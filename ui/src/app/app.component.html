@@ -1,0 +1,85 @@
+<div class="container-fluid">
+  <div class="row text-center">
+    <div class="col">
+      <h1 class="text-center">Der Web-Befundgenerator</h1>
+    </div>
+  </div>
+  <div class="row mt-1">
+    <table>
+      <tbody>
+	<tr *ngFor="let category of parts">
+	  <td class="category">{{category.name}}</td>
+	  <ng-container *ngFor="let sel of category.selectables" class="col-3">
+	    <ng-container *ngIf="sel.kind === 'box'">
+	      <td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value"/> </td>
+	      <td class="title"> {{sel.name}} </td>
+	    </ng-container>
+	    <ng-container *ngIf="sel.kind === 'group'">
+	      <ng-container *ngFor="let option of sel.options" class="col-3">
+		<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name" [value]="option.name" type="radio" [(ngModel)]="sel.value"/> </td>
+		<td class="title"> {{option.name}} </td>
+	      </ng-container>
+	    </ng-container>
+	  </ng-container>
+	</tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row mt-3">
+    <div class="col text-center">
+      <button (click)="copyText()" class="btn btn-outline-secondary m-2">In die Zwischenablage kopieren</button>
+      <button (click)="makeNormal()" class="btn btn-outline-secondary m-2">Rest normal</button>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output" rows=20 class="w-100" [(ngModel)]="text"></textarea>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col text-center">
+      <button (click)="saveDialog()" class="btn btn-outline-secondary">Input als neuen default Dialog speichern</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="variableDialogLabel">Variablen wählen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	<table>
+	  <tr *ngFor="let v of modalVariables">
+	    <td class="text-right">{{v.textBefore}}</td>
+	    <td *ngIf="v.kind === 'oc'">
+	      <span *ngFor="let vv of v.values">
+		<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value"/> {{vv}}
+	      </span>
+	    </td>
+	    <td *ngIf="v.kind === 'text'">
+	      <input type="text" [(ngModel)]="v.value"/>
+	    </td>
+	    <td *ngIf="v.kind === 'number'">
+	      <input type="number" class="w-100" [(ngModel)]="v.value"/>
+	    </td>
+	    <td *ngIf="v.kind === 'date'">
+	      <ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
+	    </td>
+	    <td *ngIf="v.kind === 'ratio'">
+	      <input type="number" [(ngModel)]="v.numerator" /> / <input type="number" [(ngModel)]="v.denominator" />
+	    </td>
+	    <td class="text-left">{{v.textAfter}}</td>
+	  </tr>
+	</table>
+      </div>
+      <div class="modal-footer">
+	<button (click)="endVariableSelection()" type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
