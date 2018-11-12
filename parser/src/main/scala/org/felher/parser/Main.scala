@@ -7,7 +7,10 @@ object Main {
     val rawSheet = parseCSV(sheetString)
     val s = Parser.S(0, Set(), rawSheet(0), rawSheet.tail)
     val tls = Parser.runComplete(TableParser.topLevels, s)
-    Files.write(Paths.get("output.json"), ToJson.toJson(tls.right.get).getBytes("UTF-8"))
+    tls match {
+      case Right(x) => Files.write(Paths.get("output.json"), ToJson.toJson(x).getBytes("UTF-8"))
+      case Left(e)  => println(e)
+    }
     ()
   }
 

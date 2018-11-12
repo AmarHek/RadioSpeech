@@ -4,11 +4,13 @@ sealed trait TopLevel
 
 final case class Block(
   text: String,
+  judgementText: Option[String],
 ) extends TopLevel
 
 final case class Enumeration(
-  id:   String,
-  text: String,
+  id:            String,
+  text:          String,
+  judgementText: Option[String],
 ) extends TopLevel
 
 final case class Category(
@@ -19,12 +21,14 @@ final case class Category(
 sealed trait Selectable
 
 final case class CheckBox(
-  name:        String,
-  value:       Boolean,
-  text:        String,
-  normal:      Boolean,
-  variables:   List[Variable],
-  enumeration: Option[String],
+  name:           String,
+  value:          Boolean,
+  text:           String,
+  judgementText:  Option[String],
+  normal:         Boolean,
+  conditionalId:  Option[String],
+  variables:      List[Variable],
+  enumeration:    Option[String],
 ) extends Selectable
 
 final case class Group(
@@ -34,11 +38,19 @@ final case class Group(
 ) extends Selectable
 
 final case class Opt(
-  name:      String,
-  text:      String,
-  normal:    Boolean,
-  variables: List[Variable],
+  name:          String,
+  text:          String,
+  judgementText: Option[String],
+  normal:        Boolean,
+  conditionalId: Option[String],
+  variables:     List[Variable],
 )
+
+final case class Conditional(
+  precondition:  Condition,
+  normalText:    Option[String],
+  judgementText: Option[String],
+) extends TopLevel
 
 sealed trait Variable
 
@@ -81,3 +93,7 @@ final case class VariableRatio(
 ) extends Variable
 
 final case class NgbDateStruct(year: Int, month: Int, day: Int)
+
+final case class Condition(ored: List[And])
+final case class And(literals: List[Literal])
+final case class Literal(id: String, negated: Boolean)

@@ -12,3 +12,8 @@ td.category {
 	font-size: 120%;
 	font-weight: bold;
 }
+
+#normal-button {
+	font-weight: bold;
+	color: black;
+}

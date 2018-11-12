@@ -71,6 +71,7 @@ addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.7")
 libraryDependencies ++= Seq(
   "org.typelevel"   %% "cats-core"           % "1.2.0",
   "org.typelevel"   %% "cats-effect"         % "0.10.1",
+  "co.fs2"          %% "fs2-core"            % "1.0.0",
   "io.circe"        %% "circe-core"          % "0.10.0-M2",
   "io.circe"        %% "circe-generic"       % "0.10.0-M2",
   "io.circe"        %% "circe-parser"        % "0.10.0-M2",
