@@ -27,7 +27,7 @@ object TableParser {
       enumeration.widen[TopLevel],
       category.widen[TopLevel],
       conditional.widen[TopLevel],
-    )
+    ) <* takeAll(endLine)
   )
 
   def block: Parser[Block] = for {

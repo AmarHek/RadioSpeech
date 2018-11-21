@@ -25,7 +25,7 @@ object Main extends IOApp {
     case req@POST -> Root / "upload" => for {
       json   <- req.as[UploadData]
       bytes  <- IO { java.util.Base64.getDecoder.decode(json.data) }
-      table  <- IO { parseCSV(new String(bytes, "UTF-8")) }
+      table  <- IO { parseCSV(createString(bytes)) }
       s       = Parser.S(0, Set(), table(0), table.tail)
       tls     = Parser.runComplete(TableParser.topLevels, s)
       result <- tls match {
@@ -38,6 +38,13 @@ object Main extends IOApp {
         } yield r
       }
     } yield result
+  }
+
+  def createString(bytes: Array[Byte]): String = {
+    val utf8String = new String(bytes, "UTF-8")
+    val utf8Bytes = utf8String.getBytes("UTF-8")
+    if (utf8Bytes.sameElements(bytes)) utf8String
+    else new String(bytes, "latin1")
   }
 
   def parseCSV(s: String): Array[Array[String]] =
