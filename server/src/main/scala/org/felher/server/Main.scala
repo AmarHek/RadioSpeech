@@ -3,7 +3,6 @@ package org.felher.server
 import cats.effect._, cats.data._
 import cats.implicits._
 import io.circe._, io.circe.generic.semiauto._, io.circe.syntax._, io.circe.parser._
-import java.io._
 import java.nio.file._
 import java.util.concurrent._
 import org.http4s._
@@ -25,14 +24,18 @@ object Main extends IOApp {
     case req@POST -> Root / "upload" => for {
       json   <- req.as[UploadData]
       bytes  <- IO { java.util.Base64.getDecoder.decode(json.data) }
-      table  <- IO { parseCSV(createString(bytes)) }
+      table  <- IO {
+        ExcelParser.parseTable(bytes) match {
+          case Left(s)  => throw new RuntimeException(s)
+          case Right(t) => t
+        }
+      }
       s       = Parser.S(0, Set(), table(0), table.tail)
       tls     = Parser.runComplete(TableParser.topLevels, s)
       result <- tls match {
         case Left(e)  => BadRequest(e)
         case Right(r) => for {
           _ <- IO { Files.createDirectories(dataDir) }
-          _ = println(json.name)
           _ <- IO { Files.write(dataDir.resolve(json.name), ToJson.toJson(r).getBytes("UTF-8")) }
           r <- Ok(().asJson)
         } yield r
@@ -111,9 +114,7 @@ object Main extends IOApp {
   def returnErrors[F[_]: Sync](k: Kleisli[F, Request[F], Response[F]]): Kleisli[F, Request[F], Response[F]] = Kleisli(req =>
       k(req).attempt.flatMap({
         case Left(e) => {
-          val sw = new StringWriter
-          e.printStackTrace(new PrintWriter(sw))
-          Http4sDsl[F].http4sInternalServerErrorSyntax(InternalServerError).apply(sw.toString)
+          Http4sDsl[F].http4sInternalServerErrorSyntax(InternalServerError).apply(Util.stringify(e))
         }
         case Right(r) => r.pure[F]
       }))
