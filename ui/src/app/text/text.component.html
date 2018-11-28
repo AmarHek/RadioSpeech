@@ -71,6 +71,11 @@
 		<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value"/> {{vv}}
 	      </span>
 	    </td>
+	    <td *ngIf="v.kind === 'mc'">
+	      <span *ngFor="let vv of v.values">
+		<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]"/> {{vv[0]}}
+	      </span>
+	    </td>
 	    <td *ngIf="v.kind === 'text'">
 	      <input type="text" [(ngModel)]="v.value"/>
 	    </td>

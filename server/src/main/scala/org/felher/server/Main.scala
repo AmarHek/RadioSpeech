@@ -17,7 +17,6 @@ import scala.concurrent.ExecutionContext
 
 object Main extends IOApp {
   val dataDir: java.nio.file.Path = Paths.get("data/")
-  val staticDir: java.nio.file.Path = Paths.get("static/")
   val blockingEc = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(4))
 
   val uploadService = HttpRoutes.of[IO] {
@@ -89,11 +88,11 @@ object Main extends IOApp {
   val staticService = HttpRoutes.of[IO] {
     case req@GET -> "static" /: file =>
       if (file.toList.mkString("/").isEmpty) 
-        StaticFile.fromFile(staticDir.resolve("index.html").toFile, blockingEc, Some(req))
-          .getOrElseF(NotFound()) // In case the file doesn't exist
+        StaticFile.fromResource("/org/felher/server/index.html", blockingEc, Some(req))
+          .getOrElseF(NotFound())
       else 
-        StaticFile.fromFile(staticDir.resolve(file.toList.mkString("/")).toFile, blockingEc, Some(req))
-          .getOrElseF(NotFound()) // In case the file doesn't exist
+        StaticFile.fromResource("/org/felher/server/" + file.toList.mkString("/"), blockingEc, Some(req))
+          .getOrElseF(NotFound())
   }
 
   def run(args: List[String]): IO[ExitCode] =

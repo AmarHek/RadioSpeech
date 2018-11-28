@@ -62,6 +62,13 @@ final case class VariableOC(
   values:     List[String],
 ) extends Variable
 
+final case class VariableMC(
+  id:         String,
+  textBefore: String,
+  textAfter:  String,
+  values:     List[(String, Boolean)],
+) extends Variable
+
 final case class VariableText(
   id:         String,
   textBefore: String,

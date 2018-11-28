@@ -252,6 +252,8 @@ function allVariables(data: TopLevel[]): Variable[] {
 function textOfVariable(v: Variable): string | undefined {
   if (v.kind === "oc") {
     return v.value;
+  } else if (v.kind === "mc") {
+    return v.values.filter(v => v[1]).map(v => v[0]).join(", ");
   } else if (v.kind === "text") {
     return v.value;
   } else if (v.kind === "number") {
@@ -261,6 +263,8 @@ function textOfVariable(v: Variable): string | undefined {
   } else if (v.kind === "ratio") {
     return (v.numerator / v.denominator).toLocaleString("de-DE", { maximumFractionDigits: v.fractionDigits });
   }
+
+  return assertUnreachable(v);
 }
 
 function makeNormalCategory(c: Category): void {
@@ -325,6 +329,10 @@ function getRelevantEnumerationItems(id: string, data: TopLevel[], textExtractor
   }
 
   return items;
+}
+
+function assertUnreachable(x: never): never {
+  throw new Error("should not be reachable: " + x);
 }
 
 type Selectable = CheckBox | Group;
@@ -400,7 +408,7 @@ export interface Literal {
   negated: boolean;
 }
 
-type Variable = VariableOC | VariableText | VariableNumber | VariableDate | VariableRatio
+type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio
 
 export interface VariableCommon {
   id:         string;
@@ -412,6 +420,11 @@ export interface VariableOC extends VariableCommon {
   kind:   "oc";
   value?: string;
   values: string[];
+}
+
+export interface VariableMC extends VariableCommon {
+  kind:   "mc";
+  values: [string, boolean][];
 }
 
 export interface VariableText extends VariableCommon {

@@ -1,0 +1,8 @@
+build:
+  script:
+    - cd server && sbt assembly
+    - find ./ -iname 'server-assembly*jar' -exec cp '{}' website.jar \;
+    - docker build -t befundung:$CI_COMMIT_SHA .
+    - docker kill befundung || true
+    - docker rm befundung || true
+    - docker run -d -t -p 0.0.0.0:9050:9050 --restart=always --name befundung befundung:$CI_COMMIT_SHA

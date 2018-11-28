@@ -75,6 +75,7 @@ object ToJson {
 
   def variable(v: Variable): Json = v match {
     case oc     : VariableOC     => variableOC(oc)
+    case mc     : VariableMC     => variableMC(mc)
     case text   : VariableText   => variableText(text)
     case number : VariableNumber => variableNumber(number)
     case date   : VariableDate   => variableDate(date)
@@ -89,6 +90,15 @@ object ToJson {
     "value"      -> oc.value,
     "values"     -> oc.values,
   )
+
+  def variableMC(mc: VariableMC): Json = JsonObject(
+    "kind"       -> "mc",
+    "id"         -> mc.id,
+    "textBefore" -> mc.textBefore,
+    "textAfter"  -> mc.textAfter,
+    "values"     -> mc.values,
+  )
+
 
   def variableText(text: VariableText): Json = JsonObject(
     "kind"       -> "text",

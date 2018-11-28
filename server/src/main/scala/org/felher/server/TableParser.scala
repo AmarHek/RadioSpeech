@@ -142,12 +142,22 @@ object TableParser {
       } yield VariableRatio(id, ib, ia, 0, 0, fd)).widen[Variable]
       case "Zahl"      => VariableNumber(id, ib, ia, 0).pure[Parser].widen[Variable]
       case "Text"      => VariableText(id, ib, ia, "").pure[Parser].widen[Variable]
-      case ocString    => ocString.split("/").map(_.trim).toList match {
-        case Nil => fail(s"Unknown type $typ")
-        case vs  => VariableOC(id, ib, ia, None, vs).pure[Parser].widen[Variable]
+      case text        => parseOcOrMcQuestion(text, id, ib, ia) match {
+        case None    => fail(s"Unknown type $typ")
+        case Some(v) => v.pure[Parser]
       }
     }
   } yield result
+
+  def parseOcOrMcQuestion(typeText: String, id: String, before: String, after: String): Option[Variable] = {
+    if (typeText.contains("/")) {
+      Some(VariableOC(id, before, after, None, typeText.split("/").map(_.trim).toList))
+    } else if (typeText.contains(";")) {
+      Some(VariableMC(id, before, after, typeText.split(";").map(t => (t.trim, false)).toList))
+    } else {
+      None
+    }
+  }
 
   def en(s: String): String = s.replace("\\n", "\n")
 
