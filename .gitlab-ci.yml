@@ -6,4 +6,4 @@ build:
     - docker build -t befundung:$CI_COMMIT_SHA .
     - docker kill befundung || true
     - docker rm befundung || true
-    - docker run -d -t -p 0.0.0.0:9050:1337 --restart=always --mount source=/var/lib/befundung/data,target=/website/data,type=bind --name befundung befundung:$CI_COMMIT_SHA
+    - docker run -d -t -p 127.0.0.1:9050:1337 --restart=always --mount source=/var/lib/befundung/data,target=/website/data,type=bind --name befundung befundung:$CI_COMMIT_SHA
