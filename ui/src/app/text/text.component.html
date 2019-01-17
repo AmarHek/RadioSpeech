@@ -34,16 +34,16 @@
   </div>
   <div class="row mt-3">
     <div class="col">
-      <button id="ready-button" (click)="copyText()" class="btn btn-outline-secondary float-left">Befund kopieren</button>
-      <button id="ready-button" (click)="copyText()" class="btn btn-outline-secondary float-right">Beurteilung kopieren</button>
+      <button id="ready-button" (click)="copyText('output1')" class="btn btn-outline-secondary float-left">Befund kopieren</button>
+      <button id="ready-button" (click)="copyText('output2')" class="btn btn-outline-secondary float-right">Beurteilung kopieren</button>
     </div>
   </div>
   <div class="row mt-3">
     <div class="col">
-      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output" rows=20 class="w-100" [(ngModel)]="text"></textarea>
+      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output1" rows=20 class="w-100" [(ngModel)]="text"></textarea>
     </div>
     <div class="col">
-      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben" id="output" rows=20 class="w-100" [(ngModel)]="judgement"></textarea>
+      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben" id="output2" rows=20 class="w-100" [(ngModel)]="judgement"></textarea>
     </div>
   </div>
   <div class="row mt-3">

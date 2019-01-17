@@ -75,8 +75,8 @@ export class TextComponent {
     this.judgement = makeText(this.parts, judgementExtractor, suppressedJudgement);
   }
 
-  copyText(): void {
-    (document.getElementById("output") as HTMLInputElement).select();
+  copyText(id: string): void {
+    (document.getElementById(id) as HTMLInputElement).select();
     document.execCommand('copy');
   }
 
