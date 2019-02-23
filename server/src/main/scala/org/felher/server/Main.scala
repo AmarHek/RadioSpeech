@@ -6,6 +6,7 @@ import io.circe._, io.circe.generic.semiauto._, io.circe.syntax._, io.circe.pars
 import java.nio.file._
 import java.util.concurrent._
 import org.http4s._
+import org.http4s.server.middleware._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe._
 import org.http4s.dsl._
@@ -98,13 +99,13 @@ object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] =
     BlazeServerBuilder[IO]
       .bindHttp(1337, "0.0.0.0")
-      .withHttpApp(returnErrors((
+      .withHttpApp(CORS(returnErrors((
         uploadService <+>
         listService <+>
         getService <+>
         removeService <+>
         staticService
-      ).orNotFound))
+      ).orNotFound)))
       .serve
       .compile
       .drain
