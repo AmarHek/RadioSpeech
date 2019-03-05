@@ -114,13 +114,30 @@ function takeOfInterpolatedString(s: string, structure: M.TopLevel[]): T.Taker {
 
 function takerOfVariable(v: M.Variable, textAfter: string): T.Taker {
   switch (v.kind) {
-    case 'text':   return T.dummy;
+    case 'text':   return takeOfText(v, textAfter);
     case 'date':   return takeOfdate(v);
     case 'mc':     return takerOfMcVariable(v);
     case 'number': return takerOfNumber(v);
     case 'ratio':  return takerOfRation(v);
     case 'oc':     return takerOfOcVariable(v);
     default:       return assertNever(v);
+  }
+}
+
+function takeOfText(v: M.VariableText, textAfter: string): T. Taker {
+  if (textAfter.length === 0 || textAfter.substring(0, 1) === "%") {
+    return T.dummy;
+  } else {
+    const terminationChar = textAfter.substring(0, 1);
+    return s => {
+      const i = s.indexOf(terminationChar)
+      if (i !== -1) {
+        return {
+          lengthTaken: i,
+          setter: () => { v.value = s.substring(0, i) }
+        };
+      }
+    }
   }
 }
 
