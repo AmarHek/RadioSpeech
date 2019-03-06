@@ -1,11 +1,9 @@
-<div class="container-fluid">
-  <div class="row text-center">
-    <div class="col">
-      <h1 class="text-center">Der Web-Befundgenerator</h1>
-    </div>
+<div class="main">
+  <div class="headline">
+    Der Web-Befundgenerator
+    <button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest normal</button>
   </div>
-  <div class="row mt-1">
-    <div class="col">
+  <div class="main-content">
       <table>
 	<tbody>
 	  <tr *ngFor="let category of parts">
@@ -25,32 +23,19 @@
 	  </tr>
 	</tbody>
       </table>
-    </div>
   </div>
-  <div class="row mt-3">
-    <div class="col">
-      <button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-left ">Rest normal</button>
-    </div>
+  <div class="befundung-text">
+    <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output1" class="w-100" [(ngModel)]="text"></textarea>
   </div>
-  <div class="row mt-3">
-    <div class="col">
-      <button id="ready-button" (click)="copyText('output1')" class="btn btn-outline-secondary float-left">Befund kopieren</button>
-      <button id="ready-button" (click)="reverse()"           class="ml-2 btn btn-outline-secondary float-left">Befund auslesen</button>
-      <button id="ready-button" (click)="copyText('output2')" class="btn btn-outline-secondary float-right">Beurteilung kopieren</button>
-    </div>
+  <div class="befundung-buttons">
+    <button id="ready-button" (click)="copyText('output1')" class="btn btn-outline-secondary float-left">kopieren</button>
+    <button id="ready-button" (click)="reverse()"           class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
   </div>
-  <div class="row mt-3">
-    <div class="col">
-      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output1" rows=20 class="w-100" [(ngModel)]="text"></textarea>
-    </div>
-    <div class="col">
-      <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben" id="output2" rows=20 class="w-100" [(ngModel)]="judgement"></textarea>
-    </div>
+  <div class="beurteilung-text">
+    <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben" id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
   </div>
-  <div class="row mt-3">
-    <div class="col text-center">
-       <button (click)="saveDialog()" class="btn btn-outline-secondary">Input als neuen default Dialog speichern</button>
-    </div>
+  <div class="beurteilung-buttons">
+    <button id="ready-button" (click)="copyText('output2')" class="btn btn-outline-secondary float-right">kopieren</button>
   </div>
 </div>
 

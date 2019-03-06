@@ -1,0 +1,88 @@
+$border-color: hsl(200, 70%, 80);
+.main {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 400px 1fr;
+	grid-template-areas:
+		"headline headline"
+		"bf-text  content"
+		"bf-but   content"
+		"bu-text  content"
+		"bu-but   content";
+	
+	grid-template-rows: auto 3fr auto 1fr auto;
+}
+
+.main > div {
+	background-color: hsl(200, 70%, 97%);
+	padding: 5px;
+	overflow: auto;
+}
+
+.headline {
+	grid-area: headline;
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 1px solid $border-color;
+}
+
+.main-content {
+	grid-area: content;
+	border-top: 1px solid $border-color;
+	border-left: 1px solid $border-color;
+}
+
+.befundung-text {
+	grid-area: bf-text;
+}
+
+.befundung-buttons {
+	grid-area: bf-but;
+	grid-template-columns: 1fr 1fr;
+}
+
+.beurteilung-text {
+	grid-area: bu-text;
+}
+
+.beurteilung-buttons {
+	grid-area: bu-but;
+	grid-template-columns: 1fr;
+}
+
+.befundung-text, .befundung-buttons, .beurteilung-text, .beurteilung-buttons {
+	border: 1px solid $border-color;
+	border-left: none;
+}
+
+.befundung-buttons, .beurteilung-buttons {
+	display: grid;
+}
+
+textarea {
+	height: 100%;
+}
+
+td.box {
+	padding: 5px 20px;
+	padding-right: 2px;
+}
+
+td.title {
+	padding: 5px 20px;
+	padding-left:  2px;
+}
+
+td.category {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+#normal-button {
+	font-weight: bold;
+	color: black;
+}
+
