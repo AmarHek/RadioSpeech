@@ -15,6 +15,7 @@ object ToJson {
     "kind"          -> "block",
     "text"          -> b.text,
     "judgementText" -> b.judgementText,
+    "data"          -> b.data,
   )
 
   def enumeration(e: Enumeration): Json = JsonObject(
@@ -22,12 +23,14 @@ object ToJson {
     "text"          -> e.text,
     "judgementText" -> e.judgementText,
     "id"            -> e.id,
+    "data"          -> e.data,
   )
 
   def category(c: Category): Json = JsonObject(
     "kind"        -> "category",
     "name"        -> c.name,
-    "selectables" -> c.selectables.map(selectable)
+    "selectables" -> c.selectables.map(selectable),
+    "data"        -> c.data,
   )
 
   def conditional(c: Conditional): Json = JsonObject(
@@ -37,6 +40,7 @@ object ToJson {
                            JsonObject("id" -> literal.id, "negated" -> literal.negated))),
     "normalText"    -> c.normalText,
     "judgementText" -> c.judgementText,
+    "data"          -> c.data,
   )
 
   def selectable(s: Selectable): Json = s match {
@@ -54,6 +58,7 @@ object ToJson {
     "conditionalId" -> c.conditionalId,
     "variables"     -> c.variables.map(variable),
     "enumeration"   -> c.enumeration,
+    "data"          -> c.data,
   )
 
   def group(g: Group): Json = JsonObject(
@@ -61,6 +66,7 @@ object ToJson {
     "name"    -> g.name,
     "options" -> g.options.map(opt),
     "value"   -> g.value,
+    "data"    -> g.data,
   )
 
   def opt(o: Opt): Json = JsonObject(
@@ -71,6 +77,7 @@ object ToJson {
     "normal"        -> o.normal,
     "conditionalId" -> o.conditionalId,
     "variables"     -> o.variables.map(variable),
+    "data"          -> o.data,
   )
 
   def variable(v: Variable): Json = v match {
@@ -89,6 +96,7 @@ object ToJson {
     "textAfter"  -> oc.textAfter,
     "value"      -> oc.value,
     "values"     -> oc.values,
+    "data"       -> oc.data,
   )
 
   def variableMC(mc: VariableMC): Json = JsonObject(
@@ -97,6 +105,7 @@ object ToJson {
     "textBefore" -> mc.textBefore,
     "textAfter"  -> mc.textAfter,
     "values"     -> mc.values,
+    "data"       -> mc.data,
   )
 
 
@@ -106,6 +115,7 @@ object ToJson {
     "textBefore" -> text.textBefore,
     "textAfter"  -> text.textAfter,
     "value"      -> text.value,
+    "data"       -> text.data,
   )
 
   def variableNumber(number: VariableNumber): Json = JsonObject(
@@ -114,6 +124,7 @@ object ToJson {
     "textBefore" -> number.textBefore,
     "textAfter"  -> number.textAfter,
     "value"      -> number.value,
+    "data"       -> number.data,
   )
 
   def variableRatio(number: VariableRatio): Json = JsonObject(
@@ -124,6 +135,7 @@ object ToJson {
     "numerator"      -> number.numerator,
     "denominator"    -> number.denominator,
     "fractionDigits" -> number.fractionDigits,
+    "data"           -> number.data,
   )
 
   def variableDate(date: VariableDate): Json = JsonObject(
@@ -132,6 +144,7 @@ object ToJson {
     "textBefore" -> date.textBefore,
     "textAfter"  -> date.textAfter,
     "value"      -> Map("year" -> date.value.year, "month" -> date.value.month, "day" -> date.value.day),
+    "data"       -> date.data,
   )
 
   implicit def toJsonI[A: Encoder](a: A): Json = a.asJson

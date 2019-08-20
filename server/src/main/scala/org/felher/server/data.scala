@@ -5,17 +5,20 @@ sealed trait TopLevel
 final case class Block(
   text: String,
   judgementText: Option[String],
+  data: Data,
 ) extends TopLevel
 
 final case class Enumeration(
   id:            String,
   text:          String,
   judgementText: Option[String],
+  data:          Data,
 ) extends TopLevel
 
 final case class Category(
   name:        String,
   selectables: List[Selectable],
+  data:        Data,
 ) extends TopLevel
 
 sealed trait Selectable
@@ -29,12 +32,14 @@ final case class CheckBox(
   conditionalId:  Option[String],
   variables:      List[Variable],
   enumeration:    Option[String],
+  data:           Data,
 ) extends Selectable
 
 final case class Group(
   name:    String,
   options: List[Opt],
   value:   Option[String],
+  data:    Data,
 ) extends Selectable
 
 final case class Opt(
@@ -44,12 +49,14 @@ final case class Opt(
   normal:        Boolean,
   conditionalId: Option[String],
   variables:     List[Variable],
+  data:          Data,
 )
 
 final case class Conditional(
   precondition:  Condition,
   normalText:    Option[String],
   judgementText: Option[String],
+  data:          Data,
 ) extends TopLevel
 
 sealed trait Variable
@@ -60,6 +67,7 @@ final case class VariableOC(
   textAfter:  String,
   value:      Option[String],
   values:     List[String],
+  data:       Data,
 ) extends Variable
 
 final case class VariableMC(
@@ -67,6 +75,7 @@ final case class VariableMC(
   textBefore: String,
   textAfter:  String,
   values:     List[(String, Boolean)],
+  data:       Data,
 ) extends Variable
 
 final case class VariableText(
@@ -74,6 +83,7 @@ final case class VariableText(
   textBefore: String,
   textAfter:  String,
   value:      String,
+  data:       Data,
 ) extends Variable
 
 final case class VariableNumber(
@@ -81,6 +91,7 @@ final case class VariableNumber(
   textBefore: String,
   textAfter:  String,
   value:      Double,
+  data:       Data,
 ) extends Variable
 
 final case class VariableDate(
@@ -88,6 +99,7 @@ final case class VariableDate(
   textBefore: String,
   textAfter:  String,
   value:      NgbDateStruct,
+  data:       Data,
 ) extends Variable
 
 final case class VariableRatio(
@@ -97,6 +109,7 @@ final case class VariableRatio(
   numerator:      Double,
   denominator:    Double,
   fractionDigits: Int,
+  data:           Data,
 ) extends Variable
 
 final case class NgbDateStruct(year: Int, month: Int, day: Int)

@@ -4,6 +4,10 @@ import { assertNever, flatMap } from './util';
 export type Selectable = CheckBox | Group;
 export type Clickable  = CheckBox | Option;
 
+export type Data = {
+  [name: string]: string[]
+};
+
 export interface TextExtractor {
   ofCheckbox(c: CheckBox): string | undefined;
   ofOption(o: Option): string | undefined;
@@ -22,6 +26,7 @@ export interface CheckBox {
   normal:         boolean;
   variables:      Variable[];
   enumeration?:   string;
+  data:           Data;
 }
 
 export interface Group {
@@ -29,6 +34,7 @@ export interface Group {
   name:    string;
   options: Option[];
   value?:  string;
+  data:    Data;
 }
 
 export interface Option {
@@ -39,6 +45,7 @@ export interface Option {
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
+  data:           Data;
 }
 
 export type TopLevel = Category | Block | Enumeration | Conditional;
@@ -47,12 +54,14 @@ export interface Category {
   kind: "category";
   name: string;
   selectables: Selectable[];
+  data: Data;
 }
 
 export interface Block {
   kind: "block";
   text?: string;
   judgementText?: string;
+  data: Data;
 }
 
 export interface Enumeration {
@@ -60,6 +69,7 @@ export interface Enumeration {
   text:           string;
   judgementText?: string;
   id:             string;
+  data:           Data;
 }
 
 export interface Conditional {
@@ -67,6 +77,7 @@ export interface Conditional {
   precondition:   Literal[][];
   normalText?:    string;
   judgementText?: string;
+  data:           Data;
 }
 
 export interface Literal {
@@ -80,6 +91,7 @@ export interface VariableCommon {
   id:         string;
   textBefore: string;
   textAfter:  string;
+  data:       Data;
 }
 
 export interface VariableOC extends VariableCommon {

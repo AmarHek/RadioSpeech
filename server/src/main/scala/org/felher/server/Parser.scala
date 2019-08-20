@@ -14,6 +14,19 @@ object Parser {
         else Right(a)
     }
 
+  def getData: Parser[Map[String, List[String]]] =
+    get.flatMap(_.header.zipWithIndex.toList.foldMapM({
+      case (h, i) =>
+        if (h.startsWith("data-")) {
+          lookupValueMaybe(i).map({
+            case None    => Map.empty[String, List[String]]
+            case Some(v) => Map(h.substring("data-".length) -> List(v))
+          })
+      } else {
+        Map.empty[String, List[String]].pure[Parser]
+      }
+    }))
+
   def resolve(name: String): Parser[String] = for {
     column <- resolveHeader(name)
     value  <- lookupValue(column)

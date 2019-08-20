@@ -34,16 +34,18 @@ object TableParser {
     _             <- assertContent(_Typ, "Block")
     text          <- resolve(_Text_Befund)
     judgementText <- resolveMaybe(_Text_Beurteilung)
+    data          <- getData
     _             <- endLine
-  } yield Block(en(text), judgementText.map(en))
+  } yield Block(en(text), judgementText.map(en), data.mapValues(_.map(en)))
 
   def conditional: Parser[Conditional] = for {
     precondition  <- resolve(_Wenn)
     preconditionp <- parseCondition(precondition)
     normalText    <- resolveMaybe(_Text_Befund)
     judgementText <- resolveMaybe(_Text_Beurteilung)
+    data          <- getData
     _             <- endLine
-  } yield Conditional(preconditionp, normalText, judgementText)
+  } yield Conditional(preconditionp, normalText, judgementText, data.mapValues(_.map(en)))
 
   def parseCondition(s: String): Parser[Condition] = {
     def parseLiteral(s: String): Either[String, Literal] = {
@@ -69,14 +71,16 @@ object TableParser {
     id            <- resolve(_Aufzaehlung)
     text          <- resolve(_Text_Befund)
     judgementText <- resolveMaybe(_Text_Beurteilung)
+    data          <- getData
     _             <- endLine
-  } yield Enumeration(id, en(text), judgementText.map(en))
+  } yield Enumeration(id, en(text), judgementText.map(en), data.mapValues(_.map(en)))
 
   def category: Parser[Category] = for {
     name         <- resolve(_Gliederung)
     firstSel     <- selectable
+    data         <- getData
     remainingSel <- takeAll(selectable)
-  } yield Category(name, firstSel :: remainingSel)
+  } yield Category(name, firstSel :: remainingSel, data.mapValues(_.map(en)))
 
   def selectable: Parser[Selectable] = or(
     checkBox.widen[Selectable],
@@ -91,6 +95,7 @@ object TableParser {
     enumeration   <- resolveMaybe(_Aufzaehlung)
     text          <- resolve(enumeration.fold(_Text_Befund)(_ => _Aufzaehlungstexte))
     condId        <- resolveMaybe(_BausteinID)
+    data          <- getData
     firstVar      <- maybe(variable)
     _             <- endLine
     remainingVars <- takeAll(variable <* endLine)
@@ -99,15 +104,16 @@ object TableParser {
       case (Some(v), l  ) => (v :: l).pure[Parser]
       case (None,    _  ) => fail("missing first variable")
     }
-  } yield CheckBox(name, default.nonEmpty, en(text), judgementText.map(en), normal.nonEmpty, condId, vars, enumeration)
+  } yield CheckBox(name, default.nonEmpty, en(text), judgementText.map(en), normal.nonEmpty, condId, vars, enumeration, data.mapValues(_.map(en)))
 
   def group: Parser[Group] = for {
     name         <- resolve(_Choice_Gruppe)
+    data         <- getData
     firstOpt     <- option(name)
     remainingOpt <- takeAll(option(name))
   } yield {
     val value = (firstOpt :: remainingOpt).find(o => o._1).map(_._2.name)
-    Group(name, (firstOpt :: remainingOpt).map(_._2), value)
+    Group(name, (firstOpt :: remainingOpt).map(_._2), value, data.mapValues(_.map(en)))
   }
 
   def option(group: String): Parser[(Boolean, Opt)] = for {
@@ -118,6 +124,7 @@ object TableParser {
     default       <- resolveMaybe(_Default)
     normal        <- resolveMaybe(_Normal)
     condId        <- resolveMaybe(_BausteinID)
+    data          <- getData
     firstVar      <- maybe(variable)
     _             <- endLine
     remainingVars <- takeAll(variable <* endLine)
@@ -126,34 +133,36 @@ object TableParser {
       case (Some(v), l  ) => (v :: l).pure[Parser]
       case (None,    _  ) => fail("missing first variable")
     }
-  } yield (default.nonEmpty, Opt(name, en(text), judgementText.map(en), normal.nonEmpty, condId, vars))
+  } yield (default.nonEmpty, Opt(name, en(text), judgementText.map(en), normal.nonEmpty, condId, vars, data.mapValues(_.map(en))))
 
   def variable: Parser[Variable] = for {
     id     <- resolve(_Variable_ID)
     typ    <- resolve(_Variable_Typ)
+    data   <- getData
+    dm      = data.mapValues(_.map(en))
     info   <- maybe(resolve(_Variable_Info)).map(_.getOrElse(""))
     ia     = after(info)
     ib     = before(info)
     result <- typ match {
-      case "Datum"     => VariableDate(id, ib, ia, NgbDateStruct(2019, 1, 1)).pure[Parser].widen[Variable]
+      case "Datum"     => VariableDate(id, ib, ia, NgbDateStruct(2019, 1, 1), dm).pure[Parser].widen[Variable]
       case "ZahlBruch" => (for {
         fractionDigits <- resolve(_NK_Stellen)
         fd             <- convertTry(fractionDigits.toInt)
-      } yield VariableRatio(id, ib, ia, 0, 0, fd)).widen[Variable]
-      case "Zahl"      => VariableNumber(id, ib, ia, 0).pure[Parser].widen[Variable]
-      case "Text"      => VariableText(id, ib, ia, "").pure[Parser].widen[Variable]
-      case text        => parseOcOrMcQuestion(text, id, ib, ia) match {
+      } yield VariableRatio(id, ib, ia, 0, 0, fd, dm)).widen[Variable]
+      case "Zahl"      => VariableNumber(id, ib, ia, 0, dm).pure[Parser].widen[Variable]
+      case "Text"      => VariableText(id, ib, ia, "", dm).pure[Parser].widen[Variable]
+      case text        => parseOcOrMcQuestion(text, id, ib, ia, dm) match {
         case None    => fail(s"Unknown type $typ")
         case Some(v) => v.pure[Parser]
       }
     }
   } yield result
 
-  def parseOcOrMcQuestion(typeText: String, id: String, before: String, after: String): Option[Variable] = {
+  def parseOcOrMcQuestion(typeText: String, id: String, before: String, after: String, dm: Data): Option[Variable] = {
     if (typeText.contains("/")) {
-      Some(VariableOC(id, before, after, None, typeText.split("/").map(_.trim).toList))
+      Some(VariableOC(id, before, after, None, typeText.split("/").map(_.trim).toList, dm))
     } else if (typeText.contains(";")) {
-      Some(VariableMC(id, before, after, typeText.split(";").map(t => (t.trim, false)).toList))
+      Some(VariableMC(id, before, after, typeText.split(";").map(t => (t.trim, false)).toList, dm))
     } else {
       None
     }
