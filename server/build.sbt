@@ -80,6 +80,7 @@ libraryDependencies ++= Seq(
   "ch.qos.logback"   % "logback-classic"     % "1.2.3",
   "de.uniwue.scala" %% "morewarts"           % "0.1",
   "org.docx4j"       % "docx4j"              % "6.0.1",
+  "javax.xml.bind"   % "jaxb-api"            % "2.3.0",
 )
 
 assemblyMergeStrategy in assembly := {
