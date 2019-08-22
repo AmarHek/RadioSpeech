@@ -79,11 +79,10 @@ libraryDependencies ++= Seq(
   "org.http4s"      %% "http4s-dsl"          % "0.20.0-M3",
   "ch.qos.logback"   % "logback-classic"     % "1.3.0-alpha4",
   "de.uniwue.scala" %% "morewarts"           % "0.1",
-  "javax.xml.bind"   % "jaxb-api"            % "2.3.0",
   "org.docx4j"       % "docx4j-JAXB-MOXy" % "11.1.2",
 )
 
 assemblyMergeStrategy in assembly := {
  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
- case x => MergeStrategy.first
+ case x => MergeStrategy.last
 }

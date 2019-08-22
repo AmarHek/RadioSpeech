@@ -77,8 +77,8 @@ object TableParser {
 
   def category: Parser[Category] = for {
     name         <- resolve(_Gliederung)
-    firstSel     <- selectable
     data         <- getData
+    firstSel     <- selectable
     remainingSel <- takeAll(selectable)
   } yield Category(name, firstSel :: remainingSel, data.mapValues(_.map(en)))
 
