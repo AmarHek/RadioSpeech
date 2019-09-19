@@ -1,4 +1,4 @@
-FROM openjdk:11-alpine
+FROM openjdk:11.0.4-jdk-stretch
 
 RUN mkdir /website
 
