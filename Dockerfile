@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java:latest
+FROM openjdk:11-alpine
 
 RUN mkdir /website
 
