@@ -79,7 +79,8 @@ libraryDependencies ++= Seq(
   "org.http4s"      %% "http4s-dsl"          % "0.20.0-M3",
   "ch.qos.logback"   % "logback-classic"     % "1.3.0-alpha4",
   "de.uniwue.scala" %% "morewarts"           % "0.1",
-  "org.docx4j"       % "docx4j-JAXB-MOXy" % "11.1.2",
+  "org.docx4j"       % "docx4j-JAXB-MOXy" % "11.1.3",
+  "org.docx4j"       % "docx4j-JAXB-ReferenceImpl" % "11.1.3",
 )
 
 assemblyMergeStrategy in assembly := {
