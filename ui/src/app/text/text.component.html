@@ -1,86 +1,122 @@
 <div class="main">
-  <div class="headline">
-    Der Web-Befundgenerator
-    <button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest normal</button>
-  </div>
-  <div class="main-content">
-      <table>
-	<tbody>
-	  <tr *ngFor="let category of parts">
-	    <td class="category">{{category.name}}</td>
-	    <ng-container *ngFor="let sel of category.selectables" class="col-3">
-	      <ng-container *ngIf="sel.kind === 'box'">
-		<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value"/> </td>
-		<td class="title"> {{sel.name}} </td>
-	      </ng-container>
-	      <ng-container *ngIf="sel.kind === 'group'">
-		<ng-container *ngFor="let option of sel.options" class="col-3">
-		  <td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name" [value]="option.name" type="radio" [(ngModel)]="sel.value"/> </td>
-		  <td class="title"> {{option.name}} </td>
-		</ng-container>
-	      </ng-container>
-	    </ng-container>
-	  </tr>
-	</tbody>
-      </table>
-  </div>
-  <div class="befundung-text">
-    <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben" id="output1" class="w-100" [(ngModel)]="text"></textarea>
-  </div>
-  <div class="befundung-buttons">
-    <button id="ready-button" (click)="copyText('output1')" class="btn btn-outline-secondary float-left">kopieren</button>
-    <button id="ready-button" (click)="reverse()"           class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
-  </div>
-  <div class="beurteilung-text">
-    <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben" id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
-  </div>
-  <div class="beurteilung-buttons">
-    <button id="ready-button" (click)="copyText('output2')" class="btn btn-outline-secondary float-right">kopieren</button>
-  </div>
+
+
+
+	<div class="headline">
+
+		<div style="display: flex; justify-content: flex-end;">Config Datei hochladen &nbsp;
+			<input type="file" id="fileInput" title="txt file mit dem Format: x,y,z">
+			<div id="fileDisplayArea"></div>
+		</div>
+		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
+			normal</button>
+		<button id="los"  class="btn btn-outline-secondary float-right ">los</button>
+		<button id="refresh"  class="btn btn-outline-secondary float-right ">refresh</button>
+		<button id="submit-button"  class="btn btn-outline-secondary float-right ">Senden</button>
+		<label for="input">Befund eingeben:
+			<input id="input" name="Befund" type="text" placeholder="Befund eingeben..." size="100">
+		</label>
+		<div id="inputText">
+			<br>
+		</div>
+	</div>
+
+	<div class="main-content">
+		<table>
+			<tbody>
+				<tr *ngFor="let category of parts;let j = index">
+					<td class="category" id="{{category.name}}">{{category.name}}</td>
+					<ng-container *ngFor="let sel of category.selectables; let k = index" class="col-3">
+						<ng-container *ngIf="sel.kind === 'box'">
+							<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value" />
+							</td>
+							<td class="title0"> {{sel.name}}
+								<br>
+								<div class="link" id="{{category.name + sel.name}}"></div>
+							</td>
+						</ng-container>
+						<ng-container *ngIf="sel.kind === 'group'">
+							<ng-container *ngFor="let option of sel.options; let k = index" class="col-3">
+								<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name"
+										[value]="option.name" type="radio" [(ngModel)]="sel.value" />
+								</td>
+								<td class="title0"> {{option.name}}
+									<br>
+									<div class="link" id="{{sel.name + option.name}}"></div>
+								</td>
+							</ng-container>
+						</ng-container>
+					</ng-container>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+	<div class="befundung-text">
+		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"
+			id="output1" class="w-100" [(ngModel)]="text"></textarea>
+	</div>
+	<div class="befundung-buttons">
+		<button id="ready-button" (click)="copyText('output1')"
+			class="btn btn-outline-secondary float-left">kopieren</button>
+		<button id="ready-button" (click)="reverse()"
+			class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
+	</div>
+	<div class="beurteilung-text">
+		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
+			id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
+	</div>
+	<div class="beurteilung-buttons" onload="init()">
+		<button id="ready-button" (click)="copyText('output2')"
+			class="btn btn-outline-secondary float-right">kopieren</button>
+	</div>
 </div>
 
-<div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="variableDialogLabel">Parameter zum Textbaustein eingeben</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-	<table>
-	  <tr *ngFor="let v of modalVariables">
-	    <td class="text-right">{{v.textBefore}}</td>
-	    <td *ngIf="v.kind === 'oc'">
-	      <span *ngFor="let vv of v.values">
-		<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value"/> {{vv}}
-	      </span>
-	    </td>
-	    <td *ngIf="v.kind === 'mc'">
-	      <span *ngFor="let vv of v.values">
-		<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]"/> {{vv[0]}}
-	      </span>
-	    </td>
-	    <td *ngIf="v.kind === 'text'">
-	      <input type="text" [(ngModel)]="v.value"/>
-	    </td>
-	    <td *ngIf="v.kind === 'number'">
-	      <input type="number" class="w-100" [(ngModel)]="v.value"/>
-	    </td>
-	    <td *ngIf="v.kind === 'date'">
-	      <ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
-	    </td>
-	    <td *ngIf="v.kind === 'ratio'">
-	      <input type="number" [(ngModel)]="v.numerator" /> / <input type="number" [(ngModel)]="v.denominator" />
-	    </td>
-	    <td class="text-left">{{v.textAfter}}</td>
-	  </tr>
-	</table>
-      </div>
-      <div class="modal-footer">
-	<button (click)="endVariableSelection()" type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="variableDialogLabel">Parameter zum Textbaustein eingeben</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table>
+					<tr *ngFor="let v of modalVariables">
+						<td class="text-right">{{v.textBefore}}</td>
+						<td *ngIf="v.kind === 'oc'">
+							<span *ngFor="let vv of v.values">
+								<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value" /> {{vv}}
+							</span>
+						</td>
+						<td *ngIf="v.kind === 'mc'">
+							<span *ngFor="let vv of v.values">
+								<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]" /> {{vv[0]}}
+							</span>
+						</td>
+						<td *ngIf="v.kind === 'text'">
+							<input type="text" [(ngModel)]="v.value" />
+						</td>
+						<td *ngIf="v.kind === 'number'">
+							<input type="number" class="w-100" [(ngModel)]="v.value" />
+						</td>
+						<td *ngIf="v.kind === 'date'">
+							<ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
+						</td>
+						<td *ngIf="v.kind === 'ratio'">
+							<input type="number" [(ngModel)]="v.numerator" /> / <input type="number"
+								[(ngModel)]="v.denominator" />
+						</td>
+						<td class="text-left">{{v.textAfter}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button (click)="endVariableSelection()" type="button" data-dismiss="modal"
+					class="btn btn-primary">Ok</button>
+			</div>
+		</div>
+	</div>
 </div>
