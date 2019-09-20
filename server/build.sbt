@@ -68,6 +68,8 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += "Uni-Artifactory" at "http://artifactory-ls6.informatik.uni-wuerzburg.de/artifactory/libs-release"
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.8")
 
+enablePlugins(JavaAppPackaging)
+
 libraryDependencies ++= Seq(
   "org.typelevel"   %% "cats-core"           % "1.4.0",
   "org.typelevel"   %% "cats-effect"         % "1.0.0",

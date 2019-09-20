@@ -2,6 +2,6 @@
 
 set -e
 
-JAVA_OPTS=${JAVA_OPTS:="-Xmx256m"}
+export JAVA_OPTS=${JAVA_OPTS:="-Xmx256m"}
 
-exec java -jar $JAVA_OPTS website.jar
+exec stage/bin/server
