@@ -91,13 +91,6 @@ export class TextComponent implements OnInit {
         fileDisplayArea.innerText = "File not supported!"
       }
     });
-
-
-
-    setTimeout(function () {
-      document.getElementById('los').click();
-      // document.getElementById('los').style.visibility = 'hidden';
-    }, 50);
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -137,6 +130,7 @@ export class TextComponent implements OnInit {
             const taker = P.boxTaker(box, this.parts);
             console.log(taker(s));
             console.log(T.compound([T.text("abc"), T.optional(T.text(", "))])("abc, "));
+            this.init();
           },
           error => window.alert("An unknown error occured: " + JSON.stringify(error))
         );
@@ -561,7 +555,7 @@ export class TextComponent implements OnInit {
   readTextFile(file) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function () {
+    rawFile.onreadystatechange = () => {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status == 0) {
           var allText = rawFile.responseText;
