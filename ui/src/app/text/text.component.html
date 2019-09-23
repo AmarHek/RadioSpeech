@@ -4,18 +4,19 @@
 
 	<div class="headline">
 
-		<div style="display: flex; justify-content: flex-end;">Config Datei hochladen &nbsp;
-			<input type="file" id="fileInput" title="txt file mit dem Format: x,y,z">
-			<div id="fileDisplayArea"></div>
-		</div>
+	
 		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
 			normal</button>
-		<button id="los"  class="btn btn-outline-secondary float-right ">los</button>
-		<button id="refresh"  class="btn btn-outline-secondary float-right ">refresh</button>
-		<button id="submit-button"  class="btn btn-outline-secondary float-right ">Senden</button>
+		
+		<button id="refresh" title="seite neu laden" (click)="refreshPage()" class="btn btn-outline-secondary float-right ">refresh</button>
+		<button id="submit-button" title="eingabe absenden"(click)="submit()" class="btn btn-outline-secondary float-right ">Senden</button>
+		<button id="los" title ="das sollte man nicht sehen..."(click)="init()" class="btn btn-outline-secondary float-right ">los</button>
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" placeholder="Befund eingeben..." size="100">
+			<input id="input" name="Befund" type="text" placeholder="Befund eingeben..." size="80">
 		</label>
+		<input type="file" id="fileInput" title="Config file hochladen im txt-Format: x,y,z,... erste Zahl legt die Breite des Berichtsfeld fest, die
+		zweite die Breite der Kategorien, nachfolgende gibt die Breite der Spalten mit den checkboxen (in mm)" class="btn btn-outline-secondary float-right ">
+			<div id="fileDisplayArea"></div>
 		<div id="inputText">
 			<br>
 		</div>

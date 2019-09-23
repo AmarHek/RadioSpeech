@@ -1,88 +1,184 @@
 $border-color: hsl(200, 70%, 80);
 .main {
-	height: 100%;
-	width: 100%;
-	display: grid;
-	grid-gap: 10px;
-	grid-template-columns: 400px 1fr;
-	grid-template-areas:
-		"headline headline"
-		"bf-text  content"
-		"bf-but   content"
-		"bu-text  content"
-		"bu-but   content";
-	
-	grid-template-rows: auto 3fr auto 1fr auto;
+  height: 100%;
+  width: 100%;
+  display: inline-grid;
+  grid-gap: 10px;
+  grid-template-columns: 600px 1fr;
+  grid-template-areas:
+    "headline headline"
+    "bf-text  content"
+    "bf-but   content"
+    "bu-text  content"
+    "bu-but   content";
+
+  grid-template-rows: auto 3fr auto 1fr auto;
 }
 
 .main > div {
-	background-color: hsl(200, 70%, 97%);
-	padding: 5px;
-	overflow: auto;
+  background-color: hsl(200, 70%, 97%);
+  padding: 5px;
+  overflow: auto;
 }
 
 .headline {
-	grid-area: headline;
-	font-size: 120%;
-	font-weight: bold;
-	text-align: center;
-	border-bottom: 1px solid $border-color;
+  grid-area: headline;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid $border-color;
 }
 
 .main-content {
-	grid-area: content;
-	border-top: 1px solid $border-color;
-	border-left: 1px solid $border-color;
+  grid-area: content;
+  border-top: 1px solid $border-color;
+  border-left: 1px solid $border-color;
 }
 
 .befundung-text {
-	grid-area: bf-text;
+  width: auto;
+  grid-area: bf-text;
 }
 
 .befundung-buttons {
-	grid-area: bf-but;
-	grid-template-columns: 1fr 1fr;
+  grid-area: bf-but;
+  grid-template-columns: 1fr 1fr;
 }
 
 .beurteilung-text {
-	grid-area: bu-text;
+  grid-area: bu-text;
 }
 
 .beurteilung-buttons {
-	grid-area: bu-but;
-	grid-template-columns: 1fr;
+  grid-area: bu-but;
+  grid-template-columns: 1fr;
 }
 
-.befundung-text, .befundung-buttons, .beurteilung-text, .beurteilung-buttons {
-	border: 1px solid $border-color;
-	border-left: none;
+.befundung-text,
+.befundung-buttons,
+.beurteilung-text,
+.beurteilung-buttons {
+  border: 1px solid $border-color;
+  border-left: none;
 }
 
-.befundung-buttons, .beurteilung-buttons {
-	display: grid;
+.befundung-buttons,
+.beurteilung-buttons {
+  display: grid;
+}
+
+.small {
+  font-size: 70%;
+}
+
+.link {
+  padding: 0;
+  font-size: 75%;
+  background: none;
+  border: none;
+  white-space: pre-line;
+  max-width: 250px;
+  word-wrap: break-word;
+}
+
+.link.active {
+  background: greenyellow;
+  text-decoration: none;
+}
+
+a.info {
+  position: relative; 
+  z-index: 24;
+  color: #000;
+  text-decoration: none;
+}
+
+a.info:hover {
+  z-index: 25;
+  background-color: red($color: #190466);
+}
+
+a.info span {
+  display: none;
+}
+
+a.info:hover span {
+  display: block;
+  position: absolute;
+  bottom: 2em;
+  left: 2em;
+  width: 200%;
+  border: 1px;
+  background-color: #e2df1e;
+  color: #000;
+  text-align: top;
 }
 
 textarea {
-	height: 100%;
+  height: 100%;
 }
 
 td.box {
-	padding: 5px 20px;
-	padding-right: 2px;
+  width: 13px;
+  height: 13px;
+  //padding: 0;
+  //margin:0;
+  vertical-align: text-top;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
 }
 
-td.title {
-	padding: 5px 20px;
-	padding-left:  2px;
+td.title0 {
+  font-size: 85%;
+  display: block;
+  position: relative;
+  //max-width: 250px;
+  word-wrap: break-word;
+  //padding-left: 0px;
+  //text-indent: 0px;
 }
+
+/*tbody>tr>:nth-child(7)
+{
+  color: red;
+  max-width: 80px;
+}*/
+
+
 
 td.category {
-	font-size: 120%;
-	font-weight: bold;
+  font-size: 120%;
+  font-weight: bold;
+  padding: 10;
+  margin: 10;
+  vertical-align: top;
+  position: relative;
+  top: -1px;
+  
+  word-wrap: break-word;
+  *overflow: hidden;
+}
+
+td.grey {
+  font-size: 120%;
+  font-weight: bold;
+  padding: 10;
+  margin: 10;
+  vertical-align: top;
+  position: relative;
+  top: -1px;
+  color: grey;
+  word-wrap: break-word;
+  *overflow: hidden;
 }
 
 #normal-button {
-	font-weight: bold;
-	color: black;
+  font-weight: bold;
+  color: black;
 }
 
+img{
+  max-width:180px;
+  max-height: 180px;
+}
