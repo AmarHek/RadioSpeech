@@ -44,7 +44,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
             //oc
             if (o.kind === "oc" && o.data['syn'] != undefined) {
               let splittedVariables = o.data['syn'][0].split('/');
-              currKeyword.variables3D.push(this.splitVariables(splittedVariables, ";"));
+              currKeyword.variables3D.push(splitVariables(splittedVariables, ";"));
               for (let v of o.values) {
                 currVariables.push(v);
               }
@@ -53,7 +53,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
             //mc
             else if (o.kind === "mc" && o.data['syn'] != undefined) {
               let splittedVariables = o.data['syn'][0].split(';');
-              currKeyword.variables3D.push(this.splitVariables(splittedVariables, ","));
+              currKeyword.variables3D.push(splitVariables(splittedVariables, ","));
               for (let v of o.values) {
                 currVariables.push(v[0]);
               }
@@ -91,7 +91,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 if (v.kind === "oc" && v.data['syn'] != undefined) {
                   let splittedVariables = v.data['syn'][0].split('/');
 
-                  currKeyword.variables3D.push(this.splitVariables(splittedVariables, ";"));
+                  currKeyword.variables3D.push(splitVariables(splittedVariables, ";"));
                   for (let va of v.values) {
                     currVariables.push(va);
                   }
@@ -101,7 +101,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 else if (v.kind === "mc" && v.data['syn'] != undefined) {
                   let splittedVariables = v.data['syn'][0].split(';');
 
-                  currKeyword.variables3D.push(this.splitVariables(splittedVariables, ","));
+                  currKeyword.variables3D.push(splitVariables(splittedVariables, ","));
                   for (let va of v.values) {
                     currVariables.push(va[0]);
                   }
