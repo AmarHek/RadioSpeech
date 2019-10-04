@@ -22,7 +22,6 @@ declare const $: any;
 export class TextComponent implements OnInit {
 
   ngOnInit(): void {
-<<<<<<< HEAD
     $('#my_img').hide();
     $("#imgUpload").hover(
       // show
@@ -37,70 +36,6 @@ export class TextComponent implements OnInit {
       document.getElementById('los').click();
       // document.getElementById('los').style.visibility = 'hidden';
     }, 50);
-=======
-    //
-    var fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    var fileDisplayArea = document.getElementById('fileDisplayArea');
-    fileInput.addEventListener('change', function (e) {
-      var file = fileInput.files[0];
-      var textType = /text.*/;
-      if (file.type.match(textType)) {
-        var reader = new FileReader();
-        fileDisplayArea.innerText = "";
-        reader.onload = function (e) {
-          var test = reader.result;
-          let textLeft = document.getElementsByClassName('main') as HTMLCollectionOf<HTMLElement>;
-          if (test === '') {
-            //textLeft[0].style.gridTemplateColumns = "600px 1fr";
-          }
-          var isValid = /^[0-9,]*$/.test(test.toString());
-          if (isValid) {
-            let numbers = reader.result.toString().split(",");
-            //text links wird resiszt
-            if (textLeft.length != 0) {
-              let wid = Number.parseInt(numbers[0]) * 3.7795275591;
-              // textLeft[0].style.gridTemplateColumns = wid.toString() + "px 1fr";
-            }
-            //Kategorien werden resiszt
-            let categoryWid = document.getElementsByClassName("category") as HTMLCollectionOf<HTMLElement>;
-            if (categoryWid.length != 0) {
-              let wid = Number.parseInt(numbers[1]) * 3.7795275591;
-              categoryWid[0].style.maxWidth = wid.toString() + "px";
-            }
-            for (var i = 0; i < categoryWid.length; i++) {
-              categoryWid[i].style.maxWidth = "150px";
-            }
-            //alle restlichen Spalten
-            for (var i = 2; i < numbers.length; i++) {
-              var transNum = (i * 2) - 1;
-              var testStyle = document.createElement('style');
-              let wid = Number.parseInt(numbers[i]) * 3.7795275591;
-              testStyle.type = 'text/css';
-              testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + wid.toString() + 'px;}';
-              console.log(testStyle.innerHTML);
-              document.getElementsByTagName('head')[0].appendChild(testStyle);
-            }
-            //dem Rest 300 px max zuweisen
-            console.log(numbers.length);
-            for (var i: number = numbers.length; i < 20; i++) {
-              var transNum = (i * 2) - 1;
-              var testStyle = document.createElement('style');
-              testStyle.type = 'text/css';
-              testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + 500 + 'px;}';
-              console.log(testStyle.innerHTML);
-              document.getElementsByTagName('head')[0].appendChild(testStyle);
-            }
-          }
-          else {
-            alert("illegal config file");
-          }
-        }
-        reader.readAsText(file);
-      } else {
-        fileDisplayArea.innerText = "File not supported!"
-      }
-    });
->>>>>>> 2853a0c507c39cf68587aedc8cbadb820e7365bf
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -142,7 +77,6 @@ export class TextComponent implements OnInit {
             const taker = P.boxTaker(box, this.parts);
             console.log(taker(s));
             console.log(T.compound([T.text("abc"), T.optional(T.text(", "))])("abc, "));
-            this.init();
           },
           error => window.alert("An unknown error occured: " + JSON.stringify(error))
         );
@@ -681,7 +615,7 @@ export class TextComponent implements OnInit {
   readTextFile(file) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = () => {
+    rawFile.onreadystatechange = function () {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status == 0) {
           var allText = rawFile.responseText;
