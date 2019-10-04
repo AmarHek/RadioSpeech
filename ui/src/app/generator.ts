@@ -1,4 +1,5 @@
 import * as M from './model';
+import { v } from '@angular/core/src/render3';
 
 export function normalExtractor(): M.TextExtractor {
   return new class {
@@ -20,10 +21,10 @@ export function judgementExtractor(): M.TextExtractor {
   };
 }
 
-export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppressed: string[]): string  {
-  return parts.map(c => {
+export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppressed: string[]): string {
+ var result = parts.map(c => {
     if (c.kind === "category") {
-      return getTexts(c.selectables, suppressed, extractor).map(t => expandVariablesInString(t, parts)).join("")
+      return getTexts(c.selectables, suppressed, extractor).map(t => expandVariablesInString(t, parts,true)).join("")
     } else if (c.kind === "block") {
       return extractor.ofBlock(c) || "";
     } else if (c.kind === "enumeration") {
@@ -32,7 +33,7 @@ export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppre
       if (checkConditional(c, parts)) {
         const data = extractor.ofConditional(c);
         if (data) {
-          return expandVariablesInString(data, parts);
+          return expandVariablesInString(data, parts,true);
         } else {
           return "";
         }
@@ -41,6 +42,13 @@ export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppre
       throw new Error("unkonwn top level kind");
     }
   }).join("");
+  var blocks = parts.filter(x=>x.kind === "block");
+  for (var b of blocks)
+  {
+    var regEx = new RegExp((b as M.Block).text+"(\\n|$)");
+    result = result.replace(regEx,"\n");
+  }
+  return result;
 }
 
 export function getSuppressedConditionalIds(data: M.TopLevel[]): string[][] {
@@ -123,11 +131,10 @@ export function getTexts(ss: M.Selectable[], suppressed: string[], textExtractor
       }
     }
   }
-
   return ret;
 }
 
-export function expandVariablesInString(s: string, data: M.TopLevel[]): string {
+export function expandVariablesInString(s: string, data: M.TopLevel[], addFullStop: boolean): string {
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
@@ -145,13 +152,34 @@ export function expandVariablesInString(s: string, data: M.TopLevel[]): string {
     const vars = allVariables(data);
     const matching = vars.find(v => "%" + v.id + "%" === name);
     if (matching) {
-      return textOfVariable(matching) || "-";
+      if (textOfVariable(matching)) {
+        return textOfVariable(matching);
+      }
+      else {
+        return "---";
+      }
     } else {
-      return "-";
+      return "---";
     }
   }
-
-  return s.replace(/%[^%]+%/g, lookup);
+  s = s.replace(/%[^%]+%/g, lookup);
+  let brackets = s.match(/(\[]*?[^\]]*?])/g);
+  if (brackets != null && brackets != undefined) {
+    for (var t of brackets) {
+      if (t.includes("---")) {
+        s = s.replace(t, "");
+      }
+    }
+  }
+  s = s.replace(/(---)/g, ""); //"Fehlzeichen" weg
+  s = s.replace(/\s\s+/g, " "); //doppelt oder mehr Leerzeichen weg
+  s = s.replace(/\[|\]/g, ""); //Klammern weg
+  s = s.trim();
+  if(addFullStop)
+  {
+    s = s.replace(/(\s*\.?\s*$)/,". "); //Punkt am Ende einfügen, falls keiner da ist 
+  }
+  return s;
 }
 
 export function makeDateString(d: Date): string {
@@ -199,7 +227,7 @@ export function textOfVariable(v: M.Variable): string | undefined {
 }
 
 export function makeNormalCategory(c: M.Category): void {
-  if (hasSelection(c)) return;
+  if (hasSelectionNormal(c)) return;
 
   for (const entry of c.selectables) {
     if (entry.kind === "box") {
@@ -224,20 +252,32 @@ export function hasSelection(c: M.Category): boolean {
       return true;
     }
   }
-
   return false;
 }
+
+function hasSelectionNormal(c: M.Category): boolean {
+  for (const entry of c.selectablesNormal) {
+    if (entry.kind === "box" && entry.value) {
+      return true;
+    } else if (entry.kind === "group" && entry.value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 
 export function makeEnumeration(e: M.Enumeration, data: M.TopLevel[], textExtractor: M.TextExtractor): string {
   const items: string[] = getRelevantEnumerationItems(e.id, data, textExtractor);
   if (items.length === 0) {
     return "";
   } else if (items.length === 1) {
-    return textExtractor.ofEnumeration(e) + items[0];
+    return textExtractor.ofEnumeration(e) + items[0] + ". ";
   } else if (items.length === 2) {
-    return textExtractor.ofEnumeration(e) + items[0] + " und " + items[1];
+    return textExtractor.ofEnumeration(e) + items[0] + " und " + items[1] + ". ";
   } else if (items.length > 2) {
-    return textExtractor.ofEnumeration(e) + items.slice(0, items.length - 1).join(", ") + " und " + items[items.length - 1];
+    return textExtractor.ofEnumeration(e) + items.slice(0, items.length - 1).join(", ") + " und " + items[items.length - 1] + " ";
   }
 }
 
@@ -251,7 +291,7 @@ export function getRelevantEnumerationItems(id: string, data: M.TopLevel[], text
           if (s.value && s.enumeration === id) {
             const result = textExtractor.ofCheckbox(s);
             if (result) {
-              items.push(expandVariablesInString(result, data));
+              items.push(expandVariablesInString(result, data,false));
             }
           }
         }

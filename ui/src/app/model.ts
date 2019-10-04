@@ -5,7 +5,7 @@ export type Selectable = CheckBox | Group;
 export type Clickable  = CheckBox | Option;
 
 export type Data = {
-  [name: string]: string[]
+[name: string]: string[] 
 };
 
 export interface TextExtractor {
@@ -54,6 +54,7 @@ export interface Category {
   kind: "category";
   name: string;
   selectables: Selectable[];
+  selectablesNormal: Selectable[];
   data: Data;
 }
 
@@ -146,7 +147,7 @@ export function resolve(varId: string, structure: TopLevel[]): Variable | undefi
   }
 }
 
-function resolveCategory(varId: string, c: Category): Variable | undefined {
+export function resolveCategory(varId: string, c: Category): Variable | undefined {
   return flatMap(c.selectables, variablesOfSelectable).find(v => v.id === varId);
 }
 

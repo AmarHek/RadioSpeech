@@ -4,19 +4,21 @@
 
 	<div class="headline">
 
-	
+
 		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
 			normal</button>
-		
-		<button id="refresh" title="seite neu laden" (click)="refreshPage()" class="btn btn-outline-secondary float-right ">refresh</button>
-		<button id="submit-button" title="eingabe absenden"(click)="submit()" class="btn btn-outline-secondary float-right ">Senden</button>
-		<button id="los" title ="das sollte man nicht sehen..."(click)="init()" class="btn btn-outline-secondary float-right ">los</button>
+
+		<button id="refresh" title="seite neu laden" (click)="refreshPage()"
+			class="btn btn-outline-secondary float-right ">refresh</button>
+		<button id="submit-button" title="eingabe absenden" (click)="submit()"
+			class="btn btn-outline-secondary float-right ">Senden</button>
+		<button id="los" title="das sollte man nicht sehen..." (click)="init()"
+			class="btn btn-outline-secondary float-right ">los</button>
 		<label for="input">Befund eingeben:
 			<input id="input" name="Befund" type="text" placeholder="Befund eingeben..." size="80">
 		</label>
-		<input type="file" id="fileInput" title="Config file hochladen im txt-Format: x,y,z,... erste Zahl legt die Breite des Berichtsfeld fest, die
-		zweite die Breite der Kategorien, nachfolgende gibt die Breite der Spalten mit den checkboxen (in mm)" class="btn btn-outline-secondary float-right ">
-			<div id="fileDisplayArea"></div>
+		<input type='file' id = "imgUpload" />
+		<img src="http://placehold.it/180" id="my_img" />
 		<div id="inputText">
 			<br>
 		</div>
@@ -26,22 +28,24 @@
 		<table>
 			<tbody>
 				<tr *ngFor="let category of parts;let j = index">
-					<td class="category" id="{{category.name}}">{{category.name}}</td>
+					<td class="category" name="test" id="{{category.name}}">{{category.name}}</td>
 					<ng-container *ngFor="let sel of category.selectables; let k = index" class="col-3">
 						<ng-container *ngIf="sel.kind === 'box'">
-							<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value" />
+							<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value"
+									id="{{sel.name}}box" />
 							</td>
-							<td class="title0"> {{sel.name}}
+							<td class="title0" id={{sel.name}}> {{sel.name}}
 								<br>
 								<div class="link" id="{{category.name + sel.name}}"></div>
 							</td>
 						</ng-container>
 						<ng-container *ngIf="sel.kind === 'group'">
 							<ng-container *ngFor="let option of sel.options; let k = index" class="col-3">
-								<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name"
-										[value]="option.name" type="radio" [(ngModel)]="sel.value" />
+								<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name "
+										id="{{option.name}}box" [value]="option.name" type="radio"
+										[(ngModel)]="sel.value" />
 								</td>
-								<td class="title0"> {{option.name}}
+								<td class="title0" id={{option.name}}> {{option.name}}
 									<br>
 									<div class="link" id="{{sel.name + option.name}}"></div>
 								</td>

@@ -12,6 +12,7 @@ export class Keyword {
     textBefore = new Array<string>();
     textAfter = new Array<string>();
     variableKind1D: string[] = new Array();
+    overlap: Keyword[] = new Array();
 
    
     
