@@ -15,7 +15,7 @@
 		<button id="los" title="das sollte man nicht sehen..." (click)="init()"
 			class="btn btn-outline-secondary float-right ">los</button>
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (input) = "submit()" placeholder="Befund eingeben..." size="80">
 		</label>
 		<input type='file' id = "imgUpload" />
 		<img src="http://placehold.it/180" id="my_img" />

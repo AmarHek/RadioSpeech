@@ -38,14 +38,7 @@ export class TextComponent implements OnInit {
     }, 50);
   }
 
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    //32 ist spacebar
-    if (event.keyCode === 32) {
-      this.submit();
-    }
-    //this.submit();
-  }
+  
 
   text: string = "";
   judgement: string = "";
@@ -840,10 +833,10 @@ export class TextComponent implements OnInit {
       if (t.length >= 5 && t.length < 8) {
         let temp = new Array();
         for (const w of wordsArray) {
-          if (D.levenshtein(t, w) === 1) {
+          if (D.levenshtein(t.toLowerCase(), w.toLowerCase()) === 1) {
             temp.push(w.trim());
           }
-          else if (D.levenshtein(t, w) === 0) {
+          else if (D.levenshtein(t.toLowerCase(), w.toLowerCase()) === 0) {
             temp = [];
             break;
           }
@@ -856,10 +849,10 @@ export class TextComponent implements OnInit {
       else if (t.length >= 9) {
         let temp = new Array();
         for (const w of wordsArray) {
-          if (D.levenshtein(t, w) === 1 || D.levenshtein(t, w) === 2) {
+          if (D.levenshtein(t.toLowerCase(), w.toLowerCase()) === 1 || D.levenshtein(t.toLowerCase(), w.toLowerCase()) === 2) {
             temp.push(w.trim());
           }
-          else if (D.levenshtein(t, w) === 0) {
+          else if (D.levenshtein(t.toLowerCase(), w.toLowerCase()) === 0) {
             temp = [];
             break;
           }
