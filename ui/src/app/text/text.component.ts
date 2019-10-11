@@ -38,20 +38,21 @@ export class TextComponent implements OnInit {
     }, 50);
   }
 
-  
 
   text: string = "";
   judgement: string = "";
   modalVariables: M.Variable[] = [];
   input: string = "";
-  completeKeywords = new Map<string, string[]>();
-  partialCompleteKeywords = new Map<string, string[]>();
-  incompleteKeywords = Array<string>();
   DictionaryPrimary: string[] = new Array<string>();
   keywords: Keyword[] = new Array<Keyword>();
   foundKeywords: Keyword[] = new Array<Keyword>();
   parts: M.TopLevel[] = [];
+  matches: string[] = new Array();
+  foundDateRegex: RegExp[] = new Array();
   //defValues:  = new Array ();
+  //default values
+  defBox: M.Selectable[] = new Array();
+  defGroup: M.Selectable[] = new Array();
 
 
   resetTexts = new Map<M.CheckBox | M.Option, string>();
@@ -78,39 +79,37 @@ export class TextComponent implements OnInit {
   }
 
 
+  scroll()
+  {
+    var ele = document.getElementById('main-content');
+    console.log(ele.offsetHeight);
+    console.log(ele.scrollTop);
+    console.log(ele.clientHeight);
+    if(ele.scrollTop < 70)
+    {
+      console.log("1");
+      ele.scrollTo(0,document.body.scrollHeight);
+    }
+    else
+    {
+      console.log("2");
+      ele.scrollTop = 0;
+    }
+  }
 
   refreshPage() {
     window.location.reload();
   }
 
 
-  splitVariables(toSplit: string[], splitter: string): string[][] {
-    let result: string[][] = new Array();
-    for (let splitted of toSplit) {
-      let toTrim = splitted.split(";");
-      for (var i = 0; i < toTrim.length; i++) {
-        toTrim[i] = toTrim[i].trim();
-      }
-      result.push(toTrim);
-    }
-    return result;
-  }
-
-  logMapElements(value, key, map) {
-    console.log(`m[${key}] = ${value}`);
-  }
-
-
   splitMulti(str, tokens) {
     var tempChar = tokens[0];
-    if(tempChar!= undefined)
-    {
+    if (tempChar != undefined) {
       tempChar = tempChar.toLowerCase();
     }
     str = str.toLowerCase();
     for (var i = 1; i < tokens.length; i++) {
-      if(tokens[i] != undefined)
-      {
+      if (tokens[i] != undefined) {
         str = str.split(tokens[i].toLowerCase()).join(tempChar);
       }
     }
@@ -118,23 +117,18 @@ export class TextComponent implements OnInit {
     return str;
   }
 
-  /*  splitMulti(str, tokens) {
-    var tempChar = tokens[0];
-    for (var i = 1; i < tokens.length; i++) {
-      str = str.split(tokens[i]).join(tempChar);
-    }
-    str = str.split(tempChar);
-    console.log(str);
-    return str;
-  }
-  */
-
   matchMulti(str: string, tokens) {
     var tempChar = tokens[0];
-
-    for (var i = 1; i < tokens.length; i++) {
-      str = str.split(tokens[i]).join(tempChar);
+    if (tempChar != undefined) {
+      tempChar = tempChar.toLowerCase();
     }
+    str = str.toLowerCase();
+    for (var i = 1; i < tokens.length; i++) {
+      if (tokens[i] != undefined) {
+        str = str.split(tokens[i].toLowerCase()).join(tempChar);
+      }
+    }
+    console.log(str);
     var reg = new RegExp("(" + tempChar + ")", "g");
     var strArr: string[] = str.split(reg);
     strArr = this.deleteEmptyFields(strArr);
@@ -147,15 +141,6 @@ export class TextComponent implements OnInit {
     }
     return strArr;
   }
-
-  see(value) {
-    return value
-      .split(/(Thorax p.a.)/)
-      .filter(x => x.length > 0)
-      .map(x => x.length + x[0])
-      .join('')
-  }
-
 
   deleteEmptyFields(input: Array<string>): Array<string> {
     for (var i = 0; i < input.length; i++) {
@@ -222,18 +207,10 @@ export class TextComponent implements OnInit {
     this.foundKeywords.sort(this.compareKeywords);
   }
 
-
-
-
-  highlight(text: string, colorCode: string) {
-    var inputText: HTMLElement = document.getElementById("inputText");
-    var innerHTML = inputText.innerHTML;
-    var index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
-    if (index >= 0) {
-      inputText.innerHTML = inputText.innerHTML.substring(0, index) + "<span style=\"background-color: " + colorCode + "\">" + inputText.innerHTML.substring(index, index + text.length) + "</span>" + inputText.innerHTML.substring(index + text.length);
-    }
+  highlightByIndex(text: string, colorCode: string, index: number) {
+    var regex = new RegExp("(" + text + ")(?!([^<]+)?>)", "gi");
+    this.matches[index] = this.matches[index].replace(regex, "<span style=\"background-color: " + colorCode + "\">" + text + "</span>");
   }
-
 
 
   setKeywordButtons() {
@@ -245,8 +222,6 @@ export class TextComponent implements OnInit {
 
     let textIndex: number = 0;
     for (const word of this.keywords) {
-      // knownWords = [];
-
       if (word.id != undefined && word.variables2D.length != 0) {
         if (knownWords.includes(word.id)) {
           var btns = this.keywords.find(x => x.id === word.id);
@@ -293,8 +268,6 @@ export class TextComponent implements OnInit {
                 word.textBefore[i].lastIndexOf("]")
               );
               //final[i] = word.textBefore[i].replace(replaceBraces, result);
-
-
               if (word.variableKind1D[i] === "mc") {
                 final[i] = word.textBefore[i].replace(replaceBraces, result);
               }
@@ -302,8 +275,6 @@ export class TextComponent implements OnInit {
                 final[i] += "<button _ngcontent-c1 class = \"link\" id =\"" + textIndex + i + "text\"><u>.....</u></button>";
                 textID.set(textIndex + "" + i + "text", [word, i]);
               }
-              // final[i] = word.variableKind1D[i] === "mc" ? word.textBefore[i].replace(replaceBraces, result) : final[i] += "<button _ngcontent-c1 class = \"link\"><u>.....</u></button>";
-
               if (word.textBefore[i].startsWith(" ")) {
                 final[i] += word.textAfter[i] + " ";
               }
@@ -331,7 +302,6 @@ export class TextComponent implements OnInit {
           this.makeText();
           // this.highlightButton(num.toString());
         });
-
       }
     }
     for (let w of Array.from(textID.keys())) {
@@ -390,11 +360,10 @@ export class TextComponent implements OnInit {
 
   }
 
-  findFreeText(keyword: Keyword, input: string): void {
+  findFreeText(keyword: Keyword, input: string, index: number): void {
     let inpArray: string[] = new Array();
     let splitter: string[] = new Array();
-    var inpToLower = JSON.parse(JSON.stringify(input));
-    inpToLower = inpToLower.toLowerCase();
+
     for (var i = 0; i < keyword.variableKind1D.length; i++) {
       if (keyword.variableKind1D[i] === "oc" || keyword.variableKind1D[i] === "mc") {
         for (var j = 0; j < keyword.variables3D[i].length; j++) {
@@ -406,29 +375,29 @@ export class TextComponent implements OnInit {
         splitter = splitter.concat(keyword.textAfter[i].trim());
       }
     }
-    /*for (var spl of splitter) {
-      spl = spl.toLowerCase();
-    }*/
-    splitter = splitter.concat(input.match(/\d{1,2}([\/.-])\d{1,2}\1\d{4}/g));
-
+    //splitter = splitter.concat(input.match(/\d{1,2}([\/.-])\d{1,2}\1\d{4}/g));
+    for (var r of this.foundDateRegex) {
+      splitter = splitter.concat(input.match(r));
+    }
+    console.log(input);
+    console.log(splitter);
     inpArray = this.splitMulti(input, splitter);
-
     for (var s of inpArray) {
       let arr: string[] = s.split(" ");
       arr = this.deleteEmptyFields(arr);
-
       if (arr.length >= 3) {
-        this.highlight(s, "#87CEEB");
-
+        this.highlightByIndex(s, "#87CEEB", index);
         if (keyword.kind.valueOf() === "group") {
-
           let gr: M.Option = D.createDummyGroup(this.parts, keyword.id, keyword.name);
+          s = s.trim();
+          s = s.charAt(0).toUpperCase() + s.slice(1);
           gr.text += s;
           this.resetTexts.set(gr, s);
         }
         else if (keyword.kind.valueOf() === "box") {
-
           let gr: M.CheckBox = D.createDummyBox(this.parts, keyword.name);
+          s = s.trim();
+          s = s.charAt(0).toUpperCase() + s.slice(1);
           gr.text += s;
           this.resetTexts.set(gr, s);
         }
@@ -438,8 +407,10 @@ export class TextComponent implements OnInit {
 
 
   findDate(input: string) {
+    this.foundDateRegex = [];
     for (var w of this.foundKeywords) {
       if (w.synonym.includes("variabel")) {
+        console.log(w.synonym);
         var arr = w.synonym.toLowerCase().split(/(variabel)/g)
         var resString = "";
         for (var i = 0; i < arr.length; i++) {
@@ -450,12 +421,11 @@ export class TextComponent implements OnInit {
             resString += "\\d{1,2}([\\/.-])\\d{1,2}\\1\\d{4}";
           }
         }
-        console.log(resString);
-        var regex = new RegExp(resString);
+        var regex = new RegExp(resString, "gi");
         var res = input.toLowerCase().match(regex);
         if (res != undefined) {
+          this.foundDateRegex.push(regex);
           var dates = res[0].toString();
-          this.highlight(dates, "lightgreen");
           var param = dates.match(/\d{1,2}([./-])\d{1,2}\1\d{4}/g);
           var numDate = new Array<string>();
           for (const i of param) {
@@ -479,11 +449,26 @@ export class TextComponent implements OnInit {
     if ((input.length - (this.foundKeywords[this.foundKeywords.length - 1].synonym.length + this.foundKeywords[this.foundKeywords.length - 1].position) === 0)) {
       reducedInput.push("");
     }
+
+    //wenn erster Eintrag in matches kein Keyword ist->löschen, damit Index mit reducedInput übereinstimmt
+    if (!this.matches[0].includes(this.foundKeywords[0].synonym)) {
+      this.matches.shift()
+    }
     console.log(this.foundKeywords);
     //hier Variablen zu Keywords zuordnen
     for (var i = 0; i < this.foundKeywords.length; i++) {
+      var numberFoundVars = 0;
       let currentKeyword: Keyword = this.foundKeywords[i];
-      this.findFreeText(currentKeyword, reducedInput[rightIndex]);
+      this.findFreeText(currentKeyword, reducedInput[rightIndex], (i * 2) + 1);
+      //Date finden und highlighten
+      for (var fdate of this.foundDateRegex) {
+        if (this.matches[(i * 2) + 1] != undefined) {
+          var dateString = this.matches[(i * 2) + 1].match(fdate);
+          if (dateString != undefined) {
+            this.matches[(i * 2) + 1] = this.matches[(i * 2) + 1].replace(fdate, "<span style=\"background-color: #01DF01 \">" + dateString + "</span>");
+          }
+        }
+      }
       if (currentKeyword.variables2D.length != 0) {
         //nach jedem potentiellen Keyword suchen...
         var foundVar: boolean = false;
@@ -501,42 +486,42 @@ export class TextComponent implements OnInit {
               //rechts vom Keyword
               if ((currentKeyword.variableKind1D[j] === "oc" || currentKeyword.variableKind1D[j] === "mc") && reducedInput[rightIndex].includes(currentKeyword.variables3D[j][k][l].toLowerCase())) {
                 currentKeyword.foundVariables.push(currentKeyword.variables2D[j][k]);
-                this.highlight(currentKeyword.variables3D[j][k][l], "lightgreen");
-                reducedInput[rightIndex] = reducedInput[rightIndex].replace(currentKeyword.variables3D[j][k][l], '');
+                this.highlightByIndex(currentKeyword.variables3D[j][k][l], "lightgreen", (i * 2) + 1);
                 breakOuter = true;
                 foundVar = true;
-                // this.highlightButton(currentKeyword.buttons2D[j][k]);
+                numberFoundVars++;
                 break;
               }
               else if ((currentKeyword.variableKind1D[j] === "text" || currentKeyword.variableKind1D[j] === "number" || (currentKeyword.variableKind1D[j] === "ratio")) && reducedInput[rightIndex].includes(currentKeyword.textBefore[j].toLowerCase())) {
                 let nextSplitter = Number.MAX_SAFE_INTEGER;
-                console.log(reducedInput[rightIndex]);
                 let str = reducedInput[rightIndex].substring(reducedInput[rightIndex].lastIndexOf(currentKeyword.textBefore[j].toLowerCase()) + currentKeyword.textBefore[j].length, reducedInput[rightIndex].length);
-                console.log(str);
-                // str = str.toLowerCase();
                 let splitter: string[];
                 splitter = [].concat(...currentKeyword.variables3D).filter(word => word != "" && word != " ");
                 splitter = splitter.concat(currentKeyword.textBefore).filter(word => word != currentKeyword.textBefore[j] && word != undefined);
-                for (var a = 0; a < splitter.length; a++)
-                {
+                for (var a = 0; a < splitter.length; a++) {
                   splitter[a] = splitter[a].toString().toLowerCase();
                 }
-                for (var l = 1; l < splitter.length; l++) {
+                for (var l = 0; l < splitter.length; l++) {
                   var ind = str.toLowerCase().indexOf(splitter[l]);
                   if (ind != -1 && ind < nextSplitter) {
                     nextSplitter = ind;
                   }
                 }
-                console.log(str);
-                console.log(nextSplitter);
                 if (currentKeyword.textAfter[j] != undefined && currentKeyword.textAfter[j].replace(/\s/g, '').length != 0) {
-                  if (str.toLowerCase().indexOf(currentKeyword.textAfter[j]) < nextSplitter && str.indexOf(currentKeyword.textAfter[j]) != -1) {
-                    nextSplitter = str.toLowerCase().indexOf(currentKeyword.textAfter[j]);
+                  var textAfterIndex = str.toLowerCase().indexOf(currentKeyword.textAfter[j].toLowerCase());
+                  if (textAfterIndex < nextSplitter && textAfterIndex != -1) {
+                    nextSplitter = textAfterIndex;
+                    this.highlightByIndex(currentKeyword.textAfter[j].toLowerCase(), "#cc9900", (i * 2) + 1);
                   }
                 }
-                currentKeyword.foundVariables.push(str.substring(0, nextSplitter));
+              
+                var res = str.substring(0, nextSplitter);
+                this.highlightByIndex(currentKeyword.textBefore[j].toLowerCase(), "#cc9900", (i * 2) + 1);
+                this.highlightByIndex(res, "lightgreen", (i * 2) + 1);
+                currentKeyword.foundVariables.push(res);
                 foundVar = true;
                 breakOuter = true;
+                numberFoundVars++;
                 break;
               }
             }
@@ -545,16 +530,15 @@ export class TextComponent implements OnInit {
             }
           }
         }
-        //komplett, teilweise komplett oder keine Variablen?
-        let countVariables = this.countCompleteVariables(currentKeyword);
-        if (countVariables < currentKeyword.variables2D.length && countVariables > 0) {
-          this.partialCompleteKeywords.set(currentKeyword.synonym, currentKeyword.foundVariables);
+        //Farbe des Keywords nach Anzahl der gefunden Variablen festlegen
+        if (numberFoundVars === currentKeyword.variables2D.length) {
+          this.highlightByIndex(currentKeyword.synonym, "#01DF01", (i * 2));
         }
-        else if (countVariables === 0) {
-          this.incompleteKeywords.push(currentKeyword.synonym);
+        else if (numberFoundVars === 0) {
+          this.highlightByIndex(currentKeyword.synonym, "#e65c00", (i * 2));
         }
         else {
-          this.completeKeywords.set(currentKeyword.synonym, currentKeyword.foundVariables);
+          this.highlightByIndex(currentKeyword.synonym, "yellow", (i * 2));
         }
         console.log(currentKeyword.category + "" + currentKeyword.kind + "" + currentKeyword.name + "" + currentKeyword.foundVariables + "" + currentKeyword.variableKind1D);
         this.assignValue(currentKeyword.category, currentKeyword.kind, currentKeyword.name, currentKeyword.foundVariables, currentKeyword.variableKind1D);
@@ -562,7 +546,7 @@ export class TextComponent implements OnInit {
       //ansonsten Keyword ohne Variablen assignen
       else {
         //Keywords ohne Variablen sind automatisch auch vollständig
-        this.completeKeywords.set(currentKeyword.synonym, []);
+        this.highlightByIndex(currentKeyword.synonym, "#01DF01", (i * 2));
         this.assignValue(currentKeyword.category, currentKeyword.kind, currentKeyword.name);
       }
       rightIndex++;
@@ -629,7 +613,7 @@ export class TextComponent implements OnInit {
       textLeft[0].style.columns = wid.toString() + "px 1fr";
     }*/
     let textLeft = document.getElementById("output1");
-    textLeft.style.width = "100px";
+    //textLeft.style.width = "100px";
     //Kategorien werden resiszt
     let categoryWid = document.getElementsByClassName("category") as HTMLCollectionOf<HTMLElement>;
     if (categoryWid.length != 0) {
@@ -654,10 +638,11 @@ export class TextComponent implements OnInit {
       var transNum = (i * 2) - 1;
       var testStyle = document.createElement('style');
       testStyle.type = 'text/css';
-      testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + 500 + 'px;}';
+      testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + 6000 + 'px;}';
       document.getElementsByTagName('head')[0].appendChild(testStyle);
     }
   }
+
 
 
   readConfig() {
@@ -672,7 +657,7 @@ export class TextComponent implements OnInit {
     remove = document.getElementById("BildUploadbox");
     remove.parentNode.removeChild(remove);
     var test = this.keywords.find(x => x.name === "Spaltenbreite");
-    this.resizeColumns(test.synonym);
+    //this.resizeColumns(test.synonym);
     var bild = this.keywords.find(x => x.name === "BildUpload");
     var fileTag = document.getElementById("imgUpload"),
       preview = document.getElementById("my_img");
@@ -686,6 +671,7 @@ export class TextComponent implements OnInit {
     });
     function changeImage(input) {
       var reader;
+      console.log("asd");
       if (input.files && input.files[0]) {
         reader = new FileReader();
         reader.onload = function (e) {
@@ -754,22 +740,21 @@ export class TextComponent implements OnInit {
     this.getDefault();
     this.setKeywordButtons();
     this.readConfig();
-    let btn = document.getElementById("los") as HTMLButtonElement;
-    //  btn.disabled = true;
   }
 
-  getDefault()
-  {
-    var cat = this.parts.filter(x=>x.kind === "category");
-    var def = new Array();
-    for (var d of cat)
-    {
-      def = def.concat((d as M.Category).selectables.filter(x=>x.kind === "box" && x.value === true));
-      def = def.concat((d as M.Category).selectables.filter(x=>x.kind === "group" && x.value != "" && x.value != null));
+  getDefault() {
+    var cat = this.parts.filter(x => x.kind === "category");
+    for (var d of cat) {
+      this.defBox = this.defBox.concat((d as M.Category).selectables.filter(x => x.kind === "box" && x.value === true));
+      //this.defGroup = this.defGroup.concat((d as M.Category).selectables.filter(x => x.kind === "group" && x.value != "" && x.value != null));
     }
-    //this.defValues = def;
   }
 
+  setDefault() {
+    for (var b of this.defBox) {
+      (b as M.CheckBox).value = true;
+    }
+  }
 
   submit(): void {
     let resetText = Array.from(this.resetTexts.keys());
@@ -777,43 +762,37 @@ export class TextComponent implements OnInit {
       let val: string = this.resetTexts.get(res);
       res.text = res.text.replace(val, "");
     }
-
+    this.matches = [];
     D.resetValue(this.parts);
+    this.setDefault();
     this.makeText();
+
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     let inputWithoutKeywords = new Array<string>();
-    //das ist ein Reset
-    this.completeKeywords.clear();
-    this.partialCompleteKeywords.clear();
-    this.incompleteKeywords.splice(0, this.incompleteKeywords.length);
-
     document.getElementById('inputText').innerHTML = input;
     input = this.autocorrect(input);
-    
-    //input = document.getElementById('inputText').innerHTML.replace(/<\/?[^>]+(>|$)/g, "");
+
     //das Wörterbuch soll nur einmal erstellt werden; in foundKeywords sind nur die Wörter drin, die im Input auch gefunden werden
     this.foundKeywords.splice(0, this.foundKeywords.length);
     this.foundKeywords = JSON.parse(JSON.stringify(this.keywords));
-
-
     //Idee: erst nach allen Keywords trennen, damit splitted Array keine primären Keywords mehr enthält. 
     //Dann Reihenfolge der vorhandenen Keywords erstellen aufgrund ihrer Position im ursprünglichen String
     //Dann schaut man für jedes Keyword im Bereich vor und nach dem Keyword nach möglichen Variablen
     this.findDate(input);
     this.sortKeywords(input);
     var keyWordSyn = new Array();
+    console.log(this.foundKeywords);
     for (var k of this.foundKeywords) {
       keyWordSyn.push(k.synonym);
     }
-    var match = this.matchMulti(input, keyWordSyn);
-    console.log(match);
+    this.matches = this.matchMulti(input, keyWordSyn);
+    console.log(this.matches);
     inputWithoutKeywords = this.splitMulti(input, keyWordSyn);
     inputWithoutKeywords = this.deleteEmptyFields(inputWithoutKeywords); //weil für Keywords immer leere Felder eingefügt werden
     this.findVariables(input, inputWithoutKeywords);
-    this.makeDebugColors();
     this.checkActive();
     this.makeText();
-    //document.getElementById('inputText').innerHTML = match.join("");
+    document.getElementById('inputText').innerHTML = this.matches.join("");
   }
 
 
@@ -866,21 +845,6 @@ export class TextComponent implements OnInit {
     return result;
   }
 
-
-
-  makeDebugColors(): void {
-    let keysTest = Array.from(this.completeKeywords.keys());
-    for (var i = 0; i < keysTest.length; i++) {
-      this.highlight(keysTest[i], "#01DF01");
-    }
-    keysTest = Array.from(this.partialCompleteKeywords.keys());
-    for (var i = 0; i < keysTest.length; i++) {
-      this.highlight(keysTest[i], "#F4FA58");
-    }
-    for (var i = 0; i < this.incompleteKeywords.length; i++) {
-      this.highlight(this.incompleteKeywords[i], "#F97457");
-    }
-  }
 
   getIndexOfK(arr, k) {
     for (var i = 0; i < arr.length; i++) {

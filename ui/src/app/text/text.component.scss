@@ -4,7 +4,7 @@ $border-color: hsl(200, 70%, 80);
   width: 100%;
   display: inline-grid;
   grid-gap: 10px;
-  grid-template-columns: 600px 1fr;
+  grid-template-columns: 500px 1fr;
   grid-template-areas:
     "headline headline"
     "bf-text  content"
@@ -73,11 +73,11 @@ $border-color: hsl(200, 70%, 80);
 
 .link {
   padding: 0;
-  font-size: 75%;
+  font-size: 90%;
   background: none;
   border: none;
   white-space: pre-line;
-  max-width: 250px;
+  max-width: 300px;
   word-wrap: break-word;
 }
 
@@ -130,7 +130,7 @@ td.box {
 }
 
 td.title0 {
-  font-size: 85%;
+  font-size: 95%;
   display: block;
   position: relative;
   //max-width: 250px;
@@ -146,7 +146,7 @@ td.title0 {
 }*/
 
 td.category {
-  font-size: 120%;
+  font-size: 140%;
   font-weight: bold;
   padding: 10;
   margin: 10;
@@ -159,7 +159,7 @@ td.category {
 }
 
 td.grey {
-  font-size: 120%;
+  font-size: 140%;
   font-weight: bold;
   padding: 10;
   margin: 10;
@@ -185,4 +185,3 @@ input[type="file"] {
   padding: 0px;
   background: none;
 }
-

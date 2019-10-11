@@ -44,7 +44,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
             //oc
             if (o.kind === "oc" && o.data['syn'] != undefined) {
               let splittedVariables = o.data['syn'][0].split('/');
-              currKeyword.variables3D.push(splitVariables(splittedVariables, ";"));
+              currKeyword.variables3D.push(this.splitVariables(splittedVariables, ";"));
               for (let v of o.values) {
                 currVariables.push(v);
               }
@@ -53,7 +53,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
             //mc
             else if (o.kind === "mc" && o.data['syn'] != undefined) {
               let splittedVariables = o.data['syn'][0].split(';');
-              currKeyword.variables3D.push(splitVariables(splittedVariables, ","));
+              currKeyword.variables3D.push(this.splitVariables(splittedVariables, ","));
               for (let v of o.values) {
                 currVariables.push(v[0]);
               }
@@ -91,7 +91,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 if (v.kind === "oc" && v.data['syn'] != undefined) {
                   let splittedVariables = v.data['syn'][0].split('/');
 
-                  currKeyword.variables3D.push(splitVariables(splittedVariables, ";"));
+                  currKeyword.variables3D.push(this.splitVariables(splittedVariables, ";"));
                   for (let va of v.values) {
                     currVariables.push(va);
                   }
@@ -101,7 +101,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 else if (v.kind === "mc" && v.data['syn'] != undefined) {
                   let splittedVariables = v.data['syn'][0].split(';');
 
-                  currKeyword.variables3D.push(splitVariables(splittedVariables, ","));
+                  currKeyword.variables3D.push(this.splitVariables(splittedVariables, ","));
                   for (let va of v.values) {
                     currVariables.push(va[0]);
                   }
@@ -137,16 +137,16 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
 function findOverlap(keywords: Keyword[])
 {
   let knownWords: Keyword[] = new Array();
+  knownWords = knownWords.concat(keywords);
   for(let w of keywords)
   {
     for (let k of knownWords)
     {
-      if(w.synonym.includes(k.synonym))
+      if(w.synonym.localeCompare(k.synonym) != 0 && w.synonym.toLowerCase().includes(k.synonym.toLowerCase()))
       {
         w.overlap.push(k);
       }
     }
-    knownWords.push(w);
   }
 }
 
@@ -272,11 +272,8 @@ export function createDummyGroup(parts: M.TopLevel[], name: string, oName: strin
     if (p.kind === "category") {
       for (const s of p.selectables) {
         if (s.kind === "group" && s.data['bau'] != undefined) {
-          console.log(s.name);
-          console.log(name);
           if (name.includes(s.name)) {
             for (const o of s.options) {
-              console.log(o.name);
               if (o.name === oName) {
                 return o;
               }
