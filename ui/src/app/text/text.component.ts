@@ -79,19 +79,16 @@ export class TextComponent implements OnInit {
   }
 
 
-  scroll()
-  {
+  scroll() {
     var ele = document.getElementById('main-content');
     console.log(ele.offsetHeight);
     console.log(ele.scrollTop);
     console.log(ele.clientHeight);
-    if(ele.scrollTop < 70)
-    {
+    if (ele.scrollTop < 70) {
       console.log("1");
-      ele.scrollTo(0,document.body.scrollHeight);
+      ele.scrollTo(0, document.body.scrollHeight);
     }
-    else
-    {
+    else {
       console.log("2");
       ele.scrollTop = 0;
     }
@@ -113,6 +110,25 @@ export class TextComponent implements OnInit {
         str = str.split(tokens[i].toLowerCase()).join(tempChar);
       }
     }
+    console.log(str);
+    str = str.split(tempChar);
+    console.log(str);
+    return str;
+  }
+
+  splitMultiSpecial(str, tokens) {
+    var tempChar = tokens[0];
+    if (tempChar != undefined) {
+      tempChar = tempChar.toLowerCase();
+    }
+    str = str.toLowerCase();
+    for (var i = 1; i < tokens.length; i++) {
+      if (tokens[i] != undefined) {
+        str = str.split(tokens[i].toLowerCase()).join(tempChar);
+      }
+    }
+    var regex = new RegExp(tempChar + "" + tempChar, "gi");
+    str = str.replace(regex, tempChar + " " + tempChar);
     str = str.split(tempChar);
     return str;
   }
@@ -126,6 +142,7 @@ export class TextComponent implements OnInit {
     for (var i = 1; i < tokens.length; i++) {
       if (tokens[i] != undefined) {
         str = str.split(tokens[i].toLowerCase()).join(tempChar);
+        console.log(str);
       }
     }
     console.log(str);
@@ -139,6 +156,7 @@ export class TextComponent implements OnInit {
         index++;
       }
     }
+    console.log(strArr);
     return strArr;
   }
 
@@ -379,8 +397,10 @@ export class TextComponent implements OnInit {
     for (var r of this.foundDateRegex) {
       splitter = splitter.concat(input.match(r));
     }
-    console.log(input);
-    console.log(splitter);
+    if (splitter != null) {
+    //  splitter = splitter.filter(entry => /\S/.test(entry));
+    }
+    //
     inpArray = this.splitMulti(input, splitter);
     for (var s of inpArray) {
       let arr: string[] = s.split(" ");
@@ -438,10 +458,28 @@ export class TextComponent implements OnInit {
     }
   }
 
+  arrayContains(needle, arrhaystack) {
+    return (arrhaystack.indexOf(needle) > -1);
+  }
 
+  matchesFixup() {
+
+    var syns: string[] = new Array();
+    for (var s of this.foundKeywords) {
+      syns.push(s.synonym);
+    }
+    for (var m = 0; m < this.matches.length - 1; m++) {
+      if (this.arrayContains(this.matches[m], syns)) {
+        if (this.arrayContains(this.matches[m + 1], syns)) {
+          this.matches.splice(m + 1, 0, " ");
+        }
+      }
+    }
+  }
 
   findVariables(input: string, reducedInput: string[]) {
     var rightIndex = 1;
+    console.log(this.foundKeywords);
     //wenn erstes oder letztes Wort im Input Keywords sind, müssen Stopper eingefügt werden, damit das mit dem links und rechts funktioniert
     if (this.foundKeywords[0].position === 0) {
       reducedInput.unshift("");
@@ -454,6 +492,8 @@ export class TextComponent implements OnInit {
     if (!this.matches[0].includes(this.foundKeywords[0].synonym)) {
       this.matches.shift()
     }
+    this.matchesFixup();
+
     console.log(this.foundKeywords);
     //hier Variablen zu Keywords zuordnen
     for (var i = 0; i < this.foundKeywords.length; i++) {
@@ -486,6 +526,19 @@ export class TextComponent implements OnInit {
               //rechts vom Keyword
               if ((currentKeyword.variableKind1D[j] === "oc" || currentKeyword.variableKind1D[j] === "mc") && reducedInput[rightIndex].includes(currentKeyword.variables3D[j][k][l].toLowerCase())) {
                 currentKeyword.foundVariables.push(currentKeyword.variables2D[j][k]);
+                var removeBrackets = currentKeyword.textBefore[j].replace(/\[.*?\]/g,"[]");
+                var splitBefore = removeBrackets.split("[]")[0];
+                var splitAfter = removeBrackets.split("[]")[1];
+                if(splitBefore && !/^\s*$/.test(splitBefore))
+                {
+                  this.highlightByIndex(splitBefore, "#cc9900", (i * 2) + 1);
+                }
+                if(splitAfter && !/^\s*$/.test(splitAfter))
+                {
+                  this.highlightByIndex(splitAfter, "#cc9900", (i * 2) + 1);
+                }
+                console.log(removeBrackets);
+
                 this.highlightByIndex(currentKeyword.variables3D[j][k][l], "lightgreen", (i * 2) + 1);
                 breakOuter = true;
                 foundVar = true;
@@ -514,7 +567,7 @@ export class TextComponent implements OnInit {
                     this.highlightByIndex(currentKeyword.textAfter[j].toLowerCase(), "#cc9900", (i * 2) + 1);
                   }
                 }
-              
+
                 var res = str.substring(0, nextSplitter);
                 this.highlightByIndex(currentKeyword.textBefore[j].toLowerCase(), "#cc9900", (i * 2) + 1);
                 this.highlightByIndex(res, "lightgreen", (i * 2) + 1);
@@ -770,7 +823,7 @@ export class TextComponent implements OnInit {
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     let inputWithoutKeywords = new Array<string>();
     document.getElementById('inputText').innerHTML = input;
-    input = this.autocorrect(input);
+   // input = this.autocorrect(input);
 
     //das Wörterbuch soll nur einmal erstellt werden; in foundKeywords sind nur die Wörter drin, die im Input auch gefunden werden
     this.foundKeywords.splice(0, this.foundKeywords.length);
@@ -787,8 +840,9 @@ export class TextComponent implements OnInit {
     }
     this.matches = this.matchMulti(input, keyWordSyn);
     console.log(this.matches);
-    inputWithoutKeywords = this.splitMulti(input, keyWordSyn);
+    inputWithoutKeywords = this.splitMultiSpecial(input, keyWordSyn);
     inputWithoutKeywords = this.deleteEmptyFields(inputWithoutKeywords); //weil für Keywords immer leere Felder eingefügt werden
+    console.log(inputWithoutKeywords);
     this.findVariables(input, inputWithoutKeywords);
     this.checkActive();
     this.makeText();
