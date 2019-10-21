@@ -710,7 +710,7 @@ export class TextComponent implements OnInit {
     remove = document.getElementById("BildUploadbox");
     remove.parentNode.removeChild(remove);
     var test = this.keywords.find(x => x.name === "Spaltenbreite");
-    //this.resizeColumns(test.synonym);
+    this.resizeColumns(test.synonym);
     var bild = this.keywords.find(x => x.name === "BildUpload");
     var fileTag = document.getElementById("imgUpload"),
       preview = document.getElementById("my_img");
@@ -823,7 +823,7 @@ export class TextComponent implements OnInit {
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     let inputWithoutKeywords = new Array<string>();
     document.getElementById('inputText').innerHTML = input;
-   // input = this.autocorrect(input);
+    input = this.autocorrect(input);
 
     //das Wörterbuch soll nur einmal erstellt werden; in foundKeywords sind nur die Wörter drin, die im Input auch gefunden werden
     this.foundKeywords.splice(0, this.foundKeywords.length);
