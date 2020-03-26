@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "befundungstest"
+  "defaultProject": "befundungstest",
+  "cli": {
+    "analytics": false
+  }
 }
