@@ -27,6 +27,7 @@ import { ListComponent } from './list/list.component';
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
+        { path: '**', redirectTo: '/upload' },
       ],
       { useHash: true }
     )

@@ -1,6 +1,6 @@
 <ul>
   <li *ngFor="let generator of generators">
-    <a [routerLink]="['/', 'text', generator]">{{generator}}</a> <button (click)="remove(generator)">remove</button>
+    <a [routerLink]="['/', 'text', generator]">{{generator}}</a> <button class="btn btn-danger ml-3" (click)="remove(generator)">remove</button>
   </li>
 </ul>
 

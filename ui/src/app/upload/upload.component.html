@@ -1,7 +1,10 @@
-<form>
-  <table>
-    <tr><td>file</td><td><input type="file" id="uploadFile"/></td></tr>
-    <tr><td>name</td><td><input type="text" name="name" [(ngModel)]="name"></td></tr>
-    <tr><td></td><td><button (click)="upload()">Upload</button></td></tr>
-  </table>
-</form>
+
+  <form>
+    <div>
+      <label class="mr-3" for="uploadFile">File </label><input type="file" id="uploadFile"/>
+    </div>
+    <div>
+      <label class="mr-3" for="NameOfFile">Name </label><input type="text" name="name" id="NameOfFile" [(ngModel)]="name">
+      <button class="btn btn-info ml-3" (click)="upload()">Upload</button>
+    </div>
+  </form>
