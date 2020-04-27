@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 declare const $: any;
 
 @Component({
@@ -8,4 +9,5 @@ declare const $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
 }

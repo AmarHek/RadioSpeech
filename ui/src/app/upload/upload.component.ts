@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
@@ -10,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class UploadComponent implements OnInit {
   name: string = "";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,8 @@ export class UploadComponent implements OnInit {
       const data = { name: this.name, data: base64 };
       this.http.post(environment.urlRoot + 'upload', data, { 'observe': 'response' } ).subscribe((result) => {
         window.alert("Upload Erfolgreich");
+        this.router.navigate(['list']);
+
       }, (error) =>{
         if (error instanceof ErrorEvent) {
           window.alert("an unkown error has occurred")

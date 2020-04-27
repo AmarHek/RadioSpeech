@@ -33,7 +33,7 @@ export class TextComponent implements OnInit {
         $('#my_img').hide();
       });
     setTimeout(function () {
-      document.getElementById('los').click();
+       document.getElementById('los').click();
       // document.getElementById('los').style.visibility = 'hidden';
     }, 50);
   }
