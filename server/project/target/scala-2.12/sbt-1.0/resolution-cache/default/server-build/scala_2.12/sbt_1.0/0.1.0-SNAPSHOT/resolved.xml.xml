@@ -4,7 +4,11 @@
 		module="server-build"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
+<<<<<<< HEAD
 		publication="20200427153733"
+=======
+		publication="20200428141823"
+>>>>>>> c8977eb85f438cc2f415d956a9339ab5ff137eed
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>

@@ -4,7 +4,11 @@
 		module="server_2.12"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
+<<<<<<< HEAD
 		publication="20200427153748"
+=======
+		publication="20200428141835"
+>>>>>>> c8977eb85f438cc2f415d956a9339ab5ff137eed
 	>
 		<description>
 		server
