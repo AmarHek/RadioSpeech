@@ -1,3 +1,4 @@
+scriptClasspath := Seq("*")
 scalaVersion := "2.12.7"
 
 name := "server"

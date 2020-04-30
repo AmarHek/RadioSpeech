@@ -7,15 +7,15 @@
 		revision="0.1.0-SNAPSHOT"
 		conf="test-internal"
 		confs="compile, runtime, test, provided, optional, universal, universal-docs, universal-src, windows, docker, linux, rpm, debian, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20200326164559"/>
+		date="20200427153749"/>
 	<dependencies>
 		<module organisation="org.docx4j" name="docx4j-JAXB-ReferenceImpl">
 			<revision name="11.1.3" status="release" pubdate="20190828080801" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-JAXB-ReferenceImpl/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="72">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3305" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-JAXB-ReferenceImpl\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-ReferenceImpl/11.1.3/docx4j-JAXB-ReferenceImpl-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="3305" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-JAXB-ReferenceImpl\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-ReferenceImpl/11.1.3/docx4j-JAXB-ReferenceImpl-11.1.3.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="docx4j-JAXB-ReferenceImpl" type="jar" ext="jar" status="no" details="" size="4542" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-JAXB-ReferenceImpl\jars\docx4j-JAXB-ReferenceImpl-11.1.3.jar">
+					<artifact name="docx4j-JAXB-ReferenceImpl" type="jar" ext="jar" status="no" details="" size="4542" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-JAXB-ReferenceImpl\jars\docx4j-JAXB-ReferenceImpl-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-ReferenceImpl/11.1.3/docx4j-JAXB-ReferenceImpl-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -24,10 +24,10 @@
 		<module organisation="org.glassfish.jaxb" name="jaxb-runtime">
 			<revision name="2.3.2" status="release" pubdate="20190102163223" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="73">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="10882" time="0" location="C:\Users\maste\.ivy2\cache\org.glassfish.jaxb\jaxb-runtime\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.pom"/>
+				<metadata-artifact status="no" details="" size="10882" time="0" location="C:\Users\DELL\.ivy2\cache\org.glassfish.jaxb\jaxb-runtime\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-JAXB-ReferenceImpl" conf="default, compile, runtime, master" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jaxb-runtime" type="jar" ext="jar" status="no" details="" size="1013367" time="0" location="C:\Users\maste\.ivy2\cache\org.glassfish.jaxb\jaxb-runtime\jars\jaxb-runtime-2.3.2.jar">
+					<artifact name="jaxb-runtime" type="jar" ext="jar" status="no" details="" size="1013367" time="0" location="C:\Users\DELL\.ivy2\cache\org.glassfish.jaxb\jaxb-runtime\jars\jaxb-runtime-2.3.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -37,10 +37,10 @@
 			<revision name="1.2.16" status="release" pubdate="20181227153400" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="77">
 				<license name="Apache License, Version 2.0" url="http://www.opensource.org/licenses/apache2.0.php"/>
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="4619" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.xml.fastinfoset\FastInfoset\ivy-1.2.16.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.pom"/>
+				<metadata-artifact status="no" details="" size="4619" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.xml.fastinfoset\FastInfoset\ivy-1.2.16.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.pom"/>
 				<caller organisation="org.glassfish.jaxb" name="jaxb-runtime" conf="compile, runtime" rev="1.2.16" rev-constraint-default="1.2.16" rev-constraint-dynamic="1.2.16" callerrev="2.3.2"/>
 				<artifacts>
-					<artifact name="FastInfoset" type="jar" ext="jar" status="no" details="" size="317195" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.xml.fastinfoset\FastInfoset\jars\FastInfoset-1.2.16.jar">
+					<artifact name="FastInfoset" type="jar" ext="jar" status="no" details="" size="317195" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.xml.fastinfoset\FastInfoset\jars\FastInfoset-1.2.16.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.jar"/>
 					</artifact>
 				</artifacts>
@@ -49,10 +49,10 @@
 		<module organisation="org.jvnet.staxex" name="stax-ex">
 			<revision name="1.8.1" status="release" pubdate="20181227161428" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="76">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="4258" time="0" location="C:\Users\maste\.ivy2\cache\org.jvnet.staxex\stax-ex\ivy-1.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.pom"/>
+				<metadata-artifact status="no" details="" size="4258" time="0" location="C:\Users\DELL\.ivy2\cache\org.jvnet.staxex\stax-ex\ivy-1.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.pom"/>
 				<caller organisation="org.glassfish.jaxb" name="jaxb-runtime" conf="compile, runtime" rev="1.8.1" rev-constraint-default="1.8.1" rev-constraint-dynamic="1.8.1" callerrev="2.3.2"/>
 				<artifacts>
-					<artifact name="stax-ex" type="jar" ext="jar" status="no" details="" size="38099" time="0" location="C:\Users\maste\.ivy2\cache\org.jvnet.staxex\stax-ex\jars\stax-ex-1.8.1.jar">
+					<artifact name="stax-ex" type="jar" ext="jar" status="no" details="" size="38099" time="0" location="C:\Users\DELL\.ivy2\cache\org.jvnet.staxex\stax-ex\jars\stax-ex-1.8.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -61,10 +61,10 @@
 		<module organisation="com.sun.istack" name="istack-commons-runtime">
 			<revision name="3.0.8" status="release" pubdate="20181227154938" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="75">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="8138" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.istack\istack-commons-runtime\ivy-3.0.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.pom"/>
+				<metadata-artifact status="no" details="" size="8138" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.istack\istack-commons-runtime\ivy-3.0.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.pom"/>
 				<caller organisation="org.glassfish.jaxb" name="jaxb-runtime" conf="compile, runtime" rev="3.0.8" rev-constraint-default="3.0.8" rev-constraint-dynamic="3.0.8" callerrev="2.3.2"/>
 				<artifacts>
-					<artifact name="istack-commons-runtime" type="jar" ext="jar" status="no" details="" size="27156" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.istack\istack-commons-runtime\jars\istack-commons-runtime-3.0.8.jar">
+					<artifact name="istack-commons-runtime" type="jar" ext="jar" status="no" details="" size="27156" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.istack\istack-commons-runtime\jars\istack-commons-runtime-3.0.8.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.jar"/>
 					</artifact>
 				</artifacts>
@@ -73,10 +73,10 @@
 		<module organisation="org.glassfish.jaxb" name="txw2">
 			<revision name="2.3.2" status="release" pubdate="20190102163211" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="74">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="9720" time="0" location="C:\Users\maste\.ivy2\cache\org.glassfish.jaxb\txw2\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.pom"/>
+				<metadata-artifact status="no" details="" size="9720" time="0" location="C:\Users\DELL\.ivy2\cache\org.glassfish.jaxb\txw2\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.pom"/>
 				<caller organisation="org.glassfish.jaxb" name="jaxb-runtime" conf="compile, runtime" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="2.3.2"/>
 				<artifacts>
-					<artifact name="txw2" type="jar" ext="jar" status="no" details="" size="72080" time="0" location="C:\Users\maste\.ivy2\cache\org.glassfish.jaxb\txw2\jars\txw2-2.3.2.jar">
+					<artifact name="txw2" type="jar" ext="jar" status="no" details="" size="72080" time="0" location="C:\Users\DELL\.ivy2\cache\org.glassfish.jaxb\txw2\jars\txw2-2.3.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -85,10 +85,10 @@
 		<module organisation="org.docx4j" name="docx4j-JAXB-MOXy">
 			<revision name="11.1.3" status="release" pubdate="20190828080937" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-JAXB-MOXy/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="40">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3310" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-JAXB-MOXy\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-MOXy/11.1.3/docx4j-JAXB-MOXy-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="3310" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-JAXB-MOXy\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-MOXy/11.1.3/docx4j-JAXB-MOXy-11.1.3.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="docx4j-JAXB-MOXy" type="jar" ext="jar" status="no" details="" size="4837" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-JAXB-MOXy\jars\docx4j-JAXB-MOXy-11.1.3.jar">
+					<artifact name="docx4j-JAXB-MOXy" type="jar" ext="jar" status="no" details="" size="4837" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-JAXB-MOXy\jars\docx4j-JAXB-MOXy-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-JAXB-MOXy/11.1.3/docx4j-JAXB-MOXy-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -98,10 +98,10 @@
 			<revision name="2.7.4" status="release" pubdate="20190118074012" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.eclipse.org/eclipselink" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="69">
 				<license name="Eclipse Public License v. 2.0" url="http://www.eclipse.org/legal/epl-v20.html"/>
 				<license name="Eclipse Distribution License v. 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="2921" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.moxy\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.moxy/2.7.4/org.eclipse.persistence.moxy-2.7.4.pom"/>
+				<metadata-artifact status="no" details="" size="2921" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.moxy\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.moxy/2.7.4/org.eclipse.persistence.moxy-2.7.4.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-JAXB-MOXy" conf="default, compile, runtime, master" rev="2.7.4" rev-constraint-default="2.7.4" rev-constraint-dynamic="2.7.4" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="org.eclipse.persistence.moxy" type="jar" ext="jar" status="no" details="" size="652945" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.moxy\jars\org.eclipse.persistence.moxy-2.7.4.jar">
+					<artifact name="org.eclipse.persistence.moxy" type="jar" ext="jar" status="no" details="" size="652945" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.moxy\jars\org.eclipse.persistence.moxy-2.7.4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.moxy/2.7.4/org.eclipse.persistence.moxy-2.7.4.jar"/>
 					</artifact>
 				</artifacts>
@@ -111,10 +111,10 @@
 			<revision name="2.7.4" status="release" pubdate="20190118073741" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.eclipse.org/eclipselink" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="70">
 				<license name="Eclipse Public License v. 2.0" url="http://www.eclipse.org/legal/epl-v20.html"/>
 				<license name="Eclipse Distribution License v. 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="2920" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.core\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.core/2.7.4/org.eclipse.persistence.core-2.7.4.pom"/>
+				<metadata-artifact status="no" details="" size="2920" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.core\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.core/2.7.4/org.eclipse.persistence.core-2.7.4.pom"/>
 				<caller organisation="org.eclipse.persistence" name="org.eclipse.persistence.moxy" conf="compile, runtime" rev="2.7.4" rev-constraint-default="2.7.4" rev-constraint-dynamic="2.7.4" callerrev="2.7.4"/>
 				<artifacts>
-					<artifact name="org.eclipse.persistence.core" type="jar" ext="jar" status="no" details="" size="5393770" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.core\jars\org.eclipse.persistence.core-2.7.4.jar">
+					<artifact name="org.eclipse.persistence.core" type="jar" ext="jar" status="no" details="" size="5393770" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.core\jars\org.eclipse.persistence.core-2.7.4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.core/2.7.4/org.eclipse.persistence.core-2.7.4.jar"/>
 					</artifact>
 				</artifacts>
@@ -124,10 +124,10 @@
 			<revision name="2.7.4" status="release" pubdate="20190118073720" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.eclipse.org/eclipselink" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="71">
 				<license name="Eclipse Public License v. 2.0" url="http://www.eclipse.org/legal/epl-v20.html"/>
 				<license name="Eclipse Distribution License v. 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="2713" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.asm\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.asm/2.7.4/org.eclipse.persistence.asm-2.7.4.pom"/>
+				<metadata-artifact status="no" details="" size="2713" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.asm\ivy-2.7.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.asm/2.7.4/org.eclipse.persistence.asm-2.7.4.pom"/>
 				<caller organisation="org.eclipse.persistence" name="org.eclipse.persistence.core" conf="compile, runtime" rev="2.7.4" rev-constraint-default="2.7.4" rev-constraint-dynamic="2.7.4" callerrev="2.7.4"/>
 				<artifacts>
-					<artifact name="org.eclipse.persistence.asm" type="jar" ext="jar" status="no" details="" size="508314" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.asm\jars\org.eclipse.persistence.asm-2.7.4.jar">
+					<artifact name="org.eclipse.persistence.asm" type="jar" ext="jar" status="no" details="" size="508314" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.persistence\org.eclipse.persistence.asm\jars\org.eclipse.persistence.asm-2.7.4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/eclipse/persistence/org.eclipse.persistence.asm/2.7.4/org.eclipse.persistence.asm-2.7.4.jar"/>
 					</artifact>
 				</artifacts>
@@ -136,11 +136,11 @@
 		<module organisation="org.docx4j" name="docx4j-core">
 			<revision name="11.1.3" status="release" pubdate="20190828080718" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-core/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="41">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="6321" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-core\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-core/11.1.3/docx4j-core-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="6321" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-core\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-core/11.1.3/docx4j-core-11.1.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-JAXB-MOXy" conf="default, compile, runtime, master" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-JAXB-ReferenceImpl" conf="default, compile, runtime, master" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="docx4j-core" type="jar" ext="jar" status="no" details="" size="2901607" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-core\jars\docx4j-core-11.1.3.jar">
+					<artifact name="docx4j-core" type="jar" ext="jar" status="no" details="" size="2901607" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-core\jars\docx4j-core-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-core/11.1.3/docx4j-core-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -149,10 +149,10 @@
 		<module organisation="com.google.errorprone" name="error_prone_annotations">
 			<revision name="2.3.3" status="release" pubdate="20190222225324" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="68">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="4356" time="0" location="C:\Users\maste\.ivy2\cache\com.google.errorprone\error_prone_annotations\ivy-2.3.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.pom"/>
+				<metadata-artifact status="no" details="" size="4356" time="0" location="C:\Users\DELL\.ivy2\cache\com.google.errorprone\error_prone_annotations\ivy-2.3.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.3.3" rev-constraint-default="2.3.3" rev-constraint-dynamic="2.3.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="error_prone_annotations" type="jar" ext="jar" status="no" details="" size="13161" time="0" location="C:\Users\maste\.ivy2\cache\com.google.errorprone\error_prone_annotations\jars\error_prone_annotations-2.3.3.jar">
+					<artifact name="error_prone_annotations" type="jar" ext="jar" status="no" details="" size="13161" time="0" location="C:\Users\DELL\.ivy2\cache\com.google.errorprone\error_prone_annotations\jars\error_prone_annotations-2.3.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -161,10 +161,10 @@
 		<module organisation="org.checkerframework" name="checker-qual">
 			<revision name="2.8.1" status="release" pubdate="20190501223240" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://checkerframework.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="67">
 				<license name="The MIT License" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="2696" time="0" location="C:\Users\maste\.ivy2\cache\org.checkerframework\checker-qual\ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"/>
+				<metadata-artifact status="no" details="" size="2696" time="0" location="C:\Users\DELL\.ivy2\cache\org.checkerframework\checker-qual\ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="checker-qual" type="jar" ext="jar" status="no" details="" size="200629" time="0" location="C:\Users\maste\.ivy2\cache\org.checkerframework\checker-qual\jars\checker-qual-2.8.1.jar">
+					<artifact name="checker-qual" type="jar" ext="jar" status="no" details="" size="200629" time="0" location="C:\Users\DELL\.ivy2\cache\org.checkerframework\checker-qual\jars\checker-qual-2.8.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -173,10 +173,10 @@
 		<module organisation="org.antlr" name="antlr-runtime">
 			<revision name="3.5.2" status="release" pubdate="20140325130356" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.antlr.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="64">
 				<license name="BSD licence" url="http://antlr.org/license.html"/>
-				<metadata-artifact status="no" details="" size="5642" time="0" location="C:\Users\maste\.ivy2\cache\org.antlr\antlr-runtime\ivy-3.5.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.pom"/>
+				<metadata-artifact status="no" details="" size="5642" time="0" location="C:\Users\DELL\.ivy2\cache\org.antlr\antlr-runtime\ivy-3.5.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="3.5.2" rev-constraint-default="3.5.2" rev-constraint-dynamic="3.5.2" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="antlr-runtime" type="jar" ext="jar" status="no" details="" size="167761" time="0" location="C:\Users\maste\.ivy2\cache\org.antlr\antlr-runtime\jars\antlr-runtime-3.5.2.jar">
+					<artifact name="antlr-runtime" type="jar" ext="jar" status="no" details="" size="167761" time="0" location="C:\Users\DELL\.ivy2\cache\org.antlr\antlr-runtime\jars\antlr-runtime-3.5.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -185,10 +185,10 @@
 		<module organisation="org.antlr" name="stringtemplate">
 			<revision name="3.2.1" status="release" pubdate="20090923012529" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.stringtemplate.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="65">
 				<license name="BSD licence" url="http://antlr.org/license.html"/>
-				<metadata-artifact status="no" details="" size="3719" time="0" location="C:\Users\maste\.ivy2\cache\org.antlr\stringtemplate\ivy-3.2.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/antlr/stringtemplate/3.2.1/stringtemplate-3.2.1.pom"/>
+				<metadata-artifact status="no" details="" size="3719" time="0" location="C:\Users\DELL\.ivy2\cache\org.antlr\stringtemplate\ivy-3.2.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/antlr/stringtemplate/3.2.1/stringtemplate-3.2.1.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="3.2.1" rev-constraint-default="3.2.1" rev-constraint-dynamic="3.2.1" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="stringtemplate" type="jar" ext="jar" status="no" details="" size="148627" time="0" location="C:\Users\maste\.ivy2\cache\org.antlr\stringtemplate\jars\stringtemplate-3.2.1.jar">
+					<artifact name="stringtemplate" type="jar" ext="jar" status="no" details="" size="148627" time="0" location="C:\Users\DELL\.ivy2\cache\org.antlr\stringtemplate\jars\stringtemplate-3.2.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/antlr/stringtemplate/3.2.1/stringtemplate-3.2.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -197,10 +197,10 @@
 		<module organisation="antlr" name="antlr">
 			<revision name="2.7.7" status="release" pubdate="20070113072839" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.antlr.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="66">
 				<license name="BSD License" url="http://www.antlr.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2595" time="0" location="C:\Users\maste\.ivy2\cache\antlr\antlr\ivy-2.7.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/antlr/antlr/2.7.7/antlr-2.7.7.pom"/>
+				<metadata-artifact status="no" details="" size="2595" time="0" location="C:\Users\DELL\.ivy2\cache\antlr\antlr\ivy-2.7.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/antlr/antlr/2.7.7/antlr-2.7.7.pom"/>
 				<caller organisation="org.antlr" name="stringtemplate" conf="compile, runtime" rev="2.7.7" rev-constraint-default="2.7.7" rev-constraint-dynamic="2.7.7" callerrev="3.2.1"/>
 				<artifacts>
-					<artifact name="antlr" type="jar" ext="jar" status="no" details="" size="445288" time="0" location="C:\Users\maste\.ivy2\cache\antlr\antlr\jars\antlr-2.7.7.jar">
+					<artifact name="antlr" type="jar" ext="jar" status="no" details="" size="445288" time="0" location="C:\Users\DELL\.ivy2\cache\antlr\antlr\jars\antlr-2.7.7.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/antlr/antlr/2.7.7/antlr-2.7.7.jar"/>
 					</artifact>
 				</artifacts>
@@ -209,10 +209,10 @@
 		<module organisation="net.arnx" name="wmf2svg">
 			<revision name="0.9.8" status="release" pubdate="20150704133458" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://wmf2svg.sourceforge.jp/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="63">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="2740" time="0" location="C:\Users\maste\.ivy2\cache\net.arnx\wmf2svg\ivy-0.9.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/net/arnx/wmf2svg/0.9.8/wmf2svg-0.9.8.pom"/>
+				<metadata-artifact status="no" details="" size="2740" time="0" location="C:\Users\DELL\.ivy2\cache\net.arnx\wmf2svg\ivy-0.9.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/net/arnx/wmf2svg/0.9.8/wmf2svg-0.9.8.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="0.9.8" rev-constraint-default="0.9.8" rev-constraint-dynamic="0.9.8" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="wmf2svg" type="jar" ext="jar" status="no" details="" size="86772" time="0" location="C:\Users\maste\.ivy2\cache\net.arnx\wmf2svg\jars\wmf2svg-0.9.8.jar">
+					<artifact name="wmf2svg" type="jar" ext="jar" status="no" details="" size="86772" time="0" location="C:\Users\DELL\.ivy2\cache\net.arnx\wmf2svg\jars\wmf2svg-0.9.8.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/net/arnx/wmf2svg/0.9.8/wmf2svg-0.9.8.jar"/>
 					</artifact>
 				</artifacts>
@@ -221,10 +221,10 @@
 		<module organisation="org.docx4j.org.apache" name="xalan-interpretive">
 			<revision name="11.0.0" status="release" pubdate="20190526041200" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://xml.apache.org/xalan-j/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="61">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="2978" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j.org.apache\xalan-interpretive\ivy-11.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-interpretive/11.0.0/xalan-interpretive-11.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="2978" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j.org.apache\xalan-interpretive\ivy-11.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-interpretive/11.0.0/xalan-interpretive-11.0.0.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="11.0.0" rev-constraint-default="11.0.0" rev-constraint-dynamic="11.0.0" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="xalan-interpretive" type="jar" ext="jar" status="no" details="" size="1829796" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j.org.apache\xalan-interpretive\jars\xalan-interpretive-11.0.0.jar">
+					<artifact name="xalan-interpretive" type="jar" ext="jar" status="no" details="" size="1829796" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j.org.apache\xalan-interpretive\jars\xalan-interpretive-11.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-interpretive/11.0.0/xalan-interpretive-11.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -233,10 +233,10 @@
 		<module organisation="org.docx4j.org.apache" name="xalan-serializer">
 			<revision name="11.0.0" status="release" pubdate="20190526041131" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://xml.apache.org/xalan-j/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="62">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="2697" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j.org.apache\xalan-serializer\ivy-11.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-serializer/11.0.0/xalan-serializer-11.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="2697" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j.org.apache\xalan-serializer\ivy-11.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-serializer/11.0.0/xalan-serializer-11.0.0.pom"/>
 				<caller organisation="org.docx4j.org.apache" name="xalan-interpretive" conf="compile, runtime" rev="11.0.0" rev-constraint-default="11.0.0" rev-constraint-dynamic="11.0.0" callerrev="11.0.0"/>
 				<artifacts>
-					<artifact name="xalan-serializer" type="jar" ext="jar" status="no" details="" size="290138" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j.org.apache\xalan-serializer\jars\xalan-serializer-11.0.0.jar">
+					<artifact name="xalan-serializer" type="jar" ext="jar" status="no" details="" size="290138" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j.org.apache\xalan-serializer\jars\xalan-serializer-11.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/org/apache/xalan-serializer/11.0.0/xalan-serializer-11.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -245,10 +245,10 @@
 		<module organisation="org.apache.xmlgraphics" name="xmlgraphics-commons">
 			<revision name="2.3" status="release" pubdate="20180523095147" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://xmlgraphics.apache.org/commons/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="60">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3841" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.xmlgraphics\xmlgraphics-commons\ivy-2.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/xmlgraphics/xmlgraphics-commons/2.3/xmlgraphics-commons-2.3.pom"/>
+				<metadata-artifact status="no" details="" size="3841" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.xmlgraphics\xmlgraphics-commons\ivy-2.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/xmlgraphics/xmlgraphics-commons/2.3/xmlgraphics-commons-2.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.3" rev-constraint-default="2.3" rev-constraint-dynamic="2.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="xmlgraphics-commons" type="jar" ext="jar" status="no" details="" size="671727" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.xmlgraphics\xmlgraphics-commons\jars\xmlgraphics-commons-2.3.jar">
+					<artifact name="xmlgraphics-commons" type="jar" ext="jar" status="no" details="" size="671727" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.xmlgraphics\xmlgraphics-commons\jars\xmlgraphics-commons-2.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/xmlgraphics/xmlgraphics-commons/2.3/xmlgraphics-commons-2.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -257,10 +257,10 @@
 		<module organisation="com.fasterxml.jackson.core" name="jackson-databind">
 			<revision name="2.9.9" status="release" pubdate="20190516051018" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="58">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="23829" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\ivy-2.9.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.9.9/jackson-databind-2.9.9.pom"/>
+				<metadata-artifact status="no" details="" size="23829" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\ivy-2.9.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.9.9/jackson-databind-2.9.9.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.9.9" rev-constraint-default="2.9.9" rev-constraint-dynamic="2.9.9" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jackson-databind" type="bundle" ext="jar" status="no" details="" size="1348108" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\bundles\jackson-databind-2.9.9.jar">
+					<artifact name="jackson-databind" type="bundle" ext="jar" status="no" details="" size="1348108" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-databind\bundles\jackson-databind-2.9.9.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.9.9/jackson-databind-2.9.9.jar"/>
 					</artifact>
 				</artifacts>
@@ -269,10 +269,10 @@
 		<module organisation="com.fasterxml.jackson.core" name="jackson-annotations">
 			<revision name="2.9.0" status="release" pubdate="20170730055340" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="59">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="7030" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\ivy-2.9.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.pom"/>
+				<metadata-artifact status="no" details="" size="7030" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\ivy-2.9.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.pom"/>
 				<caller organisation="com.fasterxml.jackson.core" name="jackson-databind" conf="compile, runtime" rev="2.9.0" rev-constraint-default="2.9.0" rev-constraint-dynamic="2.9.0" callerrev="2.9.9"/>
 				<artifacts>
-					<artifact name="jackson-annotations" type="bundle" ext="jar" status="no" details="" size="66519" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\bundles\jackson-annotations-2.9.0.jar">
+					<artifact name="jackson-annotations" type="bundle" ext="jar" status="no" details="" size="66519" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-annotations\bundles\jackson-annotations-2.9.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -281,11 +281,11 @@
 		<module organisation="com.fasterxml.jackson.core" name="jackson-core">
 			<revision name="2.9.9" status="release" pubdate="20190516045911" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/FasterXML/jackson-core" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="57">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="23044" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\ivy-2.9.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.9.9/jackson-core-2.9.9.pom"/>
+				<metadata-artifact status="no" details="" size="23044" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\ivy-2.9.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.9.9/jackson-core-2.9.9.pom"/>
 				<caller organisation="com.fasterxml.jackson.core" name="jackson-databind" conf="compile, runtime" rev="2.9.9" rev-constraint-default="2.9.9" rev-constraint-dynamic="2.9.9" callerrev="2.9.9"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.9.9" rev-constraint-default="2.9.9" rev-constraint-dynamic="2.9.9" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jackson-core" type="bundle" ext="jar" status="no" details="" size="325632" time="0" location="C:\Users\maste\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\bundles\jackson-core-2.9.9.jar">
+					<artifact name="jackson-core" type="bundle" ext="jar" status="no" details="" size="325632" time="0" location="C:\Users\DELL\.ivy2\cache\com.fasterxml.jackson.core\jackson-core\bundles\jackson-core-2.9.9.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.9.9/jackson-core-2.9.9.jar"/>
 					</artifact>
 				</artifacts>
@@ -294,10 +294,10 @@
 		<module organisation="org.apache.httpcomponents" name="httpclient">
 			<revision name="4.5.8" status="release" pubdate="20190326092407" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://hc.apache.org/httpcomponents-client" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="55">
 				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="11553" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.httpcomponents\httpclient\ivy-4.5.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.8/httpclient-4.5.8.pom"/>
+				<metadata-artifact status="no" details="" size="11553" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.httpcomponents\httpclient\ivy-4.5.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.8/httpclient-4.5.8.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="4.5.8" rev-constraint-default="4.5.8" rev-constraint-dynamic="4.5.8" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="httpclient" type="jar" ext="jar" status="no" details="" size="772386" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.httpcomponents\httpclient\jars\httpclient-4.5.8.jar">
+					<artifact name="httpclient" type="jar" ext="jar" status="no" details="" size="772386" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.httpcomponents\httpclient\jars\httpclient-4.5.8.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.8/httpclient-4.5.8.jar"/>
 					</artifact>
 				</artifacts>
@@ -306,10 +306,10 @@
 		<module organisation="org.apache.httpcomponents" name="httpcore">
 			<revision name="4.4.11" status="release" pubdate="20190115112425" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://hc.apache.org/httpcomponents-core-ga" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="56">
 				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="9389" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.httpcomponents\httpcore\ivy-4.4.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.4.11/httpcore-4.4.11.pom"/>
+				<metadata-artifact status="no" details="" size="9389" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.httpcomponents\httpcore\ivy-4.4.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.4.11/httpcore-4.4.11.pom"/>
 				<caller organisation="org.apache.httpcomponents" name="httpclient" conf="compile, runtime" rev="4.4.11" rev-constraint-default="4.4.11" rev-constraint-dynamic="4.4.11" callerrev="4.5.8"/>
 				<artifacts>
-					<artifact name="httpcore" type="jar" ext="jar" status="no" details="" size="326874" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.httpcomponents\httpcore\jars\httpcore-4.4.11.jar">
+					<artifact name="httpcore" type="jar" ext="jar" status="no" details="" size="326874" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.httpcomponents\httpcore\jars\httpcore-4.4.11.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.4.11/httpcore-4.4.11.jar"/>
 					</artifact>
 				</artifacts>
@@ -318,11 +318,11 @@
 		<module organisation="commons-io" name="commons-io">
 			<revision name="2.6" status="release" pubdate="20171015120052" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://commons.apache.org/proper/commons-io/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="54">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="12952" time="0" location="C:\Users\maste\.ivy2\cache\commons-io\commons-io\ivy-2.6.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.pom"/>
+				<metadata-artifact status="no" details="" size="12952" time="0" location="C:\Users\DELL\.ivy2\cache\commons-io\commons-io\ivy-2.6.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.6" rev-constraint-default="2.6" rev-constraint-dynamic="2.6" callerrev="11.1.3"/>
 				<caller organisation="org.apache.xmlgraphics" name="xmlgraphics-commons" conf="compile, runtime" rev="1.3.1" rev-constraint-default="1.3.1" rev-constraint-dynamic="1.3.1" callerrev="2.3"/>
 				<artifacts>
-					<artifact name="commons-io" type="jar" ext="jar" status="no" details="" size="214788" time="0" location="C:\Users\maste\.ivy2\cache\commons-io\commons-io\jars\commons-io-2.6.jar">
+					<artifact name="commons-io" type="jar" ext="jar" status="no" details="" size="214788" time="0" location="C:\Users\DELL\.ivy2\cache\commons-io\commons-io\jars\commons-io-2.6.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.jar"/>
 					</artifact>
 				</artifacts>
@@ -337,11 +337,11 @@
 		<module organisation="commons-codec" name="commons-codec">
 			<revision name="1.12" status="release" pubdate="20190209144904" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://commons.apache.org/proper/commons-codec/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="53">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="14453" time="0" location="C:\Users\maste\.ivy2\cache\commons-codec\commons-codec\ivy-1.12.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.12/commons-codec-1.12.pom"/>
+				<metadata-artifact status="no" details="" size="14453" time="0" location="C:\Users\DELL\.ivy2\cache\commons-codec\commons-codec\ivy-1.12.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.12/commons-codec-1.12.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.12" rev-constraint-default="1.12" rev-constraint-dynamic="1.12" callerrev="11.1.3"/>
 				<caller organisation="org.apache.httpcomponents" name="httpclient" conf="compile, runtime" rev="1.11" rev-constraint-default="1.11" rev-constraint-dynamic="1.11" callerrev="4.5.8"/>
 				<artifacts>
-					<artifact name="commons-codec" type="jar" ext="jar" status="no" details="" size="339669" time="0" location="C:\Users\maste\.ivy2\cache\commons-codec\commons-codec\jars\commons-codec-1.12.jar">
+					<artifact name="commons-codec" type="jar" ext="jar" status="no" details="" size="339669" time="0" location="C:\Users\DELL\.ivy2\cache\commons-codec\commons-codec\jars\commons-codec-1.12.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.12/commons-codec-1.12.jar"/>
 					</artifact>
 				</artifacts>
@@ -356,10 +356,10 @@
 		<module organisation="org.apache.commons" name="commons-compress">
 			<revision name="1.18" status="release" pubdate="20180813092452" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://commons.apache.org/proper/commons-compress/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="52">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="16275" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.commons\commons-compress\ivy-1.18.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.18/commons-compress-1.18.pom"/>
+				<metadata-artifact status="no" details="" size="16275" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.commons\commons-compress\ivy-1.18.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.18/commons-compress-1.18.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.18" rev-constraint-default="1.18" rev-constraint-dynamic="1.18" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="commons-compress" type="jar" ext="jar" status="no" details="" size="591748" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.commons\commons-compress\jars\commons-compress-1.18.jar">
+					<artifact name="commons-compress" type="jar" ext="jar" status="no" details="" size="591748" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.commons\commons-compress\jars\commons-compress-1.18.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.18/commons-compress-1.18.jar"/>
 					</artifact>
 				</artifacts>
@@ -368,10 +368,10 @@
 		<module organisation="org.apache.commons" name="commons-lang3">
 			<revision name="3.9" status="release" pubdate="20190411033039" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://commons.apache.org/proper/commons-lang/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="51">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="15370" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.commons\commons-lang3\ivy-3.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.pom"/>
+				<metadata-artifact status="no" details="" size="15370" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.commons\commons-lang3\ivy-3.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="3.9" rev-constraint-default="3.9" rev-constraint-dynamic="3.9" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="commons-lang3" type="jar" ext="jar" status="no" details="" size="503880" time="0" location="C:\Users\maste\.ivy2\cache\org.apache.commons\commons-lang3\jars\commons-lang3-3.9.jar">
+					<artifact name="commons-lang3" type="jar" ext="jar" status="no" details="" size="503880" time="0" location="C:\Users\DELL\.ivy2\cache\org.apache.commons\commons-lang3\jars\commons-lang3-3.9.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar"/>
 					</artifact>
 				</artifacts>
@@ -380,10 +380,10 @@
 		<module organisation="org.slf4j" name="jcl-over-slf4j">
 			<revision name="1.7.26" status="release" pubdate="20190219001850" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="50">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
-				<metadata-artifact status="no" details="" size="5422" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\jcl-over-slf4j\ivy-1.7.26.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.26/jcl-over-slf4j-1.7.26.pom"/>
+				<metadata-artifact status="no" details="" size="5416" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\jcl-over-slf4j\ivy-1.7.26.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.26/jcl-over-slf4j-1.7.26.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.7.26" rev-constraint-default="1.7.26" rev-constraint-dynamic="1.7.26" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jcl-over-slf4j" type="jar" ext="jar" status="no" details="" size="16461" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\jcl-over-slf4j\jars\jcl-over-slf4j-1.7.26.jar">
+					<artifact name="jcl-over-slf4j" type="jar" ext="jar" status="no" details="" size="16461" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\jcl-over-slf4j\jars\jcl-over-slf4j-1.7.26.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.26/jcl-over-slf4j-1.7.26.jar"/>
 					</artifact>
 				</artifacts>
@@ -392,10 +392,10 @@
 		<module organisation="net.engio" name="mbassador">
 			<revision name="1.3.2" status="release" pubdate="20180307153053" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/bennidi/mbassador" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="49">
 				<license name="MIT license" url="http://www.opensource.org/licenses/mit-license.php"/>
-				<metadata-artifact status="no" details="" size="4786" time="0" location="C:\Users\maste\.ivy2\cache\net.engio\mbassador\ivy-1.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/net/engio/mbassador/1.3.2/mbassador-1.3.2.pom"/>
+				<metadata-artifact status="no" details="" size="4786" time="0" location="C:\Users\DELL\.ivy2\cache\net.engio\mbassador\ivy-1.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/net/engio/mbassador/1.3.2/mbassador-1.3.2.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.3.2" rev-constraint-default="1.3.2" rev-constraint-dynamic="1.3.2" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="mbassador" type="bundle" ext="jar" status="no" details="" size="98376" time="0" location="C:\Users\maste\.ivy2\cache\net.engio\mbassador\bundles\mbassador-1.3.2.jar">
+					<artifact name="mbassador" type="bundle" ext="jar" status="no" details="" size="98376" time="0" location="C:\Users\DELL\.ivy2\cache\net.engio\mbassador\bundles\mbassador-1.3.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/net/engio/mbassador/1.3.2/mbassador-1.3.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -404,10 +404,10 @@
 		<module organisation="org.plutext" name="jaxb-svg11">
 			<revision name="1.0.2" status="release" pubdate="20120414005252" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/plutext/JAXB-classes-for-SVG" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="48">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3092" time="0" location="C:\Users\maste\.ivy2\cache\org.plutext\jaxb-svg11\ivy-1.0.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/plutext/jaxb-svg11/1.0.2/jaxb-svg11-1.0.2.pom"/>
+				<metadata-artifact status="no" details="" size="3092" time="0" location="C:\Users\DELL\.ivy2\cache\org.plutext\jaxb-svg11\ivy-1.0.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/plutext/jaxb-svg11/1.0.2/jaxb-svg11-1.0.2.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.0.2" rev-constraint-default="1.0.2" rev-constraint-dynamic="1.0.2" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jaxb-svg11" type="jar" ext="jar" status="no" details="" size="280402" time="0" location="C:\Users\maste\.ivy2\cache\org.plutext\jaxb-svg11\jars\jaxb-svg11-1.0.2.jar">
+					<artifact name="jaxb-svg11" type="jar" ext="jar" status="no" details="" size="280402" time="0" location="C:\Users\DELL\.ivy2\cache\org.plutext\jaxb-svg11\jars\jaxb-svg11-1.0.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/plutext/jaxb-svg11/1.0.2/jaxb-svg11-1.0.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -416,10 +416,10 @@
 		<module organisation="org.docx4j" name="docx4j-openxml-objects-sml">
 			<revision name="11.1.3" status="release" pubdate="20190828080627" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-openxml-objects-sml/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="47">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3172" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects-sml\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-sml/11.1.3/docx4j-openxml-objects-sml-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="3172" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects-sml\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-sml/11.1.3/docx4j-openxml-objects-sml-11.1.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="docx4j-openxml-objects-sml" type="jar" ext="jar" status="no" details="" size="589020" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects-sml\jars\docx4j-openxml-objects-sml-11.1.3.jar">
+					<artifact name="docx4j-openxml-objects-sml" type="jar" ext="jar" status="no" details="" size="589020" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects-sml\jars\docx4j-openxml-objects-sml-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-sml/11.1.3/docx4j-openxml-objects-sml-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -428,10 +428,10 @@
 		<module organisation="org.docx4j" name="docx4j-openxml-objects-pml">
 			<revision name="11.1.3" status="release" pubdate="20190828080534" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-openxml-objects-pml/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="46">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3173" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects-pml\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-pml/11.1.3/docx4j-openxml-objects-pml-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="3173" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects-pml\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-pml/11.1.3/docx4j-openxml-objects-pml-11.1.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="docx4j-openxml-objects-pml" type="jar" ext="jar" status="no" details="" size="363366" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects-pml\jars\docx4j-openxml-objects-pml-11.1.3.jar">
+					<artifact name="docx4j-openxml-objects-pml" type="jar" ext="jar" status="no" details="" size="363366" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects-pml\jars\docx4j-openxml-objects-pml-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects-pml/11.1.3/docx4j-openxml-objects-pml-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -440,12 +440,12 @@
 		<module organisation="org.docx4j" name="docx4j-openxml-objects">
 			<revision name="11.1.3" status="release" pubdate="20190828080309" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.docx4java.org/docx4j-openxml-objects/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="42">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3018" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects/11.1.3/docx4j-openxml-objects-11.1.3.pom"/>
+				<metadata-artifact status="no" details="" size="3018" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects\ivy-11.1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects/11.1.3/docx4j-openxml-objects-11.1.3.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects-pml" conf="compile, runtime" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects-sml" conf="compile, runtime" rev="11.1.3" rev-constraint-default="11.1.3" rev-constraint-dynamic="11.1.3" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="docx4j-openxml-objects" type="jar" ext="jar" status="no" details="" size="2268450" time="0" location="C:\Users\maste\.ivy2\cache\org.docx4j\docx4j-openxml-objects\jars\docx4j-openxml-objects-11.1.3.jar">
+					<artifact name="docx4j-openxml-objects" type="jar" ext="jar" status="no" details="" size="2268450" time="0" location="C:\Users\DELL\.ivy2\cache\org.docx4j\docx4j-openxml-objects\jars\docx4j-openxml-objects-11.1.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/docx4j/docx4j-openxml-objects/11.1.3/docx4j-openxml-objects-11.1.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -454,7 +454,7 @@
 		<module organisation="org.slf4j" name="slf4j-api">
 			<revision name="1.8.0-beta4" status="release" pubdate="20190219182958" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="45">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
-				<metadata-artifact status="no" details="" size="5575" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.8.0-beta4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta4/slf4j-api-1.8.0-beta4.pom"/>
+				<metadata-artifact status="no" details="" size="5575" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.8.0-beta4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta4/slf4j-api-1.8.0-beta4.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="1.8.0-beta4" rev-constraint-default="1.8.0-beta4" rev-constraint-dynamic="1.8.0-beta4" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects" conf="compile, runtime" rev="1.8.0-beta4" rev-constraint-default="1.8.0-beta4" rev-constraint-dynamic="1.8.0-beta4" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j.org.apache" name="xalan-serializer" conf="compile, runtime" rev="1.8.0-beta4" rev-constraint-default="1.8.0-beta4" rev-constraint-dynamic="1.8.0-beta4" callerrev="11.0.0"/>
@@ -467,23 +467,23 @@
 				<caller organisation="org.log4s" name="log4s_2.12" conf="compile, runtime" rev="1.7.25" rev-constraint-default="1.7.25" rev-constraint-dynamic="1.7.25" callerrev="1.6.1"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects-sml" conf="compile, runtime" rev="1.8.0-beta4" rev-constraint-default="1.8.0-beta4" rev-constraint-dynamic="1.8.0-beta4" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="slf4j-api" type="jar" ext="jar" status="no" details="" size="44213" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\slf4j-api\jars\slf4j-api-1.8.0-beta4.jar">
+					<artifact name="slf4j-api" type="jar" ext="jar" status="no" details="" size="44213" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\slf4j-api\jars\slf4j-api-1.8.0-beta4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta4/slf4j-api-1.8.0-beta4.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
 			<revision name="1.8.0-beta1" status="release" pubdate="20180130132319" resolver="sbt-chain" artresolver="sbt-chain" evicted="latest-revision" evicted-reason="" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="-1">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
-				<metadata-artifact status="no" details="" size="5397" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.8.0-beta1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta1/slf4j-api-1.8.0-beta1.pom"/>
+				<metadata-artifact status="no" details="" size="5397" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.8.0-beta1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta1/slf4j-api-1.8.0-beta1.pom"/>
 				<evicted-by rev="1.8.0-beta4"/>
 				<caller organisation="ch.qos.logback" name="logback-classic" conf="default, compile, runtime, master" rev="1.8.0-beta1" rev-constraint-default="1.8.0-beta1" rev-constraint-dynamic="1.8.0-beta1" callerrev="1.3.0-alpha4"/>
 				<caller organisation="org.log4s" name="log4s_2.12" conf="compile, runtime" rev="1.7.25" rev-constraint-default="1.7.25" rev-constraint-dynamic="1.7.25" callerrev="1.6.1"/>
 				<artifacts>
 				</artifacts>
 			</revision>
-			<revision name="1.7.25" status="release" pubdate="20200203220534" resolver="sbt-chain" artresolver="sbt-chain" evicted="latest-revision" evicted-reason="" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="-1">
+			<revision name="1.7.25" status="release" pubdate="20200415032240" resolver="sbt-chain" artresolver="sbt-chain" evicted="latest-revision" evicted-reason="" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="-1">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
-				<metadata-artifact status="no" details="" size="5431" time="0" location="C:\Users\maste\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.7.25.xml" searched="false" origin-is-local="false" origin-location="file:/C:/Users/maste/.sbt/preloaded/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom"/>
+				<metadata-artifact status="no" details="" size="5431" time="0" location="C:\Users\DELL\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.7.25.xml" searched="false" origin-is-local="false" origin-location="file:/C:/Users/DELL/.sbt/preloaded/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom"/>
 				<evicted-by rev="1.8.0-beta1"/>
 				<caller organisation="org.log4s" name="log4s_2.12" conf="compile, runtime" rev="1.7.25" rev-constraint-default="1.7.25" rev-constraint-dynamic="1.7.25" callerrev="1.6.1"/>
 				<artifacts>
@@ -499,7 +499,7 @@
 		<module organisation="jakarta.xml.bind" name="jakarta.xml.bind-api">
 			<revision name="2.3.2" status="release" pubdate="20181227163107" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="43">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="4710" time="0" location="C:\Users\maste\.ivy2\cache\jakarta.xml.bind\jakarta.xml.bind-api\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.pom"/>
+				<metadata-artifact status="no" details="" size="4710" time="0" location="C:\Users\DELL\.ivy2\cache\jakarta.xml.bind\jakarta.xml.bind-api\ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.pom"/>
 				<caller organisation="org.docx4j" name="docx4j-core" conf="compile, runtime" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects" conf="compile, runtime" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="11.1.3"/>
 				<caller organisation="org.jvnet.staxex" name="stax-ex" conf="compile, runtime" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="1.8.1"/>
@@ -509,7 +509,7 @@
 				<caller organisation="org.docx4j" name="docx4j-JAXB-ReferenceImpl" conf="default, compile, runtime, master" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="11.1.3"/>
 				<caller organisation="org.docx4j" name="docx4j-openxml-objects-sml" conf="compile, runtime" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="11.1.3"/>
 				<artifacts>
-					<artifact name="jakarta.xml.bind-api" type="jar" ext="jar" status="no" details="" size="115498" time="0" location="C:\Users\maste\.ivy2\cache\jakarta.xml.bind\jakarta.xml.bind-api\jars\jakarta.xml.bind-api-2.3.2.jar">
+					<artifact name="jakarta.xml.bind-api" type="jar" ext="jar" status="no" details="" size="115498" time="0" location="C:\Users\DELL\.ivy2\cache\jakarta.xml.bind\jakarta.xml.bind-api\jars\jakarta.xml.bind-api-2.3.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -518,13 +518,13 @@
 		<module organisation="jakarta.activation" name="jakarta.activation-api">
 			<revision name="1.2.1" status="release" pubdate="20181120231634" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="44">
 				<license name="EDL 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
-				<metadata-artifact status="no" details="" size="5436" time="0" location="C:\Users\maste\.ivy2\cache\jakarta.activation\jakarta.activation-api\ivy-1.2.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.pom"/>
+				<metadata-artifact status="no" details="" size="5436" time="0" location="C:\Users\DELL\.ivy2\cache\jakarta.activation\jakarta.activation-api\ivy-1.2.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.pom"/>
 				<caller organisation="com.sun.istack" name="istack-commons-runtime" conf="compile, runtime" rev="1.2.1" rev-constraint-default="1.2.1" rev-constraint-dynamic="1.2.1" callerrev="3.0.8"/>
 				<caller organisation="org.jvnet.staxex" name="stax-ex" conf="compile, runtime" rev="1.2.1" rev-constraint-default="1.2.1" rev-constraint-dynamic="1.2.1" callerrev="1.8.1"/>
 				<caller organisation="jakarta.xml.bind" name="jakarta.xml.bind-api" conf="compile, runtime" rev="1.2.1" rev-constraint-default="1.2.1" rev-constraint-dynamic="1.2.1" callerrev="2.3.2"/>
 				<caller organisation="org.glassfish.jaxb" name="jaxb-runtime" conf="compile, runtime" rev="1.2.1" rev-constraint-default="1.2.1" rev-constraint-dynamic="1.2.1" callerrev="2.3.2"/>
 				<artifacts>
-					<artifact name="jakarta.activation-api" type="jar" ext="jar" status="no" details="" size="44399" time="0" location="C:\Users\maste\.ivy2\cache\jakarta.activation\jakarta.activation-api\jars\jakarta.activation-api-1.2.1.jar">
+					<artifact name="jakarta.activation-api" type="jar" ext="jar" status="no" details="" size="44399" time="0" location="C:\Users\DELL\.ivy2\cache\jakarta.activation\jakarta.activation-api\jars\jakarta.activation-api-1.2.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -532,10 +532,10 @@
 		</module>
 		<module organisation="de.uniwue.scala" name="morewarts_2.12">
 			<revision name="0.1" status="release" pubdate="20180827171550" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="36">
-				<metadata-artifact status="no" details="" size="2841" time="0" location="C:\Users\maste\.ivy2\cache\de.uniwue.scala\morewarts_2.12\ivy-0.1.xml" searched="false" origin-is-local="false" origin-location="http://artifactory-ls6.informatik.uni-wuerzburg.de/artifactory/libs-release/de/uniwue/scala/morewarts_2.12/0.1/morewarts_2.12-0.1.pom"/>
+				<metadata-artifact status="no" details="" size="2841" time="0" location="C:\Users\DELL\.ivy2\cache\de.uniwue.scala\morewarts_2.12\ivy-0.1.xml" searched="false" origin-is-local="false" origin-location="http://artifactory-ls6.informatik.uni-wuerzburg.de/artifactory/libs-release/de/uniwue/scala/morewarts_2.12/0.1/morewarts_2.12-0.1.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.1" rev-constraint-default="0.1" rev-constraint-dynamic="0.1" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="morewarts_2.12" type="jar" ext="jar" status="no" details="" size="8856" time="0" location="C:\Users\maste\.ivy2\cache\de.uniwue.scala\morewarts_2.12\jars\morewarts_2.12-0.1.jar">
+					<artifact name="morewarts_2.12" type="jar" ext="jar" status="no" details="" size="8856" time="0" location="C:\Users\DELL\.ivy2\cache\de.uniwue.scala\morewarts_2.12\jars\morewarts_2.12-0.1.jar">
 						<origin-location is-local="false" location="http://artifactory-ls6.informatik.uni-wuerzburg.de/artifactory/libs-release/de/uniwue/scala/morewarts_2.12/0.1/morewarts_2.12-0.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -544,10 +544,10 @@
 		<module organisation="org.wartremover" name="wartremover_2.12">
 			<revision name="2.3.4" status="release" pubdate="20180817165933" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://wartremover.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="37">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3116" time="0" location="C:\Users\maste\.ivy2\cache\org.wartremover\wartremover_2.12\ivy-2.3.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/wartremover/wartremover_2.12/2.3.4/wartremover_2.12-2.3.4.pom"/>
+				<metadata-artifact status="no" details="" size="3116" time="0" location="C:\Users\DELL\.ivy2\cache\org.wartremover\wartremover_2.12\ivy-2.3.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/wartremover/wartremover_2.12/2.3.4/wartremover_2.12-2.3.4.pom"/>
 				<caller organisation="de.uniwue.scala" name="morewarts_2.12" conf="default, compile, runtime, master" rev="2.3.4" rev-constraint-default="2.3.4" rev-constraint-dynamic="2.3.4" callerrev="0.1"/>
 				<artifacts>
-					<artifact name="wartremover_2.12" type="jar" ext="jar" status="no" details="" size="296175" time="0" location="C:\Users\maste\.ivy2\cache\org.wartremover\wartremover_2.12\jars\wartremover_2.12-2.3.4.jar">
+					<artifact name="wartremover_2.12" type="jar" ext="jar" status="no" details="" size="296175" time="0" location="C:\Users\DELL\.ivy2\cache\org.wartremover\wartremover_2.12\jars\wartremover_2.12-2.3.4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/wartremover/wartremover_2.12/2.3.4/wartremover_2.12-2.3.4.jar"/>
 					</artifact>
 				</artifacts>
@@ -557,10 +557,10 @@
 			<revision name="1.3.0-alpha4" status="release" pubdate="20180211222059" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="32">
 				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
-				<metadata-artifact status="no" details="" size="11553" time="0" location="C:\Users\maste\.ivy2\cache\ch.qos.logback\logback-classic\ivy-1.3.0-alpha4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.3.0-alpha4/logback-classic-1.3.0-alpha4.pom"/>
+				<metadata-artifact status="no" details="" size="11553" time="0" location="C:\Users\DELL\.ivy2\cache\ch.qos.logback\logback-classic\ivy-1.3.0-alpha4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.3.0-alpha4/logback-classic-1.3.0-alpha4.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="1.3.0-alpha4" rev-constraint-default="1.3.0-alpha4" rev-constraint-dynamic="1.3.0-alpha4" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="logback-classic" type="jar" ext="jar" status="no" details="" size="239334" time="0" location="C:\Users\maste\.ivy2\cache\ch.qos.logback\logback-classic\jars\logback-classic-1.3.0-alpha4.jar">
+					<artifact name="logback-classic" type="jar" ext="jar" status="no" details="" size="239334" time="0" location="C:\Users\DELL\.ivy2\cache\ch.qos.logback\logback-classic\jars\logback-classic-1.3.0-alpha4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.3.0-alpha4/logback-classic-1.3.0-alpha4.jar"/>
 					</artifact>
 				</artifacts>
@@ -570,10 +570,10 @@
 			<revision name="1.3.0-alpha4" status="release" pubdate="20180211222015" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="33">
 				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
-				<metadata-artifact status="no" details="" size="9155" time="0" location="C:\Users\maste\.ivy2\cache\ch.qos.logback\logback-core\ivy-1.3.0-alpha4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.3.0-alpha4/logback-core-1.3.0-alpha4.pom"/>
+				<metadata-artifact status="no" details="" size="9155" time="0" location="C:\Users\DELL\.ivy2\cache\ch.qos.logback\logback-core\ivy-1.3.0-alpha4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.3.0-alpha4/logback-core-1.3.0-alpha4.pom"/>
 				<caller organisation="ch.qos.logback" name="logback-classic" conf="default, compile, runtime, master" rev="1.3.0-alpha4" rev-constraint-default="1.3.0-alpha4" rev-constraint-dynamic="1.3.0-alpha4" callerrev="1.3.0-alpha4"/>
 				<artifacts>
-					<artifact name="logback-core" type="jar" ext="jar" status="no" details="" size="469400" time="0" location="C:\Users\maste\.ivy2\cache\ch.qos.logback\logback-core\jars\logback-core-1.3.0-alpha4.jar">
+					<artifact name="logback-core" type="jar" ext="jar" status="no" details="" size="469400" time="0" location="C:\Users\DELL\.ivy2\cache\ch.qos.logback\logback-core\jars\logback-core-1.3.0-alpha4.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.3.0-alpha4/logback-core-1.3.0-alpha4.jar"/>
 					</artifact>
 				</artifacts>
@@ -582,10 +582,10 @@
 		<module organisation="com.sun.mail" name="javax.mail">
 			<revision name="1.6.0" status="release" pubdate="20170717215546" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="34">
 				<license name="CDDL/GPLv2+CE" url="https://javaee.github.io/javamail/LICENSE"/>
-				<metadata-artifact status="no" details="" size="7095" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.mail\javax.mail\ivy-1.6.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/mail/javax.mail/1.6.0/javax.mail-1.6.0.pom"/>
+				<metadata-artifact status="no" details="" size="7095" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.mail\javax.mail\ivy-1.6.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/sun/mail/javax.mail/1.6.0/javax.mail-1.6.0.pom"/>
 				<caller organisation="ch.qos.logback" name="logback-classic" conf="default, compile, runtime, master" rev="1.6.0" rev-constraint-default="1.6.0" rev-constraint-dynamic="1.6.0" callerrev="1.3.0-alpha4"/>
 				<artifacts>
-					<artifact name="javax.mail" type="jar" ext="jar" status="no" details="" size="653275" time="0" location="C:\Users\maste\.ivy2\cache\com.sun.mail\javax.mail\jars\javax.mail-1.6.0.jar">
+					<artifact name="javax.mail" type="jar" ext="jar" status="no" details="" size="653275" time="0" location="C:\Users\DELL\.ivy2\cache\com.sun.mail\javax.mail\jars\javax.mail-1.6.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/sun/mail/javax.mail/1.6.0/javax.mail-1.6.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -594,10 +594,10 @@
 		<module organisation="javax.activation" name="activation">
 			<revision name="1.1" status="release" pubdate="20060503014829" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://java.sun.com/products/javabeans/jaf/index.jsp" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="35">
 				<license name="Common Development and Distribution License (CDDL) v1.0" url="https://glassfish.dev.java.net/public/CDDLv1.0.html"/>
-				<metadata-artifact status="no" details="" size="2874" time="0" location="C:\Users\maste\.ivy2\cache\javax.activation\activation\ivy-1.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/javax/activation/activation/1.1/activation-1.1.pom"/>
+				<metadata-artifact status="no" details="" size="2874" time="0" location="C:\Users\DELL\.ivy2\cache\javax.activation\activation\ivy-1.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/javax/activation/activation/1.1/activation-1.1.pom"/>
 				<caller organisation="com.sun.mail" name="javax.mail" conf="compile, runtime" rev="1.1" rev-constraint-default="1.1" rev-constraint-dynamic="1.1" callerrev="1.6.0"/>
 				<artifacts>
-					<artifact name="activation" type="jar" ext="jar" status="no" details="" size="62983" time="0" location="C:\Users\maste\.ivy2\cache\javax.activation\activation\jars\activation-1.1.jar">
+					<artifact name="activation" type="jar" ext="jar" status="no" details="" size="62983" time="0" location="C:\Users\DELL\.ivy2\cache\javax.activation\activation\jars\activation-1.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/javax/activation/activation/1.1/activation-1.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -606,10 +606,10 @@
 		<module organisation="org.http4s" name="http4s-circe_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004559" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="28">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4419" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-circe_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-circe_2.12/0.20.0-M3/http4s-circe_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4419" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-circe_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-circe_2.12/0.20.0-M3/http4s-circe_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="http4s-circe_2.12" type="jar" ext="jar" status="no" details="" size="26697" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-circe_2.12\jars\http4s-circe_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-circe_2.12" type="jar" ext="jar" status="no" details="" size="26697" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-circe_2.12\jars\http4s-circe_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-circe_2.12/0.20.0-M3/http4s-circe_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -618,10 +618,10 @@
 		<module organisation="org.http4s" name="http4s-jawn_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004339" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="29">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4164" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-jawn_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-jawn_2.12/0.20.0-M3/http4s-jawn_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4164" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-jawn_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-jawn_2.12/0.20.0-M3/http4s-jawn_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.http4s" name="http4s-circe_2.12" conf="default, compile, runtime, master" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="http4s-jawn_2.12" type="jar" ext="jar" status="no" details="" size="6237" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-jawn_2.12\jars\http4s-jawn_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-jawn_2.12" type="jar" ext="jar" status="no" details="" size="6237" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-jawn_2.12\jars\http4s-jawn_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-jawn_2.12/0.20.0-M3/http4s-jawn_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -630,10 +630,10 @@
 		<module organisation="org.http4s" name="jawn-fs2_2.12">
 			<revision name="0.13.0" status="release" pubdate="20181005185349" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/http4s/jawn-fs2" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="30">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3334" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\jawn-fs2_2.12\ivy-0.13.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/jawn-fs2_2.12/0.13.0/jawn-fs2_2.12-0.13.0.pom"/>
+				<metadata-artifact status="no" details="" size="3334" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\jawn-fs2_2.12\ivy-0.13.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/jawn-fs2_2.12/0.13.0/jawn-fs2_2.12-0.13.0.pom"/>
 				<caller organisation="org.http4s" name="http4s-jawn_2.12" conf="compile, runtime" rev="0.13.0" rev-constraint-default="0.13.0" rev-constraint-dynamic="0.13.0" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="jawn-fs2_2.12" type="jar" ext="jar" status="no" details="" size="14175" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\jawn-fs2_2.12\jars\jawn-fs2_2.12-0.13.0.jar">
+					<artifact name="jawn-fs2_2.12" type="jar" ext="jar" status="no" details="" size="14175" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\jawn-fs2_2.12\jars\jawn-fs2_2.12-0.13.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/jawn-fs2_2.12/0.13.0/jawn-fs2_2.12-0.13.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -642,10 +642,10 @@
 		<module organisation="org.http4s" name="http4s-blaze-server_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004640" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="15">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4050" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-blaze-server_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-server_2.12/0.20.0-M3/http4s-blaze-server_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4050" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-blaze-server_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-server_2.12/0.20.0-M3/http4s-blaze-server_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="http4s-blaze-server_2.12" type="jar" ext="jar" status="no" details="" size="115470" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-blaze-server_2.12\jars\http4s-blaze-server_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-blaze-server_2.12" type="jar" ext="jar" status="no" details="" size="115470" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-blaze-server_2.12\jars\http4s-blaze-server_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-server_2.12/0.20.0-M3/http4s-blaze-server_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -654,10 +654,10 @@
 		<module organisation="org.http4s" name="http4s-server_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004439" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="27">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4137" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-server_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-server_2.12/0.20.0-M3/http4s-server_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4137" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-server_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-server_2.12/0.20.0-M3/http4s-server_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.http4s" name="http4s-blaze-server_2.12" conf="default, compile, runtime, master" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="http4s-server_2.12" type="jar" ext="jar" status="no" details="" size="364053" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-server_2.12\jars\http4s-server_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-server_2.12" type="jar" ext="jar" status="no" details="" size="364053" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-server_2.12\jars\http4s-server_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-server_2.12/0.20.0-M3/http4s-server_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -666,10 +666,10 @@
 		<module organisation="org.http4s" name="http4s-dsl_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004413" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="31">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4003" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-dsl_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-dsl_2.12/0.20.0-M3/http4s-dsl_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4003" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-dsl_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-dsl_2.12/0.20.0-M3/http4s-dsl_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="http4s-dsl_2.12" type="jar" ext="jar" status="no" details="" size="261094" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-dsl_2.12\jars\http4s-dsl_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-dsl_2.12" type="jar" ext="jar" status="no" details="" size="261094" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-dsl_2.12\jars\http4s-dsl_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-dsl_2.12/0.20.0-M3/http4s-dsl_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -678,10 +678,10 @@
 		<module organisation="org.http4s" name="http4s-blaze-core_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004358" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="16">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4189" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-blaze-core_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-core_2.12/0.20.0-M3/http4s-blaze-core_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4189" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-blaze-core_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-core_2.12/0.20.0-M3/http4s-blaze-core_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.http4s" name="http4s-blaze-server_2.12" conf="default, compile, runtime, master" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="http4s-blaze-core_2.12" type="jar" ext="jar" status="no" details="" size="106648" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-blaze-core_2.12\jars\http4s-blaze-core_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-blaze-core_2.12" type="jar" ext="jar" status="no" details="" size="106648" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-blaze-core_2.12\jars\http4s-blaze-core_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-blaze-core_2.12/0.20.0-M3/http4s-blaze-core_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -690,10 +690,10 @@
 		<module organisation="org.http4s" name="blaze-http_2.12">
 			<revision name="0.14.0-M11" status="release" pubdate="20181108214939" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/http4s/blaze" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="23">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="3539" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\blaze-http_2.12\ivy-0.14.0-M11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/blaze-http_2.12/0.14.0-M11/blaze-http_2.12-0.14.0-M11.pom"/>
+				<metadata-artifact status="no" details="" size="3539" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\blaze-http_2.12\ivy-0.14.0-M11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/blaze-http_2.12/0.14.0-M11/blaze-http_2.12-0.14.0-M11.pom"/>
 				<caller organisation="org.http4s" name="http4s-blaze-core_2.12" conf="compile, runtime" rev="0.14.0-M11" rev-constraint-default="0.14.0-M11" rev-constraint-dynamic="0.14.0-M11" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="blaze-http_2.12" type="jar" ext="jar" status="no" details="" size="595041" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\blaze-http_2.12\jars\blaze-http_2.12-0.14.0-M11.jar">
+					<artifact name="blaze-http_2.12" type="jar" ext="jar" status="no" details="" size="595041" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\blaze-http_2.12\jars\blaze-http_2.12-0.14.0-M11.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/blaze-http_2.12/0.14.0-M11/blaze-http_2.12-0.14.0-M11.jar"/>
 					</artifact>
 				</artifacts>
@@ -703,10 +703,10 @@
 			<revision name="1.1.3.v20160715" status="release" pubdate="20160715052221" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="26">
 				<license name="Apache Software License - Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 				<license name="Eclipse Public License - Version 1.0" url="http://www.eclipse.org/org/documents/epl-v10.php"/>
-				<metadata-artifact status="no" details="" size="3394" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.jetty.alpn\alpn-api\ivy-1.1.3.v20160715.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/jetty/alpn/alpn-api/1.1.3.v20160715/alpn-api-1.1.3.v20160715.pom"/>
+				<metadata-artifact status="no" details="" size="3394" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.jetty.alpn\alpn-api\ivy-1.1.3.v20160715.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/eclipse/jetty/alpn/alpn-api/1.1.3.v20160715/alpn-api-1.1.3.v20160715.pom"/>
 				<caller organisation="org.http4s" name="blaze-http_2.12" conf="compile, runtime" rev="1.1.3.v20160715" rev-constraint-default="1.1.3.v20160715" rev-constraint-dynamic="1.1.3.v20160715" callerrev="0.14.0-M11"/>
 				<artifacts>
-					<artifact name="alpn-api" type="jar" ext="jar" status="no" details="" size="5557" time="0" location="C:\Users\maste\.ivy2\cache\org.eclipse.jetty.alpn\alpn-api\jars\alpn-api-1.1.3.v20160715.jar">
+					<artifact name="alpn-api" type="jar" ext="jar" status="no" details="" size="5557" time="0" location="C:\Users\DELL\.ivy2\cache\org.eclipse.jetty.alpn\alpn-api\jars\alpn-api-1.1.3.v20160715.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/eclipse/jetty/alpn/alpn-api/1.1.3.v20160715/alpn-api-1.1.3.v20160715.jar"/>
 					</artifact>
 				</artifacts>
@@ -715,10 +715,10 @@
 		<module organisation="com.twitter" name="hpack">
 			<revision name="1.0.2" status="release" pubdate="20160324232836" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="25">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="4944" time="0" location="C:\Users\maste\.ivy2\cache\com.twitter\hpack\ivy-1.0.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/twitter/hpack/1.0.2/hpack-1.0.2.pom"/>
+				<metadata-artifact status="no" details="" size="4944" time="0" location="C:\Users\DELL\.ivy2\cache\com.twitter\hpack\ivy-1.0.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/twitter/hpack/1.0.2/hpack-1.0.2.pom"/>
 				<caller organisation="org.http4s" name="blaze-http_2.12" conf="compile, runtime" rev="1.0.2" rev-constraint-default="1.0.2" rev-constraint-dynamic="1.0.2" callerrev="0.14.0-M11"/>
 				<artifacts>
-					<artifact name="hpack" type="jar" ext="jar" status="no" details="" size="29339" time="0" location="C:\Users\maste\.ivy2\cache\com.twitter\hpack\jars\hpack-1.0.2.jar">
+					<artifact name="hpack" type="jar" ext="jar" status="no" details="" size="29339" time="0" location="C:\Users\DELL\.ivy2\cache\com.twitter\hpack\jars\hpack-1.0.2.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/twitter/hpack/1.0.2/hpack-1.0.2.jar"/>
 					</artifact>
 				</artifacts>
@@ -727,10 +727,10 @@
 		<module organisation="org.http4s" name="blaze-core_2.12">
 			<revision name="0.14.0-M11" status="release" pubdate="20181108215003" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/http4s/blaze" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="24">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="3215" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\blaze-core_2.12\ivy-0.14.0-M11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/blaze-core_2.12/0.14.0-M11/blaze-core_2.12-0.14.0-M11.pom"/>
+				<metadata-artifact status="no" details="" size="3215" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\blaze-core_2.12\ivy-0.14.0-M11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/blaze-core_2.12/0.14.0-M11/blaze-core_2.12-0.14.0-M11.pom"/>
 				<caller organisation="org.http4s" name="blaze-http_2.12" conf="compile, runtime" rev="0.14.0-M11" rev-constraint-default="0.14.0-M11" rev-constraint-dynamic="0.14.0-M11" callerrev="0.14.0-M11"/>
 				<artifacts>
-					<artifact name="blaze-core_2.12" type="jar" ext="jar" status="no" details="" size="312909" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\blaze-core_2.12\jars\blaze-core_2.12-0.14.0-M11.jar">
+					<artifact name="blaze-core_2.12" type="jar" ext="jar" status="no" details="" size="312909" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\blaze-core_2.12\jars\blaze-core_2.12-0.14.0-M11.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/blaze-core_2.12/0.14.0-M11/blaze-core_2.12-0.14.0-M11.jar"/>
 					</artifact>
 				</artifacts>
@@ -739,14 +739,14 @@
 		<module organisation="org.http4s" name="http4s-core_2.12">
 			<revision name="0.20.0-M3" status="release" pubdate="20181114004112" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://http4s.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="17">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
-				<metadata-artifact status="no" details="" size="4751" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-core_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-core_2.12/0.20.0-M3/http4s-core_2.12-0.20.0-M3.pom"/>
+				<metadata-artifact status="no" details="" size="4751" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-core_2.12\ivy-0.20.0-M3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/http4s-core_2.12/0.20.0-M3/http4s-core_2.12-0.20.0-M3.pom"/>
 				<caller organisation="org.http4s" name="http4s-jawn_2.12" conf="compile, runtime" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<caller organisation="org.http4s" name="http4s-dsl_2.12" conf="default, compile, runtime, master" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<caller organisation="org.http4s" name="http4s-circe_2.12" conf="default, compile, runtime, master" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<caller organisation="org.http4s" name="http4s-server_2.12" conf="compile, runtime" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<caller organisation="org.http4s" name="http4s-blaze-core_2.12" conf="compile, runtime" rev="0.20.0-M3" rev-constraint-default="0.20.0-M3" rev-constraint-dynamic="0.20.0-M3" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="http4s-core_2.12" type="jar" ext="jar" status="no" details="" size="2085163" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\http4s-core_2.12\jars\http4s-core_2.12-0.20.0-M3.jar">
+					<artifact name="http4s-core_2.12" type="jar" ext="jar" status="no" details="" size="2085163" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\http4s-core_2.12\jars\http4s-core_2.12-0.20.0-M3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/http4s-core_2.12/0.20.0-M3/http4s-core_2.12-0.20.0-M3.jar"/>
 					</artifact>
 				</artifacts>
@@ -755,10 +755,10 @@
 		<module organisation="org.http4s" name="parboiled_2.12">
 			<revision name="1.0.0" status="release" pubdate="20170925224549" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/http4s/parboiled2" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="22">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3017" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\parboiled_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/parboiled_2.12/1.0.0/parboiled_2.12-1.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="3017" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\parboiled_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/http4s/parboiled_2.12/1.0.0/parboiled_2.12-1.0.0.pom"/>
 				<caller organisation="org.http4s" name="http4s-core_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="parboiled_2.12" type="jar" ext="jar" status="no" details="" size="967981" time="0" location="C:\Users\maste\.ivy2\cache\org.http4s\parboiled_2.12\jars\parboiled_2.12-1.0.0.jar">
+					<artifact name="parboiled_2.12" type="jar" ext="jar" status="no" details="" size="967981" time="0" location="C:\Users\DELL\.ivy2\cache\org.http4s\parboiled_2.12\jars\parboiled_2.12-1.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/http4s/parboiled_2.12/1.0.0/parboiled_2.12-1.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -767,11 +767,11 @@
 		<module organisation="org.log4s" name="log4s_2.12">
 			<revision name="1.6.1" status="release" pubdate="20180321032027" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://log4s.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="21">
 				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3653" time="0" location="C:\Users\maste\.ivy2\cache\org.log4s\log4s_2.12\ivy-1.6.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/log4s/log4s_2.12/1.6.1/log4s_2.12-1.6.1.pom"/>
+				<metadata-artifact status="no" details="" size="3653" time="0" location="C:\Users\DELL\.ivy2\cache\org.log4s\log4s_2.12\ivy-1.6.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/log4s/log4s_2.12/1.6.1/log4s_2.12-1.6.1.pom"/>
 				<caller organisation="org.http4s" name="http4s-core_2.12" conf="compile, runtime" rev="1.6.1" rev-constraint-default="1.6.1" rev-constraint-dynamic="1.6.1" callerrev="0.20.0-M3"/>
 				<caller organisation="org.http4s" name="blaze-core_2.12" conf="compile, runtime" rev="1.6.1" rev-constraint-default="1.6.1" rev-constraint-dynamic="1.6.1" callerrev="0.14.0-M11"/>
 				<artifacts>
-					<artifact name="log4s_2.12" type="jar" ext="jar" status="no" details="" size="66927" time="0" location="C:\Users\maste\.ivy2\cache\org.log4s\log4s_2.12\jars\log4s_2.12-1.6.1.jar">
+					<artifact name="log4s_2.12" type="jar" ext="jar" status="no" details="" size="66927" time="0" location="C:\Users\DELL\.ivy2\cache\org.log4s\log4s_2.12\jars\log4s_2.12-1.6.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/log4s/log4s_2.12/1.6.1/log4s_2.12-1.6.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -780,10 +780,10 @@
 		<module organisation="co.fs2" name="fs2-io_2.12">
 			<revision name="1.0.0" status="release" pubdate="20181005163202" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/functional-streams-for-scala/fs2" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="18">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="3104" time="0" location="C:\Users\maste\.ivy2\cache\co.fs2\fs2-io_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/co/fs2/fs2-io_2.12/1.0.0/fs2-io_2.12-1.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="3104" time="0" location="C:\Users\DELL\.ivy2\cache\co.fs2\fs2-io_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/co/fs2/fs2-io_2.12/1.0.0/fs2-io_2.12-1.0.0.pom"/>
 				<caller organisation="org.http4s" name="http4s-core_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.20.0-M3"/>
 				<artifacts>
-					<artifact name="fs2-io_2.12" type="jar" ext="jar" status="no" details="" size="181329" time="0" location="C:\Users\maste\.ivy2\cache\co.fs2\fs2-io_2.12\jars\fs2-io_2.12-1.0.0.jar">
+					<artifact name="fs2-io_2.12" type="jar" ext="jar" status="no" details="" size="181329" time="0" location="C:\Users\DELL\.ivy2\cache\co.fs2\fs2-io_2.12\jars\fs2-io_2.12-1.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/co/fs2/fs2-io_2.12/1.0.0/fs2-io_2.12-1.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -792,11 +792,11 @@
 		<module organisation="co.fs2" name="fs2-core_2.12">
 			<revision name="1.0.0" status="release" pubdate="20181005163226" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/functional-streams-for-scala/fs2" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="19">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="3117" time="0" location="C:\Users\maste\.ivy2\cache\co.fs2\fs2-core_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/co/fs2/fs2-core_2.12/1.0.0/fs2-core_2.12-1.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="3117" time="0" location="C:\Users\DELL\.ivy2\cache\co.fs2\fs2-core_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/co/fs2/fs2-core_2.12/1.0.0/fs2-core_2.12-1.0.0.pom"/>
 				<caller organisation="co.fs2" name="fs2-io_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="1.0.0"/>
 				<caller organisation="org.http4s" name="jawn-fs2_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.13.0"/>
 				<artifacts>
-					<artifact name="fs2-core_2.12" type="jar" ext="jar" status="no" details="" size="807928" time="0" location="C:\Users\maste\.ivy2\cache\co.fs2\fs2-core_2.12\jars\fs2-core_2.12-1.0.0.jar">
+					<artifact name="fs2-core_2.12" type="jar" ext="jar" status="no" details="" size="807928" time="0" location="C:\Users\DELL\.ivy2\cache\co.fs2\fs2-core_2.12\jars\fs2-core_2.12-1.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/co/fs2/fs2-core_2.12/1.0.0/fs2-core_2.12-1.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -805,10 +805,10 @@
 		<module organisation="org.scodec" name="scodec-bits_2.12">
 			<revision name="1.1.5" status="release" pubdate="20170720162155" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/scodec/scodec-bits" extra-info.apiURL="http://scodec.org/api/scodec-bits/1.1.5/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="20">
 				<license name="Three-clause BSD-style" url="https://github.com/scodec/scodec-bits/blob/master/LICENSE"/>
-				<metadata-artifact status="no" details="" size="3029" time="0" location="C:\Users\maste\.ivy2\cache\org.scodec\scodec-bits_2.12\ivy-1.1.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scodec/scodec-bits_2.12/1.1.5/scodec-bits_2.12-1.1.5.pom"/>
+				<metadata-artifact status="no" details="" size="3029" time="0" location="C:\Users\DELL\.ivy2\cache\org.scodec\scodec-bits_2.12\ivy-1.1.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scodec/scodec-bits_2.12/1.1.5/scodec-bits_2.12-1.1.5.pom"/>
 				<caller organisation="co.fs2" name="fs2-core_2.12" conf="compile, runtime" rev="1.1.5" rev-constraint-default="1.1.5" rev-constraint-dynamic="1.1.5" callerrev="1.0.0"/>
 				<artifacts>
-					<artifact name="scodec-bits_2.12" type="bundle" ext="jar" status="no" details="" size="229845" time="0" location="C:\Users\maste\.ivy2\cache\org.scodec\scodec-bits_2.12\bundles\scodec-bits_2.12-1.1.5.jar">
+					<artifact name="scodec-bits_2.12" type="bundle" ext="jar" status="no" details="" size="229845" time="0" location="C:\Users\DELL\.ivy2\cache\org.scodec\scodec-bits_2.12\bundles\scodec-bits_2.12-1.1.5.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scodec/scodec-bits_2.12/1.1.5/scodec-bits_2.12-1.1.5.jar"/>
 					</artifact>
 				</artifacts>
@@ -817,23 +817,23 @@
 		<module organisation="org.scala-lang" name="scala-compiler">
 			<revision name="2.12.7" status="release" pubdate="20180927103727" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="38">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2974" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-compiler\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.7/scala-compiler-2.12.7.pom"/>
+				<metadata-artifact status="no" details="" size="2974" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-compiler\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.7/scala-compiler-2.12.7.pom"/>
 				<caller organisation="org.wartremover" name="wartremover_2.12" conf="compile, runtime" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="2.3.4"/>
 				<artifacts>
-					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="10478558" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-compiler\jars\scala-compiler-2.12.7.jar">
+					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="10478558" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-compiler\jars\scala-compiler-2.12.7.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.7/scala-compiler-2.12.7.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
 		</module>
 		<module organisation="org.scala-lang.modules" name="scala-xml_2.12">
-			<revision name="1.0.6" status="release" pubdate="20200203220534" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="39">
+			<revision name="1.0.6" status="release" pubdate="20200415032240" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="39">
 				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
-				<metadata-artifact status="no" details="" size="3024" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\ivy-1.0.6.xml" searched="false" origin-is-local="false" origin-location="file:/C:/Users/maste/.sbt/preloaded/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.pom"/>
+				<metadata-artifact status="no" details="" size="3024" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\ivy-1.0.6.xml" searched="false" origin-is-local="false" origin-location="file:/C:/Users/DELL/.sbt/preloaded/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.pom"/>
 				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="1.0.6" rev-constraint-default="1.0.6" rev-constraint-dynamic="1.0.6" callerrev="2.12.7"/>
 				<artifacts>
-					<artifact name="scala-xml_2.12" type="bundle" ext="jar" status="no" details="" size="547860" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\bundles\scala-xml_2.12-1.0.6.jar">
-						<origin-location is-local="false" location="file:/C:/Users/maste/.sbt/preloaded/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
+					<artifact name="scala-xml_2.12" type="bundle" ext="jar" status="no" details="" size="547860" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\bundles\scala-xml_2.12-1.0.6.jar">
+						<origin-location is-local="false" location="file:/C:/Users/DELL/.sbt/preloaded/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
@@ -841,10 +841,10 @@
 		<module organisation="io.circe" name="circe-parser_2.12">
 			<revision name="0.10.1" status="release" pubdate="20181030134800" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/circe/circe" extra-info.apiURL="https://circe.github.io/circe/api/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="12">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="no" details="" size="3119" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-parser_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.1/circe-parser_2.12-0.10.1.pom"/>
+				<metadata-artifact status="no" details="" size="3119" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-parser_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.1/circe-parser_2.12-0.10.1.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="circe-parser_2.12" type="jar" ext="jar" status="no" details="" size="2752" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-parser_2.12\jars\circe-parser_2.12-0.10.1.jar">
+					<artifact name="circe-parser_2.12" type="jar" ext="jar" status="no" details="" size="2752" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-parser_2.12\jars\circe-parser_2.12-0.10.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.1/circe-parser_2.12-0.10.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -853,11 +853,11 @@
 		<module organisation="io.circe" name="circe-jawn_2.12">
 			<revision name="0.10.1" status="release" pubdate="20181030134613" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/circe/circe" extra-info.apiURL="https://circe.github.io/circe/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="13">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="no" details="" size="3120" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-jawn_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.1/circe-jawn_2.12-0.10.1.pom"/>
+				<metadata-artifact status="no" details="" size="3120" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-jawn_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.1/circe-jawn_2.12-0.10.1.pom"/>
 				<caller organisation="org.http4s" name="http4s-circe_2.12" conf="default, compile, runtime, master" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.20.0-M3"/>
 				<caller organisation="io.circe" name="circe-parser_2.12" conf="default, compile, runtime, master" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.10.1"/>
 				<artifacts>
-					<artifact name="circe-jawn_2.12" type="jar" ext="jar" status="no" details="" size="12622" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-jawn_2.12\jars\circe-jawn_2.12-0.10.1.jar">
+					<artifact name="circe-jawn_2.12" type="jar" ext="jar" status="no" details="" size="12622" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-jawn_2.12\jars\circe-jawn_2.12-0.10.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.1/circe-jawn_2.12-0.10.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -866,11 +866,11 @@
 		<module organisation="org.spire-math" name="jawn-parser_2.12">
 			<revision name="0.13.0" status="release" pubdate="20180723185752" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/non/jawn" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="14">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="2914" time="0" location="C:\Users\maste\.ivy2\cache\org.spire-math\jawn-parser_2.12\ivy-0.13.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0.pom"/>
+				<metadata-artifact status="no" details="" size="2914" time="0" location="C:\Users\DELL\.ivy2\cache\org.spire-math\jawn-parser_2.12\ivy-0.13.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0.pom"/>
 				<caller organisation="org.http4s" name="jawn-fs2_2.12" conf="compile, runtime" rev="0.13.0" rev-constraint-default="0.13.0" rev-constraint-dynamic="0.13.0" callerrev="0.13.0"/>
 				<caller organisation="io.circe" name="circe-jawn_2.12" conf="compile, runtime" rev="0.13.0" rev-constraint-default="0.13.0" rev-constraint-dynamic="0.13.0" callerrev="0.10.1"/>
 				<artifacts>
-					<artifact name="jawn-parser_2.12" type="jar" ext="jar" status="no" details="" size="80255" time="0" location="C:\Users\maste\.ivy2\cache\org.spire-math\jawn-parser_2.12\jars\jawn-parser_2.12-0.13.0.jar">
+					<artifact name="jawn-parser_2.12" type="jar" ext="jar" status="no" details="" size="80255" time="0" location="C:\Users\DELL\.ivy2\cache\org.spire-math\jawn-parser_2.12\jars\jawn-parser_2.12-0.13.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -879,10 +879,10 @@
 		<module organisation="io.circe" name="circe-generic_2.12">
 			<revision name="0.10.1" status="release" pubdate="20181030134801" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/circe/circe" extra-info.apiURL="https://circe.github.io/circe/api/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="9">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="no" details="" size="3428" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-generic_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.1/circe-generic_2.12-0.10.1.pom"/>
+				<metadata-artifact status="no" details="" size="3428" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-generic_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.1/circe-generic_2.12-0.10.1.pom"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="circe-generic_2.12" type="jar" ext="jar" status="no" details="" size="153609" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-generic_2.12\jars\circe-generic_2.12-0.10.1.jar">
+					<artifact name="circe-generic_2.12" type="jar" ext="jar" status="no" details="" size="153609" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-generic_2.12\jars\circe-generic_2.12-0.10.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.1/circe-generic_2.12-0.10.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -891,10 +891,10 @@
 		<module organisation="com.chuusai" name="shapeless_2.12">
 			<revision name="2.3.3" status="release" pubdate="20171231155153" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/milessabin/shapeless" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="10">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="3267" time="0" location="C:\Users\maste\.ivy2\cache\com.chuusai\shapeless_2.12\ivy-2.3.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3.pom"/>
+				<metadata-artifact status="no" details="" size="3267" time="0" location="C:\Users\DELL\.ivy2\cache\com.chuusai\shapeless_2.12\ivy-2.3.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3.pom"/>
 				<caller organisation="io.circe" name="circe-generic_2.12" conf="default, compile, runtime, master" rev="2.3.3" rev-constraint-default="2.3.3" rev-constraint-dynamic="2.3.3" callerrev="0.10.1"/>
 				<artifacts>
-					<artifact name="shapeless_2.12" type="bundle" ext="jar" status="no" details="" size="3243337" time="0" location="C:\Users\maste\.ivy2\cache\com.chuusai\shapeless_2.12\bundles\shapeless_2.12-2.3.3.jar">
+					<artifact name="shapeless_2.12" type="bundle" ext="jar" status="no" details="" size="3243337" time="0" location="C:\Users\DELL\.ivy2\cache\com.chuusai\shapeless_2.12\bundles\shapeless_2.12-2.3.3.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3.jar"/>
 					</artifact>
 				</artifacts>
@@ -903,10 +903,10 @@
 		<module organisation="org.typelevel" name="macro-compat_2.12">
 			<revision name="1.1.1" status="release" pubdate="20161102094258" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/milessabin/macro-compat" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="11">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="2999" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\macro-compat_2.12\ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1.pom"/>
+				<metadata-artifact status="no" details="" size="2999" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\macro-compat_2.12\ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1.pom"/>
 				<caller organisation="com.chuusai" name="shapeless_2.12" conf="compile, runtime" rev="1.1.1" rev-constraint-default="1.1.1" rev-constraint-dynamic="1.1.1" callerrev="2.3.3"/>
 				<artifacts>
-					<artifact name="macro-compat_2.12" type="jar" ext="jar" status="no" details="" size="3180" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\macro-compat_2.12\jars\macro-compat_2.12-1.1.1.jar">
+					<artifact name="macro-compat_2.12" type="jar" ext="jar" status="no" details="" size="3180" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\macro-compat_2.12\jars\macro-compat_2.12-1.1.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -915,13 +915,13 @@
 		<module organisation="io.circe" name="circe-core_2.12">
 			<revision name="0.10.1" status="release" pubdate="20181030134651" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/circe/circe" extra-info.apiURL="https://circe.github.io/circe/api/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="7">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="no" details="" size="3119" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-core_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.1/circe-core_2.12-0.10.1.pom"/>
+				<metadata-artifact status="no" details="" size="3119" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-core_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.1/circe-core_2.12-0.10.1.pom"/>
 				<caller organisation="io.circe" name="circe-jawn_2.12" conf="compile, runtime" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.10.1"/>
 				<caller organisation="io.circe" name="circe-generic_2.12" conf="default, compile, runtime, master" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.10.1"/>
 				<caller organisation="io.circe" name="circe-parser_2.12" conf="default, compile, runtime, master" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.10.1"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="circe-core_2.12" type="jar" ext="jar" status="no" details="" size="938767" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-core_2.12\jars\circe-core_2.12-0.10.1.jar">
+					<artifact name="circe-core_2.12" type="jar" ext="jar" status="no" details="" size="938767" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-core_2.12\jars\circe-core_2.12-0.10.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.1/circe-core_2.12-0.10.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -930,10 +930,10 @@
 		<module organisation="io.circe" name="circe-numbers_2.12">
 			<revision name="0.10.1" status="release" pubdate="20181030134338" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/circe/circe" extra-info.apiURL="https://circe.github.io/circe/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="8">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="no" details="" size="2834" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-numbers_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.1/circe-numbers_2.12-0.10.1.pom"/>
+				<metadata-artifact status="no" details="" size="2834" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-numbers_2.12\ivy-0.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.1/circe-numbers_2.12-0.10.1.pom"/>
 				<caller organisation="io.circe" name="circe-core_2.12" conf="default, compile, runtime, master" rev="0.10.1" rev-constraint-default="0.10.1" rev-constraint-dynamic="0.10.1" callerrev="0.10.1"/>
 				<artifacts>
-					<artifact name="circe-numbers_2.12" type="jar" ext="jar" status="no" details="" size="12754" time="0" location="C:\Users\maste\.ivy2\cache\io.circe\circe-numbers_2.12\jars\circe-numbers_2.12-0.10.1.jar">
+					<artifact name="circe-numbers_2.12" type="jar" ext="jar" status="no" details="" size="12754" time="0" location="C:\Users\DELL\.ivy2\cache\io.circe\circe-numbers_2.12\jars\circe-numbers_2.12-0.10.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.1/circe-numbers_2.12-0.10.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -942,13 +942,13 @@
 		<module organisation="org.typelevel" name="cats-effect_2.12">
 			<revision name="1.0.0" status="release" pubdate="20180906040844" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://typelevel.org/cats-effect/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="6">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/"/>
-				<metadata-artifact status="no" details="" size="3325" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-effect_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-effect_2.12/1.0.0/cats-effect_2.12-1.0.0.pom"/>
+				<metadata-artifact status="no" details="" size="3325" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-effect_2.12\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-effect_2.12/1.0.0/cats-effect_2.12-1.0.0.pom"/>
 				<caller organisation="co.fs2" name="fs2-io_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="1.0.0"/>
 				<caller organisation="org.http4s" name="http4s-core_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.20.0-M3"/>
 				<caller organisation="co.fs2" name="fs2-core_2.12" conf="compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="1.0.0"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="cats-effect_2.12" type="jar" ext="jar" status="no" details="" size="805906" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-effect_2.12\jars\cats-effect_2.12-1.0.0.jar">
+					<artifact name="cats-effect_2.12" type="jar" ext="jar" status="no" details="" size="805906" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-effect_2.12\jars\cats-effect_2.12-1.0.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/cats-effect_2.12/1.0.0/cats-effect_2.12-1.0.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -957,11 +957,11 @@
 		<module organisation="org.scala-lang" name="scala-reflect">
 			<revision name="2.12.7" status="release" pubdate="20180927103203" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.7/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), master(compile), runtime, compile(*), master" position="4">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2670" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-reflect\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.7/scala-reflect-2.12.7.pom"/>
+				<metadata-artifact status="no" details="" size="2670" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-reflect\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.7/scala-reflect-2.12.7.pom"/>
 				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="2.12.7"/>
 				<caller organisation="org.typelevel" name="machinist_2.12" conf="compile, runtime" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.6.5"/>
 				<artifacts>
-					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3616372" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-reflect\jars\scala-reflect-2.12.7.jar">
+					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3616372" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-reflect\jars\scala-reflect-2.12.7.jar">
 						<origin-location is-local="false" location="UNKNOWN"/>
 					</artifact>
 				</artifacts>
@@ -970,7 +970,7 @@
 		<module organisation="org.typelevel" name="cats-core_2.12">
 			<revision name="1.4.0" status="release" pubdate="20180912201647" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/typelevel/cats" extra-info.apiURL="http://typelevel.org/cats/api/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="1">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="3378" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-core_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.4.0/cats-core_2.12-1.4.0.pom"/>
+				<metadata-artifact status="no" details="" size="3378" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-core_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.4.0/cats-core_2.12-1.4.0.pom"/>
 				<caller organisation="co.fs2" name="fs2-io_2.12" conf="compile, runtime" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="1.0.0"/>
 				<caller organisation="io.circe" name="circe-core_2.12" conf="default, compile, runtime, master" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="0.10.1"/>
 				<caller organisation="org.http4s" name="http4s-core_2.12" conf="compile, runtime" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="0.20.0-M3"/>
@@ -978,7 +978,7 @@
 				<caller organisation="org.typelevel" name="cats-effect_2.12" conf="default, compile, runtime, master" rev="1.3.1" rev-constraint-default="1.3.1" rev-constraint-dynamic="1.3.1" callerrev="1.0.0"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="cats-core_2.12" type="jar" ext="jar" status="no" details="" size="4413894" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-core_2.12\jars\cats-core_2.12-1.4.0.jar">
+					<artifact name="cats-core_2.12" type="jar" ext="jar" status="no" details="" size="4413894" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-core_2.12\jars\cats-core_2.12-1.4.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.4.0/cats-core_2.12-1.4.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -993,10 +993,10 @@
 		<module organisation="org.typelevel" name="cats-kernel_2.12">
 			<revision name="1.4.0" status="release" pubdate="20180912200845" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/typelevel/cats" extra-info.apiURL="http://typelevel.org/cats/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="5">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="2812" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-kernel_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.4.0/cats-kernel_2.12-1.4.0.pom"/>
+				<metadata-artifact status="no" details="" size="2812" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-kernel_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.4.0/cats-kernel_2.12-1.4.0.pom"/>
 				<caller organisation="org.typelevel" name="cats-core_2.12" conf="default, compile, runtime, master" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="1.4.0"/>
 				<artifacts>
-					<artifact name="cats-kernel_2.12" type="jar" ext="jar" status="no" details="" size="3206314" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-kernel_2.12\jars\cats-kernel_2.12-1.4.0.jar">
+					<artifact name="cats-kernel_2.12" type="jar" ext="jar" status="no" details="" size="3206314" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-kernel_2.12\jars\cats-kernel_2.12-1.4.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.4.0/cats-kernel_2.12-1.4.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -1005,10 +1005,10 @@
 		<module organisation="org.typelevel" name="cats-macros_2.12">
 			<revision name="1.4.0" status="release" pubdate="20180912201028" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/typelevel/cats" extra-info.apiURL="http://typelevel.org/cats/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="2">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="2959" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-macros_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.4.0/cats-macros_2.12-1.4.0.pom"/>
+				<metadata-artifact status="no" details="" size="2959" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-macros_2.12\ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.4.0/cats-macros_2.12-1.4.0.pom"/>
 				<caller organisation="org.typelevel" name="cats-core_2.12" conf="default, compile, runtime, master" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="1.4.0"/>
 				<artifacts>
-					<artifact name="cats-macros_2.12" type="jar" ext="jar" status="no" details="" size="6273" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\cats-macros_2.12\jars\cats-macros_2.12-1.4.0.jar">
+					<artifact name="cats-macros_2.12" type="jar" ext="jar" status="no" details="" size="6273" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\cats-macros_2.12\jars\cats-macros_2.12-1.4.0.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.4.0/cats-macros_2.12-1.4.0.jar"/>
 					</artifact>
 				</artifacts>
@@ -1017,11 +1017,11 @@
 		<module organisation="org.typelevel" name="machinist_2.12">
 			<revision name="0.6.5" status="release" pubdate="20180626153520" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/typelevel/machinist" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="3">
 				<license name="MIT" url="http://opensource.org/licenses/MIT"/>
-				<metadata-artifact status="no" details="" size="2819" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\machinist_2.12\ivy-0.6.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.5/machinist_2.12-0.6.5.pom"/>
+				<metadata-artifact status="no" details="" size="2819" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\machinist_2.12\ivy-0.6.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.5/machinist_2.12-0.6.5.pom"/>
 				<caller organisation="org.typelevel" name="cats-core_2.12" conf="default, compile, runtime, master" rev="0.6.5" rev-constraint-default="0.6.5" rev-constraint-dynamic="0.6.5" callerrev="1.4.0"/>
 				<caller organisation="org.typelevel" name="cats-macros_2.12" conf="compile, runtime" rev="0.6.5" rev-constraint-default="0.6.5" rev-constraint-dynamic="0.6.5" callerrev="1.4.0"/>
 				<artifacts>
-					<artifact name="machinist_2.12" type="jar" ext="jar" status="no" details="" size="33783" time="0" location="C:\Users\maste\.ivy2\cache\org.typelevel\machinist_2.12\jars\machinist_2.12-0.6.5.jar">
+					<artifact name="machinist_2.12" type="jar" ext="jar" status="no" details="" size="33783" time="0" location="C:\Users\DELL\.ivy2\cache\org.typelevel\machinist_2.12\jars\machinist_2.12-0.6.5.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.5/machinist_2.12-0.6.5.jar"/>
 					</artifact>
 				</artifacts>
@@ -1030,7 +1030,7 @@
 		<module organisation="org.scala-lang" name="scala-library">
 			<revision name="2.12.7" status="release" pubdate="20180927103542" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.7/" downloaded="false" searched="false" default="false" conf="default, master(*), compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="0">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2501" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.7/scala-library-2.12.7.pom"/>
+				<metadata-artifact status="no" details="" size="2501" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.7.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.7/scala-library-2.12.7.pom"/>
 				<caller organisation="org.http4s" name="http4s-dsl_2.12" conf="default, compile, runtime, master" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.20.0-M3"/>
 				<caller organisation="io.circe" name="circe-core_2.12" conf="default, compile, runtime, master" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.10.1"/>
 				<caller organisation="org.http4s" name="jawn-fs2_2.12" conf="compile, runtime" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.13.0"/>
@@ -1066,7 +1066,7 @@
 				<caller organisation="org.http4s" name="http4s-blaze-core_2.12" conf="compile, runtime" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.20.0-M3"/>
 				<caller organisation="org.felher" name="server_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="2.12.7" rev-constraint-default="2.12.7" rev-constraint-dynamic="2.12.7" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5277511" time="0" location="C:\Users\maste\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.7.jar">
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5277511" time="0" location="C:\Users\DELL\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.7.jar">
 						<origin-location is-local="false" location="UNKNOWN"/>
 					</artifact>
 				</artifacts>
