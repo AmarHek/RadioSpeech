@@ -23,3 +23,18 @@ export class Keyword {
        this.category = category;
     }
 }
+
+export class Keyword2 {
+    name: string;
+    synonyms: string[] = [];
+    category: string;
+    position: number;
+    VarType: string;
+    VarFound: string[] = [];
+    TextBefore: string;
+    TextAfter: string;
+
+    constructor(){
+     
+    }
+}

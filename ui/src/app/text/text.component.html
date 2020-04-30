@@ -8,14 +8,19 @@
 		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
 			normal</button>
 
+		<!-- refreshes Page -->
 		<button id="refresh" title="seite neu laden" (click)="refreshPage()"
 			class="btn btn-outline-secondary float-right ">refresh</button>
+		<!-- submits text in "Befund eingeben", if it is not automatically triggered by input -->
 		<button id="submit-button" title="eingabe absenden" (click)="submit()"
 			class="btn btn-outline-secondary float-right ">Senden</button>
+		<!-- enables inputting text -->
 		<button id="los" (click)="init()"
 			class="btn btn-outline-secondary float-right ">los</button>
+		
 		<button id="scroll" (click)="scroll()"
 			class="btn btn-outline-secondary float-right ">scroll</button>
+		<!-- input "Befund" text here and submits it automatically -->
 		<label for="input">Befund eingeben:
 			<input id="input" name="Befund" type="text" (input)="submit()" placeholder="Befund eingeben..." size="80">
 		</label>
@@ -31,7 +36,9 @@
 			<tbody>
 				<tr *ngFor="let category of parts;let j = index">
 					<td class="category" name="test" id="{{category.name}}">{{category.name}}</td>
+					<!-- Loads all Options, either Checkboxes or radio Buttons -->
 					<ng-container *ngFor="let sel of category.selectables; let k = index" class="col-3">
+						<!-- responsible for Checkboxes (not used) -->
 						<ng-container *ngIf="sel.kind === 'box'">
 							<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value"
 									id="{{sel.name}}box" />
@@ -41,14 +48,18 @@
 								<div class="link" id="{{category.name + sel.name}}"></div>
 							</td>
 						</ng-container>
+						<!-- responsible for radio Buttons -->
 						<ng-container *ngIf="sel.kind === 'group'">
+							<!-- Radio buttons themselves, when clicked they call makeText and fill in the specific text on the left -->
 							<ng-container *ngFor="let option of sel.options; let k = index" class="col-3">
 								<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name "
 										id="{{option.name}}box" [value]="option.name" type="radio"
 										[(ngModel)]="sel.value" />
 								</td>
+								<!-- Title of the radio Button -->
 								<td class="title0" id={{option.name}}> {{option.name}}
 									<br>
+									<!-- Adds the optional length Attribute  -->
 									<div class="link" id="{{sel.name + option.name}}"></div>
 								</td>
 							</ng-container>
@@ -59,13 +70,17 @@
 
 		</table>
 	</div>
+	<!-- textfield for summary -->
 	<div class="befundung-text">
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"
 			id="output1" class="w-100" [(ngModel)]="text"></textarea>
 	</div>
+	
 	<div class="befundung-buttons">
+		<!-- copies summary to clipboard -->
 		<button id="ready-button" (click)="copyText('output1')"
 			class="btn btn-outline-secondary float-left">kopieren</button>
+		<!--  -->
 		<button id="ready-button" (click)="reverse()"
 			class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
 	</div>
@@ -78,6 +93,9 @@
 			class="btn btn-outline-secondary float-right">kopieren</button>
 	</div>
 </div>
+
+<!-- Dialog to enter the Parameters, can be activated by integrating a button or link that
+triggers the modal, for example: <div class="btn btn-info btn-lg" data-toggle="modal" data-target="#variableDialog"> Open Dialog </div> -->
 
 <div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel"
 	aria-hidden="true">

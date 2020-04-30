@@ -7,8 +7,9 @@ import * as M from '../model'
 import * as G from '../generator'
 import * as P from '../parser'
 import * as T from '../takers'
-import { Keyword } from './Keyword';
+import { Keyword, Keyword2 } from './Keyword';
 import * as D from './Dictionary';
+import { InputParserService } from '../input-parser.service';
 
 //ich hoffe dass das nie jemand debuggen/erweitern muss
 
@@ -36,6 +37,7 @@ export class TextComponent implements OnInit {
        document.getElementById('los').click();
       // document.getElementById('los').style.visibility = 'hidden';
     }, 50);
+    this.init();
   }
 
 
@@ -45,6 +47,8 @@ export class TextComponent implements OnInit {
   input: string = "";
   DictionaryPrimary: string[] = new Array<string>();
   keywords: Keyword[] = new Array<Keyword>();
+  newkeys: Keyword2[] = new Array<Keyword2>();
+
   foundKeywords: Keyword[] = new Array<Keyword>();
   parts: M.TopLevel[] = [];
   matches: string[] = new Array();
@@ -60,12 +64,15 @@ export class TextComponent implements OnInit {
 
 
 
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient, private route: ActivatedRoute, private inputParser: InputParserService) {
     route.paramMap.subscribe(ps => {
       if (ps.get('name')) {
+
         http.post(environment.urlRoot + 'get', JSON.stringify(ps.get('name'))).subscribe(
           worked => {
-            this.parts = worked as any
+            this.parts = worked as any;
+            console.log("JSON Element");
+            console.log(worked);
             const s = "\nSM-Aggregat re. pektoral, 2 konnektierte Sondenkabel in Projektion auf rechtes Atrium, Epikardium endend. "
             const box = (this.parts[5] as any).selectables[2];
             const taker = P.boxTaker(box, this.parts);
@@ -76,6 +83,11 @@ export class TextComponent implements OnInit {
         );
       }
     });
+  }
+
+  onInput(){
+    let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    this.inputParser.parseInput(input);
   }
 
 
@@ -142,13 +154,15 @@ export class TextComponent implements OnInit {
     for (var i = 1; i < tokens.length; i++) {
       if (tokens[i] != undefined) {
         str = str.split(tokens[i].toLowerCase()).join(tempChar);
-        console.log(str);
+        
       }
-    }
-    console.log(str);
+    } 
+     
     var reg = new RegExp("(" + tempChar + ")", "g");
     var strArr: string[] = str.split(reg);
+    
     strArr = this.deleteEmptyFields(strArr);
+   
     var index = 0;
     for (var s = 0; s < strArr.length; s++) {
       if (strArr[s] === tempChar) {
@@ -200,11 +214,13 @@ export class TextComponent implements OnInit {
     for (var i = 0; i < this.foundKeywords.length; i++) {
       var positions: number[] = this.getIndicesOf(this.foundKeywords[i].synonym, input, false);
       if (positions.length >= 1) {
+        
         this.foundKeywords[i].position = positions[0];
         for (var j = 1; j < positions.length; j++) {
           let word: Keyword = JSON.parse(JSON.stringify(this.foundKeywords[i]));
           word.position = positions[j];
           addKeywords.push(word);
+          
         }
       }
       else {
@@ -222,6 +238,7 @@ export class TextComponent implements OnInit {
         }
       }
     }
+    
     this.foundKeywords.sort(this.compareKeywords);
   }
 
@@ -402,6 +419,7 @@ export class TextComponent implements OnInit {
     }
     //
     inpArray = this.splitMulti(input, splitter);
+        
     for (var s of inpArray) {
       let arr: string[] = s.split(" ");
       arr = this.deleteEmptyFields(arr);
@@ -468,6 +486,7 @@ export class TextComponent implements OnInit {
     for (var s of this.foundKeywords) {
       syns.push(s.synonym);
     }
+    
     for (var m = 0; m < this.matches.length - 1; m++) {
       if (this.arrayContains(this.matches[m], syns)) {
         if (this.arrayContains(this.matches[m + 1], syns)) {
@@ -785,6 +804,8 @@ export class TextComponent implements OnInit {
   init(): void {
     let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
     this.keywords = D.createDic(this.parts);
+    this.inputParser.createStartDict(this.parts);
+    this.inputParser.parseInput("Knosp Rektum Hose");
     this.makeGreyCategory("<");
     this.creatNormalKeyword(restNormalSynonyms);
     for (const k of this.keywords) {
@@ -824,6 +845,8 @@ export class TextComponent implements OnInit {
     let inputWithoutKeywords = new Array<string>();
     document.getElementById('inputText').innerHTML = input;
     input = this.autocorrect(input);
+    console.log("pimmel4");
+    console.log(input);
 
     //das Wörterbuch soll nur einmal erstellt werden; in foundKeywords sind nur die Wörter drin, die im Input auch gefunden werden
     this.foundKeywords.splice(0, this.foundKeywords.length);
@@ -876,7 +899,7 @@ export class TextComponent implements OnInit {
         }
         if (temp.length >= 1) {
           document.getElementById('inputText').innerHTML = document.getElementById('inputText').innerHTML.replace(t, "<u _ngcontent-c1><a _ngcontent-c1 class=info>" + t + " <span _ngcontent-c1>" + temp + "</span></a></u>");
-          result = inputString.replace(t, temp[0]);
+          result = result.replace(t, temp[0]);
         }
       }
       else if (t.length >= 9) {
@@ -891,7 +914,7 @@ export class TextComponent implements OnInit {
           }
         }
         if (temp.length >= 1) {
-          result = inputString.replace(t, temp[0]);
+          result = result.replace(t, temp[0]);
           document.getElementById('inputText').innerHTML = document.getElementById('inputText').innerHTML.replace(t, "<u _ngcontent-c1><a _ngcontent-c1 class=info>" + t + " <span _ngcontent-c1>" + temp + "</span></a></u>");
         }
       }
