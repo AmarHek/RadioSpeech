@@ -119,7 +119,7 @@ export class InputParserService {
    // this.makeReport(this.keywords);
    console.log("KeyTest");
    console.log(this.keywords);
-   console.log(this.categories);
+   
   }
 
 /*   makeReport(parsedKeys: any){
@@ -168,6 +168,7 @@ onlyLatestKeyword(allKeywords: any, categories: string[]){
         }
       }
     }
+    if(activeKeys.length >=1){
     activeKeys[activeKeys.length-1].active = activeKeys[activeKeys.length-1].name;
     if(activeKeys[activeKeys.length-1].VarType != undefined){
       let endIndex = input.length;
@@ -179,6 +180,7 @@ onlyLatestKeyword(allKeywords: any, categories: string[]){
           activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[.]/));  
         }
       }
+    }
     let mainKeys = allKeywords.filter((mainKey => mainKey.synonym == mainKey.name));
     for (const key of activeKeys){
       for (const main of mainKeys){

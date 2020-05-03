@@ -30,6 +30,8 @@ export class TextComponent implements OnInit {
     return bool;
   }
 
+  myinput = "<span>Hallo</span>";
+
   ngOnInit(): void {
     this.myText = this.textOut.myReport;
     this.keywordsService = this.inputParser.keywords;
@@ -110,7 +112,9 @@ myText: {report: string} = {report: ""};
   onInput(){
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     this.inputParser.parseInput(input);
+    this.textOut.colorTextInput(input,JSON.parse(JSON.stringify(this.keywordsService)) );
     this.textOut.makeReport(this.keywordsService);
+    
   }
 
 
@@ -871,8 +875,6 @@ myText: {report: string} = {report: ""};
     let inputWithoutKeywords = new Array<string>();
     document.getElementById('inputText').innerHTML = input;
     input = this.autocorrect(input);
-    console.log("pimmel4");
-    console.log(input);
 
     //das Wörterbuch soll nur einmal erstellt werden; in foundKeywords sind nur die Wörter drin, die im Input auch gefunden werden
     this.foundKeywords.splice(0, this.foundKeywords.length);
