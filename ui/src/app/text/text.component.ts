@@ -10,6 +10,7 @@ import * as T from '../takers'
 import { Keyword, Keyword2 } from './Keyword';
 import * as D from './Dictionary';
 import { InputParserService } from '../input-parser.service';
+import { TextOutputService } from '../text-output.service';
 
 //ich hoffe dass das nie jemand debuggen/erweitern muss
 
@@ -22,7 +23,18 @@ declare const $: any;
 })
 export class TextComponent implements OnInit {
 
+  temp: string = "";
+  category(cat: string){
+    let bool = cat!=this.temp? true : false;
+    this.temp = cat;
+    return bool;
+  }
+
   ngOnInit(): void {
+    this.myText = this.textOut.myReport;
+    this.keywordsService = this.inputParser.keywords;
+    this.finalKeys = this.inputParser.finalKeys;
+    
     $('#my_img').hide();
     $("#imgUpload").hover(
       // show
@@ -33,11 +45,13 @@ export class TextComponent implements OnInit {
       function () {
         $('#my_img').hide();
       });
-    setTimeout(function () {
+    /* setTimeout(function () {
        document.getElementById('los').click();
       // document.getElementById('los').style.visibility = 'hidden';
-    }, 50);
-    this.init();
+    }, 50); */
+    /* this.init(); */
+    
+    
   }
 
 
@@ -58,13 +72,21 @@ export class TextComponent implements OnInit {
   defBox: M.Selectable[] = new Array();
   defGroup: M.Selectable[] = new Array();
 
+keywordsService:{name: string, synonym: string,  VarType: string, TextAfter: string, TextBefore:string, category: string,
+    position: number,active: string, VarFound: string}[] = [];
+
+finalKeys:{name: string, synonym: string,  VarType: string, TextAfter: string, TextBefore:string, category: string,
+    position: number,active: string, VarFound: string}[] = [];
+
+myText: {report: string} = {report: ""};
+
 
   resetTexts = new Map<M.CheckBox | M.Option, string>();
 
 
 
 
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient, private route: ActivatedRoute, private inputParser: InputParserService) {
+  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient, private route: ActivatedRoute, private inputParser: InputParserService, private textOut: TextOutputService) {
     route.paramMap.subscribe(ps => {
       if (ps.get('name')) {
 
@@ -88,6 +110,7 @@ export class TextComponent implements OnInit {
   onInput(){
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     this.inputParser.parseInput(input);
+    this.textOut.makeReport(this.keywordsService);
   }
 
 
@@ -648,13 +671,11 @@ export class TextComponent implements OnInit {
   }
 
   makeGreyCategory(markGrey: string): void {
-    for (const p of this.parts) {
-      if (p.kind === "category") {
-        if (p.name.startsWith(markGrey)) {
-          document.getElementById(p.name).classList.remove("category");
-          document.getElementById(p.name).classList.add("grey");
-          p.name = p.name.substring(1, p.name.length);
-        }
+    for (const p of this.keywordsService) {
+        if (p.category.startsWith(markGrey)) {
+          document.getElementById(p.category).classList.remove("category");
+          document.getElementById(p.category).classList.add("grey");
+          p.category = p.category.substring(1, p.name.length);
       }
     }
   }
@@ -802,10 +823,15 @@ export class TextComponent implements OnInit {
 
 
   init(): void {
+    
     let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
     this.keywords = D.createDic(this.parts);
     this.inputParser.createStartDict(this.parts);
-    this.inputParser.parseInput("Knosp Rektum Hose");
+    this.inputParser.parseInput("Hose bei haha. Knospe intakt der Größe 83.");
+    this.textOut.makeReport(this.keywordsService);
+    console.log("TestReport");
+    console.log(this.myText.report);
+    
     this.makeGreyCategory("<");
     this.creatNormalKeyword(restNormalSynonyms);
     for (const k of this.keywords) {

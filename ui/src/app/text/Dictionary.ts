@@ -113,7 +113,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 }
                 currKeyword.variables2D.push(currVariables);
               }
-              console.log(s.name + " " + currKeyword.name);
+              //console.log(s.name + " " + currKeyword.name);
               currKeyword.id = s.name + "" + currKeyword.name;
 
               //alle synonyme Keywords pushen
@@ -121,7 +121,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
                 let synonymKeyword: Keyword = JSON.parse(JSON.stringify(currKeyword));
                 synonymKeyword.synonym = splittedSynonyms[i];
                 keywords.push(synonymKeyword);
-                console.log(synonymKeyword.id);
+                //console.log(synonymKeyword.id);
               }
             }
           }
@@ -129,7 +129,7 @@ export function createDic(parts: M.TopLevel[]): Keyword[] {
       }
     }
   }
-  console.log(keywords);
+  //console.log(keywords);
   findOverlap(keywords);
   return keywords;
 }

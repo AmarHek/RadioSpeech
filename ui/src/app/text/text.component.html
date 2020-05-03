@@ -22,7 +22,7 @@
 			class="btn btn-outline-secondary float-right ">scroll</button>
 		<!-- input "Befund" text here and submits it automatically -->
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" (input)="submit()" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (input)="onInput()" placeholder="Befund eingeben..." size="80">
 		</label>
 		<input type='file' id="imgUpload" />
 		<img src="http://placehold.it/180" id="my_img" />
@@ -34,37 +34,28 @@
 	<div class="main-content" id = "main-content">
 		<table>
 			<tbody>
-				<tr *ngFor="let category of parts;let j = index">
-					<td class="category" name="test" id="{{category.name}}">{{category.name}}</td>
+				<tr *ngFor="let key of keywordsService;let j = index">
+				<ng-container *ngIf="category(key.category)">
+					<td class="grey" name="test" id="{{key.category}}">{{key.category}}</td>
 					<!-- Loads all Options, either Checkboxes or radio Buttons -->
-					<ng-container *ngFor="let sel of category.selectables; let k = index" class="col-3">
-						<!-- responsible for Checkboxes (not used) -->
-						<ng-container *ngIf="sel.kind === 'box'">
-							<td class="box"> <input (click)="clicked(sel)" type="checkbox" [(ngModel)]="sel.value"
-									id="{{sel.name}}box" />
+					
+					<ng-container *ngFor="let key2 of keywordsService; let k = index" class="col-3">
+						<!-- Radio buttons themselves, when clicked they call makeText and fill in the specific text on the left -->
+						<ng-container *ngIf="key2.category == key.category && key2.synonym == key2.name" class="col-3">
+							<td class="box"> <input [name]="key.category"
+							id="{{key2.name}}box" [value]="key2.name" type="radio"
+								[(ngModel)]="key2.active" />
 							</td>
-							<td class="title0" id={{sel.name}}> {{sel.name}}
-								<br>
-								<div class="link" id="{{category.name + sel.name}}"></div>
+							<!-- Title of the radio Button -->
+							<td class="title0" id={{key2.name}}> {{key2.name}}
+							<br>
+							<!-- Adds the optional length Attribute  -->
+							
+							<div *ngIf="key2.TextBefore!=undefined" class="link" id="{{key2.category + key2.name}}">{{key2.TextBefore + '...' + key2.TextAfter}}</div>
 							</td>
-						</ng-container>
-						<!-- responsible for radio Buttons -->
-						<ng-container *ngIf="sel.kind === 'group'">
-							<!-- Radio buttons themselves, when clicked they call makeText and fill in the specific text on the left -->
-							<ng-container *ngFor="let option of sel.options; let k = index" class="col-3">
-								<td class="box"> <input (click)="clicked(option, sel)" [name]="sel.name "
-										id="{{option.name}}box" [value]="option.name" type="radio"
-										[(ngModel)]="sel.value" />
-								</td>
-								<!-- Title of the radio Button -->
-								<td class="title0" id={{option.name}}> {{option.name}}
-									<br>
-									<!-- Adds the optional length Attribute  -->
-									<div class="link" id="{{sel.name + option.name}}"></div>
-								</td>
-							</ng-container>
 						</ng-container>
 					</ng-container>
+				</ng-container>
 				</tr>
 			</tbody>
 
@@ -73,7 +64,7 @@
 	<!-- textfield for summary -->
 	<div class="befundung-text">
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"
-			id="output1" class="w-100" [(ngModel)]="text"></textarea>
+			id="output1" class="w-100" [(ngModel)]="myText.report"></textarea>
 	</div>
 	
 	<div class="befundung-buttons">
