@@ -827,7 +827,7 @@ myText: {report: string} = {report: ""};
     let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
     this.keywords = D.createDic(this.parts);
     this.inputParser.createStartDict(this.parts);
-    this.inputParser.parseInput("Hose bei haha. Knospe intakt der Größe 83.");
+    this.inputParser.parseInput("Hose bei haha. Knospe gestielt");
     this.textOut.makeReport(this.keywordsService);
     console.log("TestReport");
     console.log(this.myText.report);

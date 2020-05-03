@@ -25,7 +25,7 @@ export class InputParserService {
   finalKeys:{name: string, synonym: string,  VarType: string, TextAfter: string, TextBefore:string, category: string,
             position: number, active: string, VarFound: string, text: string}[] = []; 
   
-  myReport: {report: string} = {report: ""};
+  categories: string[] = [];
   
 
  
@@ -39,6 +39,7 @@ export class InputParserService {
     // loops through all 5 categories: Form, Lokalisierung...
     for (const El of rootEl){
       if(El.kind == "category"){
+        this.categories.push(El.name);
         const categ = El.selectables[0];
         if(categ.kind == "group"){
           // loops through all options inside the categories, e.g. for "Form": Knospe, gestielt...
@@ -98,30 +99,27 @@ export class InputParserService {
      --------------------------------
   */
 
+ 
+
   parseInput(input: string){
     this.keywords = this.resetKeywords(this.keywords);
     input = this.autocorrect(input);
     for(const key of this.keywords){
       key.position = this.getIndex(key.synonym, input);
     }
-    // if a keyword name is addressed by different synonyms, the synonym with the latest appearance has to be used
-    for(let i = 0; i<(this.keywords.length-1); i++){
-      if(this.keywords[i].position < this.keywords[i+1].position && this.keywords[i].category == this.keywords[i+1].category){
-        this.keywords[i].position = -1;
-      } else if (this.keywords[i].category == this.keywords[i+1].category){
-        this.keywords[i+1].position = -1;
-      }
-    }
+    // if a keyword category is addressed by different synonyms or names, the name or synonym with the latest appearance has to be used
+    this.onlyLatestKeyword(this.keywords, this.categories);
 
-    console.log("Test_Indices");
-    console.log(this.keywords);
+   /*  console.log("Test_Indices");
+    console.log(this.keywords); */
     /* this.finalKeys.push({name: "hey", synonym: "hey", VarType: "hey", TextAfter: "hey",
     TextBefore: "hey", category: "hey", position: 0, active: "hey", VarFound: "hey",}) */
-    let dummy = this.getActivesAndVariables(this.keywords, input);
+  let dummy = this.getActivesAndVariables(this.keywords, input);
     //console.log(this.finalKeys);
    // this.makeReport(this.keywords);
-    console.log("NeuerTextTest");
-    console.log(this.myReport.report);
+   console.log("KeyTest");
+   console.log(this.keywords);
+   console.log(this.categories);
   }
 
 /*   makeReport(parsedKeys: any){
@@ -141,6 +139,18 @@ export class InputParserService {
    console.log(this.report); 
   }
  */
+
+onlyLatestKeyword(allKeywords: any, categories: string[]){
+  for (const cat of categories){
+    let activeKeys = allKeywords.filter(activeKey => activeKey.position != -1 && activeKey.category == cat).sort((a,b) => a.position-b.position);
+    for (let i = 0; i<activeKeys.length-1; i++){
+      activeKeys[i].position = -1;
+    }
+  }
+  
+}
+  
+
   getActivesAndVariables(allKeywords: any, input: string){
     // Filters for all Keywords, that are active in input and sorts them by index
     var activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
@@ -188,7 +198,7 @@ export class InputParserService {
       keyword.position = undefined;
       keyword.VarFound = undefined;
       keyword.active = undefined;
-      
+
     }
     return resKeys;
   }
