@@ -35,17 +35,17 @@
 	<div class="main-content" id = "main-content">
 		<table>
 			<tbody>
-				<tr *ngFor="let key of keywordsService;let j = index">
-				<ng-container *ngIf="category(key.category)">
-					<td class="grey" name="test" id="{{key.category}}">{{key.category}}</td>
+				<tr *ngFor="let cat of categories;let j = index">
+				
+					<td class="grey" name="test" id="{{cat}}">{{cat}}</td>
 					<!-- Loads all Options, either Checkboxes or radio Buttons -->
 					
 					<ng-container *ngFor="let key2 of keywordsService; let k = index" class="col-3">
 						<!-- Radio buttons themselves, when clicked they call makeText and fill in the specific text on the left -->
-						<ng-container *ngIf="key2.category == key.category && key2.synonym == key2.name" class="col-3">
-							<td class="box"> <input [name]="key.category"
+						<ng-container *ngIf="key2.category == cat && key2.synonym == key2.name" class="col-3">
+							<td class="box"> <input [name]="cat"
 							id="{{key2.name}}box" [value]="key2.name" type="radio"
-								[(ngModel)]="key2.active" />
+								[(ngModel)]="key2.active" (click)="onRadioClick(key2.name, cat)" />
 							</td>
 							<!-- Title of the radio Button -->
 							<td class="title0" id={{key2.name}}> {{key2.name}}
@@ -56,7 +56,7 @@
 							</td>
 						</ng-container>
 					</ng-container>
-				</ng-container>
+				
 				</tr>
 			</tbody>
 

@@ -7,7 +7,7 @@ import * as M from '../model'
 import * as G from '../generator'
 import * as P from '../parser'
 import * as T from '../takers'
-import { Keyword, Keyword2 } from './Keyword';
+import { Keyword, Keyword2, Category } from './Keyword';
 import * as D from './Dictionary';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
@@ -33,9 +33,11 @@ export class TextComponent implements OnInit {
   myinput = "<span>Hallo</span>";
 
   ngOnInit(): void {
-    this.myText = this.textOut.myReport;
+    this.polyp = this.inputParser.polyp;
+    /* this.myText = this.textOut.myReport;
     this.keywordsService = this.inputParser.keywords;
     this.finalKeys = this.inputParser.finalKeys;
+    this.categories = this.inputParser.categories; */
     
     $('#my_img').hide();
     $("#imgUpload").hover(
@@ -82,6 +84,10 @@ finalKeys:{name: string, synonym: string,  VarType: string, TextAfter: string, T
 
 myText: {report: string} = {report: ""};
 
+categories: string[] = [];
+
+polyp: Array<Category> = [];
+
 
   resetTexts = new Map<M.CheckBox | M.Option, string>();
 
@@ -110,11 +116,21 @@ myText: {report: string} = {report: ""};
   }
 
   onInput(){
-    let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+  /*   let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     this.inputParser.parseInput(input);
     this.textOut.colorTextInput(input,JSON.parse(JSON.stringify(this.keywordsService)) );
-    this.textOut.makeReport(this.keywordsService);
-    
+    this.textOut.makeReport(this.keywordsService); */
+  }
+  onRadioClick(keyName: string, category: string){
+   /*  let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    let buttonPos = input.length - 0.5
+    this.inputParser.radioClicked(buttonPos, keyName, category);
+    this.inputParser.parseInput(input);
+    this.textOut.colorTextInput(input,JSON.parse(JSON.stringify(this.keywordsService)) );
+    this.textOut.makeReport(this.keywordsService); */
+
+
+
   }
 
 
@@ -831,10 +847,10 @@ myText: {report: string} = {report: ""};
     let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
     this.keywords = D.createDic(this.parts);
     this.inputParser.createStartDict(this.parts);
-    this.inputParser.parseInput("Hose bei haha. Knospe gestielt");
-    this.textOut.makeReport(this.keywordsService);
+    /* this.inputParser.parseInput("");
+    this.textOut.makeReport(this.keywordsService); */
     console.log("TestReport");
-    console.log(this.myText.report);
+    console.log(this.polyp);
     
     this.makeGreyCategory("<");
     this.creatNormalKeyword(restNormalSynonyms);
