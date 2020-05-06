@@ -88,9 +88,11 @@ export class TextComponent implements OnInit {
   }
 
   inputClick(){
-    this.inputParser.createStartDict(this.parts);
-      this.readConfig();
-      this.firstTime = true;
+    if(!this.start){
+      this.inputParser.createStartDict(this.parts);
+      this.start = true;
+      }
+    this.readConfig();
   }
   onInput(){
     /* if(!this.firstTime){
