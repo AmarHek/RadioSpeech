@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { TextComponent } from './text/text.component';
 import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
+import { SortCategoriesPipe } from './sort-categories.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextComponent,
     UploadComponent,
-    ListComponent
+    ListComponent,
+    SortCategoriesPipe
   ],
   imports: [
     BrowserModule,

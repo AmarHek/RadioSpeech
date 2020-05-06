@@ -31,37 +31,29 @@
 			
 		</div>
 	</div>
-
 	<div class="main-content" id = "main-content">
-		<table>
-			<tbody>
-				<tr *ngFor="let cat of categories;let j = index">
-				
-					<td class="grey" name="test" id="{{cat}}">{{cat}}</td>
-					<!-- Loads all Options, either Checkboxes or radio Buttons -->
-					
-					<ng-container *ngFor="let key2 of keywordsService; let k = index" class="col-3">
-						<!-- Radio buttons themselves, when clicked they call makeText and fill in the specific text on the left -->
-						<ng-container *ngIf="key2.category == cat && key2.synonym == key2.name" class="col-3">
-							<td class="box"> <input [name]="cat"
-							id="{{key2.name}}box" [value]="key2.name" type="radio"
-								[(ngModel)]="key2.active" (click)="onRadioClick(key2.name, cat)" />
-							</td>
-							<!-- Title of the radio Button -->
-							<td class="title0" id={{key2.name}}> {{key2.name}}
-							<br>
-							<!-- Adds the optional length Attribute  -->
+		<div class="container">
+			<div *ngFor="let cat of polyp | sortCategories">
+				<div class="grey" name="test" id="{{cat.name}}">{{cat.name}}</div>
+				<div class="row">
+					<div class="col-4" *ngFor="let key of filterSyn(cat.keys)">
+						<ng-container *ngIf="cat.active == true && key.synonym == key.name">
+							<!-- <div> <input [name]="cat"
+								id="{{key.name}}box" [value]="key.name" type="radio"
+									[(ngModel)]="key.active"/>
+							</div> -->
+							<div class="option" id={{key.name}}> {{key.name}}
+								<!-- Adds the optional length Attribute  -->
+							</div>
+								<div *ngIf="key.TextBefore!=undefined" class="link" id="{{key.category + key.name}}">{{key.TextBefore + '...' + key.TextAfter}}</div>
 							
-							<div *ngIf="key2.TextBefore!=undefined" class="link" id="{{key2.category + key2.name}}">{{key2.TextBefore + '...' + key2.TextAfter}}</div>
-							</td>
 						</ng-container>
-					</ng-container>
-				
-				</tr>
-			</tbody>
-
-		</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
 	<!-- textfield for summary -->
 	<div class="befundung-text">
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"

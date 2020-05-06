@@ -15,16 +15,9 @@ export class InputParserService {
   constructor(private textOut: TextOutputService){
 
   }
-
-
-
-
-  keywords:{name: string, synonym: string,  VarType: string, TextAfter: string, TextBefore:string, category: string,
-            position: number, active: string, VarFound: string, text: string, buttonPos :number}[] = [];
-  
-  finalKeys:{name: string, synonym: string,  VarType: string, TextAfter: string, TextBefore:string, category: string,
-            position: number, active: string, VarFound: string, text: string, buttonPos :number}[] = []; 
-  
+  // (currently not used: only when all keywords can occurr simultaneously)
+  keywords: Array<Keyword2> = [];
+  // Contains whole Polyp with its Categories and Keywords inside of each Category 
   polyp: Array<Category> = [];
   
 
@@ -33,7 +26,7 @@ export class InputParserService {
       Creating Dictionary
      --------------------------------
   */
-
+  // Create a Dictionary (e.g. the polyp Object)
   createStartDict(rootEl: M.TopLevel[]){
     let syns: string[];
     var keys: Keyword2[];
@@ -49,10 +42,10 @@ export class InputParserService {
               for(const s of syns){
               // adds a new possible Keyword based on the information from the excel table
              keys.push(this.createKeyword(opt,El,s));
-            //  this.addKeyword(this.keywords, opt, El, s);
             }
           }
         }
+        // Adds a new category 
         this.polyp.push({keys: keys, name: El.name, active: false});
       }
     }
@@ -76,7 +69,7 @@ export class InputParserService {
     })
   } */
 
-
+  // sets default values for each keyword
   createKeyword(option : any, category: any, synonym: string){
       return  {
         // assigning corresponding values
@@ -87,7 +80,7 @@ export class InputParserService {
         TextAfter: option.variables.length!=0 ? option.variables[0].textAfter : undefined,
         TextBefore:  option.variables.length!=0 ? option.variables[0].textBefore : undefined,
         category: category.name,
-        position: undefined,
+        position: -1,
         VarFound: undefined,
         active: undefined,
         text: option.text,
@@ -105,32 +98,40 @@ export class InputParserService {
 
 
 
- 
+ // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
+  // checks which category is active and where in the input field it occurs
   let activeCat: {tempPos: number, catName: string} =  this.setCategory(input, this.polyp);
+  // if one active category is detected, it's active value is set to true, all others to false
   if(activeCat.catName.length != 0){
+    for(const act of this.polyp){
+      if(act.name == activeCat.catName){
+        act.active = true;
+      } else {
+        act.active = false;
+      }
+    }
+    // resets Keywords that belong to the active category
     this.resetKeywords(activeCat.catName);
+    // Evaluate only the input that comes after the last category
     input = input.substring(activeCat.tempPos);
+    // Autocorrect words
     input = this.autocorrect(input);
+    // Find out which keywords occur in the input
     let active = this.polyp.find(cat=> cat.name == activeCat.catName);
     for(const key of active.keys){
       key.position = this.getIndex(key.synonym, input);
     }
+    // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
+    // (currently not used: Also responsible for button clicks)
+    this.onlyLatestKeyword(active.keys);
+    // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
+    // Also check which keywords have variables and if the occurr in the input
+    let dummy = this.getActivesAndVariables(active.keys, input);
     
-
-  
-    // if a keyword category is addressed by different synonyms or names, the name or synonym with the latest appearance has to be used
-  this.onlyLatestKeyword(this.polyp);
-
-  /*  console.log("Test_Indices");
-    console.log(this.keywords); */
-    /* this.finalKeys.push({name: "hey", synonym: "hey", VarType: "hey", TextAfter: "hey",
-    TextBefore: "hey", category: "hey", position: 0, active: "hey", VarFound: "hey",}) */
-  let dummy = this.getActivesAndVariables(this.keywords, input);
-    //console.log(this.finalKeys);
-  // this.makeReport(this.keywords);
-  console.log("KeyTest");
-  console.log(this.keywords);
+    // Test Log
+    console.log("KeyTest");
+    console.log(this.polyp);
  
   }
 }
@@ -148,11 +149,11 @@ radioClicked(buttonPos: number, keyName: string, category: string){
 
 
 
-onlyLatestKeyword(polyp: Array<Category>){
+onlyLatestKeyword(keys: Array<Keyword2>){
 // Loop through all Categories
-for (const cat of polyp){
+
   // Filter Keywords for the active ones and sort them by their position in the input
-  let activeKeys = cat.keys.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
+  let activeKeys = keys.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
   // From all active Keywords with the same category, only the one with the latest position stays active.
   for (let i = 0; i<activeKeys.length-1; i++){
     if((activeKeys[i].position + activeKeys[i].synonym.length-1) < activeKeys[i+1].position){
@@ -164,7 +165,7 @@ for (const cat of polyp){
   }
 
   // Filter for all buttons that were pressed and sort them by order !!! todo
-  let activeButtons = cat.keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
+  let activeButtons = keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
   if(activeButtons.length >= 1){
 
     // if keyword of latest button click occurs later than latest written key -> take button click, else take written key
@@ -180,7 +181,6 @@ for (const cat of polyp){
       activeButtons[0].position = activeButtons[0].buttonPos;
     }
   }
-}
 
 }
 
@@ -198,10 +198,12 @@ getActivesAndVariables(allKeywords: any, input: string){
       let activeVar = varField.indexOf(activeKeys[i].TextBefore);
       if( activeVar != -1){
         let varStart = activeVar + activeKeys[i].TextBefore.length;
-        activeKeys[i].VarFound = varField.slice(varStart, varField.search(/[.]/)+1);  
+        // decides what combination of characters ends variable input
+        activeKeys[i].VarFound = varField.slice(varStart, varField.search(/[cm]/)+2);  
       }
     }
   }
+  // same procedure for last element of activeKeys
   if(activeKeys.length >=1){
   activeKeys[activeKeys.length-1].active = activeKeys[activeKeys.length-1].name;
   if(activeKeys[activeKeys.length-1].VarType != undefined){
@@ -211,10 +213,12 @@ getActivesAndVariables(allKeywords: any, input: string){
     let activeVar = varField.indexOf(activeKeys[activeKeys.length-1].TextBefore);
       if( activeVar != -1){
         let varStart = activeVar + activeKeys[activeKeys.length-1].TextBefore.length;
-        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[.]/)+1);  
+        // decides what combination of characters ends variable input
+        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[cm]/)+2);  
       }
     }
   }
+  // (currently not used: only when all keywords can be used as input simultaneously)
   let mainKeys = allKeywords.filter((mainKey => mainKey.synonym == mainKey.name));
   for (const key of activeKeys){
     for (const main of mainKeys){
@@ -222,12 +226,12 @@ getActivesAndVariables(allKeywords: any, input: string){
         main.active = key.name;
       }
     }
-    this.finalKeys.push(key);
   }
 
   return activeKeys;
 }
 
+// resets keyword of specified category
 resetKeywords(category: string){
   for (const keyword of this.polyp.filter(cat => cat.name == category)[0].keys){
     keyword.position = undefined;
@@ -236,6 +240,7 @@ resetKeywords(category: string){
   }
 }
 
+// gets position of a keyword in specified input string
 getIndex(keySyn: string, input:string){
   let tempPos : number = -1;
   // gets index of latest appearance of synonym, if keyword is not in input, position = -1
@@ -255,8 +260,8 @@ setCategory(input:string, polyp: Array<Category>){
     let catPos: number = -1;
     // find latest occurence of one category
     catPos = input.toLowerCase().indexOf(cat.name.toLowerCase());
-    while (input.toLowerCase().indexOf(cat.name.toLowerCase(), catPos+1) !==-1){
-      activeCat.tempPos = input.toLowerCase().indexOf(cat.name.toLowerCase(), catPos+1);
+    while (input.toLowerCase().indexOf(cat.name.toLowerCase(), catPos+1) != -1){
+      catPos = input.toLowerCase().indexOf(cat.name.toLowerCase(), catPos+1);
     }
     // if it is the latest occurence of a category by now, assign its name to activeCat
     if(catPos > activeCat.tempPos){
