@@ -26,15 +26,26 @@ export class Keyword {
 
 export class Keyword2 {
     name: string;
-    synonyms: string[] = [];
+    synonym: string;
+    VarType: string;
+    TextAfter: string;
+    TextBefore: string;
     category: string;
     position: number;
-    VarType: string;
-    VarFound: string[] = [];
-    TextBefore: string;
-    TextAfter: string;
-
+    VarFound: string;
+    active: string;
+    text: string;
+    buttonPos: number;
+      
     constructor(){
      
     }
+}
+
+export class Category{
+    keys: Keyword2[];
+    name: string;
+    active: boolean;
+
+    
 }

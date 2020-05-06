@@ -4,7 +4,8 @@ $border-color: hsl(200, 70%, 80);
   width: 100%;
   display: inline-grid;
   grid-gap: 10px;
-  grid-template-columns: 500px 1fr;
+  //grid-template-columns: 500px 1fr;
+  grid-template-columns: 1fr 2fr;
   grid-template-areas:
     "headline headline"
     "bf-text  content"
@@ -13,12 +14,15 @@ $border-color: hsl(200, 70%, 80);
     "bu-but   content";
 
   grid-template-rows: auto 3fr auto 1fr auto;
+  overflow-y: scroll;
+
 }
 
 .main > div {
   background-color: hsl(200, 70%, 97%);
   padding: 5px;
-  overflow: auto;
+  /* word-wrap: break-word;
+  word-break: break-all; */
 }
 
 .headline {
@@ -118,7 +122,7 @@ textarea {
   height: 100%;
 }
 
-td.box {
+.box {
   width: 13px;
   height: 13px;
   //padding: 0;
@@ -129,12 +133,12 @@ td.box {
   *overflow: hidden;
 }
 
-td.title0 {
+.title0 {
   font-size: 95%;
   display: block;
   position: relative;
   //max-width: 250px;
-  word-wrap: break-word;
+  //word-wrap: break-word;
   //padding-left: 0px;
   //text-indent: 0px;
 }
@@ -145,7 +149,7 @@ td.title0 {
   max-width: 80px;
 }*/
 
-td.category {
+.category {
   font-size: 140%;
   font-weight: bold;
   padding: 10;
@@ -158,17 +162,13 @@ td.category {
   *overflow: hidden;
 }
 
-td.grey {
-  font-size: 140%;
-  font-weight: bold;
-  padding: 10;
-  margin: 10;
-  vertical-align: top;
-  position: relative;
-  top: -1px;
-  color: grey;
-  word-wrap: break-word;
-  *overflow: hidden;
+.grey {
+  margin: 0 10px;
+  font-size: 1.7em;
+  font-weight: 700;
+  padding-left: 5px;
+  margin-top: 10px;
+  color: gray;
 }
 
 #normal-button {
@@ -184,4 +184,21 @@ img {
 input[type="file"] {
   padding: 0px;
   background: none;
+}
+
+div.option{
+  margin: 0 10px;
+  font-size: 1.5em;
+  text-decoration: underline;
+  font-weight: 500;
+  padding-left: 5px;
+  margin-top: 10px;
+  
+}
+div.link{
+  margin: 0 10px;
+  color: lightgray;
+  padding-left: 5px;
+  font-size: 1.2em;
+  
 }
