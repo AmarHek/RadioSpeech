@@ -19,6 +19,8 @@ export class InputParserService {
   keywords: Array<Keyword2> = [];
   // Contains whole Polyp with its Categories and Keywords inside of each Category 
   polyp: Array<Category> = [];
+
+  normalKeys: Array<Keyword2> = [];
   
 
  
@@ -85,6 +87,7 @@ export class InputParserService {
         active: undefined,
         text: option.text,
         buttonPos: -1,
+        normal: option.normal
       };
   }
 
@@ -112,7 +115,7 @@ export class InputParserService {
       }
     }
     // resets Keywords that belong to the active category
-    this.resetKeywords(activeCat.catName);
+    //this.resetKeywords(activeCat.catName);
     // Evaluate only the input that comes after the last category
     input = input.substring(activeCat.tempPos);
     // Autocorrect words
@@ -133,6 +136,19 @@ export class InputParserService {
     console.log("KeyTest");
     console.log(this.polyp);
  
+  }
+}
+
+restNormal(){
+  for(const cat of this.polyp){
+    if(cat.keys.find(key => key.position != -1) == undefined){
+      for(const key of cat.keys){
+        if(key.normal == true && key.name == key.synonym){
+          key.active = key.name;
+          key.position = 0;
+        }
+      }
+    }
   }
 }
 
@@ -185,7 +201,7 @@ onlyLatestKeyword(keys: Array<Keyword2>){
 }
 
 
-getActivesAndVariables(allKeywords: any, input: string){
+getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
   // Filters for all Keywords, that are active in input and sorts them by index
   var activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
   // Searches for Signal Variable Text (Text Before) between corresponding keyword and next active Variable
@@ -194,12 +210,12 @@ getActivesAndVariables(allKeywords: any, input: string){
     if(activeKeys[i].VarType != undefined){
       let endIndex = activeKeys[i+1].position-1;
       let startIndex = activeKeys[i].position + activeKeys[i].synonym.length+1;
-      let varField = input.slice(startIndex, endIndex);
-      let activeVar = varField.indexOf(activeKeys[i].TextBefore);
+      let varField = input.slice(startIndex, endIndex).toLowerCase();
+      let activeVar = varField.indexOf(activeKeys[i].TextBefore.toLowerCase());
       if( activeVar != -1){
         let varStart = activeVar + activeKeys[i].TextBefore.length;
         // decides what combination of characters ends variable input
-        activeKeys[i].VarFound = varField.slice(varStart, varField.search(/[cm]/)+2);  
+        activeKeys[i].VarFound = varField.slice(varStart, varField.search(/[mm]/)+2);  
       }
     }
   }
@@ -209,12 +225,12 @@ getActivesAndVariables(allKeywords: any, input: string){
   if(activeKeys[activeKeys.length-1].VarType != undefined){
     let endIndex = input.length;
     let startIndex = activeKeys[activeKeys.length-1].position + activeKeys[activeKeys.length-1].synonym.length+1;
-    let varField = input.slice(startIndex, endIndex);
-    let activeVar = varField.indexOf(activeKeys[activeKeys.length-1].TextBefore);
+    let varField = input.slice(startIndex, endIndex).toLowerCase();
+    let activeVar = varField.indexOf(activeKeys[activeKeys.length-1].TextBefore.toLowerCase());
       if( activeVar != -1){
         let varStart = activeVar + activeKeys[activeKeys.length-1].TextBefore.length;
         // decides what combination of characters ends variable input
-        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[cm]/)+2);  
+        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[mm]/)+2);  
       }
     }
   }

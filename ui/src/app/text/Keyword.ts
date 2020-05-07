@@ -36,9 +36,11 @@ export class Keyword2 {
     active: string;
     text: string;
     buttonPos: number;
+    normal: boolean;
       
     constructor(){
      
+        
     }
 }
 

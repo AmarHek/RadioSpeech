@@ -119,6 +119,18 @@ export class TextComponent implements OnInit {
 
   }*/
 
+  makeNormal(){
+    let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    for(const cat of this.polyp){
+      if(input.toLowerCase().indexOf(cat.name.toLowerCase())==-1){
+        this.inputParser.parseInput(input + cat.name);
+        this.inputParser.restNormal();
+        this.myText.report = this.textOut.makeReport(this.polyp);
+      }
+    }
+    this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.polyp)) );
+  }
+
   start: boolean = false;
   init(): void {
     
