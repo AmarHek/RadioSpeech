@@ -34,6 +34,7 @@ export class TextComponent implements OnInit {
     // assigns reference to polyp object
     this.polyp = this.inputParser.polyp;
     this.firstTime = false;
+    this.start = false;
     $('#my_img').hide();
     $("#imgUpload").hover(
       // show
@@ -88,6 +89,13 @@ export class TextComponent implements OnInit {
     });
   }
 
+  inputClick(){
+    if(!this.start){
+      this.inputParser.createStartDict(this.parts);
+      this.start = true;
+      }
+    this.readConfig();
+  }
   onInput(){
     /* if(!this.firstTime){
       this.inputParser.createStartDict(this.parts);
@@ -113,10 +121,14 @@ export class TextComponent implements OnInit {
 
   }*/
 
+  start: boolean = false;
   init(): void {
 
     //let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
+    if(!this.start){
     this.inputParser.createStartDict(this.parts);
+    this.start = true;
+    }
     this.readConfig();
   }
 
