@@ -15,7 +15,7 @@ export class TextOutputService {
   myReport: {report: string, category: string}[] = [];
 
   // produces the text output
-  makeReport(polyp: Array<Category>){
+  makeReport(polyp: Array<Category>): string {
     // this.report.text="";
     // gets active Category
     if(polyp.find(cat => cat.active == true)!=undefined){
@@ -75,5 +75,5 @@ export class TextOutputService {
     document.getElementById("inputText").innerHTML = inByWord.join(" ");
   }
 
-  
+
 }

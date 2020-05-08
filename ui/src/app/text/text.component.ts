@@ -28,7 +28,7 @@ export class TextComponent implements OnInit {
     return arr.filter(key => key.name == key.synonym);
   }
 
-  
+
 
   ngOnInit(): void {
     // assigns reference to polyp object
@@ -45,12 +45,12 @@ export class TextComponent implements OnInit {
         $('#my_img').hide();
       });
      /* setTimeout(function () {
-      
+
       // document.getElementById('los').style.visibility = 'hidden';
     }, 100); */
     /* this.init(); */
-    
-    
+
+
   }
 
 
@@ -65,7 +65,9 @@ export class TextComponent implements OnInit {
 
 
 
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient, private route: ActivatedRoute, private inputParser: InputParserService, private textOut: TextOutputService) {
+  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
+              private route: ActivatedRoute, private inputParser: InputParserService,
+              private textOut: TextOutputService) {
     route.paramMap.subscribe(ps => {
       if (ps.get('name')) {
 
@@ -105,14 +107,14 @@ export class TextComponent implements OnInit {
     this.inputParser.radioClicked(buttonPos, keyName, category);
     this.inputParser.parseInput(input);
     this.textOut.colorTextInput(input,JSON.parse(JSON.stringify(this.keywordsService)) );
-    this.textOut.makeReport(this.keywordsService); 
+    this.textOut.makeReport(this.keywordsService);
 
 
 
   }*/
 
   init(): void {
-    
+
     //let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
     this.inputParser.createStartDict(this.parts);
     this.readConfig();
@@ -231,7 +233,7 @@ export class TextComponent implements OnInit {
           preview.setAttribute('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
-      } 
+      }
     }*/
 
     var captions = Array.from(document.getElementsByName("test"));
@@ -302,12 +304,6 @@ export class TextComponent implements OnInit {
     return arr.some(row => row.includes(search));
   }
 
-
-  copyText(id: string): void {
-    (document.getElementById(id) as HTMLInputElement).select();
-    document.execCommand('copy');
-  }
-
 /*   makeNormal(): void {
     for (const p of this.parts) {
       if (p.kind === "category") {
@@ -323,11 +319,6 @@ export class TextComponent implements OnInit {
     this.parts = JSON.parse(this.text);
     this.text = "";
   } */
-
-  reverse(): void {
-    const text = (document.getElementById('output1') as HTMLTextAreaElement).value;
-    P.take(text, this.parts);
-  }
 
 }
 

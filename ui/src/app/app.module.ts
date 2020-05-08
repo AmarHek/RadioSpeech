@@ -10,6 +10,7 @@ import { TextComponent } from './text/text.component';
 import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
 import { SortCategoriesPipe } from './sort-categories.pipe';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SortCategoriesPipe } from './sort-categories.pipe';
     TextComponent,
     UploadComponent,
     ListComponent,
-    SortCategoriesPipe
+    SortCategoriesPipe,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
