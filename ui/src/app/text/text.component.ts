@@ -7,7 +7,7 @@ import * as M from '../model'
 import * as G from '../generator'
 import * as P from '../parser'
 import * as T from '../takers'
-import { Keyword, Keyword2, Category } from './Keyword';
+import { Keyword, Keyword2, Category, Disease } from './Keyword';
 import * as D from './Dictionary';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
@@ -32,7 +32,8 @@ export class TextComponent implements OnInit {
 
   ngOnInit(): void {
     // assigns reference to polyp object
-    this.polyp = this.inputParser.polyp;
+    //this.polyp = this.inputParser.polyp;
+    this.diseases = this.inputParser.diseases;
     this.firstTime = false;
     this.start = false;
     $('#my_img').hide();
@@ -58,7 +59,8 @@ export class TextComponent implements OnInit {
   parts: M.TopLevel[] = [];
   keywordsService: Array<Keyword2> = [];
   myText: {report: string} = {report: ""};
-  polyp: Array<Category> = [];
+  //polyp: Array<Category> = [];
+  diseases: Array<Disease> = [];
   firstTime: boolean = false;
 
   resetTexts = new Map<M.CheckBox | M.Option, string>();
@@ -101,9 +103,9 @@ export class TextComponent implements OnInit {
       this.firstTime = true;
     } */
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    this.inputParser.parseInput(input);
-    this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.polyp)) );
-    this.myText.report = this.textOut.makeReport(this.polyp);
+    this.myText.report = this.inputParser.parseInput(input);
+    this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input);
+   // this.myText.report = this.textOut.makeReport(this.diseases);
   }
   // (currently not used: Keyword options are also clickable as radio input)
 
@@ -119,7 +121,7 @@ export class TextComponent implements OnInit {
 
   }*/
 
-  makeNormal(){
+/*   makeNormal(){
     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     for(const cat of this.polyp){
       if(input.toLowerCase().indexOf(cat.name.toLowerCase())==-1){
@@ -129,7 +131,7 @@ export class TextComponent implements OnInit {
       }
     }
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.polyp)) );
-  }
+  } */
 
   start: boolean = false;
   init(): void {

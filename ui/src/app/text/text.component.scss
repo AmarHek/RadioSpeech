@@ -162,13 +162,22 @@ textarea {
   *overflow: hidden;
 }
 
-.grey {
+.disease{
   margin: 0 10px;
   font-size: 1.7em;
   font-weight: 700;
   padding-left: 5px;
   margin-top: 10px;
   color: gray;
+}
+
+.cat{
+  margin: 0 12px;
+  font-size: 1.4em;
+  font-weight: 500;
+  padding-left: 5px;
+  margin-top: 3px;
+  color:  #726e6d;
 }
 
 #normal-button {
@@ -197,7 +206,7 @@ div.option{
 }
 div.link{
   margin: 0 10px;
-  color: lightgray;
+  color:  #ad2609 ;
   padding-left: 5px;
   font-size: 1.2em;
   

@@ -48,6 +48,20 @@ export class Category{
     keys: Keyword2[];
     name: string;
     active: boolean;
+    position: number;
 
     
+}
+
+export class Disease{
+    name: string;
+    categories: Category[];
+    active: boolean;
+    number: number;
+    position: number;
+}
+
+export class TextDic{
+    disName: string;
+    reports: {text: string, category: string}[];
 }

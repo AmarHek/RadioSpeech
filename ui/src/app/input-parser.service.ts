@@ -1,6 +1,6 @@
 import { Injectable, Input } from '@angular/core';
 import * as M from './model'
-import { Keyword2, Category } from './text/Keyword';
+import { Keyword2, Category, Disease } from './text/Keyword';
 import { TextOutputService } from './text-output.service';
 
 
@@ -21,6 +21,8 @@ export class InputParserService {
   polyp: Array<Category> = [];
 
   normalKeys: Array<Keyword2> = [];
+
+  diseases: Array<Disease> = [];
   
 
  
@@ -32,8 +34,13 @@ export class InputParserService {
   createStartDict(rootEl: M.TopLevel[]){
     let syns: string[];
     var keys: Keyword2[];
+    var disName = "";
     // loops through all 5 categories: Form, Lokalisierung...
     for (const El of rootEl){
+      if(El.kind == "block"){
+        disName = El.text;
+        this.diseases.push({name: disName, categories: [], active: false, number: 1, position: -1 });
+      }
       keys = [];
       if(El.kind == "category"){
         const categ = El.selectables[0];
@@ -48,10 +55,12 @@ export class InputParserService {
           }
         }
         // Adds a new category 
-        this.polyp.push({keys: keys, name: El.name, active: false});
+        this.diseases.find(disease => disease.name == disName).categories.push({keys: keys, name: El.name, active: false, position: -1});
+        //this.polyp.push({keys: keys, name: El.name, active: false});
       }
     }
-    console.log(this.polyp);
+    this.textOut.initDiseaseText(this.diseases);
+    console.log(this.diseases);
   }
 
   // --------- Help methods for creating Dictionary ----------
@@ -103,51 +112,58 @@ export class InputParserService {
 
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
-  // checks which category is active and where in the input field it occurs
-  let activeCat: {tempPos: number, catName: string} =  this.setCategory(input, this.polyp);
-  // if one active category is detected, it's active value is set to true, all others to false
-  if(activeCat.catName.length != 0){
-    for(const act of this.polyp){
-      if(act.name == activeCat.catName){
-        act.active = true;
-      } else {
-        act.active = false;
+  let activeDis = this.setDisease(input, this.diseases);
+  if(activeDis != undefined){
+    input = input.substring(activeDis.position);
+    let actDis = this.diseases.find(dis => dis.active == true);
+    if(input.toLowerCase().indexOf("rest normal") != -1){
+      this.restNormal(actDis);   
+    }
+    // checks which category is active and where in the input field it occurs
+    let activeCat =  this.setCategory(input, actDis.categories );
+    // if one active category is detected, it's active value is set to true, all others to false
+    if(activeCat != undefined){
+      
+      // Evaluate only the input that comes after the last category
+      input = input.substring(activeCat.position);
+      // Autocorrect words
+      input = this.autocorrect(input);
+      // Find out which keywords occur in the input
+      
+      for(const key of activeCat.keys){
+        key.position = this.getIndex(key.synonym, input);
       }
+      // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
+      // (currently not used: Also responsible for button clicks)
+      this.onlyLatestKeyword(activeCat.keys);
+      // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
+      // Also check which keywords have variables and if the occurr in the input
+      let dummy = this.getActivesAndVariables(activeCat.keys, input);
+      let text = this.textOut.makeReport(activeCat, activeDis);
+
+      
+      // Test Log
+      console.log("KeyTest");
+      console.log(this.diseases);
+      return text;
+  
     }
-    // resets Keywords that belong to the active category
-    //this.resetKeywords(activeCat.catName);
-    // Evaluate only the input that comes after the last category
-    input = input.substring(activeCat.tempPos);
-    // Autocorrect words
-    input = this.autocorrect(input);
-    // Find out which keywords occur in the input
-    let active = this.polyp.find(cat=> cat.name == activeCat.catName);
-    for(const key of active.keys){
-      key.position = this.getIndex(key.synonym, input);
-    }
-    // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
-    // (currently not used: Also responsible for button clicks)
-    this.onlyLatestKeyword(active.keys);
-    // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
-    // Also check which keywords have variables and if the occurr in the input
-    let dummy = this.getActivesAndVariables(active.keys, input);
-    
-    // Test Log
-    console.log("KeyTest");
-    console.log(this.polyp);
- 
+  console.log("KeyTest");
+  console.log(this.diseases);
   }
+  return this.textOut.makeReport(undefined, undefined);
 }
 
-restNormal(){
-  for(const cat of this.polyp){
-    if(cat.keys.find(key => key.position != -1) == undefined){
+restNormal(disease: Disease){
+  for(const cat of disease.categories){
+    if(cat.keys.find(key => key.position !== -1) == undefined){
       for(const key of cat.keys){
         if(key.normal == true && key.name == key.synonym){
           key.active = key.name;
           key.position = 0;
         }
       }
+      this.textOut.makeReport(cat, disease);
     }
   }
 }
@@ -248,9 +264,11 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
 }
 
 // resets keyword of specified category
-resetKeywords(category: string){
-  for (const keyword of this.polyp.filter(cat => cat.name == category)[0].keys){
-    keyword.position = undefined;
+resetCategory(category: Category){
+  category.position = -1;
+  category.active = false;
+  for (const keyword of category.keys){
+    keyword.position = -1;
     keyword.VarFound = undefined;
     keyword.active = undefined;
   }
@@ -267,12 +285,60 @@ getIndex(keySyn: string, input:string){
   return tempPos;
 }
 
-setCategory(input:string, polyp: Array<Category>){
+setDisease(input: string, diseases: Array<Disease>){
+  let activeDis: {disPos: number, disName: string} = {disPos: -1, disName: ""};
+  
+  for(let i = 0; i<diseases.length; i++){
+    if(diseases[i].number == 1){
+      let nextInstance = diseases.filter(disease => disease.name.indexOf(diseases[i].name) !== -1).length +1;
+      console.log("nextInst");
+      console.log(nextInstance);
+      let addInstance = input.toLowerCase().indexOf(diseases[i].name.toLowerCase() + " " + nextInstance);
+      if(addInstance !== -1){
+        let copy : Disease = JSON.parse(JSON.stringify(diseases[i]));
+        copy.number = nextInstance;
+        copy.position = addInstance;
+        copy.active = true;
+        copy.name += " " + copy.number;
+        for(const cat of copy.categories){
+          this.resetCategory(cat);
+        }
+        this.diseases.splice(i+nextInstance-1, 0, copy);
+        this.textOut.addDisease(copy, i+nextInstance-1);
+        
+      }
+    }
+    let tempPos: number = -1;
+    tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase());
+    while (input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1) !== -1){
+      tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1);
+    }
+    if(tempPos !== -1 && ((tempPos+diseases[i].name.length) > activeDis.disPos)){
+      activeDis.disPos = tempPos;
+      activeDis.disName = diseases[i].name;
+    }
+  }
+  if(diseases.find(dis => dis.name == activeDis.disName) != undefined){
+    diseases.find(dis => dis.name == activeDis.disName).position = activeDis.disPos;
+    for(const act of diseases){
+      if(act.name == activeDis.disName){
+        act.active = true;
+      } else {
+        act.active = false;
+      }
+    }
+    return diseases.find(dis => dis.name == activeDis.disName);
+  } else {
+    return undefined;
+  }
+}
+
+setCategory(input:string, dis: Array<Category>){
   // set the last category to active
   let activeCat: {tempPos: number, catName: string} = {tempPos: -1, catName: ""};
   
   // loop throught categories
-  for(const cat of polyp){
+  for(const cat of dis){
     let catPos: number = -1;
     // find latest occurence of one category
     catPos = input.toLowerCase().indexOf(cat.name.toLowerCase());
@@ -285,7 +351,19 @@ setCategory(input:string, polyp: Array<Category>){
       activeCat.catName = cat.name;
     }
   }
-  return activeCat;
+  if(dis.find(dis => dis.name == activeCat.catName) != undefined){
+    dis.find(dis => dis.name == activeCat.catName).position = activeCat.tempPos;
+    for(const act of dis){
+      if(act.name == activeCat.catName){
+        act.active = true;
+      } else {
+        act.active = false;
+      }
+    }
+    return dis.find(dis => dis.name == activeCat.catName);
+  } else {
+    return undefined;
+  }
   
 }
 

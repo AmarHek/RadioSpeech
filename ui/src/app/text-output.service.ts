@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { InputParserService } from './input-parser.service';
 import { parse } from 'querystring';
 import { Key } from 'protractor';
-import{Keyword2, Category} from './text/Keyword';
+import{Keyword2, Category, Disease, TextDic} from './text/Keyword';
 
 @Injectable({
   providedIn: 'root'
@@ -13,47 +13,47 @@ export class TextOutputService {
    }
   // Array containing the text for each category
   myReport: {report: string, category: string}[] = [];
-
+  rep: Array<TextDic> = [];
   // produces the text output
-  makeReport(polyp: Array<Category>){
+
+
+  makeReport(activeCat: Category, activeDis: Disease){
     // this.report.text="";
     // gets active Category
-    if(polyp.find(cat => cat.active == true)!=undefined){
-    let activeCat = polyp.find(cat => cat.active == true);
     let repo = "";
-    // checks if report array already holds this category
-    if(this.myReport.find(cat => cat.category == activeCat.name) == undefined){
-      // case1: array doesnt already hold this category
-      // adds text corresponding to active Keywords
-      for (const key of activeCat.keys.filter(key => key.position!==-1)){
-        repo += key.text;
-        if(key.VarFound != undefined){
-           repo += key.TextBefore + key.VarFound + key.TextAfter;
-        }
+    // adds text corresponding to active Keywords
+    if(activeDis != undefined){
+    for (const key of activeCat.keys.filter(key => key.position!==-1)){
+      repo += key.text;
+      if(key.VarFound != undefined){
+        repo = repo.slice(0,-2) + " " + key.TextBefore + key.VarFound + key.TextAfter;
       }
-      this.myReport.push({report: repo, category: activeCat.name});
-      // case2: array does already hold this category
-    } else {
-      // adds text corresponding to active Keywords
-      for (const key of activeCat.keys.filter(key => key.position!==-1)){
-        repo += key.text;
-        if(key.VarFound != undefined){
-           repo += key.TextBefore + key.VarFound + key.TextAfter;
-        }
-      }
-      // assigns text to corresponding array element
-      this.myReport.find(cat => cat.category == activeCat.name).report = repo;
+    }
+    // assigns text to corresponding array element
+    this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text = repo;
+    console.log("repo");
+    console.log(this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text);
     }
     // concatenate all text elements from the array
-    return this.myReport.map(rep => rep.report).join(". ");
+    let finalText = "";
+    for(const dis of this.rep){
+      if(dis.reports.map(report => report.text).join("") !== ""){
+        finalText = finalText + dis.disName+ ":\n";
+      }
+      finalText = finalText + dis.reports.map(report => report.text).join("") + "\n\n";
     }
-    else return "";
+    
+    return finalText;
   }
 
   // shows which keywords were detected and are written into the text output
-  colorTextInput(polyp: Array<Category>){
+  colorTextInput(diseases: Array<Disease>, input: string){
     let inByWord : string[] = [];
-    for(const cat of polyp){
+    for(const dis of diseases){
+      if(input.toLowerCase().indexOf(dis.name.toLowerCase()) !== -1){
+      inByWord.push("<span style=\"background-color: yellow; text-decoration: underline\">" + dis.name + "</span>");
+      }
+    for(const cat of dis.categories){
       var activeKeys = cat.keys.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
       // loops through all active Keywords
       for (const key of activeKeys){
@@ -64,15 +64,35 @@ export class TextOutputService {
         // if keyword can hold a variable but doesnt hold it, it will be red
         } else if(key.VarType != undefined){
           inByWord.push("<span style=\"background-color: red\">" + key.name + "</span>");
-        }
         // if keyword can't hold a variable, it will be darkgreen
-        else {
+        } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
         }
       }
     }
+  }
     // assigns text to element on html
     document.getElementById("inputText").innerHTML = inByWord.join(" ");
+  }
+
+  initDiseaseText(diseases: Array<Disease>){
+    for(const dis of diseases){
+      let tempReports : {text: string, category: string}[] = [];
+      for(const cat of dis.categories){
+        tempReports.push({text: "", category: cat.name});
+      }
+      this.rep.push({disName: dis.name, reports: tempReports});
+    }
+  console.log("initDicTest");
+  console.log(this.rep);
+  }
+
+  addDisease(disease: Disease, index: number){
+    let tempReports : {text: string, category: string}[] = [];
+    for(const cat of disease.categories){
+      tempReports.push({text: "", category: cat.name});
+    }
+    this.rep.splice(index, 0, {disName: disease.name, reports: tempReports})
   }
 
   
