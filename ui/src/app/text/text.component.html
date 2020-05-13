@@ -12,14 +12,14 @@
 		<button id="refresh" title="seite neu laden" (click)="refreshPage()"
 			class="btn btn-outline-secondary float-right ">refresh</button>
 		<!-- submits text in "Befund eingeben", if it is not automatically triggered by input -->
-		<button id="submit-button" title="eingabe absenden" (click)="submit()"
-			class="btn btn-outline-secondary float-right ">Senden</button>
+		<!-- <button id="submit-button" title="eingabe absenden" (click)="submit()"
+			class="btn btn-outline-secondary float-right ">Senden</button> -->
 		<!-- enables inputting text -->
 		<button id="los" (click)="init()"
 			class="btn btn-outline-secondary float-right ">los</button>
 		
-		<button id="scroll" (click)="scroll()"
-			class="btn btn-outline-secondary float-right ">scroll</button>
+		<!-- <button id="scroll" (click)="scroll()"
+			class="btn btn-outline-secondary float-right ">scroll</button> -->
 		<!-- input "Befund" text here and submits it automatically -->
 		<label for="input">Befund eingeben:
 			<input id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput()" placeholder="Befund eingeben..." size="80">
@@ -75,14 +75,14 @@
 		<button id="ready-button" (click)="reverse()"
 			class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
 	</div>
-	<div class="beurteilung-text">
+	<!-- <div class="beurteilung-text">
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
 			id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
-	</div>
-	<div class="beurteilung-buttons" onload="init()">
+	</div> -->
+	<!-- <div class="beurteilung-buttons" onload="init()">
 		<button id="ready-button" (click)="copyText('output2')"
 			class="btn btn-outline-secondary float-right">kopieren</button>
-	</div>
+	</div> -->
 </div>
 
 <!-- Dialog to enter the Parameters, can be activated by integrating a button or link that
