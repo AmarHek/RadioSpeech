@@ -39,38 +39,6 @@ $border-color: hsl(200, 70%, 80);
   border-left: 1px solid $border-color;
 }
 
-.befundung-text {
-  width: auto;
-  grid-area: bf-text;
-}
-
-.befundung-buttons {
-  grid-area: bf-but;
-  grid-template-columns: 1fr 1fr;
-}
-
-.beurteilung-text {
-  grid-area: bu-text;
-}
-
-.beurteilung-buttons {
-  grid-area: bu-but;
-  grid-template-columns: 1fr;
-}
-
-.befundung-text,
-.befundung-buttons,
-.beurteilung-text,
-.beurteilung-buttons {
-  border: 1px solid $border-color;
-  border-left: none;
-}
-
-.befundung-buttons,
-.beurteilung-buttons {
-  display: grid;
-}
-
 .small {
   font-size: 70%;
 }
@@ -202,12 +170,12 @@ div.option{
   font-weight: 500;
   padding-left: 5px;
   margin-top: 10px;
-  
+
 }
 div.link{
   margin: 0 10px;
   color:  #ad2609 ;
   padding-left: 5px;
   font-size: 1.2em;
-  
+
 }

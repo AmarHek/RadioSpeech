@@ -1,0 +1,56 @@
+
+.report-text {
+  width: auto;
+  grid-area: bf-text;
+  height: 100%;
+}
+
+textarea {
+  height: 100%;
+}
+
+.report-buttons {
+  grid-area: bf-but;
+  grid-template-columns: 1fr 1fr;
+}
+
+.judgement-text {
+  grid-area: bu-text;
+}
+
+.judgement-buttons {
+  grid-area: bu-but;
+  grid-template-columns: 1fr;
+}
+
+.report-text,
+.report-buttons,
+.judgement-text,
+.judgement-buttons {
+  border: 1px solid hsl(200, 70%, 80%);
+  border-left: none;
+}
+
+.report-buttons,
+.judgement-buttons {
+  display: grid;
+}
+
+/*
+div.option{
+  margin: 0 10px;
+  font-size: 1.5em;
+  text-decoration: underline;
+  font-weight: 500;
+  padding-left: 5px;
+  margin-top: 10px;
+
+}
+div.link{
+  margin: 0 10px;
+  color: lightgray;
+  padding-left: 5px;
+  font-size: 1.2em;
+
+}
+ */

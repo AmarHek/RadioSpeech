@@ -1,9 +1,6 @@
 <div class="main">
 
-
-
 	<div class="headline">
-
 
 		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
 			normal</button>
@@ -28,7 +25,7 @@
 		<img src="http://placehold.it/180" id="my_img" />
 		<div id="inputText">
 			<br>
-			
+
 		</div>
 	</div>
 	<div class="main-content" id = "main-content">
@@ -61,28 +58,8 @@
 		</div>
 	</div>
 
-	<!-- textfield for summary -->
-	<div class="befundung-text">
-		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"
-			id="output1" class="w-100" [(ngModel)]="myText.report"></textarea>
-	</div>
-	
-	<div class="befundung-buttons">
-		<!-- copies summary to clipboard -->
-		<button id="ready-button" (click)="copyText('output1')"
-			class="btn btn-outline-secondary float-left">kopieren</button>
-		<!--  -->
-		<button id="ready-button" (click)="reverse()"
-			class="ml-2 btn btn-outline-secondary float-left">auslesen</button>
-	</div>
-	<!-- <div class="beurteilung-text">
-		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
-			id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
-	</div> -->
-	<!-- <div class="beurteilung-buttons" onload="init()">
-		<button id="ready-button" (click)="copyText('output2')"
-			class="btn btn-outline-secondary float-right">kopieren</button>
-	</div> -->
+	<app-report [report]="myText.report" [parts]="parts"></app-report>
+
 </div>
 
 <!-- Dialog to enter the Parameters, can be activated by integrating a button or link that
