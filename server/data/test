@@ -1,0 +1,1477 @@
+[
+  {
+    "kind" : "block",
+    "text" : "Polyp",
+    "judgementText" : null,
+    "data" : {
+      
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Form",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "Knospe",
+            "text" : "Polypen Einzelbeschreibung: Es zeigt sich eine Polypenknospe. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "A1",
+                "textBefore" : "bei;zusatz ",
+                "textAfter" : "(entsprechend einer begradigten Gerätelänge).;fertig ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "Knospe;Hose"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "Knospe;Hose"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "gestielt",
+            "text" : "Polypen Einzelbeschreibung: Es zeigt sich ein gestielter Polyp. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "A2",
+                "textBefore" : "bei;zusatz ",
+                "textAfter" : "(entsprechend einer begradigten Gerätelänge).;fertig ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "gestielt;Rose"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "gestielt;Rose"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "schmalbasig",
+            "text" : "Polypen Einzelbeschreibung: Es zeigt sich ein schmalbasiger Polyp. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "A3",
+                "textBefore" : "bei;zusatz ",
+                "textAfter" : "(entsprechend einer begradigten Gerätelänge).;fertig ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "schmalbasig"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "schmalbasig"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "breitbasig",
+            "text" : "Polypen Einzelbeschreibung: Es zeigt sich ein breitbasiger Polyp. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "A4",
+                "textBefore" : "bei;zusatz ",
+                "textAfter" : "(entsprechend einer begradigten Gerätelänge).;fertig ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "breitbasig"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "breitbasig"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "rasenförmig",
+            "text" : "Polypen Einzelbeschreibung: Es zeigt sich ein rasenförmiger Polyp. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "A5",
+                "textBefore" : "bei;zusatz ",
+                "textAfter" : "(entsprechend einer begradigten Gerätelänge).;fertig ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "rasenförmig"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "rasenförmig"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "Knospe;Hose"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "Knospe;Hose"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Lokalisierung",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG63",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "gesamtes Kolon",
+            "text" : "Der Polyp befindet sich im gesamten Kolon. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "gesamtes Kolon"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Rektum",
+            "text" : "Der Polyp befindet sich im Rektum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Rektum"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Sigma",
+            "text" : "Der Polyp befindet sich im Sigma. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Sigma"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "dist. Sigma",
+            "text" : "Der Polyp befindet sich im distalen Sigma. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "dist. Sigma"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "prox. Sigma",
+            "text" : "Der Polyp befindet sich im proximalen Sigma. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "prox. Sigma"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon desc.",
+            "text" : "Der Polyp befindet sich im Colon descendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon desc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "dist. Colon desc.",
+            "text" : "Der Polyp befindet sich im distalen Colon descendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "dist. Colon desc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "prox. Colon desc.",
+            "text" : "Der Polyp befindet sich im proximalen Colon descendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "prox. Colon desc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "linke Flexur",
+            "text" : "Der Polyp befindet sich in der linken Flexur. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "linke Flexur"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon transv.",
+            "text" : "Der Polyp befindet sich im Colon transversum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon transv."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "linksseit. Colon transv.",
+            "text" : "Der Polyp befindet sich im linksseitigen Colon transversum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "linksseit. Colon transv."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "mittl. Colon transv.",
+            "text" : "Der Polyp befindet sich im mittleren Colon transversum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "mittl. Colon transv."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "rechtsseit. Colon transv.",
+            "text" : "Der Polyp befindet sich im rechtsseitigen Colon transversum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "rechtsseit. Colon transv."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "rechte Flexur",
+            "text" : "Der Polyp befindet sich in der rechten Flexur. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "rechte Flexur"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon asc.",
+            "text" : "Der Polyp befindet sich im Colon ascendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon asc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "prox. Colon asc.",
+            "text" : "Der Polyp befindet sich im proximalen Colon ascendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "prox. Colon asc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "dist. Colon asc.",
+            "text" : "Der Polyp befindet sich im distalen Colon ascendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "dist. Colon asc."
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Ileocoecalklappe",
+            "text" : "Der Polyp befindet sich in der Ileocoecalklappe. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Ileocoecalklappe"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Coecum",
+            "text" : "Der Polyp befindet sich im Coecum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Coecum"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "term. Ileum",
+            "text" : "Der Polyp befindet sich im terminalen Ileum. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "term. Ileum"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "gesamtes Kolon"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "gesamtes Kolon"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Oberfläche",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG64",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "intakt",
+            "text" : "Er hat eine intakte Oberfläche. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "G1",
+                "textBefore" : "der Größe ",
+                "textAfter" : ". ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "intakt"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "intakt"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "erodiert",
+            "text" : "Er hat eine erodierte Oberfläche. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "G2",
+                "textBefore" : "der Größe ",
+                "textAfter" : ". ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "erodiert"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "erodiert"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "blutend",
+            "text" : "Er hat eine blutende Oberfläche. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+              {
+                "kind" : "text",
+                "id" : "G3",
+                "textBefore" : "der Größe ",
+                "textAfter" : ". ",
+                "value" : "",
+                "data" : {
+                  "bau" : [
+                    "blutend"
+                  ]
+                }
+              }
+            ],
+            "data" : {
+              "bau" : [
+                "blutend"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "intakt"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "intakt"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "NICE Klassifikation",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG72",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "NICE Typ 1",
+            "text" : "Die Klassifikation des Polypen ist NICE Typ 1. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "NICE Typ 1"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "NICE Typ 2",
+            "text" : "Die Klassifikation des Polypen ist NICE Typ 2. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "NICE Typ 2"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "NICE Typ 3",
+            "text" : "Die Klassifikation des Polypen ist NICE Typ 3. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "NICE Typ 3"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "NICE Typ nicht eindeutig",
+            "text" : "Die Klassifikation des Polypen ist nicht eindeutig. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "NICE Typ nicht eindeutig"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "NICE Typ 1"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "NICE Typ 1"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Polypektomie",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG65",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "keine Abtragung /Empfehlung Polypektomie - ambulant",
+            "text" : "Keine Abtragung. Eine ambulante Polypektomie sollte erfolgen. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "keine Abtragung /Empfehlung Polypektomie - ambulant"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Zangen-Abtragung",
+            "text" : "Der Polyp wird mit einer Biopsiezange entfernt. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Zangen-Abtragung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "EPE (endosk. Polypektomie Schlinge) enbloc (one piece)",
+            "text" : "Der Polyp wird mit der Schlinge (EPE). ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "EPE (endosk. Polypektomie Schlinge) enbloc (one piece)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "fEPE (fraktionierte Abtragung piecemeal)",
+            "text" : "Der Polyp wird mit der Schlinge (fEPE). ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "fEPE (fraktionierte Abtragung piecemeal)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "EMR (endoskopische Mukosaresektion Schlinge) enbloc (one piece)",
+            "text" : "Der Polyp wird mit der Schlinge mukosektomiert (EMR). ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "EMR (endoskopische Mukosaresektion Schlinge) enbloc (one piece)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "fEMR (fraktionierte Abtragung piecemeal)",
+            "text" : "Der Polyp wird mit der Schlinge mukosektomiert (fEMR). ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "fEMR (fraktionierte Abtragung piecemeal)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "EMRC (endoskop. Mukosaresektion Kappe)",
+            "text" : "Der Polyp wird mittels Aufsatzkappe mukosektomiert (EMRC) entfernt. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "EMRC (endoskop. Mukosaresektion Kappe)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "ESD (endosk. Submukosadissektion) enbloc (one piece)",
+            "text" : "Der Polyp wird durch Submukosa-Resektion (ESD) entfernt. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "ESD (endosk. Submukosadissektion) enbloc (one piece)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "EFTR (endoskopische Vollwandresektion)",
+            "text" : "Der Polyp wird mittels Vollwandresektion (EFTR) entfernt. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "EFTR (endoskopische Vollwandresektion)"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Zangenbiopsie (Probenentnahme)",
+            "text" : "Mit der Biopsiezange wird eine Probe entnommen. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Zangenbiopsie (Probenentnahme)"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "keine Abtragung /Empfehlung Polypektomie - ambulant"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "keine Abtragung /Empfehlung Polypektomie - ambulant"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Komplikationen",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG66",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "Keine Komplikationen",
+            "text" : "Keine Komplikationen. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Keine Komplikationen"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Keine akuten Kompl./Prophylaxe OTSC",
+            "text" : "Keine Komplikationen. Zur Prophylaxe Wundverschluss. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Keine akuten Kompl./Prophylaxe OTSC"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Keine akuten Kompl./Prophylaxe Adrenalin",
+            "text" : "Keine Komplikationen. Zur Prophylaxe Injektion von Adrenalin. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Keine akuten Kompl./Prophylaxe Adrenalin"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Keine akuten Kompl./Prophylaxe Endoloop",
+            "text" : "Keine Komplikationen. Endoloop zur Prophylaxe. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Keine akuten Kompl./Prophylaxe Endoloop"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Schmerzen",
+            "text" : "Nach der Therapie treten Schmerzen auf. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Schmerzen"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Sickerblutung",
+            "text" : "Hiernach Sickerblutung. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Sickerblutung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Sickerblutung und Perforation",
+            "text" : "Hiernach Sickerblutung und Perforation. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Sickerblutung und Perforation"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "arterielle Blutung",
+            "text" : "Hiernach arterielle Blutung. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "arterielle Blutung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Perforation",
+            "text" : "Hiernach Perforation. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Perforation"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "Keine Komplikationen"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "Keine Komplikationen"
+      ]
+    }
+  },
+  {
+    "kind" : "block",
+    "text" : "Divertikulose",
+    "judgementText" : null,
+    "data" : {
+      
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Anzahl",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "einzelne Divertikel",
+            "text" : "Divertikulose Beschreibung: Mit einzelnen Divertikeln. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "einzelne Divertikel;einzeln; einzelne"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "mehrere Divertikel",
+            "text" : "Divertikulose Beschreibung: Mit mehreren Divertikeln. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "mehrere Divertikel; mehrere"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "viele Divertikel",
+            "text" : "Divertikulose Beschreibung: Mit vielen Divertikeln. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "viele Divertikel; viele"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "viele, große Divertikel",
+            "text" : "Divertikulose Beschreibung: Mit vielen großen Divertikeln. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "viele, große Divertikel;viele große Divertikel;viele große;viele, große"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "einzelne Divertikel;einzeln; einzelne"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "einzelne Divertikel;einzeln; einzelne"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Hauptlokalisation",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "gesamtes Colon",
+            "text" : "Hauptlokalisation im gesamten Colon. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "gesamtes Colon;gesamtes Kolon"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon asc.",
+            "text" : "Hauptlokalisation vor allem im Bereich des Colon ascendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon ascendens;Kolon ascendens"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon transv.",
+            "text" : "Hauptlokalisation vor allem im Bereich des Colon transversums. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon transversum;Kolon transversum"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "rechte Flexur",
+            "text" : "Hauptlokalisation vor allem im Bereich der rechten Flexur. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "rechte Flexur"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "linke Flexur",
+            "text" : "Hauptlokalisation vor allem im Bereich der linken Flexur. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "linke Flexur"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Colon desc.",
+            "text" : "Hauptlokalisation vor allem im Bereich des Colon descendens. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Colon descendens;Kolon descendens"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Sigma",
+            "text" : "Hauptlokalisation vor allem im Bereich des Sigmas. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Sigma"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Rektum",
+            "text" : "Hauptlokalisation vor allem im Bereich des Rektums. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Rektum"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Coecum",
+            "text" : "Hauptlokalisation vor allem im Bereich des Coecums. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Coecum;Koecum;Koekum"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "gesamtes Colon;gesamtes Kolon"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "gesamtes Colon;gesamtes Kolon"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Lumeneinengung",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "mit Einengung",
+            "text" : "Divertikulose mit Lumeneinengung. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "mit Einengung;mit Lumeneinengung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "ohne Einengung",
+            "text" : "Divertikulose ohne Lumeneinengung. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "ohne Einengung;ohne Lumeneinengung"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "mit Einengung;mit Lumeneinengung"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "mit Einengung;mit Lumeneinengung"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Blutung",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "keine Blutung",
+            "text" : "Es gibt keine Blutung. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "keine Blutung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "sickernd",
+            "text" : "Es gibt eine sickernde Divertikelblutung. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "sickernd"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "spritzend, arteriell",
+            "text" : "Es gibt eine spritzend, arterielle Divertikelblutung. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "spritzend, arteriell;spritzend arteriell"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "keine Blutung"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "keine Blutung"
+      ]
+    }
+  },
+  {
+    "kind" : "category",
+    "name" : "Empfehlung",
+    "selectables" : [
+      {
+        "kind" : "group",
+        "name" : "CG0",
+        "options" : [
+          {
+            "kind" : "option",
+            "name" : "OP-Empfehlung allgemein",
+            "text" : "Eine OP sollte erfolgen. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "OP Empfehlung allgemein"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "OP-Empfehlung zur Blutstillung",
+            "text" : "Eine OP zur Blutstillung sollte erfolgen. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "OP-Empfehlung zur Blutstillung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Wiedervorstellung",
+            "text" : "Es sollte eine Wiedervorstellung stattfinden. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Wiedervorstellung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "Kontrolluntersuchung",
+            "text" : "Es sollte eine Kontrolluntersuchung stattfinden. ",
+            "judgementText" : null,
+            "normal" : false,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "Kontrolluntersuchung"
+              ]
+            }
+          },
+          {
+            "kind" : "option",
+            "name" : "keine weitere Empfehlung",
+            "text" : "Ansonsten keine weitere Empfehlung. ",
+            "judgementText" : null,
+            "normal" : true,
+            "conditionalId" : null,
+            "variables" : [
+            ],
+            "data" : {
+              "bau" : [
+                "keine weitere Empfehlung"
+              ]
+            }
+          }
+        ],
+        "value" : null,
+        "data" : {
+          "bau" : [
+            "OP Empfehlung allgemein"
+          ]
+        }
+      }
+    ],
+    "data" : {
+      "bau" : [
+        "OP Empfehlung allgemein"
+      ]
+    }
+  }
+]
