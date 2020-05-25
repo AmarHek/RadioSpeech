@@ -92,7 +92,7 @@ export class InputParserService {
         TextBefore:  option.variables.length!=0 ? option.variables[0].textBefore : undefined,
         category: category.name,
         position: -1,
-        VarFound: undefined,
+        VarFound: [],
         active: undefined,
         text: option.text,
         buttonPos: -1,
@@ -221,22 +221,46 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
   // Filters for all Keywords, that are active in input and sorts them by index
   var activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
   // Searches for Signal Variable Text (Text Before) between corresponding keyword and next active Variable
-  for(let i = 0; i<activeKeys.length-1; i++){
+  for(let i = 0; i<activeKeys.length; i++){
     activeKeys[i].active = activeKeys[i].name;
-    if(activeKeys[i].VarType != undefined){
-      let endIndex = activeKeys[i+1].position-1;
+    //if(activeKeys[i].VarType != undefined){
+      let endIndex : number;
+      let activeVar = -1;
+      if(i == activeKeys.length-1){
+        endIndex = input.length;
+      } else {
+        endIndex = activeKeys[i+1].position-1;
+      }
       let startIndex = activeKeys[i].position + activeKeys[i].synonym.length+1;
       let varField = input.slice(startIndex, endIndex).toLowerCase();
-      let activeVar = varField.indexOf(activeKeys[i].TextBefore.toLowerCase());
-      if( activeVar != -1){
-        let varStart = activeVar + activeKeys[i].TextBefore.length;
-        // decides what combination of characters ends variable input
-        activeKeys[i].VarFound = varField.slice(varStart, varField.search(/[mm]/)+2);  
+
+      if(activeKeys[i].TextBefore != undefined){
+        for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
+          let tb = activeKeys[i].TextBefore.split(';');
+          let ta = activeKeys[i].TextAfter.split(';');
+          activeVar = varField.indexOf(tb[j].toLowerCase());
+      
+          if( activeVar != -1){
+            let varStart = activeVar + tb[j].length;
+            // decides what combination of characters ends variable input
+            activeKeys[i].VarFound[j] = (tb[j] + varField.slice(varStart, varField.search(/[cm]m/)+2) + ta[j]);
+          }
+          else {
+            activeKeys[i].VarFound[j] = undefined;
+          }
+        } 
       }
-    }
+      let str = "Zusatz";
+      activeVar = varField.indexOf(str.toLowerCase());
+      if(activeVar != -1){
+        let varStart = activeVar + str.length;
+        // decides what combination of characters ends variable input
+        activeKeys[i].VarFound[1] = "Zusatz: " + varField.slice(varStart, varField.search(/fertig/)-1) + ". ";
+      }
+    //}
   }
   // same procedure for last element of activeKeys
-  if(activeKeys.length >=1){
+  /* if(activeKeys.length >=1){
   activeKeys[activeKeys.length-1].active = activeKeys[activeKeys.length-1].name;
   if(activeKeys[activeKeys.length-1].VarType != undefined){
     let endIndex = input.length;
@@ -246,10 +270,10 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
       if( activeVar != -1){
         let varStart = activeVar + activeKeys[activeKeys.length-1].TextBefore.length;
         // decides what combination of characters ends variable input
-        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[mm]/)+2);  
+        activeKeys[activeKeys.length-1].VarFound = varField.slice(varStart, varField.search(/[cm]m/)+2);  
       }
     }
-  }
+  } */
   // (currently not used: only when all keywords can be used as input simultaneously)
   let mainKeys = allKeywords.filter((mainKey => mainKey.synonym == mainKey.name));
   for (const key of activeKeys){
@@ -313,9 +337,13 @@ setDisease(input: string, diseases: Array<Disease>){
     while (input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1) !== -1){
       tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1);
     }
-    if(tempPos !== -1 && ((tempPos+diseases[i].name.length) > activeDis.disPos)){
+    if(tempPos !== -1 && ((tempPos+diseases[i].name.length) > (activeDis.disPos + activeDis.disName.length))){
       activeDis.disPos = tempPos;
       activeDis.disName = diseases[i].name;
+      console.log("distest");
+      console.log(diseases[i].name);
+      console.log(activeDis);
+
     }
   }
   if(diseases.find(dis => dis.name == activeDis.disName) != undefined){

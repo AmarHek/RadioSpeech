@@ -8,7 +8,7 @@ import { Category, Keyword2 } from './text/Keyword';
 })
 export class SortCategoriesPipe implements PipeTransform {
 
-  transform(value: Array<Category>): any {
+  transform(value: any): any {
     
     return value.sort((a,b) => {
       if (a.active == true){

@@ -2,7 +2,7 @@
 .report-text {
   width: auto;
   grid-area: bf-text;
-  height: 100%;
+  height: 131%;
 }
 
 textarea {
@@ -14,14 +14,14 @@ textarea {
   grid-template-columns: 1fr 1fr;
 }
 
-.judgement-text {
+/* .judgement-text {
   grid-area: bu-text;
 }
 
 .judgement-buttons {
   grid-area: bu-but;
   grid-template-columns: 1fr;
-}
+} */
 
 .report-text,
 .report-buttons,

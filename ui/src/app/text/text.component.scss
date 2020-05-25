@@ -39,6 +39,11 @@ $border-color: hsl(200, 70%, 80);
   border-left: 1px solid $border-color;
 }
 
+.report-buttons {
+  grid-area: bf-but;
+  grid-template-columns: 1fr 1fr;
+}
+
 .small {
   font-size: 70%;
 }
@@ -88,6 +93,7 @@ a.info:hover span {
 
 textarea {
   height: 100%;
+  grid-area: bf-text;
 }
 
 .box {

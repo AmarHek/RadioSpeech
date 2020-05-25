@@ -25,8 +25,12 @@ export class TextOutputService {
     if(activeDis != undefined){
     for (const key of activeCat.keys.filter(key => key.position!==-1)){
       repo += key.text;
-      if(key.VarFound != undefined){
-        repo = repo.slice(0,-2) + " " + key.TextBefore + key.VarFound + key.TextAfter;
+      for(let i = 0; i< key.VarFound.length; i++){
+        if(key.VarFound[i] != undefined && i == 0){
+          repo = repo.slice(0,-2) + " " + key.VarFound[i];
+        } else if (key.VarFound[i] != undefined && i == 1){
+          repo = repo + " " + key.VarFound[i];
+        }
       }
     }
     // assigns text to corresponding array element
@@ -58,15 +62,17 @@ export class TextOutputService {
       // loops through all active Keywords
       for (const key of activeKeys){
         // if keyword does hold a variable it will be darkgreen and its variable will be lightgreen
-        if(key.VarType != undefined && key.VarFound!= undefined){
+        if(key.VarType != undefined && key.VarFound[0]!= undefined){
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.TextBefore + key.VarFound + "</span>")
+          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
         // if keyword can hold a variable but doesnt hold it, it will be red
         } else if(key.VarType != undefined){
           inByWord.push("<span style=\"background-color: red\">" + key.name + "</span>");
+          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
         // if keyword can't hold a variable, it will be darkgreen
         } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
         }
       }
     }

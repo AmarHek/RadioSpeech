@@ -31,7 +31,7 @@ import { ReportComponent } from './report/report.component';
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
-        { path: '**', redirectTo: '/upload' },
+        { path: '**', redirectTo: '/text/test' },
       ],
       { useHash: true }
     )

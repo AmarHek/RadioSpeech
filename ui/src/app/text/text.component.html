@@ -30,7 +30,7 @@
 	</div>
 	<div class="main-content" id = "main-content">
 		<div class="container">
-			<div *ngFor="let dis of diseases">
+			<div *ngFor="let dis of diseases | sortCategories">
 				<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
 				
 				<div  *ngFor="let cat of dis.categories | sortCategories">

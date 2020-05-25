@@ -32,7 +32,7 @@ export class Keyword2 {
     TextBefore: string;
     category: string;
     position: number;
-    VarFound: string;
+    VarFound: string[];
     active: string;
     text: string;
     buttonPos: number;
