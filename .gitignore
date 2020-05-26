@@ -1,0 +1,6 @@
+server/target
+server/project/target
+server/.idea
+
+ui/.idea
+ui/node_modules
