@@ -235,10 +235,14 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
       let varField = input.slice(startIndex, endIndex).toLowerCase();
 
       if(activeKeys[i].TextBefore != undefined){
-        for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
+        //for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
+        for(let j = 0; j<1; j++){
+
           let tb = activeKeys[i].TextBefore.split(';');
           let ta = activeKeys[i].TextAfter.split(';');
           activeVar = varField.indexOf(tb[j].toLowerCase());
+          console.log("VarTest");
+          console.log(activeVar);
       
           if( activeVar != -1){
             let varStart = activeVar + tb[j].length;
@@ -255,7 +259,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
       if(activeVar != -1){
         let varStart = activeVar + str.length;
         // decides what combination of characters ends variable input
-        activeKeys[i].VarFound[1] = "Zusatz: " + varField.slice(varStart, varField.search(/fertig/)-1) + ". ";
+        activeKeys[i].VarFound[1] = "Zusatz:" + varField.slice(varStart, varField.search(/fertig/)-1) + ". ";
       }
     //}
   }
@@ -293,7 +297,7 @@ resetCategory(category: Category){
   category.active = false;
   for (const keyword of category.keys){
     keyword.position = -1;
-    keyword.VarFound = undefined;
+    keyword.VarFound = [];
     keyword.active = undefined;
   }
 }
@@ -316,6 +320,7 @@ setDisease(input: string, diseases: Array<Disease>){
     if(diseases[i].number == 1){
       let nextInstance = diseases.filter(disease => disease.name.indexOf(diseases[i].name) !== -1).length +1;
       console.log("nextInst");
+      console.log(diseases[i].name);
       console.log(nextInstance);
       let addInstance = input.toLowerCase().indexOf(diseases[i].name.toLowerCase() + " " + nextInstance);
       if(addInstance !== -1){

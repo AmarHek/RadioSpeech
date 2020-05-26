@@ -25,6 +25,7 @@ export class TextOutputService {
     if(activeDis != undefined){
     for (const key of activeCat.keys.filter(key => key.position!==-1)){
       repo += key.text;
+      if(key.VarFound != undefined){
       for(let i = 0; i< key.VarFound.length; i++){
         if(key.VarFound[i] != undefined && i == 0){
           repo = repo.slice(0,-2) + " " + key.VarFound[i];
@@ -32,6 +33,7 @@ export class TextOutputService {
           repo = repo + " " + key.VarFound[i];
         }
       }
+    }
     }
     // assigns text to corresponding array element
     this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text = repo;
@@ -68,11 +70,15 @@ export class TextOutputService {
         // if keyword can hold a variable but doesnt hold it, it will be red
         } else if(key.VarType != undefined){
           inByWord.push("<span style=\"background-color: red\">" + key.name + "</span>");
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
+          if(key.VarFound != undefined){
+            inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
+          }
         // if keyword can't hold a variable, it will be darkgreen
         } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+          if(key.VarFound != undefined){
           inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
+          }
         }
       }
     }
