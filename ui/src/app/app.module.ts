@@ -11,6 +11,7 @@ import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
 import { SortCategoriesPipe } from './sort-categories.pipe';
 import { ReportComponent } from './report/report.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -25,13 +26,14 @@ import { ReportComponent } from './report/report.component';
     BrowserModule,
     FormsModule,
     NgbModule,
+    FontAwesomeModule,
     HttpClientModule,
     RouterModule.forRoot(
       [
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
-        { path: '**', redirectTo: '/text/test' },
+        { path: '**', redirectTo: '/upload' },
       ],
       { useHash: true }
     )

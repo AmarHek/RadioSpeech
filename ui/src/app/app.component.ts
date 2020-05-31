@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons'; 
 
 
 declare const $: any;
@@ -9,5 +10,5 @@ declare const $: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  faUser = faLaptopMedical;
 }

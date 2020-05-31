@@ -114,31 +114,40 @@ export class InputParserService {
  parseInput(input: string){
   let activeDis = this.setDisease(input, this.diseases);
   if(activeDis != undefined){
-    input = input.substring(activeDis.position);
-    let actDis = this.diseases.find(dis => dis.active == true);
-    if(input.toLowerCase().indexOf("rest normal") != -1){
-      this.restNormal(actDis);   
+    // Checks if Category name contains Disease name, which produces an error
+    let disPosLast = activeDis.position+activeDis.name.length;
+    if((disPosLast != input.length) && input.charAt(disPosLast) !== " "){
+        
+        let tempInput = input.substr(0,activeDis.position) + input.substr(disPosLast+1);
+        activeDis = this.setDisease(tempInput, this.diseases);
+    }
+    // only look for categories at what comes after the last disease
+    let input2 = input.substring(activeDis.position);
+    //let actDis = this.diseases.find(dis => dis.active == true);
+    //enables the rest normal method
+    if(input2.toLowerCase().indexOf("rest normal") != -1){
+      this.restNormal(activeDis);   
     }
     // checks which category is active and where in the input field it occurs
-    let activeCat =  this.setCategory(input, actDis.categories );
+    let activeCat =  this.setCategory(input2, activeDis.categories );
     // if one active category is detected, it's active value is set to true, all others to false
     if(activeCat != undefined){
       
       // Evaluate only the input that comes after the last category
-      input = input.substring(activeCat.position);
+      input2 = input2.substring(activeCat.position);
       // Autocorrect words
-      input = this.autocorrect(input);
-      // Find out which keywords occur in the input
-      
+      input2 = this.autocorrect(input2);
+      // Find out which keywords occur in the input2
       for(const key of activeCat.keys){
-        key.position = this.getIndex(key.synonym, input);
+        key.position = this.getIndex(key.synonym, input2);
       }
       // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
       // (currently not used: Also responsible for button clicks)
       this.onlyLatestKeyword(activeCat.keys);
       // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
-      // Also check which keywords have variables and if the occurr in the input
-      let dummy = this.getActivesAndVariables(activeCat.keys, input);
+      // Also check which keywords have variables and if the occurr in the input2
+      let dummy = this.getActivesAndVariables(activeCat.keys, input2);
+      // produces text output 
       let text = this.textOut.makeReport(activeCat, activeDis);
 
       
@@ -151,23 +160,30 @@ export class InputParserService {
   console.log("KeyTest");
   console.log(this.diseases);
   }
+  // no text when no category is activated
   return this.textOut.makeReport(undefined, undefined);
 }
 
+// sets all unused categories of one disease to its normal keywords
 restNormal(disease: Disease){
+  // loops through all categories
   for(const cat of disease.categories){
+    // if category is unused
     if(cat.keys.find(key => key.position !== -1) == undefined){
+      // find normal keyword and set it 
       for(const key of cat.keys){
         if(key.normal == true && key.name == key.synonym){
           key.active = key.name;
           key.position = 0;
         }
       }
+      // make additional report
       this.textOut.makeReport(cat, disease);
     }
   }
 }
 
+// only for buttons, currently disabled
 radioClicked(buttonPos: number, keyName: string, category: string){
   // Only one button of each category may be active at the same time
   for (const key of this.keywords.filter(key => key.category == category)){
@@ -180,9 +196,8 @@ radioClicked(buttonPos: number, keyName: string, category: string){
 }
 
 
-
+// find only the latest keyword of one category
 onlyLatestKeyword(keys: Array<Keyword2>){
-// Loop through all Categories
 
   // Filter Keywords for the active ones and sort them by their position in the input
   let activeKeys = keys.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
@@ -195,7 +210,7 @@ onlyLatestKeyword(keys: Array<Keyword2>){
       activeKeys.splice(i+1,1);
     }
   }
-
+  // currently disabled
   // Filter for all buttons that were pressed and sort them by order !!! todo
   let activeButtons = keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
   if(activeButtons.length >= 1){
@@ -291,7 +306,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
   return activeKeys;
 }
 
-// resets keyword of specified category
+// resets keywords of specified category
 resetCategory(category: Category){
   category.position = -1;
   category.active = false;
@@ -313,17 +328,23 @@ getIndex(keySyn: string, input:string){
   return tempPos;
 }
 
+// finds the active category
 setDisease(input: string, diseases: Array<Disease>){
   let activeDis: {disPos: number, disName: string} = {disPos: -1, disName: ""};
-  
+  // loops through all diseases
   for(let i = 0; i<diseases.length; i++){
+    // only for the first instance of every disease
     if(diseases[i].number == 1){
+      // computes next Instance
       let nextInstance = diseases.filter(disease => disease.name.indexOf(diseases[i].name) !== -1).length +1;
-      console.log("nextInst");
+      /* console.log("nextInst");
       console.log(diseases[i].name);
-      console.log(nextInstance);
+      console.log(nextInstance); */
+      // checks if new intance should be created
       let addInstance = input.toLowerCase().indexOf(diseases[i].name.toLowerCase() + " " + nextInstance);
+      // creates new instance
       if(addInstance !== -1){
+        // makes copie of instance number 1
         let copy : Disease = JSON.parse(JSON.stringify(diseases[i]));
         copy.number = nextInstance;
         copy.position = addInstance;
@@ -332,25 +353,31 @@ setDisease(input: string, diseases: Array<Disease>){
         for(const cat of copy.categories){
           this.resetCategory(cat);
         }
+        // adds new instance in diseases array
         this.diseases.splice(i+nextInstance-1, 0, copy);
+        // adds new instance in textproduction
         this.textOut.addDisease(copy, i+nextInstance-1);
         
+
       }
     }
+    // checks what is the latest disease
     let tempPos: number = -1;
     tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase());
     while (input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1) !== -1){
       tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos+1);
     }
+    // makes that "polyp 2" is not recognised as "polyp" 
     if(tempPos !== -1 && ((tempPos+diseases[i].name.length) > (activeDis.disPos + activeDis.disName.length))){
       activeDis.disPos = tempPos;
       activeDis.disName = diseases[i].name;
-      console.log("distest");
+      /* console.log("distest");
       console.log(diseases[i].name);
       console.log(activeDis);
-
+ */
     }
   }
+  // sets active and position of latest disease
   if(diseases.find(dis => dis.name == activeDis.disName) != undefined){
     diseases.find(dis => dis.name == activeDis.disName).position = activeDis.disPos;
     for(const act of diseases){
@@ -360,14 +387,17 @@ setDisease(input: string, diseases: Array<Disease>){
         act.active = false;
       }
     }
+    // return disease
     return diseases.find(dis => dis.name == activeDis.disName);
   } else {
     return undefined;
   }
 }
 
+
+// set the last category to active
 setCategory(input:string, dis: Array<Category>){
-  // set the last category to active
+  
   let activeCat: {tempPos: number, catName: string} = {tempPos: -1, catName: ""};
   
   // loop throught categories
@@ -384,6 +414,8 @@ setCategory(input:string, dis: Array<Category>){
       activeCat.catName = cat.name;
     }
   }
+
+   // sets active and position of latest category
   if(dis.find(dis => dis.name == activeCat.catName) != undefined){
     dis.find(dis => dis.name == activeCat.catName).position = activeCat.tempPos;
     for(const act of dis){
@@ -393,6 +425,7 @@ setCategory(input:string, dis: Array<Category>){
         act.active = false;
       }
     }
+    // return category
     return dis.find(dis => dis.name == activeCat.catName);
   } else {
     return undefined;
