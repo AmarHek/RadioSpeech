@@ -200,14 +200,16 @@ radioClicked(buttonPos: number, keyName: string, category: string){
 onlyLatestKeyword(keys: Array<Keyword2>){
 
   // Filter Keywords for the active ones and sort them by their position in the input
-  let activeKeys = keys.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
+  let activeKeys = keys.filter(activeKey => activeKey.position != -1).sort((a,b) => b.position-a.position);
   // From all active Keywords with the same category, only the one with the latest position stays active.
   for (let i = 0; i<activeKeys.length-1; i++){
-    if((activeKeys[i].position + activeKeys[i].synonym.length-1) < activeKeys[i+1].position){
-      activeKeys[i].position = -1;
+    if((activeKeys[i].position) > (activeKeys[i+1].position)+ activeKeys[i+1].synonym.length-1){
+      while(activeKeys[i+1] != undefined){
+        activeKeys[i+1].position = -1;
+        activeKeys.splice(i+1,1);
+      }
     } else {
-      activeKeys[i+1].position = -1;
-      activeKeys.splice(i+1,1);
+      activeKeys[i].position = -1;
     }
   }
   // currently disabled
