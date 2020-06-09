@@ -112,6 +112,7 @@ export class TextComponent implements OnInit {
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
+      this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     }
    // this.myText.report = this.textOut.makeReport(this.diseases);
   }

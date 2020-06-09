@@ -265,6 +265,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
       let varField = input.slice(startIndex, endIndex).toLowerCase();
 
       if(activeKeys[i].TextBefore != undefined){
+        
         //for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
         for(let j = 0; j<1; j++){
 
@@ -273,6 +274,12 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
           activeVar = varField.indexOf(tb[j].toLowerCase());
           console.log("VarTest");
           console.log(activeVar);
+          // Automatically gets you to the next variable if valid Attribute is entered
+          if(index < activeDis.categories.length-1 && activeVar === -1){
+            let nextCatName = activeDis.categories[index+1].name;
+            this.twInput.twInput += " " + tb[j] + " ";
+            reRun = true;
+          }
       
           if( activeVar != -1){
             let varStart = activeVar + tb[j].length;
