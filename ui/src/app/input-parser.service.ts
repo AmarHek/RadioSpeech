@@ -23,6 +23,8 @@ export class InputParserService {
   normalKeys: Array<Keyword2> = [];
 
   diseases: Array<Disease> = [];
+
+  twInput: {twInput: string, again: boolean} = {twInput: "", again: false};
   
 
  
@@ -112,6 +114,7 @@ export class InputParserService {
 
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
+  this.twInput.twInput = input;
   let activeDis = this.setDisease(input, this.diseases);
   if(activeDis != undefined){
     // Checks if Category name contains Disease name, which produces an error
@@ -146,22 +149,28 @@ export class InputParserService {
       this.onlyLatestKeyword(activeCat.keys);
       // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
       // Also check which keywords have variables and if the occurr in the input2
-      let dummy = this.getActivesAndVariables(activeCat.keys, input2);
+      let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
+      this.twInput.again = reRun;
       // produces text output 
       let text = this.textOut.makeReport(activeCat, activeDis);
 
-      
+
       // Test Log
-      console.log("KeyTest");
+      
+      const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
+      console.log("IndexTest");
       console.log(this.diseases);
-      return text;
+      console.log(index);
+      return text
+     //return {report: text, twInput: input};
   
     }
   console.log("KeyTest");
   console.log(this.diseases);
   }
   // no text when no category is activated
-  return this.textOut.makeReport(undefined, undefined);
+  let text2 = this.textOut.makeReport(undefined, undefined);
+  return text2;
 }
 
 // sets all unused categories of one disease to its normal keywords
@@ -234,12 +243,16 @@ onlyLatestKeyword(keys: Array<Keyword2>){
 }
 
 
-getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
+getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: Disease, activeCat: Category){
   // Filters for all Keywords, that are active in input and sorts them by index
   var activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a,b) => a.position-b.position);
+  var reRun = false;
   // Searches for Signal Variable Text (Text Before) between corresponding keyword and next active Variable
   for(let i = 0; i<activeKeys.length; i++){
     activeKeys[i].active = activeKeys[i].name;
+    const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
+    console.log("CheckActiveKeys");
+    console.log(activeKeys);
     //if(activeKeys[i].VarType != undefined){
       let endIndex : number;
       let activeVar = -1;
@@ -265,19 +278,36 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
             let varStart = activeVar + tb[j].length;
             // decides what combination of characters ends variable input
             activeKeys[i].VarFound[j] = (tb[j] + varField.slice(varStart, varField.search(/[cm]m/)+2) + ta[j]);
+            
+            
+            // Automatically gets you to the next Categorie if valid Attribute is entered
+            if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1){
+              let nextCatName = activeDis.categories[index+1].name;
+              this.twInput.twInput += " " + nextCatName + " ";
+              reRun = true;
+            }
           }
           else {
             activeKeys[i].VarFound[j] = undefined;
           }
         } 
+      } else {
+        // Automatically gets you to the next Categorie if valid Attribute is entered
+        if(index < activeDis.categories.length-1){
+          let nextCatName = activeDis.categories[index+1].name;
+          this.twInput.twInput += " " + nextCatName + " ";
+          reRun = true;
+
+        }
       }
-      let str = "Zusatz";
+      //Zusatz Function for every attribute, not needed when automatic categories iterating is active
+      /* let str = "Zusatz";
       activeVar = varField.indexOf(str.toLowerCase());
       if(activeVar != -1){
         let varStart = activeVar + str.length;
         // decides what combination of characters ends variable input
         activeKeys[i].VarFound[1] = "Zusatz:" + varField.slice(varStart, varField.search(/fertig/)-1) + ". ";
-      }
+      } */
     //}
   }
   // same procedure for last element of activeKeys
@@ -296,16 +326,16 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string){
     }
   } */
   // (currently not used: only when all keywords can be used as input simultaneously)
-  let mainKeys = allKeywords.filter((mainKey => mainKey.synonym == mainKey.name));
+  /* let mainKeys = allKeywords.filter((mainKey => mainKey.synonym == mainKey.name));
   for (const key of activeKeys){
     for (const main of mainKeys){
       if (key.name == main.name){
         main.active = key.name;
       }
     }
-  }
+  } */
 
-  return activeKeys;
+  return reRun;
 }
 
 // resets keywords of specified category

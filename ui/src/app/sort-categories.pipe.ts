@@ -9,8 +9,7 @@ import { Category, Keyword2 } from './text/Keyword';
 export class SortCategoriesPipe implements PipeTransform {
 
   transform(value: any): any {
-    
-    return value.sort((a,b) => {
+    return JSON.parse(JSON.stringify(value)).sort((a,b) => {
       if (a.active == true){
         return -1;
       } else if (b.active == true){

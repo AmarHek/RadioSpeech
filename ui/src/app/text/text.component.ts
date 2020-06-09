@@ -36,6 +36,7 @@ export class TextComponent implements OnInit {
     this.diseases = this.inputParser.diseases;
     this.firstTime = false;
     this.start = false;
+    this.myInput = this.inputParser.twInput;
     $('#my_img').hide();
     $("#imgUpload").hover(
       // show
@@ -62,6 +63,7 @@ export class TextComponent implements OnInit {
   //polyp: Array<Category> = [];
   diseases: Array<Disease> = [];
   firstTime: boolean = false;
+  myInput: {twInput: string, again: boolean} = {twInput: "", again: false};
 
   resetTexts = new Map<M.CheckBox | M.Option, string>();
 
@@ -104,9 +106,13 @@ export class TextComponent implements OnInit {
       this.readConfig();
       this.firstTime = true;
     } */
-    let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    this.myText.report = this.inputParser.parseInput(input);
-    this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input);
+    //this.twoWayInput += "In ";
+    //let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
+    this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
+    if(this.myInput.again){
+      this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
+    }
    // this.myText.report = this.textOut.makeReport(this.diseases);
   }
   // (currently not used: Keyword options are also clickable as radio input)
