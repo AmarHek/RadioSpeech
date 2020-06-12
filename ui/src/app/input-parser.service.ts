@@ -41,7 +41,7 @@ export class InputParserService {
     for (const El of rootEl){
       if(El.kind == "block"){
         disName = El.text;
-        this.diseases.push({name: disName, categories: [], active: false, number: 1, position: -1 });
+        this.diseases.push({name: disName, categories: [], active: false, number: 1, position: -1, firstTime: true });
       }
       keys = [];
       if(El.kind == "category"){
@@ -127,10 +127,7 @@ export class InputParserService {
     // only look for categories at what comes after the last disease
     let input2 = input.substring(activeDis.position);
     //let actDis = this.diseases.find(dis => dis.active == true);
-    //enables the rest normal method
-    if(input2.toLowerCase().indexOf("rest normal") != -1){
-      this.restNormal(activeDis);   
-    }
+    
     // checks which category is active and where in the input field it occurs
     let activeCat =  this.setCategory(input2, activeDis.categories );
     // if one active category is detected, it's active value is set to true, all others to false
@@ -143,6 +140,10 @@ export class InputParserService {
       // Find out which keywords occur in the input2
       for(const key of activeCat.keys){
         key.position = this.getIndex(key.synonym, input2);
+      }
+      //enables the rest normal method
+      if(input2.toLowerCase().indexOf("rest normal") != -1){
+        this.restNormal(activeDis);   
       }
       // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
       // (currently not used: Also responsible for button clicks)
@@ -161,13 +162,22 @@ export class InputParserService {
       console.log("IndexTest");
       console.log(this.diseases);
       console.log(index);
+      
       return text
      //return {report: text, twInput: input};
   
+    } else if(activeDis.firstTime) {
+      // automatically goes into first category when disease is called
+      let firstCatName = activeDis.categories[0].name;
+      this.twInput.twInput += " " + firstCatName + " ";
+      this.twInput.again = true;
+      activeDis.firstTime = false;
     }
-  console.log("KeyTest");
-  console.log(this.diseases);
+    console.log("KeyTest");
+    console.log(this.diseases);
+    
   }
+
   // no text when no category is activated
   let text2 = this.textOut.makeReport(undefined, undefined);
   return text2;
@@ -181,9 +191,12 @@ restNormal(disease: Disease){
     if(cat.keys.find(key => key.position !== -1) == undefined){
       // find normal keyword and set it 
       for(const key of cat.keys){
+        
         if(key.normal == true && key.name == key.synonym){
           key.active = key.name;
           key.position = 0;
+          console.log("RestNormalCheck");
+          console.log(key.name);
         }
       }
       // make additional report
@@ -223,7 +236,7 @@ onlyLatestKeyword(keys: Array<Keyword2>){
   }
   // currently disabled
   // Filter for all buttons that were pressed and sort them by order !!! todo
-  let activeButtons = keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
+  /* let activeButtons = keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
   if(activeButtons.length >= 1){
 
     // if keyword of latest button click occurs later than latest written key -> take button click, else take written key
@@ -238,7 +251,7 @@ onlyLatestKeyword(keys: Array<Keyword2>){
     } else {
       activeButtons[0].position = activeButtons[0].buttonPos;
     }
-  }
+  } */
 
 }
 
@@ -251,6 +264,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
   for(let i = 0; i<activeKeys.length; i++){
     activeKeys[i].active = activeKeys[i].name;
     const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
+    let guided = (activeDis.categories[activeDis.categories.length-1].keys.find(key => key.position !== -1) !== undefined);
     console.log("CheckActiveKeys");
     console.log(activeKeys);
     //if(activeKeys[i].VarType != undefined){
@@ -275,12 +289,12 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
           console.log("VarTest");
           console.log(activeVar);
           // Automatically gets you to the next variable if valid Attribute is entered
-          if(index < activeDis.categories.length-1 && activeVar === -1){
+          if(index < activeDis.categories.length-1 && activeVar === -1 && activeKeys[i].position !== 0){
             let nextCatName = activeDis.categories[index+1].name;
             this.twInput.twInput += " " + tb[j] + " ";
             reRun = true;
           }
-      
+    
           if( activeVar != -1){
             let varStart = activeVar + tb[j].length;
             // decides what combination of characters ends variable input
@@ -288,7 +302,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
             
             
             // Automatically gets you to the next Categorie if valid Attribute is entered
-            if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1){
+            if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
               let nextCatName = activeDis.categories[index+1].name;
               this.twInput.twInput += " " + nextCatName + " ";
               reRun = true;
@@ -300,7 +314,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
         } 
       } else {
         // Automatically gets you to the next Categorie if valid Attribute is entered
-        if(index < activeDis.categories.length-1){
+        if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
           let nextCatName = activeDis.categories[index+1].name;
           this.twInput.twInput += " " + nextCatName + " ";
           reRun = true;
@@ -388,6 +402,7 @@ setDisease(input: string, diseases: Array<Disease>){
         copy.number = nextInstance;
         copy.position = addInstance;
         copy.active = true;
+        copy.firstTime = true;
         copy.name += " " + copy.number;
         for(const cat of copy.categories){
           this.resetCategory(cat);

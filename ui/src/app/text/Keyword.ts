@@ -59,6 +59,7 @@ export class Disease{
     active: boolean;
     number: number;
     position: number;
+    firstTime: boolean;
 }
 
 export class TextDic{
