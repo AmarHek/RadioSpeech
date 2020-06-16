@@ -26,6 +26,8 @@ export class InputParserService {
 
   twInput: {twInput: string, again: boolean} = {twInput: "", again: false};
   
+  end: boolean = false;
+  globalPos : number;
 
  
   /* --------------------------------
@@ -114,73 +116,87 @@ export class InputParserService {
 
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
-  this.twInput.twInput = input;
-  let activeDis = this.setDisease(input, this.diseases);
-  if(activeDis != undefined){
-    // Checks if Category name contains Disease name, which produces an error
-    let disPosLast = activeDis.position+activeDis.name.length;
-    if((disPosLast != input.length) && input.charAt(disPosLast) !== " "){
+  if(input.toLowerCase().indexOf("ende") !== -1){
+    this.end = true;
+  } else {
+    this.twInput.twInput = input;
+    let activeDis = this.setDisease(input, this.diseases);
+    if(activeDis != undefined){
+      // Checks if Category name contains Disease name, which produces an error
+      let disPosLast = activeDis.position+activeDis.name.length;
+      if((disPosLast != input.length) && input.charAt(disPosLast) !== " "){
+          
+          let tempInput = input.substr(0,activeDis.position) + input.substr(disPosLast+1);
+          activeDis = this.setDisease(tempInput, this.diseases);
+      }
+      /* // pushes dis name to array for correction purpose later
+      if(this.textOut.recogWords[this.textOut.recogWords.length-1] !== activeDis.name.toLowerCase()){
+      this.textOut.recogWords.push(activeDis.name.toLowerCase());
+      }  */
+      // only look for categories at what comes after the last disease
+      let input2 = input.substring(activeDis.position);
+      //let actDis = this.diseases.find(dis => dis.active == true);
+      
+      // checks which category is active and where in the input field it occurs
+      let activeCat =  this.setCategory(input2, activeDis.categories );
+      // if one active category is detected, it's active value is set to true, all others to false
+      if(activeCat != undefined){
+        // pushes dis name to array for correction purpose later
+      if(this.textOut.recogWords.find(el => {
+        return (el.word === activeCat.name.toLowerCase() && el.pos === activeCat.position + activeDis.position)
+      }) === undefined){
+        this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeCat.position + activeDis.position});
+        }
+
+        // Evaluate only the input that comes after the last category
+        input2 = input2.substring(activeCat.position);
+        // Autocorrect words
+        input2 = this.autocorrect(input2);
+        // Find out which keywords occur in the input2
+        for(const key of activeCat.keys){
+          key.position = this.getIndex(key.synonym, input2, activeCat.position + activeDis.position);
+        }
+        //enables the rest normal method
+        if(input2.toLowerCase().indexOf("rest normal") != -1){
+          this.restNormal(activeDis);   
+        }
+        // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
+        // (currently not used: Also responsible for button clicks)
+        this.onlyLatestKeyword(activeCat.keys);
+        // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
+        // Also check which keywords have variables and if the occurr in the input2
+        let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
+        this.twInput.again = reRun;
+        // produces text output 
+        let text = this.textOut.makeReport(activeCat, activeDis);
+
+
+        // Test Log
         
-        let tempInput = input.substr(0,activeDis.position) + input.substr(disPosLast+1);
-        activeDis = this.setDisease(tempInput, this.diseases);
-    }
-    // only look for categories at what comes after the last disease
-    let input2 = input.substring(activeDis.position);
-    //let actDis = this.diseases.find(dis => dis.active == true);
+        const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
+        console.log("IndexTest");
+        console.log(this.diseases);
+        console.log(index);
+        
+        return text
+      //return {report: text, twInput: input};
     
-    // checks which category is active and where in the input field it occurs
-    let activeCat =  this.setCategory(input2, activeDis.categories );
-    // if one active category is detected, it's active value is set to true, all others to false
-    if(activeCat != undefined){
-      
-      // Evaluate only the input that comes after the last category
-      input2 = input2.substring(activeCat.position);
-      // Autocorrect words
-      input2 = this.autocorrect(input2);
-      // Find out which keywords occur in the input2
-      for(const key of activeCat.keys){
-        key.position = this.getIndex(key.synonym, input2);
+      } else if(activeDis.firstTime) {
+        // automatically goes into first category when disease is called
+        let firstCatName = activeDis.categories[0].name;
+        this.twInput.twInput += " " + firstCatName + " ";
+        this.twInput.again = true;
+        activeDis.firstTime = false;
       }
-      //enables the rest normal method
-      if(input2.toLowerCase().indexOf("rest normal") != -1){
-        this.restNormal(activeDis);   
-      }
-      // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
-      // (currently not used: Also responsible for button clicks)
-      this.onlyLatestKeyword(activeCat.keys);
-      // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
-      // Also check which keywords have variables and if the occurr in the input2
-      let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
-      this.twInput.again = reRun;
-      // produces text output 
-      let text = this.textOut.makeReport(activeCat, activeDis);
-
-
-      // Test Log
-      
-      const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
-      console.log("IndexTest");
+      console.log("KeyTest");
       console.log(this.diseases);
-      console.log(index);
       
-      return text
-     //return {report: text, twInput: input};
-  
-    } else if(activeDis.firstTime) {
-      // automatically goes into first category when disease is called
-      let firstCatName = activeDis.categories[0].name;
-      this.twInput.twInput += " " + firstCatName + " ";
-      this.twInput.again = true;
-      activeDis.firstTime = false;
     }
-    console.log("KeyTest");
-    console.log(this.diseases);
-    
   }
-
-  // no text when no category is activated
-  let text2 = this.textOut.makeReport(undefined, undefined);
-  return text2;
+    // no text when no category is activated
+    let text2 = this.textOut.makeReport(undefined, undefined);
+    return text2;
+  
 }
 
 // sets all unused categories of one disease to its normal keywords
@@ -298,9 +314,27 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
           if( activeVar != -1){
             let varStart = activeVar + tb[j].length;
             // decides what combination of characters ends variable input
-            activeKeys[i].VarFound[j] = (tb[j] + varField.slice(varStart, varField.search(/[cm]m/)+2) + ta[j]);
-            
-            
+            let varInp =  varField.slice(varStart, varField.search(/[cm]m/)+2);
+            activeKeys[i].VarFound[j] = (tb[j] + varInp + ta[j]);
+
+            // pushes dis name to array for correction purpose later
+            if(this.textOut.recogWords.find(el => {
+              return (el.word === tb[j].trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + activeVar + startIndex)
+            }) === undefined){
+              this.textOut.recogWords.push({word: tb[j].trim().toLowerCase(), pos: activeCat.position + activeDis.position + activeVar + startIndex});
+              }
+            if(this.textOut.recogWords.find(el => {
+              return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + varStart + startIndex)
+            }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+              this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + varStart + startIndex});
+              }
+            // puts variable into an array with alle recognised words for correction purpose at the end
+            /* if(this.textOut.recogWords.indexOf(tb[j]) === -1){
+            this.textOut.recogWords.push(tb[j].toLowerCase());
+            }
+            if(this.textOut.recogWords[this.textOut.recogWords.length-1] !== varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase()){
+            this.textOut.recogWords.push(varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase());
+            } */
             // Automatically gets you to the next Categorie if valid Attribute is entered
             if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
               let nextCatName = activeDis.categories[index+1].name;
@@ -371,13 +405,29 @@ resetCategory(category: Category){
 }
 
 // gets position of a keyword in specified input string
-getIndex(keySyn: string, input:string){
+getIndex(keySyn: string, input:string, glPos: number){
   let tempPos : number = -1;
   // gets index of latest appearance of synonym, if keyword is not in input, position = -1
   tempPos = input.toLowerCase().indexOf(keySyn.toLowerCase());
-    while (input.toLowerCase().indexOf(keySyn.toLowerCase(), tempPos+1) !==-1){
-      tempPos = input.toLowerCase().indexOf(keySyn.toLowerCase(), tempPos+1);
+  /* if(tempPos !== -1 && this.textOut.recogWords[this.textOut.recogWords.length-1] !== keySyn.toLowerCase()){
+    this.textOut.recogWords.push(keySyn.toLowerCase());
+  } */
+  let ind = this.textOut.recogWords.findIndex(el => {
+    return ((el.pos + el.word.length) === (glPos + tempPos + keySyn.length) && (el.word.length > keySyn.length)); 
+  });
+  if(this.textOut.recogWords.find(el => {
+    return (el.word === keySyn.toLowerCase() &&  el.pos === glPos + tempPos);
+  }) === undefined && tempPos !== -1 && ind === -1){
+    this.textOut.recogWords.push({word: keySyn.toLowerCase(), pos: glPos + tempPos});
+    let ind2 = this.textOut.recogWords.findIndex(el => {
+      return ((el.pos + el.word.length) === (glPos + tempPos + keySyn.length) && (el.word.length < keySyn.length)); 
+    });
+    ind2 !== -1 ? this.textOut.recogWords.splice(ind2,1) : ind = ind;
     }
+
+  while (input.toLowerCase().indexOf(keySyn.toLowerCase(), tempPos+1) !==-1){
+    tempPos = input.toLowerCase().indexOf(keySyn.toLowerCase(), tempPos+1);
+  }
   return tempPos;
 }
 
@@ -437,6 +487,22 @@ setDisease(input: string, diseases: Array<Disease>){
     for(const act of diseases){
       if(act.name == activeDis.disName){
         act.active = true;
+        this.globalPos = activeDis.disPos;
+        // pushes dis name to array for correction purpose later
+      /* if(this.textOut.recogWords.find(el => {
+        return (el.word === activeDis.disName.toLowerCase() &&  el.pos === activeDis.disPos);
+      }) === undefined){
+        this.textOut.recogWords.push({word: activeDis.disName.toLowerCase(), pos: activeDis.disPos});
+        } */
+        if(this.textOut.recogWords.find(el => {
+          return (el.word.length >= activeDis.disName.length &&  el.pos === activeDis.disPos);
+        }) === undefined){
+          this.textOut.recogWords.push({word: activeDis.disName.toLowerCase(), pos: activeDis.disPos});
+          let ind = this.textOut.recogWords.findIndex(el => {
+            return ((el.pos === activeDis.disPos) && (el.word.length < activeDis.disName.length))
+          });
+          ind !== -1 ? this.textOut.recogWords.splice(ind,1) : ind = ind;
+          }
       } else {
         act.active = false;
       }

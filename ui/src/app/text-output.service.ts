@@ -14,9 +14,10 @@ export class TextOutputService {
   // Array containing the text for each category
   myReport: {report: string, category: string}[] = [];
   rep: Array<TextDic> = [];
+  recogWords : {word: string, pos: number}[] = [];
+
+
   // produces the text output
-
-
   makeReport(activeCat: Category, activeDis: Disease){
     // this.report.text="";
     // gets active Category
@@ -107,5 +108,43 @@ export class TextOutputService {
     this.rep.splice(index, 0, {disName: disease.name, reports: tempReports})
   }
 
+  finalOut(end: boolean, inpAr: Array<string>){
+    /* if(end){
+    console.log(this.recogWords);
+    console.log(inpAr);
+    } */
+    if(end){
+      var temp = 0;
+      for (let j = 0; j<this.recogWords.length; j++){
+        let splitAr = this.recogWords[j].word.split(" ");
+        
+        let bool = true;
+        temp = inpAr.indexOf(splitAr[0], temp);
+        for(let i = 1; i<splitAr.length; i++){
+          if(inpAr[temp+i] !== splitAr[i]){
+            bool = false;
+          }
+        }
+        if(bool){
+          for(let i = 0; i<splitAr.length; i++){
+            
+           // console.log(temp);
+            inpAr[temp+i] = "<span style=\"color: red; text-transform: uppercase\">" + inpAr[temp+i] + "</span>";
+          }
+          temp += splitAr.length;
+        } else {
+          temp++;
+          console.log("pimmel2");
+          j -= 1;
+        }
+      
+      }
+      console.log(inpAr);
+      console.log(this.recogWords);
+      inpAr.pop();
+      document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
+    }
   
+  }
+
 }

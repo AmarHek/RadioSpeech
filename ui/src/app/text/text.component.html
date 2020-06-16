@@ -19,17 +19,17 @@
 			class="btn btn-outline-secondary float-right ">scroll</button> -->
 		<!-- input "Befund" text here and submits it automatically -->
 		<label for="input">Befund eingeben:
-			<input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput()" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80">
+			<!-- <input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80"> -->
 		</label>
 		<input type='file' id="imgUpload" />
-		
 		<img src="http://placehold.it/180" id="my_img" />
 		<div id="inputText">
 			<br>
 		</div>
 	</div>
 	<div class="main-content" id = "main-content">
-		<div class="container">
+		<div *ngIf="!end" class="container">
 			<div *ngFor="let dis of diseases | sortCategories">
 				<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
 
@@ -55,6 +55,12 @@
 
 				</div>
 			</div>
+		</div>
+		<div class="ende">
+		<div *ngIf="end" class="ende">
+			<!-- {{myInput.twInput.split(" ")}} -->
+			<!-- {{recogWords}} -->
+		</div>
 		</div>
 	</div>
 

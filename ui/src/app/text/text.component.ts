@@ -34,9 +34,11 @@ export class TextComponent implements OnInit {
     // assigns reference to polyp object
     //this.polyp = this.inputParser.polyp;
     this.diseases = this.inputParser.diseases;
+
     this.firstTime = false;
     this.start = false;
     this.myInput = this.inputParser.twInput;
+    //this.recogWords = this.textOut.recogWords;
     $('#my_img').hide();
     $("#imgUpload").hover(
       // show
@@ -64,8 +66,12 @@ export class TextComponent implements OnInit {
   diseases: Array<Disease> = [];
   firstTime: boolean = false;
   myInput: {twInput: string, again: boolean} = {twInput: "", again: false};
-
+  end: boolean = false;
   resetTexts = new Map<M.CheckBox | M.Option, string>();
+
+  parsingString: string = "";
+ // recogWords : {Array<string>} = [];
+  
 
 
 
@@ -100,7 +106,7 @@ export class TextComponent implements OnInit {
       }
     this.readConfig();
   }
-  onInput(){
+  onInput(ev){
     /* if(!this.firstTime){
       this.inputParser.createStartDict(this.parts);
       this.readConfig();
@@ -108,7 +114,13 @@ export class TextComponent implements OnInit {
     } */
     //this.twoWayInput += "In ";
     //let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    console.log("event");
+    console.log(ev.data);
+    this.myInput.twInput += ev.data;
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
+    let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
+    this.end = this.inputParser.end;
+    this.textOut.finalOut(this.end, inpArr);
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
