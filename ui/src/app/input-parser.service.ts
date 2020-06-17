@@ -117,6 +117,9 @@ export class InputParserService {
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
   if(input.toLowerCase().indexOf("ende") !== -1){
+    let main = document.getElementsByClassName("main")[0].classList
+    main.remove("main");
+    main.add("report");
     this.end = true;
   } else {
     this.twInput.twInput = input;

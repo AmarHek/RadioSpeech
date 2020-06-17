@@ -2,8 +2,8 @@
 
 	<div class="headline">
 
-		<button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
-			normal</button>
+		<!-- <button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
+			normal</button> -->
 
 		<!-- refreshes Page -->
 		<button id="refresh" title="seite neu laden" (click)="refreshPage()"
@@ -19,15 +19,16 @@
 			class="btn btn-outline-secondary float-right ">scroll</button> -->
 		<!-- input "Befund" text here and submits it automatically -->
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (paste)="inputOrPaste($event)" (input)="inputOrPaste($event)" (click)="inputClick()" placeholder="Befund eingeben..." size="80">
 			<!-- <input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80"> -->
 		</label>
-		<input type='file' id="imgUpload" />
-		<img src="http://placehold.it/180" id="my_img" />
+		<!-- <input type='file' id="imgUpload" />
+		<img src="http://placehold.it/180" id="my_img" /> -->
 		<div id="inputText">
 			<br>
 		</div>
 	</div>
+	
 	<div class="main-content" id = "main-content">
 		<div *ngIf="!end" class="container">
 			<div *ngFor="let dis of diseases | sortCategories">
@@ -63,9 +64,9 @@
 		</div>
 		</div>
 	</div>
-
+	<div *ngIf="end">
 	<app-report [report]="myText.report" [parts]="parts"></app-report>
-
+	</div>
 </div>
 
 <!-- Dialog to enter the Parameters, can be activated by integrating a button or link that

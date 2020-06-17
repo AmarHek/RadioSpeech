@@ -8,10 +8,29 @@ $border-color: hsl(200, 70%, 80);
   grid-template-columns: 1fr 2fr;
   grid-template-areas:
     "headline headline"
+    "content  content"
+    "content  content"
+    "content  content"
+    "content  content";
+
+  grid-template-rows: auto 1fr;
+  overflow-y: scroll;
+
+}
+
+.report {
+  height: 100%;
+  width: 100%;
+  display: inline-grid;
+  grid-gap: 10px;
+  //grid-template-columns: 500px 1fr;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas:
+    "headline headline"
     "bf-text  content"
     "bf-text  content"
     "bf-text  content"
-    "bf-but   content";
+    "bf-but  content";
 
   grid-template-rows: auto 3fr auto 1fr auto;
   overflow-y: scroll;

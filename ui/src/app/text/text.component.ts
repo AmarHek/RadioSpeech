@@ -106,7 +106,15 @@ export class TextComponent implements OnInit {
       }
     this.readConfig();
   }
-  onInput(ev){
+
+  inputOrPaste(ev){
+    if(ev.type==="paste"){
+      this.onInput(ev.clipboardData.getData('text'));
+    } else if (ev.type==="input" && ev.inputType==="insertText"){
+      this.onInput(ev.data);
+    }
+  }
+  onInput(ev : string){
     /* if(!this.firstTime){
       this.inputParser.createStartDict(this.parts);
       this.readConfig();
@@ -114,9 +122,10 @@ export class TextComponent implements OnInit {
     } */
     //this.twoWayInput += "In ";
     //let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    console.log("event");
-    console.log(ev.data);
-    this.myInput.twInput += ev.data;
+    
+    this.myInput.twInput += ev;
+    //console.log(ev.clipboardData.getData('text'));
+    //this.myInput.twInput += ev.data;
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;
