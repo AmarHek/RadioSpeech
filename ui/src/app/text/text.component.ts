@@ -68,6 +68,7 @@ export class TextComponent implements OnInit {
   myInput: {twInput: string, again: boolean} = {twInput: "", again: false};
   end: boolean = false;
   resetTexts = new Map<M.CheckBox | M.Option, string>();
+  oldInput : string = "";
 
   parsingString: string = "";
  // recogWords : {Array<string>} = [];
@@ -107,14 +108,15 @@ export class TextComponent implements OnInit {
     this.readConfig();
   }
 
-  inputOrPaste(ev){
+  /* inputOrPaste(ev){
     if(ev.type==="paste"){
       this.onInput(ev.clipboardData.getData('text'));
     } else if (ev.type==="input" && ev.inputType==="insertText"){
       this.onInput(ev.data);
     }
-  }
-  onInput(ev : string){
+  } */
+  
+  onInput(ev){
     /* if(!this.firstTime){
       this.inputParser.createStartDict(this.parts);
       this.readConfig();
@@ -122,8 +124,20 @@ export class TextComponent implements OnInit {
     } */
     //this.twoWayInput += "In ";
     //let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    
-    this.myInput.twInput += ev;
+    console.log("event");
+    console.log(ev);
+    let inp = (document.getElementById('input') as HTMLTextAreaElement).value;
+    let dif : string;
+    if (this.oldInput ===""){
+      dif = inp;
+    } else {
+    dif = inp.replace(this.oldInput, ""); 
+    }
+    console.log("dif and inp");
+    console.log(dif);
+    console.log(inp);
+    this.oldInput = inp;
+    this.myInput.twInput += dif;
     //console.log(ev.clipboardData.getData('text'));
     //this.myInput.twInput += ev.data;
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);

@@ -36,6 +36,9 @@ $border-color: hsl(200, 70%, 80);
   overflow-y: scroll;
 
 }
+.main.container{
+  max-width: 100%;
+}
 
 .main > div {
   background-color: hsl(200, 70%, 97%);
@@ -145,8 +148,8 @@ textarea {
 .category {
   font-size: 140%;
   font-weight: bold;
-  padding: 10;
-  margin: 10;
+  padding: 10px;
+  margin: 10px;
   vertical-align: top;
   position: relative;
   top: -1px;
