@@ -141,15 +141,19 @@ export class InputParserService {
       //let actDis = this.diseases.find(dis => dis.active == true);
       
       // checks which category is active and where in the input field it occurs
-      let activeCat =  this.setCategory(input2, activeDis.categories );
-      // if one active category is detected, it's active value is set to true, all others to false
-      if(activeCat != undefined){
-        // pushes dis name to array for correction purpose later
-      if(this.textOut.recogWords.find(el => {
-        return (el.word === activeCat.name.toLowerCase() && el.pos === activeCat.position + activeDis.position)
-      }) === undefined){
-        this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeCat.position + activeDis.position});
-        }
+      //let activeCat =  this.setCategory(input2, activeDis.categories );
+      for(let i = 0; i< activeDis.categories.length; i++){
+        let activeCat = activeDis.categories[i];
+        activeCat.position = 0;
+        activeCat.active = true;
+        // if one active category is detected, it's active value is set to true, all others to false
+        if(activeCat != undefined){
+          // pushes dis name to array for correction purpose later
+        /* if(this.textOut.recogWords.find(el => {
+          return (el.word === activeCat.name.toLowerCase() && el.pos === activeCat.position + activeDis.position)
+        }) === undefined){
+          this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeCat.position + activeDis.position});
+          } */
 
         // Evaluate only the input that comes after the last category
         input2 = input2.substring(activeCat.position);
@@ -171,35 +175,37 @@ export class InputParserService {
         let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
         this.twInput.again = reRun;
         // produces text output 
-        let text = this.textOut.makeReport(activeCat, activeDis);
-
-
+        var text = this.textOut.makeReport(activeCat, activeDis);
+        }
+        activeCat.active = false;
+      }
         // Test Log
-        
+       /*  
         const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
         console.log("IndexTest");
         console.log(this.diseases);
-        console.log(index);
+        console.log(index); */
         
-        return text
+        
       //return {report: text, twInput: input};
     
-      } else if(activeDis.firstTime) {
+       /* else if(activeDis.firstTime) {
         // automatically goes into first category when disease is called
         let firstCatName = activeDis.categories[0].name;
         this.twInput.twInput += " " + firstCatName + " ";
         this.twInput.again = true;
         activeDis.firstTime = false;
-      }
+      } */
       console.log("KeyTest");
       console.log(this.diseases);
       
     }
+    return text
   }
     // no text when no category is activated
     let text2 = this.textOut.makeReport(undefined, undefined);
     return text2;
-  
+    
 }
 
 // sets all unused categories of one disease to its normal keywords
@@ -339,11 +345,11 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
             this.textOut.recogWords.push(varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase());
             } */
             // Automatically gets you to the next Categorie if valid Attribute is entered
-            if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
+            /* if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
               let nextCatName = activeDis.categories[index+1].name;
               this.twInput.twInput += " " + nextCatName + " ";
               reRun = true;
-            }
+            } */
           }
           else {
             activeKeys[i].VarFound[j] = undefined;
@@ -351,12 +357,12 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
         } 
       } else {
         // Automatically gets you to the next Categorie if valid Attribute is entered
-        if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+        /* if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
           let nextCatName = activeDis.categories[index+1].name;
           this.twInput.twInput += " " + nextCatName + " ";
           reRun = true;
 
-        }
+        } */
       }
       //Zusatz Function for every attribute, not needed when automatic categories iterating is active
       /* let str = "Zusatz";
@@ -486,7 +492,9 @@ setDisease(input: string, diseases: Array<Disease>){
   }
   // sets active and position of latest disease
   if(diseases.find(dis => dis.name == activeDis.disName) != undefined){
+    if(diseases.find(dis => dis.name == activeDis.disName).position === -1){
     diseases.find(dis => dis.name == activeDis.disName).position = activeDis.disPos;
+    }
     for(const act of diseases){
       if(act.name == activeDis.disName){
         act.active = true;

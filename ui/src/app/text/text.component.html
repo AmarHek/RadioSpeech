@@ -30,32 +30,38 @@
 	</div>
 	
 	<div class="main-content" id = "main-content">
-		<div *ngIf="!end" class="container m-1">
-			<div *ngFor="let dis of diseases | sortCategories">
-				<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
+		<div *ngIf="!end" class="m-1">
+			<table>
+			<tbody>
+				<div *ngFor="let dis of diseases | sortCategories">
+					<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
 
-				<div  *ngFor="let cat of dis.categories | sortCategories">
-					<ng-container *ngIf="dis.active == true">
-						<div class="cat" name="test" id="{{cat.name}}">{{cat.name}}</div>
-						<div class="row">
-							<div class="col-4" *ngFor="let key of filterSyn(cat.keys)">
-								<ng-container *ngIf="cat.active == true">
-									<!-- <div> <input [name]="cat"
+					<tr  *ngFor="let cat of dis.categories | sortCategories">
+						<ng-container *ngIf="dis.active == true">
+							<td class="cat" name="test" id="{{cat.name}}">{{cat.name}}</td>
+							<td>
+							<div class="row">
+							<ng-container *ngFor="let key of filterSyn(cat.keys)">
+								<!-- <ng-container *ngIf="cat.active == true"> -->
+																	<!-- <div> <input [name]="cat"
 										id="{{key.name}}box" [value]="key.name" type="radio"
 											[(ngModel)]="key.active"/>
 									</div> -->
-									<div class="option" id={{key.name}}> {{key.name}}
+									<div class="col-3 option" id={{key.name}}> {{key.name}}
 										<!-- Adds the optional length Attribute  -->
+									
+										<span *ngIf="key.TextBefore!=undefined" class="link" id="{{key.category + key.name}}">{{key.TextBefore + '...'}}</span>
 									</div>
-									<div *ngIf="key.TextBefore!=undefined" class="link" id="{{key.category + key.name}}">{{key.TextBefore + '...' + key.TextAfter}}</div>
-
-								</ng-container>
+								
+							</ng-container>
 							</div>
-						</div>
-					</ng-container>
+							</td>
+						</ng-container>
 
+					</tr>
 				</div>
-			</div>
+			</tbody>
+			</table>
 		</div>
 		<div class="ende">
 		<div *ngIf="end" class="ende">

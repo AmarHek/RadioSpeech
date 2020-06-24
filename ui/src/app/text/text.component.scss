@@ -17,7 +17,28 @@ $border-color: hsl(200, 70%, 80);
   overflow-y: scroll;
 
 }
+.row{
+  margin-left: 0px;
+  margin-bottom: 10px;
+  border: solid rgba($color: lightgrey, $alpha: 0.4);
+}
 
+
+table { 
+  width: 100%; 
+}
+.col-3{
+  flex: 0 0 19%;
+  max-width: 25%;
+}
+table td { 
+  width: 1px; 
+  white-space: nowrap;
+} /* min width, actually: this causes the width to fit the content */
+table td:last-child { 
+  width: 100%;
+  box-sizing: content-box;
+} /* well, it's less than 100% in the end, but this still works for me */
 .report {
   height: 100%;
   width: 100%;
@@ -192,19 +213,19 @@ input[type="file"] {
 }
 
 div.option{
-  margin: 0 10px;
-  font-size: 1.5em;
+  margin: 0 5px;
+  font-size: 1.2em;
   text-decoration: underline;
   font-weight: 500;
   padding-left: 5px;
-  margin-top: 10px;
+  margin-top: 5px;
 
 }
-div.link{
+span.link{
   margin: 0 10px;
   color:  #ad2609 ;
   padding-left: 5px;
-  font-size: 1.2em;
+  font-size: 1.0em;
 
 }
 

@@ -145,6 +145,6 @@ export class TextOutputService {
       document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
     }
   
-  }
+  } 
 
 }
