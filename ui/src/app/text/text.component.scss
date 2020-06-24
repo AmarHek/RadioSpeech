@@ -57,6 +57,26 @@ table td:last-child {
   overflow-y: scroll;
 
 }
+.esFehlen{
+  color: red;
+}
+.missingDis{
+ // text-decoration: underline;
+  font-style: italic;
+  font-size: 1.2em;
+  background-color: yellowgreen;
+  
+}
+span.missingCat{
+  text-decoration: none!important;
+  font-style: normal;
+  font-size: 0.9em;
+}
+.missing{
+  font-size: 1.1em;
+  float: right;
+}
+
 .main.container{
   max-width: 100%;
 }
@@ -139,6 +159,7 @@ textarea {
   grid-area: bf-text;
 }
 
+
 .box {
   width: 13px;
   height: 13px;
@@ -180,17 +201,17 @@ textarea {
 }
 
 .disease{
-  margin: 0 10px;
-  font-size: 1.7em;
+  margin: 0 1px;
+  font-size: 1.6em;
   font-weight: 700;
   padding-left: 5px;
-  margin-top: 10px;
+  margin-top: 3px;
   color: gray;
 }
 
 .cat{
-  margin: 0 12px;
-  font-size: 1.4em;
+  margin: 0 10px;
+  font-size: 1.3em;
   font-weight: 500;
   padding-left: 5px;
   margin-top: 3px;
@@ -222,10 +243,12 @@ div.option{
 
 }
 span.link{
+  text-decoration: none;
+  font-style: italic;
   margin: 0 10px;
   color:  #ad2609 ;
   padding-left: 5px;
-  font-size: 1.0em;
+  font-size: 0.9em;
 
 }
 

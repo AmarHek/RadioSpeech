@@ -18,8 +18,11 @@
 		<!-- <button id="scroll" (click)="scroll()"
 			class="btn btn-outline-secondary float-right ">scroll</button> -->
 		<!-- input "Befund" text here and submits it automatically -->
+		<div id="listening" class="btn btn-danger float-left p-2">Aus
+		</div>
+		
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" (input)="onInput($event)" (click)="inputClick()" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (input)="onInput($event)" (focusout)="changeButton()" (focusin)="inputClick()" placeholder="Befund eingeben..." size="80">
 			<!-- <input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80"> -->
 		</label>
 		<!-- <input type='file' id="imgUpload" />
@@ -34,8 +37,17 @@
 			<table>
 			<tbody>
 				<div *ngFor="let dis of diseases | sortCategories">
-					<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
-
+					<span class="disease" name="test" id="{{dis.name}}">{{dis.name}}</span>
+					<span *ngIf="end0" class="missing">
+						<span class="esFehlen">Es fehlen: </span>  
+						<span *ngFor="let dis of missing" class="missingDis">
+							{{dis.disName}}:
+							<span *ngFor="let cat of dis.reports" class="missingCat">
+								{{cat.category}}
+							</span>
+							
+						</span>
+					</span>
 					<tr  *ngFor="let cat of dis.categories | sortCategories">
 						<ng-container *ngIf="dis.active == true">
 							<td class="cat" name="test" id="{{cat.name}}">{{cat.name}}</td>
@@ -50,10 +62,16 @@
 									<div class="col-3 option" id={{key.name}}> {{key.name}}
 										<!-- Adds the optional length Attribute  -->
 									
-										<span *ngIf="key.TextBefore!=undefined" class="link" id="{{key.category + key.name}}">{{key.TextBefore + '...'}}</span>
+										<span *ngFor="let vari of key.variables" class="link" id="{{key.category + key.name}}">
+											<ng-container *ngIf="vari.kind === 'text'">
+												{{vari.textBefore + '...'}}
+											</ng-container>
+											<ng-container *ngIf="vari.kind === 'oc'">
+												{{vari.options.join("/")}}
+											</ng-container>
+										</span>
 									</div>
-								
-							</ng-container>
+								</ng-container>
 							</div>
 							</td>
 						</ng-container>
@@ -64,15 +82,16 @@
 			</table>
 		</div>
 		<div class="ende">
-		<div *ngIf="end" class="ende">
-			<!-- {{myInput.twInput.split(" ")}} -->
-			<!-- {{recogWords}} -->
-		</div>
+			<div *ngIf="end" class="ende">
+				<!-- {{myInput.twInput.split(" ")}} -->
+				<!-- {{recogWords}} -->
+			</div>
 		</div>
 	</div>
 	<div *ngIf="end">
-	<app-report [report]="myText.report" [parts]="parts"></app-report>
+		<app-report [report]="myText.report" [parts]="parts"></app-report>
 	</div>
+	
 </div>
 
 <!-- Dialog to enter the Parameters, can be activated by integrating a button or link that

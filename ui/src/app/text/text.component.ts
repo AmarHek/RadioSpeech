@@ -7,7 +7,7 @@ import * as M from '../model'
 import * as G from '../generator'
 import * as P from '../parser'
 import * as T from '../takers'
-import { Keyword, Keyword2, Category, Disease } from './Keyword';
+import { Keyword, Keyword2, Category, Disease, TextDic} from './Keyword';
 import * as D from './Dictionary';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
@@ -34,7 +34,7 @@ export class TextComponent implements OnInit {
     // assigns reference to polyp object
     //this.polyp = this.inputParser.polyp;
     this.diseases = this.inputParser.diseases;
-
+    this.missing = this.inputParser.missing;
     this.firstTime = false;
     this.start = false;
     this.myInput = this.inputParser.twInput;
@@ -67,8 +67,10 @@ export class TextComponent implements OnInit {
   firstTime: boolean = false;
   myInput: {twInput: string, again: boolean} = {twInput: "", again: false};
   end: boolean = false;
+  end0: boolean = false;
   resetTexts = new Map<M.CheckBox | M.Option, string>();
   oldInput : string = "";
+  missing: Array<TextDic> = [];
 
   parsingString: string = "";
  // recogWords : {Array<string>} = [];
@@ -106,7 +108,22 @@ export class TextComponent implements OnInit {
       this.start = true;
       }
     this.readConfig();
+    this.changeButton();
   }
+
+  changeButton(){
+    if(!this.end){
+      let signalButton = document.getElementById("listening");
+      signalButton.classList.toggle("btn-danger");
+      signalButton.classList.toggle("btn-success");
+      if(signalButton.innerText==="Ein"){
+        signalButton.innerText = "Aus";
+      } else {
+        signalButton.innerText = "Ein";
+      }
+    }
+  }
+
 
   /* inputOrPaste(ev){
     if(ev.type==="paste"){
@@ -124,8 +141,8 @@ export class TextComponent implements OnInit {
     } */
     //this.twoWayInput += "In ";
     //let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    console.log("event");
-    console.log(ev);
+    /* console.log("event");
+    console.log(ev); */
     let inp = (document.getElementById('input') as HTMLTextAreaElement).value;
     let dif : string;
     if (this.oldInput ===""){
@@ -133,17 +150,19 @@ export class TextComponent implements OnInit {
     } else {
     dif = inp.replace(this.oldInput, ""); 
     }
-    console.log("dif and inp");
-    console.log(dif);
-    console.log(inp);
     this.oldInput = inp;
     this.myInput.twInput += dif;
     //console.log(ev.clipboardData.getData('text'));
     //this.myInput.twInput += ev.data;
-    this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
+    this.myText.report = this.inputParser.parseInput(this.myInput.twInput.toLowerCase());
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;
     this.textOut.finalOut(this.end, inpArr);
+    this.end0 = this.inputParser.end0;
+    this.missing = this.inputParser.missing;
+    /* console.log("MissingComp");
+    console.log(this.missing); */
+    
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);

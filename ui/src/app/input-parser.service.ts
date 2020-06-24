@@ -1,7 +1,9 @@
 import { Injectable, Input } from '@angular/core';
 import * as M from './model'
-import { Keyword2, Category, Disease } from './text/Keyword';
+import { Keyword2, Category, Disease, MyVariable, TextDic } from './text/Keyword';
 import { TextOutputService } from './text-output.service';
+import { mainModule } from 'process';
+
 
 
 @Injectable({
@@ -25,9 +27,12 @@ export class InputParserService {
   diseases: Array<Disease> = [];
 
   twInput: {twInput: string, again: boolean} = {twInput: "", again: false};
-  
+  missing: Array<TextDic> = [];
   end: boolean = false;
+  end0: boolean = false;
   globalPos : number;
+  startingTime: Date;
+
 
  
   /* --------------------------------
@@ -36,6 +41,7 @@ export class InputParserService {
   */
   // Create a Dictionary (e.g. the polyp Object)
   createStartDict(rootEl: M.TopLevel[]){
+    this.startingTime = new Date();
     let syns: string[];
     var keys: Keyword2[];
     var disName = "";
@@ -43,7 +49,7 @@ export class InputParserService {
     for (const El of rootEl){
       if(El.kind == "block"){
         disName = El.text;
-        this.diseases.push({name: disName, categories: [], active: false, number: 1, position: -1, firstTime: true });
+        this.diseases.push({name: disName, categories: [], active: false, number: 1, position: [], firstTime: true, positionEnd: [] });
       }
       keys = [];
       if(El.kind == "category"){
@@ -64,7 +70,7 @@ export class InputParserService {
       }
     }
     this.textOut.initDiseaseText(this.diseases);
-    console.log(this.diseases);
+    /* console.log(this.diseases); */
   }
 
   // --------- Help methods for creating Dictionary ----------
@@ -86,17 +92,22 @@ export class InputParserService {
 
   // sets default values for each keyword
   createKeyword(option : any, category: any, synonym: string){
+    let Vars : MyVariable[] = [];
+    for(const vari of option.variables){
+      if(vari.kind === "oc"){
+        Vars.push({kind : vari.kind, textBefore : undefined, textAfter: undefined, options: vari.values, varFound: []});
+      } else if(vari.kind ==="text"){
+        Vars.push({kind: vari.kind, textBefore: vari.textBefore, textAfter: vari.textAfter, options: [], varFound: []})
+      }
+    }
       return  {
         // assigning corresponding values
         name: option.name,
         synonym: synonym,
         // conditional tests whether keyword can have a variable or not
-        VarType: option.variables.length!=0 ? option.variables[0].kind : undefined,
-        TextAfter: option.variables.length!=0 ? option.variables[0].textAfter : undefined,
-        TextBefore:  option.variables.length!=0 ? option.variables[0].textBefore : undefined,
+        variables: Vars,       
         category: category.name,
         position: -1,
-        VarFound: [],
         active: undefined,
         text: option.text,
         buttonPos: -1,
@@ -116,20 +127,37 @@ export class InputParserService {
 
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
-  if(input.toLowerCase().indexOf("ende") !== -1){
-    let main = document.getElementsByClassName("main")[0].classList
-    main.remove("main");
-    main.add("report");
-    this.end = true;
-  } else {
     this.twInput.twInput = input;
+  if(input.toLowerCase().indexOf("ende") !== -1){
+     let main = document.getElementsByClassName("main")[0].classList
+   this.missing = this.textOut.firstOut();
+    if(this.missing.length !== 0 && ((input.split("ende").length - 1) === 1)){
+      /* console.log("Missing");
+      console.log(this.missing); */
+      this.end0 = true;
+      /* main.remove("main");
+      main.add("notEnd"); */
+    } else {
+      
+      main.remove("main");
+      //main.remove("notEnd");
+      main.add("report");
+      let signalButton = document.getElementById("listening");
+      signalButton.classList.remove("btn-success");
+      signalButton.classList.add("btn-danger");
+      signalButton.innerText = "Aus";
+
+      this.end = true;
+    }
+    }
+    if(!this.end){
     let activeDis = this.setDisease(input, this.diseases);
     if(activeDis != undefined){
       // Checks if Category name contains Disease name, which produces an error
-      let disPosLast = activeDis.position+activeDis.name.length;
+      let disPosLast = activeDis.position[activeDis.position.length-1] + activeDis.name.length;
       if((disPosLast != input.length) && input.charAt(disPosLast) !== " "){
           
-          let tempInput = input.substr(0,activeDis.position) + input.substr(disPosLast+1);
+          let tempInput = input.substr(0,activeDis.position[activeDis.position.length-1]) + input.substr(disPosLast+1);
           activeDis = this.setDisease(tempInput, this.diseases);
       }
       /* // pushes dis name to array for correction purpose later
@@ -137,7 +165,12 @@ export class InputParserService {
       this.textOut.recogWords.push(activeDis.name.toLowerCase());
       }  */
       // only look for categories at what comes after the last disease
-      let input2 = input.substring(activeDis.position);
+
+      let input2 = "";
+      for(let j = 0; j<activeDis.positionEnd.length; j++){
+        input2+= input.substring(activeDis.position[j], activeDis.positionEnd[j]);
+      }
+      input2 += input.substring(activeDis.position[activeDis.position.length-1]);
       //let actDis = this.diseases.find(dis => dis.active == true);
       
       // checks which category is active and where in the input field it occurs
@@ -150,9 +183,13 @@ export class InputParserService {
         if(activeCat != undefined){
           // pushes dis name to array for correction purpose later
         /* if(this.textOut.recogWords.find(el => {
-          return (el.word === activeCat.name.toLowerCase() && el.pos === activeCat.position + activeDis.position)
+          return (el.word.length >= activeCat.name.length &&  el.pos === activeCat.position + activeDis.position);
         }) === undefined){
-          this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeCat.position + activeDis.position});
+          this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeDis.position + activeCat.position});
+          let ind = this.textOut.recogWords.findIndex(el => {
+            return ((el.pos === activeCat.position + activeDis.position) && (el.word.length < activeCat.name.length))
+          });
+          ind !== -1 ? this.textOut.recogWords.splice(ind,1) : ind = ind;
           } */
 
         // Evaluate only the input that comes after the last category
@@ -161,7 +198,7 @@ export class InputParserService {
         input2 = this.autocorrect(input2);
         // Find out which keywords occur in the input2
         for(const key of activeCat.keys){
-          key.position = this.getIndex(key.synonym, input2, activeCat.position + activeDis.position);
+          key.position = this.getIndex(key.synonym, input2, activeCat.position + activeDis.position[activeDis.position.length-1]);
         }
         //enables the rest normal method
         if(input2.toLowerCase().indexOf("rest normal") != -1){
@@ -175,7 +212,7 @@ export class InputParserService {
         let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
         this.twInput.again = reRun;
         // produces text output 
-        var text = this.textOut.makeReport(activeCat, activeDis);
+        var text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
         }
         activeCat.active = false;
       }
@@ -198,12 +235,13 @@ export class InputParserService {
       } */
       console.log("KeyTest");
       console.log(this.diseases);
+      console.log(this.twInput.twInput);
       
     }
     return text
   }
     // no text when no category is activated
-    let text2 = this.textOut.makeReport(undefined, undefined);
+    let text2 = this.textOut.makeReport(undefined, undefined, this.startingTime);
     return text2;
     
 }
@@ -220,12 +258,12 @@ restNormal(disease: Disease){
         if(key.normal == true && key.name == key.synonym){
           key.active = key.name;
           key.position = 0;
-          console.log("RestNormalCheck");
-          console.log(key.name);
+         /*  console.log("RestNormalCheck");
+          console.log(key.name); */
         }
       }
       // make additional report
-      this.textOut.makeReport(cat, disease);
+      this.textOut.makeReport(cat, disease, this.startingTime);
     }
   }
 }
@@ -290,8 +328,8 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
     activeKeys[i].active = activeKeys[i].name;
     const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
     let guided = (activeDis.categories[activeDis.categories.length-1].keys.find(key => key.position !== -1) !== undefined);
-    console.log("CheckActiveKeys");
-    console.log(activeKeys);
+    /* console.log("CheckActiveKeys");
+    console.log(activeKeys); */
     //if(activeKeys[i].VarType != undefined){
       let endIndex : number;
       let activeVar = -1;
@@ -303,58 +341,128 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
       let startIndex = activeKeys[i].position + activeKeys[i].synonym.length+1;
       let varField = input.slice(startIndex, endIndex).toLowerCase();
 
-      if(activeKeys[i].TextBefore != undefined){
+      
+        let done: boolean = false;
+        let varStarted = false;
+        for(let k = 0; k<activeKeys[i].variables.length; k++){
+          
+          let variable = activeKeys[i].variables[k];
+          
+          if(variable.kind === "text" && !varStarted){
+            done = false; 
+            let tbPos = varField.indexOf(variable.textBefore.toLowerCase());
+            
+            if(tbPos != -1){
+              varStarted = true;
+              let tbPosEnd = tbPos + variable.textBefore.length;
+              let varEnd = varField.slice(tbPosEnd).search(/[cm]m/);
+
+              let varInp;
+              if(varEnd != -1){
+                /* console.log("VARend");
+                console.log(varEnd); */
+                varInp = varField.slice(tbPosEnd,tbPosEnd+varEnd +2);
+                /* console.log("VARINP");
+                console.log(varInp); */
+                variable.varFound[0] = variable.textBefore + varInp + variable.textAfter;
+                varStarted = false;
+                done = true;
+                if(this.textOut.recogWords.find(el => {
+                  return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position[activeDis.position.length-1] + tbPos + variable.textBefore.length + startIndex)
+                }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+                  this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position[activeDis.position.length-1] + tbPos + variable.textBefore.length + startIndex});
+                  }
+              } else {
+                variable.varFound[0] = variable.textBefore + varField.slice(tbPos + variable.textBefore.length) + variable.textAfter;
+              }
+               // pushes dis name to array for correction purpose later
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === variable.textBefore.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position[activeDis.position.length-1] + tbPos + startIndex)
+              }) === undefined){
+                this.textOut.recogWords.push({word: variable.textBefore.trim().toLowerCase(), pos: activeCat.position + activeDis.position[activeDis.position.length-1] + tbPos + startIndex});
+                }
+              
+            } else {
+              // Automatically gets you to the next variable if valid Attribute is entered
+              if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+                this.twInput.twInput += " " + variable.textBefore;
+                reRun = true;
+              }
+            }
+          }
+          if(variable.kind === "oc" && !varStarted){
+            done = false;
+            varStarted = true;
+            for(const opt of variable.options){
+              if(varField.indexOf(opt) != -1){
+                variable.varFound[0] = opt;
+                done = true;
+                varStarted = false;
+                if(this.textOut.recogWords.find(el => {
+                  return (el.word === opt.toLowerCase() && el.pos === activeCat.position + activeDis.position[activeDis.position.length-1] + varField.indexOf(opt) + startIndex)
+                }) === undefined){
+                  this.textOut.recogWords.push({word: opt.toLowerCase(), pos: activeCat.position + activeDis.position[activeDis.position.length-1] + varField.indexOf(opt) + startIndex});
+                  }
+                break;
+              }
+            }
+          }
+        }
+        /* if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+          if(done || activeKeys[i].variables.length === 0){
+          let nextCatName = activeDis.categories[index+1].name;
+          this.twInput.twInput += " " + nextCatName;
+          reRun = true;
+          }
+        } */
+
+
+
+
+/* 
         
         //for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
-        for(let j = 0; j<1; j++){
-
-          let tb = activeKeys[i].TextBefore.split(';');
-          let ta = activeKeys[i].TextAfter.split(';');
-          activeVar = varField.indexOf(tb[j].toLowerCase());
-          console.log("VarTest");
-          console.log(activeVar);
-          // Automatically gets you to the next variable if valid Attribute is entered
-          if(index < activeDis.categories.length-1 && activeVar === -1 && activeKeys[i].position !== 0){
-            let nextCatName = activeDis.categories[index+1].name;
-            this.twInput.twInput += " " + tb[j] + " ";
-            reRun = true;
-          }
-    
-          if( activeVar != -1){
-            let varStart = activeVar + tb[j].length;
-            // decides what combination of characters ends variable input
-            let varInp =  varField.slice(varStart, varField.search(/[cm]m/)+2);
-            activeKeys[i].VarFound[j] = (tb[j] + varInp + ta[j]);
-
-            // pushes dis name to array for correction purpose later
-            if(this.textOut.recogWords.find(el => {
-              return (el.word === tb[j].trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + activeVar + startIndex)
-            }) === undefined){
-              this.textOut.recogWords.push({word: tb[j].trim().toLowerCase(), pos: activeCat.position + activeDis.position + activeVar + startIndex});
-              }
-            if(this.textOut.recogWords.find(el => {
-              return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + varStart + startIndex)
-            }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
-              this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + varStart + startIndex});
-              }
-            // puts variable into an array with alle recognised words for correction purpose at the end
-            /* if(this.textOut.recogWords.indexOf(tb[j]) === -1){
-            this.textOut.recogWords.push(tb[j].toLowerCase());
-            }
-            if(this.textOut.recogWords[this.textOut.recogWords.length-1] !== varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase()){
-            this.textOut.recogWords.push(varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase());
-            } */
-            // Automatically gets you to the next Categorie if valid Attribute is entered
-            /* if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
-              let nextCatName = activeDis.categories[index+1].name;
-              this.twInput.twInput += " " + nextCatName + " ";
+        for(const vari of activeKeys[i].variables){
+          if(vari.kind === "text"){
+            activeVar = varField.indexOf(vari.textBefore.toLowerCase());
+            console.log("VarTest");
+            console.log(activeVar);
+            // Automatically gets you to the next variable if valid Attribute is entered
+            if(index < activeDis.categories.length-1 && activeVar === -1 && activeKeys[i].position !== 0 && !guided){
+              this.twInput.twInput += " " + vari.textBefore + " ";
               reRun = true;
-            } */
+            }
+      
+            if( activeVar != -1){
+              let varStart = activeVar + vari.textBefore.length;
+              // decides what combination of characters ends variable input
+              let varInp =  varField.slice(varStart, varField.search(/[cm]m/)+2);
+              vari.varFound[0] = (vari.textBefore + varInp + vari.textAfter);
+ 
+              // pushes dis name to array for correction purpose later
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === vari.textBefore.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + activeVar + startIndex)
+              }) === undefined){
+                this.textOut.recogWords.push({word: vari.textBefore.trim().toLowerCase(), pos: activeCat.position + activeDis.position + activeVar + startIndex});
+                }
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + varStart + startIndex)
+              }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+                this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + varStart + startIndex});
+                }
+              
+              // Automatically gets you to the next Categorie if valid Variable is entered
+              if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
+                let nextCatName = activeDis.categories[index+1].name;
+                this.twInput.twInput += " " + nextCatName + " ";
+                reRun = true;
+              }
+            }
+            else {
+              vari.varFound[0] = undefined;
+            }
           }
-          else {
-            activeKeys[i].VarFound[j] = undefined;
-          }
-        } 
+        
       } else {
         // Automatically gets you to the next Categorie if valid Attribute is entered
         /* if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
@@ -362,8 +470,8 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
           this.twInput.twInput += " " + nextCatName + " ";
           reRun = true;
 
-        } */
-      }
+        }
+      } */
       //Zusatz Function for every attribute, not needed when automatic categories iterating is active
       /* let str = "Zusatz";
       activeVar = varField.indexOf(str.toLowerCase());
@@ -408,7 +516,9 @@ resetCategory(category: Category){
   category.active = false;
   for (const keyword of category.keys){
     keyword.position = -1;
-    keyword.VarFound = [];
+    for(const vari of keyword.variables){
+      vari.varFound = [];
+    }
     keyword.active = undefined;
   }
 }
@@ -459,10 +569,11 @@ setDisease(input: string, diseases: Array<Disease>){
         // makes copie of instance number 1
         let copy : Disease = JSON.parse(JSON.stringify(diseases[i]));
         copy.number = nextInstance;
-        copy.position = addInstance;
+        copy.position.push(addInstance);
         copy.active = true;
         copy.firstTime = true;
         copy.name += " " + copy.number;
+        copy.positionEnd = [];
         for(const cat of copy.categories){
           this.resetCategory(cat);
         }
@@ -492,11 +603,11 @@ setDisease(input: string, diseases: Array<Disease>){
   }
   // sets active and position of latest disease
   if(diseases.find(dis => dis.name == activeDis.disName) != undefined){
-    if(diseases.find(dis => dis.name == activeDis.disName).position === -1){
-    diseases.find(dis => dis.name == activeDis.disName).position = activeDis.disPos;
-    }
     for(const act of diseases){
       if(act.name == activeDis.disName){
+        if(!act.position.includes(activeDis.disPos) && (act.positionEnd[act.position.length-1]!== undefined || act.position === [])){
+        act.position.push(activeDis.disPos);
+        }
         act.active = true;
         this.globalPos = activeDis.disPos;
         // pushes dis name to array for correction purpose later
@@ -514,7 +625,12 @@ setDisease(input: string, diseases: Array<Disease>){
           });
           ind !== -1 ? this.textOut.recogWords.splice(ind,1) : ind = ind;
           }
-      } else {
+      } else if(act.active == true) {
+        act.positionEnd.push(activeDis.disPos);
+        let deleter = act.position.indexOf(activeDis.disPos);
+        if(deleter !== -1){
+          act.position.splice(deleter,1);
+        }
         act.active = false;
       }
     }

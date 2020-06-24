@@ -15,34 +15,45 @@ export class TextOutputService {
   myReport: {report: string, category: string}[] = [];
   rep: Array<TextDic> = [];
   recogWords : {word: string, pos: number}[] = [];
+  timeSpan: number = 0;
 
 
   // produces the text output
-  makeReport(activeCat: Category, activeDis: Disease){
+  makeReport(activeCat: Category, activeDis: Disease, startingTime: Date){
     // this.report.text="";
     // gets active Category
     let repo = "";
     // adds text corresponding to active Keywords
+    let keyName = "";
     if(activeDis != undefined){
-    for (const key of activeCat.keys.filter(key => key.position!==-1)){
-      repo += key.text;
-      if(key.VarFound != undefined){
-      for(let i = 0; i< key.VarFound.length; i++){
-        if(key.VarFound[i] != undefined && i == 0){
-          repo = repo.slice(0,-2) + " " + key.VarFound[i];
-        } else if (key.VarFound[i] != undefined && i == 1){
-          repo = repo + " " + key.VarFound[i];
+      for (const key of activeCat.keys.filter(key => key.position!==-1)){
+        let newText = key.text;
+        keyName = key.name;
+        for(let i = 0; i<key.variables.length; i++){
+        //repo += key.text;
+        if(key.variables[i].varFound.length != 0){
+            newText = newText.replace('%'+i, key.variables[i].varFound[0]);
+          } else{
+            newText = newText.replace('%'+i, "");
+          }
         }
-      }
-    }
-    }
+        repo += newText;
+      }  
+    
     // assigns text to corresponding array element
-    this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text = repo;
-    console.log("repo");
-    console.log(this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text);
+    let report = this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name);
+    report.text = repo;
+    report.key = keyName;
+    /* console.log("repo");
+    console.log(this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text); */
     }
     // concatenate all text elements from the array
     let finalText = "";
+    let date = new Date()
+    finalText += date.getDate() + "." + date.getMonth() +"." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
+    this.timeSpan = Math.abs(date.getTime() - startingTime.getTime())/1000;
+    console.log("Time Span in Seconds");
+    console.log(this.timeSpan);
     for(const dis of this.rep){
       if(dis.reports.map(report => report.text).join("") !== ""){
         finalText = finalText + dis.disName+ ":\n";
@@ -65,21 +76,27 @@ export class TextOutputService {
       // loops through all active Keywords
       for (const key of activeKeys){
         // if keyword does hold a variable it will be darkgreen and its variable will be lightgreen
-        if(key.VarType != undefined && key.VarFound[0]!= undefined){
-          inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
-        // if keyword can hold a variable but doesnt hold it, it will be red
-        } else if(key.VarType != undefined){
-          inByWord.push("<span style=\"background-color: red\">" + key.name + "</span>");
-          if(key.VarFound != undefined){
-            inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
+        if(key.variables.length != 0){
+          let complete = true;
+          let activeVars = 0;
+          for(const vari of key.variables){
+            if(vari.varFound.length != 0){
+              //inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+              inByWord.push("<span style=\"background-color: lightgreen\">" + vari.varFound[0] + "</span>");
+              activeVars++;
+            } else {
+              complete = false;
+            }
+          }
+          if(complete){
+            inByWord.splice(inByWord.length-activeVars, 0, "<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+          } else{
+            // if keyword can hold variables but doesnt hold all of them, it will be red
+            inByWord.splice(inByWord.length-activeVars, 0, "<span style=\"background-color: red\">" + key.name + "</span>");
           }
         // if keyword can't hold a variable, it will be darkgreen
         } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-          if(key.VarFound != undefined){
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
-          }
         }
       }
     }
@@ -90,30 +107,30 @@ export class TextOutputService {
 
   initDiseaseText(diseases: Array<Disease>){
     for(const dis of diseases){
-      let tempReports : {text: string, category: string}[] = [];
+      let tempReports : {text: string, category: string, key: string}[] = [];
       for(const cat of dis.categories){
-        tempReports.push({text: "", category: cat.name});
+        tempReports.push({text: "", category: cat.name, key: ""});
       }
       this.rep.push({disName: dis.name, reports: tempReports});
     }
-  console.log("initDicTest");
-  console.log(this.rep);
   }
 
   addDisease(disease: Disease, index: number){
-    let tempReports : {text: string, category: string}[] = [];
+    let tempReports : {text: string, category: string, key: string}[] = [];
     for(const cat of disease.categories){
-      tempReports.push({text: "", category: cat.name});
+      tempReports.push({text: "", category: cat.name, key: ""});
     }
     this.rep.splice(index, 0, {disName: disease.name, reports: tempReports})
   }
 
   finalOut(end: boolean, inpAr: Array<string>){
-    /* if(end){
-    console.log(this.recogWords);
-    console.log(inpAr);
-    } */
     if(end){
+    /* console.log(this.recogWords);
+    console.log(inpAr);
+    console.log(this.rep); */
+    document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
+    }
+    /* if(end){
       var temp = 0;
       for (let j = 0; j<this.recogWords.length; j++){
         let splitAr = this.recogWords[j].word.split(" ");
@@ -143,8 +160,30 @@ export class TextOutputService {
       console.log(this.recogWords);
       inpAr.pop();
       document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
-    }
+      console.log("41");
+    } */
   
   } 
+
+  firstOut(){
+    let missing : Array<TextDic> = [];
+    
+      for(const dis of this.rep){
+        let empty = true;
+        let tempReports : {text: string, category: string, key: string}[] = [];
+        for(const cat of dis.reports){
+          if(cat.key === ""){
+            tempReports.push({text: "", category: cat.category, key: ""});
+          } else {
+            empty = false;
+          }
+        }
+        if(!empty && tempReports.length !== 0){
+          missing.push({disName: dis.disName, reports: tempReports});
+        }
+      }
+    
+    return missing;
+  }
 
 }
