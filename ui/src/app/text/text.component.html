@@ -18,8 +18,10 @@
 		<!-- <button id="scroll" (click)="scroll()"
 			class="btn btn-outline-secondary float-right ">scroll</button> -->
 		<!-- input "Befund" text here and submits it automatically -->
+		<div id="listening" class="btn btn-danger float-left p-2">Aus
+		</div>
 		<label for="input">Befund eingeben:
-			<input id="input" name="Befund" type="text" (input)="onInput($event)" (click)="inputClick()" placeholder="Befund eingeben..." size="80">
+			<input id="input" name="Befund" type="text" (input)="onInput($event)" (focusout)="changeButton()" (focusin)="inputClick()" placeholder="Befund eingeben..." size="80">
 			<!-- <input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80"> -->
 		</label>
 		<!-- <input type='file' id="imgUpload" />
@@ -30,7 +32,7 @@
 	</div>
 	
 	<div class="main-content" id = "main-content">
-		<div *ngIf="!end" class="container m-1">
+		<div *ngIf="!end" class="m-1">
 			<div *ngFor="let dis of diseases | sortCategories">
 				<div class="disease" name="test" id="{{dis.name}}">{{dis.name}}</div>
 
@@ -38,7 +40,7 @@
 					<ng-container *ngIf="dis.active == true">
 						<div class="cat" name="test" id="{{cat.name}}">{{cat.name}}</div>
 						<div class="row">
-							<div class="col-4" *ngFor="let key of filterSyn(cat.keys)">
+							<div class="col-3" *ngFor="let key of filterSyn(cat.keys)">
 								<ng-container *ngIf="cat.active == true">
 									<!-- <div> <input [name]="cat"
 										id="{{key.name}}box" [value]="key.name" type="radio"
@@ -46,9 +48,16 @@
 									</div> -->
 									<div class="option" id={{key.name}}> {{key.name}}
 										<!-- Adds the optional length Attribute  -->
+									
+										<span *ngFor="let vari of key.variables" class="link" id="{{key.category + key.name}}">
+											<ng-container *ngIf="vari.kind === 'text'">
+												{{vari.textBefore + '...'}}
+											</ng-container>
+											<ng-container *ngIf="vari.kind === 'oc'">
+												{{vari.options.join("/")}}
+											</ng-container>
+										</span>
 									</div>
-									<div *ngIf="key.TextBefore!=undefined" class="link" id="{{key.category + key.name}}">{{key.TextBefore + '...' + key.TextAfter}}</div>
-
 								</ng-container>
 							</div>
 						</div>

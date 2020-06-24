@@ -1,7 +1,8 @@
 import { Injectable, Input } from '@angular/core';
 import * as M from './model'
-import { Keyword2, Category, Disease } from './text/Keyword';
+import { Keyword2, Category, Disease, MyVariable } from './text/Keyword';
 import { TextOutputService } from './text-output.service';
+
 
 
 @Injectable({
@@ -86,17 +87,22 @@ export class InputParserService {
 
   // sets default values for each keyword
   createKeyword(option : any, category: any, synonym: string){
+    let Vars : MyVariable[] = [];
+    for(const vari of option.variables){
+      if(vari.kind === "oc"){
+        Vars.push({kind : vari.kind, textBefore : undefined, textAfter: undefined, options: vari.values, varFound: []});
+      } else if(vari.kind ==="text"){
+        Vars.push({kind: vari.kind, textBefore: vari.textBefore, textAfter: vari.textAfter, options: [], varFound: []})
+      }
+    }
       return  {
         // assigning corresponding values
         name: option.name,
         synonym: synonym,
         // conditional tests whether keyword can have a variable or not
-        VarType: option.variables.length!=0 ? option.variables[0].kind : undefined,
-        TextAfter: option.variables.length!=0 ? option.variables[0].textAfter : undefined,
-        TextBefore:  option.variables.length!=0 ? option.variables[0].textBefore : undefined,
+        variables: Vars,       
         category: category.name,
         position: -1,
-        VarFound: [],
         active: undefined,
         text: option.text,
         buttonPos: -1,
@@ -120,6 +126,11 @@ export class InputParserService {
     let main = document.getElementsByClassName("main")[0].classList
     main.remove("main");
     main.add("report");
+    let signalButton = document.getElementById("listening");
+    signalButton.classList.remove("btn-success");
+    signalButton.classList.add("btn-danger");
+    signalButton.innerText = "Aus";
+
     this.end = true;
   } else {
     this.twInput.twInput = input;
@@ -145,11 +156,15 @@ export class InputParserService {
       // if one active category is detected, it's active value is set to true, all others to false
       if(activeCat != undefined){
         // pushes dis name to array for correction purpose later
-      if(this.textOut.recogWords.find(el => {
-        return (el.word === activeCat.name.toLowerCase() && el.pos === activeCat.position + activeDis.position)
-      }) === undefined){
-        this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeCat.position + activeDis.position});
-        }
+        if(this.textOut.recogWords.find(el => {
+          return (el.word.length >= activeCat.name.length &&  el.pos === activeCat.position + activeDis.position);
+        }) === undefined){
+          this.textOut.recogWords.push({word: activeCat.name.toLowerCase(), pos: activeDis.position + activeCat.position});
+          let ind = this.textOut.recogWords.findIndex(el => {
+            return ((el.pos === activeCat.position + activeDis.position) && (el.word.length < activeCat.name.length))
+          });
+          ind !== -1 ? this.textOut.recogWords.splice(ind,1) : ind = ind;
+          }
 
         // Evaluate only the input that comes after the last category
         input2 = input2.substring(activeCat.position);
@@ -297,58 +312,128 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
       let startIndex = activeKeys[i].position + activeKeys[i].synonym.length+1;
       let varField = input.slice(startIndex, endIndex).toLowerCase();
 
-      if(activeKeys[i].TextBefore != undefined){
+      
+        let done: boolean = false;
+        let varStarted = false;
+        for(let k = 0; k<activeKeys[i].variables.length; k++){
+          
+          let variable = activeKeys[i].variables[k];
+          
+          if(variable.kind === "text" && !varStarted){
+            done = false; 
+            let tbPos = varField.indexOf(variable.textBefore.toLowerCase());
+            
+            if(tbPos != -1){
+              varStarted = true;
+              let tbPosEnd = tbPos + variable.textBefore.length;
+              let varEnd = varField.slice(tbPosEnd).search(/[cm]m/);
+
+              let varInp;
+              if(varEnd != -1){
+                console.log("VARend");
+                console.log(varEnd);
+                varInp = varField.slice(tbPosEnd,tbPosEnd+varEnd +2);
+                console.log("VARINP");
+                console.log(varInp);
+                variable.varFound[0] = variable.textBefore + varInp + variable.textAfter;
+                varStarted = false;
+                done = true;
+                if(this.textOut.recogWords.find(el => {
+                  return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + tbPos + variable.textBefore.length + startIndex)
+                }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+                  this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + tbPos + variable.textBefore.length + startIndex});
+                  }
+              } else {
+                variable.varFound[0] = variable.textBefore + varField.slice(tbPos + variable.textBefore.length) + variable.textAfter;
+              }
+               // pushes dis name to array for correction purpose later
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === variable.textBefore.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + tbPos + startIndex)
+              }) === undefined){
+                this.textOut.recogWords.push({word: variable.textBefore.trim().toLowerCase(), pos: activeCat.position + activeDis.position + tbPos + startIndex});
+                }
+              
+            } else {
+              // Automatically gets you to the next variable if valid Attribute is entered
+              if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+                this.twInput.twInput += " " + variable.textBefore;
+                reRun = true;
+              }
+            }
+          }
+          if(variable.kind === "oc" && !varStarted){
+            done = false;
+            varStarted = true;
+            for(const opt of variable.options){
+              if(varField.indexOf(opt) != -1){
+                variable.varFound[0] = opt;
+                done = true;
+                varStarted = false;
+                if(this.textOut.recogWords.find(el => {
+                  return (el.word === opt.toLowerCase() && el.pos === activeCat.position + activeDis.position + varField.indexOf(opt) + startIndex)
+                }) === undefined){
+                  this.textOut.recogWords.push({word: opt.toLowerCase(), pos: activeCat.position + activeDis.position + varField.indexOf(opt) + startIndex});
+                  }
+                break;
+              }
+            }
+          }
+        }
+        if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+          if(done || activeKeys[i].variables.length === 0){
+          let nextCatName = activeDis.categories[index+1].name;
+          this.twInput.twInput += " " + nextCatName;
+          reRun = true;
+          }
+        }
+
+
+
+
+/* 
         
         //for(let j = 0; j<activeKeys[i].TextBefore.split(';').length; j++){
-        for(let j = 0; j<1; j++){
-
-          let tb = activeKeys[i].TextBefore.split(';');
-          let ta = activeKeys[i].TextAfter.split(';');
-          activeVar = varField.indexOf(tb[j].toLowerCase());
-          console.log("VarTest");
-          console.log(activeVar);
-          // Automatically gets you to the next variable if valid Attribute is entered
-          if(index < activeDis.categories.length-1 && activeVar === -1 && activeKeys[i].position !== 0){
-            let nextCatName = activeDis.categories[index+1].name;
-            this.twInput.twInput += " " + tb[j] + " ";
-            reRun = true;
-          }
-    
-          if( activeVar != -1){
-            let varStart = activeVar + tb[j].length;
-            // decides what combination of characters ends variable input
-            let varInp =  varField.slice(varStart, varField.search(/[cm]m/)+2);
-            activeKeys[i].VarFound[j] = (tb[j] + varInp + ta[j]);
-
-            // pushes dis name to array for correction purpose later
-            if(this.textOut.recogWords.find(el => {
-              return (el.word === tb[j].trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + activeVar + startIndex)
-            }) === undefined){
-              this.textOut.recogWords.push({word: tb[j].trim().toLowerCase(), pos: activeCat.position + activeDis.position + activeVar + startIndex});
-              }
-            if(this.textOut.recogWords.find(el => {
-              return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + varStart + startIndex)
-            }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
-              this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + varStart + startIndex});
-              }
-            // puts variable into an array with alle recognised words for correction purpose at the end
-            /* if(this.textOut.recogWords.indexOf(tb[j]) === -1){
-            this.textOut.recogWords.push(tb[j].toLowerCase());
-            }
-            if(this.textOut.recogWords[this.textOut.recogWords.length-1] !== varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase()){
-            this.textOut.recogWords.push(varField.slice(varStart, varField.search(/[cm]m/)+2).trim().toLowerCase());
-            } */
-            // Automatically gets you to the next Categorie if valid Attribute is entered
-            if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
-              let nextCatName = activeDis.categories[index+1].name;
-              this.twInput.twInput += " " + nextCatName + " ";
+        for(const vari of activeKeys[i].variables){
+          if(vari.kind === "text"){
+            activeVar = varField.indexOf(vari.textBefore.toLowerCase());
+            console.log("VarTest");
+            console.log(activeVar);
+            // Automatically gets you to the next variable if valid Attribute is entered
+            if(index < activeDis.categories.length-1 && activeVar === -1 && activeKeys[i].position !== 0 && !guided){
+              this.twInput.twInput += " " + vari.textBefore + " ";
               reRun = true;
             }
+      
+            if( activeVar != -1){
+              let varStart = activeVar + vari.textBefore.length;
+              // decides what combination of characters ends variable input
+              let varInp =  varField.slice(varStart, varField.search(/[cm]m/)+2);
+              vari.varFound[0] = (vari.textBefore + varInp + vari.textAfter);
+ 
+              // pushes dis name to array for correction purpose later
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === vari.textBefore.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + activeVar + startIndex)
+              }) === undefined){
+                this.textOut.recogWords.push({word: vari.textBefore.trim().toLowerCase(), pos: activeCat.position + activeDis.position + activeVar + startIndex});
+                }
+              if(this.textOut.recogWords.find(el => {
+                return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + varStart + startIndex)
+              }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+                this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + varStart + startIndex});
+                }
+              
+              // Automatically gets you to the next Categorie if valid Variable is entered
+              if(index < activeDis.categories.length-1 && varField.search(/[cm]m/) !== -1 && activeKeys[i].position !== 0 && !guided){
+                let nextCatName = activeDis.categories[index+1].name;
+                this.twInput.twInput += " " + nextCatName + " ";
+                reRun = true;
+              }
+            }
+            else {
+              vari.varFound[0] = undefined;
+            }
           }
-          else {
-            activeKeys[i].VarFound[j] = undefined;
-          }
-        } 
+        
       } else {
         // Automatically gets you to the next Categorie if valid Attribute is entered
         if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
@@ -357,7 +442,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
           reRun = true;
 
         }
-      }
+      } */
       //Zusatz Function for every attribute, not needed when automatic categories iterating is active
       /* let str = "Zusatz";
       activeVar = varField.indexOf(str.toLowerCase());
@@ -402,7 +487,9 @@ resetCategory(category: Category){
   category.active = false;
   for (const keyword of category.keys){
     keyword.position = -1;
-    keyword.VarFound = [];
+    for(const vari of keyword.variables){
+      vari.varFound = [];
+    }
     keyword.active = undefined;
   }
 }

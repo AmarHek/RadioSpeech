@@ -24,18 +24,19 @@ export class TextOutputService {
     let repo = "";
     // adds text corresponding to active Keywords
     if(activeDis != undefined){
-    for (const key of activeCat.keys.filter(key => key.position!==-1)){
-      repo += key.text;
-      if(key.VarFound != undefined){
-      for(let i = 0; i< key.VarFound.length; i++){
-        if(key.VarFound[i] != undefined && i == 0){
-          repo = repo.slice(0,-2) + " " + key.VarFound[i];
-        } else if (key.VarFound[i] != undefined && i == 1){
-          repo = repo + " " + key.VarFound[i];
+      for (const key of activeCat.keys.filter(key => key.position!==-1)){
+        let newText = key.text;
+        for(let i = 0; i<key.variables.length; i++){
+        //repo += key.text;
+        if(key.variables[i].varFound.length != 0){
+            newText = newText.replace('%'+i, key.variables[i].varFound[0]);
+          } else{
+            newText = newText.replace('%'+i, "");
+          }
         }
-      }
-    }
-    }
+        repo += newText;
+      }  
+    
     // assigns text to corresponding array element
     this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text = repo;
     console.log("repo");
@@ -43,6 +44,8 @@ export class TextOutputService {
     }
     // concatenate all text elements from the array
     let finalText = "";
+    let date = new Date()
+    finalText += date.getDate() + "." + date.getMonth() +"." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
     for(const dis of this.rep){
       if(dis.reports.map(report => report.text).join("") !== ""){
         finalText = finalText + dis.disName+ ":\n";
@@ -65,21 +68,27 @@ export class TextOutputService {
       // loops through all active Keywords
       for (const key of activeKeys){
         // if keyword does hold a variable it will be darkgreen and its variable will be lightgreen
-        if(key.VarType != undefined && key.VarFound[0]!= undefined){
-          inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
-        // if keyword can hold a variable but doesnt hold it, it will be red
-        } else if(key.VarType != undefined){
-          inByWord.push("<span style=\"background-color: red\">" + key.name + "</span>");
-          if(key.VarFound != undefined){
-            inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
+        if(key.variables.length != 0){
+          let complete = true;
+          let activeVars = 0;
+          for(const vari of key.variables){
+            if(vari.varFound.length != 0){
+              //inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+              inByWord.push("<span style=\"background-color: lightgreen\">" + vari.varFound[0] + "</span>");
+              activeVars++;
+            } else {
+              complete = false;
+            }
+          }
+          if(complete){
+            inByWord.splice(inByWord.length-activeVars, 0, "<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+          } else{
+            // if keyword can hold variables but doesnt hold all of them, it will be red
+            inByWord.splice(inByWord.length-activeVars, 0, "<span style=\"background-color: red\">" + key.name + "</span>");
           }
         // if keyword can't hold a variable, it will be darkgreen
         } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-          if(key.VarFound != undefined){
-          inByWord.push("<span style=\"background-color: lightgreen\">" + key.VarFound.join(" ") + "</span>");
-          }
         }
       }
     }
@@ -143,6 +152,7 @@ export class TextOutputService {
       console.log(this.recogWords);
       inpAr.pop();
       document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
+      console.log("41");
     }
   
   }

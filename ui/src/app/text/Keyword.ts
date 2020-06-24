@@ -27,12 +27,9 @@ export class Keyword {
 export class Keyword2 {
     name: string;
     synonym: string;
-    VarType: string;
-    TextAfter: string;
-    TextBefore: string;
+    variables: MyVariable[];
     category: string;
     position: number;
-    VarFound: string[];
     active: string;
     text: string;
     buttonPos: number;
@@ -42,6 +39,14 @@ export class Keyword2 {
      
         
     }
+}
+
+export class MyVariable{
+    kind: string;
+    textAfter: string = "";
+    textBefore: string = "";
+    options: string[] = [];
+    varFound: string[] = [];
 }
 
 export class Category{

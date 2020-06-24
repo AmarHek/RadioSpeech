@@ -106,7 +106,22 @@ export class TextComponent implements OnInit {
       this.start = true;
       }
     this.readConfig();
+    this.changeButton();
   }
+
+  changeButton(){
+    if(!this.end){
+      let signalButton = document.getElementById("listening");
+      signalButton.classList.toggle("btn-danger");
+      signalButton.classList.toggle("btn-success");
+      if(signalButton.innerText==="Ein"){
+        signalButton.innerText = "Aus";
+      } else {
+        signalButton.innerText = "Ein";
+      }
+    }
+  }
+
 
   /* inputOrPaste(ev){
     if(ev.type==="paste"){
