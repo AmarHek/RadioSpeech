@@ -14,18 +14,21 @@ export class TextOutputService {
   // Array containing the text for each category
   myReport: {report: string, category: string}[] = [];
   rep: Array<TextDic> = [];
+  timeSpan: number = 0;
   recogWords : {word: string, pos: number}[] = [];
 
 
   // produces the text output
-  makeReport(activeCat: Category, activeDis: Disease){
+  makeReport(activeCat: Category, activeDis: Disease, startingTime: Date){
     // this.report.text="";
     // gets active Category
     let repo = "";
     // adds text corresponding to active Keywords
+    let keyName = "";
     if(activeDis != undefined){
       for (const key of activeCat.keys.filter(key => key.position!==-1)){
         let newText = key.text;
+        keyName = key.name;
         for(let i = 0; i<key.variables.length; i++){
         //repo += key.text;
         if(key.variables[i].varFound.length != 0){
@@ -38,7 +41,9 @@ export class TextOutputService {
       }  
     
     // assigns text to corresponding array element
-    this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text = repo;
+    let report = this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name);
+    report.text = repo;
+    report.key = keyName;
     console.log("repo");
     console.log(this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text);
     }
@@ -46,6 +51,7 @@ export class TextOutputService {
     let finalText = "";
     let date = new Date()
     finalText += date.getDate() + "." + date.getMonth() +"." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
+    this.timeSpan = Math.abs(date.getTime() - startingTime.getTime())/1000;
     for(const dis of this.rep){
       if(dis.reports.map(report => report.text).join("") !== ""){
         finalText = finalText + dis.disName+ ":\n";
@@ -99,9 +105,9 @@ export class TextOutputService {
 
   initDiseaseText(diseases: Array<Disease>){
     for(const dis of diseases){
-      let tempReports : {text: string, category: string}[] = [];
+      let tempReports : {text: string, category: string, key: string}[] = [];
       for(const cat of dis.categories){
-        tempReports.push({text: "", category: cat.name});
+        tempReports.push({text: "", category: cat.name, key: ""});
       }
       this.rep.push({disName: dis.name, reports: tempReports});
     }
@@ -110,9 +116,9 @@ export class TextOutputService {
   }
 
   addDisease(disease: Disease, index: number){
-    let tempReports : {text: string, category: string}[] = [];
+    let tempReports : {text: string, category: string, key: string}[] = [];
     for(const cat of disease.categories){
-      tempReports.push({text: "", category: cat.name});
+      tempReports.push({text: "", category: cat.name, key: ""});
     }
     this.rep.splice(index, 0, {disName: disease.name, reports: tempReports})
   }

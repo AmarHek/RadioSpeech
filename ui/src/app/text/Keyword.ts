@@ -69,5 +69,5 @@ export class Disease{
 
 export class TextDic{
     disName: string;
-    reports: {text: string, category: string}[];
+    reports: {text: string, category: string, key: string}[];
 }

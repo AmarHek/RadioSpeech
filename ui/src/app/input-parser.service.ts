@@ -26,7 +26,7 @@ export class InputParserService {
   diseases: Array<Disease> = [];
 
   twInput: {twInput: string, again: boolean} = {twInput: "", again: false};
-  
+  startingTime: Date;
   end: boolean = false;
   globalPos : number;
 
@@ -37,6 +37,7 @@ export class InputParserService {
   */
   // Create a Dictionary (e.g. the polyp Object)
   createStartDict(rootEl: M.TopLevel[]){
+    this.startingTime = new Date();
     let syns: string[];
     var keys: Keyword2[];
     var disName = "";
@@ -186,7 +187,7 @@ export class InputParserService {
         let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
         this.twInput.again = reRun;
         // produces text output 
-        let text = this.textOut.makeReport(activeCat, activeDis);
+        let text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
 
 
         // Test Log
@@ -212,7 +213,7 @@ export class InputParserService {
     }
   }
     // no text when no category is activated
-    let text2 = this.textOut.makeReport(undefined, undefined);
+    let text2 = this.textOut.makeReport(undefined, undefined, this.startingTime);
     return text2;
   
 }
@@ -234,7 +235,7 @@ restNormal(disease: Disease){
         }
       }
       // make additional report
-      this.textOut.makeReport(cat, disease);
+      this.textOut.makeReport(cat, disease, this.startingTime);
     }
   }
 }
