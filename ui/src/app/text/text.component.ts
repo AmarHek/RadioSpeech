@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterContentInit, HostListener, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterContentInit, HostListener, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { Keyword, Keyword2, Category, Disease } from './Keyword';
 import * as D from './Dictionary';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
+import { SafeUrl } from '@angular/platform-browser';
 
 //ich hoffe dass das nie jemand debuggen/erweitern muss
 
@@ -71,8 +72,18 @@ export class TextComponent implements OnInit {
   oldInput : string = "";
 
   parsingString: string = "";
+
+ // recogWords : {Array<string>} = [];
+    jsDown: SafeUrl;
+
  // recogWords : {Array<string>} = [];
   
+@ViewChild('myButton') myButton : ElementRef;
+
+  triggerClick(){
+    let el: HTMLElement = this.myButton.nativeElement as HTMLElement;
+    setTimeout(()=> el.click(), 1000);
+  }
 
 
 
@@ -158,6 +169,9 @@ export class TextComponent implements OnInit {
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;
+    if(this.end){
+      this.triggerClick();
+    }
     this.textOut.finalOut(this.end, inpArr);
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
