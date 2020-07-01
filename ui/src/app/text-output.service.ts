@@ -3,20 +3,27 @@ import { InputParserService } from './input-parser.service';
 import { parse } from 'querystring';
 import { Key } from 'protractor';
 import{Keyword2, Category, Disease, TextDic} from './text/Keyword';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TextOutputService {
 
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
    }
   // Array containing the text for each category
   myReport: {report: string, category: string}[] = [];
   rep: Array<TextDic> = [];
   recogWords : {word: string, pos: number}[] = [];
   timeSpan: number = 0;
+  downJson : SafeUrl;
 
+  generateDownloadJson(){
+    var js = JSON.stringify(this.rep);
+    var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js));
+    this.downJson = uri;
+  }
 
   // produces the text output
   makeReport(activeCat: Category, activeDis: Disease, startingTime: Date){
@@ -128,6 +135,22 @@ export class TextOutputService {
     /* console.log(this.recogWords);
     console.log(inpAr);
     console.log(this.rep); */
+    let i = 0;
+    while(i < this.rep.length){
+      let empty = true;
+      for(const cat of this.rep[i].reports){
+        if(cat.key !== ""){
+          empty = false;
+        }
+      }
+      if(empty){
+        this.rep.splice(i,1);
+      } else {
+        i++;
+      }
+    }
+    this.generateDownloadJson();
+    
     document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
     }
     /* if(end){
