@@ -36,6 +36,9 @@ export class TextOutputService {
       for (const key of activeCat.keys.filter(key => key.position!==-1)){
         let newText = key.text;
         keyName = key.name;
+        if(activeCat.name === "Größe"){
+          newText = newText.replace('%0', key.synonym);
+        }
         for(let i = 0; i<key.variables.length; i++){
         //repo += key.text;
         if(key.variables[i].varFound.length != 0){
@@ -101,7 +104,11 @@ export class TextOutputService {
           }
         // if keyword can't hold a variable, it will be darkgreen
         } else {
+          if(cat.name === "Größe"){
+            inByWord.push("<span style=\"background-color: darkgreen\">" + key.synonym + "</span>");
+          } else {
           inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
+          }
         }
       }
     }

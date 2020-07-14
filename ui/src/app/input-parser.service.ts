@@ -93,7 +93,11 @@ export class InputParserService {
       if(vari.kind === "oc"){
         Vars.push({kind : vari.kind, textBefore : undefined, textAfter: undefined, options: vari.values, varFound: []});
       } else if(vari.kind ==="text"){
-        Vars.push({kind: vari.kind, textBefore: vari.textBefore, textAfter: vari.textAfter, options: [], varFound: []})
+        let signalWord : Array<string> = [];
+        signalWord.push(vari.textAfter.split('[').pop().split(']')[0]);
+        let helpTextAfter = vari.textAfter.replace('[' + signalWord + ']','');
+
+        Vars.push({kind: vari.kind, textBefore: vari.textBefore, textAfter: helpTextAfter, options: signalWord, varFound: []})
       }
     }
       return  {
@@ -299,9 +303,22 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
   for(let i = 0; i<activeKeys.length; i++){
     activeKeys[i].active = activeKeys[i].name;
     const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
-    let guided = (activeDis.categories[activeDis.categories.length-1].keys.find(key => key.position !== -1) !== undefined);
-    console.log("CheckActiveKeys");
-    console.log(activeKeys);
+    let lastKey = (activeDis.categories[activeDis.categories.length-1].keys.find(key => key.position !== -1));
+    let guided : boolean;
+    if(lastKey !== undefined){
+      if(lastKey.variables.length > 0){
+        if(lastKey.variables[lastKey.variables.length-1].varFound.length !== 0){
+          guided = true;
+        } else {
+          guided = false;
+        }
+      } else {
+        guided = true;
+
+      }
+    } else {
+      guided = false;
+    }
     //if(activeKeys[i].VarType != undefined){
       let endIndex : number;
       let activeVar = -1;
@@ -327,13 +344,16 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
             if(tbPos != -1){
               varStarted = true;
               let tbPosEnd = tbPos + variable.textBefore.length;
-              let varEnd = varField.slice(tbPosEnd).search(/[cm]m/);
+              let reg = new RegExp(variable.options[0], "i");
+              console.log("Regex");
+              console.log(reg);
+              let varEnd = varField.slice(tbPosEnd).search(reg);
 
               let varInp;
               if(varEnd != -1){
                 console.log("VARend");
                 console.log(varEnd);
-                varInp = varField.slice(tbPosEnd,tbPosEnd+varEnd +2);
+                varInp = varField.slice(tbPosEnd,tbPosEnd+varEnd + varField.slice(tbPosEnd).match(reg)[0].length);
                 console.log("VARINP");
                 console.log(varInp);
                 variable.varFound[0] = variable.textBefore + varInp + variable.textAfter;
@@ -341,7 +361,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
                 done = true;
                 if(this.textOut.recogWords.find(el => {
                   return (el.word === varInp.trim().toLowerCase() && el.pos === activeCat.position + activeDis.position + tbPos + variable.textBefore.length + startIndex)
-                }) === undefined && ((varInp.search(/[cm]m/)) !== -1)){
+                }) === undefined && ((varInp.search(reg)) !== -1)){
                   this.textOut.recogWords.push({word: varInp.trim().toLowerCase(), pos: activeCat.position + activeDis.position + tbPos + variable.textBefore.length + startIndex});
                   }
               } else {
@@ -356,7 +376,7 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
               
             } else {
               // Automatically gets you to the next variable if valid Attribute is entered
-              if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
+              if(index <= activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
                 this.twInput.twInput += " " + variable.textBefore;
                 reRun = true;
               }
@@ -383,6 +403,8 @@ getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: D
         if(index < activeDis.categories.length-1 && activeKeys[i].position !== 0 && !guided){
           if(done || activeKeys[i].variables.length === 0){
           let nextCatName = activeDis.categories[index+1].name;
+          console.log("nextCat");
+          console.log(nextCatName);
           this.twInput.twInput += " " + nextCatName;
           reRun = true;
           }
