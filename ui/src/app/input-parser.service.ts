@@ -127,7 +127,7 @@ export class InputParserService {
 
  // parses the input by calling different methods and writing/reading to/from the polyp object
  parseInput(input: string){
-  if(input.toLowerCase().indexOf("ende") !== -1){
+  if(input.toLowerCase().indexOf(" ende") !== -1){
     let main = document.getElementsByClassName("main")[0].classList
     main.remove("main");
     main.add("report");
@@ -528,9 +528,12 @@ getIndex(keySyn: string, input:string, glPos: number){
   let ind = this.textOut.recogWords.findIndex(el => {
     return ((el.pos + el.word.length) === (glPos + tempPos + keySyn.length) && (el.word.length > keySyn.length)); 
   });
+  let ind3 = this.textOut.recogWords.findIndex(el => {
+    return ((el.pos) === (glPos + tempPos)); 
+  });
   if(this.textOut.recogWords.find(el => {
     return (el.word === keySyn.toLowerCase() &&  el.pos === glPos + tempPos);
-  }) === undefined && tempPos !== -1 && ind === -1){
+  }) === undefined && tempPos !== -1 && ind === -1 && ind3 === -1){
     this.textOut.recogWords.push({word: keySyn.toLowerCase(), pos: glPos + tempPos});
     let ind2 = this.textOut.recogWords.findIndex(el => {
       return ((el.pos + el.word.length) === (glPos + tempPos + keySyn.length) && (el.word.length < keySyn.length)); 

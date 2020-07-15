@@ -178,7 +178,7 @@ export class TextOutputService {
           temp += splitAr.length;
         } else {
           temp++;
-          console.log("pimmel2");
+          
           j -= 1;
         }
       
