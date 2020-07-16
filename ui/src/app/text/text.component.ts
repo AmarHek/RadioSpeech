@@ -70,6 +70,7 @@ export class TextComponent implements OnInit {
   end: boolean = false;
   resetTexts = new Map<M.CheckBox | M.Option, string>();
   oldInput : string = "";
+  getReady: boolean = false;
 
   parsingString: string = "";
 
@@ -154,18 +155,33 @@ export class TextComponent implements OnInit {
     console.log(ev);
     let inp = (document.getElementById('input') as HTMLTextAreaElement).value;
     let dif : string;
+    
     if (this.oldInput ===""){
       dif = inp;
+      this.oldInput = inp;
+      this.myInput.twInput += dif;
     } else {
-    dif = inp.replace(this.oldInput, ""); 
+      if(inp.toLowerCase().lastIndexOf("pause") > inp.toLowerCase().lastIndexOf("weiter")){
+        this.getReady = true;
+      } else {
+        if(this.getReady){
+          this.oldInput = inp;
+          this.getReady = false;
+          console.log("weiter");
+          console.log(this.oldInput);
+        } else {
+      
+          dif = inp.replace(this.oldInput, ""); 
+          console.log("dif");
+          console.log(dif);
+          this.oldInput = inp;
+          this.myInput.twInput += dif;
+        }
+      }
     }
-    console.log("dif and inp");
-    console.log(dif);
-    console.log(inp);
-    this.oldInput = inp;
-    this.myInput.twInput += dif;
-    //console.log(ev.clipboardData.getData('text'));
-    //this.myInput.twInput += ev.data;
+    
+    
+  
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;

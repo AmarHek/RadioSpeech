@@ -17,7 +17,7 @@ export class TextOutputService {
   rep: Array<TextDic> = [];
   timeSpan: number = 0;
   recogWords : {word: string, pos: number}[] = [];
-  downJson : SafeUrl;
+  downJson;
 
   generateDownloadJson(){
     var js = JSON.stringify(this.rep);
