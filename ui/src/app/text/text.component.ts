@@ -185,10 +185,12 @@ export class TextComponent implements OnInit {
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;
-    if(this.end){
-      this.triggerClick();
-    }
     this.textOut.finalOut(this.end, inpArr);
+    this.jsDown = this.textOut.downJson;
+    if(this.end){
+      //this.triggerClick();
+    }
+    
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);

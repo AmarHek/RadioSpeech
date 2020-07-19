@@ -17,10 +17,12 @@ export class TextOutputService {
   rep: Array<TextDic> = [];
   timeSpan: number = 0;
   recogWords : {word: string, pos: number}[] = [];
-  downJson;
+  downJson : SafeUrl;
 
   generateDownloadJson(){
     var js = JSON.stringify(this.rep);
+    console.log("Download!");
+    console.log(js);
     var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js));
     this.downJson = uri;
   }
