@@ -7,7 +7,7 @@ import { Category, Keyword2 } from './text/Keyword';
   pure: false
 })
 export class SortCategoriesPipe implements PipeTransform {
-
+  // sorts categories so that the active is always on top
   transform(value: any): any {
     return JSON.parse(JSON.stringify(value)).sort((a,b) => {
       if (a.active == true){

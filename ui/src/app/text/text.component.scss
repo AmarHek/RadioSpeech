@@ -49,9 +49,9 @@ $border-color: hsl(200, 70%, 80);
 
 .headline {
   grid-area: headline;
-  font-size: 120%;
-  font-weight: bold;
-  text-align: center;
+  font-size: 50%;
+  //font-weight: bold;
+  //text-align: center;
   border-bottom: 1px solid $border-color;
 }
 
@@ -133,17 +133,7 @@ textarea {
   font-size: 95%;
   display: block;
   position: relative;
-  //max-width: 250px;
-  //word-wrap: break-word;
-  //padding-left: 0px;
-  //text-indent: 0px;
 }
-
-/*tbody>tr>:nth-child(7)
-{
-  color: red;
-  max-width: 80px;
-}*/
 
 .category {
   font-size: 140%;
@@ -189,6 +179,9 @@ img {
 input[type="file"] {
   padding: 0px;
   background: none;
+}
+#inputText{
+  font-size: 3em;
 }
 
 div.option{
