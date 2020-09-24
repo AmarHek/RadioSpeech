@@ -51,8 +51,8 @@ export class TextComponent implements OnInit {
     jsDown: SafeUrl;
     jsDown2: SafeUrl;
   
-@ViewChild('myReport') myReport : ElementRef;
-@ViewChild('myJson') myJson : ElementRef;
+@ViewChild('myReport', { static: true }) myReport : ElementRef;
+@ViewChild('myJson', { static: true }) myJson : ElementRef;
 
 
   triggerClick(){

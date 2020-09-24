@@ -1,5 +1,4 @@
 import * as M from './model';
-import { v } from '@angular/core/src/render3';
 
 export function normalExtractor(): M.TextExtractor {
   return new class {
@@ -177,7 +176,7 @@ export function expandVariablesInString(s: string, data: M.TopLevel[], addFullSt
   s = s.trim();
   if(addFullStop)
   {
-    s = s.replace(/(\s*\.?\s*$)/,". "); //Punkt am Ende einfügen, falls keiner da ist 
+    s = s.replace(/(\s*\.?\s*$)/,". "); //Punkt am Ende einfügen, falls keiner da ist
   }
   return s;
 }
