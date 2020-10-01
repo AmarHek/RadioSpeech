@@ -11,7 +11,7 @@ import { TimeStampsService } from '../time-stamps.service';
 })
 export class UploadComponent implements OnInit {
   name: string = "";
-  months: string[] = ["Januar", "Februar", "März","April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  months: string[] = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
   constructor(private http: HttpClient, private router: Router, private timesService: TimeStampsService) { }
 

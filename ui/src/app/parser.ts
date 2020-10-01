@@ -4,7 +4,9 @@ import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstra
 import { flatMap, assertNever } from './util';
 
 export function take(text: string, structure: M.TopLevel[]): void {
+  console.log("takers:");
   const takers = createTakers(structure);
+  console.log(takers);
 
   let textPosition = 0;
   let takerPosition = 0;

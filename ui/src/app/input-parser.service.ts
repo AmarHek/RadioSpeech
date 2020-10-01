@@ -1,8 +1,7 @@
-import { Injectable, Input } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as M from './model'
 import { Keyword2, Category, Disease, MyVariable } from './text/Keyword';
 import { TextOutputService } from './text-output.service';
-
 
 
 @Injectable({
@@ -14,9 +13,9 @@ export class InputParserService {
   constructor(private textOut: TextOutputService) {
 
   }
-  // Contains whole Polyp with its Categories and Keywords inside of each Category 
+  // Contains whole Polyp with its Categories and Keywords inside of each Category
   diseases: Array<Disease> = [];
-  // contains the input text 
+  // contains the input text
   twInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   startingTime: Date;
   // finished?
@@ -57,7 +56,7 @@ export class InputParserService {
             }
           }
         }
-        // Adds a new category 
+        // Adds a new category
         this.diseases.find(disease => disease.name == disName).categories.push({ keys: keys, name: El.name, active: false, position: -1 });
       }
     }
@@ -169,7 +168,7 @@ export class InputParserService {
           let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
           // checks if the guide is still necessary
           this.twInput.again = reRun;
-          // produces text output 
+          // produces text output
           let text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
           // Test log
           const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
@@ -203,7 +202,7 @@ export class InputParserService {
     for (const cat of disease.categories) {
       // if category is unused
       if (cat.keys.find(key => key.position !== -1) == undefined) {
-        // find normal keyword and set it 
+        // find normal keyword and set it
         for (const key of cat.keys) {
 
           if (key.normal == true && key.name == key.synonym) {
@@ -252,7 +251,7 @@ export class InputParserService {
     // Filter for all buttons that were pressed and sort them by order !!! todo
     /* let activeButtons = keys.filter(activeKey => activeKey.buttonPos != -1).sort((a,b) => a.buttonPos-b.buttonPos);
     if(activeButtons.length >= 1){
-  
+
       // if keyword of latest button click occurs later than latest written key -> take button click, else take written key
       if(activeKeys.length >= 1){
         if(activeButtons[0].buttonPos > activeKeys[activeKeys.length-1].position){
@@ -478,7 +477,7 @@ export class InputParserService {
       while (input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos + 1) !== -1) {
         tempPos = input.toLowerCase().indexOf(diseases[i].name.toLowerCase(), tempPos + 1);
       }
-      // makes that "polyp 2" is not recognised as "polyp" 
+      // makes that "polyp 2" is not recognised as "polyp"
       if (tempPos !== -1 && ((tempPos + diseases[i].name.length) > (activeDis.disPos + activeDis.disName.length))) {
         activeDis.disPos = tempPos;
         activeDis.disName = diseases[i].name;

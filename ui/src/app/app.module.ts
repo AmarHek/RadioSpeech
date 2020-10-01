@@ -12,6 +12,7 @@ import { ListComponent } from './list/list.component';
 import { SortCategoriesPipe } from './sort-categories.pipe';
 import { ReportComponent } from './report/report.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { WorkspaceComponent } from './workspace/workspace.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     UploadComponent,
     ListComponent,
     SortCategoriesPipe,
-    ReportComponent
+    ReportComponent,
+    WorkspaceComponent,
   ],
   imports: [
     BrowserModule,

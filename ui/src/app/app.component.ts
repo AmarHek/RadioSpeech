@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons'; 
+import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons';
 
 
-declare const $: any;
+// declare const $: any;
 
 @Component({
   selector: 'app-root',
