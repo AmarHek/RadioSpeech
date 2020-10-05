@@ -1,4 +1,5 @@
 <div class="report-text">
+  <label for="report">Bericht</label>
   <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtserstellung überschrieben"
             id="report" class="w-100" [(ngModel)]="report" #textContent ></textarea>
 </div>
@@ -13,14 +14,15 @@
 </div>
 
 <div class="judgement-text">
+    <label for="judgement">Beurteilung</label>
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
-              id="output2" class="w-100"></textarea>
+              id="judgement" class="w-100"></textarea>
 </div>
-<div class="judgement-buttons" onload="init()">
+<div class="judgement-buttons">
   <button id="copy-judge" (click)="copyText(textContent)"
-          class="btn btn-outline-secondary float-right">kopieren</button>
+          class="btn btn-outline-secondary float-left">Kopieren</button>
   <button id="read-judge" (click)="reverse(textContent)"
-          class="ml-2 btn btn-outline-secondary float-left">Auslesen</button>
+          class="ml-2 btn btn-outline-secondary float-right">Auslesen</button>
 </div>
 
 <!--

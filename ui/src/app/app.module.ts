@@ -13,6 +13,7 @@ import { SortCategoriesPipe } from './sort-categories.pipe';
 import { ReportComponent } from './report/report.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WorkspaceComponent } from './workspace/workspace.component';
+import { OptionsComponent } from './options/options.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
     SortCategoriesPipe,
     ReportComponent,
     WorkspaceComponent,
+    OptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
     HttpClientModule,
     RouterModule.forRoot(
       [
+        { path: 'workspace/:name', component: WorkspaceComponent},
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },

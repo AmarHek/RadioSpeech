@@ -20,15 +20,50 @@ export class DataBuilderService {
 
   constructor() {}
 
-  // startingTime: Date;
-  // parts: M.TopLevel[];
+  parseRawParts(raw: M.TopLevel[]){
+    let parts: M.TopLevel[] = [];
+    let currentBlock: M.Block = null;
+    let currentEnum: M.Enumeration = null;
+    for(let el of raw){
+      if(el.kind === "block"){
+        currentBlock = el;
+      }
+      else if(el.kind === "enumeration"){
+        currentEnum = el;
+      }
+      else if(el.kind === "category"){
+        let parsed = this.parseOptionalCategory(el.name);
+        parts.push({
+          kind: "category",
+          name: parsed[0],
+          optional: parsed[1],
+          block: currentBlock,
+          enum: currentEnum,
+          selectables: el.selectables,
+          selectablesNormal: el.selectablesNormal,
+          data: el.data,
+        })
+        currentBlock = null;
+        currentEnum = null;
+      }
+      else {
+        console.log(el);
+        window.alert("Error during parsing of parts: unkown kind");
+      }
+    }
 
-  generateDataDict(rootEl: M.TopLevel[]) {
-    let example = "Thorax pa kein PE PE rechts gering Mediastinum normal Aorta elongiert";
-    P.take(example, rootEl);
-    //for (const El of rootEl) {
-    //  console.log(El);
-    //}
+    return parts;
   }
+
+  // TODO: remove once backend is updated
+  parseOptionalCategory(category: string): [string, boolean] {
+    if(category.includes("<", 0)){
+      return [category.substring(1, category.length), true];
+    }
+    else{
+      return [category, false];
+    }
+  }
+
 
 }

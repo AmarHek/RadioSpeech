@@ -8,8 +8,6 @@ export interface TakeResult {
   setter: () => void;
 }
 
-
-
 /*
  * basic takers
  */

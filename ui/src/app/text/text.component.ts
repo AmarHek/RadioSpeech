@@ -60,14 +60,7 @@ export class TextComponent implements OnInit {
     this.myInput = this.inputParser.twInput;
   }
 
-  public test(){
-    console.log("JSON ELEMENT");
-    console.log(this.parts);
-    console.log("data builder:");
-    this.databuilder.generateDataDict(this.parts);
-  }
-
-  public getTopLevel(){
+  getTopLevel(){
     this.route.paramMap.subscribe(ps => {
       if (ps.get('name')) {
         this.http.post(environment.urlRoot + 'get', JSON.stringify(ps.get('name'))).subscribe(
@@ -90,7 +83,6 @@ export class TextComponent implements OnInit {
 
   }
 
-
   inputClick(){
     if(!this.start){
       this.inputParser.createStartDict(this.parts);
@@ -112,7 +104,6 @@ export class TextComponent implements OnInit {
       }
     }
   }
-
 
   onInput(ev){
     console.log("event");
@@ -143,8 +134,6 @@ export class TextComponent implements OnInit {
         }
       }
     }
-
-
 
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
@@ -186,12 +175,9 @@ export class TextComponent implements OnInit {
     }
   }
 
-
   refreshPage() {
     window.location.reload();
   }
-
-
 
 }
 

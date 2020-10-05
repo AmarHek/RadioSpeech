@@ -1,11 +1,15 @@
+$border-color: hsl(200, 70%, 80);
+
 .report-text {
   width: 100%;
-  height: 60%;
+  height: 100%;
 }
 
-.report-buttons {
+.report-buttons
+.judgement-buttons{
   grid-area: bf-but;
   grid-template-columns: 1fr 1fr;
+  display: grid;
 }
 .report-text,
 .report-buttons,
@@ -13,10 +17,5 @@
 .judgement-buttons {
   border: 1px solid hsl(200, 70%, 80%);
   border-left: none;
-}
-
-.report-buttons,
-.judgement-buttons {
-  display: grid;
 }
 
