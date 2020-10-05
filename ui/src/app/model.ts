@@ -64,7 +64,7 @@ export interface Category {
   block?: Block;
   enum?: Enumeration;
   selectables: Selectable[];
-  selectablesNormal: Selectable[];
+  // selectablesNormal: Selectable[];
   data: Data;
 }
 

@@ -7,7 +7,7 @@ import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
 import {InputParserService} from "../input-parser.service";
 import {TextOutputService} from "../text-output.service";
 import {DataBuilderService} from "../data-builder.service";
-import {Disease} from "../text/Keyword";
+import {makeNormalCategory} from "../generator";
 
 @Component({
   selector: 'app-workspace',
@@ -66,8 +66,9 @@ export class WorkspaceComponent implements OnInit {
   }
 
   makeNormal(){
-    for(let el in this.parts){
-
+    for(const category of this.parts){
+      console.log(category);
+      makeNormalCategory(category);
     }
     // let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     // this.myText.report = this.inputParser.parseInput(input + " rest normal");

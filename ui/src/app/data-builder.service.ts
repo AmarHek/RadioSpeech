@@ -40,7 +40,6 @@ export class DataBuilderService {
           block: currentBlock,
           enum: currentEnum,
           selectables: el.selectables,
-          selectablesNormal: el.selectablesNormal,
           data: el.data,
         })
         currentBlock = null;

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import * as M from '../model';
 
 @Component({
   selector: 'app-options',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OptionsComponent implements OnInit {
 
+  @Input() parts: M.TopLevel[];
+
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.parts);
+  }
+
+  displayParts(){
+    console.log(this.parts)
   }
 
 

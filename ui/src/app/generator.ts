@@ -226,7 +226,7 @@ export function textOfVariable(v: M.Variable): string | undefined {
 }
 
 export function makeNormalCategory(c: M.Category): void {
-  if (hasSelectionNormal(c)) return;
+  if (hasSelection(c)) return;
 
   for (const entry of c.selectables) {
     if (entry.kind === "box") {
@@ -253,18 +253,6 @@ export function hasSelection(c: M.Category): boolean {
   }
   return false;
 }
-
-function hasSelectionNormal(c: M.Category): boolean {
-  for (const entry of c.selectablesNormal) {
-    if (entry.kind === "box" && entry.value) {
-      return true;
-    } else if (entry.kind === "group" && entry.value) {
-      return true;
-    }
-  }
-  return false;
-}
-
 
 
 export function makeEnumeration(e: M.Enumeration, data: M.TopLevel[], textExtractor: M.TextExtractor): string {

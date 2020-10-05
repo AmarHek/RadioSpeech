@@ -14,6 +14,11 @@ export class ReportComponent implements OnInit {
   @Input() report: string;
   @Input() parts: TopLevel[];
 
+  constructor() { }
+
+  ngOnInit() {
+  }
+
   copyText(inputElement: HTMLTextAreaElement){
     inputElement.select();
     document.execCommand('copy');
@@ -25,9 +30,6 @@ export class ReportComponent implements OnInit {
     P.take(text, this.parts);
   }
 
-  constructor() { }
 
-  ngOnInit() {
-  }
 
 }
