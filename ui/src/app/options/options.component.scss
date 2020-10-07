@@ -1,0 +1,61 @@
+td.mandatory{
+  font-size: 100%;
+  font-weight: bold;
+  padding: 10;
+  margin: 10;
+  vertical-align: top;
+  position: relative;
+  top: -1px;
+  max-width: 10px;
+  // word-wrap: break-word;
+  *overflow: hidden;
+}
+
+td.optional {
+  font-size: 100%;
+  font-weight: bold;
+  padding: 10;
+  margin: 10;
+  vertical-align: top;
+  position: relative;
+  top: -1px;
+  color: grey;
+  // word-wrap: break-word;
+  *overflow: hidden;
+}
+
+td.box {
+  width: 13px;
+  height: 13px;
+  //padding: 0;
+  //margin:0;
+  vertical-align: text-top;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
+}
+
+td.title0 {
+  font-size: 95%;
+  display: block;
+  position: relative;
+  //max-width: 250px;
+  word-wrap: break-word;
+  //padding-left: 0px;
+  //text-indent: 0px;
+}
+
+.link {
+  padding: 0;
+  font-size: 90%;
+  background: none;
+  border: none;
+  white-space: pre-line;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.link.active {
+  background: greenyellow;
+  text-decoration: none;
+}

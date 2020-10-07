@@ -7,12 +7,17 @@ import {TopLevel} from '../model';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
-  styleUrls: ['./report.component.css']
+  styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
 
   @Input() report: string;
   @Input() parts: TopLevel[];
+
+  constructor() { }
+
+  ngOnInit() {
+  }
 
   copyText(inputElement: HTMLTextAreaElement){
     inputElement.select();
@@ -25,9 +30,6 @@ export class ReportComponent implements OnInit {
     P.take(text, this.parts);
   }
 
-  constructor() { }
 
-  ngOnInit() {
-  }
 
 }

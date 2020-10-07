@@ -5,7 +5,7 @@ export type Selectable = CheckBox | Group;
 export type Clickable  = CheckBox | Option;
 
 export type Data = {
-[name: string]: string[] 
+[name: string]: string[]
 };
 
 export interface TextExtractor {
@@ -50,18 +50,21 @@ export interface Option {
 
 export type TopLevel = Category | Block | Enumeration | Conditional;
 
-export interface Category {
-  kind: "category";
-  name: string;
-  selectables: Selectable[];
-  selectablesNormal: Selectable[];
-  data: Data;
-}
-
 export interface Block {
   kind: "block";
   text?: string;
   judgementText?: string;
+  data: Data;
+}
+
+export interface Category {
+  kind: "category";
+  name: string;
+  optional: boolean;
+  block?: Block;
+  enum?: Enumeration;
+  selectables: Selectable[];
+  // selectablesNormal: Selectable[];
   data: Data;
 }
 

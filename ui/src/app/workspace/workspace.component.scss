@@ -1,0 +1,71 @@
+$border-color: hsl(200, 70%, 80);
+.main {
+  height: 100%;
+  width: 100%;
+  // border: 1px solid $border-color;
+  background-color: hsl(202, 73%, 97%);
+  color: black;
+}
+
+.main > div {
+  background-color: hsl(200, 70%, 97%);
+  padding: 10px;
+  overflow: auto;
+}
+
+.header{
+  font-size: 100%;
+  font-weight: bold;
+  text-align: center;
+  border-top: 1px solid $border-color;
+  height: 10%;
+}
+
+.inputWindow{
+  grid-area: inputWindow;
+  float: left;
+  padding-left: 5px;
+}
+
+.buttons{
+  grid-area: buttons;
+  float: right;
+  padding-right: 5px;
+}
+
+.inputText{
+  grid-area: inputText;
+  font-size: 3em;
+}
+
+#normal-button {
+  font-weight: bold;
+  color: black;
+}
+
+.content {
+  height: 90%;
+  background-color: white;
+  border: 1px $border-color;
+  color: white;
+  display: grid;
+  grid-template-columns: 19% 80%;
+  grid-column-gap: 10px;
+  grid-template-areas:
+    "report  options";
+}
+
+.report{
+  grid-area: report;
+  height: 100%;
+  border: 1px $border-color;
+}
+
+.options{
+  grid-area: options;
+  height: 99%;
+  width: 99%;
+  margin: 5px;
+  padding: 5px;
+  border: 1px $border-color;
+}

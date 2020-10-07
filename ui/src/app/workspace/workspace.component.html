@@ -1,0 +1,33 @@
+<div class="main">
+  <div class="header">
+    <div class="inputWindow">
+      <label for="input">Eingabefenster:
+        <input id="input" name="Befund" type="text"
+               (input)="onInput($event)" placeholder="Befund eingeben...">
+      </label>
+    </div>
+    <div class="buttons">
+      <button id="normal-button" (click)="makeNormal()"
+              class="btn btn-outline-secondary">Rest normal</button>
+      <button id="test" title="button zum testen" (click)="test()"
+              class="btn btn-outline-secondary">Test</button>
+      <!-- refreshes Page -->
+      <button id="refresh" title="Seite neu laden" (click)="refreshPage()"
+              class="btn btn-outline-secondary">Refresh</button>
+    </div>
+
+    <!--
+    <div id="listening" class="btn btn-sm btn-danger float-left">Aus
+    </div>-->
+
+    <div class="inputText" id="inputText">
+      <br>
+    </div>
+
+  </div>
+
+  <div class="content">
+    <app-report class="report"></app-report>
+    <app-options class="options" [parts]="this.parts"></app-options>
+  </div>
+</div>

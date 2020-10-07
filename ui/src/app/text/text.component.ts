@@ -11,6 +11,7 @@ import { Keyword2, Category, Disease } from './Keyword';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { DataBuilderService } from "../data-builder.service";
 
 declare const $: any;
 
@@ -26,17 +27,6 @@ export class TextComponent implements OnInit {
     return arr.filter(key => key.name == key.synonym);
   }
 
-
-
-  ngOnInit(): void {
-    // assigns reference to polyp object
-    this.diseases = this.inputParser.diseases;
-    this.firstTime = false;
-    this.start = false;
-    this.myInput = this.inputParser.twInput;
-  }
-
-
   parts: M.TopLevel[] = [];
   keywordsService: Array<Keyword2> = [];
   myText: {report: string} = {report: ""};
@@ -50,32 +40,32 @@ export class TextComponent implements OnInit {
   parsingString: string = "";
     jsDown: SafeUrl;
     jsDown2: SafeUrl;
-  
+
 @ViewChild('myReport', { static: true }) myReport : ElementRef;
 @ViewChild('myJson', { static: true }) myJson : ElementRef;
 
-
-  triggerClick(){
-    let el: HTMLElement = this.myReport.nativeElement as HTMLElement;
-    let el2: HTMLElement = this.myJson.nativeElement as HTMLElement;
-    setTimeout(()=> {
-        el.click();
-        el2.click();
-      }, 1000);
-    
-  }
-
   constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
               private route: ActivatedRoute, private inputParser: InputParserService,
-              private textOut: TextOutputService) {
-    route.paramMap.subscribe(ps => {
-      if (ps.get('name')) {
+              private textOut: TextOutputService,
+              private databuilder: DataBuilderService) {
 
-        http.post(environment.urlRoot + 'get', JSON.stringify(ps.get('name'))).subscribe(
+  }
+
+  ngOnInit(): void {
+    // assigns reference to polyp object
+    this.getTopLevel();
+    this.diseases = this.inputParser.diseases;
+    this.firstTime = false;
+    this.start = false;
+    this.myInput = this.inputParser.twInput;
+  }
+
+  getTopLevel(){
+    this.route.paramMap.subscribe(ps => {
+      if (ps.get('name')) {
+        this.http.post(environment.urlRoot + 'get', JSON.stringify(ps.get('name'))).subscribe(
           worked => {
             this.parts = worked as any;
-            console.log("JSON Element");
-            console.log(worked);
           },
           error => window.alert("An unknown error occured: " + JSON.stringify(error))
         );
@@ -83,12 +73,22 @@ export class TextComponent implements OnInit {
     });
   }
 
+  triggerClick(){
+    let el: HTMLElement = this.myReport.nativeElement as HTMLElement;
+    let el2: HTMLElement = this.myJson.nativeElement as HTMLElement;
+    setTimeout(()=> {
+      el.click();
+      el2.click();
+    }, 1000);
+
+  }
+
   inputClick(){
     if(!this.start){
       this.inputParser.createStartDict(this.parts);
       this.start = true;
       }
-    
+
     this.changeButton();
   }
 
@@ -105,13 +105,12 @@ export class TextComponent implements OnInit {
     }
   }
 
-  
   onInput(ev){
     console.log("event");
     console.log(ev);
     let inp = (document.getElementById('input') as HTMLTextAreaElement).value;
     let dif : string;
-    
+
     if (this.oldInput ===""){
       dif = inp;
       this.oldInput = inp;
@@ -126,8 +125,8 @@ export class TextComponent implements OnInit {
           console.log("weiter");
           console.log(this.oldInput);
         } else {
-      
-          dif = inp.replace(this.oldInput, ""); 
+
+          dif = inp.replace(this.oldInput, "");
           console.log("dif");
           console.log(dif);
           this.oldInput = inp;
@@ -135,9 +134,7 @@ export class TextComponent implements OnInit {
         }
       }
     }
-    
-    
-  
+
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.inputParser.end;
@@ -147,7 +144,7 @@ export class TextComponent implements OnInit {
     if(this.end){
       this.triggerClick();
     }
-    
+
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if(this.myInput.again){
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
@@ -178,12 +175,9 @@ export class TextComponent implements OnInit {
     }
   }
 
-
   refreshPage() {
     window.location.reload();
   }
-
- 
 
 }
 

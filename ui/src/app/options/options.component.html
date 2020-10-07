@@ -1,0 +1,33 @@
+<div class="main">
+  <table>
+    <tbody>
+      <tr *ngFor="let category of parts">
+        <td class="category" [ngClass]="category.optional ? 'optional': 'mandatory'"
+            id="{{category.name}}">{{category.name}}</td>
+        <ng-container *ngFor="let sel of category.selectables; let k = index" class="col-3">
+          <ng-container *ngIf="sel.kind === 'box'">
+            <td class="box"> <input type="checkbox" [(ngModel)]="sel.value"
+                                    id="{{sel.name}}box" />
+            </td>
+            <td class="title0" id={{sel.name}}> {{sel.name}}
+              <br>
+              <div class="link" id="{{category.name + sel.name}}"></div>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="sel.kind === 'group'">
+            <ng-container *ngFor="let option of sel.options; let k = index" class="col-3">
+              <td class="box"> <input [name]="sel.name "
+                                      id="{{option.name}}box" [value]="option.name" type="radio"
+                                      [(ngModel)]="sel.value" />
+              </td>
+              <td class="title0" id={{option.name}}> {{option.name}}
+                <br>
+                <div class="link" id="{{sel.name + option.name}}"></div>
+              </td>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -5,14 +5,10 @@ $border-color: hsl(200, 70%, 80);
   display: inline-grid;
   grid-gap: 10px;
   //grid-template-columns: 500px 1fr;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 20% 80%;
   grid-template-areas:
-    "headline headline"
-    "content  content"
-    "content  content"
-    "content  content"
-    "content  content";
-
+    "headline  headline"
+    "report   content";
   grid-template-rows: auto 1fr;
   overflow-y: scroll;
 
@@ -21,18 +17,6 @@ $border-color: hsl(200, 70%, 80);
 .report {
   height: 100%;
   width: 100%;
-  display: inline-grid;
-  grid-gap: 10px;
-  //grid-template-columns: 500px 1fr;
-  grid-template-columns: 1fr 2fr;
-  grid-template-areas:
-    "headline headline"
-    "bf-text  content"
-    "bf-text  content"
-    "bf-text  content"
-    "bf-but  content";
-
-  grid-template-rows: auto 3fr auto 1fr auto;
   overflow-y: scroll;
 
 }

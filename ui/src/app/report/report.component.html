@@ -1,27 +1,37 @@
-
 <div class="report-text">
-  <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtgenerierung überschrieben"
+  <label for="report"></label>
+  <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtserstellung überschrieben"
             id="report" class="w-100" [(ngModel)]="report" #textContent ></textarea>
 </div>
 
 <div class="report-buttons">
    <!-- copies summary to clipboard -->
-  <button id="copy-button" (click)="copyText(textContent)"
+  <button id="copy-rep" (click)="copyText(textContent)"
           class="btn btn-outline-secondary float-left">Kopieren</button>
   <!-- -->
-  <button id="read-button" (click)="reverse(textContent)"
+  <button id="read-rep" (click)="reverse(textContent)"
           class="ml-2 btn btn-outline-secondary float-left">Auslesen</button>
 </div>
 
-<!-- Text für Beurteilung erstmal weglassen, da unsicher, wofür dieser Bereich ist -->
+<div class="judgement-text">
+    <label for="judgement"></label>
+		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
+              id="judgement" class="w-100"></textarea>
+</div>
+<div class="judgement-buttons">
+  <button id="copy-judge" (click)="copyText(textContent)"
+          class="btn btn-outline-secondary float-left">Kopieren</button>
+  <button id="read-judge" (click)="reverse(textContent)"
+          class="ml-2 btn btn-outline-secondary float-right">Auslesen</button>
+</div>
+
 <!--
-<div class="beurteilung-text">
+<div class="judgement-text">
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
               id="output2" class="w-100" [(ngModel)]="judgement"></textarea>
 </div>
-<div class="beurteilung-buttons" onload="init()">
+<div class="judgement-buttons" onload="init()">
   <button id="ready-button" (click)="copyText('output2')"
           class="btn btn-outline-secondary float-right">kopieren</button>
 </div>
 -->
-
