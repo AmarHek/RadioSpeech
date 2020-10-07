@@ -8,6 +8,7 @@ import {InputParserService} from "../input-parser.service";
 import {TextOutputService} from "../text-output.service";
 import {DataBuilderService} from "../data-builder.service";
 import {makeNormalCategory} from "../generator";
+import {DisplayService} from "../display.service";
 
 @Component({
   selector: 'app-workspace',
@@ -49,6 +50,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   test(){
+    console.log(this.rawParts);
     console.log(this.parts);
   }
 

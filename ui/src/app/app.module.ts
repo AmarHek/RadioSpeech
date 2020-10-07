@@ -14,6 +14,7 @@ import { ReportComponent } from './report/report.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { OptionsComponent } from './options/options.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { OptionsComponent } from './options/options.component';
     ReportComponent,
     WorkspaceComponent,
     OptionsComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

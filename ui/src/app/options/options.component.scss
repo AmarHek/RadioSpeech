@@ -1,4 +1,4 @@
-td.mandatory {
+td.mandatory{
   font-size: 100%;
   font-weight: bold;
   padding: 10;
@@ -43,4 +43,19 @@ td.title0 {
   word-wrap: break-word;
   //padding-left: 0px;
   //text-indent: 0px;
+}
+
+.link {
+  padding: 0;
+  font-size: 90%;
+  background: none;
+  border: none;
+  white-space: pre-line;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.link.active {
+  background: greenyellow;
+  text-decoration: none;
 }

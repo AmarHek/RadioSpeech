@@ -1,14 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons';
-
-
-// declare const $: any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  faUser = faLaptopMedical;
-}
+
+export class AppComponent {}
+

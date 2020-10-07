@@ -6,6 +6,8 @@ div.settings {
   display:grid;
   grid-template-columns: max-content;
   grid-gap:5px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 div.settings label       { text-align:right; }
 div.settings label:after { content: ":"; }

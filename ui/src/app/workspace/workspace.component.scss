@@ -2,27 +2,9 @@ $border-color: hsl(200, 70%, 80);
 .main {
   height: 100%;
   width: 100%;
-  border: 1px solid $border-color;
+  // border: 1px solid $border-color;
   background-color: hsl(202, 73%, 97%);
   color: black;
-}
-
-.content {
-  background-color: white;
-  color: white;
-  display: grid;
-  grid-template-columns: 19% 80%;
-  grid-column-gap: 10px;
-  grid-template-areas:
-    "report  options";
-}
-
-.report{
-  grid-area: report;
-}
-
-.options{
-  grid-area: options;
 }
 
 .main > div {
@@ -36,6 +18,7 @@ $border-color: hsl(200, 70%, 80);
   font-weight: bold;
   text-align: center;
   border-top: 1px solid $border-color;
+  height: 10%;
 }
 
 .inputWindow{
@@ -58,4 +41,31 @@ $border-color: hsl(200, 70%, 80);
 #normal-button {
   font-weight: bold;
   color: black;
+}
+
+.content {
+  height: 90%;
+  background-color: white;
+  border: 1px $border-color;
+  color: white;
+  display: grid;
+  grid-template-columns: 19% 80%;
+  grid-column-gap: 10px;
+  grid-template-areas:
+    "report  options";
+}
+
+.report{
+  grid-area: report;
+  height: 100%;
+  border: 1px $border-color;
+}
+
+.options{
+  grid-area: options;
+  height: 99%;
+  width: 99%;
+  margin: 5px;
+  padding: 5px;
+  border: 1px $border-color;
 }
