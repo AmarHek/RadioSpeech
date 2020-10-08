@@ -1,26 +1,24 @@
 td.mandatory{
-  font-size: 100%;
+  font-size: 120%;
   font-weight: bold;
-  padding: 10;
-  margin: 10;
+  // padding: 10px;
+  // margin: 10px;
   vertical-align: top;
   position: relative;
   top: -1px;
   max-width: 10px;
-  // word-wrap: break-word;
   *overflow: hidden;
 }
 
 td.optional {
-  font-size: 100%;
+  font-size: 120%;
   font-weight: bold;
-  padding: 10;
-  margin: 10;
+  // padding: 10px;
+  // margin: 10px;
   vertical-align: top;
   position: relative;
   top: -1px;
   color: grey;
-  // word-wrap: break-word;
   *overflow: hidden;
 }
 
