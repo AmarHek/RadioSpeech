@@ -11,7 +11,7 @@ import { Keyword2, Category, Disease } from './Keyword';
 import { InputParserService } from '../input-parser.service';
 import { TextOutputService } from '../text-output.service';
 import { SafeUrl } from '@angular/platform-browser';
-import { DataBuilderService } from "../data-builder.service";
+import { DataParserService } from "../dataParser.service";
 
 declare const $: any;
 
@@ -47,7 +47,7 @@ export class TextComponent implements OnInit {
   constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
               private route: ActivatedRoute, private inputParser: InputParserService,
               private textOut: TextOutputService,
-              private databuilder: DataBuilderService) {
+              private databuilder: DataParserService) {
 
   }
 

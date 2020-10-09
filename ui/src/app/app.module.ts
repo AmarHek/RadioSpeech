@@ -10,10 +10,10 @@ import { TextComponent } from './text/text.component';
 import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
 import { SortCategoriesPipe } from './sort-categories.pipe';
-import { ReportComponent } from './report/report.component';
+import { ReportComponent } from './layout1/report/report.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { WorkspaceComponent } from './workspace/workspace.component';
-import { OptionsComponent } from './options/options.component';
+import { Layout1Component } from './layout1/layout1.component';
+import { OptionsComponent } from './layout1/options/options.component';
 import { HeaderComponent } from './header/header.component';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { HeaderComponent } from './header/header.component';
     ListComponent,
     SortCategoriesPipe,
     ReportComponent,
-    WorkspaceComponent,
+    Layout1Component,
     OptionsComponent,
     HeaderComponent,
   ],
@@ -36,7 +36,7 @@ import { HeaderComponent } from './header/header.component';
     HttpClientModule,
     RouterModule.forRoot(
       [
-        { path: 'workspace/:name', component: WorkspaceComponent},
+        { path: 'layout1/:name', component: Layout1Component},
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },

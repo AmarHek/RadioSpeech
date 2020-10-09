@@ -5,11 +5,6 @@ $border-color: hsl(200, 70%, 80);
   // border: 1px solid $border-color;
   background-color: hsl(202, 73%, 97%);
   color: black;
-}
-
-.main > div {
-  background-color: hsl(200, 70%, 97%);
-  padding: 10px;
   overflow: auto;
 }
 
@@ -17,20 +12,22 @@ $border-color: hsl(200, 70%, 80);
   font-size: 100%;
   font-weight: bold;
   text-align: center;
-  border-top: 1px solid $border-color;
-  height: 10%;
+  border-bottom: 1px solid $border-color;
+  height: 9%;
 }
 
 .inputWindow{
+  padding-top: 5px;
+  padding-left: 10px;
   grid-area: inputWindow;
   float: left;
-  padding-left: 5px;
 }
 
 .buttons{
+  padding-top: 5px;
+  padding-right: 5px;
   grid-area: buttons;
   float: right;
-  padding-right: 5px;
 }
 
 .inputText{
@@ -44,28 +41,30 @@ $border-color: hsl(200, 70%, 80);
 }
 
 .content {
-  height: 90%;
+  height: 91%;
   background-color: white;
   border: 1px $border-color;
   color: white;
   display: grid;
-  grid-template-columns: 19% 80%;
-  grid-column-gap: 10px;
+  grid-template-columns: 20% 80%;
+  grid-column-gap: 5px;
   grid-template-areas:
     "report  options";
 }
 
 .report{
   grid-area: report;
-  height: 100%;
-  border: 1px $border-color;
+  height: 98.5%;
+  border: 1px solid $border-color;
+  margin: 5px;
 }
 
 .options{
   grid-area: options;
-  height: 99%;
-  width: 99%;
-  margin: 5px;
-  padding: 5px;
-  border: 1px $border-color;
+  height: 98.5%;
+  width: 99.5%;
+  margin-top: 5px;
+  border: 1px solid $border-color;
+  overflow-y: scroll;
+  background-color: hsl(202, 73%, 97%);
 }

@@ -1,5 +1,5 @@
 td.mandatory{
-  font-size: 120%;
+  font-size: 140%;
   font-weight: bold;
   // padding: 10px;
   // margin: 10px;
@@ -8,10 +8,11 @@ td.mandatory{
   top: -1px;
   max-width: 10px;
   *overflow: hidden;
+  color: black;
 }
 
 td.optional {
-  font-size: 120%;
+  font-size: 140%;
   font-weight: bold;
   // padding: 10px;
   // margin: 10px;
@@ -31,9 +32,11 @@ td.box {
   position: relative;
   top: -1px;
   *overflow: hidden;
+  color: black;
 }
 
 td.title0 {
+  color: black;
   font-size: 95%;
   display: block;
   position: relative;
@@ -51,6 +54,7 @@ td.title0 {
   white-space: pre-line;
   max-width: 300px;
   word-wrap: break-word;
+  color: black;
 }
 
 .link.active {

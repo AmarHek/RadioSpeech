@@ -1,30 +1,21 @@
 import { Injectable } from '@angular/core';
 import * as M from './model';
-import * as P from './parser';
-import { Keyword2, Category, Disease, MyVariable } from './text/Keyword';
-import { TextOutputService } from './text-output.service';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse} from "@angular/common/http";
-
-const httpOptions = {
-  headers: new HttpHeaders({ "Content-Type": "application/json", "Authorization": "c31z" })
-};
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class DataBuilderService {
+export class DataParserService {
+
+  keywords: string[] = [];
 
   constructor() {}
 
-  parseRawParts(raw: M.TopLevel[]){
-    let parts: M.TopLevel[] = [];
+  parseRawPartsLayout1(rawParts: M.TopLevel[]): M.Category[]{
+    let parts = [];
     let currentBlock: M.Block = null;
     let currentEnum: M.Enumeration = null;
-    for(let el of raw){
+    for(let el of rawParts){
       if(el.kind === "block"){
         currentBlock = el;
       }
@@ -47,9 +38,11 @@ export class DataBuilderService {
       }
       else {
         console.log(el);
-        window.alert("Error during parsing of parts: unkown kind");
+        window.alert("Error during parsing of parts: unknown kind");
       }
     }
+
+    this.extractKeywords(parts);
 
     return parts;
   }
@@ -61,6 +54,15 @@ export class DataBuilderService {
     }
     else{
       return [category, false];
+    }
+  }
+
+  // TODO
+  extractKeywords(parts: M.Category[]) {
+    for(const part of parts){
+      for(const keyword of part.data.bau){
+        this.keywords.push(keyword);
+      }
     }
   }
 

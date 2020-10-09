@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, SimpleChanges} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
@@ -6,34 +6,36 @@ import * as M from "../model";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
 import {InputParserService} from "../input-parser.service";
 import {TextOutputService} from "../text-output.service";
-import {DataBuilderService} from "../data-builder.service";
+import {DataParserService} from "../dataParser.service";
 import {makeNormalCategory} from "../generator";
+import {OptionsComponent} from "./options/options.component";
 // import {DisplayService} from "../display.service";
 
 @Component({
   selector: "app-workspace",
-  templateUrl: "./workspace.component.html",
-  styleUrls: ["./workspace.component.scss"]
+  templateUrl: "./layout1.component.html",
+  styleUrls: ["./layout1.component.scss"]
 })
 
-export class WorkspaceComponent implements OnInit {
+export class Layout1Component implements OnInit {
 
   rawParts: M.TopLevel[] = [];
-  parts: Array<any> = [];
+  parts: M.Category[] = [];
+  report: string = "";
+  judgement: string = "";
 
   constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
               private route: ActivatedRoute,
-              private dataBuilder: DataBuilderService,
+              private dataParser: DataParserService,
               private inputParser: InputParserService,
               private textOut: TextOutputService) {
   }
 
   ngOnInit(): void {
     this.getTopLevel();
-    // this.dataBuilder.generateDataDict(this.rawParts);
-    // this.inputParser.createStartDict(this.parts);
   }
 
+  // TODO: Maybe add inputParser and update keywords here from parts or rawParts or something
   getTopLevel() {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
@@ -41,7 +43,7 @@ export class WorkspaceComponent implements OnInit {
           worked => {
             this.rawParts = worked as any;
             // TODO: Remove this once backend is updated to include "optional" value
-            this.parts = this.dataBuilder.parseRawParts(this.rawParts);
+            this.parts = this.dataParser.parseRawPartsLayout1(this.rawParts);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -49,9 +51,23 @@ export class WorkspaceComponent implements OnInit {
     });
   }
 
+  updateText(){
+    this.report = "It worked";
+    this.judgement = "But did it really?";
+  }
+
+  onClick(event: any){
+    this.updateText();
+  }
+
   test() {
-    console.log(this.rawParts);
-    console.log(this.parts);
+    console.log(this.report);
+    console.log(this.judgement);
+    console.log(this.dataParser.keywords);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
 
   onInput(ev) {

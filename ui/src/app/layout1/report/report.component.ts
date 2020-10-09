@@ -1,8 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {TextOutputService} from '../text-output.service';
-import {Category} from '../text/Keyword';
-import * as P from '../parser';
-import {TopLevel} from '../model';
+import {TextOutputService} from '../../text-output.service';
+import {Category} from '../../text/Keyword';
+import * as P from '../../parser';
+import {TopLevel} from '../../model';
 
 @Component({
   selector: 'app-report',
@@ -12,6 +12,8 @@ import {TopLevel} from '../model';
 export class ReportComponent implements OnInit {
 
   @Input() report: string;
+  @Input() judgement: string;
+
   @Input() parts: TopLevel[];
 
   constructor() { }
@@ -29,7 +31,6 @@ export class ReportComponent implements OnInit {
     const text = textElement.value;
     P.take(text, this.parts);
   }
-
 
 
 }
