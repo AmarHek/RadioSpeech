@@ -37,12 +37,12 @@ td.box {
   color: black;
 }
 
-td.title0 {
+td.title {
   color: black;
   font-size: 95%;
   display: block;
   position: relative;
-  //max-width: 250px;
+  max-width: 250px;
   word-wrap: break-word;
   //padding-left: 0px;
   //text-indent: 0px;
@@ -53,7 +53,11 @@ td.title0 {
 }
 
 .selected-opt {
-  background-color: lightgreen;
+  background-color: lightyellow;
+}
+
+.radio-group {
+  border: 1px solid black;
 }
 
 .link {

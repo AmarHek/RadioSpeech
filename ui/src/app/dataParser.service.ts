@@ -8,7 +8,7 @@ import * as M from "./model";
 export class DataParserService {
 
   rawParts: M.TopLevel[] = [];
-  parts: M.Category[] = [];
+  defaultParts: M.Category[] = [];
   keywords: string[] = [];
 
   constructor() {}
@@ -41,7 +41,7 @@ export class DataParserService {
         window.alert("Error during parsing of parts: unknown kind");
       }
     }
-
+    this.defaultParts = parts;
     this.extractKeywords(parts);
     return parts;
   }

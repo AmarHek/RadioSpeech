@@ -27,4 +27,6 @@ export class OptionsComponent implements OnInit {
   public print(input: any) {
     console.log(input);
   }
+
+  // TODO: Add logic for hover click animations etc.
 }

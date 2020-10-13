@@ -63,6 +63,10 @@ export class Layout1Component implements OnInit {
     this.updateText();
   }
 
+  reset(){
+    this.parts = this.dataParser.defaultParts;
+  }
+
   test() {
     console.log(this.parts);
     //console.log(this.report);
