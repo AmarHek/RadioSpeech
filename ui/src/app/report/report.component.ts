@@ -16,6 +16,8 @@ export class ReportComponent implements OnInit {
 
   @Input() parts: TopLevel[];
 
+  // @ViewChild('reportfield'): reportfield;
+
   constructor() { }
 
   ngOnInit() {
@@ -30,6 +32,18 @@ export class ReportComponent implements OnInit {
   reverse(textElement: HTMLTextAreaElement): void {
     const text = textElement.value;
     P.take(text, this.parts);
+  }
+
+  copyAll(){
+    let fullText: string = "";
+    fullText = this.report + "<br><br>" + this.judgement;
+    let selBox = document.createElement('textarea');
+    selBox.value = fullText;
+    document.body.append(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
 
 

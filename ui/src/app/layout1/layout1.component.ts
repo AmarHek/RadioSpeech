@@ -64,14 +64,12 @@ export class Layout1Component implements OnInit {
   }
 
   reset(){
-    this.parts = this.dataParser.defaultParts;
+    this.parts = JSON.parse(JSON.stringify(this.dataParser.defaultParts));
+    console.log(this.parts);
   }
 
   test() {
-    console.log(this.parts);
-    //console.log(this.report);
-    //console.log(this.judgement);
-    //console.log(this.dataParser.keywords);
+    this.dataParser.defaultParts[0].selectables[0].value = "Thorax p.a.";
   }
 
   ngDoCheck(): void {

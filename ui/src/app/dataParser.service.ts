@@ -41,7 +41,7 @@ export class DataParserService {
         window.alert("Error during parsing of parts: unknown kind");
       }
     }
-    this.defaultParts = parts;
+    this.defaultParts = JSON.parse(JSON.stringify(parts));
     this.extractKeywords(parts);
     return parts;
   }

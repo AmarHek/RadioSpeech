@@ -1,4 +1,5 @@
 $background-color: hsl(202, 73%, 97%);
+$border-color: hsl(200, 70%, 80);
 
 td.mandatory{
   font-size: 140%;
@@ -28,13 +29,15 @@ td.optional {
 td.box {
   width: 13px;
   height: 13px;
-  //padding: 0;
-  //margin:0;
+  padding: 5px;
+  // margin: px;
   vertical-align: text-top;
   position: relative;
   top: -1px;
   *overflow: hidden;
   color: black;
+  border-top: 1px solid $border-color;
+  border-left: 1px solid $border-color;
 }
 
 td.title {
@@ -74,4 +77,8 @@ td.title {
 .link.active {
   background: greenyellow;
   text-decoration: none;
+}
+
+.col-3 {
+  border: 1px solid $border-color;
 }
