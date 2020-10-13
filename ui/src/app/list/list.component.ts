@@ -42,14 +42,15 @@ export class ListComponent implements OnInit {
     );
   }
 
-  getTopLevel(generator) {
-    this.http.post(environment.urlRoot + "get", JSON.stringify(generator)).subscribe(
-      worked => {
-        this.dataParser.rawParts = worked as any;
-        },
-      error => window.alert("An unknown error occurred: " + JSON.stringify(error))
-    );
-  }
+  // getTopLevel(generator) {
+  //   this.http.post(environment.urlRoot + "get", JSON.stringify(generator)).subscribe(
+  //     worked => {
+  //       console.log(generator);
+  //       this.dataParser.rawParts = worked as any;
+  //       },
+  //     error => window.alert("An unknown error occurred: " + JSON.stringify(error))
+  //   );
+  // }
 
 
 }

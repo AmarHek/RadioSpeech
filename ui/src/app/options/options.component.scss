@@ -1,7 +1,9 @@
+$background-color: hsl(202, 73%, 97%);
+
 td.mandatory{
   font-size: 140%;
   font-weight: bold;
-  // padding: 10px;
+  padding-left: 5px;
   // margin: 10px;
   vertical-align: top;
   position: relative;
@@ -14,7 +16,7 @@ td.mandatory{
 td.optional {
   font-size: 140%;
   font-weight: bold;
-  // padding: 10px;
+  padding-left: 5px;
   // margin: 10px;
   vertical-align: top;
   position: relative;
@@ -44,6 +46,14 @@ td.title0 {
   word-wrap: break-word;
   //padding-left: 0px;
   //text-indent: 0px;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+.selected-opt {
+  background-color: lightgreen;
 }
 
 .link {

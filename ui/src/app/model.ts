@@ -77,7 +77,7 @@ export interface Enumeration {
 }
 
 export interface Conditional {
-  kind:           "conditional"
+  kind:           "conditional";
   precondition:   Literal[][];
   normalText?:    string;
   judgementText?: string;

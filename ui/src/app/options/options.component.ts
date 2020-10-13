@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import * as M from "../../model";
+import * as M from "../model";
 
 @Component({
   selector: "app-options",
   templateUrl: "./options.component.html",
-  styleUrls: ["./options.component.scss", "../layout1.component.scss"]
+  styleUrls: ["./options.component.scss", "../layout1/layout1.component.scss"]
 })
 export class OptionsComponent implements OnInit {
 
@@ -24,6 +24,7 @@ export class OptionsComponent implements OnInit {
     this.clickEvent.emit(event);
   }
 
-
-
+  public print(input: any) {
+    console.log(input);
+  }
 }

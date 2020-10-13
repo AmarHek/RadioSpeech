@@ -1,0 +1,44 @@
+<table>
+  <tbody>
+    <tr *ngFor="let category of parts">
+      <td class="category" [ngClass]="category.optional ? 'optional': 'mandatory'"
+          id="{{category.name}}">{{category.name}}</td>
+      <ng-container *ngFor="let sel of category.selectables" class="col-3">
+        <ng-container *ngIf="sel.kind === 'box'">
+          <td class="box">
+          <mat-checkbox [(ngModel)]="sel.value">
+            {{sel.name}}
+          </mat-checkbox>
+          <!--<td class="box"> <input type="checkbox"
+                                  [(ngModel)]="sel.value"
+                                  (click)=dataUpdate($event)
+                                  id="{{sel.name}}box" />
+          </td>
+
+          <td class="title0" id={{sel.name}}>
+            <span [ngClass]="sel.value ? 'selected': 'title0 unselected'">{{sel.name}}</span>
+          </td>-->
+          </td>
+          <!--<app-variables *ngIf="sel.variables != null" [(ngModel)]="sel.variables"></app-variables>-->
+        </ng-container>
+        <ng-container *ngIf="sel.kind === 'group'">
+          <!--
+          <td class="box">
+            <mat-radio-group [(ngModel)]="sel.value">
+
+              <mat-radio-button *ngFor="let option of sel.options" [name]="sel.name" [value]="sel.value">
+                {{option.name}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </td>
+          -->
+          <ng-container *ngFor="let option of sel.options" class="col-3">
+            <td class="box"> <input [name]="sel.name" [value]="option.name" type="radio" [(ngModel)]="sel.value"/> </td>
+            <td class="title"> {{option.name}} </td>
+          </ng-container>
+            <!--<app-variables *ngIf="option.variables != null" [variables]="option.variables"></app-variables>-->
+          </ng-container>
+        </ng-container>
+    </tr>
+  </tbody>
+</table>

@@ -8,7 +8,8 @@ import {InputParserService} from "../input-parser.service";
 import {TextOutputService} from "../text-output.service";
 import {DataParserService} from "../dataParser.service";
 import {makeNormalCategory} from "../generator";
-import {OptionsComponent} from "./options/options.component";
+import {OptionsComponent} from "../options/options.component";
+import {Observable} from "rxjs";
 // import {DisplayService} from "../display.service";
 
 @Component({
@@ -33,17 +34,18 @@ export class Layout1Component implements OnInit {
 
   ngOnInit(): void {
     this.getTopLevel();
+    console.log(this.parts);
   }
 
   // TODO: Maybe add inputParser and update keywords here from parts or rawParts or something
-  getTopLevel() {
+  getTopLevel(): void {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
         this.http.post(environment.urlRoot + "get", JSON.stringify(ps.get("name"))).subscribe(
           worked => {
             this.rawParts = worked as any;
             // TODO: Remove this once backend is updated to include "optional" value
-            this.parts = this.dataParser.parseRawPartsLayout1(this.rawParts);
+            this.parts = this.dataParser.parseRawPartsLayout1(worked as M.TopLevel[]);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -51,9 +53,10 @@ export class Layout1Component implements OnInit {
     });
   }
 
-  updateText(){
-    this.report = "It worked";
-    this.judgement = "But did it really?";
+  updateText() {
+    // console.log("update");
+    //this.report = "It worked";
+    //this.judgement = "But did it really?";
   }
 
   onClick(event: any){
@@ -61,13 +64,14 @@ export class Layout1Component implements OnInit {
   }
 
   test() {
-    console.log(this.report);
-    console.log(this.judgement);
-    console.log(this.dataParser.keywords);
+    console.log(this.parts);
+    //console.log(this.report);
+    //console.log(this.judgement);
+    //console.log(this.dataParser.keywords);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  ngDoCheck(): void {
+    this.updateText();
   }
 
   onInput(ev) {

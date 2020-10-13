@@ -32,10 +32,10 @@ function createTakers(structure: M.TopLevel[]): T.Taker[] {
 
 function createTopLevelTakers(t: M.TopLevel, structure: M.TopLevel[]): T.Taker[] {
   switch (t.kind) {
-    case 'block':       return [T.text(t.text)];
-    case 'category':    return createCategoryTakers(t, structure);
-    case 'conditional': return [T.dummy];
-    case 'enumeration': return [T.dummy];
+    case "block":       return [T.text(t.text)];
+    case "category":    return createCategoryTakers(t, structure);
+    case "conditional": return [T.dummy];
+    case "enumeration": return [T.dummy];
     default: return assertNever(t);
   }
 }
