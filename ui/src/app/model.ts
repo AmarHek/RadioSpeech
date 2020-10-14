@@ -61,10 +61,7 @@ export interface Category {
   kind: "category";
   name: string;
   optional?: boolean;
-  // block?: Block;
-  // enum?: Enumeration;
   selectables: Selectable[];
-  // selectablesNormal: Selectable[];
   data: Data;
 }
 

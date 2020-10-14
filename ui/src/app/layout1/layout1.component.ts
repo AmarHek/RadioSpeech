@@ -23,7 +23,7 @@ export class Layout1Component implements OnInit {
   report: string = "";
   judgement: string = "";
 
-  maxCatLength: number = 50; // TODO: Make configurable
+  maxCatLength: number = 6; // TODO: Make configurable
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -53,23 +53,6 @@ export class Layout1Component implements OnInit {
       }
     });
   }
-
-  // TODO: http request auf dataParserService auslagern
-  // TODO: Maybe add inputParser and update keywords here from parts or rawParts or something
-  // getTopLevel(): void {
-  //   this.route.paramMap.subscribe(ps => {
-  //     console.log(ps);
-  //     if (ps.get("name")) {
-  //       this.http.post(environment.urlRoot + "get", JSON.stringify(ps.get("name"))).subscribe(
-  //         worked => {
-  //           this.parts = this.dataParser.parts;
-  //           this.categories = this.dataParser.parseCategories("layout1");
-  //         },
-  //         error => window.alert("An unknown error occurred: " + JSON.stringify(error))
-  //       );
-  //     }
-  //   });
-  // }
 
   makeNormal() {
     for (const p of this.parts) {

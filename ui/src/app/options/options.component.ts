@@ -13,6 +13,8 @@ export class OptionsComponent implements OnInit {
   showBorders: Map<string, boolean> = new Map();
   @Output() clickEvent = new EventEmitter<any>();
 
+  // TODO: Make new classes "button-model" or whatever to first extract all possible buttons contained in rows
+
   constructor() { }
 
   ngOnInit(): void {
