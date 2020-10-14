@@ -1,7 +1,6 @@
 <table>
   <tbody>
-    <tr *ngFor="let category of parts">
-
+    <tr *ngFor="let category of categories">
       <td class="category" [ngClass]="category.optional ? 'optional': 'mandatory'"
           id="{{category.name}}">{{category.name}}</td>
       <ng-container *ngFor="let sel of category.selectables" class="col-3">
@@ -15,21 +14,25 @@
               {{sel.name}}
             </label>
           </td>
-          <app-variables [(ngModel)]="sel.variables"></app-variables>
+          <app-variables style="max-width: 150px" [variables]="sel.variables"></app-variables>
         </ng-container>
 
         <ng-container *ngIf="sel.kind === 'group'">
           <ng-container *ngFor="let option of sel.options" class="col-3">
-            <td class="box" colspan="{{sel.options.length}}">
-              <input id="{{sel.name + option.name}}box"  [name]="sel.name" [value]="option.name" type="radio" [(ngModel)]="sel.value"/>
+            <td class="radio box">
+              <input id="{{sel.name + option.name}}box"
+                     [name]="sel.name" [value]="option.name" type="radio" [(ngModel)]="sel.value"/>
             </td>
-            <td class="title">
+            <td class="radio title">
               <label [ngClass]="{'selected' : sel.value === option.name}"
                      for="{{sel.name + option.name}}box">
                 {{option.name}}
               </label>
             </td>
-            <app-variables *ngIf="option.variables != null" [variables]="option.variables"></app-variables>
+            <app-variables style="max-width: 150px"
+                            *ngIf="option.variables != null"
+                           [variables]="option.variables"
+                           (click)="selected()"></app-variables>
           </ng-container>
         </ng-container>
       </ng-container>

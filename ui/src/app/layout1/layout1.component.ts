@@ -1,16 +1,12 @@
 import {Component, OnInit, SimpleChanges} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { Location } from "@angular/common";
+
 import { environment } from "../../environments/environment";
 import * as M from "../model";
-import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
-import {InputParserService} from "../input-parser.service";
-import {TextOutputService} from "../text-output.service";
+import * as G from "../generator";
 import {DataParserService} from "../dataParser.service";
-import {makeNormalCategory} from "../generator";
-import {OptionsComponent} from "../options/options.component";
-import {Observable} from "rxjs";
-// import {DisplayService} from "../display.service";
 
 @Component({
   selector: "app-workspace",
@@ -20,32 +16,37 @@ import {Observable} from "rxjs";
 
 export class Layout1Component implements OnInit {
 
-  rawParts: M.TopLevel[] = [];
-  parts: M.Category[] = [];
+  parts: M.TopLevel[];
+  defaultParts: M.TopLevel[];
+
+  categories: M.Category[];
   report: string = "";
   judgement: string = "";
 
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
+  maxCatLength: number = 50; // TODO: Make configurable
+
+  constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
-              private inputParser: InputParserService,
-              private textOut: TextOutputService) {
+              private _location: Location) {
   }
 
-  ngOnInit(): void {
-    this.getTopLevel();
-    console.log(this.parts);
+  ngOnInit() {
+    this.getData();
   }
 
-  // TODO: Maybe add inputParser and update keywords here from parts or rawParts or something
-  getTopLevel(): void {
+  ngOnChanges(change: SimpleChanges){
+    console.log(change)
+  }
+
+  getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
         this.http.post(environment.urlRoot + "get", JSON.stringify(ps.get("name"))).subscribe(
           worked => {
-            this.rawParts = worked as any;
-            // TODO: Remove this once backend is updated to include "optional" value
-            this.parts = this.dataParser.parseRawPartsLayout1(worked as M.TopLevel[]);
+            this.parts = worked as any;
+            this.defaultParts = JSON.parse(JSON.stringify(worked))
+            this.categories = this.dataParser.parseLayout1(this.parts, this.maxCatLength)
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -53,27 +54,49 @@ export class Layout1Component implements OnInit {
     });
   }
 
-  updateText() {
-    // console.log("update");
-    //this.report = "It worked";
-    //this.judgement = "But did it really?";
+  // TODO: http request auf dataParserService auslagern
+  // TODO: Maybe add inputParser and update keywords here from parts or rawParts or something
+  // getTopLevel(): void {
+  //   this.route.paramMap.subscribe(ps => {
+  //     console.log(ps);
+  //     if (ps.get("name")) {
+  //       this.http.post(environment.urlRoot + "get", JSON.stringify(ps.get("name"))).subscribe(
+  //         worked => {
+  //           this.parts = this.dataParser.parts;
+  //           this.categories = this.dataParser.parseCategories("layout1");
+  //         },
+  //         error => window.alert("An unknown error occurred: " + JSON.stringify(error))
+  //       );
+  //     }
+  //   });
+  // }
+
+  makeNormal() {
+    for (const p of this.parts) {
+      if(p.kind === "category") {
+        G.makeNormalCategory(p);
+      }
+    }
+    // let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    // this.myText.report = this.inputParser.parseInput(input + " rest normal");
+    // this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input );
   }
 
-  onClick(event: any){
-    this.updateText();
-  }
+  //updateText(): void {
+  //  // TODO: Datenstruktur anpassen (Categories separat von conditionals, enums, Blöcken etc?)
+  //  const [suppressedNormal, suppressedJudgement] = G.getSuppressedConditionalIds(this.rawParts);
+  //  const normalExtractor: M.TextExtractor = G.normalExtractor()
+  //  const judgementExtractor: M.TextExtractor = G.judgementExtractor();
+//
+  //  this.report = G.makeText(this.rawParts, normalExtractor, suppressedNormal);
+  //  this.judgement = G.makeText(this.rawParts, judgementExtractor, suppressedJudgement);
+//
+  //  console.log(this.report);
+  //  console.log(this.judgement);
+  //}
 
-  reset(){
-    this.parts = JSON.parse(JSON.stringify(this.dataParser.defaultParts));
-    console.log(this.parts);
-  }
-
-  test() {
-    this.dataParser.defaultParts[0].selectables[0].value = "Thorax p.a.";
-  }
-
-  ngDoCheck(): void {
-    this.updateText();
+  onClick(){
+    // this.updateText();
   }
 
   onInput(ev) {
@@ -85,18 +108,20 @@ export class Layout1Component implements OnInit {
     console.log("dif", dif);
   }
 
+  reset(){
+    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
+  }
+
   refreshPage() {
     window.location.reload();
   }
 
-  makeNormal() {
-    for (const category of this.parts) {
-      makeNormalCategory(category);
-    }
+  pageBack() {
+    this._location.back();
+  }
+
+  test() {
     console.log(this.parts);
-    // let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    // this.myText.report = this.inputParser.parseInput(input + " rest normal");
-    // this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input );
   }
 
 }

@@ -14,4 +14,10 @@ export class VariablesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selected() {
+
+  }
+
+
+
 }

@@ -1,4 +1,4 @@
-import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { assertNever, flatMap } from './util';
 
 export type Selectable = CheckBox | Group;
@@ -60,9 +60,9 @@ export interface Block {
 export interface Category {
   kind: "category";
   name: string;
-  optional: boolean;
-  block?: Block;
-  enum?: Enumeration;
+  optional?: boolean;
+  // block?: Block;
+  // enum?: Enumeration;
   selectables: Selectable[];
   // selectablesNormal: Selectable[];
   data: Data;

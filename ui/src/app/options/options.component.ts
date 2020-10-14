@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: "app-options",
@@ -8,16 +9,37 @@ import * as M from "../model";
 })
 export class OptionsComponent implements OnInit {
 
-  @Input() parts: M.Category[];
+  @Input() categories: M.Category[];
+  showBorders: Map<string, boolean> = new Map();
   @Output() clickEvent = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit(): void {
+    this.setBorders();
+    console.log(this.showBorders);
+  }
+
+  private setBorders() {
+    for(let cat of this.categories){
+      const activatedBorder = this.activateBorder(cat);
+      this.showBorders.set(cat.name, activatedBorder);
+    }
+  }
+
+  private activateBorder(cat: M.Category): boolean {
+    let counter: number = 0;
+    for(let sel of cat.selectables) {
+      if(sel.kind === "group"){
+        counter += 1;
+      }
+    }
+    console.log(counter);
+    return counter > 1;
   }
 
   public displayParts() {
-    console.log(this.parts);
+    console.log(this.categories);
   }
 
   public dataUpdate(event: any) {
@@ -27,6 +49,8 @@ export class OptionsComponent implements OnInit {
   public print(input: any) {
     console.log(input);
   }
+
+
 
   // TODO: Add logic for hover click animations etc.
 }

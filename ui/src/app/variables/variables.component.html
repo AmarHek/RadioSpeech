@@ -1,29 +1,34 @@
-<table class="variables">
-  <tr *ngFor="let v of this.variables">
-    <td class="text-right">{{v.textBefore}}</td>
-    <td *ngIf="v.kind === 'oc'">
-	      <span *ngFor="let vv of v.values">
-		<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value"/> {{vv}}
+<div class="variables">
+  <ng-container *ngFor="let variable of this.variables">
+    <span class="text-right">{{variable.textBefore}}</span>
+    <td *ngIf="variable.kind === 'oc'">
+	      <span *ngFor="let val of variable.values">
+		    <input type="radio" id="{{variable.id}}+{{val}}"  name="{{variable.id}}" [value]="val" [(ngModel)]="variable.value"/>
+          <label for="{{variable.id}}+{{val}}">{{val}}</label>
 	      </span>
     </td>
-    <td *ngIf="v.kind === 'mc'">
-	      <span *ngFor="let vv of v.values">
-		<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]"/> {{vv[0]}}
+    <td *ngIf="variable.kind === 'mc'">
+	      <span *ngFor="let vv of variable.values">
+		<input type="checkbox" name="{{variable.id}}" [value]="vv[0]" [(ngModel)]="vv[1]"/> {{vv[0]}}
 	      </span>
     </td>
-    <td *ngIf="v.kind === 'text'">
-      <input type="text" [(ngModel)]="v.value"/>
+    <td *ngIf="variable.kind === 'text'">
+      <span>Text Platzhalter</span>
+      <!--<input type="text" [(ngModel)]="v.value"/>-->
     </td>
-    <td *ngIf="v.kind === 'number'">
-      <input type="number" class="w-100" [(ngModel)]="v.value"/>
+    <td *ngIf="variable.kind === 'number'">
+      <span>Number-Platzhalter</span>
+      <!--<input type="number" class="w-100" [(ngModel)]="v.value"/>-->
     </td>
-    <td *ngIf="v.kind === 'date'">
-      <span>Hier kommt eine Datumsauswahl hin</span>
+    <td *ngIf="variable.kind === 'date'">
+      <span>Datum-Platzhalter</span>
       <!--<ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>-->
     </td>
-    <td *ngIf="v.kind === 'ratio'">
-      <input type="number" [(ngModel)]="v.numerator" /> / <input type="number" [(ngModel)]="v.denominator" />
+    <!--
+    <td *ngIf="variable.kind === 'ratio'">
+      <input type="number" [(ngModel)]="variable.numerator" /> / <input type="number" [(ngModel)]="variable.denominator" />
     </td>
-    <td class="text-left">{{v.textAfter}}</td>
-  </tr>
-</table>
+    <td class="text-left">{{variable.textAfter}}</td>
+    -->
+  </ng-container>
+</div>

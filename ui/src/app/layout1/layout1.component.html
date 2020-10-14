@@ -7,15 +7,16 @@
       </label>
     </div>
     <div class="buttons">
+      <button id="test" title="button zum testen" (click)="test()"
+              class="btn btn-outline-secondary">Test</button>
       <button id="normal-button" (click)="makeNormal()"
               class="btn btn-outline-secondary">Rest normal</button>
       <button id="reset-button" (click)="reset()"
-              class="btn btn-outline-secondary">Reset</button>
-      <button id="test" title="button zum testen" (click)="test()"
-              class="btn btn-outline-secondary">Test</button>
-      <!-- refreshes Page -->
+              class="btn btn-outline-secondary">Zurücksetzen</button>
       <button id="refresh" title="Seite neu laden" (click)="refreshPage()"
-              class="btn btn-outline-secondary">Refresh</button>
+              class="btn btn-outline-secondary">Neu Laden</button>
+      <button id="back" title="Go back to last page" (click)="pageBack()"
+              class="btn btn-outline-secondary">Zurück</button>
     </div>
 
     <!--
@@ -27,8 +28,8 @@
     </div>
   </div>
 
-  <div class="content">
-    <app-report class="report" [report]="this.report" [judgement]="this.judgement"></app-report>
-    <app-options class="options" (clickEvent)="onClick($event)" [parts]="this.parts"></app-options>
+  <div class="content" *ngIf="categories">
+    <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
+    <app-options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
   </div>
 </div>
