@@ -7,7 +7,7 @@
 
         <ng-container *ngIf="sel.kind === 'box'">
           <td class="box">
-            <input type="checkbox" [(ngModel)]="sel.value" (click)=dataUpdate($event) id="{{sel.name}}box"/>
+            <input type="checkbox" [(ngModel)]="sel.value" (input)=dataUpdate($event) id="{{sel.name}}box"/>
           </td>
           <td class="title">
             <label [ngClass]="{'selected': sel.value}" for="{{sel.name}}box">

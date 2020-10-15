@@ -1,8 +1,4 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {TextOutputService} from '../text-output.service';
-import {Category} from '../text/Keyword';
-import * as P from '../parser';
-import {TopLevel} from '../model';
 
 @Component({
   selector: "app-report",
@@ -14,11 +10,9 @@ export class ReportComponent implements OnInit {
   @Input() report: string;
   @Input() judgement: string;
 
-  @Input() parts: TopLevel[];
-
-  // @ViewChild('reportfield'): reportfield;
-
   constructor() { }
+
+  // TODO: make download button
 
   ngOnInit() {
   }
@@ -29,14 +23,16 @@ export class ReportComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
   }
 
-  reverse(textElement: HTMLTextAreaElement): void {
-    const text = textElement.value;
-    P.take(text, this.parts);
-  }
+  // TODO: Make sense of this
+  // reverse(textElement: HTMLTextAreaElement): void {
+  //   const text = textElement.value;
+  //   P.take(text, this.parts);
+  // }
+
 
   copyAll(){
     let fullText: string = "";
-    fullText = this.report + "<br><br>" + this.judgement;
+    fullText = this.report + "\n\n\n" + this.judgement;
     let selBox = document.createElement('textarea');
     selBox.value = fullText;
     document.body.append(selBox);

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as M from "./model";
 import {HttpClient} from "@angular/common/http";
+import * as G from "./generator";
 
 @Injectable({
   providedIn: "root"
@@ -82,6 +83,17 @@ export class DataParserService {
         this.keywords.push(keyword);
       }
     }
+  }
+
+  makeText(parts: M.TopLevel[]) {
+    const [suppressedNormal, suppressedJudgement] = G.getSuppressedConditionalIds(parts);
+    const normalExtractor: M.TextExtractor = G.normalExtractor();
+    const judgementExtractor: M.TextExtractor = G.judgementExtractor();
+
+    let report = G.makeText(parts, normalExtractor, suppressedNormal);
+    let judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
+
+    return [report, judgement];
   }
 
 // parseLayout1_old(parts: M.TopLevel[]): M.Category[] {

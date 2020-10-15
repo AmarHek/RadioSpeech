@@ -60,26 +60,15 @@ export class Layout1Component implements OnInit {
         G.makeNormalCategory(p);
       }
     }
-    // let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    // this.myText.report = this.inputParser.parseInput(input + " rest normal");
-    // this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input );
+    this.updateText()
   }
 
-  //updateText(): void {
-  //  // TODO: Datenstruktur anpassen (Categories separat von conditionals, enums, Blöcken etc?)
-  //  const [suppressedNormal, suppressedJudgement] = G.getSuppressedConditionalIds(this.rawParts);
-  //  const normalExtractor: M.TextExtractor = G.normalExtractor()
-  //  const judgementExtractor: M.TextExtractor = G.judgementExtractor();
-//
-  //  this.report = G.makeText(this.rawParts, normalExtractor, suppressedNormal);
-  //  this.judgement = G.makeText(this.rawParts, judgementExtractor, suppressedJudgement);
-//
-  //  console.log(this.report);
-  //  console.log(this.judgement);
-  //}
+  updateText(): void {
+    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+  }
 
   onClick(){
-    // this.updateText();
+    setTimeout(() => this.updateText(), 20);
   }
 
   onInput(ev) {

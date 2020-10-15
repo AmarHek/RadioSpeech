@@ -21,9 +21,10 @@ export function judgementExtractor(): M.TextExtractor {
 }
 
 export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppressed: string[]): string {
- var result = parts.map(c => {
+ let result = parts.map(c => {
     if (c.kind === "category") {
-      return getTexts(c.selectables, suppressed, extractor).map(t => expandVariablesInString(t, parts,true)).join("")
+      return getTexts(c.selectables, suppressed, extractor)
+        .map(t => expandVariablesInString(t, parts,true)).join("");
     } else if (c.kind === "block") {
       return extractor.ofBlock(c) || "";
     } else if (c.kind === "enumeration") {
@@ -38,13 +39,13 @@ export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppre
         }
       }
     } else {
-      throw new Error("unkonwn top level kind");
+      throw new Error("unknown top level kind");
     }
   }).join("");
-  var blocks = parts.filter(x=>x.kind === "block");
-  for (var b of blocks)
+  let blocks = parts.filter(x=>x.kind === "block");
+  for (let b of blocks)
   {
-    var regEx = new RegExp((b as M.Block).text+"(\\n|$)");
+    let regEx = new RegExp((b as M.Block).text+"(\\n|$)");
     result = result.replace(regEx,"\n");
   }
   return result;
@@ -163,8 +164,8 @@ export function expandVariablesInString(s: string, data: M.TopLevel[], addFullSt
   }
   s = s.replace(/%[^%]+%/g, lookup);
   let brackets = s.match(/(\[]*?[^\]]*?])/g);
-  if (brackets != null && brackets != undefined) {
-    for (var t of brackets) {
+  if (brackets != null) {
+    for (let t of brackets) {
       if (t.includes("---")) {
         s = s.replace(t, "");
       }
