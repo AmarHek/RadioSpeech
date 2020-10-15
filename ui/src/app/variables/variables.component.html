@@ -1,12 +1,14 @@
-<div class="variables">
+<table class="variables">
   <ng-container *ngFor="let variable of this.variables">
-    <span class="text-right">{{variable.textBefore}}</span>
+    <tr>
     <td *ngIf="variable.kind === 'oc'">
-	      <span *ngFor="let val of variable.values">
+
+	      <ng-container *ngFor="let val of variable.values">
 		    <input type="radio" id="{{variable.id}}+{{val}}"  name="{{variable.id}}" [value]="val" [(ngModel)]="variable.value"/>
           <label for="{{variable.id}}+{{val}}">{{val}}</label>
-	      </span>
+	      </ng-container>
     </td>
+    <!--
     <td *ngIf="variable.kind === 'mc'">
 	      <span *ngFor="let vv of variable.values">
 		<input type="checkbox" name="{{variable.id}}" [value]="vv[0]" [(ngModel)]="vv[1]"/> {{vv[0]}}
@@ -14,21 +16,21 @@
     </td>
     <td *ngIf="variable.kind === 'text'">
       <span>Text Platzhalter</span>
-      <!--<input type="text" [(ngModel)]="v.value"/>-->
+      <input type="text" [(ngModel)]="v.value"/>
     </td>
     <td *ngIf="variable.kind === 'number'">
       <span>Number-Platzhalter</span>
-      <!--<input type="number" class="w-100" [(ngModel)]="v.value"/>-->
+      <input type="number" class="w-100" [(ngModel)]="v.value"/>
     </td>
     <td *ngIf="variable.kind === 'date'">
       <span>Datum-Platzhalter</span>
-      <!--<ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>-->
+      <ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
     </td>
-    <!--
     <td *ngIf="variable.kind === 'ratio'">
       <input type="number" [(ngModel)]="variable.numerator" /> / <input type="number" [(ngModel)]="variable.denominator" />
     </td>
     <td class="text-left">{{variable.textAfter}}</td>
     -->
+    </tr>
   </ng-container>
-</div>
+</table>

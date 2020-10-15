@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
-import {Observable} from "rxjs";
+import {DataParserService} from "../dataParser.service";
 
 @Component({
   selector: "app-options",
@@ -11,13 +11,17 @@ export class OptionsComponent implements OnInit {
 
   @Input() categories: M.Category[];
   showBorders: Map<string, boolean> = new Map();
+
+  buttons: M.CategoryButton[];
+
   @Output() clickEvent = new EventEmitter<any>();
 
   // TODO: Make new classes "button-model" or whatever to first extract all possible buttons contained in rows
 
-  constructor() { }
+  constructor(private dataParser: DataParserService) { }
 
   ngOnInit(): void {
+    this.buttons = this.dataParser.extractButtons(this.categories);
     this.setBorders();
     console.log(this.showBorders);
   }

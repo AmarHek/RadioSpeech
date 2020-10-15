@@ -13,7 +13,7 @@ export class DataParserService {
 
   constructor() {}
 
-  parseLayout1(parts: M.TopLevel[], maxRowLength: number): M.Category[] {
+  parseLayout1(parts: M.TopLevel[], maxRowLength?: number): M.Category[] {
     const res = [];
     for(const el of parts) {
       if (el.kind === "category"){
@@ -94,6 +94,10 @@ export class DataParserService {
     let judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
 
     return [report, judgement];
+  }
+
+  extractButtons(categories: M.Category[]): M.CategoryButton[] {
+    return;
   }
 
 // parseLayout1_old(parts: M.TopLevel[]): M.Category[] {

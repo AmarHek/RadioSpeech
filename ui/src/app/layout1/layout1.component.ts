@@ -23,7 +23,8 @@ export class Layout1Component implements OnInit {
   report: string = "";
   judgement: string = "";
 
-  maxCatLength: number = 6; // TODO: Make configurable
+  splitCategories: boolean = false;
+  maxCatLength: number = null; // TODO: Make configurable
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,

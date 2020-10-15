@@ -2,7 +2,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { assertNever, flatMap } from './util';
 
 export type Selectable = CheckBox | Group;
-export type Clickable  = CheckBox | Option;
+export type Clickable  = CheckBoxButton | OptionButton;
 
 export type Data = {
 [name: string]: string[]
@@ -15,6 +15,8 @@ export interface TextExtractor {
   ofBlock(e: Block): string | undefined;
   ofConditional(c: Conditional): string | undefined;
 }
+
+// Selectable classes, lower than category
 
 export interface CheckBox {
   kind:           "box";
@@ -50,18 +52,48 @@ export interface Option {
 
 export type TopLevel = Category | Block | Enumeration | Conditional;
 
-export interface Block {
-  kind: "block";
-  text?: string;
-  judgementText?: string;
-  data: Data;
-}
+// Main data management and display class
 
 export interface Category {
   kind: "category";
   name: string;
   optional?: boolean;
   selectables: Selectable[];
+  data: Data;
+}
+
+// Classes for button extraction to dynamically display table rows
+// no data necessary here, since data display and text recognition are separate
+// rows are extracted from all possible selectables (including options) in a category
+
+export interface CategoryButton {
+  kind:       "category";
+  name:       string;
+  optional:   boolean;
+  rows:       Clickable[][];
+}
+
+export interface CheckBoxButton {
+  kind:           "box";
+  name:           string;
+  value:          boolean;
+  variables:      Variable[];
+}
+
+
+export interface OptionButton {
+  kind:           "option";
+  name:           string;
+  groupName:      string;
+  variables:      Variable[];
+}
+
+// Classes only relevant for text generation
+
+export interface Block {
+  kind: "block";
+  text?: string;
+  judgementText?: string;
   data: Data;
 }
 
@@ -85,6 +117,8 @@ export interface Literal {
   id:      string;
   negated: boolean;
 }
+
+// Variable types
 
 export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio
 
