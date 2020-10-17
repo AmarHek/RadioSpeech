@@ -12,16 +12,20 @@ export class OptionsComponent implements OnInit {
   @Input() categories: M.Category[];
   showBorders: Map<string, boolean> = new Map();
 
-  buttons: M.CategoryButton[];
+  // TODO Make these configurable
+  maxRowLength: number = 6;
+  splitGroups: boolean = false; // whether to separate radio buttons from the same group if maxRowLength is exceeded
+
+  rows: M.CategoryRow[];
+  groupValues: Map<string, string>;
 
   @Output() clickEvent = new EventEmitter<any>();
-
-  // TODO: Make new classes "button-model" or whatever to first extract all possible buttons contained in rows
 
   constructor(private dataParser: DataParserService) { }
 
   ngOnInit(): void {
-    this.buttons = this.dataParser.extractButtons(this.categories);
+    this.rows = this.dataParser.extractRows(this.categories, );
+    this.groupValues = this.dataParser.extractGroups(this.categories);
     this.setBorders();
     console.log(this.showBorders);
   }

@@ -76,6 +76,88 @@ export class DataParserService {
     return res;
   }
 
+  // Takes list of categories to transform them into list of rows without groups, only singular buttons
+  extractRows(categories: M.Category[], maxRowLength: number, splitGroups: boolean): M.CategoryRow[] {
+    rows
+
+    for(let category of categories) {
+      let buttons = this.extractButtons(category);
+      let rowLengths = this.getRowLengths(category, maxRowLength, splitGroups);
+      let position = 0;
+      for(let row of rowLengths) {
+        let tmp_buttons = buttons.slice(position, position+row)
+
+      }
+    };
+  }
+
+  extractButtons(category: M.Category): M.Clickable[] {
+    let buttons: M.Clickable[] = [];
+    for(let sel of category.selectables) {
+      if(sel.kind === "box") {
+        buttons.push({
+          kind:      "box",
+          name:      sel.name,
+          value:     sel.value,
+          variables: sel.variables
+        });
+      } else if(sel.kind === "group") {
+        for(let option of sel.options) {
+          buttons.push({
+            kind: "option",
+            name: option.name,
+            groupName: sel.name,
+            variables: option.variables
+          })
+        }
+      }
+    }
+    return buttons;
+  }
+
+  // computes, how many rows a category needs and how long each row is, returns as an array
+  getRowLengths(category: M.Category, maxRowLength: number, splitGroups: boolean): Array<number> {
+    // TODO: Currently only works sequentially as per data structure, possibly allow/implement reordering of buttons
+    let rowLengths = [];
+    let rowCounter = 0;
+    for(let sel of category.selectables) {
+      if(rowCounter === maxRowLength) {
+        rowLengths.push(rowCounter);
+        rowCounter = 0;
+      }
+      if(sel.kind == "box") {
+        rowCounter += 1;
+      } else if(sel.kind == "group") {
+        if(splitGroups) {
+          for(let opt of sel.options) {
+            rowCounter += 1;
+            if(rowCounter === maxRowLength) {
+              rowLengths.push(rowCounter);
+              rowCounter = 0;
+            }
+          }
+        } else {
+          if(sel.options.length > maxRowLength){
+            Error("One or more radio button groups are longer than max elements allowed in one row. " +
+              "Either allow split or change data structure.");
+          } else {
+            if(rowCounter + sel.options.length > maxRowLength){
+              rowLengths.push(rowCounter);
+              rowCounter = sel.options.length;
+            } else {
+              rowCounter += sel.options.length;
+            }
+          }
+        }
+      }
+    }
+    return rowLengths
+  }
+
+  extractGroups(categories: M.Category[]) {
+
+  }
+
   // TODO
   extractKeywords(parts: M.Category[]) {
     for (const part of parts){
@@ -94,10 +176,6 @@ export class DataParserService {
     let judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
 
     return [report, judgement];
-  }
-
-  extractButtons(categories: M.Category[]): M.CategoryButton[] {
-    return;
   }
 
 // parseLayout1_old(parts: M.TopLevel[]): M.Category[] {

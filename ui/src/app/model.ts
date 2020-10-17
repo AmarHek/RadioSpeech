@@ -66,11 +66,12 @@ export interface Category {
 // no data necessary here, since data display and text recognition are separate
 // rows are extracted from all possible selectables (including options) in a category
 
-export interface CategoryButton {
+export interface CategoryRow {
   kind:       "category";
   name:       string;
   optional:   boolean;
-  rows:       Clickable[][];
+  rowNumber:  number;
+  buttons:    Clickable[];
 }
 
 export interface CheckBoxButton {
@@ -79,7 +80,6 @@ export interface CheckBoxButton {
   value:          boolean;
   variables:      Variable[];
 }
-
 
 export interface OptionButton {
   kind:           "option";
