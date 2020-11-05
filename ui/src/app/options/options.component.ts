@@ -1,11 +1,12 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
 import {DataParserService} from "../dataParser.service";
+import {CheckBoxButton} from "../model";
 
 @Component({
   selector: "app-options",
   templateUrl: "./options.component.html",
-  styleUrls: ["./options.component.scss", "../layout1/layout1.component.scss"]
+  styleUrls: ["./options.component.scss"]
 })
 export class OptionsComponent implements OnInit {
 
@@ -24,10 +25,55 @@ export class OptionsComponent implements OnInit {
   constructor(private dataParser: DataParserService) { }
 
   ngOnInit(): void {
-    this.rows = this.dataParser.extractRows(this.categories, );
+    this.initButtons();
+
+    // console.log(this.groupValues);
+    // this.setBorders();
+    // console.log(this.showBorders);
+  }
+
+  public initButtons(){
+    console.log(this.categories);
+    this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength, this.splitGroups)
     this.groupValues = this.dataParser.extractGroups(this.categories);
-    this.setBorders();
-    console.log(this.showBorders);
+    console.log(this.groupValues);
+    console.log(this.rows);
+  }
+
+  public displayParts() {
+    console.log(this.categories);
+  }
+
+  public update(event: any, category: string,  button: M.Clickable) {
+    setTimeout(() => this.updateCategories(category, button), 1);
+    this.clickEvent.emit();
+  }
+
+  private updateCategories(category: string, button: M.Clickable){
+    for(let cat of this.categories) {
+      if(cat.name === category) {
+        if (button.kind === "box") {
+          for (let sel of cat.selectables) {
+            if (sel.name === button.name) {
+              console.log(button.name)
+              console.log(button.value)
+              sel.value = button.value;
+            }
+          }
+        }
+        else {
+          for (let sel of cat.selectables) {
+            if (sel.name === button.groupName) {
+              sel.value = button.name;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public print(input: any) {
+    console.log(input);
   }
 
   private setBorders() {
@@ -47,20 +93,6 @@ export class OptionsComponent implements OnInit {
     console.log(counter);
     return counter > 1;
   }
-
-  public displayParts() {
-    console.log(this.categories);
-  }
-
-  public dataUpdate(event: any) {
-    this.clickEvent.emit(event);
-  }
-
-  public print(input: any) {
-    console.log(input);
-  }
-
-
 
   // TODO: Add logic for hover click animations etc.
 }

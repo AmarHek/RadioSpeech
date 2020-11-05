@@ -2,16 +2,18 @@ import {Component, OnInit, SimpleChanges} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Location } from "@angular/common";
+import { ViewChild } from "@angular/core";
 
 import { environment } from "../../environments/environment";
 import * as M from "../model";
 import * as G from "../generator";
 import {DataParserService} from "../dataParser.service";
+import {OptionsComponent} from "../options/options.component";
 
 @Component({
   selector: "app-workspace",
   templateUrl: "./layout1.component.html",
-  styleUrls: ["./layout1.component.scss"]
+  styleUrls: ["./layout1.component.scss"],
 })
 
 export class Layout1Component implements OnInit {
@@ -23,8 +25,11 @@ export class Layout1Component implements OnInit {
   report: string = "";
   judgement: string = "";
 
+  @ViewChild(OptionsComponent)
+  private optionsComponent: OptionsComponent;
+
   splitCategories: boolean = false;
-  maxCatLength: number = null; // TODO: Make configurable
+  maxCatLength: number = 50; // TODO: Make configurable
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -47,7 +52,7 @@ export class Layout1Component implements OnInit {
           worked => {
             this.parts = worked as any;
             this.defaultParts = JSON.parse(JSON.stringify(worked))
-            this.categories = this.dataParser.parseLayout1(this.parts, this.maxCatLength)
+            this.categories = this.dataParser.extractCategories(this.parts)
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -55,21 +60,12 @@ export class Layout1Component implements OnInit {
     });
   }
 
-  makeNormal() {
-    for (const p of this.parts) {
-      if(p.kind === "category") {
-        G.makeNormalCategory(p);
-      }
-    }
-    this.updateText()
-  }
-
   updateText(): void {
     [this.report, this.judgement] = this.dataParser.makeText(this.parts);
   }
 
   onClick(){
-    setTimeout(() => this.updateText(), 20);
+    setTimeout(() => this.updateText(), 1);
   }
 
   onInput(ev) {
@@ -81,8 +77,19 @@ export class Layout1Component implements OnInit {
     console.log("dif", dif);
   }
 
+  makeNormal() {
+    for (const p of this.parts) {
+      if(p.kind === "category") {
+        G.makeNormalCategory(p);
+      }
+    }
+    setTimeout(() => this.optionsComponent.initButtons(), 1);
+    this.updateText();
+  }
+
   reset(){
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
+    setTimeout(() => this.optionsComponent.initButtons(), 1);
   }
 
   refreshPage() {
@@ -95,6 +102,9 @@ export class Layout1Component implements OnInit {
 
   test() {
     console.log(this.parts);
+    console.log(this.optionsComponent.rows);
+    console.log(this.optionsComponent.groupValues.get("CG0"));
+    console.log(this.optionsComponent.groupValues);
   }
 
 }

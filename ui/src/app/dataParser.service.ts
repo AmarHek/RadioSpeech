@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import * as M from "./model";
-import {HttpClient} from "@angular/common/http";
 import * as G from "./generator";
 
 @Injectable({
@@ -9,39 +8,27 @@ import * as G from "./generator";
 
 export class DataParserService {
 
-  keywords: string[] = [];
-
   constructor() {}
 
-  parseLayout1(parts: M.TopLevel[], maxRowLength?: number): M.Category[] {
+  extractCategories(parts: M.TopLevel[]): M.Category[] {
     const res = [];
     for(const el of parts) {
       if (el.kind === "category"){
-        if(el.selectables.length > maxRowLength){
-          let split_cats = this.splitCategory(el, maxRowLength);
-          for(let cat of split_cats){
-            const parsed = this.parseOptionalCategory(cat.name);
-            res.push({
-              kind: "category",
-              name: parsed[0],
-              optional: parsed[1],
-              selectables: cat.selectables,
-              data: cat.data,
-            });
-          }
-        } else {
-          const parsed = this.parseOptionalCategory(el.name);
-          res.push({
+        const parsed = this.parseOptionalCategory(el.name);
+        res.push({
             kind: "category",
             name: parsed[0],
             optional: parsed[1],
             selectables: el.selectables,
             data: el.data,
-          });
-        }
+        });
       }
     }
     return res;
+  }
+
+  parseVariableText(categories: M.Category[]): M.Category[] {
+    return [];
   }
 
   parseOptionalCategory(category: string): [string, boolean] {
@@ -52,43 +39,28 @@ export class DataParserService {
     }
   }
 
-  splitCategory(category: M.Category, splitLength: number){
-    // let n_categories = Math.ceil(category.selectables.length / splitLength);
-    let res: M.Category[] = [];
-
-    for(let i=0, j=category.selectables.length; i<j; i+=splitLength){
-      let name: string;
-      if(i === 0){
-        name = category.name
-      } else {
-        name = "";
-      }
-      let temp_sels: M.Selectable[] = [];
-      temp_sels = category.selectables.slice(i, i+splitLength);
-      res.push({
-        kind: "category",
-        name: name,
-        selectables: temp_sels,
-        data: category.data,
-      });
-    }
-
-    return res;
-  }
-
   // Takes list of categories to transform them into list of rows without groups, only singular buttons
   extractRows(categories: M.Category[], maxRowLength: number, splitGroups: boolean): M.CategoryRow[] {
-    rows
+    let rows: M.CategoryRow[] = [];
 
     for(let category of categories) {
       let buttons = this.extractButtons(category);
       let rowLengths = this.getRowLengths(category, maxRowLength, splitGroups);
       let position = 0;
-      for(let row of rowLengths) {
+      for(let [index, row] of rowLengths.entries()) {
         let tmp_buttons = buttons.slice(position, position+row)
-
+        rows.push({
+          kind: "category",
+          name: category.name,
+          optional: category.optional,
+          number: index,
+          buttons: tmp_buttons
+        });
+        position += row;
       }
-    };
+    }
+
+    return rows;
   }
 
   extractButtons(category: M.Category): M.Clickable[] {
@@ -121,12 +93,12 @@ export class DataParserService {
     let rowLengths = [];
     let rowCounter = 0;
     for(let sel of category.selectables) {
-      if(rowCounter === maxRowLength) {
-        rowLengths.push(rowCounter);
-        rowCounter = 0;
-      }
       if(sel.kind == "box") {
         rowCounter += 1;
+        if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
+          rowLengths.push(rowCounter);
+          rowCounter = 0;
+        }
       } else if(sel.kind == "group") {
         if(splitGroups) {
           for(let opt of sel.options) {
@@ -136,6 +108,10 @@ export class DataParserService {
               rowCounter = 0;
             }
           }
+          if(category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
+            rowLengths.push(rowCounter);
+            rowCounter = 0;
+          }
         } else {
           if(sel.options.length > maxRowLength){
             Error("One or more radio button groups are longer than max elements allowed in one row. " +
@@ -144,27 +120,45 @@ export class DataParserService {
             if(rowCounter + sel.options.length > maxRowLength){
               rowLengths.push(rowCounter);
               rowCounter = sel.options.length;
+              if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
+                rowLengths.push(rowCounter);
+                rowCounter = 0;
+              }
             } else {
               rowCounter += sel.options.length;
+              if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
+                rowLengths.push(rowCounter);
+                rowCounter = 0;
+              }
             }
           }
         }
       }
     }
-    return rowLengths
+    return rowLengths;
   }
 
-  extractGroups(categories: M.Category[]) {
-
+  // extracts group identifiers and corresponding values for ngModel application
+  extractGroups(categories: M.Category[]): Map<string,string> {
+    let groupValues: Map<string, string> = new Map();
+    for (let category of categories) {
+      for (let sel of category.selectables) {
+        if(sel.kind === "group") {
+          console.log(sel.name, sel.value);
+          groupValues.set(sel.name, sel.value);
+        }
+      }
+    }
+    return groupValues;
   }
 
   // TODO
   extractKeywords(parts: M.Category[]) {
-    for (const part of parts){
-      for (const keyword of part.data.bau){
-        this.keywords.push(keyword);
-      }
-    }
+  //  for (const part of parts){
+  //    for (const keyword of part.data.bau){
+  //      this.keywords.push(keyword);
+  //    }
+  //  }
   }
 
   makeText(parts: M.TopLevel[]) {
@@ -178,35 +172,5 @@ export class DataParserService {
     return [report, judgement];
   }
 
-// parseLayout1_old(parts: M.TopLevel[]): M.Category[] {
-//   const res = [];
-//   let currentBlock: M.Block = null;
-//   let currentEnum: M.Enumeration = null;
-//   for(const el of this.parts) {
-//     if (el.kind === "block") {
-//       currentBlock = el;
-//     } else if (el.kind === "enumeration"){
-//       currentEnum = el;
-//     } else if (el.kind === "category"){
-//       const parsed = this.parseOptionalCategory(el.name);
-//       res.push({
-//         kind: "category",
-//         name: parsed[0],
-//         optional: parsed[1],
-//         block: currentBlock,
-//         enum: currentEnum,
-//         selectables: el.selectables,
-//         data: el.data,
-//       });
-//       currentBlock = null;
-//       currentEnum = null;
-//     } else {
-//       console.log(el);
-//       window.alert("Error during parsing of parts: unknown kind");
-//     }
-//   }
-//   // this.extractKeywords(parts);
-//   return res;
-// }
 
 }

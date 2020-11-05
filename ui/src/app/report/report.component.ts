@@ -13,6 +13,7 @@ export class ReportComponent implements OnInit {
   constructor() { }
 
   // TODO: make download button
+  // TODO: Send change event to layout so changes in report are reflected in data structure
 
   ngOnInit() {
   }
@@ -22,13 +23,6 @@ export class ReportComponent implements OnInit {
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
   }
-
-  // TODO: Make sense of this
-  // reverse(textElement: HTMLTextAreaElement): void {
-  //   const text = textElement.value;
-  //   P.take(text, this.parts);
-  // }
-
 
   copyAll(){
     let fullText: string = "";
