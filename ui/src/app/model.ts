@@ -2,7 +2,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { assertNever, flatMap } from './util';
 
 export type Selectable = CheckBox | Group;
-export type Clickable  = CheckBoxButton | OptionButton;
+export type Clickable  = CheckBox | Option;
 
 export type Data = {
 [name: string]: string[]
@@ -58,37 +58,10 @@ export interface Category {
   kind: "category";
   name: string;
   optional?: boolean;
+  // rowNumber?: number;
   selectables: Selectable[];
   data: Data;
 }
-
-// Classes for button extraction to dynamically display table rows
-// no data necessary here, since data display and text recognition are separate
-// rows are extracted from all possible selectables (including options) in a category
-
-export interface CategoryRow {
-  kind:       "category";
-  name:       string;
-  optional:   boolean;
-  number:     number;
-  buttons:    Clickable[];
-}
-
-export interface CheckBoxButton {
-  kind:           "box";
-  name:           string;
-  value:          boolean;
-  variables:      Variable[];
-}
-
-export interface OptionButton {
-  kind:           "option";
-  name:           string;
-  groupName:      string;
-  variables:      Variable[];
-}
-
-// Classes only relevant for text generation
 
 export interface Block {
   kind: "block";

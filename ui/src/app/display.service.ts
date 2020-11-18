@@ -8,6 +8,7 @@ export class DisplayService {
 
   public displayHeader: boolean;
   public currentLayout: number = 1;
+  public maxRowLength: number = 6;
   private layouts: Map<number, string>;
 
   constructor(private router: Router) {

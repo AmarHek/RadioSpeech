@@ -8,6 +8,9 @@ import * as G from "./generator";
 
 export class DataParserService {
 
+  maxRowLength: number = 6;
+  minRowLength: number;
+
   constructor() {}
 
   extractCategories(parts: M.TopLevel[]): M.Category[] {
@@ -27,10 +30,6 @@ export class DataParserService {
     return res;
   }
 
-  parseVariableText(categories: M.Category[]): M.Category[] {
-    return [];
-  }
-
   parseOptionalCategory(category: string): [string, boolean] {
     if(category.includes("<", 0)){
       return [category.substring(1, category.length), true];
@@ -40,102 +39,75 @@ export class DataParserService {
   }
 
   // Takes list of categories to transform them into list of rows without groups, only singular buttons
-  extractRows(categories: M.Category[], maxRowLength: number, splitGroups: boolean): M.CategoryRow[] {
-    let rows: M.CategoryRow[] = [];
+  extractRows(categories: M.Category[], maxRowLength: number): M.Category[] {
+    let rows: M.Category[] = [];
 
     for(let category of categories) {
-      let buttons = this.extractButtons(category);
-      let rowLengths = this.getRowLengths(category, maxRowLength, splitGroups);
-      let position = 0;
-      for(let [index, row] of rowLengths.entries()) {
-        let tmp_buttons = buttons.slice(position, position+row)
-        rows.push({
-          kind: "category",
-          name: category.name,
-          optional: category.optional,
-          number: index,
-          buttons: tmp_buttons
-        });
-        position += row;
-      }
+      let splits = this.getSplits(category, maxRowLength);
+      let split_cats = this.splitCategory(category, splits)
+      rows = rows.concat(split_cats);
     }
 
     return rows;
   }
 
-  extractButtons(category: M.Category): M.Clickable[] {
-    let buttons: M.Clickable[] = [];
-    for(let sel of category.selectables) {
-      if(sel.kind === "box") {
-        buttons.push({
-          kind:      "box",
-          name:      sel.name,
-          value:     sel.value,
-          variables: sel.variables
-        });
-      } else if(sel.kind === "group") {
-        for(let option of sel.options) {
-          buttons.push({
-            kind: "option",
-            name: option.name,
-            groupName: sel.name,
-            variables: option.variables
-          })
-        }
+  splitCategory(category: M.Category, splits: number[]){
+    // let n_categories = Math.ceil(category.selectables.length / splitLength);
+    let res: M.Category[] = [];
+
+    let pos = 0;
+    for(let split of splits){
+      let name: string;
+      if(pos === 0){
+        name = category.name
+      } else {
+        name = "";
       }
+      let temp_sels: M.Selectable[] = [];
+      temp_sels = category.selectables.slice(pos, pos+split);
+      res.push({
+        kind: "category",
+        name: name,
+        optional: category.optional,
+        selectables: temp_sels,
+        data: category.data,
+      });
     }
-    return buttons;
+
+    return res;
   }
 
-  // computes, how many rows a category needs and how long each row is, returns as an array
-  getRowLengths(category: M.Category, maxRowLength: number, splitGroups: boolean): Array<number> {
-    // TODO: Currently only works sequentially as per data structure, possibly allow/implement reordering of buttons
-    let rowLengths = [];
+  getSplits(category: M.Category, maxRowLength: number): number[] {
+    // Variation of getRowLengths: returns the number of selectables per row instead of number of options
+    let rowSplits = [];
+    let currentSplit = 0;
     let rowCounter = 0;
     for(let sel of category.selectables) {
-      if(sel.kind == "box") {
+      if (rowCounter >= maxRowLength) {
+        rowSplits.push(currentSplit);
+        currentSplit = 0;
+        rowCounter = 0;
+      }
+
+      if (sel.kind === "box") {
         rowCounter += 1;
-        if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
-          rowLengths.push(rowCounter);
-          rowCounter = 0;
-        }
-      } else if(sel.kind == "group") {
-        if(splitGroups) {
-          for(let opt of sel.options) {
-            rowCounter += 1;
-            if(rowCounter === maxRowLength) {
-              rowLengths.push(rowCounter);
-              rowCounter = 0;
-            }
-          }
-          if(category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
-            rowLengths.push(rowCounter);
-            rowCounter = 0;
-          }
+        currentSplit += 1;
+      } else if (sel.kind === "group") {
+        if (rowCounter + sel.options.length > maxRowLength) {
+          rowSplits.push(currentSplit);
+          rowCounter = sel.options.length;
+          currentSplit = 1;
         } else {
-          if(sel.options.length > maxRowLength){
-            Error("One or more radio button groups are longer than max elements allowed in one row. " +
-              "Either allow split or change data structure.");
-          } else {
-            if(rowCounter + sel.options.length > maxRowLength){
-              rowLengths.push(rowCounter);
-              rowCounter = sel.options.length;
-              if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
-                rowLengths.push(rowCounter);
-                rowCounter = 0;
-              }
-            } else {
-              rowCounter += sel.options.length;
-              if(rowCounter === maxRowLength || category.selectables.indexOf(sel) === (category.selectables.length - 1)) {
-                rowLengths.push(rowCounter);
-                rowCounter = 0;
-              }
-            }
-          }
+          rowCounter += sel.options.length;
+          currentSplit += 1;
         }
       }
+
+      if (category.selectables.indexOf(sel) === (category.selectables.length - 1) && currentSplit != 0) {
+        rowSplits.push(currentSplit);
+      }
     }
-    return rowLengths;
+    return rowSplits;
   }
 
   // extracts group identifiers and corresponding values for ngModel application

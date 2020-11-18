@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
 import {DataParserService} from "../dataParser.service";
-import {CheckBoxButton} from "../model";
+import {DisplayService} from "../display.service";
 
 @Component({
   selector: "app-options",
@@ -11,87 +11,65 @@ import {CheckBoxButton} from "../model";
 export class OptionsComponent implements OnInit {
 
   @Input() categories: M.Category[];
-  showBorders: Map<string, boolean> = new Map();
 
   // TODO Make these configurable
-  maxRowLength: number = 6;
-  splitGroups: boolean = false; // whether to separate radio buttons from the same group if maxRowLength is exceeded
 
-  rows: M.CategoryRow[];
-  groupValues: Map<string, string>;
+  minRowLength: number = 1;
+  maxRowLength: number;
+  rows: M.Category[];
 
   @Output() clickEvent = new EventEmitter<any>();
 
-  constructor(private dataParser: DataParserService) { }
+  constructor(private dataParser: DataParserService,
+              private display: DisplayService) { }
 
   ngOnInit(): void {
-    this.initButtons();
-
-    // console.log(this.groupValues);
-    // this.setBorders();
-    // console.log(this.showBorders);
+    this.maxRowLength = this.display.maxRowLength;
+    this.initRows();
   }
 
-  public initButtons(){
+  public initRows(){
     console.log(this.categories);
-    this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength, this.splitGroups)
-    this.groupValues = this.dataParser.extractGroups(this.categories);
-    console.log(this.groupValues);
+    this.setMinRowLength(this.categories);
+    let rowLength
+    if (this.minRowLength > this.maxRowLength) {
+      rowLength = this.minRowLength;
+      window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
+        " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
+        ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
+    }
+    else {
+      rowLength = this.maxRowLength;
+    }
+    this.rows = this.dataParser.extractRows(this.categories, rowLength);
     console.log(this.rows);
+  }
+
+  setMinRowLength(cats: M.Category[]) {
+    let minRowLength = 1;
+    for (let cat of cats) {
+      for (let sel of cat.selectables) {
+        if (sel.kind === "group") {
+          if (sel.options.length > minRowLength) {
+            minRowLength = sel.options.length;
+          }
+        }
+      }
+    }
+    this.minRowLength = minRowLength;
   }
 
   public displayParts() {
     console.log(this.categories);
   }
 
-  public update(event: any, category: string,  button: M.Clickable) {
-    setTimeout(() => this.updateCategories(category, button), 1);
+  public update(event: any) {
+    console.log(event);
     this.clickEvent.emit();
-  }
-
-  private updateCategories(category: string, button: M.Clickable){
-    for(let cat of this.categories) {
-      if(cat.name === category) {
-        if (button.kind === "box") {
-          for (let sel of cat.selectables) {
-            if (sel.name === button.name) {
-              console.log(button.name)
-              console.log(button.value)
-              sel.value = button.value;
-            }
-          }
-        }
-        else {
-          for (let sel of cat.selectables) {
-            if (sel.name === button.groupName) {
-              sel.value = button.name;
-            }
-          }
-        }
-      }
-    }
   }
 
   public print(input: any) {
     console.log(input);
-  }
-
-  private setBorders() {
-    for(let cat of this.categories){
-      const activatedBorder = this.activateBorder(cat);
-      this.showBorders.set(cat.name, activatedBorder);
-    }
-  }
-
-  private activateBorder(cat: M.Category): boolean {
-    let counter: number = 0;
-    for(let sel of cat.selectables) {
-      if(sel.kind === "group"){
-        counter += 1;
-      }
-    }
-    console.log(counter);
-    return counter > 1;
   }
 
   // TODO: Add logic for hover click animations etc.

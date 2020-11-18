@@ -1,43 +1,42 @@
 <table>
   <tbody>
     <tr *ngFor="let row of rows">
-      <td *ngIf="row.number === 0; else elseBlock" class="category"
-          [ngStyle]="{'color': row.optional ? 'grey' : 'black'}"
-          id="{{row.name+row.number}}">{{row.name}}</td>
-      <ng-template #elseBlock>
-        <td class="category" id="{{row.name+row.number}}"></td>
-      </ng-template>
-      <ng-container *ngFor="let button of row.buttons" class="col-3">
+      <td class="category" [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name}}</td>
+      <ng-container *ngFor="let sel of row.selectables" class="col-3">
 
-        <ng-container *ngIf="button.kind === 'box'">
+        <ng-container *ngIf="sel.kind === 'box'">
           <td class="box">
-            <input type="checkbox" [(ngModel)]="button.value"
-                   (click)="update($event, row.name, button)" id="{{button.name}}box"/>
+            <input type="checkbox" [(ngModel)]="sel.value"
+                   (click)="update($event)" id="{{sel.name}}box"/>
           </td>
           <td class="title">
-            <label [ngClass]="{'selected': button.value}" for="{{button.name}}box">
-              {{button.name}}
+            <label [ngClass]="{'selected': sel.value}"
+                   for="{{sel.name}}box">
+              {{sel.name}}
             </label>
           </td>
-          <app-variables style="max-width: 150px" [variables]="button.variables"></app-variables>
+          <app-variables style="max-width: 150px" [variables]="sel.variables"></app-variables>
         </ng-container>
 
-        <ng-container *ngIf="button.kind === 'option'">
-          <td class="radio box">
-            <input type="radio"
-                   id="{{button.groupName + button.name}}box"
-                   (click)="update($event, row.name, button)"
-                   [name]="button.groupName"
-                   [(ngModel)]="groupValues[button.groupName]"
-                   [value]="button.name"/>
-          </td>
-          <td class="radio title">
-            <label for="{{button.groupName + button.name}}box">
-              {{button.name}}
-            </label>
-          </td>
-          <app-variables style="max-width: 150px"
-                         [variables]="button.variables"></app-variables>
+        <ng-container *ngIf="sel.kind === 'group'">
+          <ng-container *ngFor="let option of sel.options">
+            <td class="radio box">
+              <input type="radio"
+                     id="{{sel.name + option.name}}box"
+                     (click)="update($event)"
+                     [name]="sel.name"
+                     [value]="option.name"
+                     [(ngModel)]="sel.value"/>
+            </td>
+            <td class="radio title">
+              <label for="{{sel.name + option.name}}box"
+                     [ngClass]="{'selected': (option.name === sel.value)}">
+                {{option.name}}
+              </label>
+            </td>
+            <app-variables style="max-width: 150px"
+                           [variables]="option.variables"></app-variables>
+          </ng-container>
         </ng-container>
       </ng-container>
     </tr>

@@ -28,9 +28,6 @@ export class Layout1Component implements OnInit {
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
-  splitCategories: boolean = false;
-  maxCatLength: number = 50; // TODO: Make configurable
-
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
@@ -83,13 +80,13 @@ export class Layout1Component implements OnInit {
         G.makeNormalCategory(p);
       }
     }
-    setTimeout(() => this.optionsComponent.initButtons(), 1);
+    setTimeout(() => this.optionsComponent.initRows(), 1);
     this.updateText();
   }
 
   reset(){
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    setTimeout(() => this.optionsComponent.initButtons(), 1);
+    setTimeout(() => this.optionsComponent.initRows(), 1);
   }
 
   refreshPage() {
@@ -103,8 +100,6 @@ export class Layout1Component implements OnInit {
   test() {
     console.log(this.parts);
     console.log(this.optionsComponent.rows);
-    console.log(this.optionsComponent.groupValues.get("CG0"));
-    console.log(this.optionsComponent.groupValues);
   }
 
 }
