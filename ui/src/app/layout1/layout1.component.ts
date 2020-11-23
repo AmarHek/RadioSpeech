@@ -38,10 +38,6 @@ export class Layout1Component implements OnInit {
     this.getData();
   }
 
-  ngOnChanges(change: SimpleChanges){
-    console.log(change)
-  }
-
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
@@ -80,13 +76,13 @@ export class Layout1Component implements OnInit {
         G.makeNormalCategory(p);
       }
     }
-    setTimeout(() => this.optionsComponent.initRows(), 1);
     this.updateText();
   }
 
   reset(){
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    setTimeout(() => this.optionsComponent.initRows(), 1);
+    this.categories = this.dataParser.extractCategories(this.parts);
+    setTimeout(() => this.optionsComponent.initRows(), 10);
   }
 
   refreshPage() {

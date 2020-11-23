@@ -24,25 +24,20 @@ export class OptionsComponent implements OnInit {
               private display: DisplayService) { }
 
   ngOnInit(): void {
+    this.setMinRowLength(this.categories);
     this.maxRowLength = this.display.maxRowLength;
     this.initRows();
   }
 
   public initRows(){
-    console.log(this.categories);
-    this.setMinRowLength(this.categories);
-    let rowLength
+
     if (this.minRowLength > this.maxRowLength) {
-      rowLength = this.minRowLength;
       window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
         " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
         ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
+      this.maxRowLength = this.minRowLength;
     }
-    else {
-      rowLength = this.maxRowLength;
-    }
-    this.rows = this.dataParser.extractRows(this.categories, rowLength);
-    console.log(this.rows);
+    this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
   }
 
   setMinRowLength(cats: M.Category[]) {

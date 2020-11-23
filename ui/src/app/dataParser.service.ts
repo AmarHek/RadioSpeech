@@ -72,6 +72,7 @@ export class DataParserService {
         selectables: temp_sels,
         data: category.data,
       });
+      pos += split;
     }
 
     return res;

@@ -30,6 +30,6 @@
 
   <div class="content" *ngIf="categories">
     <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
-    <app-options #options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
+    <app-options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
   </div>
 </div>

@@ -15,7 +15,10 @@
               {{sel.name}}
             </label>
           </td>
-          <app-variables style="max-width: 150px" [variables]="sel.variables"></app-variables>
+          <app-variables *ngIf="sel.variables.length > 0"
+                         style="max-width: 150px"
+                         (clickEvent)="update($event)"
+                         [variables]="sel.variables"></app-variables>
         </ng-container>
 
         <ng-container *ngIf="sel.kind === 'group'">
@@ -34,7 +37,9 @@
                 {{option.name}}
               </label>
             </td>
-            <app-variables style="max-width: 150px"
+            <app-variables *ngIf="option.variables.length > 0"
+                           style="max-width: 150px"
+                           (clickEvent)="update($event)"
                            [variables]="option.variables"></app-variables>
           </ng-container>
         </ng-container>
