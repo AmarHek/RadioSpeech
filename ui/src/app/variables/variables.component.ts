@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import {Variable} from '../model';
+import {Variable, Selectable} from '../model';
 
 declare const $: any;
 
@@ -11,9 +11,10 @@ declare const $: any;
 export class VariablesComponent implements OnInit {
 
   @Input() variables: Variable[];
+  @Input() parent: Selectable;
   @Output() clickEvent = new EventEmitter<any>()
 
-  selectedVariable: Variable;
+  selectedVariable: Variable; // = {kind: "oc", id: "test", textBefore: "", textAfter: "", data: {}, values: []};
 
   constructor() { }
 
@@ -26,7 +27,8 @@ export class VariablesComponent implements OnInit {
 
   openModalView(variable: Variable) {
     this.selectedVariable = variable;
-    setTimeout(() => $('#variableDialog').modal('show'), 1);
+    console.log(this.selectedVariable);
+    setTimeout(() => $('#variableDialog').modal('show'), 10);
   }
 
 }

@@ -22,7 +22,7 @@
 	        </ng-container> ] {{variable.textAfter}}
       </td>
 
-      <td *ngIf="variable.kind === 'text' || variable.kind === 'number' || variable.kind === 'date'">
+      <td *ngIf="variable.kind === 'text' || variable.kind === 'number' || variable.kind === 'date' ||variable.kind === 'ratio'">
         {{variable.textBefore}}
         <button id="{{variable.id}}" (click)="openModalView(variable)"
                 >....</button>
@@ -50,7 +50,7 @@
 </table>
 
 <div *ngIf="selectedVariable"
-     class="modal fade" id="variableDialog" tabindex="-1" role="dialog"
+  class="modal fade" id="variableDialog" tabindex="-1" role="dialog"
      aria-labelledby="variableDialogLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -64,7 +64,8 @@
   <table>
     <tr>
     <td *ngIf="selectedVariable.kind === 'text'">
-      <input type="text" [(ngModel)]="selectedVariable.value"/>
+      {{selectedVariable.id}}
+      <input type="text" class="w-100" [(ngModel)]="selectedVariable.value"/>
     </td>
     <td *ngIf="selectedVariable.kind === 'number'">
       <input type="number" class="w-100" [(ngModel)]="selectedVariable.value"/>
@@ -81,7 +82,7 @@
     <td class="text-left">{{selectedVariable.textAfter}}</td>
 
     </tr>
-</table>
+  </table>
     </div>
     <div class="modal-footer">
       <button type="button" data-dismiss="modal"
