@@ -7,6 +7,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialogModule } from "@angular/material/dialog";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppComponent } from "./app.component";
 import { TextComponent } from "./text/text.component";
@@ -19,6 +21,7 @@ import { Layout1Component } from "./layout1/layout1.component";
 import { OptionsComponent } from "./options/options.component";
 import { HeaderComponent } from "./header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { VariablesComponent } from "./variables/variables.component";
     OptionsComponent,
     HeaderComponent,
     VariablesComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +47,8 @@ import { VariablesComponent } from "./variables/variables.component";
     MatRadioModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(
       [
         { path: 'layout1/:name', component: Layout1Component},

@@ -22,9 +22,10 @@
 	        </ng-container> ] {{variable.textAfter}}
       </td>
 
-      <td *ngIf="variable.kind === 'text' || variable.kind === 'number' || variable.kind === 'date' ||variable.kind === 'ratio'">
+      <td *ngIf="variable.kind === 'text' || variable.kind === 'number'
+      || variable.kind === 'date' ||variable.kind === 'ratio'">
         {{variable.textBefore}}
-        <button id="{{variable.id}}" (click)="openModalView(variable)"
+        <button id="{{variable.id}}" (click)="openDialog(variable)"
                 >....</button>
         <!--<input type="text" [(ngModel)]="variable.value"/>-->
         {{variable.textAfter}}

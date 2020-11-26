@@ -1,5 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import {Variable, Selectable} from '../model';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ModalComponent} from "../modal/modal.component";
 
 declare const $: any;
 
@@ -16,7 +18,7 @@ export class VariablesComponent implements OnInit {
 
   selectedVariable: Variable; // = {kind: "oc", id: "test", textBefore: "", textAfter: "", data: {}, values: []};
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +31,16 @@ export class VariablesComponent implements OnInit {
     this.selectedVariable = variable;
     console.log(this.selectedVariable);
     setTimeout(() => $('#variableDialog').modal('show'), 10);
+  }
+
+  openDialog(variable: Variable) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    this.dialog.open(ModalComponent, dialogConfig);
   }
 
 }
