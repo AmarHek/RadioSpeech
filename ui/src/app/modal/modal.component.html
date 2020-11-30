@@ -1,59 +1,30 @@
-<h2 mat-dialog-title>Wert eingeben für</h2>
+<h3 mat-dialog-title>{{data.parentText}}</h3>
 
-<mat-dialog-content>
+<mat-dialog-content [formGroup]="form">
 
-  <div>
-    <input type="text" placeholder="Platzhalter">
-  </div>
+  {{data['textBefore']}}
+  <mat-form-field>
+    <div *ngIf="data['kind'] === 'text'">
+      <input matInput type="text" class="w-100" formControlName="value">
+    </div>
+    <div *ngIf="data.kind === 'number'">
+      <input matInput type="number" class="w-100" formControlName="value">
+    </div>
+    <div *ngIf="data.kind === 'date'">
+      <input matInput [matDatepicker]="picker" formControlName="value">
+      <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
+    <div *ngIf="data.kind === 'ratio'">
+      <input matInput type="number" class="w-100" formControlName="numerator"/> /
+      <input matInput type="number" class="w-100" formControlName="denominator"/>
+    </div>
+  </mat-form-field>
+  {{data['textAfter']}}
 
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Close</button>
-  <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+  <button class="mat-raised-button mat-primary" (click)="save()">Speichern</button>
+  <button class="mat-raised-button" (click)="close()">Schließen</button>
 </mat-dialog-actions>
-
-
-<!--
-<div id="variableDialog" tabindex="-1" role="dialog"
-     aria-labelledby="variableDialogLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="variableDialogLabel">Wert eingeben für:</h5>
-        <button type="button" class="close" (click)="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <table>
-          <tr>
-            <td *ngIf="selectedVariable.kind === 'text'">
-              {{selectedVariable.id}}
-              <input type="text" class="w-100" [(ngModel)]="selectedVariable.value"/>
-            </td>
-            <td *ngIf="selectedVariable.kind === 'number'">
-              <input type="number" class="w-100" [(ngModel)]="selectedVariable.value"/>
-            </td>
-
-            <td *ngIf="selectedVariable.kind === 'date'">
-              <ngb-datepicker [(ngModel)]="selectedVariable.value"></ngb-datepicker>
-            </td>
-
-            <td *ngIf="selectedVariable.kind === 'ratio'">
-              <input type="number" [(ngModel)]="selectedVariable.numerator" /> /
-              <input type="number" [(ngModel)]="selectedVariable.denominator" />
-            </td>
-            <td class="text-left">{{selectedVariable.textAfter}}</td>
-
-          </tr>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal"
-                class="btn btn-primary">Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
--->

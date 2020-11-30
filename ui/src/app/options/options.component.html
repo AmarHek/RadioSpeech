@@ -18,7 +18,8 @@
           <app-variables *ngIf="sel.variables.length > 0"
                          style="max-width: 150px"
                          (clickEvent)="update($event)"
-                         [variables]="sel.variables"></app-variables>
+                         [variables]="sel.variables"
+                         [parentText]="sel.name"></app-variables>
         </ng-container>
 
         <ng-container *ngIf="sel.kind === 'group'">
@@ -40,7 +41,8 @@
             <app-variables *ngIf="option.variables.length > 0"
                            style="max-width: 150px"
                            (clickEvent)="update($event)"
-                           [variables]="option.variables"></app-variables>
+                           [variables]="option.variables"
+                           [parentText]="option.name"></app-variables>
           </ng-container>
         </ng-container>
       </ng-container>

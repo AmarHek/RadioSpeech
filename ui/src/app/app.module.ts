@@ -8,6 +8,10 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppComponent } from "./app.component";
@@ -22,6 +26,7 @@ import { OptionsComponent } from "./options/options.component";
 import { HeaderComponent } from "./header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
 import { ModalComponent } from './modal/modal.component';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +53,10 @@ import { ModalComponent } from './modal/modal.component';
     MatCheckboxModule,
     MatButtonModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
@@ -60,7 +69,7 @@ import { ModalComponent } from './modal/modal.component';
       { useHash: true }
     )
   ],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

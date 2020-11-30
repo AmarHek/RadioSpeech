@@ -6,8 +6,9 @@
 	        <ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="radio" id="{{variable.id}}+{{val}}"  name="{{variable.id}}"
                    [value]="val" [(ngModel)]="variable.value"
-                   (click)="onClick($event)"/>
-            <label for="{{variable.id}}+{{val}}">{{val}}</label>
+                   (click)="submit(variable)"/>
+            <label for="{{variable.id}}+{{val}}"
+                   [ngClass]="{'selected': (val === variable.value)}">{{val}}</label>
             <ng-container *ngIf="!last"> / </ng-container>
 	        </ng-container> ) {{variable.textAfter}}
       </td>
@@ -16,79 +17,20 @@
         {{variable.textBefore}} [
 	        <ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="checkbox" id="{{variable.id}}+{{val[0]}}" name="{{variable.id}}"
-                   [value]="val[0]" [(ngModel)]="val[1]"/>
-            <label for="{{variable.id}}+{{val[0]}}">{{val[0]}}</label>
+                   [value]="val[0]" [(ngModel)]="val[1]" (click)="submit(variable)"/>
+            <label for="{{variable.id}}+{{val[0]}}"
+                   [ngClass]="{'selected': val[1]}">{{val[0]}}</label>
             <ng-container *ngIf="!last"> / </ng-container>
 	        </ng-container> ] {{variable.textAfter}}
       </td>
 
       <td *ngIf="variable.kind === 'text' || variable.kind === 'number'
-      || variable.kind === 'date' ||variable.kind === 'ratio'">
+      || variable.kind === 'date' || variable.kind === 'ratio'">
         {{variable.textBefore}}
-        <button id="{{variable.id}}" (click)="openDialog(variable)"
-                >....</button>
-        <!--<input type="text" [(ngModel)]="variable.value"/>-->
+        <button id="{{variable.id}}" (click)="submit(variable)"
+                >{{parseButtonText(variable.value)}}</button>
         {{variable.textAfter}}
       </td>
-      <!--
-      <td *ngIf="variable.kind === 'number'">
-        <span>Number-Platzhalter</span>
-        <input type="number" class="w-100" [(ngModel)]="variable.value"/>
-      </td>
-
-      <td *ngIf="variable.kind === 'date'">
-        <span>Datum-Platzhalter</span>
-        <ngb-datepicker [(ngModel)]="variable.value"></ngb-datepicker>
-      </td>
-
-      <td *ngIf="variable.kind === 'ratio'">
-        <input type="number" [(ngModel)]="variable.numerator" /> / <input type="number" [(ngModel)]="variable.denominator" />
-      </td>
-      <td class="text-left">{{variable.textAfter}}</td>
--->
       </tr>
   </ng-container>
 </table>
-
-<div *ngIf="selectedVariable"
-  class="modal fade" id="variableDialog" tabindex="-1" role="dialog"
-     aria-labelledby="variableDialogLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="variableDialogLabel">Parameter zum Textbaustein eingeben</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-  <table>
-    <tr>
-    <td *ngIf="selectedVariable.kind === 'text'">
-      {{selectedVariable.id}}
-      <input type="text" class="w-100" [(ngModel)]="selectedVariable.value"/>
-    </td>
-    <td *ngIf="selectedVariable.kind === 'number'">
-      <input type="number" class="w-100" [(ngModel)]="selectedVariable.value"/>
-    </td>
-
-    <td *ngIf="selectedVariable.kind === 'date'">
-      <ngb-datepicker [(ngModel)]="selectedVariable.value"></ngb-datepicker>
-    </td>
-
-    <td *ngIf="selectedVariable.kind === 'ratio'">
-      <input type="number" [(ngModel)]="selectedVariable.numerator" /> /
-      <input type="number" [(ngModel)]="selectedVariable.denominator" />
-    </td>
-    <td class="text-left">{{selectedVariable.textAfter}}</td>
-
-    </tr>
-  </table>
-    </div>
-    <div class="modal-footer">
-      <button type="button" data-dismiss="modal"
-              class="btn btn-primary">Ok</button>
-    </div>
-  </div>
-</div>
-</div>

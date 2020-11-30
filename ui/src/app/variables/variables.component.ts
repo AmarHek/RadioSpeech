@@ -3,8 +3,6 @@ import {Variable, Selectable} from '../model';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ModalComponent} from "../modal/modal.component";
 
-declare const $: any;
-
 @Component({
   selector: 'app-variables',
   templateUrl: './variables.component.html',
@@ -13,34 +11,67 @@ declare const $: any;
 export class VariablesComponent implements OnInit {
 
   @Input() variables: Variable[];
-  @Input() parent: Selectable;
-  @Output() clickEvent = new EventEmitter<any>()
+  @Input() parentText: string;
 
-  selectedVariable: Variable; // = {kind: "oc", id: "test", textBefore: "", textAfter: "", data: {}, values: []};
+  @Output() clickEvent = new EventEmitter<any>()
 
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
-
-  onClick(event: any) {
-    console.log(this.clickEvent.emit());
-  }
-
-  openModalView(variable: Variable) {
-    this.selectedVariable = variable;
-    console.log(this.selectedVariable);
-    setTimeout(() => $('#variableDialog').modal('show'), 10);
-  }
-
-  openDialog(variable: Variable) {
+  defaultConfig(): MatDialogConfig {
+    // TODO: Auf Service auslagern
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
 
-    this.dialog.open(ModalComponent, dialogConfig);
+    return dialogConfig;
+  }
+
+  parseButtonText(value) {
+    if (typeof value === "string" || typeof value === "number") {
+      return value
+    } else {
+      return "test"
+    }
+  }
+
+  submit(variable: Variable) {
+    if(variable.kind !== "oc" && variable.kind !== "mc") {
+      this.modalInput(variable);
+    }
+    this.clickEvent.emit();
+  }
+
+  modalInput(variable: Variable) {
+    const dialogConfig = this.defaultConfig();
+
+    dialogConfig.data = {
+      kind: variable.kind,
+      textBefore: variable.textBefore,
+      textAfter: variable.textAfter,
+      parentText: this.parentText
+    }
+    const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => this.assignValues(variable, data)
+    );
+  }
+
+  assignValues(variable: Variable, input: any): void {
+    if(input !== undefined) {
+      if(variable.kind === "text" || variable.kind === "number") {
+        variable.value = input.value;
+      } else if (variable.kind === "ratio") {
+
+      } else if (variable.kind === "date") {
+
+      }
+    }
   }
 
 }

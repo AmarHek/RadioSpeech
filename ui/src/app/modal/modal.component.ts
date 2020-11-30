@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Variable} from "../model";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-modal',
@@ -9,10 +9,19 @@ import {Variable} from "../model";
 })
 export class ModalComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<ModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {variable: Variable}) { }
+  form: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<ModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      value: [],
+      numerator: [],
+      denominator: []
+    })
   }
 
   close() {
@@ -20,7 +29,7 @@ export class ModalComponent implements OnInit {
   }
 
   save() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close(this.form.value);
   }
 
 }
