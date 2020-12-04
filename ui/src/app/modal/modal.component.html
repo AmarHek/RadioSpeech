@@ -11,9 +11,7 @@
       <input matInput type="number" class="w-100" formControlName="value">
     </div>
     <div *ngIf="data.kind === 'date'">
-      <input matInput [matDatepicker]="picker" formControlName="value">
-      <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput ngbDatepicker formControlName="value">
     </div>
     <div *ngIf="data.kind === 'ratio'">
       <input matInput type="number" class="w-100" formControlName="numerator"/> /

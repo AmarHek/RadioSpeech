@@ -64,12 +64,11 @@ export class VariablesComponent implements OnInit {
 
   assignValues(variable: Variable, input: any): void {
     if(input !== undefined) {
-      if(variable.kind === "text" || variable.kind === "number") {
+      if (variable.kind === "ratio") {
+        variable.numerator = input.numerator;
+        variable.denominator = input.denominator;
+      } else if(variable.kind === "date" || variable.kind === "number" || variable.kind === "text"){
         variable.value = input.value;
-      } else if (variable.kind === "ratio") {
-
-      } else if (variable.kind === "date") {
-
       }
     }
   }

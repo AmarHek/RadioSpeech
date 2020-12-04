@@ -125,7 +125,7 @@ export interface VariableNumber extends VariableCommon {
 
 export interface VariableDate extends VariableCommon {
   kind:  "date";
-  value: MatDate;
+  value: NgbDateStruct;
 }
 
 export interface VariableRatio extends VariableCommon {
