@@ -17,9 +17,10 @@
           </td>
           <app-variables *ngIf="sel.variables.length > 0"
                          style="max-width: 150px"
-                         (clickEvent)="update($event)"
+                         (clickEvent)="updateFromVariable(sel)"
                          [variables]="sel.variables"
-                         [parentText]="sel.name"></app-variables>
+                         [parentText]="sel.name"
+                         [parentActive]="sel.value"></app-variables>
         </ng-container>
 
         <ng-container *ngIf="sel.kind === 'group'">
@@ -27,7 +28,7 @@
             <td class="radio box">
               <input type="radio"
                      id="{{sel.name + option.name}}box"
-                     (click)="update($event)"
+                     (click)="update()"
                      [name]="sel.name"
                      [value]="option.name"
                      [(ngModel)]="sel.value"/>
@@ -40,9 +41,10 @@
             </td>
             <app-variables *ngIf="option.variables.length > 0"
                            style="max-width: 150px"
-                           (clickEvent)="update($event)"
+                           (clickEvent)="updateFromVariable(option, sel)"
                            [variables]="option.variables"
-                           [parentText]="option.name"></app-variables>
+                           [parentText]="option.name"
+                           [parentActive]="option.name === sel.value"></app-variables>
           </ng-container>
         </ng-container>
       </ng-container>

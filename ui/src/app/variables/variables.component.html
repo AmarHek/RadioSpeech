@@ -6,9 +6,9 @@
 	        <ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="radio" id="{{variable.id}}+{{val}}"  name="{{variable.id}}"
                    [value]="val" [(ngModel)]="variable.value"
-                   (click)="submit(variable)"/>
+                   (click)="clicked()"/>
             <label for="{{variable.id}}+{{val}}"
-                   [ngClass]="{'selected': (val === variable.value)}">{{val}}</label>
+                   [ngClass]="{'selected': (val === variable.value && parentActive)}">{{val}}</label>
             <ng-container *ngIf="!last"> / </ng-container>
 	        </ng-container> ) {{variable.textAfter}}
       </td>
@@ -17,9 +17,9 @@
         {{variable.textBefore}} [
 	        <ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="checkbox" id="{{variable.id}}+{{val[0]}}" name="{{variable.id}}"
-                   [value]="val[0]" [(ngModel)]="val[1]" (click)="submit(variable)"/>
+                   [value]="val[0]" [(ngModel)]="val[1]" (click)="clicked()"/>
             <label for="{{variable.id}}+{{val[0]}}"
-                   [ngClass]="{'selected': val[1]}">{{val[0]}}</label>
+                   [ngClass]="{'selected': (val[1] && parentActive)}">{{val[0]}}</label>
             <ng-container *ngIf="!last"> / </ng-container>
 	        </ng-container> ] {{variable.textAfter}}
       </td>
@@ -27,8 +27,9 @@
       <td *ngIf="variable.kind === 'text' || variable.kind === 'number'
       || variable.kind === 'date' || variable.kind === 'ratio'">
         {{variable.textBefore}}
-        <button id="{{variable.id}}" (click)="submit(variable)"
-                >{{parseButtonText(variable.value)}}</button>
+        <button class="modal-button"
+                id="{{variable.id}} btn" (click)="submit(variable)"
+                >{{parseButtonText(variable)}}</button>
         {{variable.textAfter}}
       </td>
       </tr>

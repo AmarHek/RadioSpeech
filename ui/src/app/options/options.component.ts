@@ -2,6 +2,7 @@ import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
 import {DataParserService} from "../dataParser.service";
 import {DisplayService} from "../display.service";
+import {Clickable, Group} from "../model";
 
 @Component({
   selector: "app-options",
@@ -30,7 +31,6 @@ export class OptionsComponent implements OnInit {
   }
 
   public initRows(){
-
     if (this.minRowLength > this.maxRowLength) {
       window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
         " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
@@ -54,18 +54,20 @@ export class OptionsComponent implements OnInit {
     this.minRowLength = minRowLength;
   }
 
-  public displayParts() {
-    console.log(this.categories);
-  }
-
-  public update(event: any) {
-    console.log(event);
+  public update() {
     this.clickEvent.emit();
   }
 
-  public print(input: any) {
-    console.log(input);
+  public updateFromVariable(parent: Clickable, group?: Group) {
+    if(parent.kind === "box") {
+      parent.value = true;
+    } else {
+      if(group === undefined) {
+        Error("Something went wrong here");
+      } else {
+        group.value = parent.name;
+      }
+    }
+    this.clickEvent.emit();
   }
-
-  // TODO: Add logic for hover click animations etc.
 }

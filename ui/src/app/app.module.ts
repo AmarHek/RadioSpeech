@@ -4,14 +4,11 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpClientModule } from "@angular/common/http";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppComponent } from "./app.component";
@@ -49,14 +46,11 @@ import { ModalComponent } from './modal/modal.component';
     NgbModule,
     FontAwesomeModule,
     HttpClientModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
+    MatDividerModule,
+    MatIconModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
@@ -69,7 +63,7 @@ import { ModalComponent } from './modal/modal.component';
       { useHash: true }
     )
   ],
-  providers: [MatDatepickerModule],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

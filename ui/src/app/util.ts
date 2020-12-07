@@ -12,7 +12,5 @@ export function flatMap<X, Y>(xs: X[], f: (x: X) => Y[]): Y[] {
   return ret;
 }
 
-export function refreshPage() {
-  window.location.reload();
-}
+
 
