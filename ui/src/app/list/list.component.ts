@@ -8,12 +8,11 @@ import {DisplayService} from "../display.service";
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
 
   generators: string[] = [];
-  myArr: string[] = [];
   layout: string;
 
   constructor(private http: HttpClient,
@@ -26,7 +25,11 @@ export class ListComponent implements OnInit {
     this.layout = this.display.getCurrentLayout();
   }
 
-  remove(generator: string, index: number): void {
+  removeAlert(generator: string) {
+
+  }
+
+  remove(generator: string): void {
     this.http.post(environment.urlRoot + 'remove', JSON.stringify(generator)).subscribe(
       result => { this.updateList() },
       error => window.alert("unknown error: " + JSON.stringify(error))
