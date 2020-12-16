@@ -8,8 +8,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatDividerModule } from "@angular/material/divider";
-import { MatIconModule } from "@angular/material/icon";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {MatButton, MatButtonModule} from "@angular/material/button";
 
 import { AppComponent } from "./app.component";
 import { TextComponent } from "./text/text.component";
@@ -22,8 +22,8 @@ import { Layout1Component } from "./layout1/layout1.component";
 import { OptionsComponent } from "./options/options.component";
 import { HeaderComponent } from "./header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
-import { ModalComponent } from './modal/modal.component';
-
+import { InputModalComponent } from './variables/inputModal/inputModal.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,8 @@ import { ModalComponent } from './modal/modal.component';
     OptionsComponent,
     HeaderComponent,
     VariablesComponent,
-    ModalComponent,
+    InputModalComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +51,7 @@ import { ModalComponent } from './modal/modal.component';
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
-    MatIconModule,
+    MatButtonModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [

@@ -1,20 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {UtilService} from "../util.service";
+import {UtilService} from "../../util.service";
 
 @Component({
   selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+  templateUrl: './inputModal.component.html',
+  styleUrls: ['./inputModal.component.scss']
 })
-export class ModalComponent implements OnInit {
+export class InputModalComponent implements OnInit {
 
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<ModalComponent>,
+    private dialogRef: MatDialogRef<InputModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private utilService: UtilService) { }
 

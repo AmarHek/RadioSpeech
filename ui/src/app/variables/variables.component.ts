@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import {Variable} from '../model';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ModalComponent} from "../modal/modal.component";
+import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import { UtilService } from "../util.service";
 
@@ -42,7 +42,6 @@ export class VariablesComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
-    // TODO: adjust size
 
     return dialogConfig;
   }
@@ -84,7 +83,7 @@ export class VariablesComponent implements OnInit {
     if (variable.kind === 'ratio') {
       dialogConfig.data['fractionDigits'] = variable.fractionDigits
     }
-    const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(InputModalComponent, dialogConfig);
 
     return dialogRef.afterClosed()
       .toPromise()

@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment';
 import { TimeStampsService } from '../time-stamps.service';
 import {DataParserService} from "../dataParser.service";
 import {DisplayService} from "../display.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ConfirmDialogComponent, ConfirmDialogModel} from "../confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-list',
@@ -18,7 +20,8 @@ export class ListComponent implements OnInit {
   constructor(private http: HttpClient,
               private dataParser: DataParserService,
               private timesService: TimeStampsService,
-              private display: DisplayService) { }
+              private display: DisplayService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     this.updateList();
@@ -26,7 +29,25 @@ export class ListComponent implements OnInit {
   }
 
   removeAlert(generator: string) {
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Entfernen bestätigen",
+    "Möchten Sie die Schablone '" + generator + "' wirklich entfernen?");
 
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.width = '400px';
+    dialogConfig.data = dialogData;
+    dialogConfig.position = {top: '50px'};
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if(dialogResult) {
+        this.remove(generator);
+      }
+    })
   }
 
   remove(generator: string): void {
