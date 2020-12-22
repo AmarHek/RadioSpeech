@@ -57,6 +57,11 @@ export class Layout1Component implements OnInit {
     [this.report, this.judgement] = this.dataParser.makeText(this.parts);
   }
 
+  resetText(): void {
+    this.report = "";
+    this.judgement = "";
+  }
+
   onClick(){
     setTimeout(() => this.updateText(), 1);
   }
@@ -82,7 +87,8 @@ export class Layout1Component implements OnInit {
   reset(){
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts);
-    setTimeout(() => this.optionsComponent.initRows(), 10);
+    setTimeout(() => this.optionsComponent.initRows(), 5);
+    setTimeout(() => this.resetText(), 5);
   }
 
   refreshPage() {

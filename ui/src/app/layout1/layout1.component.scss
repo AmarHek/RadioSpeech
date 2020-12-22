@@ -1,9 +1,9 @@
 $border-color: hsl(200, 70%, 80);
-$background-color: hsl(202, 73%, 97%);
+$background-color: hsl(202, 73%, 96%);
+
 .main {
   height: 100%;
   width: 100%;
-  // border: 1px solid $border-color;
   background-color: $background-color;
   color: black;
   overflow: auto;
@@ -61,6 +61,7 @@ $background-color: hsl(202, 73%, 97%);
   height: 98.5%;
   border: 1px solid $border-color;
   margin: 5px;
+  background-color: $background-color;
 }
 
 .options{
@@ -70,5 +71,5 @@ $background-color: hsl(202, 73%, 97%);
   margin-top: 5px;
   border: 1px solid $border-color;
   overflow-y: scroll;
-  background-color: hsl(202, 73%, 97%);
+  background-color: $background-color;
 }

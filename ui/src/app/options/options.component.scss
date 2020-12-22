@@ -1,6 +1,3 @@
-$background-color: hsl(202, 73%, 97%);
-$border-color: hsl(200, 70%, 80);
-
 td.category{
   font-size: 140%;
   font-weight: bold;
@@ -29,20 +26,15 @@ td.title {
   word-wrap: break-word;
 }
 
-td.radio {
-  // TODO: make borders and make them align
-  // border-top: 1px solid blue;
-  // border-bottom: 1px solid blue;
-}
-
-.selected {
+label.selected {
   background-color: lightblue;
+  border-radius: 2px;
 }
-
-.selected-opt {
-  background-color: lightyellow;
+label:hover {
+  box-shadow: 0 0 2px black;
+  border-radius: 2px;
 }
-
-.radio-group {
-  border: 1px solid black;
+label:active {
+  box-shadow: 0 0 2px black;
+  border-radius: 2px;
 }
