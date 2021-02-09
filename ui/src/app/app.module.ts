@@ -61,7 +61,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
         { path: 'list',       component: ListComponent   },
         { path: '**', redirectTo: '/upload' },
       ],
-      { useHash: true }
+      { useHash: true, relativeLinkResolution: 'legacy' }
     )
   ],
   providers: [],
