@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import * as M from '../model'
 import * as G from '../generator'
-import * as P from '../parser'
 import * as T from '../takers'
 import { Keyword2, Category, Disease } from './Keyword';
 import { InputParserService } from '../input-parser.service';

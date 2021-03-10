@@ -18,6 +18,20 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
   }
 
+  /*
+  uploadNew(){
+    const file = (document.getElementById('uploadFile') as HTMLInputElement).files[0];
+    this.form.patchValue({image: file});
+    this.form.get('image').updateValueAndValidity();
+
+    const postData = new FormData();
+    postData.append("file", this.form.value.image, this.form.value.name);
+    console.log(this.form.value.name);
+    console.log(this.form.value.image);
+    console.log(postData);
+    this.dictManager.addExcel(postData);
+  }*/
+
   upload(): void {
     this.timesService.addTimeStamp(new Date());
     const reader = new FileReader();

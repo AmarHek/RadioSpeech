@@ -58,7 +58,6 @@ export interface Category {
   kind: "category";
   name: string;
   optional?: boolean;
-  // rowNumber?: number;
   selectables: Selectable[];
   data: Data;
 }
