@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {faLaptopMedical} from "@fortawesome/free-solid-svg-icons";
-import { DisplayService } from "../display.service";
+import { DisplayService } from "../services/display.service";
 
 @Component({
   selector: 'app-header',

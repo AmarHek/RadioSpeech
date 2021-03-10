@@ -22,7 +22,7 @@ import {
 
 // import { DictionaryServiceService } from "../dictionary-service.service";
 import { NgForm } from "@angular/forms";
-import { DictManagerService } from "../dict-manager.service";
+import { DictManagerService } from "../services/dict-manager.service";
 import { Subscription } from "rxjs";
 
 @Component({

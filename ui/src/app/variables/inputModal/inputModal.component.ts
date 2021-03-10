@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {UtilService} from "../../util.service";
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-modal',

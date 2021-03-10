@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { TimeStampsService } from '../time-stamps.service';
-import {DataParserService} from "../dataParser.service";
-import {DisplayService} from "../display.service";
+import { TimeStampsService } from '../services/time-stamps.service';
+import {DataParserService} from "../services/dataParser.service";
+import {DisplayService} from "../services/display.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "../confirm-dialog/confirm-dialog.component";
 

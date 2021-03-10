@@ -7,7 +7,7 @@ import { ViewChild } from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as M from "../model";
 import * as G from "../generator";
-import {DataParserService} from "../dataParser.service";
+import {DataParserService} from "../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
 
 @Component({

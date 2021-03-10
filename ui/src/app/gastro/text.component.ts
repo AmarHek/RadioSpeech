@@ -8,12 +8,12 @@ import * as G from '../generator'
 import * as P from '../parser'
 import * as T from '../takers'
 import { Keyword2, Category, Disease, TextDic } from './Keyword';
-import { InputParserService } from '../input-parser.service';
-import { TextOutputService } from '../text-output.service';
+import { InputParserService } from '../services/input-parser.service';
+import { TextOutputService } from '../services/text-output.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
-import { DictManagerService } from '../dict-manager.service';
+import { DictManagerService } from '../services/dict-manager.service';
 
 
 declare const $: any;

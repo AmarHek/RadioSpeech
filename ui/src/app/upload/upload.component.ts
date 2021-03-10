@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-import { TimeStampsService } from '../time-stamps.service';
+import { TimeStampsService } from '../services/time-stamps.service';
 
 @Component({
   selector: 'app-upload',

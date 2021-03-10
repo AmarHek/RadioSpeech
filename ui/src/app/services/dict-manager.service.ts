@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import * as N from "./new_model";
+import * as N from "../new_model";
 import { HttpClient, HttpResponse } from "@angular/common/http";
-import { environment } from "../environments/environment";
+import { environment } from "../../environments/environment";
 import { map } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -23,7 +23,7 @@ export class DictManagerService {
 
   myUrl = url;
   mode = "";
-  
+
 
   constructor(private http: HttpClient) {}
 
@@ -56,7 +56,7 @@ export class DictManagerService {
   getList() {
     this.http
       .get<{ message: string; myDicts: any }>(
-       this.myUrl 
+       this.myUrl
       )
       .pipe(
         map((getter) => {

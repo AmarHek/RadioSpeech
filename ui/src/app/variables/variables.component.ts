@@ -3,7 +3,7 @@ import {Variable} from '../model';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import { UtilService } from "../util.service";
+import { UtilService } from "../services/util.service";
 
 @Component({
   selector: 'app-variables',

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../model";
-import {DataParserService} from "../dataParser.service";
-import {DisplayService} from "../display.service";
+import {DataParserService} from "../services/dataParser.service";
+import {DisplayService} from "../services/display.service";
 import {Clickable, Group} from "../model";
 
 @Component({
