@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as N from "../new_model";
+import * as N from "../../model-files/new_model";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { map } from "rxjs/operators";

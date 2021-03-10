@@ -9,7 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 // import { environment } from "src/environments/environment";
 // import * as M from "../model";
-import * as N from "../new_model";
+import * as N from "../../model-files/new_model";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   trigger,

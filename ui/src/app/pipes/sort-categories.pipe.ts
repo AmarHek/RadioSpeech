@@ -1,6 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Category, Keyword2 } from './text/Keyword';
-
 
 @Pipe({
   name: 'sortCategories',

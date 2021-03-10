@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: "app-root",

@@ -9,14 +9,14 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatDividerModule } from "@angular/material/divider";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import {MatButtonModule} from "@angular/material/button";
+import { MatButtonModule } from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
 import { GastroComponent } from "./gastro/gastro.component";
 import { UploadComponent } from "./upload/upload.component";
 import { ListComponent } from "./list/list.component";
-import { SortCategoriesPipe } from "./sort-categories.pipe";
+import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
 import { ReportComponent } from "./report/report.component";
 import { RadiologyComponent } from "./radiology/radiology.component";
 import { OptionsComponent } from "./options/options.component";

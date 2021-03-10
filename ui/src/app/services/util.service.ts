@@ -16,7 +16,4 @@ export class UtilService {
     }
   }
 
-  public refreshPage() {
-    window.location.reload();
-  }
 }

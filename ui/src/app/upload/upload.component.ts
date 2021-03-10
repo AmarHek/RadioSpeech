@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { TimeStampsService } from '../services/time-stamps.service';
+import { FormGroup } from "@angular/forms";
+import { DictManagerService } from "../services/dict-manager.service";
 
 @Component({
   selector: 'app-upload',
@@ -13,12 +15,15 @@ export class UploadComponent implements OnInit {
   name: string = "";
   months: string[] = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
-  constructor(private http: HttpClient, private router: Router, private timesService: TimeStampsService) { }
+  form: FormGroup
+
+  constructor(private http: HttpClient, private router: Router,
+              private timesService: TimeStampsService,
+              private dictManager: DictManagerService) { }
 
   ngOnInit() {
   }
 
-  /*
   uploadNew(){
     const file = (document.getElementById('uploadFile') as HTMLInputElement).files[0];
     this.form.patchValue({image: file});
@@ -30,7 +35,7 @@ export class UploadComponent implements OnInit {
     console.log(this.form.value.image);
     console.log(postData);
     this.dictManager.addExcel(postData);
-  }*/
+  }
 
   upload(): void {
     this.timesService.addTimeStamp(new Date());

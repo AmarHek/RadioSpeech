@@ -1,5 +1,5 @@
 import { Injectable, Input } from '@angular/core';
-import * as M from '../new_model'
+import * as M from '../../model-files/new_model'
 import { Keyword2, Category, Disease, MyVariable, TextDic } from '../gastro/Keyword';
 import { TextOutputService } from './text-output.service';
 

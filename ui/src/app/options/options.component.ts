@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import * as M from "../model";
+import * as M from "../../model-files/model";
 import {DataParserService} from "../services/dataParser.service";
 import {DisplayService} from "../services/display.service";
-import {Clickable, Group} from "../model";
+import {Clickable, Group} from "../../model-files/model";
 
 @Component({
   selector: "app-options",
