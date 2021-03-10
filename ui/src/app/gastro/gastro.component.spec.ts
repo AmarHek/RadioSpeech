@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { TextComponent } from './text.component';
+import { GastroComponent } from './gastro.component';
 
 describe('TextComponent', () => {
-  let component: TextComponent;
-  let fixture: ComponentFixture<TextComponent>;
+  let component: GastroComponent;
+  let fixture: ComponentFixture<GastroComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TextComponent ]
+      declarations: [ GastroComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TextComponent);
+    fixture = TestBed.createComponent(GastroComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { InputParserService } from './input-parser.service';
-import { parse } from 'querystring';
-import { Key } from 'protractor';
-import { Keyword2, Category, Disease, TextDic } from './text/Keyword';
-import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { Category, Disease, TextDic } from '../gastro/Keyword';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +11,8 @@ export class TextOutputService {
   }
   // Array containing the text for each disease and category
   rep: Array<TextDic> = [];
+  // Array containing cash codes
+  codes: Array<TextDic> = [];
   // time when finished
   timeSpan: number = 0;
   // all the recognised words that were entered, used for correction mode
@@ -27,12 +26,10 @@ export class TextOutputService {
 
   // generates downloadable files from arrays
   generateDownloadJson() {
-    var js = JSON.stringify(this.rep);
-    console.log("Download!");
-    console.log(js);
-    var js2 = JSON.stringify(this.finalText);
-    var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js));
-    var uri2 = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js2));
+    let js = JSON.stringify(this.rep);
+    let js2 = JSON.stringify(this.finalText);
+    let uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js));
+    let uri2 = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js2));
     this.downJson = uri;
     this.downJson2 = uri2;
   }
@@ -44,11 +41,15 @@ export class TextOutputService {
     let repo = "";
     // adds text corresponding to active Keywords
     let keyName = "";
+    let code = "";
     if (activeDis != undefined) {
       for (const key of activeCat.keys.filter(key => key.position !== -1)) {
         let newText = key.text;
         keyName = key.name;
-        if (activeCat.name === "Größe" || activeCat.name === "Gefäß") {
+        if (key.code != undefined) {
+          code = key.name + ": " + key.code + "\n";
+        }
+        if (activeCat.keys.length === 1) {
           newText = newText.replace('%0', key.synonym);
         }
         for (let i = 0; i < key.variables.length; i++) {
@@ -66,20 +67,27 @@ export class TextOutputService {
       let report = this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name);
       report.text = repo;
       report.key = keyName;
-      console.log("repo");
-      console.log(this.rep.find(dis => dis.disName == activeDis.name).reports.find(cat => cat.category == activeCat.name).text);
+      report.code = code;
+
     }
     // concatenate all text elements from the array
     let finalText = "";
     // adds time stamp to the top of the report
-    let date = new Date();
+    let date = new Date()
     finalText += date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
     this.timeSpan = Math.abs(date.getTime() - startingTime.getTime()) / 1000;
+
     for (const dis of this.rep) {
       if (dis.reports.map(report => report.text).join("") !== "") {
         finalText = finalText + dis.disName + ":\n";
       }
       finalText = finalText + dis.reports.map(report => report.text).join("") + "\n\n";
+    }
+    for (const dis of this.rep) {
+      if (dis.reports.map(report => report.code).join("") !== "") {
+        finalText = finalText + dis.disName + " - Codes:\n";
+      }
+      finalText = finalText + dis.reports.map(report => report.code).join("") + "\n\n";
     }
     this.finalText = finalText;
     return finalText;
@@ -94,8 +102,8 @@ export class TextOutputService {
       }
       for (const cat of dis.categories) {
         // only lokalisierung and größe are shown on top
-        if (cat.name === "Lokalisierung" || cat.name === "Größe") {
-          var activeKeys = cat.keys.filter(activeKey => activeKey.position != -1).sort((a, b) => a.position - b.position);
+        if (!dis.name.includes("Polyp") || cat.name === "Lokalisierung" || cat.name === "Größe") {
+          let activeKeys = cat.keys.filter(activeKey => activeKey.position != -1).sort((a, b) => a.position - b.position);
           // loops through all active Keywords
           for (const key of activeKeys) {
             // if keyword does hold a variable it will be darkgreen and its variable will be lightgreen
@@ -105,7 +113,7 @@ export class TextOutputService {
               for (const vari of key.variables) {
                 if (vari.varFound.length != 0) {
                   //inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-                  inByWord.push("<span style=\"background-color: lightgreen\">" + vari.varFound[0] + "</span>");
+                  inByWord.push("<span style=\"background-color: lightgreen\">" + vari.varFound[0].replace(vari.textAfter, "") + "</span>");
                   activeVars++;
                 } else {
                   complete = false;
@@ -132,72 +140,71 @@ export class TextOutputService {
     // assigns text to element on html
     document.getElementById("inputText").innerHTML = inByWord.join(" ");
   }
-
   // adds an entry at the output array for all different diseases (at beginning)
   initDiseaseText(diseases: Array<Disease>) {
     for (const dis of diseases) {
-      let tempReports: { text: string, category: string, key: string }[] = [];
+      let tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
       for (const cat of dis.categories) {
-        tempReports.push({ text: "", category: cat.name, key: "" });
+        tempReports.push({ text: "", category: cat.name, key: "", code: undefined, condition: cat.condition });
       }
       this.rep.push({ disName: dis.name, reports: tempReports });
     }
-    console.log("initDicTest");
-    console.log(this.rep);
   }
-
   // adds an entry at the output array for all new instances (dynamic)
   addDisease(disease: Disease, index: number) {
-    let tempReports: { text: string, category: string, key: string }[] = [];
+    let tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
     for (const cat of disease.categories) {
-      tempReports.push({ text: "", category: cat.name, key: "" });
+      tempReports.push({ text: "", category: cat.name, key: "", code: undefined, condition: cat.condition });
     }
     this.rep.splice(index, 0, { disName: disease.name, reports: tempReports })
   }
-
-  // output for correction mode, uses recogWords array. Also automatically downloads the json and text after some milliseconds
+  // currently not working: output for correction mode, uses recogWords array. Also automatically downloads the json and text after some milliseconds
+  // only shows pure transcription with no colors and downloads both files
   finalOut(end: boolean, inpAr: Array<string>) {
-    /* if(end){
-    console.log(this.recogWords);
-    console.log(inpAr);
-    } */
     if (end) {
-      let k = 0;
-      while (k < this.rep.length) {
+      /* console.log(this.recogWords);
+      console.log(inpAr);
+      console.log(this.rep); */
+      let i = 0;
+      while (i < this.rep.length) {
         let empty = true;
-        for (const cat of this.rep[k].reports) {
+        for (const cat of this.rep[i].reports) {
           if (cat.key !== "") {
             empty = false;
           }
         }
         if (empty) {
-          this.rep.splice(k, 1);
+          this.rep.splice(i, 1);
         } else {
-          k++;
+          i++;
         }
       }
       this.generateDownloadJson();
+
+      document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
+    }
+    /* if(end){
       var temp = 0;
-      for (let j = 0; j < this.recogWords.length; j++) {
+      for (let j = 0; j<this.recogWords.length; j++){
         let splitAr = this.recogWords[j].word.split(" ");
 
         let bool = true;
         temp = inpAr.indexOf(splitAr[0], temp);
-        for (let i = 1; i < splitAr.length; i++) {
-          if (inpAr[temp + i] !== splitAr[i]) {
+        for(let i = 1; i<splitAr.length; i++){
+          if(inpAr[temp+i] !== splitAr[i]){
             bool = false;
           }
         }
-        if (bool) {
-          for (let i = 0; i < splitAr.length; i++) {
+        if(bool){
+          for(let i = 0; i<splitAr.length; i++){
 
-            // console.log(temp);
-            inpAr[temp + i] = "<span style=\"color: red; text-transform: uppercase\">" + inpAr[temp + i] + "</span>";
+           // console.log(temp);
+            inpAr[temp+i] = "<span style=\"color: red; text-transform: uppercase\">" + inpAr[temp+i] + "</span>";
           }
           temp += splitAr.length;
         } else {
           temp++;
-
+          console.log("pimmel2");
           j -= 1;
         }
 
@@ -206,8 +213,44 @@ export class TextOutputService {
       console.log(this.recogWords);
       inpAr.pop();
       document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
+      console.log("41");
+    } */
+
+  }
+
+  // responsible for "warning" when saying "ende" for the first time
+  firstOut() {
+    let missing: Array<TextDic> = [];
+
+    for (const dis of this.rep) {
+      let empty = true;
+      let tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
+      for (const cat of dis.reports) {
+
+        // if keine Abtragung is chosen, dont even ask for komplikationen or gefäß
+        if (cat.condition !== null) {
+
+          if (dis.reports.find(el => el.category == cat.condition)
+            .key !== "" && cat.key === "") {
+            tempReports.push({ text: "", category: cat.category, key: "", code: undefined, condition: cat.condition });
+          }
+        }
+        if (cat.key === "" && cat.condition == null) {
+          tempReports.push({ text: "", category: cat.category, key: "", code: undefined, condition: cat.condition });
+        }
+        if (cat.key !== "") {
+          empty = false;
+        }
+        /* if (cat.category === "Polypektomie" && (cat.key === "keine Abtragung" || cat.key === "")) {
+          polypektomie = false;
+        } */
+      }
+      if (!empty && tempReports.length !== 0) {
+        missing.push({ disName: dis.disName, reports: tempReports });
+      }
     }
 
+    return missing;
   }
 
 }

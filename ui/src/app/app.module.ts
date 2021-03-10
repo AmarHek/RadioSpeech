@@ -9,11 +9,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatDividerModule } from "@angular/material/divider";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import {MatButton, MatButtonModule} from "@angular/material/button";
+import {MatButtonModule} from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
-import { TextComponent } from "./text/text.component";
+import { GastroComponent } from "./gastro/gastro.component";
 import { UploadComponent } from "./upload/upload.component";
 import { ListComponent } from "./list/list.component";
 import { SortCategoriesPipe } from "./sort-categories.pipe";
@@ -29,7 +29,7 @@ import { EditStructureComponent } from './edit-structure/edit-structure.componen
 @NgModule({
   declarations: [
     AppComponent,
-    TextComponent,
+    GastroComponent,
     UploadComponent,
     ListComponent,
     SortCategoriesPipe,
@@ -58,7 +58,7 @@ import { EditStructureComponent } from './edit-structure/edit-structure.componen
     RouterModule.forRoot(
       [
         { path: 'radiology/:name', component: RadiologyComponent},
-        { path: 'text/:name', component: TextComponent   },
+        { path: 'gastro/:name', component: GastroComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
         { path: 'edit/:name', component: EditStructureComponent},

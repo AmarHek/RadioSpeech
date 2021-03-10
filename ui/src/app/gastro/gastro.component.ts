@@ -1,12 +1,8 @@
-import { Component, OnInit, AfterViewInit, AfterContentInit, HostListener, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import * as M from '../new_model'
-import * as G from '../generator'
-import * as P from '../parser'
-import * as T from '../takers'
 import { Keyword2, Category, Disease, TextDic } from './Keyword';
 import { InputParserService } from '../services/input-parser.service';
 import { TextOutputService } from '../services/text-output.service';
@@ -20,10 +16,10 @@ declare const $: any;
 
 @Component({
   selector: 'app-text',
-  templateUrl: './text.component.html',
-  styleUrls: ['./text.component.scss']
+  templateUrl: './gastro.component.html',
+  styleUrls: ['./gastro.component.scss']
 })
-export class TextComponent implements OnInit, OnDestroy {
+export class GastroComponent implements OnInit, OnDestroy {
 
   // used that only one synonym for each keyword is shown on the interface
   filterSyn(arr: Array<Keyword2>) {
