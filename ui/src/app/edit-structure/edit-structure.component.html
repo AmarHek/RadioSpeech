@@ -1,0 +1,1803 @@
+<!-- READ FIRST ------------------------------------------------------------------------------------------------------- -->
+<!-- This template is split into two parts:
+The first one is responsible for all the input forms that appear when the user wants to add new information to the dict
+The second one is responsible for showing all the information contained by the dict -->
+<!-- TO MAKE CHANGING FORMS EASIER, BOTH PARTS EXIST 2 TIMES; ONCE FOR GASTROENTEROLOGY AND ONCE FOR RADIOLOGIE (radiology has no diseases available) -->
+<!-- FIRST COMES GASTROENTEROLOGY (~until line 1000), SECOND COMES RADIOLOGY -->
+
+
+<!-- <button (click)="toggle()">Toggle</button> -->
+
+<!-- THIS IS THE LOADING ANIMATION DURING API CALLS -->
+<div *ngIf="errorMsg!==''" class="error">{{errorMsg}}</div>
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
+  <div class="spinner-grow mySpinner" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div *ngIf="errorMsg=='' && !isLoading" class="container">
+  <button class="btn btn-success save" (click)="updateDict()">Speichern</button>
+
+
+  <!-- THIS IS THE SIGNUP FORM FOR ADDING A CATEGORY TO AN EXISTING DISEASE -->
+  <ng-container *ngIf="mode == 'Gastroenterologie'">
+
+    <ng-container *ngIf="addKat">
+
+      <form (ngSubmit)="onSubmitKat()" #f="ngForm">
+
+
+        <div class="form-group row">
+
+          <!-- DISEASE PART -->
+          <ng-container id="allgData" ngModelGroup="allgData">
+            <div class="col-4 mb-2">
+              <label for="disName">Name der Kategorie</label>
+              <input class="form-control" type="text" id="disName" name="disName" ngModel required>
+            </div>
+            <div class="col-4 mb-2">
+              <label for="disCond">Abhängig von Kategorie ..</label>
+              <input class="form-control" type="text" id="disCond" name="disCond" ngModel>
+            </div>
+            <div class="col-2 mb-2">
+              <label for="KanzahlAtt">Attribute</label>
+              <select class="form-control" name="KanzahlAtt" id="KanzahlAtt" [(ngModel)]="myAtt.anzahlAtt"
+                #Kanzahl="ngModel" (change)="computeKAtts()" required>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </ng-container>
+          <!-- CATEGORY PART -->
+          <ng-container id="catData" ngModelGroup="catData">
+            <ng-container *ngFor="let myDummy4 of ' '.repeat(myAtt.anzahlAtt).split(''), let a = index">
+              <div class="col-12 mb-2">
+                <label for="KAttText{{a}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ...
+                    kennzeichnen,
+                    wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+                <input class="form-control" type="text" id="KAttText{{a}}" name="KAttText{{a}}" ngModel required>
+              </div>
+              <div class="col-4 mb-2">
+                <label for="KAttName{{a}}">Name des Attributs</label>
+                <input class="form-control" type="text" id="KAttName{{a}}" name="KAttName{{a}}" ngModel>
+              </div>
+              <div class="col-4 mb-2">
+                <label for="KJudText{{a}}">Beurteilung/Code</label>
+                <input class="form-control" type="text" id="KJudText{{a}}" name="KJudText{{a}}" ngModel>
+              </div>
+              <div class="col-2 mb-2">
+                <label for="Knormal{{a}}">Normal</label>
+                <select class="form-control" name="Knormal{{a}}" id="Knormal{{a}}" [ngModel]="false" required>
+                  <option value="true">Ja</option>
+                  <option value="false">Nein</option>
+                </select>
+              </div>
+              <div class="col-2 mb-2">
+                <label for="KanzahlAttVar{{a}}">Anzahl Variablen</label>
+                <select class="form-control" name="KanzahlAttVar{{a}}" id="KanzahlAttVar{{a}}"
+                  [(ngModel)]="myAtt.myVars[a].anzahlVar" required>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[a].anzahlVar).split(''), let b = index">
+                <div class="col-3 mb-2">
+                  <label for="KvarKind{{a}}{{b}}">Variablenart</label>
+                  <select class="form-control" name="KvarKind{{a}}{{b}}" id="KvarKind{{a}}{{b}}"
+                    [(ngModel)]="myAtt.myVars[a].varTypes[b]" (change)="Kprinter()"
+                    [required]="disTyp=='Kategorie' && myAtt.myVars[a].anzahlVar>0">
+                    <option value="oc">Auswahlvariable</option>
+                    <option value="text">Textvariable</option>
+                  </select>
+                </div>
+                <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='text'">
+                  <div class="col-3 mb-2">
+                    <label for="KtextBefore{{a}}{{b}}">Aktivierungstext</label>
+                    <input class="form-control" type="text" id="KtextBefore{{a}}{{b}}" name="KtextBefore{{a}}{{b}}"
+                      ngModel required>
+                  </div>
+                  <div class="col-3 mb-2">
+                    <label for="KvarUnit{{a}}{{b}}">Endwort (z.B. Einheit "cm")</label>
+                    <input class="form-control" type="text" id="KvarUnit{{a}}{{b}}" name="KvarUnit{{a}}{{b}}" ngModel
+                      required>
+                  </div>
+                  <div class="col-3 mb-2">
+                    <label for="KtextAfter{{a}}{{b}}">Text danach (automatisch)</label>
+                    <input class="form-control" type="text" id="KtextAfter{{a}}{{b}}" name="KtextAfter{{a}}{{b}}"
+                      ngModel required>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='oc'">
+                  <div class=" col-9 mb-2">
+                    <label for="KvarOptions{{a}}{{b}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                    <input class="form-control" type="text" id="KvarOptions{{a}}{{b}}" name="KvarOptions{{a}}{{b}}"
+                      ngModel required>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+
+
+        </div>
+        <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+          Hinzufügen
+        </button>
+        <button class="btn btn-danger mb-2" (click)='cancelAdding()'>
+          Abbrechen
+        </button>
+      </form>
+    </ng-container>
+
+
+    <!-- This is when you want to add a single attribute -->
+    <ng-container *ngIf="addAtt">
+      <form (ngSubmit)="onSubmitAtt()" #f="ngForm">
+        <div class="form-group row">
+          <div class="col-12 mb-2">
+            <label for="KAttText{{addPosition}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ... kennzeichnen,
+                wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+            <input class="form-control" type="text" id="KAttText{{addPosition}}" name="KAttText{{addPosition}}" ngModel
+              required>
+          </div>
+          <div class="col-4 mb-2">
+            <label for="KAttName{{addPosition}}">Name des Attributs</label>
+            <input class="form-control" type="text" id="KAttName{{addPosition}}" name="KAttName{{addPosition}}" ngModel>
+          </div>
+          <div class="col-4 mb-2">
+            <label for="KJudText{{addPosition}}">Beurteilung/Code</label>
+            <input class="form-control" type="text" id="KJudText{{addPosition}}" name="KJudText{{addPosition}}" ngModel>
+          </div>
+          <div class="col-2 mb-2">
+            <label for="Knormal{{addPosition}}">Normal</label>
+            <select class="form-control" name="Knormal{{addPosition}}" id="Knormal{{addPosition}}" [ngModel]="false"
+              required>
+              <option value="true">Ja</option>
+              <option value="false">Nein</option>
+            </select>
+          </div>
+          <div class="col-2 mb-2">
+            <label for="KanzahlAttVar{{addPosition}}">Anzahl Variablen</label>
+            <select class="form-control" name="KanzahlAttVar{{addPosition}}" id="KanzahlAttVar{{addPosition}}"
+              [(ngModel)]="myAtt.myVars[0].anzahlVar" required>
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[0].anzahlVar).split(''), let b = index">
+            <div class="col-3 mb-2">
+              <label for="KvarKind{{addPosition}}{{b}}">Variablenart</label>
+              <select class="form-control" name="KvarKind{{addPosition}}{{b}}" id="KvarKind{{addPosition}}{{b}}"
+                [(ngModel)]="myAtt.myVars[0].varTypes[b]" (change)="Kprinter()"
+                [required]="disTyp=='Kategorie' && myAtt.myVars[0].anzahlVar>0">
+                <option value="oc">Auswahlvariable</option>
+                <option value="text">Textvariable</option>
+              </select>
+            </div>
+            <ng-container *ngIf="myAtt.myVars[0].varTypes[b]=='text'">
+              <div class="col-3 mb-2">
+                <label for="KtextBefore{{addPosition}}{{b}}">Aktivierungstext</label>
+                <input class="form-control" type="text" id="KtextBefore{{addPosition}}{{b}}"
+                  name="KtextBefore{{addPosition}}{{b}}" ngModel required>
+              </div>
+              <div class="col-3 mb-2">
+                <label for="KvarUnit{{addPosition}}{{b}}">Endwort (z.B. Einheit "cm")</label>
+                <input class="form-control" type="text" id="KvarUnit{{addPosition}}{{b}}"
+                  name="KvarUnit{{addPosition}}{{b}}" ngModel required>
+              </div>
+              <div class="col-3 mb-2">
+                <label for="KtextAfter{{addPosition}}{{b}}">Text danach (automatisch)</label>
+                <input class="form-control" type="text" id="KtextAfter{{addPosition}}{{b}}"
+                  name="KtextAfter{{addPosition}}{{b}}" ngModel required>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="myAtt.myVars[0].varTypes[b]=='oc'">
+              <div class=" col-9 mb-2">
+                <label for="KvarOptions{{addPosition}}{{b}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                <input class="form-control" type="text" id="KvarOptions{{addPosition}}{{b}}"
+                  name="KvarOptions{{addPosition}}{{b}}" ngModel required>
+              </div>
+            </ng-container>
+          </ng-container>
+          <br>
+          <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+            Hinzufügen
+          </button>
+          <button class="btn btn-danger mb-2" (click)='cancelAdding()'>
+            Abbrechen
+          </button>
+        </div>
+      </form>
+    </ng-container>
+
+    <!-- This is when you want do add a single variable -->
+    <ng-container *ngIf="addVar">
+      <form (ngSubmit)="onSubmitVar()" #f="ngForm">
+        <div class="form-group row">
+          <div class="col-3 mb-2">
+            <label for="KvarKind{{addPosition}}">Variablenart</label>
+            <select class="form-control" name="KvarKind{{addPosition}}" id="KvarKind{{addPosition}}"
+              [(ngModel)]="myAtt.myVars[0].varTypes[0]" required (change)="Kprinter()">
+              <option value="oc">Auswahlvariable</option>
+              <option value="text">Textvariable</option>
+            </select>
+          </div>
+          <ng-container *ngIf="myAtt.myVars[0].varTypes[0]=='text'">
+            <div class="col-3 mb-2">
+              <label for="KtextBefore{{addPosition}}">Aktivierungstext</label>
+              <input class="form-control" type="text" id="KtextBefore{{addPosition}}" name="KtextBefore{{addPosition}}"
+                ngModel required>
+            </div>
+            <div class="col-3 mb-2">
+              <label for="KvarUnit{{addPosition}}">Endwort (z.B. Einheit "cm")</label>
+              <input class="form-control" type="text" id="KvarUnit{{addPosition}}" name="KvarUnit{{addPosition}}"
+                ngModel required>
+            </div>
+            <div class="col-3 mb-2">
+              <label for="KtextAfter{{addPosition}}">Text danach (automatisch)</label>
+              <input class="form-control" type="text" id="KtextAfter{{addPosition}}" name="KtextAfter{{addPosition}}"
+                ngModel required>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="myAtt.myVars[0].varTypes[0]=='oc'">
+            <div class=" col-9 mb-2">
+              <label for="KvarOptions{{addPosition}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+              <input class="form-control" type="text" id="KvarOptions{{addPosition}}" name="KvarOptions{{addPosition}}"
+                ngModel required>
+            </div>
+          </ng-container>
+
+        </div>
+
+        <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+          Hinzufügen
+        </button>
+        <button class="btn btn-danger mb-2" (click)='cancelAdding()'>
+          Abbrechen
+        </button>
+      </form>
+    </ng-container>
+
+
+    <!-- THIS IS WHEN YOU WANT TO ADD A NEW TOP LEVEL ELEMENT TO THE DICT -->
+    <ng-container *ngIf="!(addVar || addAtt || addKat)">
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+
+        <div class="form-group row">
+
+          <!-- DISEASE PART -->
+          <ng-container id="allgData" ngModelGroup="allgData">
+            <div class="col-4 mb-2">
+              <label for="disName">Krankheitsname</label>
+              <input class="form-control" type="text" id="disName" name="disName" ngModel required>
+            </div>
+            <div class="col-2 mb-2">
+              <label for="typ">Typ</label>
+              <select class="form-control" name="typ" id="typ" [(ngModel)]="disTyp" required #typ="ngModel">
+                <option value="Krankheit">Krankheit</option>
+                <option value="Kategorie">Kategorie</option>
+              </select>
+            </div>
+
+            <ng-container *ngIf="disTyp=='Kategorie'">
+              <div class="col-4 mb-2">
+                <label for="KCon">Abhängig von Kategorie ..</label>
+                <input class="form-control" type="text" id="KCon" name="KCon" ngModel>
+              </div>
+              <div class="col-2 mb-2">
+                <label for="KanzahlAtt">Attribute</label>
+                <select class="form-control" name="KanzahlAtt" id="KanzahlAtt" [(ngModel)]="myAtt.anzahlAtt"
+                  #Kanzahl="ngModel" (change)="computeKAtts()" required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="disTyp!=='Krankheit' && disTyp !== 'Kategorie'">
+              <div class="col-4"></div>
+            </ng-container>
+            
+
+            <ng-container *ngIf="disTyp=='Krankheit'">
+              <div class="col-2 mb-2">
+                <label for="anzahl">Anzahl Kategorien</label>
+                <select class="form-control" name="anzahl" id="anzahl" [(ngModel)]="myDisease.anzahlCat"
+                  #anzahl="ngModel" (change)="computeCats()" required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </ng-container>
+
+          </ng-container>
+          <!-- CATEGORY PART -->
+          <ng-container id="catData" ngModelGroup="catData">
+
+            <ng-container *ngIf="disTyp=='Kategorie'">
+              <ng-container *ngFor="let myDummy4 of ' '.repeat(myAtt.anzahlAtt).split(''), let a = index">
+                <div class="col-12 mb-2">
+                  <label for="KAttText{{a}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ... kennzeichnen,
+                      wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+                  <input class="form-control" type="text" id="KAttText{{a}}" name="KAttText{{a}}" ngModel
+                    [required]="disTyp=='Kategorie'">
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="KAttName{{a}}">Name des Attributs</label>
+                  <input class="form-control" type="text" id="KAttName{{a}}" name="KAttName{{a}}" ngModel>
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="KJudText{{a}}">Beurteilung/Code</label>
+                  <input class="form-control" type="text" id="KJudText{{a}}" name="KJudText{{a}}" ngModel>
+                </div>
+                <div class="col-2 mb-2">
+                  <label for="Knormal{{a}}">Normal</label>
+                  <select class="form-control" name="Knormal{{a}}" id="Knormal{{a}}" [ngModel]="false"
+                    [required]="disTyp=='Kategorie'">
+                    <option value="true">Ja</option>
+                    <option value="false">Nein</option>
+                  </select>
+                </div>
+                <div class="col-2 mb-2">
+                  <label for="KanzahlAttVar{{a}}">Anzahl Variablen</label>
+                  <select class="form-control" name="KanzahlAttVar{{a}}" id="KanzahlAttVar{{a}}"
+                    [(ngModel)]="myAtt.myVars[a].anzahlVar" [required]="disTyp=='Kategorie'">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[a].anzahlVar).split(''), let b = index">
+                  <div class="col-3 mb-2">
+                    <label for="KvarKind{{a}}{{b}}">Variablenart</label>
+                    <select class="form-control" name="KvarKind{{a}}{{b}}" id="KvarKind{{a}}{{b}}"
+                      [(ngModel)]="myAtt.myVars[a].varTypes[b]" (change)="Kprinter()"
+                      [required]="disTyp=='Kategorie' && myAtt.myVars[a].anzahlVar>0">
+                      <option value="oc">Auswahlvariable</option>
+                      <option value="text">Textvariable</option>
+                    </select>
+                  </div>
+                  <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='text'">
+                    <div class="col-3 mb-2">
+                      <label for="KtextBefore{{a}}{{b}}">Aktivierungstext</label>
+                      <input class="form-control" type="text" id="KtextBefore{{a}}{{b}}" name="KtextBefore{{a}}{{b}}"
+                        ngModel [required]="disTyp=='Kategorie'">
+                    </div>
+                    <div class="col-3 mb-2">
+                      <label for="KvarUnit{{a}}{{b}}">Endwort (z.B. Einheit "cm")</label>
+                      <input class="form-control" type="text" id="KvarUnit{{a}}{{b}}" name="KvarUnit{{a}}{{b}}" ngModel
+                        required>
+                    </div>
+                    <div class="col-3 mb-2">
+                      <label for="KtextAfter{{a}}{{b}}">Text danach (automatisch)</label>
+                      <input class="form-control" type="text" id="KtextAfter{{a}}{{b}}" name="KtextAfter{{a}}{{b}}"
+                        ngModel required>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='oc'">
+                    <div class=" col-9 mb-2">
+                      <label for="KvarOptions{{a}}{{b}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                      <input class="form-control" type="text" id="KvarOptions{{a}}{{b}}" name="KvarOptions{{a}}{{b}}"
+                        ngModel required>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-container id="disData" ngModelGroup="disData">
+            <ng-container *ngIf="disTyp=='Krankheit'">
+
+
+              <ng-container *ngFor="let myDummy of ' '.repeat(myDisease.anzahlCat).split(''), let x = index">
+                <div class="col-4 mb-2">
+                  <label for="disCatName{{x}}">Name der Kategorie</label>
+                  <input class="form-control" type="text" id="disCatName{{x}}" name="disCatName{{x}}" ngModel required>
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="disCatCon{{x}}">Abhängig von Kategorie ..</label>
+                  <input class="form-control" type="text" id="disCatCon{{x}}" name="disCatCon{{x}}" ngModel>
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="anzahlAtt{{x}}">Anzahl Attribute</label>
+                  <select class="form-control" name="anzahlAtt{{x}}" id="anzahlAtt{{x}}"
+                    [(ngModel)]="myDisease.myAtts[x].anzahlAtt" (change)="computeAtts(x)" required>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <ng-container
+                  *ngFor="let myDummy2 of ' '.repeat(myDisease.myAtts[x].anzahlAtt).split(''), let y = index">
+                  <div class="col-12 mb-2">
+                    <label for="disCatAttText{{x}}{{y}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ...
+                        kennzeichnen,
+                        wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+                    <input class="form-control" type="text" id="disCatAttText{{x}}{{y}}" name="disCatAttText{{x}}{{y}}"
+                      ngModel required>
+                  </div>
+                  <div class="col-4 mb-2">
+                    <label for="disCatAttName{{x}}{{y}}">Name des Attributs</label>
+                    <input class="form-control" type="text" id="disCatAttName{{x}}{{y}}" name="disCatAttName{{x}}{{y}}"
+                      ngModel required>
+                  </div>
+                  <div class="col-4 mb-2">
+                    <label for="disCatJudText{{x}}{{y}}">Beurteilung/Code</label>
+                    <input class="form-control" type="text" id="disCatJudText{{x}}{{y}}" name="disCatJudText{{x}}{{y}}"
+                      ngModel>
+                  </div>
+                  <div class="col-2 mb-2">
+                    <label for="normal{{x}}{{y}}">Normal</label>
+                    <select class="form-control" name="normal{{x}}{{y}}" id="normal{{x}}{{y}}" [ngModel]="false"
+                      required>
+                      <option value="true">Ja</option>
+                      <option value="false">Nein</option>
+                    </select>
+                  </div>
+                  <div class="col-2 mb-2">
+                    <label for="anzahlAttVar{{x}}{{y}}">Anzahl Variablen</label>
+                    <select class="form-control" name="anzahlAttVar{{x}}{{y}}" id="anzahlAttVar{{x}}{{y}}"
+                      [(ngModel)]="myDisease.myAtts[x].myVars[y].anzahlVar" required>
+                      <option>0</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+                  <ng-container
+                    *ngFor="let dummy3 of ' '.repeat(myDisease.myAtts[x].myVars[y].anzahlVar).split(''), let z = index">
+                    <div class="col-3 mb-2">
+                      <label for="varKind{{x}}{{y}}{{z}}">Variablenart</label>
+                      <select class="form-control" name="varKind{{x}}{{y}}{{z}}" id="varKind{{x}}{{y}}{{z}}"
+                        [(ngModel)]="myDisease.myAtts[x].myVars[y].varTypes[z]" (change)="printer()"
+                        [required]="disTyp=='Krankheit'">
+                        <option value="oc">Auswahlvariable</option>
+                        <option value="text">Textvariable</option>
+                      </select>
+                    </div>
+                    <ng-container *ngIf="myDisease.myAtts[x].myVars[y].varTypes[z]=='text'">
+                      <div class="col-3 mb-2">
+                        <label for="textBefore{{x}}{{y}}{{z}}">Aktivierungstext</label>
+                        <input class="form-control" type="text" id="textBefore{{x}}{{y}}{{z}}"
+                          name="textBefore{{x}}{{y}}{{z}}" ngModel required>
+                      </div>
+                      <div class="col-3 mb-2">
+                        <label for="varUnit{{x}}{{y}}{{z}}">Endwort (z.B. Einheit "cm")</label>
+                        <input class="form-control" type="text" id="varUnit{{x}}{{y}}{{z}}"
+                          name="varUnit{{x}}{{y}}{{z}}" ngModel required>
+                      </div>
+                      <div class="col-3 mb-2">
+                        <label for="textAfter{{x}}{{y}}{{z}}">Text danach (automatisch)</label>
+                        <input class="form-control" type="text" id="textAfter{{x}}{{y}}{{z}}"
+                          name="textAfter{{x}}{{y}}{{z}}" ngModel required>
+                      </div>
+                    </ng-container>
+
+
+                    <ng-container *ngIf="myDisease.myAtts[x].myVars[y].varTypes[z]=='oc'">
+                      <div class="col-9 mb-2">
+                        <label for="varOptions{{x}}{{y}}{{z}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                        <input class="form-control" type="text" id="varOptions{{x}}{{y}}{{z}}"
+                          name="varOptions{{x}}{{y}}{{z}}" ngModel required>
+                      </div>
+
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+            </ng-container>
+          </ng-container>
+          <br>
+          <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+            Hinzufügen
+          </button>
+
+        </div>
+      </form>
+    </ng-container>
+
+
+    <!-- PART ONE ENDS HERE, NOW COMES THE LIST -->
+    <!-- LIST OF ALL ELEMENTS -->
+    <!-- note: part.condition is marked as error, but is no problem because it exists on the element, compiles fine -->
+
+
+    <!-- The structure of the list are multiple nested for loops, every loop going one level deeper into the dict structure -->
+    <!-- This loop is for TopLevel elements (e.g. Diseases and Categories) -->
+    <!-- Because TopLevel elements can be both, Diseases and Categories, any level differentiates if it originates from a TopLevel disease or TopLevel Category -->
+    <ng-container *ngFor="let part of myEdit.dict, let x = index" #myParts>
+      <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist"
+        aria-multiselectable="true">
+
+        <!-- Accordion card -->
+        <div class="card myCard">
+
+          <!-- Card header -->
+          <div class="card-header {{part.kind}}" role="tab" id="headingUnfiled">
+
+            <!--Options-->
+            <div class="dropdown float-left">
+              <button class="btn btn-info btn-sm m-0 mr-3 p-2 dropdown-toggle" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt"></fa-icon>
+              </button>
+
+              <!-- TopLevel Disease -->
+              <!-- Below are the buttons that let the user edit this element -->
+              <ng-container *ngIf="part.kind=='disease'">
+
+                <div class="dropdown-menu dropdown-info">
+                  <button class="dropdown-item" (click)="addToDict('category', [x])">Neue Kategorie</button>
+                  <button class="dropdown-item" (click)="renameMode('rename', [x], part.kind)"
+                    id="rename{{part.kind + x}}">Krankheit umbenennen</button>
+                  <button class="dropdown-item" (click)="deleteDisease([x])">Krankheit löschen</button>
+                </div>
+              </ng-container>
+
+              <!-- TopLevel Category -->
+              <ng-container *ngIf="part.kind=='category'">
+
+                <div class="dropdown-menu dropdown-info">
+                  <button class="dropdown-item" (click)="addToDict('attribute', [x])">Neues Attribut</button>
+                  <button class="dropdown-item" (click)="renameMode('rename', [x], part.kind)"
+                    id="rename{{part.kind + x}}">Kategorie umbenennen</button>
+                  <button class="dropdown-item" (click)="deleteDisease([x])">Krankheit löschen</button>
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Heading -->
+            <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapseUnfiled{{x}}" aria-expanded="true"
+              aria-controls="collapseUnfiled" (click)="rotateIcon(x,undefined, undefined, part)">
+              <!-- TopLevel Category -->
+              <!-- Below all Information regarding this element is printed on screen  -->
+              <ng-container *ngIf="part.kind=='category' && !renameMode('showInput', [x], part.kind)">
+                <h5 class="mt-1 mb-0">
+                  <span>{{part.name}}{{(part.condition !== undefined && part.condition !== null) ? ' | Bedingung: ' + part.condition : ''}}
+                  </span>
+
+                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                </h5>
+              </ng-container>
+
+              <!-- TopLevel Disease -->
+              <!-- Below all Information regarding this element is printed on screen  -->
+              <ng-container *ngIf="part.kind=='disease' && !renameMode('showInput', [x], part.kind)">
+                <h5 class="mt-1 mb-0">
+                  <span>{{part.name}}</span>
+                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                </h5>
+              </ng-container>
+
+            </a>
+            <!-- TopLevel Disease -->
+            <!-- This is the input field for changing names or single things -->
+            <ng-container *ngIf="part.kind=='disease' && renameMode('showInput', [x], part.kind)">
+              <h5 class="mt-1 mb-0">
+                <span>
+                  <input class="form-control indict" type="text" id="renameVal{{part.kind + x}}">
+                  <button class="btn btn-primary mb-2" (click)="renameMode('submit', [x], part.kind)">
+                    Hinzufügen
+                  </button>
+                  <button class="btn btn-primary mb-2" (click)="renameMode('cancel', [x], part.kind)">
+                    Abbrechen
+                  </button>
+                </span>
+                <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+              </h5>
+            </ng-container>
+
+            <!-- TopLevel Category -->
+            <!-- This is the input field for changing names or single things -->
+            <ng-container *ngIf="part.kind=='category' && renameMode('showInput', [x], part.kind)">
+              <h5 class="mt-1 mb-0">
+                <span>
+                  <input class="form-control indict" type="text" id="renameVal{{part.kind + x}}">
+                  <button class="btn btn-primary mb-2" (click)="renameMode('submit', [x], part.kind)">
+                    Hinzufügen
+                  </button>
+                  <button class="btn btn-primary mb-2" (click)="renameMode('cancel', [x], part.kind)">
+                    Abbrechen
+                  </button>
+                </span>
+                <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+              </h5>
+            </ng-container>
+          </div>
+
+          <div id="collapseUnfiled{{x}}" class="collapse" role="tabpanel" aria-labelledby="headingUnfiled">
+
+
+            <!-- This is the next level loop, Disease origins are now at category level, Category origins are now at attribute level -->
+            <!-- Anything else works just like on level above, see there for more detailed information -->
+            <ng-container *ngFor="let part2 of topLevelType(part), let y = index">
+              <div class="accordion md-accordion accordion-blocks" id="accordionEx79" role="tablist"
+                aria-multiselectable="true">
+
+                <div class="card myCard">
+                  <div class="card-header {{part2.kind}}" role="tab" id="headingUnfiled2">
+                    <div class="layer1 {{part2.kind + 'Font'}}">
+                      <!--Options-->
+                      <div class="dropdown float-left">
+                        <button class="btn btn-info btn-sm m-0 mr-3 dropdown-toggle btnLayer1" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt" size="xs"></fa-icon>
+                        </button>
+                        <ng-container *ngIf="part2.kind=='category'">
+                          <div class="dropdown-menu dropdown-info">
+                            <button class="dropdown-item" (click)="addToDict('attribute', [x,y])">Neues
+                              Attribut</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind)"
+                              id="rename{{part2.kind + x + y}}">Kategorie umbenennen</button>
+                            <button class="dropdown-item" (click)="deleteDisease([x,y])">Kategorie löschen</button>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="part2.kind=='box'">
+                          <div class="dropdown-menu dropdown-info">
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'name')"
+                              id="renamename{{part2.kind + x + y}}">Synonyme ändern</button>
+                            <button class="dropdown-item" (click)="addToDict('variable', [x,y])">Variable
+                              hinzufügen</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'text')"
+                              id="renametext{{part2.kind + x + y}}">Text ändern</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'jt')"
+                              id="renamejt{{part2.kind + x + y}}">Beurteilung/Code ändern</button>
+                            <button class="dropdown-item" (click)="deleteDisease([x,y])">Attribut löschen</button>
+                          </div>
+                        </ng-container>
+                      </div>
+
+                      <!-- Heading -->
+                      <a data-toggle="collapse" data-parent="#accordionEx79" href="#collapseUnfiled{{x}}{{y}}"
+                        aria-expanded="true" aria-controls="collapseUnfiled"
+                        (click)="rotateIcon(x,y, undefined, part2)">
+                        <ng-container *ngIf="part2.kind=='category' && !renameMode('showInput', [x,y], part2.kind)">
+                          <p class="mt-1 mb-0">
+                            <!-- <span>{{part2.name}}</span> -->
+                            <span>{{part2.name}}{{(part2.condition !== undefined && part2.condition !== null) ? ' | Bedingung: ' + part2.condition : ''}}</span>
+                            <fa-icon id="angle{{x}}{{y}}" class="fas rotate-icon angle" [icon]="angleDown"></fa-icon>
+                          </p>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') && !renameMode('showInput', [x,y], part2.kind, 'text') && !renameMode('showInput', [x,y], part2.kind, 'jt'))">
+                          <p class="mt-1 mb-0">
+                            <span>{{part2.name[0] + ' | Synonyms: ' +part2.name.slice(1).join(" / ")}}{{part2.normal !== true ? '| Normal' : ''}}</span>
+                            <br>
+                            <span>
+                              "{{part2.text}}"
+                            </span>
+                            <ng-container *ngIf="part2.judgementText !== null">
+                              <br>
+                              <span class="ml-5 pl-2">
+                                Beurteilung: {{part2.judgementText}}
+                              </span>
+                            </ng-container>
+                            <fa-icon id="angle{{x}}{{y}}" class="fas rotate-icon angle" [icon]="angleDown"></fa-icon>
+                          </p>
+                        </ng-container>
+
+                      </a>
+                      <ng-container *ngIf="part2.kind=='category' && renameMode('showInput', [x,y], part2.kind)">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict" type="text" id="renameVal{{part2.kind + x + y}}">
+                            <button class="btn btn-primary mb-2" (click)="renameMode('submit', [x,y], part2.kind)">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2" (click)="renameMode('cancel', [x,y], part2.kind)">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+
+                      <ng-container *ngIf="part2.kind == 'box' && renameMode('showInput', [x,y], part2.kind, 'name')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict" type="text" id="renameValname{{part2.kind + x + y}}"
+                              [ngModel]="part2.name">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'name')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'name')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'text')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text"
+                              id="renameValtext{{part2.kind + x + y}}" [ngModel]="part2.text">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'text')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'text')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'jt')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text" id="renameValjt{{part2.kind + x + y}}"
+                              [ngModel]="part2.judgementText">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'jt')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'jt')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div id="collapseUnfiled{{x}}{{y}}" class="collapse" role="tabpanel"
+                    aria-labelledby="headingUnfiled2">
+
+
+                    <!-- This is the next level loop, Disease origins are now at attribute level, Category origins are now at variable level -->
+                    <!-- Anything else works just like on level above, see there for more detailed information -->
+                    <ng-container *ngFor="let part3 of secondLevelType(part2), let z = index">
+                      <div class="accordion md-accordion accordion-blocks" id="accordionEx80" role="tablist"
+                        aria-multiselectable="true">
+
+                        <div class="card myCard">
+                          <div class="card-header {{part3.kind}}" role="tab" id="headingUnfiled2">
+                            <div class="layer2 {{part3.kind + 'Font'}}">
+
+                              <div class="dropdown float-left">
+                                <button class="btn btn-info btn-sm m-0 mr-3 dropdown-toggle btnLayer1" type="button"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt" size="xs"></fa-icon>
+                                </button>
+                                <ng-container *ngIf="part3.kind=='text'">
+                                  <div class="dropdown-menu dropdown-info">
+                                    <button class="dropdown-item" (click)="renameMode('rename', [x,y,z], part3.kind)"
+                                      id="rename{{part3.kind + x + y + z}}">Variable ändern</button>
+                                    <button class="dropdown-item" (click)="deleteDisease([x,y,z])">Variable
+                                      löschen</button>
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngIf="part3.kind=='oc'">
+                                  <div class="dropdown-menu dropdown-info">
+
+                                    <button class="dropdown-item" (click)="renameMode('rename', [x,y,z], part3.kind)"
+                                      id="rename{{part3.kind + x + y + z}}">Optionen Ändern</button>
+                                    <button class="dropdown-item" (click)="deleteDisease([x,y,z])">Variable
+                                      löschen</button>
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngIf="part3.kind=='box'">
+                                  <div class="dropdown-menu dropdown-info">
+                                    <button class="dropdown-item"
+                                      (click)="renameMode('rename', [x,y,z], part3.kind, 'name')"
+                                      id="renamename{{part3.kind + x + y + z}}">Synonyme ändern</button>
+                                    <button class="dropdown-item" (click)="addToDict('variable', [x,y,z])">Variable
+                                      hinzufügen</button>
+                                    <button class="dropdown-item"
+                                      (click)="renameMode('rename', [x,y,z], part3.kind, 'text')"
+                                      id="renametext{{part3.kind + x + y + z}}">Text ändern</button>
+                                    <button class="dropdown-item"
+                                      (click)="renameMode('rename', [x,y,z], part3.kind, 'jt')"
+                                      id="renamejt{{part3.kind + x + y + z}}">Beurteilung ändern</button>
+                                    <button class="dropdown-item" (click)="deleteDisease([x,y,z])">Attribut
+                                      löschen</button>
+                                  </div>
+                                </ng-container>
+                              </div>
+                              <ng-container *ngIf="part3.kind=='text' && !renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+
+                                  <span>{{'Aktivierungswort(e): ' + part3.textBefore + ' | Endwort: ' + part3.unit + ' | nachgefügter Text: ' + part3.textAfter}}</span>
+
+                                </p>
+                              </ng-container>
+                              <ng-container *ngIf="part3.kind=='oc' && !renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+
+                                  <span>{{'Möglichkeiten: ' + part3.values}}</span>
+
+                                </p>
+                              </ng-container>
+                              <ng-container *ngIf="part3.kind=='text' && renameMode('showInput', [x,y,z], part3.kind)">
+                                <div class="mt-1 mb-0">
+                                  <form id="renameVal{{part3.kind +x + y+ z}}">
+
+                                    <div class="textVar pr-2">
+                                      <label for="renameValtb{{part3.kind + x + y + z}}">Aktivierungswort(e)</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.textBefore"
+                                        name="renameValtb{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar pr-2">
+                                      <label for="renameValun{{part3.kind + x + y + z}}">Endwort</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.unit"
+                                        name="renameValun{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar pr-2">
+                                      <label for="renameValta{{part3.kind + x + y + z}}">nachgefügter Text</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.textAfter"
+                                        name="renameValta{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar">
+                                      <button class="btn btn-primary mb-2"
+                                        (click)="renameMode('submit', [x,y,z], part3.kind)">
+                                        Hinzufügen
+                                      </button>
+                                      <button class="btn btn-primary mb-2"
+                                        (click)="renameMode('cancel', [x,y,z], part3.kind)">
+                                        Abbrechen
+                                      </button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </ng-container>
+
+                              <ng-container *ngIf="part3.kind=='oc' && renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+                                  <span>
+                                    <input class="form-control indict" type="text"
+                                      id="renameVal{{part3.kind + x + y + z}}" [ngModel]="part3.values">
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('submit', [x,y,z], part3.kind)">
+                                      Hinzufügen
+                                    </button>
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('cancel', [x,y,z], part3.kind)">
+                                      Abbrechen
+                                    </button>
+                                  </span>
+                                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                                </p>
+                              </ng-container>
+
+                              <a data-toggle="collapse" data-parent="#accordionEx80"
+                                href="#collapseUnfiled{{x}}{{y}}{{z}}" aria-expanded="true"
+                                aria-controls="collapseUnfiled" (click)="rotateIcon(x,y,z, part3)">
+
+                                <ng-container
+                                  *ngIf="part3.kind=='box' && !renameMode('showInput', [x,y,z], part3.kind,'name') && !renameMode('showInput', [x,y,z], part3.kind, 'text') && !renameMode('showInput', [x,y,z], part3.kind, 'jt')">
+                                  <p class="mt-1 mb-0">
+                                    <span>{{part3.name[0] + ' | Synonyms: ' +part3.name.slice(1).join(" / ")}}{{part3.normal !== true ? '| Normal' : ''}}</span>
+                                    <br>
+                                    <span>
+                                      "{{part3.text}}"
+                                    </span>
+                                    <ng-container *ngIf="part3.judgementText !== null">
+                                      <br>
+                                      <span class="ml-5 pl-2">
+                                        Beurteilung: {{part3.judgementText}}
+                                      </span>
+                                    </ng-container>
+                                    <fa-icon id="angle{{x}}{{y}}{{z}}" class="fas rotate-icon angle" [icon]="angleDown">
+                                    </fa-icon>
+                                  </p>
+                                </ng-container>
+                              </a>
+                              <ng-container
+                                *ngIf="part3.kind=='box' && renameMode('showInput', [x,y,z], part3.kind, 'name')">
+                                <p class="mt-1 mb-0">
+                                  <span>
+                                    <input class="form-control indict" type="text"
+                                      id="renameValname{{part3.kind + x + y + z}}" [ngModel]="part3.name">
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('submit', [x,y,z], part3.kind, 'name')">
+                                      Hinzufügen
+                                    </button>
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('cancel', [x,y,z], part3.kind, 'name')">
+                                      Abbrechen
+                                    </button>
+                                  </span>
+                                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="part3.kind=='box' && renameMode('showInput', [x,y,z], part3.kind, 'text')">
+                                <p class="mt-1 mb-0">
+                                  <span>
+                                    <input class="form-control indict mytext" type="text"
+                                      id="renameValtext{{part3.kind + x + y + z}}" [ngModel]="part3.text">
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('submit', [x,y,z], part3.kind, 'text')">
+                                      Hinzufügen
+                                    </button>
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('cancel', [x,y,z], part3.kind, 'text')">
+                                      Abbrechen
+                                    </button>
+                                  </span>
+                                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                                </p>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="part3.kind=='box' && renameMode('showInput', [x,y,z], part3.kind, 'jt')">
+                                <p class="mt-1 mb-0">
+                                  <span>
+                                    <input class="form-control indict mytext" type="text"
+                                      id="renameValjt{{part3.kind + x + y + z}}" [ngModel]="part3.judgementText">
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('submit', [x,y,z], part3.kind, 'jt')">
+                                      Hinzufügen
+                                    </button>
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('cancel', [x,y,z], part3.kind, 'jt')">
+                                      Abbrechen
+                                    </button>
+                                  </span>
+                                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                                </p>
+                              </ng-container>
+
+                            </div>
+                          </div>
+                          <div id="collapseUnfiled{{x}}{{y}}{{z}}" class="collapse" role="tabpanel"
+                            aria-labelledby="headingUnfiled2">
+                            <ng-container *ngIf="part3.kind=='box'">
+
+
+                              <!-- This is the next level loop, Disease origins are now at variable level, Category origins dont go that deep -->
+                              <!-- Anything else works just like on level above, see there for more detailed information -->
+                              <ng-container *ngFor="let part4 of thirdLevelType(part3), let w = index">
+                                <div class="accordion md-accordion accordion-blocks" id="accordionEx81" role="tablist"
+                                  aria-multiselectable="true">
+                                  <div class="card myCard">
+                                    <div class="card-header {{part4.kind}}" role="tab" id="headingUnfiled2">
+                                      <div class="layer2 {{part4.kind + 'Font'}}">
+
+
+                                        <div class="dropdown float-left">
+                                          <button class="btn btn-info btn-sm m-0 mr-3 dropdown-toggle btnLayer1"
+                                            type="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt" size="xs">
+                                            </fa-icon>
+                                          </button>
+
+                                          <ng-container *ngIf="part4.kind=='text'">
+                                            <div class="dropdown-menu dropdown-info">
+                                              <button class="dropdown-item"
+                                                (click)="renameMode('rename', [x,y,z,w], part4.kind)"
+                                                id="rename{{part4.kind + x + y + z + w}}">Variable ändern</button>
+
+                                              <button class="dropdown-item" (click)="deleteDisease([x,y,z,w])">Variable
+                                                löschen</button>
+                                            </div>
+                                          </ng-container>
+                                          <ng-container *ngIf="part4.kind=='oc'">
+                                            <div class="dropdown-menu dropdown-info">
+
+                                              <button class="dropdown-item"
+                                                (click)="renameMode('rename', [x,y,z,w], part4.kind)"
+                                                id="rename{{part4.kind + x + y + z + w}}">Optionen Ändern</button>
+                                              <button class="dropdown-item" (click)="deleteDisease([x,y,z,w])">Variable
+                                                löschen</button>
+                                            </div>
+                                          </ng-container>
+
+
+                                        </div>
+
+                                        <ng-container
+                                          *ngIf="part4.kind=='text' && !renameMode('showInput', [x,y,z,w], part4.kind)">
+                                          <p class="mt-1 mb-0">
+
+                                            <span>{{'Aktivierungswort(e): ' + part4.textBefore + ' | Endwort: ' + part4.unit + ' | nachgefügter Text: ' + part4.textAfter}}</span>
+
+                                          </p>
+                                        </ng-container>
+                                        <ng-container
+                                          *ngIf="part4.kind=='oc' && !renameMode('showInput', [x,y,z,w], part4.kind)">
+                                          <p class="mt-1 mb-0">
+
+                                            <span>{{'Möglichkeiten: ' + part4.values}}</span>
+
+                                          </p>
+                                        </ng-container>
+                                        <ng-container
+                                          *ngIf="part4.kind=='text' && renameMode('showInput', [x,y,z,w], part4.kind)">
+                                          <div class="mt-1 mb-0">
+                                            <form id="renameVal{{part4.kind +x + y+ z + w}}">
+
+                                              <div class="textVar pr-2">
+                                                <label
+                                                  for="renameValtb{{part4.kind + x + y + z + w}}">Aktivierungswort(e)</label>
+                                                <input class="form-control indict" type="text"
+                                                  [ngModel]="part4.textBefore"
+                                                  name="renameValtb{{part4.kind + x + y + z + w}}">
+                                              </div>
+                                              <div class="textVar pr-2">
+                                                <label for="renameValun{{part4.kind + x + y + z + w}}">Endwort</label>
+                                                <input class="form-control indict" type="text" [ngModel]="part4.unit"
+                                                  name="renameValun{{part4.kind + x + y + z + w}}">
+                                              </div>
+                                              <div class="textVar pr-2">
+                                                <label for="renameValta{{part4.kind + x + y + z + w}}">nachgefügter
+                                                  Text</label>
+                                                <input class="form-control indict" type="text"
+                                                  [ngModel]="part4.textAfter"
+                                                  name="renameValta{{part4.kind + x + y + z + w}}">
+                                              </div>
+                                              <div class="textVar">
+                                                <button class="btn btn-primary mb-2"
+                                                  (click)="renameMode('submit', [x,y,z,w], part4.kind)">
+                                                  Hinzufügen
+                                                </button>
+                                                <button class="btn btn-primary mb-2"
+                                                  (click)="renameMode('cancel', [x,y,z,w], part4.kind)">
+                                                  Abbrechen
+                                                </button>
+                                              </div>
+                                            </form>
+                                          </div>
+                                        </ng-container>
+
+                                        <ng-container
+                                          *ngIf="part4.kind=='oc' && renameMode('showInput', [x,y,z,w], part4.kind)">
+                                          <p class="mt-1 mb-0">
+                                            <span>
+                                              <input class="form-control indict" type="text"
+                                                id="renameVal{{part4.kind + x + y + z + w}}" [ngModel]="part4.values">
+                                              <button class="btn btn-primary mb-2"
+                                                (click)="renameMode('submit', [x,y,z,w], part4.kind)">
+                                                Hinzufügen
+                                              </button>
+                                              <button class="btn btn-primary mb-2"
+                                                (click)="renameMode('cancel', [x,y,z,w], part4.kind)">
+                                                Abbrechen
+                                              </button>
+                                            </span>
+
+                                          </p>
+                                        </ng-container>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                            </ng-container>
+
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+
+
+
+
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Card body -->
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- HERE COMES RADIOLOGY PART, FIRST PART ONE (ADDING), THEN PART TWO (LIST) -->
+
+  <ng-container *ngIf="mode == 'Radiologie'">
+
+
+    <!-- This is when you want to add a single attribute -->
+    <ng-container *ngIf="addAtt">
+      <form (ngSubmit)="onSubmitAtt()" #f="ngForm">
+        <div class="form-group row">
+          <div class="col-12 mb-2">
+            <label for="KAttText{{addPosition}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ... kennzeichnen,
+                wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+            <input class="form-control" type="text" id="KAttText{{addPosition}}" name="KAttText{{addPosition}}" ngModel
+              required>
+          </div>
+          <div class="col-4 mb-2">
+            <label for="KAttName{{addPosition}}">Name des Attributs</label>
+            <input class="form-control" type="text" id="KAttName{{addPosition}}" name="KAttName{{addPosition}}" ngModel>
+          </div>
+          <div class="col-4 mb-2">
+            <label for="KJudText{{addPosition}}">Beurteilung/Code</label>
+            <input class="form-control" type="text" id="KJudText{{addPosition}}" name="KJudText{{addPosition}}" ngModel>
+          </div>
+          <div class="col-2 mb-2">
+            <label for="Knormal{{addPosition}}">Normal</label>
+            <select class="form-control" name="Knormal{{addPosition}}" id="Knormal{{addPosition}}" [ngModel]="false"
+              required>
+              <option value="true">Ja</option>
+              <option value="false">Nein</option>
+            </select>
+          </div>
+          <div class="col-2 mb-2">
+            <label for="KanzahlAttVar{{addPosition}}">Anzahl Variablen</label>
+            <select class="form-control" name="KanzahlAttVar{{addPosition}}" id="KanzahlAttVar{{addPosition}}"
+              [(ngModel)]="myAtt.myVars[0].anzahlVar" required>
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="col-6 mb-2">
+            <label for="KZuGroup{{addPosition}}">Zugehörigkeitsgruppe</label>
+            <input class="form-control" type="text" id="KZuGroup{{addPosition}}" name="KZuGroup{{addPosition}}" ngModel>
+          </div>
+          <div class="col-6 mb-2">
+            <label for="KAuGroup{{addPosition}}">Aufzählungsgruppe</label>
+            <input class="form-control" type="text" id="KAuGroup{{addPosition}}" name="KAuGroup{{addPosition}}" ngModel>
+          </div>
+          <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[0].anzahlVar).split(''), let b = index">
+            <div class="col-3 mb-2">
+              <label for="KvarKind{{addPosition}}{{b}}">Variablenart</label>
+              <select class="form-control" name="KvarKind{{addPosition}}{{b}}" id="KvarKind{{addPosition}}{{b}}"
+                [(ngModel)]="myAtt.myVars[0].varTypes[b]" (change)="Kprinter()"
+                [required]="disTyp=='Kategorie' && myAtt.myVars[0].anzahlVar>0">
+                <option value="oc">Auswahlvariable</option>
+                <option value="text">Textvariable</option>
+              </select>
+            </div>
+            <ng-container *ngIf="myAtt.myVars[0].varTypes[b]=='text'">
+              <div class="col-3 mb-2">
+                <label for="KtextBefore{{addPosition}}{{b}}">Aktivierungstext</label>
+                <input class="form-control" type="text" id="KtextBefore{{addPosition}}{{b}}"
+                  name="KtextBefore{{addPosition}}{{b}}" ngModel required>
+              </div>
+              <div class="col-3 mb-2">
+                <label for="KvarUnit{{addPosition}}{{b}}">Endwort (z.B. Einheit "cm")</label>
+                <input class="form-control" type="text" id="KvarUnit{{addPosition}}{{b}}"
+                  name="KvarUnit{{addPosition}}{{b}}" ngModel required>
+              </div>
+              <div class="col-3 mb-2">
+                <label for="KtextAfter{{addPosition}}{{b}}">Text danach (automatisch)</label>
+                <input class="form-control" type="text" id="KtextAfter{{addPosition}}{{b}}"
+                  name="KtextAfter{{addPosition}}{{b}}" ngModel required>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="myAtt.myVars[0].varTypes[b]=='oc'">
+              <div class=" col-9 mb-2">
+                <label for="KvarOptions{{addPosition}}{{b}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                <input class="form-control" type="text" id="KvarOptions{{addPosition}}{{b}}"
+                  name="KvarOptions{{addPosition}}{{b}}" ngModel required>
+              </div>
+            </ng-container>
+          </ng-container>
+          <br>
+          <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+            Hinzufügen
+          </button>
+          <button class="btn btn-danger mb-2" (click)='cancelAdding()'>
+            Abbrechen
+          </button>
+        </div>
+      </form>
+    </ng-container>
+
+    <!-- This is when you want do add a single variable -->
+    <ng-container *ngIf="addVar">
+      <form (ngSubmit)="onSubmitVar()" #f="ngForm">
+        <div class="form-group row">
+          <div class="col-3 mb-2">
+            <label for="KvarKind{{addPosition}}">Variablenart</label>
+            <select class="form-control" name="KvarKind{{addPosition}}" id="KvarKind{{addPosition}}"
+              [(ngModel)]="myAtt.myVars[0].varTypes[0]" required (change)="Kprinter()">
+              <option value="oc">Auswahlvariable</option>
+              <option value="text">Textvariable</option>
+            </select>
+          </div>
+          <ng-container *ngIf="myAtt.myVars[0].varTypes[0]=='text'">
+            <div class="col-3 mb-2">
+              <label for="KtextBefore{{addPosition}}">Aktivierungstext</label>
+              <input class="form-control" type="text" id="KtextBefore{{addPosition}}" name="KtextBefore{{addPosition}}"
+                ngModel required>
+            </div>
+            <div class="col-3 mb-2">
+              <label for="KvarUnit{{addPosition}}">Endwort (z.B. Einheit "cm")</label>
+              <input class="form-control" type="text" id="KvarUnit{{addPosition}}" name="KvarUnit{{addPosition}}"
+                ngModel required>
+            </div>
+            <div class="col-3 mb-2">
+              <label for="KtextAfter{{addPosition}}">Text danach (automatisch)</label>
+              <input class="form-control" type="text" id="KtextAfter{{addPosition}}" name="KtextAfter{{addPosition}}"
+                ngModel required>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="myAtt.myVars[0].varTypes[0]=='oc'">
+            <div class=" col-9 mb-2">
+              <label for="KvarOptions{{addPosition}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+              <input class="form-control" type="text" id="KvarOptions{{addPosition}}" name="KvarOptions{{addPosition}}"
+                ngModel required>
+            </div>
+          </ng-container>
+
+        </div>
+
+        <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+          Hinzufügen
+        </button>
+        <button class="btn btn-danger mb-2" (click)='cancelAdding()'>
+          Abbrechen
+        </button>
+      </form>
+    </ng-container>
+
+
+    <!-- THIS IS WHEN YOU WANT TO ADD A NEW TOP LEVEL ELEMENT TO THE DICT -->
+    <ng-container *ngIf="!(addVar || addAtt)">
+
+
+
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+        <div class="form-group row">
+
+          <!-- DISEASE PART -->
+          <ng-container id="allgData" ngModelGroup="allgData">
+            <div class="col-4 mb-2">
+              <label for="disName">Name</label>
+              <input class="form-control" type="text" id="disName" name="disName" ngModel required>
+            </div>
+            <div class="col-4 mb-2">
+              <label for="typ">Typ</label>
+              <select class="form-control" name="typ" id="typ" [(ngModel)]="disTyp" required #typ="ngModel">
+                <!-- <option value="Krankheit">Krankheit</option> -->
+                <option value="Kategorie">Kategorie</option>
+              </select>
+            </div>
+            <div class="col-4 mb-2">
+              <ng-container>
+                <label for="KanzahlAtt">Attribute</label>
+                <select class="form-control" name="KanzahlAtt" id="KanzahlAtt" [(ngModel)]="myAtt.anzahlAtt"
+                  #Kanzahl="ngModel" (change)="computeKAtts()" required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </ng-container>
+
+            </div>
+          </ng-container>
+          <!-- CATEGORY PART -->
+          <ng-container id="catData" ngModelGroup="catData">
+
+            <ng-container>
+              <ng-container *ngFor="let myDummy4 of ' '.repeat(myAtt.anzahlAtt).split(''), let a = index">
+                <div class="col-12 mb-2">
+                  <label for="KAttText{{a}}">Text im Bericht <em>(Variablen Plätze mit %0, %1 ... kennzeichnen,
+                      wobei %0 die als erstes definierte Variable ist, %1 die zweite usw.)</em></label>
+                  <input class="form-control" type="text" id="KAttText{{a}}" name="KAttText{{a}}" ngModel
+                    [required]="disTyp=='Kategorie'">
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="KAttName{{a}}">Name des Attributs</label>
+                  <input class="form-control" type="text" id="KAttName{{a}}" name="KAttName{{a}}" ngModel>
+                </div>
+                <div class="col-4 mb-2">
+                  <label for="KJudText{{a}}">Beurteilung/Code</label>
+                  <input class="form-control" type="text" id="KJudText{{a}}" name="KJudText{{a}}" ngModel>
+                </div>
+                <div class="col-2 mb-2">
+                  <label for="Knormal{{a}}">Normal</label>
+                  <select class="form-control" name="Knormal{{a}}" id="Knormal{{a}}" [ngModel]="false"
+                    [required]="disTyp=='Kategorie'">
+                    <option value="true">Ja</option>
+                    <option value="false">Nein</option>
+                  </select>
+                </div>
+                <div class="col-2 mb-2">
+                  <label for="KanzahlAttVar{{a}}">Anzahl Variablen</label>
+                  <select class="form-control" name="KanzahlAttVar{{a}}" id="KanzahlAttVar{{a}}"
+                    [(ngModel)]="myAtt.myVars[a].anzahlVar" [required]="disTyp=='Kategorie'">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="col-6 mb-2">
+                  <label for="KZuGroup{{a}}">Zugehörigkeitsgruppe</label>
+                  <input class="form-control" type="text" id="KZuGroup{{a}}" name="KZuGroup{{a}}" ngModel>
+                </div>
+                <div class="col-6 mb-2">
+                  <label for="KAuGroup{{a}}">Aufzählungsgruppe</label>
+                  <input class="form-control" type="text" id="KAuGroup{{a}}" name="KAuGroup{{a}}" ngModel>
+                </div>
+                <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[a].anzahlVar).split(''), let b = index">
+                  <div class="col-3 mb-2">
+                    <label for="KvarKind{{a}}{{b}}">Variablenart</label>
+                    <select class="form-control" name="KvarKind{{a}}{{b}}" id="KvarKind{{a}}{{b}}"
+                      [(ngModel)]="myAtt.myVars[a].varTypes[b]" (change)="Kprinter()"
+                      [required]="disTyp=='Kategorie' && myAtt.myVars[a].anzahlVar>0">
+                      <option value="oc">Auswahlvariable</option>
+                      <option value="text">Textvariable</option>
+                    </select>
+                  </div>
+                  <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='text'">
+                    <div class="col-3 mb-2">
+                      <label for="KtextBefore{{a}}{{b}}">Aktivierungstext</label>
+                      <input class="form-control" type="text" id="KtextBefore{{a}}{{b}}" name="KtextBefore{{a}}{{b}}"
+                        ngModel [required]="disTyp=='Kategorie'">
+                    </div>
+                    <div class="col-3 mb-2">
+                      <label for="KvarUnit{{a}}{{b}}">Endwort (z.B. Einheit "cm")</label>
+                      <input class="form-control" type="text" id="KvarUnit{{a}}{{b}}" name="KvarUnit{{a}}{{b}}" ngModel
+                        required>
+                    </div>
+                    <div class="col-3 mb-2">
+                      <label for="KtextAfter{{a}}{{b}}">Text danach (automatisch)</label>
+                      <input class="form-control" type="text" id="KtextAfter{{a}}{{b}}" name="KtextAfter{{a}}{{b}}"
+                        ngModel required>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="myAtt.myVars[a].varTypes[b]=='oc'">
+                    <div class=" col-9 mb-2">
+                      <label for="KvarOptions{{a}}{{b}}">Auswahlmöglichkeiten (mit '/' getrennt)</label>
+                      <input class="form-control" type="text" id="KvarOptions{{a}}{{b}}" name="KvarOptions{{a}}{{b}}"
+                        ngModel required>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <button class="btn btn-primary mb-2" type="submit" [disabled]="!f.valid">
+            Hinzufügen
+          </button>
+
+        </div>
+      </form>
+    </ng-container>
+
+    <!-- PART ONE ENDS HERE, NOW COMES THE LIST -->
+    <!-- LIST OF ALL ELEMENTS -->
+    <!-- note: part.condition is marked as error, but is no problem because it exists on the element, compiles fine -->
+
+
+    <!-- The structure of the list are multiple nested for loops, every loop going one level deeper into the dict structure -->
+    <!-- This loop is for TopLevel elements (e.g. Diseases and Categories) -->
+    <!-- Because TopLevel elements can be both, Diseases and Categories, any level differentiates if it originates from a TopLevel disease or TopLevel Category -->
+    <ng-container *ngFor="let part of myEdit.dict, let x = index" #myParts>
+      <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist"
+        aria-multiselectable="true">
+
+        <!-- Accordion card -->
+        <div class="card myCard">
+
+          <!-- Card header -->
+          <div class="card-header {{part.kind}}" role="tab" id="headingUnfiled">
+
+            <!--Options-->
+            <div class="dropdown float-left">
+              <button class="btn btn-info btn-sm m-0 mr-3 p-2 dropdown-toggle" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt"></fa-icon>
+              </button>
+
+              <!-- TopLevel Disease -->
+              <!-- Below are the buttons that let the user edit this element -->
+
+              <!-- TopLevel Category -->
+              <ng-container *ngIf="part.kind=='category'">
+
+                <div class="dropdown-menu dropdown-info">
+                  <button class="dropdown-item" (click)="addToDict('attribute', [x])">Neues Attribut</button>
+                  <button class="dropdown-item" (click)="renameMode('rename', [x], part.kind)"
+                    id="rename{{part.kind + x}}">Kategorie umbenennen</button>
+                  <button class="dropdown-item" (click)="deleteDisease([x])">Krankheit löschen</button>
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Heading -->
+            <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapseUnfiled{{x}}" aria-expanded="true"
+              aria-controls="collapseUnfiled" (click)="rotateIcon(x,undefined, undefined, part)">
+              <!-- TopLevel Category -->
+              <!-- Below all Information regarding this element is printed on screen  -->
+              <ng-container *ngIf="part.kind=='category' && !renameMode('showInput', [x], part.kind)">
+                <h5 class="mt-1 mb-0">
+                  <span>{{part.name}}{{(part.condition !== undefined && part.condition !== null) ? ' | Bedingung: ' + part.condition : ''}}
+                  </span>
+
+                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                </h5>
+              </ng-container>
+
+
+            </a>
+
+
+            <!-- TopLevel Category -->
+            <!-- This is the input field for changing names or single things -->
+            <ng-container *ngIf="part.kind=='category' && renameMode('showInput', [x], part.kind)">
+              <h5 class="mt-1 mb-0">
+                <span>
+                  <input class="form-control indict" type="text" id="renameVal{{part.kind + x}}">
+                  <button class="btn btn-primary mb-2" (click)="renameMode('submit', [x], part.kind)">
+                    Hinzufügen
+                  </button>
+                  <button class="btn btn-primary mb-2" (click)="renameMode('cancel', [x], part.kind)">
+                    Abbrechen
+                  </button>
+                </span>
+                <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+              </h5>
+            </ng-container>
+          </div>
+
+          <div id="collapseUnfiled{{x}}" class="collapse" role="tabpanel" aria-labelledby="headingUnfiled">
+
+
+            <!-- This is the next level loop, Disease origins are now at category level, Category origins are now at attribute level -->
+            <!-- Anything else works just like on level above, see there for more detailed information -->
+            <ng-container *ngFor="let part2 of topLevelType(part), let y = index">
+              <div class="accordion md-accordion accordion-blocks" id="accordionEx79" role="tablist"
+                aria-multiselectable="true">
+
+                <div class="card myCard">
+                  <div class="card-header {{part2.kind}}" role="tab" id="headingUnfiled2">
+                    <div class="layer1 {{part2.kind + 'Font'}}">
+                      <!--Options-->
+                      <div class="dropdown float-left">
+                        <button class="btn btn-info btn-sm m-0 mr-3 dropdown-toggle btnLayer1" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt" size="xs"></fa-icon>
+                        </button>
+
+                        <ng-container *ngIf="part2.kind=='box'">
+                          <div class="dropdown-menu dropdown-info">
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'name')"
+                              id="renamename{{part2.kind + x + y}}">Synonyme ändern</button>
+                            <button class="dropdown-item" (click)="addToDict('variable', [x,y])">Variable
+                              hinzufügen</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'text')"
+                              id="renametext{{part2.kind + x + y}}">Text ändern</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'cg')"
+                              id="renamecg{{part2.kind + x + y}}">Zugehörigkeitsgruppe ändern</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'ag')"
+                              id="renameag{{part2.kind + x + y}}">Aufzählungsgruppe ändern</button>
+                            <button class="dropdown-item" (click)="renameMode('rename', [x,y], part2.kind, 'jt')"
+                              id="renamejt{{part2.kind + x + y}}">Beurteilung ändern</button>
+                            <button class="dropdown-item" (click)="deleteDisease([x,y])">Attribut löschen</button>
+
+                          </div>
+                        </ng-container>
+                      </div>
+
+                      <!-- Heading -->
+                      <a data-toggle="collapse" data-parent="#accordionEx79" href="#collapseUnfiled{{x}}{{y}}"
+                        aria-expanded="true" aria-controls="collapseUnfiled"
+                        (click)="rotateIcon(x,y, undefined, part2)">
+
+                        <ng-container *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') && 
+                          !renameMode('showInput', [x,y], part2.kind, 'text') && !renameMode('showInput', [x,y], part2.kind, 'cg')
+                          && !renameMode('showInput', [x,y], part2.kind, 'jt'))">
+                          <p class="mt-1 mb-0">
+                            <span>{{part2.name[0] + ' | Synonyms: ' +part2.name.slice(1).join(" / ")}}{{part2.normal !== true ? ' | Normal' : ''}}</span>
+                            <br>
+                            <span>
+                              "{{part2.text}}"
+                            </span>
+                            <ng-container *ngIf="part2.choiceGroup !== null">
+                              <br>
+                              <span class="ml-5 pl-2">
+                                Zugehörigkeitsgruppe: {{part2.choiceGroup}}
+                              </span>
+                            </ng-container>
+                            <ng-container *ngIf="part2.listGroup !== null">
+                              <span class="ml-1">
+                                | Aufzählungsgruppe: {{part2.listGroup}}
+                              </span>
+                            </ng-container>
+                            <ng-container *ngIf="part2.judgementText !== null">
+                              <br>
+                              <span class="ml-5 pl-2">
+                                Beurteilung: {{part2.judgementText}}
+                              </span>
+                            </ng-container>
+                            <fa-icon id="angle{{x}}{{y}}" class="fas rotate-icon angle" [icon]="angleDown"></fa-icon>
+                          </p>
+                        </ng-container>
+
+                      </a>
+
+
+                      <ng-container *ngIf="part2.kind == 'box' && renameMode('showInput', [x,y], part2.kind, 'name')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict" type="text" id="renameValname{{part2.kind + x + y}}"
+                              [ngModel]="part2.name">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'name')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'name')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'text')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text"
+                              id="renameValtext{{part2.kind + x + y}}" [ngModel]="part2.text">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'text')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'text')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'cg')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text" id="renameValcg{{part2.kind + x + y}}"
+                              [ngModel]="part2.choiceGroup">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'cg')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'cg')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'ag')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text" id="renameValag{{part2.kind + x + y}}"
+                              [ngModel]="part2.listGroup">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'ag')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'ag')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                      <ng-container *ngIf="part2.kind=='box' && renameMode('showInput', [x,y], part2.kind, 'jt')">
+                        <p class="mt-1 mb-0">
+                          <span>
+                            <input class="form-control indict mytext" type="text" id="renameValjt{{part2.kind + x + y}}"
+                              [ngModel]="part2.judgementText">
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('submit', [x,y], part2.kind, 'jt')">
+                              Hinzufügen
+                            </button>
+                            <button class="btn btn-primary mb-2"
+                              (click)="renameMode('cancel', [x,y], part2.kind, 'jt')">
+                              Abbrechen
+                            </button>
+                          </span>
+                          <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                        </p>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div id="collapseUnfiled{{x}}{{y}}" class="collapse" role="tabpanel"
+                    aria-labelledby="headingUnfiled2">
+
+
+                    <!-- This is the next level loop, Disease origins are now at attribute level, Category origins are now at variable level -->
+                    <!-- Anything else works just like on level above, see there for more detailed information -->
+                    <ng-container *ngFor="let part3 of secondLevelType(part2), let z = index">
+                      <div class="accordion md-accordion accordion-blocks" id="accordionEx80" role="tablist"
+                        aria-multiselectable="true">
+
+                        <div class="card myCard">
+                          <div class="card-header {{part3.kind}}" role="tab" id="headingUnfiled2">
+                            <div class="layer2 {{part3.kind + 'Font'}}">
+
+                              <div class="dropdown float-left">
+                                <button class="btn btn-info btn-sm m-0 mr-3 dropdown-toggle btnLayer1" type="button"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <fa-icon class="fas rotate-icon pencil" [icon]="pencilAlt" size="xs"></fa-icon>
+                                </button>
+                                <ng-container *ngIf="part3.kind=='text'">
+                                  <div class="dropdown-menu dropdown-info">
+                                    <button class="dropdown-item" (click)="renameMode('rename', [x,y,z], part3.kind)"
+                                      id="rename{{part3.kind + x + y + z}}">Variable ändern</button>
+                                    <button class="dropdown-item" (click)="deleteDisease([x,y,z])">Variable
+                                      löschen</button>
+                                  </div>
+                                </ng-container>
+                                <ng-container *ngIf="part3.kind=='oc'">
+                                  <div class="dropdown-menu dropdown-info">
+
+                                    <button class="dropdown-item" (click)="renameMode('rename', [x,y,z], part3.kind)"
+                                      id="rename{{part3.kind + x + y + z}}">Optionen Ändern</button>
+                                    <button class="dropdown-item" (click)="deleteDisease([x,y,z])">Variable
+                                      löschen</button>
+                                  </div>
+                                </ng-container>
+
+                              </div>
+                              <ng-container *ngIf="part3.kind=='text' && !renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+
+                                  <span>{{'Aktivierungswort(e): ' + part3.textBefore + ' | Endwort: ' + part3.unit + ' | nachgefügter Text: ' + part3.textAfter}}</span>
+
+                                </p>
+                              </ng-container>
+                              <ng-container *ngIf="part3.kind=='oc' && !renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+
+                                  <span>{{'Möglichkeiten: ' + part3.values}}</span>
+
+                                </p>
+                              </ng-container>
+                              <ng-container *ngIf="part3.kind=='text' && renameMode('showInput', [x,y,z], part3.kind)">
+                                <div class="mt-1 mb-0">
+                                  <form id="renameVal{{part3.kind +x + y+ z}}">
+
+                                    <div class="textVar pr-2">
+                                      <label for="renameValtb{{part3.kind + x + y + z}}">Aktivierungswort(e)</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.textBefore"
+                                        name="renameValtb{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar pr-2">
+                                      <label for="renameValun{{part3.kind + x + y + z}}">Endwort</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.unit"
+                                        name="renameValun{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar pr-2">
+                                      <label for="renameValta{{part3.kind + x + y + z}}">nachgefügter Text</label>
+                                      <input class="form-control indict" type="text" [ngModel]="part3.textAfter"
+                                        name="renameValta{{part3.kind + x + y + z}}">
+                                    </div>
+                                    <div class="textVar">
+                                      <button class="btn btn-primary mb-2"
+                                        (click)="renameMode('submit', [x,y,z], part3.kind)">
+                                        Hinzufügen
+                                      </button>
+                                      <button class="btn btn-primary mb-2"
+                                        (click)="renameMode('cancel', [x,y,z], part3.kind)">
+                                        Abbrechen
+                                      </button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </ng-container>
+
+                              <ng-container *ngIf="part3.kind=='oc' && renameMode('showInput', [x,y,z], part3.kind)">
+                                <p class="mt-1 mb-0">
+                                  <span>
+                                    <input class="form-control indict" type="text"
+                                      id="renameVal{{part3.kind + x + y + z}}" [ngModel]="part3.values">
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('submit', [x,y,z], part3.kind)">
+                                      Hinzufügen
+                                    </button>
+                                    <button class="btn btn-primary mb-2"
+                                      (click)="renameMode('cancel', [x,y,z], part3.kind)">
+                                      Abbrechen
+                                    </button>
+                                  </span>
+                                  <fa-icon id="angle{{x}}" class="fas angle" [icon]="angleDown"></fa-icon>
+                                </p>
+                              </ng-container>
+
+                              <a data-toggle="collapse" data-parent="#accordionEx80"
+                                href="#collapseUnfiled{{x}}{{y}}{{z}}" aria-expanded="true"
+                                aria-controls="collapseUnfiled" (click)="rotateIcon(x,y,z, part3)">
+
+
+                              </a>
+
+
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </ng-container>
+
+
+
+
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Card body -->
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

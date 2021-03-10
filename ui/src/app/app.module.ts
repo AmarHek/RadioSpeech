@@ -24,6 +24,7 @@ import { HeaderComponent } from "./header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
 import { InputModalComponent } from './variables/inputModal/inputModal.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { EditStructureComponent } from './edit-structure/edit-structure.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     HeaderComponent,
     VariablesComponent,
     InputModalComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    EditStructureComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
+        { path: 'edit/:name', component: EditStructureComponent},
         { path: '**', redirectTo: '/upload' },
       ],
       { useHash: true, relativeLinkResolution: 'legacy' }
