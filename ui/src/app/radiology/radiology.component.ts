@@ -12,11 +12,11 @@ import {OptionsComponent} from "../options/options.component";
 
 @Component({
   selector: "app-workspace",
-  templateUrl: "./layout1.component.html",
-  styleUrls: ["./layout1.component.scss"],
+  templateUrl: "./radiology.component.html",
+  styleUrls: ["./radiology.component.scss"],
 })
 
-export class Layout1Component implements OnInit {
+export class RadiologyComponent implements OnInit {
 
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];

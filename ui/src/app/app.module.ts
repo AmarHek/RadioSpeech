@@ -10,6 +10,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatDividerModule } from "@angular/material/divider";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import {MatButton, MatButtonModule} from "@angular/material/button";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
 import { TextComponent } from "./text/text.component";
@@ -17,8 +18,7 @@ import { UploadComponent } from "./upload/upload.component";
 import { ListComponent } from "./list/list.component";
 import { SortCategoriesPipe } from "./sort-categories.pipe";
 import { ReportComponent } from "./report/report.component";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { Layout1Component } from "./layout1/layout1.component";
+import { RadiologyComponent } from "./radiology/radiology.component";
 import { OptionsComponent } from "./options/options.component";
 import { HeaderComponent } from "./header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
@@ -34,7 +34,7 @@ import { EditStructureComponent } from './edit-structure/edit-structure.componen
     ListComponent,
     SortCategoriesPipe,
     ReportComponent,
-    Layout1Component,
+    RadiologyComponent,
     OptionsComponent,
     HeaderComponent,
     VariablesComponent,
@@ -57,7 +57,7 @@ import { EditStructureComponent } from './edit-structure/edit-structure.componen
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        { path: 'layout1/:name', component: Layout1Component},
+        { path: 'radiology/:name', component: RadiologyComponent},
         { path: 'text/:name', component: TextComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },

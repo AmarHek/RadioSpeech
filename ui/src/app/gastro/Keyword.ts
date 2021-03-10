@@ -8,6 +8,7 @@ export class Keyword2 {
     text: string;
     buttonPos: number;
     normal: boolean;
+    code: string;
       
     constructor(){
      
@@ -28,6 +29,7 @@ export class Category{
     name: string;
     active: boolean;
     position: number;
+    condition: string;
 
     
 }
@@ -37,11 +39,12 @@ export class Disease{
     categories: Category[];
     active: boolean;
     number: number;
-    position: number;
+    position: number[];
     firstTime: boolean;
+    positionEnd: number[];
 }
 
 export class TextDic{
     disName: string;
-    reports: {text: string, category: string, key: string}[];
+    reports: {text: string, category: string, key: string, code: string, condition: string}[];
 }

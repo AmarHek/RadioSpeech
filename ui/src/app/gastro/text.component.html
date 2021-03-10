@@ -1,0 +1,171 @@
+<div *ngIf="errorMsg!==''" class="error">{{errorMsg}}</div>
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
+  <div class="spinner-grow mySpinner" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="errorMsg=='' && !isLoading" class="main">
+
+  <div class="headline">
+
+    <!-- <button id="normal-button" (click)="makeNormal()" class="btn btn-outline-secondary float-right ">Rest
+			normal</button> -->
+
+    <!-- refreshes Page -->
+    <button id="refresh" title="seite neu laden" (click)="refreshPage()" class="btn btn-sm">Refresh</button>
+    <a #myReport class="btn btn-clear btn-sm" title="Download JSON" [href]="jsDown2"
+      download="finaltext.txt">RepDown</a>
+    <a #myJson class="btn btn-clear btn-sm" title="Download JSON" [href]="jsDown" download="download.json">JSDown </a>
+    <!-- submits text in "Befund eingeben", if it is not automatically triggered by input -->
+    <!-- <button id="submit-button" title="eingabe absenden" (click)="submit()"
+			class="btn btn-outline-secondary float-right ">Senden</button> -->
+    <!-- enables inputting text -->
+    <!-- <button id="los" (click)="init()"
+			class="btn btn-outline-secondary float-right ">los</button> -->
+
+    <!-- <button id="scroll" (click)="scroll()"
+			class="btn btn-outline-secondary float-right ">scroll</button> -->
+    <!-- input "Befund" text here and submits it automatically -->
+    <div id="listening" class="btn btn-sm btn-danger float-left">Aus
+    </div>
+
+    <label for="input">Eingabefenster:
+      <input style="width: 3em;" id="input" name="Befund" type="text" (input)="onInput($event)"
+        (focusout)="changeButton()" (focusin)="inputClick()" placeholder="Befund eingeben...">
+      <!-- <input [(ngModel)]="myInput.twInput" id="input" name="Befund" type="text" (click)="inputClick()" (input)="onInput($event)" placeholder="Befund eingeben..." size="80"> -->
+    </label>
+    <!-- <input type='file' id="imgUpload" />
+		<img src="http://placehold.it/180" id="my_img" /> -->
+    <div id="inputText">
+      <br>
+    </div>
+  </div>
+
+  <div *ngIf="!getReady" class="main-content" id="main-content">
+    <div *ngIf="!end" class="m-1">
+      <table>
+        <tbody>
+          <div *ngFor="let dis of diseases | sortCategories">
+            <span class="disease" name="test" id="{{dis.name}}">{{dis.name}}</span>
+            <span *ngIf="end0" class="missing">
+              <span class="esFehlen">Es fehlen: </span>
+              <span *ngFor="let dis2 of missing" class="missingDis">
+                {{dis2.disName}}:
+                <span *ngFor="let cat of dis2.reports" class="missingCat">
+                  {{cat.category}}
+                </span>
+
+              </span>
+            </span>
+            <tr class="catrow" style="border-bottom: solid 2px red;"
+              *ngFor="let cat of dis.categories | sortCategories">
+              <ng-container *ngIf="dis.active == true">
+
+                <td *ngIf="!(cat.condition !== null) || !((whichKeyUsed(dis.name, cat.condition, true)===undefined))"
+                  class="cat" name="test" id="{{cat.name}}">{{cat.name}}</td>
+                <!-- <ng-container *ngFor="let key of filterSyn(cat.keys)">
+								<td [style.background-color]="(catUsed(dis.name, cat.name)) ? 'green' : 'red'">{{key.name}}</td>
+							</ng-container> -->
+                <td *ngIf="!(cat.condition !== null) || !((whichKeyUsed(dis.name, cat.condition, true)===undefined))"
+                  class="check" id="{{cat.name+1}}"
+                  [innerHTML]="(catUsed(dis.name, cat.name)) ? whichKeyUsed(dis.name, cat.name) : KeysExample(dis.name, cat.name)"
+                  [style.background-color]="(catUsed(dis.name, cat.name)) ? 'green' : 'red'">
+
+                  <!-- <div class="row">
+									<ng-container *ngFor="let key of filterSyn(cat.keys)">
+										<div class="col-3 option" id={{key.name}}> {{key.name}}
+
+
+											<span *ngFor="let vari of key.variables" class="link" id="{{key.category + key.name}}">
+												<ng-container *ngIf="vari.kind === 'text'">
+													{{vari.textBefore + '...'}}
+												</ng-container>
+												<ng-container *ngIf="vari.kind === 'oc'">
+													{{vari.options.join("/")}}
+												</ng-container>
+											</span>
+										</div>
+									</ng-container>
+								</div> -->
+                </td>
+              </ng-container>
+
+            </tr>
+          </div>
+        </tbody>
+      </table>
+    </div>
+    <div class="ende">
+      <div *ngIf="end" class="ende">
+        <!-- {{myInput.twInput.split(" ")}} -->
+        <!-- {{recogWords}} -->
+      </div>
+    </div>
+  </div>
+  <div *ngIf="getReady" class="pause">
+    PAUSE
+  </div>
+  <div *ngIf="end">
+    <app-report [report]="myText.report" [judgment]=""></app-report>
+  </div>
+
+</div>
+
+
+
+<!-- Dialog to enter the Parameters, can be activated by integrating a button or link that
+triggers the modal, for example: <div class="btn btn-info btn-lg" data-toggle="modal" data-target="#variableDialog"> Open Dialog </div> -->
+
+<div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="variableDialogLabel">Parameter zum Textbaustein eingeben</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--
+				<table>
+					<tr *ngFor="let v of modalVariables">
+						<td class="text-right">{{v.textBefore}}</td>
+						<td *ngIf="v.kind === 'oc'">
+							<span *ngFor="let vv of v.values">
+								<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value" /> {{vv}}
+							</span>
+						</td>
+						<td *ngIf="v.kind === 'mc'">
+							<span *ngFor="let vv of v.values">
+								<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]" /> {{vv[0]}}
+							</span>
+						</td>
+						<td *ngIf="v.kind === 'text'">
+							<input type="text" [(ngModel)]="v.value" />
+						</td>
+						<td *ngIf="v.kind === 'number'">
+							<input type="number" class="w-100" [(ngModel)]="v.value" />
+						</td>
+						<td *ngIf="v.kind === 'date'">
+							<ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
+						</td>
+						<td *ngIf="v.kind === 'ratio'">
+							<input type="number" [(ngModel)]="v.numerator" /> / <input type="number"
+								[(ngModel)]="v.denominator" />
+						</td>
+						<td class="text-left">{{v.textAfter}}</td>
+					</tr>
+				</table>
+				-->
+      </div>
+      <div class="modal-footer">
+        <!--
+				<button (click)="endVariableSelection()" type="button" data-dismiss="modal"
+					class="btn btn-primary">Ok</button>
+					-->
+      </div>
+    </div>
+  </div>
+</div>

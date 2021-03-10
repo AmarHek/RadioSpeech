@@ -14,11 +14,11 @@ export class DisplayService {
   constructor(private router: Router) {
     this.displayHeader = true;
     this.layouts = new Map();
-    this.layouts.set(1, "layout1");
+    this.layouts.set(1, "radiology");
   }
 
   public updateDisplay(){
-    this.displayHeader = !this.router.url.includes("layout1");
+    this.displayHeader = !this.router.url.includes("radiology");
   }
 
   public getCurrentLayout(): string{
