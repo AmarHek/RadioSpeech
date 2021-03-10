@@ -146,6 +146,7 @@ export class InputParserService {
     }
     // if ende is not called yet
     if (!this.end) {
+      let text
       // gets current disease
       let activeDis = this.setDisease(input, this.diseases);
       if (activeDis != undefined) {
@@ -175,7 +176,7 @@ export class InputParserService {
           activeCat.position = 0;
           activeCat.active = true;
           // if one active category is detected, it's active value is set to true, all others to false
-          if (activeCat != undefined) {
+          if (activeCat) {
 
             // Evaluate only the input that comes after the last category
             input2 = input2.substring(activeCat.position);
@@ -193,10 +194,9 @@ export class InputParserService {
             this.onlyLatestKeyword(activeCat.keys);
             // if a category is addressed by different keywords, the keyword with the lastest appearance has to be used
             // Also check which keywords have variables and if the occurr in the input2
-            let reRun = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
-            this.twInput.again = reRun;
+            this.twInput.again = this.getActivesAndVariables(activeCat.keys, input2, activeDis, activeCat);
             // produces text output
-            var text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
+            text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
           }
           activeCat.active = false;
         }
@@ -211,8 +211,7 @@ export class InputParserService {
       return text
     }
     // no text when no category is activated
-    let text2 = this.textOut.makeReport(undefined, undefined, this.startingTime);
-    return text2;
+    return this.textOut.makeReport(undefined, undefined, this.startingTime);
 
   }
 
@@ -291,8 +290,8 @@ export class InputParserService {
 
   getActivesAndVariables(allKeywords: Array<Keyword2>, input: string, activeDis: Disease, activeCat: Category) {
     // Filters for all Keywords, that are active in input and sorts them by index
-    var activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a, b) => a.position - b.position);
-    var reRun = false;
+    let activeKeys = allKeywords.filter(activeKey => activeKey.position != -1).sort((a, b) => a.position - b.position);
+    let reRun = false;
     // Searches for Signal Variable Text (Text Before) between corresponding keyword and next active Variable
     for (let i = 0; i < activeKeys.length; i++) {
       activeKeys[i].active = activeKeys[i].name;
@@ -544,7 +543,7 @@ export class InputParserService {
 
     let activeCat: { tempPos: number, catName: string } = { tempPos: -1, catName: "" };
 
-    // loop throught categories
+    // loop through categories
     for (const cat of dis) {
       let catPos: number = -1;
       // find latest occurence of one category
