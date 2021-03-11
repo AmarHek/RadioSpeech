@@ -5,8 +5,8 @@ import { Location } from "@angular/common";
 import { ViewChild } from "@angular/core";
 
 import { environment } from "../../environments/environment";
-import * as M from "../../model-files/model";
-import * as G from "../../model-files/generator";
+import * as M from "../../helper-classes/model";
+import * as G from "../../helper-classes/generator";
 import {DataParserService} from "../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
 

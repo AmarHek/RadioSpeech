@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import * as M from '../../model-files/new_model'
+import * as M from '../../helper-classes/new_model'
 import { Keyword2, Category, Disease, TextDic } from './Keyword';
 import { InputParserService } from '../services/input-parser.service';
 import { TextOutputService } from '../services/text-output.service';
