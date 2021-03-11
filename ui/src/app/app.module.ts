@@ -25,11 +25,13 @@ import { VariablesComponent } from "./variables/variables.component";
 import { InputModalComponent } from './variables/inputModal/inputModal.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditStructureComponent } from './edit-structure/edit-structure.component';
+import { GastroHierarchischComponent } from "./gastro-hierarchisch/gastro-hierarchisch.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     GastroComponent,
+    GastroHierarchischComponent,
     UploadComponent,
     ListComponent,
     SortCategoriesPipe,
