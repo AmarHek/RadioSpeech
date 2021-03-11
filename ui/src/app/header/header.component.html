@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light"  *ngIf="displayNavbar">
-  <a class="navbar-brand" href="#">RadioSpeech  <fa-icon class="ml-1" [icon]="faUser"></fa-icon></a>
+  <a class="navbar-brand" href="#">{{title}}  <fa-icon class="ml-1" [icon]="faUser"></fa-icon></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -15,6 +15,11 @@
       </li>
       <li class="nav-item" routerLinkActive='active'>
         <a class="nav-link" routerLink='/edit'>Edit Structure</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <button (click)="switchMode()" class="btn">{{currentMode}}</button>
       </li>
     </ul>
   </div>

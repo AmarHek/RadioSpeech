@@ -57,7 +57,7 @@ import { EditStructureComponent } from './edit-structure/edit-structure.componen
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        { path: 'radiology/:name', component: RadiologyComponent},
+        { path: 'radio/:name', component: RadiologyComponent},
         { path: 'gastro/:name', component: GastroComponent   },
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },

@@ -6,22 +6,39 @@ import {Router} from "@angular/router";
 })
 export class DisplayService {
 
+  // TODO: Do something with layouts so all possible layouts are contained in a list, perhaps dropdown menu
+
   public displayHeader: boolean;
-  public currentLayout: number = 1;
+  public currentLayout: string;
+
   public maxRowLength: number = 6;
-  private layouts: Map<number, string>;
+  private layouts: string[] = ["gastro", "radio"];
 
   constructor(private router: Router) {
     this.displayHeader = true;
-    this.layouts = new Map();
-    this.layouts.set(1, "radiology");
+    this.setCurrentLayout();
   }
 
-  public updateDisplay(){
-    this.displayHeader = !this.router.url.includes("radiology");
+  private setCurrentLayout() {
+    // TODO: Maybe change it so you pick local storage from component and give it to setCurrentLayout as parameter
+    if(!localStorage.getItem("currentLayout")){
+      localStorage.setItem("currentLayout", this.layouts[0])
+    }
+    this.currentLayout = localStorage.getItem("currentLayout");
+  }
+
+  public switchLayout() {
+    let pos = this.layouts.indexOf(this.currentLayout)
+    let next = (pos + 1) % this.layouts.length
+    this.currentLayout = this.layouts[next]
   }
 
   public getCurrentLayout(): string{
-    return this.layouts.get(this.currentLayout);
+    return this.currentLayout;
   }
+
+  public updateDisplay(){
+    this.displayHeader = !(this.router.url.includes(this.currentLayout));
+  }
+
 }

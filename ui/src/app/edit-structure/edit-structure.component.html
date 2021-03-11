@@ -313,7 +313,7 @@ The second one is responsible for showing all the information contained by the d
             <ng-container *ngIf="disTyp!=='Krankheit' && disTyp !== 'Kategorie'">
               <div class="col-4"></div>
             </ng-container>
-            
+
 
             <ng-container *ngIf="disTyp=='Krankheit'">
               <div class="col-2 mb-2">
@@ -1542,7 +1542,7 @@ The second one is responsible for showing all the information contained by the d
                         aria-expanded="true" aria-controls="collapseUnfiled"
                         (click)="rotateIcon(x,y, undefined, part2)">
 
-                        <ng-container *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') && 
+                        <ng-container *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') &&
                           !renameMode('showInput', [x,y], part2.kind, 'text') && !renameMode('showInput', [x,y], part2.kind, 'cg')
                           && !renameMode('showInput', [x,y], part2.kind, 'jt'))">
                           <p class="mt-1 mb-0">
@@ -1780,15 +1780,6 @@ The second one is responsible for showing all the information contained by the d
                         </div>
                       </div>
                     </ng-container>
-
-
-
-
-
-
-
-
-
                   </div>
                 </div>
               </div>

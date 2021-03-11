@@ -4,7 +4,6 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { map } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 const url = environment.urlRoot;
 
@@ -24,33 +23,37 @@ export class DictManagerService {
   myUrl = url;
   mode = "";
 
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.setMode();
+  }
 
   setUrl(mode: string){
-    if(mode=="Radiologie"){
+    if(mode == "Radiologie"){
       this.myUrl += "radio/";
     }
   }
+
   setMode(){
+    // TODO: Maybe change it so you pick local storage from component and give it to setMode as parameter
     if(!localStorage.getItem("mode")){
       localStorage.setItem("mode", "Gastroenterologie");
     }
     this.mode = localStorage.getItem("mode");
     this.setUrl(this.mode);
   }
+
   getMode(){
     return this.mode;
   }
 
   switchMode(){
-    if(this.mode=="Gastroenterologie"){
+    if(this.mode == "Gastroenterologie"){
       this.mode = "Radiologie";
     } else {
       this.mode = "Gastroenterologie";
     }
     localStorage.setItem("mode", this.mode);
-    window.location.reload();
+    // window.location.reload();
   }
 
   getList() {
