@@ -12,9 +12,8 @@ import {DictManagerService} from "../services/dict-manager.service";
 export class HeaderComponent implements OnInit {
 
   public displayNavbar: boolean;
-  public currentMode: string;
+  public mode: string;
   public title: string;
-  private titles: Map<string, string>;
 
   faUser: any;
   constructor(private displayService: DisplayService,
@@ -23,28 +22,38 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setTitles();
-    this.setTitle();
     this.displayNavbar = true;
     this.faUser = faLaptopMedical;
-    // TODO
-    this.currentMode = this.dictManager.getMode();
-  }
-
-  private setTitles() {
-    this.titles.set("Radiologie", "RadioSpeech");
-    this.titles.set("Gastroenterologie", "EndoSpeech");
-  }
-
-  private setTitle() {
-    this.title = this.titles.get(this.currentMode);
-  }
-
-  switchMode(): void {
-    this.dictManager.switchMode();
-    this.displayService.switchLayout();
-    this.currentMode = this.dictManager.getMode();
+    this.setMode();
     this.setTitle();
+  }
+
+  private setMode(): void {
+    this.mode = this.displayService.getCurrentModeLong();
+  }
+
+  private setTitle(): void {
+    this.title = this.displayService.getCurrentTitle();
+  }
+
+  cycleMode(): void {
+    this.displayService.cycleMode();
+    setTimeout(() => {
+      this.refreshView();
+    }, 50);
+  }
+
+  setNewMode(index: number): void {
+    this.displayService.setMode(index);
+    setTimeout(() => {
+      this.refreshView();
+    }, 100);
+  }
+
+  refreshView(): void {
+    this.setMode();
+    this.setTitle();
+    this.dictManager.setMode();
   }
 
   ngDoCheck(): void {

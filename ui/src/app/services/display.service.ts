@@ -9,36 +9,55 @@ export class DisplayService {
   // TODO: Do something with layouts so all possible layouts are contained in a list, perhaps dropdown menu
 
   public displayHeader: boolean;
-  public currentLayout: string;
+  public currentMode: string;
 
   public maxRowLength: number = 6;
-  private layouts: string[] = ["gastro", "radio"];
+
+  // TODO Auf database auslagern
+  private possibleModes: string[] = ["gastro", "radio"];
+  private modesLong = {"gastro": "Gastroenterologie", "radio": "Radiologie"}
+  private titles = {"gastro": "EndoSpeech", "radio": "RadioSpeech"}
+
+  private layouts
 
   constructor(private router: Router) {
     this.displayHeader = true;
-    this.setCurrentLayout();
+    this.initMode();
   }
 
-  private setCurrentLayout() {
-    // TODO: Maybe change it so you pick local storage from component and give it to setCurrentLayout as parameter
-    if(!localStorage.getItem("currentLayout")){
-      localStorage.setItem("currentLayout", this.layouts[0])
+  private initMode() {
+    let storageMode = localStorage.getItem("currentMode");
+    if(!storageMode || this.possibleModes.includes(storageMode)){
+      localStorage.setItem("currentMode", this.possibleModes[0])
     }
-    this.currentLayout = localStorage.getItem("currentLayout");
+    this.currentMode = localStorage.getItem("currentMode");
   }
 
-  public switchLayout() {
-    let pos = this.layouts.indexOf(this.currentLayout)
-    let next = (pos + 1) % this.layouts.length
-    this.currentLayout = this.layouts[next]
+  public cycleMode() {
+    let pos = this.possibleModes.indexOf(this.currentMode)
+    let next = (pos + 1) % this.possibleModes.length
+    this.currentMode = this.possibleModes[next]
   }
 
-  public getCurrentLayout(): string{
-    return this.currentLayout;
+  public setMode(index: number) {
+    this.currentMode = this.possibleModes[index];
+  }
+
+  public getCurrentMode(): string{
+    return this.currentMode;
+  }
+
+  public getCurrentTitle(): string{
+    return this.titles[this.currentMode]
+  }
+
+  public getCurrentModeLong(): string{
+    return this.modesLong[this.currentMode]
   }
 
   public updateDisplay(){
-    this.displayHeader = !(this.router.url.includes(this.currentLayout));
+    this.displayHeader = !(this.router.url.includes(this.currentMode));
+    console.log(this.displayHeader);
   }
 
 }

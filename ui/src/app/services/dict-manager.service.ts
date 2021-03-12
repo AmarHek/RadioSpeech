@@ -4,13 +4,13 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { map } from "rxjs/operators";
 import { Subject } from "rxjs";
+import {DisplayService} from "./display.service";
 
 const url = environment.urlRoot;
 
 @Injectable({
   providedIn: "root",
 })
-
 
 // -----------------------------------
 // This class administrates the list of dicts and executes all api calls
@@ -23,37 +23,33 @@ export class DictManagerService {
   myUrl = url;
   mode = "";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private displayService: DisplayService) {
     this.setMode();
   }
 
   setUrl(mode: string){
-    if(mode == "Radiologie"){
+    if(mode == "radio"){
       this.myUrl += "radio/";
     }
   }
 
-  setMode(){
+  /*
+  initMode(){
     // TODO: Maybe change it so you pick local storage from component and give it to setMode as parameter
     if(!localStorage.getItem("mode")){
-      localStorage.setItem("mode", "Gastroenterologie");
+      localStorage.setItem("mode", "gastro");
     }
     this.mode = localStorage.getItem("mode");
     this.setUrl(this.mode);
-  }
+  }*/
 
   getMode(){
     return this.mode;
   }
 
-  switchMode(){
-    if(this.mode == "Gastroenterologie"){
-      this.mode = "Radiologie";
-    } else {
-      this.mode = "Gastroenterologie";
-    }
-    localStorage.setItem("mode", this.mode);
-    // window.location.reload();
+  setMode(){
+    this.mode = this.displayService.getCurrentMode();
   }
 
   getList() {

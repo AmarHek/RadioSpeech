@@ -26,6 +26,7 @@ import { InputModalComponent } from './variables/inputModal/inputModal.component
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditStructureComponent } from './edit-structure/edit-structure.component';
 import { GastroHierarchischComponent } from "./gastro-hierarchisch/gastro-hierarchisch.component";
+import {DisplayService} from "./services/display.service";
 
 @NgModule({
   declarations: [
@@ -60,7 +61,7 @@ import { GastroHierarchischComponent } from "./gastro-hierarchisch/gastro-hierar
     RouterModule.forRoot(
       [
         { path: 'radio/:name', component: RadiologyComponent},
-        { path: 'gastro/:name', component: GastroComponent   },
+        { path: 'gastro/fortgeschritten/:name', component: GastroComponent},
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
         { path: 'edit/:name', component: EditStructureComponent},
@@ -69,7 +70,7 @@ import { GastroHierarchischComponent } from "./gastro-hierarchisch/gastro-hierar
       { useHash: true, relativeLinkResolution: 'legacy' }
     )
   ],
-  providers: [],
+  providers: [DisplayService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -25,7 +25,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.updateList();
-    this.layout = this.display.getCurrentLayout();
+    this.layout = this.display.getCurrentMode();
   }
 
   removeAlert(generator: string) {
