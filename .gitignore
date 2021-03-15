@@ -5,6 +5,8 @@ server/.idea
 ui/.idea
 ui/node_modules
 
-/.idea
+backend/node_modules
+backend/.idea
 
+/.idea
 node_modules/
