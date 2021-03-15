@@ -61,7 +61,8 @@ import {DisplayService} from "./services/display.service";
     RouterModule.forRoot(
       [
         { path: 'radio/:name', component: RadiologyComponent},
-        { path: 'gastro/fortgeschritten/:name', component: GastroComponent},
+        { path: 'gastro/advanced/:name', component: GastroComponent},
+        { path: 'gastro/beginner/:name', component: GastroHierarchischComponent},
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
         { path: 'edit/:name', component: EditStructureComponent},

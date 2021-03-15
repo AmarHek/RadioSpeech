@@ -7,4 +7,4 @@ ui/node_modules
 
 /.idea
 
-./node_modules
+node_modules/
