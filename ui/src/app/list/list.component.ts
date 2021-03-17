@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TimeStampsService } from '../services/time-stamps.service';
-import {DataParserService} from "../services/dataParser.service";
-import {DisplayService} from "../services/display.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ConfirmDialogComponent, ConfirmDialogModel} from "../confirm-dialog/confirm-dialog.component";
+import {DataParserService} from '../services/dataParser.service';
+import {DisplayService} from '../services/display.service';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-list',
@@ -25,14 +25,14 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.updateList();
-    this.layout = this.display.getCurrentMode();
+    this.layout = this.display.getMode();
   }
 
   removeAlert(generator: string) {
     const dialogData = new ConfirmDialogModel(
-      "warning",
-      "Entfernen bestätigen",
-    "Möchten Sie die Schablone '" + generator + "' wirklich entfernen?");
+      'warning',
+      'Entfernen bestätigen',
+    'Möchten Sie die Schablone \'' + generator + '\' wirklich entfernen?');
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -44,16 +44,16 @@ export class ListComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      if(dialogResult) {
+      if (dialogResult) {
         this.remove(generator);
       }
-    })
+    });
   }
 
   remove(generator: string): void {
     this.http.post(environment.urlRoot + 'remove', JSON.stringify(generator)).subscribe(
-      result => { this.updateList() },
-      error => window.alert("unknown error: " + JSON.stringify(error))
+      result => { this.updateList(); },
+      error => window.alert('unknown error: ' + JSON.stringify(error))
     );
   }
 
@@ -62,7 +62,7 @@ export class ListComponent implements OnInit {
       result => {
                   this.generators = result as any;
                    },
-      error => window.alert("unknown error: " + JSON.stringify(error))
+      error => window.alert('unknown error: ' + JSON.stringify(error))
     );
   }
 
