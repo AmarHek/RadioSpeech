@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.displayNavbar = true;
     this.faUser = faLaptopMedical;
     this.setMode();
-    this.setTitle();
+    this.title = 'test';
     this.setUi();
   }
 
@@ -35,30 +35,36 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   private setMode(): void {
-    this.mode = this.displayService.getModeLong();
+    this.displayService.getMode().subscribe((value) => {
+      this.mode = value;
+    });
   }
 
+  /*
   private setTitle(): void {
     this.title = this.displayService.getTitle();
   }
+  */
 
   private setUi(): void {
-    this.ui = this.displayService.getUi();
+    this.displayService.getUi().subscribe((value) => {
+      this.ui = value;
+    });
     console.log(this.ui);
   }
 
   cycleMode(): void {
     this.displayService.cycleMode();
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.refreshView();
-    }, 50);
+    }, 50);*/
   }
 
   cycleUi(): void {
     this.displayService.cycleUI();
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.refreshView();
-    }, 50);
+    }, 50);*/
   }
 
   setNewMode(new_mode: string): void {
@@ -76,10 +82,10 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   refreshView(): void {
-    this.setMode();
-    this.setTitle();
-    this.setUi();
-    this.dictManager.setMode();
+    // this.setMode();
+    // this.setTitle();
+    // this.setUi();
+    // this.dictManager.setMode();
     /*setTimeout(() => {
       window.location.reload();
     }, 100);*/

@@ -15,17 +15,32 @@ import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/conf
 export class ListComponent implements OnInit {
 
   generators: string[] = [];
-  layout: string;
+  mode: string;
+  ui: string;
 
   constructor(private http: HttpClient,
               private dataParser: DataParserService,
               private timesService: TimeStampsService,
-              private display: DisplayService,
+              private displayService: DisplayService,
               private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.setMode();
+    this.setUi();
     this.updateList();
-    this.layout = this.display.getMode();
+  }
+
+  private setMode(): void {
+    this.displayService.getMode().subscribe((value) => {
+      this.mode = value;
+    });
+  }
+
+  private setUi(): void {
+    this.displayService.getUi().subscribe((value) => {
+      this.ui = value;
+    });
+    console.log(this.ui);
   }
 
   removeAlert(generator: string) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as N from '../../helper-classes/new_model';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -21,15 +21,17 @@ export class DictManagerService {
   private listUpdated = new Subject<N.myDict[]>();
 
   myUrl = url;
-  mode = '';
+  mode: string;
+  ui: string;
 
   constructor(private http: HttpClient,
               private displayService: DisplayService) {
     this.setMode();
+    this.setUI();
   }
 
   setUrl(mode: string) {
-    if (mode == 'radio') {
+    if (mode === 'radio') {
       this.myUrl += 'radio/';
     }
   }
@@ -43,12 +45,24 @@ export class DictManagerService {
     this.setUrl(this.mode);
   }*/
 
+  setMode() {
+    this.displayService.getMode().subscribe((value) => {
+      this.mode = value;
+    });
+  }
+
   getMode() {
     return this.mode;
   }
 
-  setMode() {
-    this.mode = this.displayService.getMode();
+  setUI() {
+    this.displayService.getUi().subscribe((value) => {
+      this.ui = value;
+    });
+  }
+
+  getUI() {
+    return this.ui;
   }
 
   getList() {
@@ -117,7 +131,7 @@ export class DictManagerService {
         console.log(res.message);
         console.log(res.dictId);
         let str = '';
-        if (res.dictId == 'false') {
+        if (res.dictId === 'false') {
           str =
             'Fehler beim Hochladen der Excel Datei. Die Tabelle wurde nicht korrekt befüllt. \n Folgender Fehler ist aufgetreten: \n\n';
         }

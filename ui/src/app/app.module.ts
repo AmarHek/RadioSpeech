@@ -60,9 +60,9 @@ import {DisplayService} from './services/display.service';
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        { path: 'radio/:name', component: RadiologyComponent},
-        { path: 'gastro/advanced/:name', component: GastroComponent},
-        { path: 'gastro/beginner/:name', component: GastroHierarchischComponent},
+        { path: 'Radiologie/:name', component: RadiologyComponent},
+        { path: 'Gastroenterologie/Fortgeschritten/:name', component: GastroComponent},
+        { path: 'Gastroenterologie/Hierarchisch/:name', component: GastroHierarchischComponent},
         { path: 'upload',     component: UploadComponent },
         { path: 'list',       component: ListComponent   },
         { path: 'edit/:name', component: EditStructureComponent},
