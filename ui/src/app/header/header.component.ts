@@ -17,14 +17,13 @@ export class HeaderComponent implements OnInit, DoCheck {
   public title: string;
 
   faUser: any;
-  constructor(private displayService: DisplayService,
-              private dictManager: DictManagerService) {}
+  constructor(private displayService: DisplayService) {}
 
   ngOnInit(): void {
     this.displayNavbar = true;
     this.faUser = faLaptopMedical;
     this.setMode();
-    this.title = 'test';
+    this.setTitle();
     this.setUi();
   }
 
@@ -40,11 +39,11 @@ export class HeaderComponent implements OnInit, DoCheck {
     });
   }
 
-  /*
   private setTitle(): void {
-    this.title = this.displayService.getTitle();
+    this.displayService.getTitle().subscribe((value) => {
+      this.title = value;
+    });
   }
-  */
 
   private setUi(): void {
     this.displayService.getUi().subscribe((value) => {
@@ -55,39 +54,18 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   cycleMode(): void {
     this.displayService.cycleMode();
-    /*setTimeout(() => {
-      this.refreshView();
-    }, 50);*/
   }
 
   cycleUi(): void {
     this.displayService.cycleUI();
-    /*setTimeout(() => {
-      this.refreshView();
-    }, 50);*/
   }
 
   setNewMode(new_mode: string): void {
     this.displayService.setMode(new_mode);
-    setTimeout(() => {
-      this.refreshView();
-    }, 100);
   }
 
   setNewUi(new_ui: string): void {
     this.displayService.setUi(new_ui);
-    setTimeout(() => {
-      this.refreshView();
-    }, 100);
   }
 
-  refreshView(): void {
-    // this.setMode();
-    // this.setTitle();
-    // this.setUi();
-    // this.dictManager.setMode();
-    /*setTimeout(() => {
-      window.location.reload();
-    }, 100);*/
-  }
 }

@@ -15,21 +15,23 @@ export class DisplayService {
   public displayHeader: boolean;
   public mode: BehaviorSubject<string>;
   public ui: BehaviorSubject<string>;
+  public title: BehaviorSubject<string>;
 
   // TODO: make observable
   public maxRowLength = 6;
 
-  // TODO Auf database auslagern
+  // TODO Auf database auslagern?
   private possibleModes: string[] = ['Gastroenterologie', 'Radiologie'];
   private possibleUIs = {'Gastroenterologie': ['Fortgeschritten', 'Hierarchisch'],
                         'Radiologie': ['Scroll']};
-  // private modesLong = {'Gastroenterologie': 'Gastroenterologie', 'Radiologie': 'Radiologie'};
-  private titles = {'Gastroenterologie': 'EndoSpeech', 'Radiologie': 'RadioSpeech'};
+  private titles = {'Gastroenterologie': 'EndoSpeech', 'Radiologie': 'RadioReport'};
 
   constructor(private router: Router) {
     this.displayHeader = true;
     this.initMode();
     this.initUI();
+    this.title = new BehaviorSubject<string>('init');
+    this.setTitle();
   }
 
   private initMode() {
@@ -86,15 +88,15 @@ export class DisplayService {
     this.setUi(UIs[next]);
   }
 
-
-  public getTitle(): string {
-    return this.titles[this.mode.value];
+  public setTitle() {
+    this.getMode().subscribe((value) => {
+      this.title.next(this.titles[value]);
+    });
   }
 
-  /*
-  public getModeLong(): string {
-    return this.modesLong[this.mode.value];
-  } */
+  public getTitle(): Observable<string> {
+    return this.title.asObservable();
+  }
 
   public updateDisplay() {
     this.displayHeader = !(this.router.url.includes(this.mode.value));
