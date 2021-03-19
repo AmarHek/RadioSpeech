@@ -4,16 +4,24 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <ul *ngIf="!isLoading">
-    <li *ngFor="let dict of dicts; let i = index">
-      <a [routerLink]="['/', this.mode, this.ui, dict.name]">{{dict.name}}</a> <!-- <span> hochgeladen am {{myArr[i]}}</span> -->
-      <button class="btn btn-danger ml-3" (click)="removeAlert(dict.id)">Entfernen</button>
-      <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', dict.name]">Edit</button>
-    </li>
-    <!-- <li *ngFor="let stamp of times">
-      {{ stamp }}
-    </li> -->
-  </ul>
+  <ng-container *ngIf="!isLoading">
+    <table>
+      <tr *ngFor="let dict of dicts; let i = index" class="list-row">
+        <td>
+          <ul>
+            <li><a [routerLink]="['/', this.mode, this.ui, dict.name]">{{dict.name}}</a></li>
+            <!-- <span> hochgeladen am {{myArr[i]}}</span> -->
+          </ul>
+        </td>
+        <td>
+          <button class="btn btn-danger ml-3" (click)="removeAlert(dict.id)">Entfernen</button>
+        </td>
+        <td>
+          <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', dict.name]">Edit</button>
+        </td>
+      </tr>
+    </table>
+  </ng-container>
 
   <div *ngIf="dicts.length === 0 && !isLoading">
     Es wurde noch nichts hochgeladen
