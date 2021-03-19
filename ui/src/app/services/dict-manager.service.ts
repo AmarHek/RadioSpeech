@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {DisplayService} from './display.service';
 
-const url = environment.urlRoot;
+const url = environment.urlRootEndo;
 
 @Injectable({
   providedIn: 'root',
@@ -28,22 +28,14 @@ export class DictManagerService {
               private displayService: DisplayService) {
     this.setMode();
     this.setUI();
+    this.getList();
   }
 
   setUrl(mode: string) {
-    if (mode === 'radio') {
+    if (mode === 'Radiologie') {
       this.myUrl += 'radio/';
     }
   }
-
-  /*
-  initMode(){
-    if(!localStorage.getItem("mode")){
-      localStorage.setItem("mode", "gastro");
-    }
-    this.mode = localStorage.getItem("mode");
-    this.setUrl(this.mode);
-  }*/
 
   setMode() {
     this.displayService.getMode().subscribe((value) => {
@@ -51,18 +43,10 @@ export class DictManagerService {
     });
   }
 
-  getMode() {
-    return this.mode;
-  }
-
   setUI() {
     this.displayService.getUi().subscribe((value) => {
       this.ui = value;
     });
-  }
-
-  getUI() {
-    return this.ui;
   }
 
   getList() {

@@ -1,25 +1,14 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as N from '../../helper-classes/new_model';
 import { faAngleDown, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
-
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { NgForm } from '@angular/forms';
-import { DictManagerService } from '../services/dict-manager.service';
 import { Subscription } from 'rxjs';
+
+import * as N from '../../helper-classes/new_model';
+import { DictManagerService } from '../services/dict-manager.service';
+import { DisplayService } from '../services/display.service';
 
 @Component({
   selector: 'app-edit-structure',
@@ -55,7 +44,8 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private route: ActivatedRoute,
     private dictManager: DictManagerService,
-    private router: Router
+    private router: Router,
+    private displayService: DisplayService
   ) { }
   @ViewChildren('myParts') myParts;
 
@@ -63,8 +53,8 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   pencilAlt = faPencilAlt;
   routeName: string;
   private editSub: Subscription;
-  isOpen = true;
-  kindVar: Array<string> = [];
+  // isOpen = true;
+  // kindVar: Array<string> = [];
   @ViewChild('f') signUpForm: NgForm;
   // parts: M.TopLevel[] = [];
   myEdit: N.myDict = { name: '', dict: [], id: '' };
@@ -126,10 +116,10 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   // --------------------------
   // uploaded is the dict that is about to be edited
   // errorMsg and is Loading are responsible for loading animation as long as api call is loading
-  uploaded: Array<N.TopLevel> = [this.startDis, this.topCat];
+  // uploaded: Array<N.TopLevel> = [this.startDis, this.topCat];
   errorMsg = '';
   isLoading = false;
-  mode = '';
+  mode: string;
 
   // this function manages the initiation process when anything is added to an existing dictionary.
   // One case for variables, attributes and categories
@@ -139,7 +129,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   addKat = false;
 
   ngOnInit() {
-    this.mode = this.dictManager.getMode();
+    this.setMode();
     console.log('Edit');
     console.log(this.mode);
     // gets chosen dict from dictManager service
@@ -153,7 +143,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
           .subscribe((list: N.myDict[]) => {
             this.isLoading = false;
             this.myEdit = list.find((d) => d.name === this.routeName);
-            if (this.myEdit == undefined) {
+            if (this.myEdit === undefined) {
               this.errorMsg =
                 'Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.';
             }
@@ -182,10 +172,18 @@ export class EditStructureComponent implements OnInit, OnDestroy {
 
   // not used, check if something breaks when removing
   /* toggle() {
-    this.isOpen = !this.isOpen;
-  } */
+  this.isOpen = !this.isOpen;
+} */
 
+  private setMode() {
+    this.displayService.getMode().subscribe((value) => {
+      this.mode = value;
+    });
+  }
 
+  // this is for adding a whole new top level element
+  // START -------------------------
+  // not used, check if they can be removed without crashing
   // if the user adds an Category to an existing disease, this function manages everything
   onSubmitKat() {
     console.log(this.signUpForm);
@@ -230,7 +228,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       ) {
         if (
           (<HTMLInputElement>document.getElementById('KvarKind' + i + k))
-            .value == 'text'
+            .value === 'text'
         ) {
           const myTextBefore = (<HTMLInputElement>(
             document.getElementById('KtextBefore' + i + k)
@@ -250,7 +248,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
           vars.push(myTextVar);
         } else if (
           (<HTMLInputElement>document.getElementById('KvarKind' + i + k))
-            .value == 'oc'
+            .value === 'oc'
         ) {
           const varOptions: Array<String> = (<HTMLInputElement>(
             document.getElementById('KvarOptions' + i + k)
@@ -267,7 +265,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         text: attText,
         normal: Boolean(attNormal),
         variables: vars,
-        judgementText: attJud == '' ? null : attJud
+        judgementText: attJud === '' ? null : attJud
 
       };
       sels.push(myAtt);
@@ -294,6 +292,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
 
     // console.log((<HTMLInputElement>document.getElementById("KAttName" + 0)).value);
   }
+
 
 
   // see onSubmitKat() for more detailed information
@@ -329,7 +328,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     ) {
       if (
         (<HTMLInputElement>document.getElementById('KvarKind' + this.addPosition + k))
-          .value == 'text'
+          .value === 'text'
       ) {
         const myTextBefore = (<HTMLInputElement>(
           document.getElementById('KtextBefore' + this.addPosition + k)
@@ -350,7 +349,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         vars.push(myTextVar);
       } else if (
         (<HTMLInputElement>document.getElementById('KvarKind' + this.addPosition + k))
-          .value == 'oc'
+          .value === 'oc'
       ) {
         const varOptions: Array<String> = (<HTMLInputElement>(
           document.getElementById('KvarOptions' + this.addPosition + k)
@@ -367,15 +366,15 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       text: attText,
       normal: Boolean(attNormal),
       variables: vars,
-      judgementText: attJud == '' ? null : attJud,
-      listGroup: attAuGroup == '' ? null : attAuGroup,
-      choiceGroup: attZuGroup == '' ? null : attZuGroup
+      judgementText: attJud === '' ? null : attJud,
+      listGroup: attAuGroup === '' ? null : attAuGroup,
+      choiceGroup: attZuGroup === '' ? null : attZuGroup
     };
     const positions = this.addPosition.split('').map(Number);
     const myVar: N.TopLevel = this.myEdit.dict[positions[0]];
-    if (myVar.kind == 'category') {
+    if (myVar.kind === 'category') {
       myVar.selectables.push(myAtt);
-    } else if (myVar.kind == 'disease') {
+    } else if (myVar.kind === 'disease') {
       myVar.categories[positions[1]].selectables.push(
         myAtt
       );
@@ -393,13 +392,12 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   }
 
 
-
   // see onSubmitKat() for more detailed information
   onSubmitVar() {
     let vari;
     if (
       (<HTMLInputElement>document.getElementById('KvarKind' + this.addPosition))
-        .value == 'text'
+        .value === 'text'
     ) {
       const myTextBefore = (<HTMLInputElement>(
         document.getElementById('KtextBefore' + this.addPosition)
@@ -418,7 +416,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       };
     } else if (
       (<HTMLInputElement>document.getElementById('KvarKind' + this.addPosition))
-        .value == 'oc'
+        .value === 'oc'
     ) {
       const varOptions: Array<String> = (<HTMLInputElement>(
         document.getElementById('KvarOptions' + this.addPosition)
@@ -429,9 +427,9 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     }
     const positions = this.addPosition.split('').map(Number);
     const myVar: N.TopLevel = this.myEdit.dict[positions[0]];
-    if (myVar.kind == 'category') {
+    if (myVar.kind === 'category') {
       myVar.selectables[positions[1]].variables.push(vari);
-    } else if (myVar.kind == 'disease') {
+    } else if (myVar.kind === 'disease') {
       myVar.categories[positions[1]].selectables[positions[2]].variables.push(
         vari
       );
@@ -447,7 +445,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   }
 
 
-  // this is for adding a whole new top level element
+
   // see onSubmitKat() for more detailed information
   onSubmit() {
     console.log(this.signUpForm);
@@ -455,7 +453,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     /*     startSel = <M.CheckBox>{name: ["paris", "1p"], text: "paris ist form", normal: true, variables: []};
         startCat = <M.Category>{name: "form", selectables: [this.startSel]};
         startDis = <M.Disease>{kind: "disease", name: "Polyp", categories: [this.startCat]}; */
-    if (this.signUpForm.value.allgData.typ == 'Krankheit') {
+    if (this.signUpForm.value.allgData.typ === 'Krankheit') {
       const cats: Array<N.Category> = [];
       for (let i = 0; i < Number(this.signUpForm.value.allgData.anzahl); i++) {
         const catName = (<HTMLInputElement>(
@@ -500,7 +498,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
           ) {
             if (
               (<HTMLInputElement>document.getElementById('varKind' + i + j + k))
-                .value == 'text'
+                .value === 'text'
             ) {
               const myTextBefore = (<HTMLInputElement>(
                 document.getElementById('textBefore' + i + j + k)
@@ -520,7 +518,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
               vars.push(myTextVar);
             } else if (
               (<HTMLInputElement>document.getElementById('varKind' + i + j + k))
-                .value == 'oc'
+                .value === 'oc'
             ) {
               const varOptions: Array<String> = (<HTMLInputElement>(
                 document.getElementById('varOptions' + i + j + k)
@@ -537,7 +535,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
             text: attText,
             normal: Boolean(attNormal),
             variables: vars,
-            judgementText: attJud == '' ? null : attJud
+            judgementText: attJud === '' ? null : attJud
 
           };
           sels.push(myAtt);
@@ -545,7 +543,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         const myCat = <N.Category>{
           kind: 'category',
           name: catName,
-          condition: catCon == '' ? undefined : catCon,
+          condition: catCon === '' ? undefined : catCon,
           selectables: sels,
         };
         cats.push(myCat);
@@ -557,7 +555,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       };
       this.myEdit.dict.push(dis);
       // this.dictionaryService.addDisease(dis);
-    } else if (this.signUpForm.value.allgData.typ == 'Kategorie') {
+    } else if (this.signUpForm.value.allgData.typ === 'Kategorie') {
       const catName = (<HTMLInputElement>document.getElementById('disName'))
         .value;
       let KCon;
@@ -599,7 +597,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         ) {
           if (
             (<HTMLInputElement>document.getElementById('KvarKind' + i + k))
-              .value == 'text'
+              .value === 'text'
           ) {
             const myTextBefore = (<HTMLInputElement>(
               document.getElementById('KtextBefore' + i + k)
@@ -619,7 +617,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
             vars.push(myTextVar);
           } else if (
             (<HTMLInputElement>document.getElementById('KvarKind' + i + k))
-              .value == 'oc'
+              .value === 'oc'
           ) {
             const varOptions: Array<String> = (<HTMLInputElement>(
               document.getElementById('KvarOptions' + i + k)
@@ -636,16 +634,16 @@ export class EditStructureComponent implements OnInit, OnDestroy {
           text: attText,
           normal: Boolean(attNormal),
           variables: vars,
-          judgementText: attJud == '' ? null : attJud,
-          listGroup: attAuGroup == '' ? null : attAuGroup,
-          choiceGroup: attZuGroup == '' ? null : attZuGroup
+          judgementText: attJud === '' ? null : attJud,
+          listGroup: attAuGroup === '' ? null : attAuGroup,
+          choiceGroup: attZuGroup === '' ? null : attZuGroup
         };
         sels.push(myAtt);
       }
       const myCat = <N.Category>{
         kind: 'category',
         name: catName,
-        condition: KCon == '' ? null : KCon,
+        condition: KCon === '' ? null : KCon,
         selectables: sels,
       };
       this.myEdit.dict.push(myCat);
@@ -660,8 +658,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     // console.log((<HTMLInputElement>document.getElementById("KAttName" + 0)).value);
   }
 
-
-
   // this is for deleting anything, from variables to attributes, category and diseases. Therefore the different cases for each level
   deleteDisease(index: Array<number>) {
     // this.myDict.dict.splice()
@@ -671,21 +667,21 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         this.myEdit.dict.splice(index[0], 1);
         break;
       case 2:
-        if (myVar.kind == 'disease') {
+        if (myVar.kind === 'disease') {
           myVar.categories.splice(index[1], 1);
-        } else if (myVar.kind == 'category') {
+        } else if (myVar.kind === 'category') {
           myVar.selectables.splice(index[1], 1);
         }
         break;
       case 3:
-        if (myVar.kind == 'disease') {
+        if (myVar.kind === 'disease') {
           myVar.categories[index[1]].selectables.splice(index[2], 1);
-        } else if (myVar.kind == 'category') {
+        } else if (myVar.kind === 'category') {
           myVar.selectables[index[1]].variables.splice(index[2], 1);
         }
         break;
       case 4:
-        if (myVar.kind == 'disease') {
+        if (myVar.kind === 'disease') {
           myVar.categories[index[1]].selectables[index[2]].variables.splice(
             index[3],
             1
@@ -695,7 +691,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     }
   }
 
-  // START -------------------------
   // These Methods are used to calculate how many options should pop on the screen after selecting a number
   computeCats() {
     for (let i = 0; i < this.myDisease.anzahlCat; i++) {
@@ -725,33 +720,33 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     console.log(this.myDisease);
     console.log(this.signUpForm);
   }
-
   Kprinter() {
     console.log(this.myAtt);
     console.log(this.signUpForm);
   }
+
   // END -------------------------------
 
   // START +++++++++++++++++++++++++++++++
   // These methods return the kind of the element that occurs in the dropdown
-
   topLevelType(top: N.TopLevel) {
-    if (top.kind == 'category') {
+    if (top.kind === 'category') {
       return top.selectables;
-    } else if (top.kind == 'disease') {
+    } else if (top.kind === 'disease') {
       return top.categories;
     }
   }
+
   secondLevelType(second) {
-    if (second.kind == 'category') {
+    if (second.kind === 'category') {
       return second.selectables;
-    } else if (second.kind == 'box') {
+    } else if (second.kind === 'box') {
       return second.variables;
     }
   }
 
   thirdLevelType(third) {
-    if (third.kind == 'box') {
+    if (third.kind === 'box') {
       return third.variables;
     }
   }
@@ -760,45 +755,35 @@ export class EditStructureComponent implements OnInit, OnDestroy {
 
   // just rotates the icon
   rotateIcon(x: number, y: number, z: number, p) {
-    if (y == undefined) {
-      document.getElementById('angle' + x).classList.contains('firstTime')
-        ? document.getElementById('angle' + x).classList.toggle('myRotOut')
-        : undefined;
+    if (y === undefined) {
+      if (document.getElementById('angle' + x).classList.contains('firstTime')) {
+        document.getElementById('angle' + x).classList.toggle('myRotOut');
+      }
       document.getElementById('angle' + x).classList.toggle('myRotIn');
       document.getElementById('angle' + x).classList.toggle('fa-rotate-180');
       document.getElementById('angle' + x).classList.add('firstTime');
-    } else if (z == undefined) {
-      document.getElementById('angle' + x + y).classList.contains('firstTime')
-        ? document.getElementById('angle' + x + y).classList.toggle('myRotOut')
-        : undefined;
+    } else if (z === undefined) {
+      if (document.getElementById('angle' + x + y).classList.contains('firstTime')) {
+        document.getElementById('angle' + x + y).classList.toggle('myRotOut');
+      }
       document.getElementById('angle' + x + y).classList.toggle('myRotIn');
-      document
-        .getElementById('angle' + x + y)
-        .classList.toggle('fa-rotate-180');
+      document.getElementById('angle' + x + y).classList.toggle('fa-rotate-180');
       document.getElementById('angle' + x + y).classList.add('firstTime');
     } else {
-      document
-        .getElementById('angle' + x + y + z)
-        .classList.contains('firstTime')
-        ? document
-          .getElementById('angle' + x + y + z)
-          .classList.toggle('myRotOut')
-        : undefined;
+      if (document.getElementById('angle' + x + y + z).classList.contains('firstTime')) {
+        document.getElementById('angle' + x + y + z).classList.toggle('myRotOut');
+      }
       document.getElementById('angle' + x + y + z).classList.toggle('myRotIn');
-      document
-        .getElementById('angle' + x + y + z)
-        .classList.toggle('fa-rotate-180');
+      document.getElementById('angle' + x + y + z).classList.toggle('fa-rotate-180');
       document.getElementById('angle' + x + y + z).classList.add('firstTime');
     }
-
     console.log(p);
   }
 
   // START --------------------------
   // These two functions handle renaming of all kinds, from diseases to variables
-
   renameMode(mode: string, arr: Array<number>, kind: string, option?: string) {
-    if (option == undefined) {
+    if (option === undefined) {
       option = '';
     }
     const ind = arr.join('');
@@ -809,7 +794,8 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     switch (mode) {
       case 'rename':
         console.log('MYPARTS');
-        // console.log(this.myParts._results[0].nativeElement.nextElementSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[3].childNodes[1]);
+        // console.log(this.myParts._results[0].nativeElement
+        // .nextElementSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[3].childNodes[1]);
         console.log(this.myParts._results[0].nativeElement.nextElementSibling);
 
         b.value = 'pressed';
@@ -819,7 +805,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         if (b != null) {
           /* console.log(new Date().getSeconds());
           console.log(b, ind, b.value == "pressed"); */
-          return b.value == 'pressed';
+          return b.value === 'pressed';
         } else {
           return false;
         }
@@ -848,20 +834,20 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         this.myEdit.dict[ind[0]].name = c.value;
         break;
       case 2:
-        if (myVar.kind == 'disease') {
+        if (myVar.kind === 'disease') {
           myVar.categories[ind[1]].name = c.value;
-        } else if (myVar.kind == 'category') {
-          if (option == 'name') {
+        } else if (myVar.kind === 'category') {
+          if (option === 'name') {
             myVar.selectables[ind[1]].name = c.value
               .split(',')
               .map((s) => s.trim());
-          } else if (option == 'text') {
+          } else if (option === 'text') {
             myVar.selectables[ind[1]].text = c.value;
-          } else if (option == 'cg') {
+          } else if (option === 'cg') {
             myVar.selectables[ind[1]].choiceGroup = c.value;
-          } else if (option == 'ag') {
+          } else if (option === 'ag') {
             myVar.selectables[ind[1]].listGroup = c.value;
-          } else if (option == 'jt') {
+          } else if (option === 'jt') {
             myVar.selectables[ind[1]].judgementText = c.value;
           }
 
@@ -869,25 +855,25 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         }
         break;
       case 3:
-        if (myVar.kind == 'disease') {
-          if (option == 'name') {
+        if (myVar.kind === 'disease') {
+          if (option === 'name') {
             myVar.categories[ind[1]].selectables[ind[2]].name = c.value
               .split(',')
               .map((s) => s.trim());
-          } else if (option == 'text') {
+          } else if (option === 'text') {
             myVar.categories[ind[1]].selectables[ind[2]].text = c.value;
-          } else if (option == 'cg') {
+          } else if (option === 'cg') {
             myVar.categories[ind[1]].selectables[ind[2]].choiceGroup = c.value;
-          } else if (option == 'ag') {
+          } else if (option === 'ag') {
             myVar.categories[ind[1]].selectables[ind[2]].listGroup = c.value;
-          } else if (option == 'jt') {
+          } else if (option === 'jt') {
             myVar.categories[ind[1]].selectables[ind[2]].judgementText = c.value;
           }
-        } else if (myVar.kind == 'category') {
+        } else if (myVar.kind === 'category') {
           const myVar2 = myVar.selectables[ind[1]].variables[ind[2]];
-          if (myVar2.kind == 'oc') {
+          if (myVar2.kind === 'oc') {
             myVar2.values = c.value.split(',').map((s) => s.trim());
-          } else if (myVar2.kind == 'text') {
+          } else if (myVar2.kind === 'text') {
             myVar2.textBefore = c.elements[0].value;
             myVar2.unit = c.elements[1].value;
             myVar2.textAfter = c.elements[2].value;
@@ -895,12 +881,12 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         }
         break;
       case 4:
-        if (myVar.kind == 'disease') {
+        if (myVar.kind === 'disease') {
           const myVar2 =
             myVar.categories[ind[1]].selectables[ind[2]].variables[ind[3]];
-          if (myVar2.kind == 'oc') {
+          if (myVar2.kind === 'oc') {
             myVar2.values = c.value.split(',').map((s) => s.trim());
-          } else if (myVar2.kind == 'text') {
+          } else if (myVar2.kind === 'text') {
             myVar2.textBefore = c.elements[0].value;
             myVar2.unit = c.elements[1].value;
             myVar2.textAfter = c.elements[2].value;
@@ -913,6 +899,8 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     console.log(this.myDict.dict[ind]); */
     console.log(this.myEdit.dict);
   }
+
+
   addToDict(kind: string, position: Array<number>) {
     this.addPosition = position.join('');
     this.signUpForm.reset();
@@ -944,7 +932,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
 
   }
 
-
   // cancels the adding of any new information
   cancelAdding() {
     this.addAtt = false;
@@ -955,7 +942,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     this.myAtt = { anzahlAtt: undefined, myVars: [] };
   }
 
-  // not used, check if they can be removed without crashing
+
   /*   logg2(arr: Array<number>, kind: string) {
       let ind = arr.join("");
       let b = document.getElementById("rename" + kind + ind) as HTMLButtonElement;
@@ -969,7 +956,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       b.value = "";
     }
    */
-
 
   // update dict after making changes and saving them
   updateDict() {
@@ -986,11 +972,12 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     b.value = "";
     console.log(this.new_parts);
   } */
-
   // just print and helper functions for debugging
+
   Myprinter() {
     console.log('triggered');
   }
+
   Myprinter2() {
     this.dictManager.addDict(this.myEdit);
   }

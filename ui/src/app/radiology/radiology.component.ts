@@ -1,19 +1,19 @@
-import {Component, OnInit, SimpleChanges} from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { Location } from "@angular/common";
-import { ViewChild } from "@angular/core";
+import {Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
+import { ViewChild } from '@angular/core';
 
-import { environment } from "../../environments/environment";
-import * as M from "../../helper-classes/model";
-import * as G from "../../helper-classes/generator";
-import {DataParserService} from "../services/dataParser.service";
-import {OptionsComponent} from "../options/options.component";
+import { environment } from '../../environments/environment';
+import * as M from '../../helper-classes/model';
+import * as G from '../../helper-classes/generator';
+import {DataParserService} from '../services/dataParser.service';
+import {OptionsComponent} from '../options/options.component';
 
 @Component({
-  selector: "app-workspace",
-  templateUrl: "./radiology.component.html",
-  styleUrls: ["./radiology.component.scss"],
+  selector: 'app-workspace',
+  templateUrl: './radiology.component.html',
+  styleUrls: ['./radiology.component.scss'],
 })
 
 export class RadiologyComponent implements OnInit {
@@ -22,8 +22,8 @@ export class RadiologyComponent implements OnInit {
   defaultParts: M.TopLevel[];
 
   categories: M.Category[];
-  report: string = "";
-  judgement: string = "";
+  report = '';
+  judgement = '';
 
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
@@ -40,14 +40,14 @@ export class RadiologyComponent implements OnInit {
 
   getData() {
     this.route.paramMap.subscribe(ps => {
-      if (ps.get("name")) {
-        this.http.post(environment.urlRoot + "get", JSON.stringify(ps.get("name"))).subscribe(
+      if (ps.get('name')) {
+        this.http.post(environment.urlRootRadio + 'get', JSON.stringify(ps.get('name'))).subscribe(
           worked => {
             this.parts = worked as any;
-            this.defaultParts = JSON.parse(JSON.stringify(worked))
-            this.categories = this.dataParser.extractCategories(this.parts)
+            this.defaultParts = JSON.parse(JSON.stringify(worked));
+            this.categories = this.dataParser.extractCategories(this.parts);
           },
-          error => window.alert("An unknown error occurred: " + JSON.stringify(error))
+          error => window.alert('An unknown error occurred: ' + JSON.stringify(error))
         );
       }
     });
@@ -58,33 +58,33 @@ export class RadiologyComponent implements OnInit {
   }
 
   resetText(): void {
-    this.report = "";
-    this.judgement = "";
+    this.report = '';
+    this.judgement = '';
   }
 
-  onClick(){
+  onClick() {
     setTimeout(() => this.updateText(), 1);
   }
 
   onInput(ev) {
-    console.log("event");
+    console.log('event');
     console.log(ev);
-    const inp = (document.getElementById("input") as HTMLTextAreaElement).value;
-    let dif: string;
-    console.log("inp", inp);
-    console.log("dif", dif);
+    const inp = (document.getElementById('input') as HTMLTextAreaElement).value;
+    const dif = '';
+    console.log('inp', inp);
+    console.log('dif', dif);
   }
 
   makeNormal() {
     for (const p of this.parts) {
-      if(p.kind === "category") {
+      if (p.kind === 'category') {
         G.makeNormalCategory(p);
       }
     }
     this.updateText();
   }
 
-  reset(){
+  reset() {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts);
     setTimeout(() => this.optionsComponent.initRows(), 5);
