@@ -1,13 +1,20 @@
-  <form>
-    <div class="settings">
-      <div>
-        <label class="mr-3" for="uploadFile">Datei: </label>
-        <input class="mr-3" type="file" id="uploadFile"/>
-      </div>
-      <div>
-        <label class="mr-3" for="NameOfFile">Name: </label>
-        <input class="mr-3" type="text" name="name" id="NameOfFile" [(ngModel)]="name">
-        <button class="btn btn-info ml-3" (click)="upload()">Upload</button>
-      </div>
+<form [formGroup]="form">
+  <div class="settings">
+    <div>
+      <label class="mr-3" for="uploadFile">Datei: </label>
+      <input class="mr-3" type="file" id="uploadFile"/>
     </div>
-  </form>
+    <div>
+      <label class="mr-3" for="NameOfFile">Name: </label>
+      <input class="mr-3" type="text" name="name" id="NameOfFile" [(ngModel)]="name">
+
+      <ng-container *ngIf="this.mode == 'Gastroenterologie'">
+        <button class="btn btn-info ml-3" (click)="uploadNew()">Upload</button>
+      </ng-container>
+      <ng-container *ngIf="this.mode == 'Radiologie'">
+        <button class="btn btn-info ml-3" (click)="upload()">Upload</button>
+      </ng-container>
+    </div>
+  </div>
+</form>
+

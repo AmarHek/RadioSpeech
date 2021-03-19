@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TimeStampsService } from '../services/time-stamps.service';
 import { FormGroup } from '@angular/forms';
 import { DictManagerService } from '../services/dict-manager.service';
+import {DisplayService} from '../services/display.service';
 
 @Component({
   selector: 'app-upload',
@@ -13,15 +14,25 @@ import { DictManagerService } from '../services/dict-manager.service';
 })
 export class UploadComponent implements OnInit {
   name = '';
-  months: string[] = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  months: string[] = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+    'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  mode: string;
 
   form: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
               private timesService: TimeStampsService,
-              private dictManager: DictManagerService) { }
+              private dictManager: DictManagerService,
+              private displayService: DisplayService) { }
 
   ngOnInit() {
+    this.setMode();
+  }
+
+  private setMode() {
+    this.displayService.getMode().subscribe((value) => {
+      this.mode = value;
+    });
   }
 
   uploadNew() {
@@ -45,7 +56,7 @@ export class UploadComponent implements OnInit {
       const dat = new Date();
       const base64 = (reader.result as string).replace(/^.*?base64,/, '');
       const data = { name: this.name + ' ' + dat.getDate() + ' ' + this.months[dat.getMonth()] + ' ' + dat.getFullYear() , data: base64 };
-      this.http.post(environment.urlRoot + 'upload', data, { 'observe': 'response' } ).subscribe((result) => {
+      this.http.post(environment.urlRootRadio + 'upload', data, { 'observe': 'response' } ).subscribe((result) => {
         window.alert('Upload Erfolgreich');
         this.router.navigate(['list']);
 

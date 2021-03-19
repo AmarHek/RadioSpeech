@@ -7,7 +7,7 @@
   <ul *ngIf="!isLoading">
     <li *ngFor="let dict of dicts; let i = index">
       <a [routerLink]="['/', this.mode, this.ui, dict.name]">{{dict.name}}</a> <!-- <span> hochgeladen am {{myArr[i]}}</span> -->
-      <button class="btn btn-danger ml-3" (click)="onRemove(dict.id)">Entfernen</button>
+      <button class="btn btn-danger ml-3" (click)="removeAlert(dict.id)">Entfernen</button>
       <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', dict.name]">Edit</button>
     </li>
     <!-- <li *ngFor="let stamp of times">

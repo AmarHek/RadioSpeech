@@ -53,11 +53,11 @@ export class ListComponent implements OnInit, OnDestroy {
     console.log(this.ui);
   }
 
-  removeAlert(generator: string) {
+  removeAlert(genOrId: string) {
     const dialogData = new ConfirmDialogModel(
       'warning',
       'Entfernen bestätigen',
-    'Möchten Sie die Schablone \'' + generator + '\' wirklich entfernen?');
+    'Möchten Sie die Schablone \'' + genOrId + '\' wirklich entfernen?');
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -70,7 +70,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.remove(generator);
+        if (this.mode === 'Radiologie') {
+          this.remove(genOrId);
+        } else if (this.mode === 'Gastroenterologie') {
+          this.removeDict(genOrId);
+        }
       }
     });
   }
@@ -104,7 +108,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.dictSub.unsubscribe();
   }
 
-  onRemove(id: string): void {
+  removeDict(id: string): void {
     this.dictManagerService.remove(id);
   }
 
