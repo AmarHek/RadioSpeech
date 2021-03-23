@@ -6,35 +6,29 @@ export class Keyword2 {
     position: number;
     active: string;
     text: string;
-    buttonPos: number;
     normal: boolean;
     code: string;
-      
-    constructor(){
-     
-        
-    }
+
+    constructor() {}
 }
 
-export class MyVariable{
+export class MyVariable {
     kind: string;
-    textAfter: string = "";
-    textBefore: string = "";
+    textAfter = '';
+    textBefore = '';
     options: string[] = [];
     varFound: string[] = [];
 }
 
-export class Category{
+export class Category {
     keys: Keyword2[];
     name: string;
     active: boolean;
     position: number;
     condition: string;
-
-    
 }
 
-export class Disease{
+export class Disease {
     name: string;
     categories: Category[];
     active: boolean;
@@ -44,7 +38,7 @@ export class Disease{
     positionEnd: number[];
 }
 
-export class TextDic{
+export class TextDic {
     disName: string;
     reports: {text: string, category: string, key: string, code: string, condition: string}[];
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as M from '../../helper-classes/new_model'
-import { Keyword2, Category, Disease, TextDic } from './Keyword';
+import { Keyword2, Disease, TextDic } from './Keyword';
 import { InputParserService } from '../services/input-parser.service';
 import { TextOutputService } from '../services/text-output.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';

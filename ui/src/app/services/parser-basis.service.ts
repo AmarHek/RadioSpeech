@@ -13,10 +13,7 @@ import { TextOutputService } from './text-output.service';
 export class ParserBasisService {
 
   constructor(private textOut: TextOutputService) { }
-
-
   // DATA STRUCTURES
-
   // Contains whole Polyp with its Categories and Keywords inside of each Category
   diseases: Array<Disease> = [];
   startingTime: Date;
@@ -35,8 +32,6 @@ export class ParserBasisService {
   */
   // Create a Dictionary from the database json(e.g. the polyp Object)
   createStartDict(rootEl: M.TopLevel[]) {
-
-
     // loops through all diseases and categories: Form, Lokalisierung...
     for (const El of rootEl) {
       let disName = '';
@@ -72,7 +67,6 @@ export class ParserBasisService {
     }
     // makes an entry for this disease in output data structure
     this.textOut.initDiseaseText(this.diseases);
-    console.log('pimmel');
     console.log(this.diseases);
     return this.diseases;
   }
