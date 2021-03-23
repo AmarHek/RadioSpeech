@@ -61,9 +61,12 @@ export class DisplayService {
   }
 
   private initUI() {
+    // TODO: Bugfix
     const storageUi = localStorage.getItem(LAST_UI_STORED);
     const UIs: string[] = this.possibleUIs[this.mode.value];
     if (!storageUi || !UIs.includes(storageUi)) {
+      console.log(UIs);
+      console.log(LAST_UI_STORED);
       localStorage.setItem(LAST_UI_STORED, UIs[0]);
     }
     this.ui = new BehaviorSubject<string>(storageUi);
