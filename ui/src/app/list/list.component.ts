@@ -1,14 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { TimeStampsService } from '../services/time-stamps.service';
-import {DataParserService} from '../services/dataParser.service';
-import {DisplayService} from '../services/display.service';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/confirm-dialog.component';
+import { DataParserService } from '../services/dataParser.service';
+import { DisplayService } from '../services/display.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import * as N from '../../helper-classes/new_model';
-import {Subscription} from 'rxjs';
-import {DictManagerService} from '../services/dict-manager.service';
+import { Subscription } from 'rxjs';
+import { DictManagerService } from '../services/dict-manager.service';
 
 
 @Component({
@@ -26,18 +26,21 @@ export class ListComponent implements OnInit, OnDestroy {
   isLoading: boolean;
 
   constructor(private http: HttpClient,
-              private dataParser: DataParserService,
-              private timesService: TimeStampsService,
-              private displayService: DisplayService,
-              private dialog: MatDialog,
-              private dictManagerService: DictManagerService) { }
+    private dataParser: DataParserService,
+    private timesService: TimeStampsService,
+    private displayService: DisplayService,
+    private dialog: MatDialog,
+    private dictManagerService: DictManagerService) { }
 
   ngOnInit() {
     this.isLoading = true;
     this.setMode();
     this.setUi();
-    this.updateGenerators();
-    this.updateList();
+    if (this.mode == "Radiologie") {
+      this.updateGenerators();
+    } else {      
+      this.updateList();
+    }
   }
 
   private setMode(): void {
@@ -57,14 +60,14 @@ export class ListComponent implements OnInit, OnDestroy {
     const dialogData = new ConfirmDialogModel(
       'warning',
       'Entfernen bestätigen',
-    'Möchten Sie die Schablone \'' + genOrId + '\' wirklich entfernen?');
+      'Möchten Sie die Schablone \'' + genOrId + '\' wirklich entfernen?');
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.width = '400px';
     dialogConfig.data = dialogData;
-    dialogConfig.position = {top: '50px'};
+    dialogConfig.position = { top: '50px' };
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
 
@@ -89,13 +92,14 @@ export class ListComponent implements OnInit, OnDestroy {
   updateGenerators(): void {
     this.http.post(environment.urlRootRadio + 'list', '').subscribe(
       result => {
-                  this.generators = result as any;
-                   },
+        this.generators = result as any;
+      },
       error => window.alert('unknown error: ' + JSON.stringify(error))
     );
   }
 
   updateList(): void {
+    this.dictManagerService.getList();
     this.dictSub = this.dictManagerService.getListUpdateListener().subscribe((list: N.myDict[]) => {
       this.dicts = list;
       this.isLoading = false;

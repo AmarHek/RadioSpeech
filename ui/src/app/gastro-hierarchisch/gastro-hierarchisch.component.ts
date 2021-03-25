@@ -9,6 +9,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { DictManagerService } from '../services/dict-manager.service';
 import { InputParserHierarchischService } from '../services/input-parser-hierarchisch.service';
+import { ParserBasisService } from '../services/parser-basis.service';
 
 
 declare const $: any;
@@ -23,7 +24,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
   constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
     private route: ActivatedRoute, private inputParser: InputParserHierarchischService,
     private textOut: TextOutputService, private sanitizer: DomSanitizer,
-    private dictManager: DictManagerService, private router: Router) {
+    private dictManager: DictManagerService, private router: Router, private base: ParserBasisService) {
   }
 
   errorMsg = "";
@@ -92,8 +93,8 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
 
 
     // ##### needs change
-    this.diseases = this.inputParser.diseases;
-    this.missing = this.inputParser.missing;
+    this.diseases = this.base.diseases;
+    this.missing = this.base.missing;
     this.firstTime = false;
     this.myInput = this.inputParser.twInput;
 
@@ -181,19 +182,19 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
     // continue here
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput.toLowerCase());
     let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
-    this.end = this.inputParser.end;
+    this.end = this.base.end;
     this.textOut.finalOut(this.end, inpArr);
     this.jsDown = this.textOut.downJson;
     this.jsDown2 = this.textOut.downJson2;
     if (this.end) {
       this.triggerClick();
     }
-    //this.end0 = this.inputParser.end0;
+    //this.end0 = this.base.end0;
     if (this.end0) {
       // document.getElementById("Form1").innerHTML = "bye";
       this.inner = "bye";
     }
-    //this.missing = this.inputParser.missing;
+    //this.missing = this.base.missing;
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if (this.myInput.again) {
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
