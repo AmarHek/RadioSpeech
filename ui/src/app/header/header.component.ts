@@ -49,7 +49,6 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.displayService.getUi().subscribe((value) => {
       this.ui = value;
     });
-    console.log(this.ui);
   }
 
   cycleMode(): void {

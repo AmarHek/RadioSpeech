@@ -103,7 +103,6 @@ export class DisplayService {
 
   public updateDisplay() {
     this.displayHeader = !(this.router.url.includes(this.mode.value));
-    console.log(this.displayHeader);
   }
 
 }

@@ -57,7 +57,6 @@ export class DictManagerService {
       .pipe(
         map((getter) => {
           return getter.myDicts.map((retDict) => {
-            console.log(retDict);
             return {
               id: retDict._id,
               dict: retDict.dict,
@@ -68,8 +67,6 @@ export class DictManagerService {
       )
       .subscribe((transData) => {
         this.myList = transData;
-        console.log('Im here');
-        console.log(this.myList);
         this.listUpdated.next([...this.myList]);
       });
   }
@@ -82,10 +79,7 @@ export class DictManagerService {
     this.http
       .delete(this.myUrl + id)
       .subscribe(() => {
-        console.log('deleted');
-        const update = this.myList.filter((dict) => dict.id !== id);
-        this.myList = update;
-        console.log(update);
+        this.myList = this.myList.filter((dict) => dict.id !== id);
         this.listUpdated.next([...this.myList]);
         // this.myList = update;
       });
@@ -100,7 +94,6 @@ export class DictManagerService {
       )
       .subscribe((response) => {
         myDict.id = response.dictId;
-        console.log(response.message);
         this.myList.push(myDict);
       });
   }
@@ -112,8 +105,6 @@ export class DictManagerService {
         postData
       )
       .subscribe((res) => {
-        console.log(res.message);
-        console.log(res.dictId);
         let str = '';
         if (res.dictId === 'false') {
           str =
@@ -130,7 +121,6 @@ export class DictManagerService {
         name: myDict.name,
       })
       .subscribe((response) => {
-        console.log(response);
         this.myList[this.myList.findIndex((d) => d.id === myDict.id)] = myDict;
         this.listUpdated.next([...this.myList]);
       });
