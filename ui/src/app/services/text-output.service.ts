@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category, Disease, TextDic } from '../gastro/Keyword';
+import { Category, Disease, TextDic } from '../../helper-classes/Keyword';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({

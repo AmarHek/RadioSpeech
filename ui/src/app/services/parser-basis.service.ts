@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as M from '../../helper-classes/new_model';
-import { Keyword2, Category, Disease, MyVariable, TextDic } from '../gastro/Keyword';
+import { Keyword2, Category, Disease, MyVariable, TextDic } from '../../helper-classes/Keyword';
 import { TextOutputService } from './text-output.service';
 
 @Injectable({

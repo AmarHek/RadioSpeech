@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as M from '../../helper-classes/new_model';
-import { Disease, TextDic } from '../gastro/Keyword';
+import { Disease, TextDic } from '../../helper-classes/Keyword';
 import { ParserBasisService } from './parser-basis.service';
 import { TextOutputService } from './text-output.service';
 
