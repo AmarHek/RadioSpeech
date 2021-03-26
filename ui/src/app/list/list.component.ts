@@ -36,9 +36,9 @@ export class ListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.setMode();
     this.setUi();
-    if (this.mode == "Radiologie") {
+    if (this.mode === 'Radiologie') {
       this.updateGenerators();
-    } else {      
+    } else {
       this.updateList();
     }
   }
@@ -109,7 +109,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dictSub.unsubscribe();
+    if (this.mode === 'Gastroenterologie') {
+      this.dictSub.unsubscribe();
+    }
   }
 
   removeDict(id: string): void {

@@ -9,7 +9,7 @@ import { EventEmitter } from '@angular/core';
 export class AttributeComponent implements OnInit {
 
   @Input() mode: string;
-  
+
   @Input() myAttAnzVar: any = 0;
   @Output() myAttAnzVarChange = new EventEmitter();
 
@@ -22,13 +22,12 @@ export class AttributeComponent implements OnInit {
   @Input() augroupID: string;
 
 
-  
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  changeAnzVar(){
+  changeAnzVar() {
     this.myAttAnzVarChange.emit(this.myAttAnzVar);
   }
 

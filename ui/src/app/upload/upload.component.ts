@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
@@ -28,6 +28,8 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.setMode();
   }
+
+  // TODO: fix Formgroup
 
   private setMode() {
     this.displayService.getMode().subscribe((value) => {
@@ -62,7 +64,7 @@ export class UploadComponent implements OnInit {
 
       }, (error) => {
         if (error instanceof ErrorEvent) {
-          window.alert('an unkown error has occurred');
+          window.alert('an unknown error has occurred');
         } else {
           window.alert('parsing failure: ' + (error as any).error);
         }
@@ -72,4 +74,5 @@ export class UploadComponent implements OnInit {
       window.alert('The following error occurred:\n' + error);
     };
   }
+
 }

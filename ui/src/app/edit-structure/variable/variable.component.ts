@@ -5,7 +5,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
   templateUrl: './variable.component.html',
   styleUrls: ['./variable.component.css']
 })
-export class VariableComponent implements OnInit { 
+export class VariableComponent implements OnInit {
   @Input() myAttKind: string;
   @Input() kindID: string;
   @Input() tbID: string;
