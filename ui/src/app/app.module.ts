@@ -14,6 +14,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from './app.component';
 import { GastroComponent } from './gastro/gastro.component';
+import { GastroHierarchischComponent } from './gastro-hierarchisch/gastro-hierarchisch.component';
 import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
 import { SortCategoriesPipe } from './pipes/sort-categories.pipe';
@@ -25,7 +26,9 @@ import { VariablesComponent } from './variables/variables.component';
 import { InputModalComponent } from './variables/inputModal/inputModal.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditStructureComponent } from './edit-structure/edit-structure.component';
-import { GastroHierarchischComponent } from './gastro-hierarchisch/gastro-hierarchisch.component';
+import { DiseaseComponent } from './edit-structure/disease/disease.component';
+import { VariableComponent } from './edit-structure/variable/variable.component';
+import { AttributeComponent } from './edit-structure/attribute/attribute.component';
 import {DisplayService} from './services/display.service';
 
 @NgModule({
@@ -43,7 +46,11 @@ import {DisplayService} from './services/display.service';
     VariablesComponent,
     InputModalComponent,
     ConfirmDialogComponent,
-    EditStructureComponent
+    EditStructureComponent,
+    DiseaseComponent,
+    VariableComponent,
+    AttributeComponent,
+
   ],
   imports: [
     BrowserModule,
