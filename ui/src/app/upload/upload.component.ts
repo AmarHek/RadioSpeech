@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { TimeStampsService } from '../services/time-stamps.service';
-import { FormGroup } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { DictManagerService } from '../services/dict-manager.service';
 import {DisplayService} from '../services/display.service';
 
@@ -27,6 +27,7 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     this.setMode();
+    this.initForm();
   }
 
   // TODO: fix Formgroup
@@ -34,6 +35,15 @@ export class UploadComponent implements OnInit {
   private setMode() {
     this.displayService.getMode().subscribe((value) => {
       this.mode = value;
+    });
+  }
+
+  private initForm() {
+    this.form = new FormGroup({
+      'name': new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      'image': new FormControl(null, {validators: [Validators.required]})
     });
   }
 
