@@ -36,7 +36,9 @@ export class ListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.setMode();
     this.setUi();
+    console.log(this.mode);
     if (this.mode === 'Radiologie') {
+      //this.updateList();
       this.updateGenerators();
     } else {
       this.updateList();
@@ -99,6 +101,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   updateList(): void {
+    
     this.dictManagerService.getList();
     this.dictSub = this.dictManagerService.getListUpdateListener().subscribe((list: N.myDict[]) => {
       this.dicts = list;
