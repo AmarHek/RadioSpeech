@@ -43,9 +43,7 @@ export class OptionsComponent implements OnInit {
   }
 
   private determineWidth() {
-    console.log(this.maxRowLength);
     this.width = 88 / this.maxRowLength;
-    console.log(this.width);
   }
 
   setMinRowLength(cats: M.Category[]) {

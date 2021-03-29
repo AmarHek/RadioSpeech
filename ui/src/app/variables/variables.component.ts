@@ -59,8 +59,12 @@ export class VariablesComponent implements OnInit {
     }
   }
 
-  clicked() {
-
+  clicked(variable: Variable, value?: string) {
+    if (variable.kind === 'oc') {
+      if (variable.value === value) {
+        variable.value = null;
+      }
+    }
     this.clickEvent.emit();
   }
 

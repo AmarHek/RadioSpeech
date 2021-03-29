@@ -6,7 +6,7 @@
 	        (<ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="radio" id="{{variable.id}}+{{val}}"  name="{{variable.id}}"
                    [value]="val" [(ngModel)]="variable.value"
-                   (click)="clicked()"/>
+                   (click)="clicked(variable, val)"/>
             <label for="{{variable.id}}+{{val}}"
                    [ngClass]="{'selected': (val === variable.value && parentActive)}">{{val}}</label>
             <ng-container *ngIf="!last">/</ng-container>
@@ -17,7 +17,7 @@
         {{variable.textBefore}}
 	        [<ng-container *ngFor="let val of variable.values; let last=last">
 		        <input type="checkbox" id="{{variable.id}}+{{val[0]}}" name="{{variable.id}}"
-                   [value]="val[0]" [(ngModel)]="val[1]" (click)="clicked()"/>
+                   [value]="val[0]" [(ngModel)]="val[1]" (click)="clicked(variable)"/>
             <label for="{{variable.id}}+{{val[0]}}"
                    [ngClass]="{'selected': (val[1] && parentActive)}">{{val[0]}}</label>
             <ng-container *ngIf="!last">/</ng-container>
