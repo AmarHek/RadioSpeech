@@ -36,11 +36,11 @@ export class ListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.setMode();
     this.setUi();
-    if (this.mode === 'Radiologie') {
+    //if (this.mode === 'Radiologie') {
       this.updateGenerators();
-    } else {
+    //} else {
       this.updateList();
-    }
+    //}
   }
 
   private setMode(): void {
@@ -53,7 +53,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.displayService.getUi().subscribe((value) => {
       this.ui = value;
     });
-    console.log(this.ui);
   }
 
   removeAlert(genOrId: string) {

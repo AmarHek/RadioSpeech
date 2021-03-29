@@ -21,6 +21,8 @@ export class RadiologyComponent implements OnInit {
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];
 
+  input = '';
+
   categories: M.Category[];
   report = '';
   judgement = '';
@@ -69,10 +71,8 @@ export class RadiologyComponent implements OnInit {
   onInput(ev) {
     console.log('event');
     console.log(ev);
-    const inp = (document.getElementById('input') as HTMLTextAreaElement).value;
+    console.log(this.input);
     const dif = '';
-    console.log('inp', inp);
-    console.log('dif', dif);
   }
 
   makeNormal() {

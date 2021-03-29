@@ -4,9 +4,9 @@ import { assertNever, flatMap } from './util';
 export type Selectable = CheckBox;
 export type Clickable  = CheckBox | Option;
 
-export type Data = {
-[name: string]: string[] 
-};
+export interface Data {
+[name: string]: string[];
+}
 
 export interface TextExtractor {
   ofCheckbox(c: CheckBox): string | undefined;
@@ -17,7 +17,7 @@ export interface TextExtractor {
 }
 
 export interface CheckBox {
-  kind:           "box";
+  kind:           'box';
   name:           string[];
   text:           string;
   judgementText: string;
@@ -28,7 +28,7 @@ export interface CheckBox {
 }
 
 export interface Group {
-  kind:    "group";
+  kind:    'group';
   name:    string;
   options: Option[];
   value?:  string;
@@ -36,7 +36,7 @@ export interface Group {
 }
 
 export interface Option {
-  kind:           "option";
+  kind:           'option';
   name:           string;
   text:           string;
   conditionalId?: string;
@@ -46,7 +46,7 @@ export interface Option {
   data:           Data;
 }
 
-export class myDict{
+export class myDict {
   id: string;
   dict: Array<TopLevel>;
   name: string;
@@ -55,27 +55,27 @@ export class myDict{
 export type TopLevel = Category | Disease;
 
 export interface Disease {
-  kind: "disease";
+  kind: 'disease';
   name: string;
   categories: Category[];
 }
 
 export interface Category {
-  kind: "category";
+  kind: 'category';
   name: string;
   condition: string;
   selectables: Selectable[];
 }
 
 export interface Block {
-  kind: "block";
+  kind: 'block';
   text?: string;
   judgementText?: string;
   data: Data;
 }
 
 export interface Enumeration {
-  kind:           "enumeration";
+  kind:           'enumeration';
   text:           string;
   judgementText?: string;
   id:             string;
@@ -83,7 +83,7 @@ export interface Enumeration {
 }
 
 export interface Conditional {
-  kind:           "conditional"
+  kind:           'conditional';
   precondition:   Literal[][];
   normalText?:    string;
   judgementText?: string;
@@ -95,7 +95,7 @@ export interface Literal {
   negated: boolean;
 }
 
-export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio
+export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio;
 
 export interface VariableCommon {
   textBefore: string;
@@ -104,35 +104,35 @@ export interface VariableCommon {
 }
 
 export interface VariableOC {
-  kind:   "oc";
+  kind:   'oc';
   value?: string;
   values: string[];
 }
 
 export interface VariableMC extends VariableCommon {
-  kind:   "mc";
+  kind:   'mc';
   values: [string, boolean][];
 }
 
 export interface VariableText {
-  kind:  "text";
+  kind:  'text';
   unit: string;
   textBefore: string;
   textAfter:  string;
 }
 
 export interface VariableNumber extends VariableCommon {
-  kind:  "number";
+  kind:  'number';
   value: number;
 }
 
 export interface VariableDate extends VariableCommon {
-  kind:  "date";
+  kind:  'date';
   value: NgbDateStruct;
 }
 
 export interface VariableRatio extends VariableCommon {
-  kind:           "ratio";
+  kind:           'ratio';
   numerator:      number;
   denominator:    number;
   fractionDigits: number;
@@ -170,18 +170,18 @@ export interface VariableRatio extends VariableCommon {
 } */
 
 
-export class Vars{
-  anzahlVar: number = 0;
-  varTypes : Array<string> = [];
+export class Vars {
+  anzahlVar = 0;
+  varTypes: Array<string> = [];
 }
 
-export class Atts{
-  anzahlAtt: number = 0;
+export class Atts {
+  anzahlAtt = 0;
   myVars: Array<Vars> = [];
 }
 
-export class Cats{
-  anzahlCat: number = 0;
+export class Cats {
+  anzahlCat = 0;
   myAtts: Array<Atts> = [];
 }
 

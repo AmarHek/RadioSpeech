@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Variable} from '../../helper-classes/model';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {InputModalComponent} from "./inputModal/inputModal.component";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import { UtilService } from "../services/util.service";
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {InputModalComponent} from './inputModal/inputModal.component';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { UtilService } from '../services/util.service';
 
 @Component({
   selector: 'app-variables',
@@ -16,7 +16,7 @@ export class VariablesComponent implements OnInit {
   @Input() parentText: string;
   @Input() parentActive: boolean;
 
-  @Output() clickEvent = new EventEmitter<any>()
+  @Output() clickEvent = new EventEmitter<any>();
 
   hasButtonBeenClickedOnce: Map<string, boolean> = new Map();
 
@@ -28,8 +28,8 @@ export class VariablesComponent implements OnInit {
   }
 
   initButtonClickedMap() {
-    for(let variable of this.variables) {
-      if(variable.kind === 'text' || variable.kind === 'number' ||
+    for (const variable of this.variables) {
+      if (variable.kind === 'text' || variable.kind === 'number' ||
         variable.kind === 'date' || variable.kind === 'ratio') {
         this.hasButtonBeenClickedOnce[variable.id] = false;
       }
@@ -48,24 +48,25 @@ export class VariablesComponent implements OnInit {
 
   parseButtonText(variable: Variable) {
     if (!this.hasButtonBeenClickedOnce[variable.id] || !this.parentActive) {
-      return ".....";
-    } else if(variable.kind === "text" || variable.kind === "number") {
+      return '.....';
+    } else if (variable.kind === 'text' || variable.kind === 'number') {
       return variable.value;
-    } else if(variable.kind === "date") {
-      return variable.value.day + '.' + variable.value.month + '.' + variable.value.year
-    } else if(variable.kind === "ratio") {
+    } else if (variable.kind === 'date') {
+      return variable.value.day + '.' + variable.value.month + '.' + variable.value.year;
+    } else if (variable.kind === 'ratio') {
       return this.utilService.displayableQuotient(variable.numerator,
         variable.denominator, variable.fractionDigits);
     }
   }
 
   clicked() {
+
     this.clickEvent.emit();
   }
 
   async submit(variable: Variable) {
     const response = await this.modalInput(variable);
-    if(response) {
+    if (response) {
       this.hasButtonBeenClickedOnce[variable.id] = true;
       this.clickEvent.emit();
     }
@@ -79,16 +80,16 @@ export class VariablesComponent implements OnInit {
       textBefore: variable.textBefore,
       textAfter: variable.textAfter,
       parentText: this.parentText
-    }
+    };
     if (variable.kind === 'ratio') {
-      dialogConfig.data['fractionDigits'] = variable.fractionDigits
+      dialogConfig.data['fractionDigits'] = variable.fractionDigits;
     }
     const dialogRef = this.dialog.open(InputModalComponent, dialogConfig);
 
     return dialogRef.afterClosed()
       .toPromise()
       .then(response => {
-        if(!response) {
+        if (!response) {
           return Promise.resolve(false);
         } else {
           this.assignValues(variable, response);
@@ -100,13 +101,13 @@ export class VariablesComponent implements OnInit {
 
   assignValues(variable: Variable, input): void {
     // TODO: check if response is valid
-    if (variable.kind === "text") {
+    if (variable.kind === 'text') {
         variable.value = input.text;
-    } else if(variable.kind === "date") {
+    } else if (variable.kind === 'date') {
       variable.value = (input.date as NgbDateStruct);
-    } else if(variable.kind === "number") {
+    } else if (variable.kind === 'number') {
       variable.value = input.number as number;
-    } else if(variable.kind === "ratio") {
+    } else if (variable.kind === 'ratio') {
       variable.numerator = input.numerator as number;
       variable.denominator = input.denominator as number;
     }

@@ -2,13 +2,16 @@
   <div class="header">
     <div class="inputWindow">
       <label for="input">Eingabefenster:
-        <input id="input" name="Befund" type="text"
+        <input id="input" name="Befund" type="text" [(ngModel)]="this.input"
                (input)="onInput($event)" placeholder="Befund eingeben...">
       </label>
     </div>
     <div class="buttons">
-      <button id="test" title="button zum testen" (click)="test()"
-              class="btn btn-outline-secondary">Test</button>
+      <!--
+        <button id="test" title="button zum testen" (click)="test()"
+                class="btn btn-outline-secondary">Test
+        </button>
+      -->
       <button id="normal-button" (click)="makeNormal()"
               class="btn btn-outline-secondary">Rest normal</button>
       <button id="reset-button" (click)="reset()"
