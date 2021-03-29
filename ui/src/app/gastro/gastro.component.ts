@@ -22,12 +22,6 @@ declare const $: any;
 })
 export class GastroComponent implements OnInit, OnDestroy {
 
-
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
-    private route: ActivatedRoute, private inputParser: InputParserService,
-    private textOut: TextOutputService, private sanitizer: DomSanitizer,
-    private dictManager: DictManagerService, private router: Router, private base: ParserBasisService) {
-  }
   errorMsg = '';
   isLoading = false;
   routeName: string;
@@ -50,15 +44,15 @@ export class GastroComponent implements OnInit, OnDestroy {
   inner = 'hey';
   faCheck = faCheckCircle;
   getReady = false;
-
   // recogWords : {Array<string>} = [];
 
   @ViewChild('myReport', { static: false }) myReport: ElementRef;
   @ViewChild('myJson', { static: false }) myJson: ElementRef;
 
-  // used that only one synonym for each keyword is shown on the interface
-  filterSyn(arr: Array<Keyword2>) {
-    return arr.filter(key => key.name === key.synonym);
+  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
+    private route: ActivatedRoute, private inputParser: InputParserService,
+    private textOut: TextOutputService, private sanitizer: DomSanitizer,
+    private dictManager: DictManagerService, private router: Router, private base: ParserBasisService) {
   }
 
   ngOnDestroy(): void {
@@ -71,8 +65,6 @@ export class GastroComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((ps) => {
       if (ps.has('name')) {
         this.routeName = ps.get('name');
-        console.log('tester');
-        console.log(this.routeName);
         this.isLoading = true;
         this.dictManager.getList();
         this.textSub = this.dictManager
@@ -109,25 +101,13 @@ export class GastroComponent implements OnInit, OnDestroy {
     this.jsDown = this.textOut.downJson;
     this.filledCats = this.textOut.rep;
     // this.recogWords = this.textOut.recogWords;
-    $('#my_img').hide();
-    $('#imgUpload').hover(
-      // show
-      function () {
-        $('#my_img').show();
-      },
-      // hide
-      function () {
-        $('#my_img').hide();
-      });
-    /* setTimeout(function () {
-
-     // document.getElementById('los').style.visibility = 'hidden';
-   }, 100); */
-    /* this.init(); */
-
-
   }
 
+
+  // used that only one synonym for each keyword is shown on the interface
+  filterSyn(arr: Array<Keyword2>) {
+    return arr.filter(key => key.name === key.synonym);
+  }
 
   triggerClick() {
     const el: HTMLElement = this.myReport.nativeElement as HTMLElement;
@@ -221,14 +201,6 @@ export class GastroComponent implements OnInit, OnDestroy {
   }
 
 
-  /* inputOrPaste(ev){
-    if(ev.type==="paste"){
-      this.onInput(ev.clipboardData.getData('text'));
-    } else if (ev.type==="input" && ev.inputType==="insertText"){
-      this.onInput(ev.data);
-    }
-  } */
-
   onInput(ev) {
     /* if(!this.firstTime){
       this.inputParser.createStartDict(this.parts);
@@ -300,19 +272,7 @@ export class GastroComponent implements OnInit, OnDestroy {
     }
     // this.myText.report = this.textOut.makeReport(this.diseases);
   }
-  // (currently not used: Keyword options are also clickable as radio input)
 
-  /*onRadioClick(keyName: string, category: string){
-     let input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    let buttonPos = input.length - 0.5
-    this.inputParser.radioClicked(buttonPos, keyName, category);
-    this.inputParser.parseInput(input);
-    this.textOut.colorTextInput(input,JSON.parse(JSON.stringify(this.keywordsService)) );
-    this.textOut.makeReport(this.keywordsService);
-
-
-
-  }*/
 
   makeNormal() {
     const input = (document.getElementById('input') as HTMLTextAreaElement).value;
@@ -320,125 +280,9 @@ export class GastroComponent implements OnInit, OnDestroy {
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input);
   }
 
-  // start: boolean = false;
-  /* init(): void {
-
-    //let restNormalSynonyms = ["Rest normal", "Rest ist normal"];
-    if (!this.start) {
-      this.inputParser.createStartDict(this.parts);
-      this.start = true;
-    }
-
-  } */
-
-
-  scroll() {
-    const ele = document.getElementById('main-content');
-    console.log(ele.offsetHeight);
-    console.log(ele.scrollTop);
-    console.log(ele.clientHeight);
-    if (ele.scrollTop < 70) {
-      console.log('1');
-      ele.scrollTo(0, document.body.scrollHeight);
-    } else {
-      console.log('2');
-      ele.scrollTop = 0;
-    }
-  }
-
   refreshPage() {
     window.location.reload();
   }
-
-  readTextFile(file) {
-    const rawFile = new XMLHttpRequest();
-    rawFile.open('GET', file, false);
-    rawFile.onreadystatechange = function () {
-      if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status === 0) {
-          const allText = rawFile.responseText;
-          alert(allText);
-        }
-      }
-    };
-    rawFile.send(null);
-  }
-
-
-  resizeColumns(input: string) {
-    const numbers = input.split(',');
-    // text links wird resiszt
-    /*let textLeft = document.getElementsByClassName('main') as HTMLCollectionOf<HTMLElement>;
-    if (numbers.length > 0) {
-      let wid = Number.parseInt(numbers[0]) * 3.7795275591;
-      textLeft[0].style.columns = wid.toString() + "px 1fr";
-    }*/
-    const textLeft = document.getElementById('output1');
-    // textLeft.style.width = "100px";
-    // Kategorien werden resized
-    const categoryWid = document.getElementsByClassName('category') as HTMLCollectionOf<HTMLElement>;
-    if (categoryWid.length !== 0) {
-      const wid = Number.parseInt(numbers[1], 10) * 3.7795275591;
-      categoryWid[0].style.maxWidth = wid.toString() + 'px';
-    }
-    /*for (var i = 0; i < categoryWid.length; i++) {
-      categoryWid[i].style.maxWidth = (Number.parseInt(numbers[1]) * 3.7795275591).toString();
-    }*/
-    // alle restlichen Spalten
-    for (let i = 2; i < numbers.length; i++) {
-      const transNum = (i * 2) - 1;
-      const testStyle = document.createElement('style');
-      const wid = Number.parseInt(numbers[i], 10) * 3.7795275591;
-      testStyle.type = 'text/css';
-      testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + wid.toString() + 'px;}';
-      console.log(testStyle.innerHTML);
-      document.getElementsByTagName('head')[0].appendChild(testStyle);
-    }
-    // dem Rest 300 px max zuweisen
-    for (let i: number = numbers.length; i < 20; i++) {
-      const transNum = (i * 2) - 1;
-      const testStyle = document.createElement('style');
-      testStyle.type = 'text/css';
-      testStyle.innerHTML = 'tbody>tr>:nth-child(' + transNum + ') { max-width: ' + 6000 + 'px;}';
-      document.getElementsByTagName('head')[0].appendChild(testStyle);
-    }
-  }
-
-  /*  getDefault() {
-     var cat = this.parts.filter(x => x.kind === "category");
-     for (var d of cat) {
-       this.defBox = this.defBox.concat((d as M.Category).selectables.filter(x =>
-       x.kind === "box" && x.value === true));
-       this.defGroup = this.defGroup.concat((d as M.Category).selectables.filter(x =>
-       x.kind === "group" && x.value != "" && x.value != null));
-     }
-   } */
-
-  /*   setDefault() {
-      for (var b of this.defBox) {
-        (b as M.CheckBox).value = true;
-      }
-    } */
-
-  exists2D(arr, search) {
-    return arr.some(row => row.includes(search));
-  }
-
-  /*   makeNormal(): void {
-      for (const p of this.parts) {
-        if (p.kind === "category") {
-          G.makeNormalCategory(p);
-        }
-      }
-      this.makeText();
-    } */
-
-
-  /*   saveDialog(): void {
-      localStorage.setItem("emptyDialog", JSON.stringify(JSON.parse(this.text)));
-      this.parts = JSON.parse(this.text);
-      this.text = "";
-    } */
 
 }
 

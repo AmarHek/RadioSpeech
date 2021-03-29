@@ -18,7 +18,8 @@ export class DisplayService {
   public title: BehaviorSubject<string>;
 
   // TODO: make observable
-  public maxRowLength = 6;
+  public maxRowLength = 7;
+  public maxTabLength = 5;
 
   // TODO Auf database auslagern?
   private possibleModes: string[] = ['Gastroenterologie', 'Radiologie'];

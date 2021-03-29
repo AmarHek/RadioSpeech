@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
@@ -9,6 +9,8 @@ import * as M from '../../helper-classes/model';
 import * as G from '../../helper-classes/generator';
 import {DataParserService} from '../services/dataParser.service';
 import {OptionsComponent} from '../options/options.component';
+import { DictManagerService } from '../services/dict-manager.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
@@ -16,7 +18,7 @@ import {OptionsComponent} from '../options/options.component';
   styleUrls: ['./radiology.component.scss'],
 })
 
-export class RadiologyComponent implements OnInit {
+export class RadiologyComponent implements OnInit, OnDestroy {
 
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];
@@ -27,18 +29,53 @@ export class RadiologyComponent implements OnInit {
   report = '';
   judgement = '';
 
+  // for node server
+  private textSub: Subscription;
+  routeName: string;
+
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
-              private _location: Location) {
+              private _location: Location,
+              
+              private dictManager: DictManagerService) {
   }
 
   ngOnInit() {
     this.getData();
   }
+
+  ngOnDestroy(): void {
+    this.textSub.unsubscribe();
+  }
+
+
+  //for migration to nodejs server
+  getDataNode(){
+    this.route.paramMap.subscribe(ps =>{
+      if (ps.has("name")) {
+        this.routeName = ps.get("name");
+        this.dictManager.getList();
+        this.textSub = this.dictManager.getListUpdateListener()
+        .subscribe((list: any) => {
+          this.parts = list.find((d) => d.name === this.routeName);
+          if (this.parts == undefined){
+            window.alert("Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
+          }
+          else {
+            this.defaultParts = JSON.parse(JSON.stringify(this.parts));
+            this.categories = this.dataParser.extractCategories(this.parts);
+          }
+        })
+      }
+    })
+  }
+
+
+
 
   getData() {
     this.route.paramMap.subscribe(ps => {
