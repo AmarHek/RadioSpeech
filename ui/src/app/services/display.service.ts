@@ -18,7 +18,7 @@ export class DisplayService {
   public title: BehaviorSubject<string>;
 
   // TODO: make observable
-  public maxRowLength = 7;
+  public maxRowLength = 6;
   public maxTabLength = 5;
 
   // TODO Auf database auslagern?

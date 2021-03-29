@@ -1,23 +1,24 @@
 <table>
   <tbody>
     <tr *ngFor="let row of rows">
-      <td class="category" [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name}}</td>
+      <td class="category"
+          [style.width.%]="10"
+          [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name}}</td>
       <ng-container *ngFor="let sel of row.selectables" class="col-3">
-
         <ng-container *ngIf="sel.kind === 'box'">
           <td class="box">
             <input type="checkbox" [(ngModel)]="sel.value"
                    (click)="update(sel)" id="{{sel.name}}box"/>
           </td>
-          <td class="title">
+          <td class="title" [style.width.%]="width">
             <label [ngClass]="{'selected': sel.value}"
                    for="{{sel.name}}box">
               {{sel.name}}
             </label>
           </td>
           <app-variables *ngIf="sel.variables.length > 0"
-                         style="max-width: 150px"
                          (clickEvent)="updateFromVariable(sel)"
+                         [style.width.%]="width"
                          [variables]="sel.variables"
                          [parentText]="sel.name"
                          [parentActive]="sel.value"></app-variables>
@@ -33,15 +34,15 @@
                      [value]="option.name"
                      [(ngModel)]="sel.value"/>
             </td>
-            <td class="radio title">
+            <td class="title" [style.width.%]="width">
               <label for="{{sel.name + option.name}}box"
                      [ngClass]="{'selected': (option.name === sel.value)}">
                 {{option.name}}
               </label>
             </td>
             <app-variables *ngIf="option.variables.length > 0"
-                           style="max-width: 150px"
                            (clickEvent)="updateFromVariable(option, sel)"
+                           [style.width.%]="width"
                            [variables]="option.variables"
                            [parentText]="option.name"
                            [parentActive]="option.name === sel.value"></app-variables>

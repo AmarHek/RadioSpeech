@@ -17,6 +17,7 @@ export class OptionsComponent implements OnInit {
 
   minRowLength = 1;
   maxRowLength: number;
+  width: number;
   rows: M.Category[];
 
   @Output() clickEvent = new EventEmitter<any>();
@@ -27,6 +28,7 @@ export class OptionsComponent implements OnInit {
   ngOnInit(): void {
     this.setMinRowLength(this.categories);
     this.maxRowLength = this.display.maxRowLength;
+    this.determineWidth();
     this.initRows();
   }
 
@@ -38,6 +40,12 @@ export class OptionsComponent implements OnInit {
       this.maxRowLength = this.minRowLength;
     }
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
+  }
+
+  private determineWidth() {
+    console.log(this.maxRowLength);
+    this.width = 88 / this.maxRowLength;
+    console.log(this.width);
   }
 
   setMinRowLength(cats: M.Category[]) {
