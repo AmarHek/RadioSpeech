@@ -115,7 +115,7 @@ export interface VariableMC extends VariableCommon {
   values: [string, boolean][];
 }
 
-export interface VariableText extends VariableCommon{
+export interface VariableText extends VariableCommon {
   kind:  "text";
   unit: string;
 }

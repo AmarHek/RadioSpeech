@@ -1,4 +1,5 @@
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import * as M from "./model";
 
 export type Selectable = CheckBox | Group;
 
@@ -13,7 +14,7 @@ export interface CheckBox {
   normal:         boolean;
   variables:      Variable[];
   enumeration?:   string;
-  synonyms:       string[];
+  keys:           string[];
 }
 
 export interface Group {
@@ -31,7 +32,7 @@ export interface Option {
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
-  synonyms:       string[];
+  keys:           string[][];
 }
 
 export type TopLevel = Category | Block | Enumeration;
@@ -66,7 +67,7 @@ export interface VariableCommon {
   id:         string;
   textBefore: string;
   textAfter:  string;
-  synonyms:   string[];
+  keys:       string[] | string[][];
 }
 
 export interface VariableOC extends VariableCommon {
@@ -100,5 +101,186 @@ export interface VariableRatio extends VariableCommon {
   numerator:      number;
   denominator:    number;
   fractionDigits: number;
+}
+
+export function convertSelectables(oldSels: M.Selectable[]): Selectable[] {
+  const newSels: Selectable[] = [];
+  for (const oldSel of oldSels) {
+    let newSel: Selectable;
+    if (oldSel.kind === "box") {
+      newSel = convertCheckBox(oldSel);
+    } else if (oldSel.kind === "group") {
+      newSel = convertGroup(oldSel);
+    }
+    newSels.push(newSel);
+  }
+  return newSels;
+}
+
+export function convertCheckBox(oldBox: M.CheckBox): CheckBox {
+  const newVariables: Variable[] = convertVariables(oldBox.variables);
+  const keywords: string[] = splitKeywords(oldBox.data["bau"][0], ";");
+  return {
+    kind: oldBox.kind,
+    name: oldBox.name,
+    value: oldBox.value,
+    text: oldBox.text,
+    judgementText: oldBox.judgementText,
+    normal: oldBox.normal,
+    variables: newVariables,
+    keys: keywords
+  };
+}
+
+export function convertGroup(oldGroup: M.Group): Group {
+  const newOpts: Option[] = [];
+  for (const oldOpt of oldGroup.options) {
+    newOpts.push(convertOption(oldOpt));
+  }
+  return {
+    kind: oldGroup.kind,
+    name: oldGroup.name,
+    options: newOpts,
+    value: oldGroup.value
+  };
+}
+
+export function convertOption(oldOpt: M.Option): Option {
+  const newVariables: Variable[] = convertVariables(oldOpt.variables);
+  const keys: string[][] = splitKeywordsArray(oldOpt.data["bau"][0], "/", ";");
+  return {
+    kind: oldOpt.kind,
+    name: oldOpt.name,
+    text: oldOpt.text,
+    judgementText: oldOpt.judgementText,
+    normal: oldOpt.normal,
+    variables: newVariables,
+    keys: keys
+  };
+}
+
+export function convertBlock(oldBlock: M.Block): Block {
+  return {
+    kind: oldBlock.kind,
+    text: oldBlock.text,
+    judgementText: oldBlock.judgementText
+  };
+}
+
+export function convertEnum(oldEnum: M.Enumeration): Enumeration {
+  return {
+    kind: oldEnum.kind,
+    text: oldEnum.text,
+    judgementText: oldEnum.judgementText,
+    id: oldEnum.id
+  };
+}
+
+export function convertCategory(oldCat: M.Category): Category {
+  const newSels = convertSelectables(oldCat.selectables);
+  return {
+    kind: oldCat.kind,
+    name: oldCat.name,
+    optional: oldCat.optional,
+    selectables: newSels
+  };
+}
+
+export function convertVariables(oldVars: M.Variable[]): Variable[] {
+  const newVars: Variable[] = [];
+  for (const variable of oldVars) {
+    newVars.push(convertVariable(variable));
+  }
+  return newVars;
+}
+
+export function convertVariable(oldVar: M.Variable): Variable {
+  let newVar: Variable;
+
+  if (oldVar.kind === "oc") {
+    const keys: string[][] = splitKeywordsArray(oldVar.data["syn"][0], "/", ";");
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: keys,
+      value: oldVar.value,
+      values: oldVar.values
+    };
+  } else if (oldVar.kind === "mc") {
+    const keys: string[][] = splitKeywordsArray(oldVar.data["syn"][0], ";", ",");
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: keys,
+      values: oldVar.values
+    };
+  } else if (oldVar.kind === "text") {
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: null,
+      value: oldVar.value
+    };
+  } else if (oldVar.kind === "number") {
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: null,
+      value: oldVar.value
+    };
+  } else if (oldVar.kind === "date") {
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: null,
+      value: oldVar.value
+    };
+  } else if (oldVar.kind === "ratio") {
+    newVar = {
+      kind: oldVar.kind,
+      id: oldVar.id,
+      textBefore: oldVar.textBefore,
+      textAfter: oldVar.textAfter,
+      keys: null,
+      numerator: oldVar.numerator,
+      denominator: oldVar.denominator,
+      fractionDigits: oldVar.fractionDigits
+    };
+  }
+
+  return newVar;
+}
+
+function splitKeywords(keywords: string, splitter: string): string[] {
+  if (keywords) {
+    return keywords.split(splitter);
+  } else {
+    return null;
+  }
+}
+
+export function splitKeywordsArray(keys: string, optionSplitter: string, synonymSplitter: string): string[][] {
+  const result: string[][] = [];
+  const variableSplit: string[] = splitKeywords(keys, optionSplitter);
+  if (variableSplit) {
+    for (const varSynonyms of variableSplit) {
+      const synSplit: string[] = splitKeywords(varSynonyms, synonymSplitter);
+      synSplit.map(key => key.trim());
+      result.push(synSplit);
+    }
+  } else {
+    return null;
+  }
+  return result;
 }
 
