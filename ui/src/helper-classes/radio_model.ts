@@ -1,31 +1,19 @@
-import { NgbDateStruct, NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
-import { assertNever, flatMap } from "./util";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
-export type Selectable = CheckBox;
-export type Clickable  = CheckBox | Option;
+export type Selectable = CheckBox | Group;
 
-export interface Data {
-[name: string]: string[];
-}
-
-export interface TextExtractor {
-  ofCheckbox(c: CheckBox): string | undefined;
-  ofOption(o: Option): string | undefined;
-  ofEnumeration(e: Enumeration): string | undefined;
-  ofBlock(e: Block): string | undefined;
-  ofConditional(c: Conditional): string | undefined;
-}
+// Selectable classes, lower than category
 
 export interface CheckBox {
   kind:           "box";
-  name:           string[];
-  value?:         boolean;
+  name:           string;
+  value:          boolean;
   text:           string;
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
   enumeration?:   string;
-  listGroup:      string;
+  synonyms:       string[];
 }
 
 export interface Group {
@@ -33,7 +21,6 @@ export interface Group {
   name:    string;
   options: Option[];
   value?:  string;
-  data:    Data;
 }
 
 export interface Option {
@@ -44,27 +31,17 @@ export interface Option {
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
-  data:           Data;
+  synonyms:       string[];
 }
 
-export class MyDict {
-  id: string;
-  dict: TopLevel[];
-  name: string;
-}
+export type TopLevel = Category | Block | Enumeration;
 
-export type TopLevel = Category | Disease;
-
-export interface Disease {
-  kind: "disease";
-  name: string;
-  categories: Category[];
-}
+// Main data management and display class
 
 export interface Category {
   kind: "category";
   name: string;
-  condition: string;
+  optional?: boolean;
   selectables: Selectable[];
 }
 
@@ -72,7 +49,6 @@ export interface Block {
   kind: "block";
   text?: string;
   judgementText?: string;
-  data: Data;
 }
 
 export interface Enumeration {
@@ -80,31 +56,20 @@ export interface Enumeration {
   text:           string;
   judgementText?: string;
   id:             string;
-  data:           Data;
 }
 
-export interface Conditional {
-  kind:           "conditional";
-  precondition:   Literal[][];
-  normalText?:    string;
-  judgementText?: string;
-  data:           Data;
-}
-
-export interface Literal {
-  id:      string;
-  negated: boolean;
-}
+// Variable types
 
 export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio;
 
 export interface VariableCommon {
+  id:         string;
   textBefore: string;
   textAfter:  string;
-  data:       Data;
+  synonyms:   string[];
 }
 
-export interface VariableOC {
+export interface VariableOC extends VariableCommon {
   kind:   "oc";
   value?: string;
   values: string[];
@@ -115,9 +80,9 @@ export interface VariableMC extends VariableCommon {
   values: [string, boolean][];
 }
 
-export interface VariableText extends VariableCommon{
+export interface VariableText extends VariableCommon {
   kind:  "text";
-  unit: string;
+  value: string;
 }
 
 export interface VariableNumber extends VariableCommon {
@@ -135,20 +100,5 @@ export interface VariableRatio extends VariableCommon {
   numerator:      number;
   denominator:    number;
   fractionDigits: number;
-}
-
-export class Vars {
-  anzahlVar = 0;
-  varTypes: Array<string> = [];
-}
-
-export class Atts {
-  anzahlAtt = 0;
-  myVars: Array<Vars> = [];
-}
-
-export class Cats {
-  anzahlCat = 0;
-  myAtts: Array<Atts> = [];
 }
 
