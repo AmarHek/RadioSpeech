@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category, Disease, TextDic } from '../../helper-classes/Keyword';
+import { Category, Disease, TextDic } from '../../helper-classes/keyword';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
@@ -46,8 +46,8 @@ export class TextOutputService {
       for (const key of activeCat.keys.filter(value => value.position !== -1)) {
         let newText = key.text;
         keyName = key.name;
-        if (key.code !== undefined) {
-          code = key.name + ': ' + key.code + '\n';
+        if (key.judgement !== undefined) {
+          code = key.name + ': ' + key.judgement + '\n';
         }
         if (activeCat.keys.length === 1) {
           newText = newText.replace('%0', key.synonym);

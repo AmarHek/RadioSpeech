@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import * as M from '../../helper-classes/new_model';
-import { Keyword2, Category, Disease, MyVariable, TextDic } from '../../helper-classes/Keyword';
-import { TextOutputService } from './text-output.service';
+import { Injectable } from "@angular/core";
+import * as M from "../../helper-classes/new_model";
+import { Keyword, Category, Disease, MyVariable, TextDic } from "../../helper-classes/keyword";
+import { TextOutputService } from "./text-output.service";
+import * as MO from "../../helper-classes/model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 
 // This class declares the basis data structures and methods for parsing the input,
@@ -15,9 +16,9 @@ export class ParserBasisService {
   constructor(private textOut: TextOutputService) { }
   // DATA STRUCTURES
   // Contains whole Polyp with its Categories and Keywords inside of each Category
-  diseases: Array<Disease> = [];
+  diseases: Disease[] = [];
   startingTime: Date;
-  missing: Array<TextDic> = [];
+  missing: TextDic[] = [];
   end = false;
   start = false;
   // 1st ende?
@@ -31,19 +32,19 @@ export class ParserBasisService {
      --------------------------------
   */
   // Create a Dictionary from the database json(e.g. the polyp Object)
-  createStartDict(rootEl: M.TopLevel[]) {
+  createStartDict(rootEl: M.TopLevel[]): Disease[] {
     // loops through all diseases and categories: Form, Lokalisierung...
     for (const El of rootEl) {
-      let disName = '';
+      let disName = "";
       // block indicates a new disease, every rootEl that follows is a category of it
-      if (El.kind === 'disease') {
+      if (El.kind === "disease") {
         disName = El.name;
         this.diseases.push({ name: disName, categories: [], active: false, number: 1, position: [], firstTime: true, positionEnd: [] });
 
         // indicates a new category
         for (const cat of El.categories) {
           let syns: string[];
-          const keys: Keyword2[] = [];
+          const keys: Keyword[] = [];
           // loops through all options inside the categories, e.g. for "Form": Knospe, gestielt...
           for (const att of cat.selectables) {
             // splits all the synonyms into an array
@@ -78,10 +79,10 @@ export class ParserBasisService {
     const Vars: MyVariable[] = [];
     for (const vari of option.variables) {
       // if variable is like "links / rechts"
-      if (vari.kind === 'oc') {
+      if (vari.kind === "oc") {
         Vars.push({ kind: vari.kind, textBefore: undefined, textAfter: undefined, options: vari.values, varFound: [] });
         // if variable is like "bei..."
-      } else if (vari.kind === 'text') {
+      } else if (vari.kind === "text") {
         // extracts ending word, for example [cm]
         Vars.push({ kind: vari.kind, textBefore: vari.textBefore, textAfter: vari.textAfter, options: [vari.unit], varFound: [] });
       }
@@ -97,7 +98,7 @@ export class ParserBasisService {
       text: option.text,
       buttonPos: -1,
       normal: option.normal,
-      code: option.judgementText
+      judgement: option.judgementText
     };
   }
 
@@ -107,21 +108,21 @@ export class ParserBasisService {
 */
 
   checkEnd(input: string) {
-    if (input.toLowerCase().indexOf(' ende') !== -1) {
-      const main = document.getElementsByClassName('main')[0].classList;
+    if (input.toLowerCase().indexOf(" ende") !== -1) {
+      const main = document.getElementsByClassName("main")[0].classList;
       this.missing = this.textOut.firstOut();
       // checks if "ende" is only called once
-      if (this.missing.length !== 0 && ((input.split(' ende').length - 1) === 1)) {
+      if (this.missing.length !== 0 && ((input.split(" ende").length - 1) === 1)) {
         this.end0 = true;
         // if "ende" is called twice
       } else {
 
-        main.remove('main');
-        main.add('report');
-        const signalButton = document.getElementById('listening');
-        signalButton.classList.remove('btn-success');
-        signalButton.classList.add('btn-danger');
-        signalButton.innerText = 'Aus';
+        main.remove("main");
+        main.add("report");
+        const signalButton = document.getElementById("listening");
+        signalButton.classList.remove("btn-success");
+        signalButton.classList.add("btn-danger");
+        signalButton.innerText = "Aus";
         this.end = true;
       }
     }
@@ -130,7 +131,7 @@ export class ParserBasisService {
   checkCategoryNameInDiseaseName(activeDis: Disease, input: string) {
     const disPosLast = activeDis.position[activeDis.position.length - 1] + activeDis.name.length;
 
-    if ((disPosLast !== input.length) && input.charAt(disPosLast) !== ' ') {
+    if ((disPosLast !== input.length) && input.charAt(disPosLast) !== " ") {
       const tempInput = input.substr(0, activeDis.position[activeDis.position.length - 1]) + input.substr(disPosLast + 1);
       // activeDis = this.setDisease(tempInput, this.diseases);
     }
@@ -161,7 +162,7 @@ export class ParserBasisService {
 
 
   // find only the latest keyword of one category
-  onlyLatestKeyword(keys: Array<Keyword2>) {
+  onlyLatestKeyword(keys: Array<Keyword>) {
 
     // Filter Keywords for the active ones and sort them by their position in the input
     const activeKeys = keys.filter(activeKey => activeKey.position !== -1).sort((a, b) => b.position - a.position);
@@ -198,30 +199,30 @@ export class ParserBasisService {
   }
 
   // gets position of a keyword in specified input string
-  getIndex(key: Keyword2, input: string, glPos: number) {
+  getIndex(key: Keyword, input: string, glPos: number) {
     let tempPos = -1;
-    const indSq = key.name.indexOf('[d]');
+    const indSq = key.name.indexOf("[d]");
     if (indSq !== -1) {
       let reg;
-      const match = key.name.replace('[d]', '').trim();
+      const match = key.name.replace("[d]", "").trim();
       console.log(match);
       if (indSq === 0) {
-        reg = new RegExp('(\\d+(,\\d+)?)(?=\\s*' + match + ')', 'mig');
+        reg = new RegExp("(\\d+(,\\d+)?)(?=\\s*" + match + ")", "mig");
         // reg = /(\d+(,\d+)?)(?=\s*\match)/mig
-        console.log('reg');
+        console.log("reg");
         console.log(reg);
       } else {
-        reg = new RegExp('(?<=' + match + '\\s)\\d+', 'mig');
+        reg = new RegExp("(?<=" + match + "\\s)\\d+", "mig");
       }
       // let result = input.toLowerCase().search(reg);
-      console.log('Look here');
+      console.log("Look here");
       const result = input.toLowerCase().match(reg);
       console.log(result);
       if (result !== null) {
         const num = result[result.length - 1];
         // key.name = key.synonym.replace("[d]", res2[0]);
-        key.synonym = key.name.replace('[d]', num);
-        console.log(key.name.replace('[d]', num));
+        key.synonym = key.name.replace("[d]", num);
+        console.log(key.name.replace("[d]", num));
         // console.log(result);
       }
     }
@@ -250,7 +251,7 @@ export class ParserBasisService {
   // set the last category to active
   setCategory(input: string, dis: Array<Category>) {
 
-    const activeCat: { tempPos: number, catName: string } = { tempPos: -1, catName: '' };
+    const activeCat: { tempPos: number, catName: string } = { tempPos: -1, catName: "" };
 
     // loop through categories
     for (const cat of dis) {
@@ -294,7 +295,7 @@ export class ParserBasisService {
 
   // finds the active disease
   setDisease(input: string, diseases: Array<Disease>) {
-    const activeDis: { disPos: number, disName: string } = { disPos: -1, disName: '' };
+    const activeDis: { disPos: number, disName: string } = { disPos: -1, disName: "" };
     // loops through all diseases
     for (let i = 0; i < diseases.length; i++) {
       // only for the first instance of every disease
@@ -302,7 +303,7 @@ export class ParserBasisService {
         // computes next Instance
         const nextInstance = diseases.filter(disease => disease.name.indexOf(diseases[i].name) !== -1).length + 1;
         // checks if new instance should be created
-        const addInstance = input.toLowerCase().indexOf(diseases[i].name.toLowerCase() + ' ' + nextInstance);
+        const addInstance = input.toLowerCase().indexOf(diseases[i].name.toLowerCase() + " " + nextInstance);
         // creates new instance
         if (addInstance !== -1) {
           // makes cope of instance number 1
@@ -311,7 +312,7 @@ export class ParserBasisService {
           copy.position.push(addInstance);
           copy.active = true;
           copy.firstTime = true;
-          copy.name += ' ' + copy.number;
+          copy.name += " " + copy.number;
           copy.positionEnd = [];
           for (const cat of copy.categories) {
             this.resetCategory(cat);
@@ -375,7 +376,7 @@ export class ParserBasisService {
 
 
 
-  getActivesAndVariables(extended: boolean, allKeywords: Array<Keyword2>,
+  getActivesAndVariables(extended: boolean, allKeywords: Array<Keyword>,
                          input: string, activeDis: Disease,
                          activeCat: Category, twInput: { twInput: string, again: boolean }) {
     // Filters for all Keywords, that are active in input and sorts them by index
@@ -419,7 +420,7 @@ export class ParserBasisService {
 
         const variable = activeKeys[i].variables[k];
         // checks if there is a text variable
-        if (variable.kind === 'text' && !varStarted) {
+        if (variable.kind === "text" && !varStarted) {
           done = false;
           // checks if text before is activated
           const tbPos = varField.indexOf(variable.textBefore.toLowerCase());
@@ -427,7 +428,7 @@ export class ParserBasisService {
           if (tbPos !== -1) {
             varStarted = true;
             const tbPosEnd = tbPos + variable.textBefore.length;
-            const reg = new RegExp(variable.options[0], 'i');
+            const reg = new RegExp(variable.options[0], "i");
             const varEnd = varField.slice(tbPosEnd).search(reg);
 
             let varInp;
@@ -462,13 +463,13 @@ export class ParserBasisService {
           } else if (extended) {
             // Automatically gets you to the next variable if valid Attribute is entered
             if (index <= activeDis.categories.length - 1 && activeKeys[i].position !== 0 && !guided) {
-              twInput.twInput += ' ' + variable.textBefore;
+              twInput.twInput += " " + variable.textBefore;
               reRun = true;
             }
           }
         }
         // same as before with "choosing variables", e.g. "links / rechts"
-        if (variable.kind === 'oc' && !varStarted) {
+        if (variable.kind === "oc" && !varStarted) {
           done = false;
           varStarted = true;
           for (const opt of variable.options) {
@@ -497,7 +498,7 @@ export class ParserBasisService {
           nextCat = activeDis.categories[j];
           // if next Category has conditional category, look if condition is fulfilled
           if (nextCat.condition !== null) {
-            console.log('NextCat:' + nextCat.name);
+            console.log("NextCat:" + nextCat.name);
             const depCat = activeDis.categories.find(cat => cat.name === nextCat.condition);
             const depKey = depCat.keys.find(key => key.position !== -1);
             if (depKey === undefined) {
@@ -514,9 +515,9 @@ export class ParserBasisService {
           }
         }
         if ((done || activeKeys[i].variables.length === 0) && !skip) {
-          console.log('nextCat');
+          console.log("nextCat");
           console.log(nextCat.name);
-          twInput.twInput += ' ' + nextCat.name;
+          twInput.twInput += " " + nextCat.name;
           reRun = true;
         }
       }

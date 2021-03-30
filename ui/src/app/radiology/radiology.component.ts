@@ -1,21 +1,23 @@
-import {Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Location } from '@angular/common';
-import { ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { Location } from "@angular/common";
+import { ViewChild } from "@angular/core";
 
-import { environment } from '../../environments/environment';
-import * as M from '../../helper-classes/model';
-import * as G from '../../helper-classes/generator';
-import {DataParserService} from '../services/dataParser.service';
-import {OptionsComponent} from '../options/options.component';
-import { DictManagerService } from '../services/dict-manager.service';
-import { Subscription } from 'rxjs';
+import { environment } from "../../environments/environment";
+import * as M from "../../helper-classes/model";
+import * as G from "../../helper-classes/generator";
+import * as K from "../../helper-classes/keywordAlt";
+import {DataParserService} from "../services/dataParser.service";
+import {OptionsComponent} from "../options/options.component";
+import { DictManagerService } from "../services/dict-manager.service";
+import { InputParserRadioService } from "../services/input-parser-radio.service";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-workspace',
-  templateUrl: './radiology.component.html',
-  styleUrls: ['./radiology.component.scss'],
+  selector: "app-workspace",
+  templateUrl: "./radiology.component.html",
+  styleUrls: ["./radiology.component.scss"],
 })
 
 export class RadiologyComponent implements OnInit, OnDestroy {
@@ -23,11 +25,12 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];
 
-  input = '';
+  input = "";
 
   categories: M.Category[];
-  report = '';
-  judgement = '';
+  keywords: K.KeywordAlt[];
+  report = "";
+  judgement = "";
 
   // for node server
   private textSub: Subscription;
@@ -40,7 +43,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private dataParser: DataParserService,
               private _location: Location,
-              
+              private inputParser: InputParserRadioService,
               private dictManager: DictManagerService) {
   }
 
@@ -49,44 +52,43 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.textSub.unsubscribe();
+    // this.textSub.unsubscribe();
   }
 
 
-  //for migration to nodejs server
-  getDataNode(){
-    this.route.paramMap.subscribe(ps =>{
+  // for migration to nodejs server
+  getDataNode() {
+    this.route.paramMap.subscribe(ps => {
       if (ps.has("name")) {
         this.routeName = ps.get("name");
         this.dictManager.getList();
         this.textSub = this.dictManager.getListUpdateListener()
         .subscribe((list: any) => {
           this.parts = list.find((d) => d.name === this.routeName);
-          if (this.parts == undefined){
+          if (this.parts === undefined) {
             window.alert("Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-          }
-          else {
+          } else {
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts);
           }
-        })
+        });
       }
-    })
+    });
   }
-
-
-
 
   getData() {
     this.route.paramMap.subscribe(ps => {
-      if (ps.get('name')) {
-        this.http.post(environment.urlRootRadio + 'get', JSON.stringify(ps.get('name'))).subscribe(
+      if (ps.get("name")) {
+        this.http.post(environment.urlRootRadio + "get", JSON.stringify(ps.get("name"))).subscribe(
           worked => {
             this.parts = worked as any;
             this.defaultParts = JSON.parse(JSON.stringify(worked));
             this.categories = this.dataParser.extractCategories(this.parts);
+            // this.keywords = this.inputParser.createStartDict(this.parts);
+            console.log(this.parts);
+            console.log(this.categories);
           },
-          error => window.alert('An unknown error occurred: ' + JSON.stringify(error))
+          error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
       }
     });
@@ -97,8 +99,8 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   }
 
   resetText(): void {
-    this.report = '';
-    this.judgement = '';
+    this.report = "";
+    this.judgement = "";
   }
 
   onClick() {
@@ -106,15 +108,15 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   }
 
   onInput(ev) {
-    console.log('event');
+    console.log("event");
     console.log(ev);
     console.log(this.input);
-    const dif = '';
+    const dif = "";
   }
 
   makeNormal() {
     for (const p of this.parts) {
-      if (p.kind === 'category') {
+      if (p.kind === "category") {
         G.makeNormalCategory(p);
       }
     }

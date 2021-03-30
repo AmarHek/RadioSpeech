@@ -30,6 +30,7 @@ import { DiseaseComponent } from './edit-structure/disease/disease.component';
 import { VariableComponent } from './edit-structure/variable/variable.component';
 import { AttributeComponent } from './edit-structure/attribute/attribute.component';
 import {DisplayService} from './services/display.service';
+import {ParserBasisService} from "./services/parser-basis.service";
 
 @NgModule({
   declarations: [
@@ -78,7 +79,7 @@ import {DisplayService} from './services/display.service';
       { useHash: true, relativeLinkResolution: 'legacy' }
     )
   ],
-  providers: [DisplayService],
+  providers: [DisplayService, ParserBasisService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

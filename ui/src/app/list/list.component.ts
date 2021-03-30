@@ -1,25 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { TimeStampsService } from '../services/time-stamps.service';
-import { DataParserService } from '../services/dataParser.service';
-import { DisplayService } from '../services/display.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
-import * as N from '../../helper-classes/new_model';
-import { Subscription } from 'rxjs';
-import { DictManagerService } from '../services/dict-manager.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+import { TimeStampsService } from "../services/time-stamps.service";
+import { DataParserService } from "../services/dataParser.service";
+import { DisplayService } from "../services/display.service";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
+import * as N from "../../helper-classes/new_model";
+import { Subscription } from "rxjs";
+import { DictManagerService } from "../services/dict-manager.service";
 
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  selector: "app-list",
+  templateUrl: "./list.component.html",
+  styleUrls: ["./list.component.scss"]
 })
 export class ListComponent implements OnInit, OnDestroy {
 
   generators: string[] = [];
-  dicts: N.myDict[] = [];
+  dicts: N.MyDict[] = [];
   dictSub: Subscription;
   mode: string;
   ui: string;
@@ -33,17 +33,14 @@ export class ListComponent implements OnInit, OnDestroy {
     private dictManagerService: DictManagerService) { }
 
   ngOnInit() {
-    this.isLoading = true;
+    this.isLoading = false;
     this.setMode();
     this.setUi();
     console.log(this.mode);
-    if (this.mode === 'Radiologie') {
-      //this.updateList();
-      this.updateGenerators();
-      //} else {
-      this.updateList();
-      //}
-    }
+    this.updateGenerators();
+      // } else {
+    this.updateList();
+      // }
   }
 
   private setMode(): void {
@@ -60,24 +57,24 @@ export class ListComponent implements OnInit, OnDestroy {
 
   removeAlert(genOrId: string) {
     const dialogData = new ConfirmDialogModel(
-      'warning',
-      'Entfernen bestätigen',
-      'Möchten Sie die Schablone \'' + genOrId + '\' wirklich entfernen?');
+      "warning",
+      "Entfernen bestätigen",
+      "Möchten Sie die Schablone '" + genOrId + "' wirklich entfernen?");
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
-    dialogConfig.width = '400px';
+    dialogConfig.width = "400px";
     dialogConfig.data = dialogData;
-    dialogConfig.position = { top: '50px' };
+    dialogConfig.position = { top: "50px" };
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        if (this.mode === 'Radiologie') {
+        if (this.mode === "Radiologie") {
           this.remove(genOrId);
-        } else if (this.mode === 'Gastroenterologie') {
+        } else if (this.mode === "Gastroenterologie") {
           this.removeDict(genOrId);
         }
       }
@@ -85,34 +82,34 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   remove(generator: string): void {
-    this.http.post(environment.urlRootRadio + 'remove', JSON.stringify(generator)).subscribe(
+    this.http.post(environment.urlRootRadio + "remove", JSON.stringify(generator)).subscribe(
       result => { this.updateGenerators(); },
-      error => window.alert('unknown error: ' + JSON.stringify(error))
+      error => window.alert("unknown error: " + JSON.stringify(error))
     );
   }
 
   updateGenerators(): void {
-    this.http.post(environment.urlRootRadio + 'list', '').subscribe(
+    this.http.post(environment.urlRootRadio + "list", "").subscribe(
       result => {
         this.generators = result as any;
       },
-      error => window.alert('unknown error: ' + JSON.stringify(error))
+      error => window.alert("unknown error: " + JSON.stringify(error))
     );
   }
 
   updateList(): void {
 
     this.dictManagerService.getList();
-    this.dictSub = this.dictManagerService.getListUpdateListener().subscribe((list: N.myDict[]) => {
+    this.dictSub = this.dictManagerService.getListUpdateListener().subscribe((list: N.MyDict[]) => {
       this.dicts = list;
       this.isLoading = false;
-      console.log('onInit');
+      console.log("onInit");
       console.log(this.dicts);
     });
   }
 
   ngOnDestroy(): void {
-    if (this.mode === 'Gastroenterologie') {
+    if (this.mode === "Gastroenterologie") {
       this.dictSub.unsubscribe();
     }
   }

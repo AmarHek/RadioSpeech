@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/model";
 import * as G from "../../helper-classes/generator";
+import * as N from "../../helper-classes/new_model";
 
 @Injectable({
   providedIn: "root"
@@ -8,15 +9,17 @@ import * as G from "../../helper-classes/generator";
 
 export class DataParserService {
 
-  maxRowLength: number = 6;
-  minRowLength: number;
-
   constructor() {}
+
+  /*
+  convertOldToNewModel(oldParts: M.TopLevel[]): N.Toplevel[] {
+
+  }*/
 
   extractCategories(parts: M.TopLevel[]): M.Category[] {
     const res = [];
-    for(const el of parts) {
-      if (el.kind === "category"){
+    for (const el of parts) {
+      if (el.kind === "category") {
         const parsed = this.parseOptionalCategory(el.name);
         res.push({
             kind: "category",
@@ -31,7 +34,7 @@ export class DataParserService {
   }
 
   parseOptionalCategory(category: string): [string, boolean] {
-    if(category.includes("<", 0)){
+    if (category.includes("<", 0)) {
       return [category.substring(1, category.length), true];
     } else {
       return [category, false];
@@ -42,29 +45,29 @@ export class DataParserService {
   extractRows(categories: M.Category[], maxRowLength: number): M.Category[] {
     let rows: M.Category[] = [];
 
-    for(let category of categories) {
-      let splits = this.getSplits(category, maxRowLength);
-      let split_cats = this.splitCategory(category, splits)
+    for (const category of categories) {
+      const splits = this.getSplits(category, maxRowLength);
+      const split_cats = this.splitCategory(category, splits);
       rows = rows.concat(split_cats);
     }
 
     return rows;
   }
 
-  splitCategory(category: M.Category, splits: number[]){
+  splitCategory(category: M.Category, splits: number[]) {
     // let n_categories = Math.ceil(category.selectables.length / splitLength);
-    let res: M.Category[] = [];
+    const res: M.Category[] = [];
 
     let pos = 0;
-    for(let split of splits){
+    for (const split of splits) {
       let name: string;
-      if(pos === 0){
-        name = category.name
+      if (pos === 0) {
+        name = category.name;
       } else {
         name = "";
       }
       let temp_sels: M.Selectable[] = [];
-      temp_sels = category.selectables.slice(pos, pos+split);
+      temp_sels = category.selectables.slice(pos, pos + split);
       res.push({
         kind: "category",
         name: name,
@@ -80,10 +83,10 @@ export class DataParserService {
 
   getSplits(category: M.Category, maxRowLength: number): number[] {
     // Variation of getRowLengths: returns the number of selectables per row instead of number of options
-    let rowSplits = [];
+    const rowSplits = [];
     let currentSplit = 0;
     let rowCounter = 0;
-    for(let sel of category.selectables) {
+    for (const sel of category.selectables) {
       if (rowCounter >= maxRowLength) {
         rowSplits.push(currentSplit);
         currentSplit = 0;
@@ -112,11 +115,11 @@ export class DataParserService {
   }
 
   // extracts group identifiers and corresponding values for ngModel application
-  extractGroups(categories: M.Category[]): Map<string,string> {
-    let groupValues: Map<string, string> = new Map();
-    for (let category of categories) {
-      for (let sel of category.selectables) {
-        if(sel.kind === "group") {
+  extractGroups(categories: M.Category[]): Map<string, string> {
+    const groupValues: Map<string, string> = new Map();
+    for (const category of categories) {
+      for (const sel of category.selectables) {
+        if (sel.kind === "group") {
           console.log(sel.name, sel.value);
           groupValues.set(sel.name, sel.value);
         }
@@ -125,22 +128,13 @@ export class DataParserService {
     return groupValues;
   }
 
-  // TODO
-  extractKeywords(parts: M.Category[]) {
-  //  for (const part of parts){
-  //    for (const keyword of part.data.bau){
-  //      this.keywords.push(keyword);
-  //    }
-  //  }
-  }
-
   makeText(parts: M.TopLevel[]) {
     const [suppressedNormal, suppressedJudgement] = G.getSuppressedConditionalIds(parts);
     const normalExtractor: M.TextExtractor = G.normalExtractor();
     const judgementExtractor: M.TextExtractor = G.judgementExtractor();
 
-    let report = G.makeText(parts, normalExtractor, suppressedNormal);
-    let judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
+    const report = G.makeText(parts, normalExtractor, suppressedNormal);
+    const judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
 
     return [report, judgement];
   }

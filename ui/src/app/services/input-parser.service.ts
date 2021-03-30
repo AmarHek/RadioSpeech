@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import * as M from '../../helper-classes/new_model';
-import { Disease, TextDic } from '../../helper-classes/Keyword';
-import { ParserBasisService } from './parser-basis.service';
-import { TextOutputService } from './text-output.service';
+import { Injectable } from "@angular/core";
+import * as M from "../../helper-classes/new_model";
+import { Disease, TextDic } from "../../helper-classes/keyword";
+import { ParserBasisService } from "./parser-basis.service";
+import { TextOutputService } from "./text-output.service";
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 
 export class InputParserService {
@@ -17,7 +17,7 @@ export class InputParserService {
   // Contains whole Polyp with its Categories and Keywords inside of each Category
   diseases: Array<Disease> = [];
   // contains input text
-  twInput: { twInput: string, again: boolean } = { twInput: '', again: false };
+  twInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   // contains all missing categories after first "ende"
   missing: Array<TextDic> = [];
   // 2nd ende?
@@ -67,7 +67,7 @@ export class InputParserService {
         // Checks if Category name contains Disease name, which produces an error
         const disPosLast = activeDis.position[activeDis.position.length - 1] + activeDis.name.length;
 
-        if ((disPosLast !== input.length) && input.charAt(disPosLast) !== ' ') {
+        if ((disPosLast !== input.length) && input.charAt(disPosLast) !== " ") {
           const tempInput = input.substr(0, activeDis.position[activeDis.position.length - 1]) + input.substr(disPosLast + 1);
           activeDis = this.base.setDisease(tempInput, this.diseases);
         }
@@ -77,7 +77,7 @@ export class InputParserService {
         }  */
         // only look for categories at what comes after the last disease
 
-        let input2 = '';
+        let input2 = "";
         for (let j = 0; j < activeDis.positionEnd.length; j++) {
           // adds together all input parts that belong to the active disease
           input2 += input.substring(activeDis.position[j], activeDis.positionEnd[j]);
@@ -100,7 +100,7 @@ export class InputParserService {
 
             }
             // enables the rest normal method
-            if (input2.toLowerCase().indexOf('rest normal') !== -1) {
+            if (input2.toLowerCase().indexOf("rest normal") !== -1) {
               this.base.restNormal(activeDis);
             }
             // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
@@ -115,10 +115,10 @@ export class InputParserService {
           activeCat.active = false;
         }
         // Test Log
-        console.log('KeyTest');
+        console.log("KeyTest");
         console.log(this.diseases);
         console.log(this.diseases[0].categories[0].condition);
-        console.log(this.diseases[0].categories[0].condition === '');
+        console.log(this.diseases[0].categories[0].condition === "");
         console.log(this.twInput.twInput);
 
       }

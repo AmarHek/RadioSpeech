@@ -1,12 +1,12 @@
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { assertNever, flatMap } from './util';
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { assertNever, flatMap } from "./util";
 
 export type Selectable = CheckBox | Group;
 export type Clickable  = CheckBox | Option;
 
-export type Data = {
-[name: string]: string[]
-};
+export interface Data {
+[name: string]: string[];
+}
 
 export interface TextExtractor {
   ofCheckbox(c: CheckBox): string | undefined;
@@ -92,7 +92,7 @@ export interface Literal {
 
 // Variable types
 
-export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio
+export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio;
 
 export interface VariableCommon {
   id:         string;
@@ -135,12 +135,12 @@ export interface VariableRatio extends VariableCommon {
 }
 
 export function resolve(varId: string, structure: TopLevel[]): Variable | undefined {
-  for (let tl of structure) {
+  for (const tl of structure) {
     switch (tl.kind) {
-      case 'block': continue;
-      case 'enumeration': continue;
-      case 'conditional': continue;
-      case 'category': {
+      case "block": continue;
+      case "enumeration": continue;
+      case "conditional": continue;
+      case "category": {
         const result = resolveCategory(varId, tl);
         if (result) {
           return result;
@@ -159,8 +159,8 @@ export function resolveCategory(varId: string, c: Category): Variable | undefine
 
 function variablesOfSelectable(s: Selectable): Variable[] {
   switch (s.kind) {
-    case 'box': return s.variables;
-    case 'group': return flatMap(s.options, o => o.variables);
+    case "box": return s.variables;
+    case "group": return flatMap(s.options, o => o.variables);
     default: return assertNever(s);
   }
 }

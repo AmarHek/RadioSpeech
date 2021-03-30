@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import {Router} from '@angular/router';
-import {Observable, BehaviorSubject} from 'rxjs';
+import { Injectable } from "@angular/core";
+import {Router} from "@angular/router";
+import {Observable, BehaviorSubject} from "rxjs";
 
-const LAST_MODE_STORED = 'last_mode_stored';
-const LAST_UI_STORED = 'last_ui_stored';
+const LAST_MODE_STORED = "last_mode_stored";
+const LAST_UI_STORED = "last_ui_stored";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DisplayService {
 
@@ -22,16 +22,16 @@ export class DisplayService {
   public maxTabLength = 5;
 
   // TODO Auf database auslagern?
-  private possibleModes: string[] = ['Gastroenterologie', 'Radiologie'];
-  private possibleUIs = {'Gastroenterologie': ['Fortgeschritten', 'Hierarchisch'],
-                        'Radiologie': ['Scroll']};
-  private titles = {'Gastroenterologie': 'EndoSpeech', 'Radiologie': 'RadioReport'};
+  private possibleModes: string[] = ["Gastroenterologie", "Radiologie"];
+  private possibleUIs = {"Gastroenterologie": ["Fortgeschritten", "Hierarchisch"],
+                        "Radiologie": ["Scroll"]};
+  private titles = {"Gastroenterologie": "EndoSpeech", "Radiologie": "RadioReport"};
 
   constructor(private router: Router) {
     this.displayHeader = true;
     this.initMode();
     this.initUI();
-    this.title = new BehaviorSubject<string>('init');
+    this.title = new BehaviorSubject<string>("init");
     this.setTitle();
   }
 

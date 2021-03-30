@@ -1,5 +1,5 @@
-import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { assertNever, flatMap } from './util';
+import { NgbDateStruct, NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
+import { assertNever, flatMap } from "./util";
 
 export type Selectable = CheckBox;
 export type Clickable  = CheckBox | Option;
@@ -17,18 +17,20 @@ export interface TextExtractor {
 }
 
 export interface CheckBox {
-  kind:           'box';
+  kind:           "box";
   name:           string[];
+  value?:         boolean;
   text:           string;
-  judgementText: string;
+  judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
-  choiceGroup: string;
-  listGroup: string;
+  enumeration?:   string;
+  choiceGroup:    string;
+  listGroup:      string;
 }
 
 export interface Group {
-  kind:    'group';
+  kind:    "group";
   name:    string;
   options: Option[];
   value?:  string;
@@ -36,7 +38,7 @@ export interface Group {
 }
 
 export interface Option {
-  kind:           'option';
+  kind:           "option";
   name:           string;
   text:           string;
   conditionalId?: string;
@@ -46,36 +48,36 @@ export interface Option {
   data:           Data;
 }
 
-export class myDict {
+export class MyDict {
   id: string;
-  dict: Array<TopLevel>;
+  dict: TopLevel[];
   name: string;
 }
 
 export type TopLevel = Category | Disease;
 
 export interface Disease {
-  kind: 'disease';
+  kind: "disease";
   name: string;
   categories: Category[];
 }
 
 export interface Category {
-  kind: 'category';
+  kind: "category";
   name: string;
   condition: string;
   selectables: Selectable[];
 }
 
 export interface Block {
-  kind: 'block';
+  kind: "block";
   text?: string;
   judgementText?: string;
   data: Data;
 }
 
 export interface Enumeration {
-  kind:           'enumeration';
+  kind:           "enumeration";
   text:           string;
   judgementText?: string;
   id:             string;
@@ -83,7 +85,7 @@ export interface Enumeration {
 }
 
 export interface Conditional {
-  kind:           'conditional';
+  kind:           "conditional";
   precondition:   Literal[][];
   normalText?:    string;
   judgementText?: string;
@@ -104,71 +106,37 @@ export interface VariableCommon {
 }
 
 export interface VariableOC {
-  kind:   'oc';
+  kind:   "oc";
   value?: string;
   values: string[];
 }
 
 export interface VariableMC extends VariableCommon {
-  kind:   'mc';
+  kind:   "mc";
   values: [string, boolean][];
 }
 
-export interface VariableText {
-  kind:  'text';
+export interface VariableText extends VariableCommon{
+  kind:  "text";
   unit: string;
-  textBefore: string;
-  textAfter:  string;
 }
 
 export interface VariableNumber extends VariableCommon {
-  kind:  'number';
+  kind:  "number";
   value: number;
 }
 
 export interface VariableDate extends VariableCommon {
-  kind:  'date';
+  kind:  "date";
   value: NgbDateStruct;
 }
 
 export interface VariableRatio extends VariableCommon {
-  kind:           'ratio';
+  kind:           "ratio";
   numerator:      number;
   denominator:    number;
   fractionDigits: number;
 }
-
-/* export function resolve(varId: string, structure: TopLevel[]): Variable | undefined {
-  for (let tl of structure) {
-    switch (tl.kind) {
-      case 'block': continue;
-      case 'enumeration': continue;
-      case 'conditional': continue;
-      case 'category': {
-        const result = resolveCategory(varId, tl);
-        if (result) {
-          return result;
-        } else {
-          continue;
-        }
-      }
-      default: assertNever(tl);
-    }
-  }
-} */
-
-/* export function resolveCategory(varId: string, c: Category): Variable | undefined {
-  return flatMap(c.selectables, variablesOfSelectable).find(v => v.id === varId);
-} */
-
-/* function variablesOfSelectable(s: Selectable): Variable[] {
-  switch (s.kind) {
-    case 'box': return s.variables;
-    case 'group': return flatMap(s.options, o => o.variables);
-    default: return assertNever(s);
-  }
-} */
-
 
 export class Vars {
   anzahlVar = 0;

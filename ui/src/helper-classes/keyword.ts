@@ -1,4 +1,4 @@
-export class Keyword2 {
+export class Keyword {
     name: string;
     synonym: string;
     variables: MyVariable[];
@@ -6,22 +6,22 @@ export class Keyword2 {
     position: number;
     active: string;
     text: string;
-    normal: boolean;
-    code: string;
+    normal?: boolean;
+    judgement: string;
 
     constructor() {}
 }
 
 export class MyVariable {
     kind: string;
-    textAfter = '';
-    textBefore = '';
+    textAfter = "";
+    textBefore = "";
     options: string[] = [];
     varFound: string[] = [];
 }
 
 export class Category {
-    keys: Keyword2[];
+    keys: Keyword[];
     name: string;
     active: boolean;
     position: number;

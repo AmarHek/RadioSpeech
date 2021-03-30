@@ -3,7 +3,7 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as M from '../../helper-classes/new_model';
-import { Keyword2, Disease, TextDic } from '../../helper-classes/Keyword';
+import { Keyword, Disease, TextDic } from '../../helper-classes/keyword';
 import { InputParserService } from '../services/input-parser.service';
 import { TextOutputService } from '../services/text-output.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -26,8 +26,8 @@ export class GastroComponent implements OnInit, OnDestroy {
   isLoading = false;
   routeName: string;
   private textSub: Subscription;
-  parts: M.myDict = { name: '', dict: [], id: '' };
-  keywordsService: Array<Keyword2> = [];
+  parts: M.MyDict = { name: '', dict: [], id: '' };
+  keywordsService: Array<Keyword> = [];
   myText: { report: string } = { report: '' };
   diseases: Array<Disease> = [];
   firstTime = false;
@@ -69,7 +69,7 @@ export class GastroComponent implements OnInit, OnDestroy {
         this.dictManager.getList();
         this.textSub = this.dictManager
           .getListUpdateListener()
-          .subscribe((list: M.myDict[]) => {
+          .subscribe((list: M.MyDict[]) => {
             this.isLoading = false;
             this.parts = list.find((d) => d.name === this.routeName);
             if (this.parts === undefined) {
@@ -105,7 +105,7 @@ export class GastroComponent implements OnInit, OnDestroy {
 
 
   // used that only one synonym for each keyword is shown on the interface
-  filterSyn(arr: Array<Keyword2>) {
+  filterSyn(arr: Array<Keyword>) {
     return arr.filter(key => key.name === key.synonym);
   }
 

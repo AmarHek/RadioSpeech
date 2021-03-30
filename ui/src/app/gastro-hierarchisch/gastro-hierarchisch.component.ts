@@ -1,23 +1,23 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import * as M from '../../helper-classes/new_model';
-import { Keyword2, Disease, TextDic } from '../../helper-classes/Keyword';
-import { TextOutputService } from '../services/text-output.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
-import { DictManagerService } from '../services/dict-manager.service';
-import { InputParserHierarchischService } from '../services/input-parser-hierarchisch.service';
-import { ParserBasisService } from '../services/parser-basis.service';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from "@angular/core";
+import { NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import * as M from "../../helper-classes/new_model";
+import { Keyword, Disease, TextDic } from "../../helper-classes/keyword";
+import { TextOutputService } from "../services/text-output.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { Subscription } from "rxjs";
+import { DictManagerService } from "../services/dict-manager.service";
+import { InputParserHierarchischService } from "../services/input-parser-hierarchisch.service";
+import { ParserBasisService } from "../services/parser-basis.service";
 
 
 declare const $: any;
 
 @Component({
-  selector: 'app-text-hierarchisch',
-  templateUrl: './gastro-hierarchisch.component.html',
-  styleUrls: ['./gastro-hierarchisch.component.scss']
+  selector: "app-text-hierarchisch",
+  templateUrl: "./gastro-hierarchisch.component.html",
+  styleUrls: ["./gastro-hierarchisch.component.scss"]
 })
 export class GastroHierarchischComponent implements OnInit, OnDestroy {
 
@@ -28,34 +28,34 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
   }
 
   errorMsg = "";
-  isLoading: boolean = false;
+  isLoading = false;
   routeName: string;
   private textSub: Subscription;
-  parts: M.myDict = { name: "", dict: [], id: "" };
+  parts: M.MyDict = { name: "", dict: [], id: "" };
   myText: { report: string } = { report: "" };
   diseases: Array<Disease> = [];
-  firstTime: boolean = false;
+  firstTime = false;
   myInput: { twInput: string, again: boolean } = { twInput: "", again: false };
-  end: boolean = false;
-  end0: boolean = false;
-  oldInput: string = "";
+  end = false;
+  end0 = false;
+  oldInput = "";
   missing: Array<TextDic> = [];
   filledCats: Array<TextDic> = [];
   jsDown: SafeUrl;
   jsDown2: SafeUrl;
-  inner: string = "hey";
-  getReady: boolean = false;
+  inner = "hey";
+  getReady = false;
 
   // recogWords : {Array<string>} = [];
 
-  @ViewChild('myReport', { static: false }) myReport: ElementRef;
-  @ViewChild('myJson', { static: false }) myJson: ElementRef;
+  @ViewChild("myReport", { static: false }) myReport: ElementRef;
+  @ViewChild("myJson", { static: false }) myJson: ElementRef;
 
 
   ngOnInit(): void {
 
     // assigns reference to polyp object
-    //this.polyp = this.inputParser.polyp;
+    // this.polyp = this.inputParser.polyp;
     this.route.paramMap.subscribe((ps) => {
       if (ps.has("name")) {
         this.routeName = ps.get("name");
@@ -63,10 +63,10 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
         this.dictManager.getList();
         this.textSub = this.dictManager
           .getListUpdateListener()
-          .subscribe((list: M.myDict[]) => {
+          .subscribe((list: M.MyDict[]) => {
             this.isLoading = false;
             this.parts = list.find((d) => d.name === this.routeName);
-            if (this.parts == undefined) {
+            if (this.parts === undefined) {
               this.errorMsg =
                 "Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.";
             } else {
@@ -83,7 +83,8 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
             this.dictManager.updateDict(this.myList[1]); */
             console.log("onInit");
             console.log(this.parts);
-            //console.log(this.new_parts);
+            console.log(this.diseases);
+            // console.log(this.new_parts);
           });
       } else {
         this.errorMsg =
@@ -101,7 +102,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
     // evtl needs change
     this.jsDown = this.textOut.downJson;
     this.filledCats = this.textOut.rep;
-    //this.recogWords = this.textOut.recogWords;
+    // this.recogWords = this.textOut.recogWords;
 
   }
 
@@ -113,13 +114,13 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
 
 
   // used that only one synonym for each keyword is shown on the interface
-  filterSyn(arr: Array<Keyword2>) {
+  filterSyn(arr: Array<Keyword>) {
     return arr.filter(key => key.name == key.synonym);
   }
 
   triggerClick() {
-    let el: HTMLElement = this.myReport.nativeElement as HTMLElement;
-    let el2: HTMLElement = this.myJson.nativeElement as HTMLElement;
+    const el: HTMLElement = this.myReport.nativeElement as HTMLElement;
+    const el2: HTMLElement = this.myJson.nativeElement as HTMLElement;
     setTimeout(() => {
       el.click();
       el2.click();
@@ -134,7 +135,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
 
   changeButton() {
     if (!this.end) {
-      let signalButton = document.getElementById("listening");
+      const signalButton = document.getElementById("listening");
       signalButton.classList.toggle("btn-danger");
       signalButton.classList.toggle("btn-success");
       if (signalButton.innerText === "Ein") {
@@ -146,7 +147,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
   }
 
   onInput(ev) {
-    let inp = (document.getElementById('input') as HTMLTextAreaElement).value;
+    const inp = (document.getElementById("input") as HTMLTextAreaElement).value;
     let dif: string;
 
     if (this.oldInput === "") {
@@ -181,7 +182,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
     }
     // continue here
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput.toLowerCase());
-    let inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
+    const inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.base.end;
     this.textOut.finalOut(this.end, inpArr);
     this.jsDown = this.textOut.downJson;
@@ -189,12 +190,12 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
     if (this.end) {
       this.triggerClick();
     }
-    //this.end0 = this.base.end0;
+    // this.end0 = this.base.end0;
     if (this.end0) {
       // document.getElementById("Form1").innerHTML = "bye";
       this.inner = "bye";
     }
-    //this.missing = this.base.missing;
+    // this.missing = this.base.missing;
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), this.myInput.twInput);
     if (this.myInput.again) {
       this.myText.report = this.inputParser.parseInput(this.myInput.twInput);
@@ -204,7 +205,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
   }
 
   makeNormal() {
-    let input = (document.getElementById('input') as HTMLTextAreaElement).value;
+    const input = (document.getElementById("input") as HTMLTextAreaElement).value;
     this.myText.report = this.inputParser.parseInput(input + " rest normal");
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input);
   }

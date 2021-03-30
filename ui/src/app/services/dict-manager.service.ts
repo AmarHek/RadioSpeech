@@ -17,8 +17,8 @@ const url = environment.urlRootEndo;
 // -----------------------------------
 
 export class DictManagerService {
-  myList: Array<N.myDict> = [];
-  private listUpdated = new Subject<N.myDict[]>();
+  myList: Array<N.MyDict> = [];
+  private listUpdated = new Subject<N.MyDict[]>();
 
   myUrl = url;
   mode: string;
@@ -86,7 +86,7 @@ export class DictManagerService {
     // this.timesService.removeTimeStamp(index);
   }
 
-  addDict(myDict: N.myDict) {
+  addDict(myDict: N.MyDict) {
     this.http
       .post<{ message: string; dictId: string }>(
         this.myUrl,
@@ -114,7 +114,7 @@ export class DictManagerService {
       });
   }
 
-  updateDict(myDict: N.myDict) {
+  updateDict(myDict: N.MyDict) {
     this.http
       .put(this.myUrl + myDict.id, {
         dict: myDict.dict,

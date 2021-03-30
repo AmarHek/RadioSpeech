@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import * as M from '../../helper-classes/new_model';
-import { Disease, TextDic } from '../../helper-classes/Keyword';
-import { ParserBasisService } from './parser-basis.service';
-import { TextOutputService } from './text-output.service';
+import { Injectable } from "@angular/core";
+import * as M from "../../helper-classes/new_model";
+import { Disease, TextDic } from "../../helper-classes/keyword";
+import { ParserBasisService } from "./parser-basis.service";
+import { TextOutputService } from "./text-output.service";
 
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 
 export class InputParserHierarchischService {
@@ -18,7 +18,7 @@ export class InputParserHierarchischService {
   // Contains whole Polyp with its Categories and Keywords inside of each Category
   diseases: Array<Disease> = [];
   // contains the input text
-  twInput: { twInput: string, again: boolean } = { twInput: '', again: false };
+  twInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   missing: Array<TextDic> = [];
 
   startingTime: Date;
@@ -60,7 +60,7 @@ export class InputParserHierarchischService {
         // Checks if Category name contains Disease name, which produces an error
         const disPosLast = activeDis.position[activeDis.position.length - 1] + activeDis.name.length;
 
-        if ((disPosLast !== input.length) && input.charAt(disPosLast) !== ' ') {
+        if ((disPosLast !== input.length) && input.charAt(disPosLast) !== " ") {
           const tempInput = input.substr(0, activeDis.position[activeDis.position.length - 1]) + input.substr(disPosLast + 1);
           activeDis = this.base.setDisease(tempInput, this.diseases);
         }
@@ -94,7 +94,7 @@ export class InputParserHierarchischService {
             key.position = this.base.getIndex(key, input2, activeCat.position + activeDis.position[activeDis.position.length - 1]);
           }
           // enables the rest normal method
-          if (input2.toLowerCase().indexOf('rest normal') !== -1) {
+          if (input2.toLowerCase().indexOf("rest normal") !== -1) {
             this.base.restNormal(activeDis);
           }
           // if a keyword is addressed by different synonyms, the synonym with the latest appearance has to be used
@@ -107,7 +107,7 @@ export class InputParserHierarchischService {
           const text = this.textOut.makeReport(activeCat, activeDis, this.startingTime);
           // Test log
           const index = activeDis.categories.findIndex(cat => cat.name === activeCat.name);
-          console.log('IndexTest');
+          console.log("IndexTest");
           console.log(this.diseases);
           console.log(index);
           // return output text
@@ -116,11 +116,11 @@ export class InputParserHierarchischService {
         } else if (activeDis.firstTime) {
           // automatically goes into first category when disease is called
           const firstCatName = activeDis.categories[0].name;
-          this.twInput.twInput += ' ' + firstCatName + ' ';
+          this.twInput.twInput += " " + firstCatName + " ";
           this.twInput.again = true;
           activeDis.firstTime = false;
         }
-        console.log('KeyTest');
+        console.log("KeyTest");
         console.log(this.diseases);
 
       }
