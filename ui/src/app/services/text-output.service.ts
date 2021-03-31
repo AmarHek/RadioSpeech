@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Category, Disease, TextDic } from '../../helper-classes/keyword';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Injectable } from "@angular/core";
+import { Category, Disease, TextDic } from "../../helper-classes/keyword";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class TextOutputService {
 
@@ -22,14 +22,14 @@ export class TextOutputService {
   // url for report file download
   downJson2: SafeUrl;
   // final output text, contains all the text from rep Array
-  finalText = '';
+  finalText = "";
 
   // generates downloadable files from arrays
   generateDownloadJson() {
     const js = JSON.stringify(this.rep);
     const js2 = JSON.stringify(this.finalText);
-    const uri = this.sanitizer.bypassSecurityTrustUrl('data:text/json;charset=UTF-8,' + encodeURIComponent(js));
-    const uri2 = this.sanitizer.bypassSecurityTrustUrl('data:text/json;charset=UTF-8,' + encodeURIComponent(js2));
+    const uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js));
+    const uri2 = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(js2));
     this.downJson = uri;
     this.downJson2 = uri2;
   }
@@ -38,26 +38,26 @@ export class TextOutputService {
   makeReport(activeCat: Category, activeDis: Disease, startingTime: Date) {
     // this.report.text="";
     // gets active Category
-    let repo = '';
+    let repo = "";
     // adds text corresponding to active Keywords
-    let keyName = '';
-    let code = '';
+    let keyName = "";
+    let code = "";
     if (activeDis !== undefined) {
       for (const key of activeCat.keys.filter(value => value.position !== -1)) {
         let newText = key.text;
         keyName = key.name;
         if (key.judgement !== undefined) {
-          code = key.name + ': ' + key.judgement + '\n';
+          code = key.name + ": " + key.judgement + "\n";
         }
         if (activeCat.keys.length === 1) {
-          newText = newText.replace('%0', key.synonym);
+          newText = newText.replace("%0", key.synonym);
         }
         for (let i = 0; i < key.variables.length; i++) {
           // repo += key.text;
           if (key.variables[i].varFound.length !== 0) {
-            newText = newText.replace('%' + i, key.variables[i].varFound[0]);
+            newText = newText.replace("%" + i, key.variables[i].varFound[0]);
           } else {
-            newText = newText.replace('%' + i, '');
+            newText = newText.replace("%" + i, "");
           }
         }
         repo += newText;
@@ -71,23 +71,23 @@ export class TextOutputService {
 
     }
     // concatenate all text elements from the array
-    let finalText = '';
+    let finalText = "";
     // adds time stamp to the top of the report
     const date = new Date();
-    finalText += date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes() + '\n\n';
+    finalText += date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
     this.timeSpan = Math.abs(date.getTime() - startingTime.getTime()) / 1000;
 
     for (const dis of this.rep) {
-      if (dis.reports.map(report => report.text).join('') !== '') {
-        finalText = finalText + dis.disName + ':\n';
+      if (dis.reports.map(report => report.text).join("") !== "") {
+        finalText = finalText + dis.disName + ":\n";
       }
-      finalText = finalText + dis.reports.map(report => report.text).join('') + '\n\n';
+      finalText = finalText + dis.reports.map(report => report.text).join("") + "\n\n";
     }
     for (const dis of this.rep) {
-      if (dis.reports.map(report => report.code).join('') !== '') {
-        finalText = finalText + dis.disName + ' - Codes:\n';
+      if (dis.reports.map(report => report.code).join("") !== "") {
+        finalText = finalText + dis.disName + " - Codes:\n";
       }
-      finalText = finalText + dis.reports.map(report => report.code).join('') + '\n\n';
+      finalText = finalText + dis.reports.map(report => report.code).join("") + "\n\n";
     }
     this.finalText = finalText;
     return finalText;
@@ -98,11 +98,11 @@ export class TextOutputService {
     const inByWord: string[] = [];
     for (const dis of diseases) {
       if (input.toLowerCase().indexOf(dis.name.toLowerCase()) !== -1) {
-        inByWord.push('<span style="background-color: yellow; text-decoration: underline">' + dis.name + '</span>');
+        inByWord.push("<span style=\"background-color: yellow; text-decoration: underline\">" + dis.name + "</span>");
       }
       for (const cat of dis.categories) {
         // only lokalisierung and größe are shown on top
-        if (!dis.name.includes('Polyp') || cat.name === 'Lokalisierung' || cat.name === 'Größe') {
+        if (!dis.name.includes("Polyp") || cat.name === "Lokalisierung" || cat.name === "Größe") {
           const activeKeys = cat.keys.filter(activeKey => activeKey.position !== -1).sort((a, b) => a.position - b.position);
           // loops through all active Keywords
           for (const key of activeKeys) {
@@ -113,24 +113,24 @@ export class TextOutputService {
               for (const vari of key.variables) {
                 if (vari.varFound.length !== 0) {
                   // inByWord.push("<span style=\"background-color: darkgreen\">" + key.name + "</span>");
-                  inByWord.push('<span style="background-color: lightgreen">' + vari.varFound[0].replace(vari.textAfter, '') + '</span>');
+                  inByWord.push("<span style=\"background-color: lightgreen\">" + vari.varFound[0].replace(vari.textAfter, "") + "</span>");
                   activeVars++;
                 } else {
                   complete = false;
                 }
               }
               if (complete) {
-                inByWord.splice(inByWord.length - activeVars, 0, '<span style="background-color: #ffc0cb">' + key.name + '</span>');
+                inByWord.splice(inByWord.length - activeVars, 0, "<span style=\"background-color: #ffc0cb\">" + key.name + "</span>");
               } else {
                 // if keyword can hold variables but doesnt hold all of them, it will be red
-                inByWord.splice(inByWord.length - activeVars, 0, '<span style="background-color: red">' + key.name + '</span>');
+                inByWord.splice(inByWord.length - activeVars, 0, "<span style=\"background-color: red\">" + key.name + "</span>");
               }
               // if keyword can't hold a variable, it will be #ffc0cb
             } else {
-              if (cat.name === 'Größe') {
-                inByWord.push('<span style="background-color: #ffc0cb">' + key.synonym + '</span>');
+              if (cat.name === "Größe") {
+                inByWord.push("<span style=\"background-color: #ffc0cb\">" + key.synonym + "</span>");
               } else {
-                inByWord.push('<span style="background-color: #ffc0cb">' + key.name + '</span>');
+                inByWord.push("<span style=\"background-color: #ffc0cb\">" + key.name + "</span>");
               }
             }
           }
@@ -138,14 +138,14 @@ export class TextOutputService {
       }
     }
     // assigns text to element on html
-    document.getElementById('inputText').innerHTML = inByWord.join(' ');
+    document.getElementById("inputText").innerHTML = inByWord.join(" ");
   }
   // adds an entry at the output array for all different diseases (at beginning)
   initDiseaseText(diseases: Array<Disease>) {
     for (const dis of diseases) {
       const tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
       for (const cat of dis.categories) {
-        tempReports.push({ text: '', category: cat.name, key: '', code: undefined, condition: cat.condition });
+        tempReports.push({ text: "", category: cat.name, key: "", code: undefined, condition: cat.condition });
       }
       this.rep.push({ disName: dis.name, reports: tempReports });
     }
@@ -154,7 +154,7 @@ export class TextOutputService {
   addDisease(disease: Disease, index: number) {
     const tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
     for (const cat of disease.categories) {
-      tempReports.push({ text: '', category: cat.name, key: '', code: undefined, condition: cat.condition });
+      tempReports.push({ text: "", category: cat.name, key: "", code: undefined, condition: cat.condition });
     }
     this.rep.splice(index, 0, { disName: disease.name, reports: tempReports });
   }
@@ -170,7 +170,7 @@ export class TextOutputService {
       while (i < this.rep.length) {
         let empty = true;
         for (const cat of this.rep[i].reports) {
-          if (cat.key !== '') {
+          if (cat.key !== "") {
             empty = false;
           }
         }
@@ -182,7 +182,7 @@ export class TextOutputService {
       }
       this.generateDownloadJson();
 
-      document.getElementsByClassName('ende')[0].innerHTML = inpAr.join(' ');
+      document.getElementsByClassName("ende")[0].innerHTML = inpAr.join(" ");
     }
     /* if(end){
       var temp = 0;
@@ -232,14 +232,14 @@ export class TextOutputService {
         if (cat.condition !== null) {
 
           if (dis.reports.find(el => el.category === cat.condition)
-            .key !== '' && cat.key === '') {
-            tempReports.push({ text: '', category: cat.category, key: '', code: undefined, condition: cat.condition });
+            .key !== "" && cat.key === "") {
+            tempReports.push({ text: "", category: cat.category, key: "", code: undefined, condition: cat.condition });
           }
         }
-        if (cat.key === '' && cat.condition == null) {
-          tempReports.push({ text: '', category: cat.category, key: '', code: undefined, condition: cat.condition });
+        if (cat.key === "" && cat.condition == null) {
+          tempReports.push({ text: "", category: cat.category, key: "", code: undefined, condition: cat.condition });
         }
-        if (cat.key !== '') {
+        if (cat.key !== "") {
           empty = false;
         }
         /* if (cat.category === "Polypektomie" && (cat.key === "keine Abtragung" || cat.key === "")) {

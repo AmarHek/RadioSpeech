@@ -1,3 +1,7 @@
+<div class="button">
+  <button id="copy-button" (click)="copyAll()" class="btn btn-outline-secondary">Kopieren</button>
+</div>
+
 <div class="report-text">
   <label for="report"></label>
   <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtserstellung überschrieben"
@@ -10,6 +14,4 @@
               id="judgement" class="w-100" [(ngModel)]="judgement"></textarea>
 </div>
 
-<div class="button">
-  <button id="copy-button" (click)="copyAll()" class="btn btn-outline-secondary">Kopieren</button>
-</div>
+

@@ -1,4 +1,4 @@
-import * as M from "./model";
+import * as M from "./radio_model";
 
 export function normalExtractor(): M.TextExtractor {
   return new class {
@@ -209,7 +209,7 @@ export function textOfVariable(v: M.Variable): string | undefined {
   if (v.kind === "oc") {
     return v.value;
   } else if (v.kind === "mc") {
-    return v.values.filter(v => v[1]).map(v => v[0]).join(", ");
+    return v.values.filter(val => val[1]).map(val => val[0]).join(", ");
   } else if (v.kind === "text") {
     return v.value;
   } else if (v.kind === "number") {

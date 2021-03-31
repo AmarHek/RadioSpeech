@@ -1,13 +1,13 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import * as M from '../../helper-classes/model';
-import {DataParserService} from '../services/dataParser.service';
-import {DisplayService} from '../services/display.service';
-import {Clickable, Group} from '../../helper-classes/model';
+import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
+import * as M from "../../helper-classes/radio_model";
+import {DataParserService} from "../services/dataParser.service";
+import {DisplayService} from "../services/display.service";
+import {Clickable, Group} from "../../helper-classes/model";
 
 @Component({
-  selector: 'app-options',
-  templateUrl: './options.component.html',
-  styleUrls: ['./options.component.scss']
+  selector: "app-options",
+  templateUrl: "./options.component.html",
+  styleUrls: ["./options.component.scss"]
 })
 export class OptionsComponent implements OnInit {
 
@@ -34,9 +34,9 @@ export class OptionsComponent implements OnInit {
 
   public initRows() {
     if (this.minRowLength > this.maxRowLength) {
-      window.alert('Die gewählte Reihenlänge von ' + this.maxRowLength +
-        ' ist kleiner als die kleinstmögliche Länge von ' + this.minRowLength +
-        '. Die Reihenlänge wird auf ' + this.minRowLength + ' gesetzt.');
+      window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
+        " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
+        ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
       this.maxRowLength = this.minRowLength;
     }
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
@@ -50,7 +50,7 @@ export class OptionsComponent implements OnInit {
     let minRowLength = 1;
     for (const cat of cats) {
       for (const sel of cat.selectables) {
-        if (sel.kind === 'group') {
+        if (sel.kind === "group") {
           if (sel.options.length > minRowLength) {
             minRowLength = sel.options.length;
           }
@@ -61,7 +61,7 @@ export class OptionsComponent implements OnInit {
   }
 
   public update(sel: M.Selectable, option?: string) {
-    if (sel.kind === 'group') {
+    if (sel.kind === "group") {
       if (sel.value === option) {
         sel.value = null;
       }
@@ -70,11 +70,11 @@ export class OptionsComponent implements OnInit {
   }
 
   public updateFromVariable(parent: Clickable, group?: Group) {
-    if (parent.kind === 'box') {
+    if (parent.kind === "box") {
       parent.value = true;
     } else {
       if (group === undefined) {
-        Error('Something went wrong here');
+        Error("Something went wrong here");
       } else {
         group.value = parent.name;
       }

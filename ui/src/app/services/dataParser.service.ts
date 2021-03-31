@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import * as M from "../../helper-classes/model";
+import * as O from "../../helper-classes/model";
 import * as G from "../../helper-classes/generator";
-import * as N from "../../helper-classes/new_model";
+import * as M from "../../helper-classes/radio_model";
 
 @Injectable({
   providedIn: "root"
@@ -11,33 +11,81 @@ export class DataParserService {
 
   constructor() {}
 
+  convertModel(parts: O.TopLevel[], parseOptional: boolean): M.TopLevel[] {
+    const newParts: M.TopLevel[] = [];
+    for (const part of parts) {
+      if (part.kind === "block") {
+        newParts.push(M.convertBlock(part));
+      } else if (part.kind === "enumeration") {
+        newParts.push(M.convertEnum(part));
+      } else if (part.kind === "category") {
+        let newPart = M.convertCategory(part);
+        if (parseOptional) {
+          newPart = this.parseOptionalCategory(newPart);
+        }
+        newParts.push(newPart);
+      }
+    }
+    return newParts;
+  }
+
   /*
-  convertOldToNewModel(oldParts: M.TopLevel[]): N.Toplevel[] {
-
-  }*/
-
-  extractCategories(parts: M.TopLevel[]): M.Category[] {
-    const res = [];
+  extractCategoriesOld(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
+    const res: M.Category[] = [];
     for (const el of parts) {
       if (el.kind === "category") {
-        const parsed = this.parseOptionalCategory(el.name);
-        res.push({
-            kind: "category",
-            name: parsed[0],
-            optional: parsed[1],
-            selectables: el.selectables,
-            data: el.data,
-        });
+        if (parseOptional) {
+          const parsedCat = this.parseOptionalCategoryOld(el);
+          res.push(parsedCat);
+        } else {
+          res.push(el);
+        }
+      }
+    }
+    return res;
+  } */
+
+  extractCategories(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
+    const res: M.Category[] = [];
+    for (const el of parts) {
+      if (el.kind === "category") {
+        if (parseOptional) {
+          const parsedCat = this.parseOptionalCategory(el);
+          res.push(parsedCat);
+        } else {
+          res.push(el);
+        }
       }
     }
     return res;
   }
 
-  parseOptionalCategory(category: string): [string, boolean] {
-    if (category.includes("<", 0)) {
-      return [category.substring(1, category.length), true];
+  parseOptionalCategory(cat: M.Category): M.Category {
+    const parsedName = this.parseCategoryTitle(cat.name);
+    return {
+      kind: cat.kind,
+      name: parsedName[0],
+      optional: parsedName[1],
+      selectables: cat.selectables
+    };
+  }
+/*
+  parseOptionalCategoryOld(cat: M.Category): M.Category {
+    const parsedName = this.parseCategoryTitle(cat.name);
+    return {
+      kind: cat.kind,
+      name: parsedName[0],
+      optional: parsedName[1],
+      selectables: cat.selectables,
+      data: cat.data
+    };
+  }
+*/
+  parseCategoryTitle(catName: string): [string, boolean] {
+    if (catName.includes("<", 0)) {
+      return [catName.substring(1, catName.length), true];
     } else {
-      return [category, false];
+      return [catName, false];
     }
   }
 
@@ -72,8 +120,7 @@ export class DataParserService {
         kind: "category",
         name: name,
         optional: category.optional,
-        selectables: temp_sels,
-        data: category.data,
+        selectables: temp_sels
       });
       pos += split;
     }
@@ -107,7 +154,7 @@ export class DataParserService {
         }
       }
 
-      if (category.selectables.indexOf(sel) === (category.selectables.length - 1) && currentSplit != 0) {
+      if (category.selectables.indexOf(sel) === (category.selectables.length - 1) && currentSplit !== 0) {
         rowSplits.push(currentSplit);
       }
     }
@@ -138,6 +185,4 @@ export class DataParserService {
 
     return [report, judgement];
   }
-
-
 }

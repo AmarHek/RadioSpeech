@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {UtilService} from "../../services/util.service";
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './inputModal.component.html',
-  styleUrls: ['./inputModal.component.scss']
+  selector: "app-modal",
+  templateUrl: "./inputModal.component.html",
+  styleUrls: ["./inputModal.component.scss"]
 })
 export class InputModalComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class InputModalComponent implements OnInit {
       date: null,
       numerator: null,
       denominator: null
-    })
+    });
   }
 
   close() {
@@ -38,7 +38,7 @@ export class InputModalComponent implements OnInit {
 
   displayQuotient(numerator, denominator) {
     return this.utilService.displayableQuotient(numerator as number,
-      denominator as number, this.data['fractionDigits']);
+      denominator as number, this.data["fractionDigits"]);
   }
 
 }

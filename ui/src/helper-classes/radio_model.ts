@@ -3,6 +3,14 @@ import * as M from "./model";
 
 export type Selectable = CheckBox | Group;
 
+export interface TextExtractor {
+  ofCheckbox(c: CheckBox): string | undefined;
+  ofOption(o: Option): string | undefined;
+  ofEnumeration(e: Enumeration): string | undefined;
+  ofBlock(e: Block): string | undefined;
+  ofConditional(c: Conditional): string | undefined;
+}
+
 // Selectable classes, lower than category
 
 export interface CheckBox {
@@ -10,6 +18,7 @@ export interface CheckBox {
   name:           string;
   value:          boolean;
   text:           string;
+  conditionalId?: string;
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
@@ -35,7 +44,7 @@ export interface Option {
   keys:           string[][];
 }
 
-export type TopLevel = Category | Block | Enumeration;
+export type TopLevel = Category | Block | Enumeration | Conditional;
 
 // Main data management and display class
 
@@ -57,6 +66,18 @@ export interface Enumeration {
   text:           string;
   judgementText?: string;
   id:             string;
+}
+
+export interface Conditional {
+  kind:           "conditional";
+  precondition:   Literal[][];
+  normalText?:    string;
+  judgementText?: string;
+}
+
+export interface Literal {
+  id:      string;
+  negated: boolean;
 }
 
 // Variable types
@@ -176,6 +197,15 @@ export function convertEnum(oldEnum: M.Enumeration): Enumeration {
   };
 }
 
+export function convertCond(oldCond: M.Conditional): Conditional {
+  return {
+    kind: oldCond.kind,
+    precondition: oldCond.precondition,
+    normalText: oldCond.normalText,
+    judgementText: oldCond. judgementText
+  };
+}
+
 export function convertCategory(oldCat: M.Category): Category {
   const newSels = convertSelectables(oldCat.selectables);
   return {
@@ -261,7 +291,7 @@ export function convertVariable(oldVar: M.Variable): Variable {
   return newVar;
 }
 
-function splitKeywords(keywords: string, splitter: string): string[] {
+export function splitKeywords(keywords: string, splitter: string): string[] {
   if (keywords) {
     return keywords.split(splitter);
   } else {

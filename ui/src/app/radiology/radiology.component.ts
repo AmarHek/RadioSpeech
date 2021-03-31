@@ -5,7 +5,7 @@ import { Location } from "@angular/common";
 import { ViewChild } from "@angular/core";
 
 import { environment } from "../../environments/environment";
-import * as M from "../../helper-classes/model";
+import * as M from "../../helper-classes/radio_model";
 import * as G from "../../helper-classes/generator";
 import * as K from "../../helper-classes/keywordAlt";
 import {DataParserService} from "../services/dataParser.service";
@@ -69,7 +69,6 @@ export class RadiologyComponent implements OnInit, OnDestroy {
             window.alert("Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
           } else {
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-            this.categories = this.dataParser.extractCategories(this.parts);
           }
         });
       }
@@ -81,12 +80,10 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       if (ps.get("name")) {
         this.http.post(environment.urlRootRadio + "get", JSON.stringify(ps.get("name"))).subscribe(
           worked => {
-            this.parts = worked as any;
-            this.defaultParts = JSON.parse(JSON.stringify(worked));
-            this.categories = this.dataParser.extractCategories(this.parts);
+            this.parts = this.dataParser.convertModel(worked as any, true);
+            this.defaultParts = JSON.parse(JSON.stringify(this.parts));
+            this.categories = this.dataParser.extractCategories(this.parts, false);
             // this.keywords = this.inputParser.createStartDict(this.parts);
-            console.log(this.parts);
-            console.log(this.categories);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -117,7 +114,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   makeNormal() {
     for (const p of this.parts) {
       if (p.kind === "category") {
-        G.makeNormalCategory(p);
+        // G.makeNormalCategory(p);
       }
     }
     this.updateText();
@@ -125,7 +122,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
 
   reset() {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts);
+    this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 5);
     setTimeout(() => this.resetText(), 5);
   }

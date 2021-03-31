@@ -1,8 +1,6 @@
-import { NgbDateStruct, NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
-import { assertNever, flatMap } from "./util";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
 export type Selectable = CheckBox;
-export type Clickable  = CheckBox | Option;
 
 export interface Data {
 [name: string]: string[];
@@ -25,6 +23,7 @@ export interface CheckBox {
   normal:         boolean;
   variables:      Variable[];
   enumeration?:   string;
+  choiceGroup:    string;
   listGroup:      string;
 }
 
