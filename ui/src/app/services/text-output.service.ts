@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Category, Disease, TextDic } from "../../helper-classes/keyword";
+import { KeywordCategory, KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
 @Injectable({
@@ -35,7 +35,7 @@ export class TextOutputService {
   }
 
   // produces the text output
-  makeReport(activeCat: Category, activeDis: Disease, startingTime: Date) {
+  makeReport(activeCat: KeywordCategory, activeDis: KeywordDisease, startingTime: Date) {
     // this.report.text="";
     // gets active Category
     let repo = "";
@@ -94,7 +94,7 @@ export class TextOutputService {
   }
 
   // shows which keywords were detected and are written into the text output
-  colorTextInput(diseases: Array<Disease>, input: string) {
+  colorTextInput(diseases: Array<KeywordDisease>, input: string) {
     const inByWord: string[] = [];
     for (const dis of diseases) {
       if (input.toLowerCase().indexOf(dis.name.toLowerCase()) !== -1) {
@@ -141,7 +141,7 @@ export class TextOutputService {
     document.getElementById("inputText").innerHTML = inByWord.join(" ");
   }
   // adds an entry at the output array for all different diseases (at beginning)
-  initDiseaseText(diseases: Array<Disease>) {
+  initDiseaseText(diseases: Array<KeywordDisease>) {
     for (const dis of diseases) {
       const tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
       for (const cat of dis.categories) {
@@ -151,7 +151,7 @@ export class TextOutputService {
     }
   }
   // adds an entry at the output array for all new instances (dynamic)
-  addDisease(disease: Disease, index: number) {
+  addDisease(disease: KeywordDisease, index: number) {
     const tempReports: { text: string, category: string, key: string, code: string, condition: string }[] = [];
     for (const cat of disease.categories) {
       tempReports.push({ text: "", category: cat.name, key: "", code: undefined, condition: cat.condition });

@@ -6,7 +6,6 @@ import { ViewChild } from "@angular/core";
 
 import { environment } from "../../environments/environment";
 import * as M from "../../helper-classes/radio_model";
-import * as G from "../../helper-classes/generator";
 import * as K from "../../helper-classes/keywordAlt";
 import {DataParserService} from "../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
@@ -54,7 +53,6 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // this.textSub.unsubscribe();
   }
-
 
   // for migration to nodejs server
   getDataNode() {
@@ -112,11 +110,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   }
 
   makeNormal() {
-    for (const p of this.parts) {
-      if (p.kind === "category") {
-        // G.makeNormalCategory(p);
-      }
-    }
+    this.dataParser.makeNormal(this.parts);
     this.updateText();
   }
 

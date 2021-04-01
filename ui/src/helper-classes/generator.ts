@@ -213,7 +213,11 @@ export function textOfVariable(v: M.Variable): string | undefined {
   } else if (v.kind === "text") {
     return v.value;
   } else if (v.kind === "number") {
-    return "" + v.value;
+    if (v.value !== 0) {
+      return "" + v.value;
+    } else {
+    return "";
+    }
   } else if (v.kind === "date") {
     return v.value.day + "." + v.value.month + "." + v.value.year;
   } else if (v.kind === "ratio") {

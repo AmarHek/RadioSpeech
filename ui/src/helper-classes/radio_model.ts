@@ -313,4 +313,3 @@ export function splitKeywordsArray(keys: string, optionSplitter: string, synonym
   }
   return result;
 }
-

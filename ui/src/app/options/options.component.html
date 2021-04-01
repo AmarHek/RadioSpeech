@@ -18,7 +18,7 @@
           </td>
           <app-variables *ngIf="sel.variables.length > 0"
                          (clickEvent)="updateFromVariable(sel)"
-                         [style.width.%]="width"
+
                          [variables]="sel.variables"
                          [parentText]="sel.name"
                          [parentActive]="sel.value"></app-variables>
@@ -42,7 +42,7 @@
             </td>
             <app-variables *ngIf="option.variables.length > 0"
                            (clickEvent)="updateFromVariable(option, sel)"
-                           [style.width.%]="width"
+
                            [variables]="option.variables"
                            [parentText]="option.name"
                            [parentActive]="option.name === sel.value"></app-variables>

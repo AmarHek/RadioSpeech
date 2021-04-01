@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/new_model";
-import { Keyword, Category, Disease, MyVariable, TextDic } from "../../helper-classes/keyword";
+import { KeywordSelectable, KeywordCategory, KeywordDisease, KeywordVariable, TextDic } from "../../helper-classes/keyword";
 import { TextOutputService } from "./text-output.service";
 import * as MO from "../../helper-classes/model";
 
@@ -16,7 +16,7 @@ export class ParserBasisService {
   constructor(private textOut: TextOutputService) { }
   // DATA STRUCTURES
   // Contains whole Polyp with its Categories and Keywords inside of each Category
-  diseases: Disease[] = [];
+  diseases: KeywordDisease[] = [];
   startingTime: Date;
   missing: TextDic[] = [];
   end = false;
@@ -32,7 +32,7 @@ export class ParserBasisService {
      --------------------------------
   */
   // Create a Dictionary from the database json(e.g. the polyp Object)
-  createStartDict(rootEl: M.TopLevel[]): Disease[] {
+  createStartDict(rootEl: M.TopLevel[]): KeywordDisease[] {
     // loops through all diseases and categories: Form, Lokalisierung...
     for (const El of rootEl) {
       let disName = "";
@@ -44,7 +44,7 @@ export class ParserBasisService {
         // indicates a new category
         for (const cat of El.categories) {
           let syns: string[];
-          const keys: Keyword[] = [];
+          const keys: KeywordSelectable[] = [];
           // loops through all options inside the categories, e.g. for "Form": Knospe, gestielt...
           for (const att of cat.selectables) {
             // splits all the synonyms into an array
@@ -76,7 +76,7 @@ export class ParserBasisService {
 
   // sets default values for each keyword
   createKeyword(option: M.CheckBox, category: M.Category, synonym: string) {
-    const Vars: MyVariable[] = [];
+    const Vars: KeywordVariable[] = [];
     for (const vari of option.variables) {
       // if variable is like "links / rechts"
       if (vari.kind === "oc") {
@@ -128,7 +128,7 @@ export class ParserBasisService {
     }
   }
 
-  checkCategoryNameInDiseaseName(activeDis: Disease, input: string) {
+  checkCategoryNameInDiseaseName(activeDis: KeywordDisease, input: string) {
     const disPosLast = activeDis.position[activeDis.position.length - 1] + activeDis.name.length;
 
     if ((disPosLast !== input.length) && input.charAt(disPosLast) !== " ") {
@@ -139,7 +139,7 @@ export class ParserBasisService {
 
 
   // sets all unused categories of one disease to its normal keywords
-  restNormal(disease: Disease) {
+  restNormal(disease: KeywordDisease) {
     // loops through all categories
     for (const cat of disease.categories) {
       // if category is unused
@@ -162,7 +162,7 @@ export class ParserBasisService {
 
 
   // find only the latest keyword of one category
-  onlyLatestKeyword(keys: Array<Keyword>) {
+  onlyLatestKeyword(keys: Array<KeywordSelectable>) {
 
     // Filter Keywords for the active ones and sort them by their position in the input
     const activeKeys = keys.filter(activeKey => activeKey.position !== -1).sort((a, b) => b.position - a.position);
@@ -199,7 +199,7 @@ export class ParserBasisService {
   }
 
   // gets position of a keyword in specified input string
-  getIndex(key: Keyword, input: string, glPos: number) {
+  getIndex(key: KeywordSelectable, input: string, glPos: number) {
     let tempPos = -1;
     const indSq = key.name.indexOf("[d]");
     if (indSq !== -1) {
@@ -249,7 +249,7 @@ export class ParserBasisService {
   }
 
   // set the last category to active
-  setCategory(input: string, dis: Array<Category>) {
+  setCategory(input: string, dis: KeywordCategory[]) {
 
     const activeCat: { tempPos: number, catName: string } = { tempPos: -1, catName: "" };
 
@@ -281,7 +281,7 @@ export class ParserBasisService {
     }
   }
   // resets keywords of specified category
-  resetCategory(category: Category) {
+  resetCategory(category: KeywordCategory) {
     category.position = -1;
     category.active = false;
     for (const keyword of category.keys) {
@@ -294,7 +294,7 @@ export class ParserBasisService {
   }
 
   // finds the active disease
-  setDisease(input: string, diseases: Array<Disease>) {
+  setDisease(input: string, diseases: Array<KeywordDisease>) {
     const activeDis: { disPos: number, disName: string } = { disPos: -1, disName: "" };
     // loops through all diseases
     for (let i = 0; i < diseases.length; i++) {
@@ -307,7 +307,7 @@ export class ParserBasisService {
         // creates new instance
         if (addInstance !== -1) {
           // makes cope of instance number 1
-          const copy: Disease = JSON.parse(JSON.stringify(diseases[i]));
+          const copy: KeywordDisease = JSON.parse(JSON.stringify(diseases[i]));
           copy.number = nextInstance;
           copy.position.push(addInstance);
           copy.active = true;
@@ -374,11 +374,9 @@ export class ParserBasisService {
     }
   }
 
-
-
-  getActivesAndVariables(extended: boolean, allKeywords: Array<Keyword>,
-                         input: string, activeDis: Disease,
-                         activeCat: Category, twInput: { twInput: string, again: boolean }) {
+  getActivesAndVariables(extended: boolean, allKeywords: Array<KeywordSelectable>,
+                         input: string, activeDis: KeywordDisease,
+                         activeCat: KeywordCategory, twInput: { twInput: string, again: boolean }) {
     // Filters for all Keywords, that are active in input and sorts them by index
     const activeKeys = allKeywords.filter(activeKey => activeKey.position !== -1).sort((a, b) => a.position - b.position);
     let reRun = false;

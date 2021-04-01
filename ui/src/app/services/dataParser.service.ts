@@ -29,22 +29,6 @@ export class DataParserService {
     return newParts;
   }
 
-  /*
-  extractCategoriesOld(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
-    const res: M.Category[] = [];
-    for (const el of parts) {
-      if (el.kind === "category") {
-        if (parseOptional) {
-          const parsedCat = this.parseOptionalCategoryOld(el);
-          res.push(parsedCat);
-        } else {
-          res.push(el);
-        }
-      }
-    }
-    return res;
-  } */
-
   extractCategories(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
     const res: M.Category[] = [];
     for (const el of parts) {
@@ -69,18 +53,7 @@ export class DataParserService {
       selectables: cat.selectables
     };
   }
-/*
-  parseOptionalCategoryOld(cat: M.Category): M.Category {
-    const parsedName = this.parseCategoryTitle(cat.name);
-    return {
-      kind: cat.kind,
-      name: parsedName[0],
-      optional: parsedName[1],
-      selectables: cat.selectables,
-      data: cat.data
-    };
-  }
-*/
+
   parseCategoryTitle(catName: string): [string, boolean] {
     if (catName.includes("<", 0)) {
       return [catName.substring(1, catName.length), true];
@@ -184,5 +157,13 @@ export class DataParserService {
     const judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
 
     return [report, judgement];
+  }
+
+  makeNormal(parts: M.TopLevel[]) {
+    for (const p of parts) {
+      if (p.kind === "category") {
+        G.makeNormalCategory(p);
+      }
+    }
   }
 }

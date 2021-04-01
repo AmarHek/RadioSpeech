@@ -3,7 +3,7 @@ import { NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import * as M from "../../helper-classes/new_model";
-import { Keyword, Disease, TextDic } from "../../helper-classes/keyword";
+import { KeywordSelectable, KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { TextOutputService } from "../services/text-output.service";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
@@ -33,7 +33,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
   private textSub: Subscription;
   parts: M.MyDict = { name: "", dict: [], id: "" };
   myText: { report: string } = { report: "" };
-  diseases: Array<Disease> = [];
+  diseases: Array<KeywordDisease> = [];
   firstTime = false;
   myInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   end = false;
@@ -114,7 +114,7 @@ export class GastroHierarchischComponent implements OnInit, OnDestroy {
 
 
   // used that only one synonym for each keyword is shown on the interface
-  filterSyn(arr: Array<Keyword>) {
+  filterSyn(arr: Array<KeywordSelectable>) {
     return arr.filter(key => key.name == key.synonym);
   }
 

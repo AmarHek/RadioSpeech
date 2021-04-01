@@ -1,7 +1,7 @@
-export class Keyword {
+export class KeywordSelectable {
     name: string;
     synonym: string;
-    variables: MyVariable[];
+    variables: KeywordVariable[];
     category: string;
     position: number;
     active: string;
@@ -12,25 +12,26 @@ export class Keyword {
     constructor() {}
 }
 
-export class MyVariable {
+export class KeywordVariable {
     kind: string;
     textAfter = "";
     textBefore = "";
     options: string[] = [];
+    synonyms?: string[] | string[][];
     varFound: string[] = [];
 }
 
-export class Category {
-    keys: Keyword[];
+export class KeywordCategory {
+    keys: KeywordSelectable[];
     name: string;
     active: boolean;
     position: number;
-    condition: string;
+    condition?: string;
 }
 
-export class Disease {
+export class KeywordDisease {
     name: string;
-    categories: Category[];
+    categories: KeywordCategory[];
     active: boolean;
     number: number;
     position: number[];

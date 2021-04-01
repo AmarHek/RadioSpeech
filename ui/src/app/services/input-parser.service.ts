@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/new_model";
-import { Disease, TextDic } from "../../helper-classes/keyword";
+import { KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { ParserBasisService } from "./parser-basis.service";
 import { TextOutputService } from "./text-output.service";
 
@@ -15,7 +15,7 @@ export class InputParserService {
 
   }
   // Contains whole Polyp with its Categories and Keywords inside of each Category
-  diseases: Array<Disease> = [];
+  diseases: Array<KeywordDisease> = [];
   // contains input text
   twInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   // contains all missing categories after first "ende"
