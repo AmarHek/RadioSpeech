@@ -31,6 +31,8 @@ import { VariableComponent } from "./edit-structure/variable/variable.component"
 import { AttributeComponent } from "./edit-structure/attribute/attribute.component";
 import {DisplayService} from "./services/display.service";
 import {ParserBasisService} from "./services/parser-basis.service";
+import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
+import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import {ParserBasisService} from "./services/parser-basis.service";
       { useHash: true, relativeLinkResolution: "legacy" }
     )
   ],
-  providers: [DisplayService, ParserBasisService],
+  providers: [DisplayService, ParserBasisService,
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

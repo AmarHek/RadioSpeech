@@ -1,3 +1,25 @@
+export interface KeySelectable {
+  name: string;
+  synonym: string;
+  category: string;
+  group?: string;
+  position: number;
+  active: boolean;
+}
+
+export interface KeyVariable {
+  category?: string;
+  selectable: string;
+  id: string;
+  kind: string;
+  name?: string;
+  synonym?: string;
+  textBefore: string;
+  textAfter: string;
+  position: number;
+  active: boolean;
+}
+
 export class KeywordSelectable {
     name: string;
     synonym: string;
@@ -5,11 +27,9 @@ export class KeywordSelectable {
     category: string;
     position: number;
     active: string;
-    text: string;
+    text?: string;
     normal?: boolean;
-    judgement: string;
-
-    constructor() {}
+    judgement?: string;
 }
 
 export class KeywordVariable {
@@ -17,7 +37,6 @@ export class KeywordVariable {
     textAfter = "";
     textBefore = "";
     options: string[] = [];
-    synonyms?: string[] | string[][];
     varFound: string[] = [];
 }
 
@@ -43,3 +62,4 @@ export class TextDic {
     disName: string;
     reports: {text: string, category: string, key: string, code: string, condition: string}[];
 }
+

@@ -81,7 +81,10 @@ export class RadiologyComponent implements OnInit, OnDestroy {
             this.parts = this.dataParser.convertModel(worked as any, true);
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts, false);
-            // this.keywords = this.inputParser.createStartDict(this.parts);
+            this.inputParser.initializeKeywords(this.parts);
+            console.log(this.parts);
+            console.log(this.inputParser.selectableKeywords);
+            console.log(this.inputParser.variableKeywords);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );

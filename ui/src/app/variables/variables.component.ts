@@ -83,11 +83,19 @@ export class VariablesComponent implements OnInit {
       kind: variable.kind,
       textBefore: variable.textBefore,
       textAfter: variable.textAfter,
-      parentText: this.parentText
+      parentText: this.parentText,
     };
     if (variable.kind === "ratio") {
+      dialogConfig.data["denominator"] = variable.denominator;
+      dialogConfig.data["numerator"] = variable.numerator;
       dialogConfig.data["fractionDigits"] = variable.fractionDigits;
+    } else if (variable.kind === "text" || variable.kind === "number") {
+      dialogConfig.data["value"] = variable.value;
+    } else if (variable.kind === "date") {
+      dialogConfig.data["value"] = variable.value.year.toString() + "-" +
+        variable.value.month.toString() + "-" + variable.value.day.toString();
     }
+
     const dialogRef = this.dialog.open(InputModalComponent, dialogConfig);
 
     return dialogRef.afterClosed()

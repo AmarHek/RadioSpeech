@@ -41,7 +41,7 @@ export interface Option {
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];
-  keys:           string[][];
+  keys:           string[];
 }
 
 export type TopLevel = Category | Block | Enumeration | Conditional;
@@ -88,7 +88,8 @@ export interface VariableCommon {
   id:         string;
   textBefore: string;
   textAfter:  string;
-  keys:       string[] | string[][];
+  // TODO: Refactor because only OC and MC need keys (aka synonyms)
+  keys?:      string[][];
 }
 
 export interface VariableOC extends VariableCommon {
@@ -168,7 +169,7 @@ export function convertGroup(oldGroup: M.Group): Group {
 
 export function convertOption(oldOpt: M.Option): Option {
   const newVariables: Variable[] = convertVariables(oldOpt.variables);
-  const keys: string[][] = splitKeywordsArray(oldOpt.data["bau"][0], "/", ";");
+  const keys: string[] = splitKeywords(oldOpt.data["bau"][0], ";");
   return {
     kind: oldOpt.kind,
     name: oldOpt.name,
