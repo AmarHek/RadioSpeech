@@ -6,7 +6,6 @@ import { ViewChild } from "@angular/core";
 
 import { environment } from "../../environments/environment";
 import * as M from "../../helper-classes/radio_model";
-import * as K from "../../helper-classes/keywordAlt";
 import {DataParserService} from "../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
 import { DictManagerService } from "../services/dict-manager.service";
@@ -27,7 +26,6 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   input = "";
 
   categories: M.Category[];
-  keywords: K.KeywordAlt[];
   report = "";
   judgement = "";
 

@@ -32,8 +32,13 @@ export class InputModalComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
+  checkForm(): boolean {
+    const value = this.form.value;
+    return !!(value.text || value.number || value.date || (value.numerator && value.denominator));
+  }
+
   save() {
-    this.dialogRef.close(this.form.value);
+    this.checkForm() ? this.dialogRef.close(this.form.value) : this.dialogRef.close(false);
   }
 
   displayQuotient(numerator, denominator) {

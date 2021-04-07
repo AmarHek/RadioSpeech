@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import * as M from '../../helper-classes/new_model';
+import * as M from '../../helper-classes/gastro_model';
 import { KeywordSelectable, KeywordDisease, TextDic } from '../../helper-classes/keyword';
 import { InputParserService } from '../services/input-parser.service';
 import { TextOutputService } from '../services/text-output.service';

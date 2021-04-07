@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as N from '../../helper-classes/new_model';
+import * as N from '../../helper-classes/gastro_model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';

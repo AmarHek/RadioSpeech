@@ -6,7 +6,7 @@ import { DataParserService } from "../services/dataParser.service";
 import { DisplayService } from "../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
-import * as N from "../../helper-classes/new_model";
+import * as N from "../../helper-classes/gastro_model";
 import { Subscription } from "rxjs";
 import { DictManagerService } from "../services/dict-manager.service";
 
