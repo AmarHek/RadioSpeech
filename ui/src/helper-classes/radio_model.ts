@@ -1,5 +1,5 @@
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import * as M from "./model";
+import * as M from "./old_model";
 
 export type Selectable = CheckBox | Group;
 
@@ -148,6 +148,7 @@ export function convertCheckBox(oldBox: M.CheckBox): CheckBox {
     value: oldBox.value,
     text: oldBox.text,
     judgementText: oldBox.judgementText,
+    enumeration: oldBox.enumeration,
     normal: oldBox.normal,
     variables: newVariables,
     keys: keywords

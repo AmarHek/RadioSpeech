@@ -79,10 +79,11 @@ export class RadiologyComponent implements OnInit, OnDestroy {
             this.parts = this.dataParser.convertModel(worked as any, true);
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts, false);
-            this.inputParser.initializeKeywords(this.parts);
+            this.inputParser.init(this.parts);
             console.log(this.parts);
             console.log(this.inputParser.selectableKeywords);
             console.log(this.inputParser.variableKeywords);
+            console.log(this.inputParser.primaryDictionary);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
@@ -104,9 +105,13 @@ export class RadiologyComponent implements OnInit, OnDestroy {
   }
 
   onInput(ev) {
-    console.log("event");
-    console.log(ev);
+    // console.log("event");
+    // console.log(ev);
     console.log(this.input);
+    console.log(this.input[this.input.length - 1]);
+    if (this.input[this.input.length - 1] === " ") {
+      this.input = this.inputParser.autocorrect(this.input);
+    }
     const dif = "";
   }
 
@@ -128,11 +133,6 @@ export class RadiologyComponent implements OnInit, OnDestroy {
 
   pageBack() {
     this._location.back();
-  }
-
-  test() {
-    console.log(this.parts);
-    console.log(this.optionsComponent.rows);
   }
 
 }

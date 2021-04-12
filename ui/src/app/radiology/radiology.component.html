@@ -1,9 +1,8 @@
 <div class="main">
   <div class="header">
-    <div class="inputWindow">
-      <label class="inputLabel" for="input">Eingabefenster:</label>
-        <input class="inputT" id="input" name="Befund" type="text" [(ngModel)]="this.input"
-               class=""
+    <div class="inputArea">
+      <label class="inputLabel" for="input">Eingabe:</label>
+        <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
                (input)="onInput($event)" placeholder="Befund eingeben...">
     </div>
     <div class="buttons">

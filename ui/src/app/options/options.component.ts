@@ -2,7 +2,7 @@ import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../../helper-classes/radio_model";
 import {DataParserService} from "../services/dataParser.service";
 import {DisplayService} from "../services/display.service";
-import {Clickable, Group} from "../../helper-classes/model";
+import {Clickable, Group} from "../../helper-classes/old_model";
 
 @Component({
   selector: "app-options",

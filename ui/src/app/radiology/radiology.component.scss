@@ -17,17 +17,28 @@ $background-color: hsl(202, 73%, 96%);
   height: 9%;
 }
 
-.inputWindow{
+.inputArea{
   padding-top: 5px;
   padding-left: 10px;
-  grid-area: inputWindow;
   float: left;
+  width: 75%;
+}
+
+.inputLabel{
+  width: 8%;
+  font-size: large;
+}
+
+.inputBox{
+  margin-top: 2px;
+  padding: 3px;
+  width: 92%;
 }
 
 .buttons{
   padding-top: 5px;
   padding-right: 5px;
-  grid-area: buttons;
+  width: 25%;
   float: right;
 }
 

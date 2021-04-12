@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as O from "../../helper-classes/model";
+import * as O from "../../helper-classes/old_model";
 import * as G from "../../helper-classes/generator";
 import * as M from "../../helper-classes/radio_model";
 

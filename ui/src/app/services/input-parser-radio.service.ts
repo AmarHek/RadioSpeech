@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import {ParserBasisService} from "./parser-basis.service";
 import * as M from "../../helper-classes/radio_model";
 import {KeyVariable, KeySelectable} from "../../helper-classes/keyword";
+import { levenshtein } from "../../helper-classes/util";
 
 @Injectable({
   providedIn: "root"
@@ -12,16 +12,45 @@ export class InputParserRadioService {
   variableKeywords: KeyVariable[] = [];
   varKeyDictionary: Map<string, KeyVariable>;
 
-  startingTime: Date;
+  primaryDictionary: Set<string>;
+
   end = false;
   start = false;
-  end0 = false;
   globalPos: number;
 
-  constructor() {
+  constructor() {}
+
+  public init(rootEl: M.TopLevel[]): void {
+    this.initializeKeywords(rootEl);
+    this.initializeDictionary();
   }
 
-  initializeKeywords(rootEl: M.TopLevel[]): void {
+  public autocorrect(inputString: string): string {
+    let result: string;
+    const possibleWords: string[] = Array.from(this.primaryDictionary);
+    const inputSplitted = inputString.split(" ");
+    inputSplitted.forEach((word, idx) => {
+      const distances: number[] = possibleWords.map((possibleWord) => levenshtein(word.toLowerCase(), possibleWord.toLocaleLowerCase()));
+      if (word.length >= 5 && word.length < 8) {
+        if (distances.includes(1)) {
+          const replacement = distances.indexOf(1);
+          inputSplitted[idx] = possibleWords[replacement];
+        }
+      } else if (word.length >= 8) {
+        if (distances.includes(1)) {
+          const replacement = distances.indexOf(1);
+          inputSplitted[idx] = possibleWords[replacement];
+        } else if (distances.includes(2)) {
+          const replacement = distances.indexOf(2);
+          inputSplitted[idx] = possibleWords[replacement];
+        }
+      }
+    });
+    result = inputSplitted.join(" ");
+    return result;
+  }
+
+  private initializeKeywords(rootEl: M.TopLevel[]): void {
     let selKeys: KeySelectable[] = [];
     let varKeys: KeyVariable[] = [];
     for (const el of rootEl) {
@@ -34,6 +63,22 @@ export class InputParserRadioService {
     }
     this.selectableKeywords = selKeys;
     this.variableKeywords = varKeys;
+  }
+
+  private initializeDictionary(): void {
+    this.primaryDictionary = new Set<string>();
+    this.primaryDictionary.add("Rest");
+    this.primaryDictionary.add("normal");
+    for (const selKey of this.selectableKeywords) {
+      const splitted: string[] = selKey.synonym.split(" ");
+      splitted.forEach((word) => this.primaryDictionary.add(word));
+    }
+    for (const varKey of this.variableKeywords) {
+      if (varKey.synonym) {
+        const splitted: string[] = varKey.synonym.split(" ");
+        splitted.forEach((word) => this.primaryDictionary.add(word));
+      }
+    }
   }
 
   // Creates list of Keywords for Selectables from Selectables of category
