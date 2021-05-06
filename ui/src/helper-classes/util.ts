@@ -46,4 +46,30 @@ export function levenshtein(a: string, b: string): number {
   return matrix[bn][an];
 }
 
+export function getAllIndexOf(searchStr: string, inputStr: string, caseSensitive: boolean): number[] {
+  // searches for all occurrences of a searchString within an inputString and returns all start indexes as an array
+  if (searchStr.length === 0) {
+    return [];
+  }
+
+  if (!caseSensitive) {
+    inputStr = inputStr.toLowerCase();
+    searchStr = searchStr.toLowerCase();
+  }
+
+  let startIndex = 0;
+  let index: number;
+  const indexes: number[] = [];
+
+  while ((index = inputStr.indexOf(searchStr, startIndex)) > -1) {
+    indexes.push(index);
+    startIndex = index + searchStr.length;
+  }
+
+  return indexes;
+}
+
+export function split_at_index(input_string: string, index: number) {
+
+}
 

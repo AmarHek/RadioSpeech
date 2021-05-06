@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/radio_model";
-import {KeyVariable, KeySelectable} from "../../helper-classes/keyword";
+import {KeyVariable, KeySelectable, KeywordSelectable} from "../../helper-classes/keyword";
 import { levenshtein } from "../../helper-classes/util";
+import { getAllIndexOf } from "../../helper-classes/util";
 
 @Injectable({
   providedIn: "root"
@@ -11,6 +12,8 @@ export class InputParserRadioService {
   selectableKeywords: KeySelectable[] = [];
   variableKeywords: KeyVariable[] = [];
   varKeyDictionary: Map<string, KeyVariable>;
+
+  foundKeywords: KeySelectable[] = [];
 
   primaryDictionary: Set<string>;
 
@@ -30,19 +33,22 @@ export class InputParserRadioService {
     const possibleWords: string[] = Array.from(this.primaryDictionary);
     const inputSplitted = inputString.split(" ");
     inputSplitted.forEach((word, idx) => {
-      const distances: number[] = possibleWords.map((possibleWord) => levenshtein(word.toLowerCase(), possibleWord.toLocaleLowerCase()));
-      if (word.length >= 5 && word.length < 8) {
-        if (distances.includes(1)) {
-          const replacement = distances.indexOf(1);
-          inputSplitted[idx] = possibleWords[replacement];
-        }
-      } else if (word.length >= 8) {
-        if (distances.includes(1)) {
-          const replacement = distances.indexOf(1);
-          inputSplitted[idx] = possibleWords[replacement];
-        } else if (distances.includes(2)) {
-          const replacement = distances.indexOf(2);
-          inputSplitted[idx] = possibleWords[replacement];
+      const distances: number[] = possibleWords.map((possibleWord) =>
+        levenshtein(word.toLowerCase(), possibleWord.toLocaleLowerCase()));
+      if (!distances.includes(0)) {
+        if (word.length >= 3 && word.length < 8) {
+          if (distances.includes(1)) {
+            const replacement = distances.indexOf(1);
+            inputSplitted[idx] = possibleWords[replacement];
+          }
+        } else if (word.length >= 8) {
+          if (distances.includes(1)) {
+            const replacement = distances.indexOf(1);
+            inputSplitted[idx] = possibleWords[replacement];
+          } else if (distances.includes(2)) {
+            const replacement = distances.indexOf(2);
+            inputSplitted[idx] = possibleWords[replacement];
+          }
         }
       }
     });
@@ -76,6 +82,14 @@ export class InputParserRadioService {
     for (const varKey of this.variableKeywords) {
       if (varKey.synonym) {
         const splitted: string[] = varKey.synonym.split(" ");
+        splitted.forEach((word) => this.primaryDictionary.add(word));
+      }
+      if (varKey.textAfter) {
+        const splitted: string[] = varKey.textAfter.split(" ");
+        splitted.forEach((word) => this.primaryDictionary.add(word));
+      }
+      if (varKey.textBefore) {
+        const splitted: string[] = varKey.textBefore.split(" ");
         splitted.forEach((word) => this.primaryDictionary.add(word));
       }
     }
@@ -167,6 +181,55 @@ export class InputParserRadioService {
     }
 
     return varKeys;
+  }
+
+  // Finds all KeySelectables in an input string
+  findKeywords(input: string) {
+    let foundKeywordsTemp: KeySelectable[] = [];
+    for (const keyword of this.selectableKeywords) {
+      const positions: number[] = getAllIndexOf(keyword.synonym, input, false);
+      if (positions.length >= 1) {
+        for (const pos of positions) {
+          const keywordWithPos: KeySelectable = JSON.parse(JSON.stringify(keyword));
+          keywordWithPos.position = pos;
+          foundKeywordsTemp.push(keywordWithPos);
+        }
+      }
+    }
+    console.log(foundKeywordsTemp);
+    foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
+    console.log(foundKeywordsTemp);
+    foundKeywordsTemp.sort(this.compareKeywords);
+    console.log(foundKeywordsTemp);
+  }
+
+  // Removes all synonyms/keywords that are substrings of another synonym/keyword
+  filterOverlap(foundKeywords: KeySelectable[]): KeySelectable[] {
+    // filters out keyword synonyms that are substrings of another keyword
+    const fK_copy = JSON.parse(JSON.stringify(foundKeywords));
+    let toRemove: KeySelectable[] = [];
+    for (const keyword of fK_copy) {
+      const overlap: KeySelectable[] = fK_copy.filter((kw) =>
+        keyword.synonym !== kw.synonym &&
+        keyword.position <= kw.position &&
+        kw.position < (keyword.position + keyword.synonym.length));
+      toRemove = toRemove.concat(overlap);
+    }
+    for (const removable of toRemove) {
+      fK_copy.splice(fK_copy.indexOf(removable), 1);
+    }
+    return fK_copy;
+  }
+
+  // sorts keywords based on their position in the input string
+  compareKeywords(arg1: KeySelectable, arg2: KeySelectable): number {
+    if (arg1.position > arg2.position) {
+      return 1;
+    } else if (arg1.position < arg2.position) {
+      return -1;
+    } else {
+      return 0;
+    }
   }
 
 }
