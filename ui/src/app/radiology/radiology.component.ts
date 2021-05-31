@@ -105,6 +105,9 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.input = this.inputParser.autocorrect(this.input);
     }
     this.inputParser.findKeywords(this.input);
+    let [split_input, split_reduced_input] = this.inputParser.split_input_from_keywords(this.input);
+    console.log(split_input);
+    console.log(split_reduced_input);
   }
 
   makeNormal() {

@@ -68,8 +68,3 @@ export function getAllIndexOf(searchStr: string, inputStr: string, caseSensitive
 
   return indexes;
 }
-
-export function split_at_index(input_string: string, index: number) {
-
-}
-

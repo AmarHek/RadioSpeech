@@ -11,19 +11,19 @@ export class InputParserRadioService {
 
   selectableKeywords: KeySelectable[] = [];
   variableKeywords: KeyVariable[] = [];
-  varKeyDictionary: Map<string, KeyVariable>;
+  varKeyDictionary: Map<string, KeyVariable[]>;
+
+  lastKeyword: KeySelectable;  // input buffer for last spoken keyword
 
   foundKeywords: KeySelectable[] = [];
+  foundVariables: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
 
   primaryDictionary: Set<string>;
-
-  end = false;
-  start = false;
-  globalPos: number;
 
   constructor() {}
 
   public init(rootEl: M.TopLevel[]): void {
+    this.varKeyDictionary = new Map<string, KeyVariable[]>();
     this.initializeKeywords(rootEl);
     this.initializeDictionary();
   }
@@ -58,17 +58,16 @@ export class InputParserRadioService {
 
   private initializeKeywords(rootEl: M.TopLevel[]): void {
     let selKeys: KeySelectable[] = [];
-    let varKeys: KeyVariable[] = [];
     for (const el of rootEl) {
       if (el.kind === "category") {
         const tempSels: KeySelectable[] = this.getSelectableKeywords(el.selectables, el.name);
         selKeys = selKeys.concat(tempSels);
-        const tempVars: KeyVariable[] = this.extractVariableKeywords(el.selectables, el.name);
-        varKeys = varKeys.concat(tempVars);
+        this.extractVariableKeywords(el.selectables, el.name);
       }
     }
     this.selectableKeywords = selKeys;
-    this.variableKeywords = varKeys;
+    console.log(this.selectableKeywords);
+    console.log(this.varKeyDictionary);
   }
 
   private initializeDictionary(): void {
@@ -128,19 +127,27 @@ export class InputParserRadioService {
     return selKeys;
   }
 
-  // Takes list of Selectables from a category and converts their variables into Keywords
-  extractVariableKeywords(selectables: M.Selectable[], category: string): KeyVariable[] {
-    let varKeys: KeyVariable[] = [];
+  // Takes list of Selectables from a category and converts their variables into Keywords and adds them to the varKeyDict
+  extractVariableKeywords(selectables: M.Selectable[], category: string): void {
+    let varKeys: KeyVariable[];
+    let id: string;
     for (const sel of selectables) {
       if (sel.kind === "box") {
-        varKeys = varKeys.concat(this.getVariableKeywords(sel.variables, category, sel.name));
+        id = category + sel.name;
+        varKeys = this.getVariableKeywords(sel.variables, category, sel.name);
+        if (varKeys.length > 0) {
+          this.varKeyDictionary.set(id, varKeys);
+        }
       } else if (sel.kind === "group") {
         for (const option of sel.options) {
-          varKeys = varKeys.concat(this.getVariableKeywords(option.variables, category, option.name));
+          id = category + option.name;
+          varKeys = this.getVariableKeywords(option.variables, category, option.name);
+          if (varKeys.length > 0) {
+            this.varKeyDictionary.set(id, varKeys);
+          }
         }
       }
     }
-    return varKeys;
   }
 
   // Takes list of variables and generates Keyword Variables list
@@ -196,11 +203,35 @@ export class InputParserRadioService {
         }
       }
     }
-    console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
-    console.log(foundKeywordsTemp);
     foundKeywordsTemp.sort(this.compareKeywords);
-    console.log(foundKeywordsTemp);
+    this.foundKeywords = foundKeywordsTemp;
+  }
+
+  findVariableKeywords(input: string, keySel: KeySelectable, relativePosition: number) {
+    const id: string = keySel.category + keySel.synonym;
+    const foundVariables_temp: KeyVariable[] = [];
+    const possibleVariables = this.varKeyDictionary.get(id);
+    for (const varKey of possibleVariables) {
+      if (varKey.kind === "oc" || varKey.kind === "mc") {
+        const positions: number[] = getAllIndexOf(varKey.synonym, input, false);
+        if (positions.length >= 1) {
+          for (const pos of positions) {
+            const varKeyWithPos: KeyVariable = JSON.parse(JSON.stringify(varKey));
+            varKeyWithPos.position = pos + relativePosition;
+            foundVariables_temp.push(varKeyWithPos);
+          }
+        }
+      } else if (varKey.kind === "text" || varKey.kind === "number") {
+        //if (varKey.textAfter )
+      } else if (varKey.kind === "ratio") {
+
+      } else if (varKey.kind === "date") {
+
+      }
+    }
+    foundVariables_temp.sort(this.compareKeywords);
+    this.varKeyDictionary.set(id, foundVariables_temp);
   }
 
   // Removes all synonyms/keywords that are substrings of another synonym/keyword
@@ -222,7 +253,7 @@ export class InputParserRadioService {
   }
 
   // sorts keywords based on their position in the input string
-  compareKeywords(arg1: KeySelectable, arg2: KeySelectable): number {
+  compareKeywords(arg1: KeySelectable | KeyVariable, arg2: KeySelectable | KeyVariable): number {
     if (arg1.position > arg2.position) {
       return 1;
     } else if (arg1.position < arg2.position) {
@@ -231,5 +262,28 @@ export class InputParserRadioService {
       return 0;
     }
   }
+
+  split_input_from_keywords(input: string): string[][] {
+    const result: string[] = [];
+    const result_without_keywords: string[] = [];
+    let lastPosition = 0;
+    let temp_string: string;
+    for (const keyword of this.foundKeywords) {
+      if (keyword.position > lastPosition) {
+        temp_string = input.substring(lastPosition, keyword.position).trim();
+        if (temp_string.length > 0) {
+          result.push(temp_string);
+          result_without_keywords.push(temp_string);
+        }
+      }
+      temp_string = input.substring(keyword.position, keyword.position + keyword.synonym.length).trim();
+      if (temp_string.length > 0) {
+        result.push(temp_string);
+      }
+      lastPosition = keyword.position + keyword.synonym.length;
+    }
+    return [result, result_without_keywords];
+  }
+
 
 }

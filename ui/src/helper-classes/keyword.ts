@@ -14,6 +14,7 @@ export interface KeyVariable {
   kind: string;
   name?: string;
   synonym?: string;
+  value?: string;
   textBefore: string;
   textAfter: string;
   position: number;

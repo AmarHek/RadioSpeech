@@ -25,6 +25,7 @@ export interface CheckBox {
   enumeration?:   string;
   choiceGroup:    string;
   listGroup:      string;
+  predictable?:   boolean;
 }
 
 export interface Group {
