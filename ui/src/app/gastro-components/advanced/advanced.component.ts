@@ -1,58 +1,65 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import * as M from '../../helper-classes/gastro_model';
-import { KeywordSelectable, KeywordDisease, TextDic } from '../../helper-classes/keyword';
-import { InputParserService } from '../services/input-parser.service';
-import { TextOutputService } from '../services/text-output.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { Subscription } from 'rxjs';
-import { DictManagerService } from '../services/dict-manager.service';
-import { ParserBasisService } from '../services/parser-basis.service';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from "@angular/core";
+import { NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import * as M from "../../../helper-classes/gastro_model";
+import { KeywordSelectable, KeywordDisease, TextDic } from "../../../helper-classes/keyword";
+import { InputParserService } from "../../services/input-parser.service";
+import { TextOutputService } from "../../services/text-output.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { Subscription } from "rxjs";
+import { DictManagerService } from "../../services/dict-manager.service";
+import { ParserBasisService } from "../../services/parser-basis.service";
+import {ExportPackageGeneratorService} from "../../services/export-package-generator.service";
 
 
 declare const $: any;
 
 @Component({
-  selector: 'app-text',
-  templateUrl: './gastro.component.html',
-  styleUrls: ['./gastro.component.scss']
+  selector: "app-text",
+  templateUrl: "./advanced.component.html",
+  styleUrls: ["./advanced.component.scss"]
 })
-export class GastroComponent implements OnInit, OnDestroy {
+export class AdvancedComponent implements OnInit, OnDestroy {
 
-  errorMsg = '';
+  errorMsg = "";
   isLoading = false;
   routeName: string;
   private textSub: Subscription;
-  parts: M.MyDict = { name: '', dict: [], id: '' };
+  parts: M.MyDict = { name: "", dict: [], id: "" };
   keywordsService: Array<KeywordSelectable> = [];
-  myText: { report: string } = { report: '' };
+  myText: { report: string } = { report: "" };
   diseases: Array<KeywordDisease> = [];
   firstTime = false;
-  myInput: { twInput: string, again: boolean } = { twInput: '', again: false };
+  myInput: { twInput: string, again: boolean } = { twInput: "", again: false };
   end = false;
   end0 = false;
   resetTexts = new Map<M.CheckBox | M.Option, string>();
-  oldInput = '';
+  oldInput = "";
   missing: Array<TextDic> = [];
   filledCats: Array<TextDic> = [];
-  parsingString = '';
+  parsingString = "";
   jsDown: SafeUrl;
   jsDown2: SafeUrl;
-  inner = 'hey';
+  inner = "hey";
   faCheck = faCheckCircle;
   getReady = false;
   // recogWords : {Array<string>} = [];
 
-  @ViewChild('myReport', { static: false }) myReport: ElementRef;
-  @ViewChild('myJson', { static: false }) myJson: ElementRef;
+  @ViewChild("myReport", { static: false }) myReport: ElementRef;
+  @ViewChild("myJson", { static: false }) myJson: ElementRef;
 
-  constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
-    private route: ActivatedRoute, private inputParser: InputParserService,
-    private textOut: TextOutputService, private sanitizer: DomSanitizer,
-    private dictManager: DictManagerService, private router: Router, private base: ParserBasisService) {
+  constructor(private dateParser: NgbDateParserFormatter,
+              private http: HttpClient,
+              private route: ActivatedRoute,
+              private inputParser: InputParserService,
+              private textOut: TextOutputService,
+              private sanitizer: DomSanitizer,
+              private dictManager: DictManagerService,
+              private router: Router,
+              private base: ParserBasisService,
+              private htmlOut: ExportPackageGeneratorService) {
   }
 
   ngOnDestroy(): void {
@@ -63,8 +70,8 @@ export class GastroComponent implements OnInit, OnDestroy {
     // assigns reference to polyp object
     // this.polyp = this.inputParser.polyp;
     this.route.paramMap.subscribe((ps) => {
-      if (ps.has('name')) {
-        this.routeName = ps.get('name');
+      if (ps.has("name")) {
+        this.routeName = ps.get("name");
         this.isLoading = true;
         this.dictManager.getList();
         this.textSub = this.dictManager
@@ -74,7 +81,7 @@ export class GastroComponent implements OnInit, OnDestroy {
             this.parts = list.find((d) => d.name === this.routeName);
             if (this.parts === undefined) {
               this.errorMsg =
-                'Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.';
+                "Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.";
             } else {
               if (!this.inputParser.start) {
                 this.inputParser.createStartDict(this.parts.dict);
@@ -85,13 +92,13 @@ export class GastroComponent implements OnInit, OnDestroy {
             this.new_parts = this.dictionaryService.myDict.dict; */
             /* this.myList[1].name = "Leo2";
             this.dictManager.updateDict(this.myList[1]); */
-            console.log('onInit');
+            console.log("onInit");
             console.log(this.parts);
             // console.log(this.new_parts);
           });
       } else {
         this.errorMsg =
-          'Kein Dictionary zum Editieren ausgewählt! Bitte auf List Seite zurückkehren und das gewünschte Dictionary auswählen.';
+          "Kein Dictionary zum Editieren ausgewählt! Bitte auf List Seite zurückkehren und das gewünschte Dictionary auswählen.";
       }
     });
     this.diseases = this.base.diseases;
@@ -120,7 +127,7 @@ export class GastroComponent implements OnInit, OnDestroy {
   }
 
   catUsed(dis: string, cat: string) {
-    return this.filledCats.find(el => el.disName === dis).reports.find(el => el.category === cat).key !== '';
+    return this.filledCats.find(el => el.disName === dis).reports.find(el => el.category === cat).key !== "";
   }
   KeysExample(dis: string, cat: string) {
     const elements: Array<String> = [];
@@ -128,13 +135,13 @@ export class GastroComponent implements OnInit, OnDestroy {
     for (let i = 0; i < 2; i++) {
       if (element.keys.length === 1) {
         elements.push(this.diseases.find(el1 => el1.name === dis).categories.find(el2 => el2.name === cat).keys[0].synonym);
-        return 'z.B.: ' + elements[0].replace('[d]', '[Zahl]');
+        return "z.B.: " + elements[0].replace("[d]", "[Zahl]");
       } else {
         elements.push(this.diseases.find(el1 => el1.name === dis).categories.find(el2 =>
           el2.name === cat).keys.filter(el3 => el3.name === el3.synonym)[i].name);
       }
     }
-    return 'z.B.: ' + elements.join(', ') + '...';
+    return "z.B.: " + elements.join(", ") + "...";
   }
 
   whichKeyUsed(dis: string, cat: string, cond = false) {
@@ -148,31 +155,31 @@ export class GastroComponent implements OnInit, OnDestroy {
       return undefined;
     }
     let re: string = element.name;
-    if (element.name.includes('[d]')) {
+    if (element.name.includes("[d]")) {
       re = element.synonym;
     }
     for (let i = 0; i < element.variables.length; i++) {
       if (i === 0) {
-        re += ': ';
+        re += ": ";
       } else {
-        re += ' +++ ';
+        re += " +++ ";
       }
-      if (element.variables[i].kind === 'text') {
-        const letters = element.variables[i].options[0].replace(/[^a-z]/gi, '');
+      if (element.variables[i].kind === "text") {
+        const letters = element.variables[i].options[0].replace(/[^a-z]/gi, "");
         if (element.variables[i].varFound[0] !== undefined) {
-          re += '<span> "' + element.variables[i].varFound[0].replace(element.variables[i].textAfter, '') + '"</span>';
+          re += "<span> \"" + element.variables[i].varFound[0].replace(element.variables[i].textAfter, "") + "\"</span>";
         } else {
-          re += '<span> "' + element.variables[i].textBefore + '... [' + letters + ']"</span>';
+          re += "<span> \"" + element.variables[i].textBefore + "... [" + letters + "]\"</span>";
         }
       } else {
         if (element.variables[i].varFound[0] !== undefined) {
-          re += '<span> "' + element.variables[i].varFound[0] + '"</span>';
+          re += "<span> \"" + element.variables[i].varFound[0] + "\"</span>";
         } else {
           for (let j = 0; j < element.variables[i].options.length; j++) {
             if (j > 0) {
-              re += ' / ';
+              re += " / ";
             }
-            re += '<span> "' + element.variables[i].options[j] + '"</span>';
+            re += "<span> \"" + element.variables[i].options[j] + "\"</span>";
 
           }
         }
@@ -189,13 +196,13 @@ export class GastroComponent implements OnInit, OnDestroy {
 
   changeButton() {
     if (!this.end) {
-      const signalButton = document.getElementById('listening');
-      signalButton.classList.toggle('btn-danger');
-      signalButton.classList.toggle('btn-success');
-      if (signalButton.innerText === 'Ein') {
-        signalButton.innerText = 'Aus';
+      const signalButton = document.getElementById("listening");
+      signalButton.classList.toggle("btn-danger");
+      signalButton.classList.toggle("btn-success");
+      if (signalButton.innerText === "Ein") {
+        signalButton.innerText = "Aus";
       } else {
-        signalButton.innerText = 'Ein';
+        signalButton.innerText = "Ein";
       }
     }
   }
@@ -211,15 +218,15 @@ export class GastroComponent implements OnInit, OnDestroy {
     // let input = (document.getElementById('input') as HTMLTextAreaElement).value;
     /* console.log("event");
     console.log(ev); */
-    const inp = (document.getElementById('input') as HTMLTextAreaElement).value;
+    const inp = (document.getElementById("input") as HTMLTextAreaElement).value;
     let dif: string;
 
-    if (this.oldInput === '') {
+    if (this.oldInput === "") {
       dif = inp;
       this.oldInput = inp;
       this.myInput.twInput += dif;
     } else {
-      if (inp.toLowerCase().lastIndexOf('pause') > inp.toLowerCase().lastIndexOf('weiter')) {
+      if (inp.toLowerCase().lastIndexOf("pause") > inp.toLowerCase().lastIndexOf("weiter")) {
         if (!this.getReady) {
           this.changeButton();
         }
@@ -232,12 +239,12 @@ export class GastroComponent implements OnInit, OnDestroy {
           }
           this.getReady = false;
 
-          console.log('weiter');
+          console.log("weiter");
           console.log(this.oldInput);
         } else {
 
-          dif = inp.replace(this.oldInput, '');
-          console.log('dif');
+          dif = inp.replace(this.oldInput, "");
+          console.log("dif");
           console.log(dif);
           this.oldInput = inp;
           this.myInput.twInput += dif;
@@ -247,7 +254,7 @@ export class GastroComponent implements OnInit, OnDestroy {
     // console.log(ev.clipboardData.getData('text'));
     // this.myInput.twInput += ev.data;
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput.toLowerCase());
-    const inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(' ');
+    const inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.base.end;
     this.textOut.finalOut(this.end, inpArr);
     this.jsDown = this.textOut.downJson;
@@ -259,7 +266,7 @@ export class GastroComponent implements OnInit, OnDestroy {
     this.end0 = this.base.end0;
     if (this.end0) {
       // document.getElementById("Form1").innerHTML = "bye";
-      this.inner = 'bye';
+      this.inner = "bye";
     }
     this.missing = this.base.missing;
     /* console.log("MissingComp");
@@ -275,8 +282,8 @@ export class GastroComponent implements OnInit, OnDestroy {
 
 
   makeNormal() {
-    const input = (document.getElementById('input') as HTMLTextAreaElement).value;
-    this.myText.report = this.inputParser.parseInput(input + ' rest normal');
+    const input = (document.getElementById("input") as HTMLTextAreaElement).value;
+    this.myText.report = this.inputParser.parseInput(input + " rest normal");
     this.textOut.colorTextInput(JSON.parse(JSON.stringify(this.diseases)), input);
   }
 

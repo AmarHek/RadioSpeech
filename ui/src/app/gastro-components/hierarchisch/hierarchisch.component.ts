@@ -2,24 +2,24 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from "@angular/co
 import { NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
-import * as M from "../../helper-classes/gastro_model";
-import { KeywordSelectable, KeywordDisease, TextDic } from "../../helper-classes/keyword";
-import { TextOutputService } from "../services/text-output.service";
+import * as M from "../../../helper-classes/gastro_model";
+import { KeywordSelectable, KeywordDisease, TextDic } from "../../../helper-classes/keyword";
+import { TextOutputService } from "../../services/text-output.service";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
-import { DictManagerService } from "../services/dict-manager.service";
-import { InputParserHierarchischService } from "../services/input-parser-hierarchisch.service";
-import { ParserBasisService } from "../services/parser-basis.service";
+import { DictManagerService } from "../../services/dict-manager.service";
+import { InputParserHierarchischService } from "../../services/input-parser-hierarchisch.service";
+import { ParserBasisService } from "../../services/parser-basis.service";
 
 
 declare const $: any;
 
 @Component({
   selector: "app-text-hierarchisch",
-  templateUrl: "./gastro-hierarchisch.component.html",
-  styleUrls: ["./gastro-hierarchisch.component.scss"]
+  templateUrl: "./hierarchisch.component.html",
+  styleUrls: ["./hierarchisch.component.scss"]
 })
-export class GastroHierarchischComponent implements OnInit, OnDestroy {
+export class HierarchischComponent implements OnInit, OnDestroy {
 
   constructor(private dateParser: NgbDateParserFormatter, private http: HttpClient,
     private route: ActivatedRoute, private inputParser: InputParserHierarchischService,

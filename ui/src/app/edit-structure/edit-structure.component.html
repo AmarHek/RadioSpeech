@@ -2,7 +2,7 @@
 <!-- This template is split into two parts:
 The first one is responsible for all the input forms that appear when the user wants to add new information to the dict
 The second one is responsible for showing all the information contained by the dict -->
-<!-- TO MAKE CHANGING FORMS EASIER, BOTH PARTS EXIST 2 TIMES; ONCE FOR GASTROENTEROLOGY AND ONCE FOR RADIOLOGIE (radiology has no diseases available) -->
+<!-- TO MAKE CHANGING FORMS EASIER, BOTH PARTS EXIST 2 TIMES; ONCE FOR GASTROENTEROLOGY AND ONCE FOR RADIOLOGIE (ui-base has no diseases available) -->
 <!-- FIRST COMES GASTROENTEROLOGY (~until line 1000), SECOND COMES RADIOLOGY -->
 <!-- <button (click)="toggle()">Toggle</button> -->
 <!-- THIS IS THE LOADING ANIMATION DURING API CALLS -->
@@ -824,7 +824,7 @@ The second one is responsible for showing all the information contained by the d
                   [normalID]="'Knormal' + a" [anzvarID]="'KanzahlAttVar' + a"
                   [(myAttAnzVar)]="myAtt.myVars[a].anzahlVar" [mode]="'radiologie'"
                   [augroupID]="'KAuGroup' + a" [zugroupID]="'KZuGroup' + a"></app-attribute>
-                
+
                 <ng-container *ngFor="let dummy5 of ' '.repeat(myAtt.myVars[a].anzahlVar).split(''), let b = index">
                   <app-variable [kindID]="'KvarKind' + a + b" [tbID]="'KtextBefore' + a + b"
                     [taID]="'KtextAfter' + a + b" [unitID]="'KvarUnit' + a + b" [optionsID]="'KvarOptions' + a + b"
@@ -937,7 +937,7 @@ The second one is responsible for showing all the information contained by the d
                       <a data-toggle="collapse" data-parent="#accordionEx79" href="#collapseUnfiled{{x}}{{y}}"
                         aria-expanded="true" aria-controls="collapseUnfiled"
                         (click)="rotateIcon(x,y, undefined, part2)">
-                        <ng-container *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') && 
+                        <ng-container *ngIf="part2.kind=='box'  && (!renameMode('showInput', [x,y], part2.kind, 'name') &&
                           !renameMode('showInput', [x,y], part2.kind, 'text') && !renameMode('showInput', [x,y], part2.kind, 'cg')
                           && !renameMode('showInput', [x,y], part2.kind, 'jt'))">
                           <p class="mt-1 mb-0">

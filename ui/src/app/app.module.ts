@@ -13,18 +13,18 @@ import { MatButtonModule } from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
-import { GastroComponent } from "./gastro/gastro.component";
-import { GastroHierarchischComponent } from "./gastro-hierarchisch/gastro-hierarchisch.component";
-import { UploadComponent } from "./upload/upload.component";
-import { ListComponent } from "./list/list.component";
+import { AdvancedComponent } from "./gastro-components/advanced/advanced.component";
+import { HierarchischComponent } from "./gastro-components/hierarchisch/hierarchisch.component";
+import { UploadComponent } from "./base-components/upload/upload.component";
+import { ListComponent } from "./base-components/list/list.component";
 import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
-import { ReportComponent } from "./report/report.component";
-import { RadiologyComponent } from "./radiology/radiology.component";
-import { OptionsComponent } from "./options/options.component";
-import { HeaderComponent } from "./header/header.component";
+import { ReportComponent } from "./base-components/report/report.component";
+import { UiBaseComponent } from "./radio-components/ui-base/ui-base.component";
+import { OptionsComponent } from "./radio-components/options/options.component";
+import { HeaderComponent } from "./base-components/header/header.component";
 import { VariablesComponent } from "./variables/variables.component";
 import { InputModalComponent } from "./variables/inputModal/inputModal.component";
-import { ConfirmDialogComponent } from "./confirm-dialog/confirm-dialog.component";
+import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm-dialog.component";
 import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 import { VariableComponent } from "./edit-structure/variable/variable.component";
@@ -33,17 +33,18 @@ import {DisplayService} from "./services/display.service";
 import {ParserBasisService} from "./services/parser-basis.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
+import { UploadModalComponent } from './gastro-components/upload-modal/upload-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GastroComponent,
-    GastroHierarchischComponent,
+    AdvancedComponent,
+    HierarchischComponent,
     UploadComponent,
     ListComponent,
     SortCategoriesPipe,
     ReportComponent,
-    RadiologyComponent,
+    UiBaseComponent,
     OptionsComponent,
     HeaderComponent,
     VariablesComponent,
@@ -53,7 +54,7 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
     DiseaseComponent,
     VariableComponent,
     AttributeComponent,
-
+    UploadModalComponent
   ],
   imports: [
     BrowserModule,
@@ -70,9 +71,9 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        { path: "Radiologie/:name", component: RadiologyComponent},
-        { path: "Gastroenterologie/Fortgeschritten/:name", component: GastroComponent},
-        { path: "Gastroenterologie/Hierarchisch/:name", component: GastroHierarchischComponent},
+        { path: "Radiologie/:name", component: UiBaseComponent},
+        { path: "Gastroenterologie/Fortgeschritten/:name", component: AdvancedComponent},
+        { path: "Gastroenterologie/Hierarchisch/:name", component: HierarchischComponent},
         { path: "upload",     component: UploadComponent },
         { path: "list",       component: ListComponent   },
         { path: "edit/:name", component: EditStructureComponent},

@@ -4,21 +4,21 @@ import { HttpClient } from "@angular/common/http";
 import { Location } from "@angular/common";
 import { ViewChild } from "@angular/core";
 
-import { environment } from "../../environments/environment";
-import * as M from "../../helper-classes/radio_model";
-import {DataParserService} from "../services/dataParser.service";
+import { environment } from "../../../environments/environment";
+import * as M from "../../../helper-classes/radio_model";
+import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import { DictManagerService } from "../services/dict-manager.service";
-import { InputParserRadioService } from "../services/input-parser-radio.service";
+import { DictManagerService } from "../../services/dict-manager.service";
+import { InputParserRadioService } from "../../services/input-parser-radio.service";
 import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-workspace",
-  templateUrl: "./radiology.component.html",
-  styleUrls: ["./radiology.component.scss"],
+  templateUrl: "./ui-base.component.html",
+  styleUrls: ["./ui-base.component.scss"],
 })
 
-export class RadiologyComponent implements OnInit, OnDestroy {
+export class UiBaseComponent implements OnInit, OnDestroy {
 
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];

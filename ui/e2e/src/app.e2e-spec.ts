@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('radiology-project App', () => {
+describe('ui-base-project App', () => {
   let page: AppPage;
 
   beforeEach(() => {

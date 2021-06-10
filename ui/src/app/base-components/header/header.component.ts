@@ -1,8 +1,8 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons';
 
-import { DisplayService } from '../services/display.service';
-import {DictManagerService} from '../services/dict-manager.service';
+import { DisplayService } from '../../services/display.service';
+import {DictManagerService} from '../../services/dict-manager.service';
 
 @Component({
   selector: 'app-header',

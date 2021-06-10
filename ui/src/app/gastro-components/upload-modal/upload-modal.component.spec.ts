@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RadiologyComponent } from './radiology.component';
+import { UploadModalComponent } from './upload-modal.component';
 
-describe('WorkspaceComponent', () => {
-  let component: RadiologyComponent;
-  let fixture: ComponentFixture<RadiologyComponent>;
+describe('UploadModalComponent', () => {
+  let component: UploadModalComponent;
+  let fixture: ComponentFixture<UploadModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RadiologyComponent ]
+      declarations: [ UploadModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RadiologyComponent);
+    fixture = TestBed.createComponent(UploadModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

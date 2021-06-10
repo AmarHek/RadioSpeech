@@ -223,7 +223,13 @@ export class InputParserRadioService {
           }
         }
       } else if (varKey.kind === "text" || varKey.kind === "number") {
-        //if (varKey.textAfter )
+        if (varKey.textAfter.length > 0) {
+          const posVar = input.indexOf(varKey.textBefore);
+          const posValueStart = posVar + varKey.textBefore.length;
+          const posValueEnd = input.indexOf(varKey.textAfter);
+          const value = input.substring(posValueStart, posValueEnd).trim();
+
+        }
       } else if (varKey.kind === "ratio") {
 
       } else if (varKey.kind === "date") {
