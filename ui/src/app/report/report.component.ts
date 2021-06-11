@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input} from "@angular/core";
 
 @Component({
   selector: "app-report",
@@ -18,24 +18,24 @@ export class ReportComponent implements OnInit {
   // TODO: Send change event to layout so changes in report are reflected in data structure
 
   ngOnInit() {
-    this.disclaimer = "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt."
+    this.disclaimer = "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt.";
   }
 
-  copyText(inputElement: HTMLTextAreaElement){
+  copyText(inputElement: HTMLTextAreaElement) {
     inputElement.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     inputElement.setSelectionRange(0, 0);
   }
 
-  copyAll(){
-    let fullText: string = "";
+  copyAll() {
+    let fullText: string;
     fullText = this.report + "\n\n" + this.disclaimer + "\n\n\n" + this.judgement + "\n\n" + this.disclaimer;
-    let selBox = document.createElement('textarea');
+    const selBox = document.createElement("textarea");
     selBox.value = fullText;
     document.body.append(selBox);
     selBox.focus();
     selBox.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     document.body.removeChild(selBox);
   }
 

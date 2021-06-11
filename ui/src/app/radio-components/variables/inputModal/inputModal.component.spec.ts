@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { InputModalComponent } from './inputModal.component';
+import { InputModalComponent } from "./inputModal.component";
 
-describe('ModalComponent', () => {
+describe("ModalComponent", () => {
   let component: InputModalComponent;
   let fixture: ComponentFixture<InputModalComponent>;
 
@@ -19,7 +19,7 @@ describe('ModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -12,6 +12,15 @@ export function flatMap<X, Y>(xs: X[], f: (x: X) => Y[]): Y[] {
   return ret;
 }
 
+export function displayableQuotient(numerator: number, denominator: number, fractionDigits: number = 2): string {
+  const res = numerator / denominator ;
+  if (isFinite(res)) {
+    return res.toFixed(fractionDigits);
+  } else {
+    return "   ";
+  }
+}
+
 export function levenshtein(a: string, b: string): number {
   const an = a ? a.length : 0;
   const bn = b ? b.length : 0;
@@ -67,4 +76,17 @@ export function getAllIndexOf(searchStr: string, inputStr: string, caseSensitive
   }
 
   return indexes;
+}
+
+export function splitStringFromIndexes(input: string, indexes: number[]): string[] {
+  const splitText: string[] = [];
+  indexes.sort();
+  for (let i = 0; i < indexes.length; i++) {
+    if (i === indexes.length) {
+      splitText.push(input.substring(indexes[i], input.length));
+    } else {
+      splitText.push(input.substring(indexes[i], indexes[i + 1]));
+    }
+  }
+  return splitText;
 }

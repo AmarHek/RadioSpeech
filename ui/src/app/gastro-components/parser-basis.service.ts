@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/gastro_model";
 import { KeywordSelectable, KeywordCategory, KeywordDisease, KeywordVariable, TextDic } from "../../helper-classes/keyword";
-import { TextOutputService } from "./text-output.service";
+import { TextOutputService } from "../general-services/text-output.service";
 import * as MO from "../../helper-classes/old_model";
 
 @Injectable({
@@ -68,7 +68,6 @@ export class ParserBasisService {
     }
     // makes an entry for this disease in output data structure
     this.textOut.initDiseaseText(this.diseases);
-    console.log(this.diseases);
     return this.diseases;
   }
 

@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import * as N from '../../helper-classes/gastro_model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import {DisplayService} from './display.service';
+import { Injectable } from "@angular/core";
+import * as N from "../../helper-classes/gastro_model";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+import { map } from "rxjs/operators";
+import { Subject } from "rxjs";
+import {DisplayService} from "../general-services/display.service";
 
 const url = environment.urlRootEndo;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 
 // -----------------------------------
@@ -32,8 +32,8 @@ export class DictManagerService {
   }
 
   setUrl(mode: string) {
-    if (mode === 'Radiologie') {
-      this.myUrl += 'radio/';
+    if (mode === "Radiologie") {
+      this.myUrl += "radio/";
     }
   }
 
@@ -101,14 +101,14 @@ export class DictManagerService {
   addExcel(postData: FormData) {
     this.http
       .post<{ message: string; dictId: string }>(
-        this.myUrl + 'excel',
+        this.myUrl + "excel",
         postData
       )
       .subscribe((res) => {
-        let str = '';
-        if (res.dictId === 'false') {
+        let str = "";
+        if (res.dictId === "false") {
           str =
-            'Fehler beim Hochladen der Excel Datei. Die Tabelle wurde nicht korrekt befüllt. \n Folgender Fehler ist aufgetreten: \n\n';
+            "Fehler beim Hochladen der Excel Datei. Die Tabelle wurde nicht korrekt befüllt. \n Folgender Fehler ist aufgetreten: \n\n";
         }
         window.alert(str + res.message);
       });

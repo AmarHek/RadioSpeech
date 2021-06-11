@@ -4,14 +4,16 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import * as M from "../../../helper-classes/gastro_model";
 import { KeywordSelectable, KeywordDisease, TextDic } from "../../../helper-classes/keyword";
-import { InputParserService } from "../../services/input-parser.service";
-import { TextOutputService } from "../../services/text-output.service";
+import { InputParserService } from "../input-parser.service";
+import { TextOutputService } from "../../general-services/text-output.service";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Subscription } from "rxjs";
-import { DictManagerService } from "../../services/dict-manager.service";
-import { ParserBasisService } from "../../services/parser-basis.service";
-import {ExportPackageGeneratorService} from "../../services/export-package-generator.service";
+import { DictManagerService } from "../dict-manager.service";
+import { ParserBasisService } from "../parser-basis.service";
+import {HtmlOutputService} from "../output/html-output.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {DialogComponent} from "../output/dialog/dialog.component";
 
 
 declare const $: any;
@@ -59,7 +61,8 @@ export class AdvancedComponent implements OnInit, OnDestroy {
               private dictManager: DictManagerService,
               private router: Router,
               private base: ParserBasisService,
-              private htmlOut: ExportPackageGeneratorService) {
+              private dialog: MatDialog,
+              private htmlOut: HtmlOutputService) {
   }
 
   ngOnDestroy(): void {
@@ -92,9 +95,6 @@ export class AdvancedComponent implements OnInit, OnDestroy {
             this.new_parts = this.dictionaryService.myDict.dict; */
             /* this.myList[1].name = "Leo2";
             this.dictManager.updateDict(this.myList[1]); */
-            console.log("onInit");
-            console.log(this.parts);
-            // console.log(this.new_parts);
           });
       } else {
         this.errorMsg =
@@ -189,8 +189,6 @@ export class AdvancedComponent implements OnInit, OnDestroy {
   }
 
   inputClick() {
-
-
     this.changeButton();
   }
 
@@ -254,6 +252,8 @@ export class AdvancedComponent implements OnInit, OnDestroy {
     // console.log(ev.clipboardData.getData('text'));
     // this.myInput.twInput += ev.data;
     this.myText.report = this.inputParser.parseInput(this.myInput.twInput.toLowerCase());
+    console.log("HIER");
+    console.log(this.myText.report);
     const inpArr: Array<string> = JSON.parse(JSON.stringify(this.myInput.twInput.toLowerCase())).split(" ");
     this.end = this.base.end;
     this.textOut.finalOut(this.end, inpArr);
@@ -289,6 +289,15 @@ export class AdvancedComponent implements OnInit, OnDestroy {
 
   refreshPage() {
     window.location.reload();
+  }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
   }
 
 }

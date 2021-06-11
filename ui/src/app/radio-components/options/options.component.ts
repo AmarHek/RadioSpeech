@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import * as M from "../../../helper-classes/radio_model";
-import {DataParserService} from "../../services/dataParser.service";
-import {DisplayService} from "../../services/display.service";
+import {DataParserService} from "../dataParser.service";
+import {DisplayService} from "../../general-services/display.service";
 import {Clickable, Group} from "../../../helper-classes/old_model";
 
 @Component({

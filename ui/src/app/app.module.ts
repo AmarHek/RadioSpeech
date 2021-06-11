@@ -18,22 +18,24 @@ import { HierarchischComponent } from "./gastro-components/hierarchisch/hierarch
 import { UploadComponent } from "./base-components/upload/upload.component";
 import { ListComponent } from "./base-components/list/list.component";
 import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
-import { ReportComponent } from "./base-components/report/report.component";
+import { ReportComponent } from "./report/report.component";
 import { UiBaseComponent } from "./radio-components/ui-base/ui-base.component";
 import { OptionsComponent } from "./radio-components/options/options.component";
 import { HeaderComponent } from "./base-components/header/header.component";
-import { VariablesComponent } from "./variables/variables.component";
-import { InputModalComponent } from "./variables/inputModal/inputModal.component";
+import { VariablesComponent } from "./radio-components/variables/variables.component";
+import { InputModalComponent } from "./radio-components/variables/inputModal/inputModal.component";
 import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm-dialog.component";
 import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 import { VariableComponent } from "./edit-structure/variable/variable.component";
 import { AttributeComponent } from "./edit-structure/attribute/attribute.component";
-import {DisplayService} from "./services/display.service";
-import {ParserBasisService} from "./services/parser-basis.service";
+import {DisplayService} from "./general-services/display.service";
+import {ParserBasisService} from "./gastro-components/parser-basis.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
-import { UploadModalComponent } from './gastro-components/upload-modal/upload-modal.component';
+import { DialogComponent } from "./gastro-components/output/dialog/dialog.component";
+import {InputParserService} from "./gastro-components/input-parser.service";
+import { DisplayComponent } from './gastro-components/output/display/display.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { UploadModalComponent } from './gastro-components/upload-modal/upload-mo
     DiseaseComponent,
     VariableComponent,
     AttributeComponent,
-    UploadModalComponent
+    DialogComponent,
+    DisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -77,12 +80,13 @@ import { UploadModalComponent } from './gastro-components/upload-modal/upload-mo
         { path: "upload",     component: UploadComponent },
         { path: "list",       component: ListComponent   },
         { path: "edit/:name", component: EditStructureComponent},
+        { path: "Gastroenterologie/output", component: DisplayComponent},
         { path: "**", redirectTo: "/upload" },
       ],
       { useHash: true, relativeLinkResolution: "legacy" }
     )
   ],
-  providers: [DisplayService, ParserBasisService,
+  providers: [DisplayService, ParserBasisService, InputParserService,
     {provide: DateAdapter, useClass: AppDateAdapter},
     {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}],
   bootstrap: [AppComponent]

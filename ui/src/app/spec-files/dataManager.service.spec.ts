@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DataParserService } from '../services/dataParser.service';
+import { DataParserService } from '../radio-components/dataParser.service';
 
 describe('DataBuilderService', () => {
   let service: DataParserService;

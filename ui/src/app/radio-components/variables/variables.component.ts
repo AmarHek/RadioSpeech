@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import {Variable} from "../../helper-classes/old_model";
+import {Variable} from "../../../helper-classes/radio_model";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import { UtilService } from "../services/util.service";
+import {displayableQuotient} from "../../../helper-classes/util";
 
 @Component({
   selector: "app-variables",
@@ -20,8 +20,7 @@ export class VariablesComponent implements OnInit {
 
   hasButtonBeenClickedOnce: Map<string, boolean> = new Map();
 
-  constructor(private dialog: MatDialog,
-              private utilService: UtilService) { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.initButtonClickedMap();
@@ -54,7 +53,7 @@ export class VariablesComponent implements OnInit {
     } else if (variable.kind === "date") {
       return variable.value.day + "." + variable.value.month + "." + variable.value.year;
     } else if (variable.kind === "ratio") {
-      return this.utilService.displayableQuotient(variable.numerator,
+      return displayableQuotient(variable.numerator,
         variable.denominator, variable.fractionDigits);
     }
   }
@@ -76,7 +75,7 @@ export class VariablesComponent implements OnInit {
     }
   }
 
-  async modalInput(variable: Variable) {
+  modalInput(variable: Variable) {
     const dialogConfig = this.defaultConfig();
 
     dialogConfig.data = {

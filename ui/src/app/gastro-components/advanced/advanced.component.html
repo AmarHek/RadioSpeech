@@ -29,8 +29,9 @@
     <!-- input "Befund" text here and submits it automatically -->
     <div id="listening" class="btn btn-sm btn-danger float-left">Aus
     </div>
-    <div id="imageupload" class="btn btn-outline-primary float-right">
-      Bild-Upload
+    <div id="output-gen" (click)=openModal()
+         class="btn btn-outline-primary float-right">
+      Dokument generieren
     </div>
 
     <label for="input">Eingabefenster:
@@ -110,65 +111,7 @@
     PAUSE
   </div>
   <div *ngIf="end">
-    <app-report [report]="myText.report" [judgment]=""></app-report>
+    <app-report [report]="myText.report" [judgement]=""></app-report>
   </div>
 
-</div>
-
-
-
-<!-- Dialog to enter the Parameters, can be activated by integrating a button or link that
-triggers the modal, for example: <div class="btn btn-info btn-lg" data-toggle="modal" data-target="#variableDialog"> Open Dialog </div> -->
-
-<div class="modal fade" id="variableDialog" tabindex="-1" role="dialog" aria-labelledby="variableDialogLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="variableDialogLabel">Parameter zum Textbaustein eingeben</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!--
-				<table>
-					<tr *ngFor="let v of modalVariables">
-						<td class="text-right">{{v.textBefore}}</td>
-						<td *ngIf="v.kind === 'oc'">
-							<span *ngFor="let vv of v.values">
-								<input type="radio" name="{{v.id}}" [value]="vv" [(ngModel)]="v.value" /> {{vv}}
-							</span>
-						</td>
-						<td *ngIf="v.kind === 'mc'">
-							<span *ngFor="let vv of v.values">
-								<input type="checkbox" name="{{v.id}}" [value]="vv[0]" [(ngModel)]="vv[1]" /> {{vv[0]}}
-							</span>
-						</td>
-						<td *ngIf="v.kind === 'text'">
-							<input type="text" [(ngModel)]="v.value" />
-						</td>
-						<td *ngIf="v.kind === 'number'">
-							<input type="number" class="w-100" [(ngModel)]="v.value" />
-						</td>
-						<td *ngIf="v.kind === 'date'">
-							<ngb-datepicker [(ngModel)]="v.value"></ngb-datepicker>
-						</td>
-						<td *ngIf="v.kind === 'ratio'">
-							<input type="number" [(ngModel)]="v.numerator" /> / <input type="number"
-								[(ngModel)]="v.denominator" />
-						</td>
-						<td class="text-left">{{v.textAfter}}</td>
-					</tr>
-				</table>
-				-->
-      </div>
-      <div class="modal-footer">
-        <!--
-				<button (click)="endVariableSelection()" type="button" data-dismiss="modal"
-					class="btn btn-primary">Ok</button>
-					-->
-      </div>
-    </div>
-  </div>
 </div>

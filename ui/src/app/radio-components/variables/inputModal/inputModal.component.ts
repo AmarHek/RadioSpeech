@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {UtilService} from "../../services/util.service";
+import {displayableQuotient} from "../../../../helper-classes/util";
+
 
 @Component({
   selector: "app-modal",
@@ -15,8 +16,7 @@ export class InputModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<InputModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
-    private utilService: UtilService) { }
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -42,7 +42,7 @@ export class InputModalComponent implements OnInit {
   }
 
   displayQuotient(numerator, denominator) {
-    return this.utilService.displayableQuotient(numerator as number,
+    return displayableQuotient(numerator as number,
       denominator as number, this.data["fractionDigits"]);
   }
 

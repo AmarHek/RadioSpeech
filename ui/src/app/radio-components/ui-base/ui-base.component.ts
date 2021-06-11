@@ -6,16 +6,16 @@ import { ViewChild } from "@angular/core";
 
 import { environment } from "../../../environments/environment";
 import * as M from "../../../helper-classes/radio_model";
-import {DataParserService} from "../../services/dataParser.service";
+import {DataParserService} from "../dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import { DictManagerService } from "../../services/dict-manager.service";
-import { InputParserRadioService } from "../../services/input-parser-radio.service";
+import { DictManagerService } from "../../gastro-components/dict-manager.service";
+import { InputParserRadioService } from "../input-parser-radio.service";
 import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-workspace",
-  templateUrl: "./ui-base.component.html",
-  styleUrls: ["./ui-base.component.scss"],
+  templateUrl: "./radio-ui.html",
+  styleUrls: ["./radio-ui.scss"],
 })
 
 export class UiBaseComponent implements OnInit, OnDestroy {
