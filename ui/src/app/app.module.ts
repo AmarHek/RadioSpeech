@@ -13,29 +13,29 @@ import { MatButtonModule } from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
-import { AdvancedComponent } from "./gastro-components/advanced/advanced.component";
-import { HierarchischComponent } from "./gastro-components/hierarchisch/hierarchisch.component";
+import { AdvancedComponent } from "./gastro-files/advanced/advanced.component";
+import { HierarchischComponent } from "./gastro-files/hierarchisch/hierarchisch.component";
 import { UploadComponent } from "./base-components/upload/upload.component";
 import { ListComponent } from "./base-components/list/list.component";
 import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
 import { ReportComponent } from "./report/report.component";
-import { UiBaseComponent } from "./radio-components/ui-base/ui-base.component";
-import { OptionsComponent } from "./radio-components/options/options.component";
+import { UiBaseComponent } from "./radio-files/ui-base/ui-base.component";
+import { OptionsComponent } from "./radio-files/options/options.component";
 import { HeaderComponent } from "./base-components/header/header.component";
-import { VariablesComponent } from "./radio-components/variables/variables.component";
-import { InputModalComponent } from "./radio-components/variables/inputModal/inputModal.component";
+import { VariablesComponent } from "./radio-files/variables/variables.component";
+import { InputModalComponent } from "./radio-files/variables/inputModal/inputModal.component";
 import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm-dialog.component";
 import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 import { VariableComponent } from "./edit-structure/variable/variable.component";
 import { AttributeComponent } from "./edit-structure/attribute/attribute.component";
 import {DisplayService} from "./general-services/display.service";
-import {ParserBasisService} from "./gastro-components/parser-basis.service";
+import {ParserBasisService} from "./gastro-files/parser-basis.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
-import { DialogComponent } from "./gastro-components/output/dialog/dialog.component";
-import {InputParserService} from "./gastro-components/input-parser.service";
-import { DisplayComponent } from './gastro-components/output/display/display.component';
+import { DialogComponent } from "./gastro-files/output/dialog/dialog.component";
+import {InputParserService} from "./gastro-files/input-parser.service";
+import { DisplayComponent } from './gastro-files/output/display/display.component';
 
 @NgModule({
   declarations: [

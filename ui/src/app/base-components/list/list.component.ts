@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { TimeStampsService } from "../../general-services/time-stamps.service";
-import { DataParserService } from "../../radio-components/dataParser.service";
+import { DataParserService } from "../../radio-files/dataParser.service";
 import { DisplayService } from "../../general-services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
 import * as N from "../../../helper-classes/gastro_model";
 import { Subscription } from "rxjs";
-import { DictManagerService } from "../../gastro-components/dict-manager.service";
+import { DictManagerService } from "../../gastro-files/dict-manager.service";
 
 
 @Component({

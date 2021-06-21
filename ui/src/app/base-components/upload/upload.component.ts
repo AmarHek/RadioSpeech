@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { TimeStampsService } from '../../general-services/time-stamps.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import { DictManagerService } from '../../gastro-components/dict-manager.service';
+import { DictManagerService } from '../../gastro-files/dict-manager.service';
 import {DisplayService} from '../../general-services/display.service';
 
 @Component({

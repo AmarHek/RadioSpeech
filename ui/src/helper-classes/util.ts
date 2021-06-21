@@ -90,3 +90,29 @@ export function splitStringFromIndexes(input: string, indexes: number[]): string
   }
   return splitText;
 }
+
+export function getDateFormatted(date: Date, addTime: boolean): string {
+  let result: string;
+  const day: string = ("0" + date.getDate()).slice(-2);
+  const month: string = ("0" + (date.getMonth() + 1)).slice(-2);
+  result = day + "." + month + "." + date.getFullYear();
+  if (addTime) {
+    const hour: string = ("0" + date.getHours()).slice(-2);
+    const minutes: string = ("0" + date.getMinutes()).slice(-2);
+    result += ", " + hour + ":" + minutes;
+  }
+  return result;
+}
+
+export function getBase64Image(img) {
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+
+  const dataURL = canvas.toDataURL("image/png");
+
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}

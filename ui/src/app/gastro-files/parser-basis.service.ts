@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/gastro_model";
 import { KeywordSelectable, KeywordCategory, KeywordDisease, KeywordVariable, TextDic } from "../../helper-classes/keyword";
-import { TextOutputService } from "../general-services/text-output.service";
+import { TextOutputService } from "./text-output.service";
 import * as MO from "../../helper-classes/old_model";
 
 @Injectable({
@@ -204,24 +204,18 @@ export class ParserBasisService {
     if (indSq !== -1) {
       let reg;
       const match = key.name.replace("[d]", "").trim();
-      console.log(match);
       if (indSq === 0) {
         reg = new RegExp("(\\d+(,\\d+)?)(?=\\s*" + match + ")", "mig");
         // reg = /(\d+(,\d+)?)(?=\s*\match)/mig
-        console.log("reg");
-        console.log(reg);
       } else {
         reg = new RegExp("(?<=" + match + "\\s)\\d+", "mig");
       }
       // let result = input.toLowerCase().search(reg);
-      console.log("Look here");
       const result = input.toLowerCase().match(reg);
-      console.log(result);
       if (result !== null) {
         const num = result[result.length - 1];
         // key.name = key.synonym.replace("[d]", res2[0]);
         key.synonym = key.name.replace("[d]", num);
-        console.log(key.name.replace("[d]", num));
         // console.log(result);
       }
     }
@@ -495,7 +489,6 @@ export class ParserBasisService {
           nextCat = activeDis.categories[j];
           // if next Category has conditional category, look if condition is fulfilled
           if (nextCat.condition !== null) {
-            console.log("NextCat:" + nextCat.name);
             const depCat = activeDis.categories.find(cat => cat.name === nextCat.condition);
             const depKey = depCat.keys.find(key => key.position !== -1);
             if (depKey === undefined) {
@@ -512,8 +505,6 @@ export class ParserBasisService {
           }
         }
         if ((done || activeKeys[i].variables.length === 0) && !skip) {
-          console.log("nextCat");
-          console.log(nextCat.name);
           twInput.twInput += " " + nextCat.name;
           reRun = true;
         }

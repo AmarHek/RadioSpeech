@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/gastro_model";
 import { KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { ParserBasisService } from "./parser-basis.service";
-import { TextOutputService } from "../general-services/text-output.service";
+import { TextOutputService } from "./text-output.service";
 
 
 @Injectable({
@@ -114,12 +114,6 @@ export class InputParserService {
           }
           activeCat.active = false;
         }
-        // Test Log
-        console.log("KeyTest");
-        console.log(this.diseases);
-        console.log(this.diseases[0].categories[0].condition);
-        console.log(this.diseases[0].categories[0].condition === "");
-        console.log(this.twInput.twInput);
 
       }
       return text;

@@ -11,9 +11,10 @@ export class HtmlOutputService {
   public images: Array<string> = [];
   public texts: Array<string> = [];
   public reports: Array<string> = [];
-  public dateAndTime = "11.06.2021  16:30";
+  public date = "";
 
-  constructor(private inputParser: InputParserService) { }
+  constructor(private inputParser: InputParserService) {
+  }
 
   readImages(imagefiles: Array<File>) {
     this.images = [];
@@ -24,7 +25,6 @@ export class HtmlOutputService {
         this.images.push(reader.result as string);
       };
     }
-    console.log(this.images);
   }
 
   async readText(textfiles: Array<File>) {
@@ -51,14 +51,25 @@ export class HtmlOutputService {
 
   parseText() {
     if (this.texts.length > 0) {
+      console.log(this.texts);
       this.reports = [];
       for (const text of this.texts) {
-        console.log(text);
         this.reports.push(this.inputParser.parseInput(text));
+
+        this.extractDate();
       }
       console.log(this.reports);
     } else {
       console.log("No text files available.");
+    }
+  }
+
+  extractDate() {
+    if (this.reports.length > 0) {
+      this.date = this.reports[0].substring(0, 16);
+      for (let i = 0; i < this.reports.length; i++) {
+        // this.reports[i] = this.reports[i].substring(18, this.reports.length);
+      }
     }
   }
 

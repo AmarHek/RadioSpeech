@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { KeywordCategory, KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import {getDateFormatted} from "../../helper-classes/util";
 
 @Injectable({
   providedIn: "root"
@@ -22,6 +23,7 @@ export class TextOutputService {
   // url for report file download
   downJson2: SafeUrl;
   // final output text, contains all the text from rep Array
+  // TODO: Separate report, date and codes
   finalText = "";
 
   // generates downloadable files from arrays
@@ -74,7 +76,7 @@ export class TextOutputService {
     let finalText = "";
     // adds time stamp to the top of the report
     const date = new Date();
-    finalText += date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes() + "\n\n";
+    finalText += getDateFormatted(date, true) + "\n\n";
     this.timeSpan = Math.abs(date.getTime() - startingTime.getTime()) / 1000;
 
     for (const dis of this.rep) {
@@ -83,12 +85,13 @@ export class TextOutputService {
       }
       finalText = finalText + dis.reports.map(report => report.text).join("") + "\n\n";
     }
+    /*
     for (const dis of this.rep) {
       if (dis.reports.map(report => report.code).join("") !== "") {
         finalText = finalText + dis.disName + " - Codes:\n";
       }
       finalText = finalText + dis.reports.map(report => report.code).join("") + "\n\n";
-    }
+    } */
     this.finalText = finalText;
     return finalText;
   }

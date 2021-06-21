@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/gastro_model";
 import { KeywordDisease, TextDic } from "../../helper-classes/keyword";
 import { ParserBasisService } from "./parser-basis.service";
-import { TextOutputService } from "../general-services/text-output.service";
+import { TextOutputService } from "./text-output.service";
 
 
 

@@ -35,7 +35,9 @@ export class DialogComponent implements OnInit {
       this.imagesUploaded = true;
     } else if (type === "text") {
       this.textfiles = files;
-      this.htmlOutputService.readText(this.textfiles);
+      this.htmlOutputService.readText(this.textfiles).then(() => {
+        console.log("Text reading successful!");
+      });
       this.textsUploaded = true;
     }
   }
@@ -46,7 +48,9 @@ export class DialogComponent implements OnInit {
 
   submit() {
     this.htmlOutputService.parseText();
-    this.router.navigateByUrl("Gastroenterologie/output");
+    this.router.navigateByUrl("Gastroenterologie/output").then(() => {
+      console.log("Promise fulfilled!");
+    });
     this.close();
   }
 

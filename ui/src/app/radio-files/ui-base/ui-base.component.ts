@@ -8,7 +8,7 @@ import { environment } from "../../../environments/environment";
 import * as M from "../../../helper-classes/radio_model";
 import {DataParserService} from "../dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import { DictManagerService } from "../../gastro-components/dict-manager.service";
+import { DictManagerService } from "../../gastro-files/dict-manager.service";
 import { InputParserRadioService } from "../input-parser-radio.service";
 import { Subscription } from "rxjs";
 
