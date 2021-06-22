@@ -1,13 +1,13 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
-import { faLaptopMedical } from '@fortawesome/free-solid-svg-icons';
+import {Component, DoCheck, OnInit} from "@angular/core";
+import { faLaptopMedical } from "@fortawesome/free-solid-svg-icons";
 
-import { DisplayService } from '../../general-services/display.service';
-import {DictManagerService} from '../../gastro-files/dict-manager.service';
+import { DisplayService } from "../../general-services/display.service";
+import {DictManagerService} from "../../gastro-files/dict-manager.service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit, DoCheck {
 

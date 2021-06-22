@@ -1,6 +1,6 @@
 {
-  "name": "befundungstest",
-  "version": "0.0.0",
+  "name": "radiospeech-server",
+  "version": "1.0.0",
   "scripts": {
     "start:server": "nodemon ./backend/myServer.js"
   },

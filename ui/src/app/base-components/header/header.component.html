@@ -17,15 +17,13 @@
       <li class="nav-item" routerLinkActive='active'>
         <a class="nav-link" routerLink='/edit'>Edit Structure</a>
       </li>-->
-    </ul>
-    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <label for="layout" class="col-form-label">Layout: </label>
-        <button id="layout" (click)="cycleUi()" class="btn btn-outline-secondary">{{ui}}</button>
+        <button id="layout" (click)="cycleUi()" class="btn btn-outline-secondary float-end">{{ui}}</button>
       </li>
       <li class="nav-item">
         <label for="modus" class="col-form-label">Modus: </label>
-        <button id="modus" (click)="cycleMode()" class="btn btn-outline-primary">{{mode}}</button>
+        <button id="modus" (click)="cycleMode()" class="btn btn-outline-primary float-end">{{mode}}</button>
       </li>
     </ul>
   </div>

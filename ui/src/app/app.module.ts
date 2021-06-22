@@ -35,7 +35,7 @@ import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 import { DialogComponent } from "./gastro-files/output/dialog/dialog.component";
 import {InputParserService} from "./gastro-files/input-parser.service";
-import { DisplayComponent } from './gastro-files/output/display/display.component';
+import { DisplayComponent } from "./gastro-files/output/display/display.component";
 
 @NgModule({
   declarations: [
@@ -74,17 +74,18 @@ import { DisplayComponent } from './gastro-files/output/display/display.componen
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        { path: "Radiologie/:name", component: UiBaseComponent},
-        { path: "Gastroenterologie/Fortgeschritten/:name", component: AdvancedComponent},
-        { path: "Gastroenterologie/Hierarchisch/:name", component: HierarchischComponent},
-        { path: "upload",     component: UploadComponent },
-        { path: "list",       component: ListComponent   },
-        { path: "edit/:name", component: EditStructureComponent},
-        { path: "Gastroenterologie/output", component: DisplayComponent},
-        { path: "**", redirectTo: "/upload" },
+        {path: "Radiologie/:name", component: UiBaseComponent},
+        {path: "Gastroenterologie/Fortgeschritten/:name", component: AdvancedComponent},
+        {path: "Gastroenterologie/Hierarchisch/:name", component: HierarchischComponent},
+        {path: "upload", component: UploadComponent},
+        {path: "list", component: ListComponent},
+        {path: "edit/:name", component: EditStructureComponent},
+        {path: "Gastroenterologie/output", component: DisplayComponent},
+        {path: "**", redirectTo: "/upload"},
       ],
-      { useHash: true, relativeLinkResolution: "legacy" }
-    )
+      {useHash: true, relativeLinkResolution: "legacy"}
+    ),
+    FontAwesomeModule
   ],
   providers: [DisplayService, ParserBasisService, InputParserService,
     {provide: DateAdapter, useClass: AppDateAdapter},
