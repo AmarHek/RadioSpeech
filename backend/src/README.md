@@ -1,11 +1,11 @@
 Backend Working Structure
 
-- myServer.js sets up Server on Port 3000 and is the file that has to be executed
+- server.js sets up Server on Port 3000 and is the file that has to be executed
 - app.js connects to MongoDB, sets CORSE Headers and defines basic API Path
 
 Folder models:
     myEndo.js defines how a dict looks like in the database (a dict and its name), have in mind that an id is automatically added as well
-    dict.js defines how a dict and its substructures look like when an excel file is converted
+    dict_old.js defines how a dict and its substructures look like when an excel file is converted
 
 Folder Routes:
     - Defines Routes for API, the options are "get all dicts", "modify one dict", "delete one dict", "upload an ui generated dict" and "upload an excel generated dict"

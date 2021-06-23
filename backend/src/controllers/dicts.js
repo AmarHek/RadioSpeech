@@ -8,7 +8,7 @@ const {
     Category,
     Disease,
     myDict
-  } = require('../models/dict');
+  } = require('../models/dict_old');
   const {
     parser,
   } = require('../excels/excelParser');

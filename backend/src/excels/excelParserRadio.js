@@ -14,7 +14,7 @@ const {
     VariableDateRadio,
     VariableRatioRadio,
     myDictRadio
-  } = require('../models/dictRadio')
+  } = require('../models/dictTemplate')
 
 
 module.exports.parserRadio = function parserRadio(json){

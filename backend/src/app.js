@@ -10,7 +10,9 @@ const dictsRoutes = require('./routes/dicts');
 const app = express();
 
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect('mongodb+srv://EndoSpeech:' + "VGmzqChCTqcGd4N" + '@cluster0.acvuh.mongodb.net/endo?retryWrites=true&w=majority', {useNewUrlParser: true})
+mongoose.connect('mongodb+srv://EndoSpeech:' +
+    "VGmzqChCTqcGd4N" + '@cluster0.acvuh.mongodb.net/endo?retryWrites=true&w=majority',
+    {useNewUrlParser: true})
   .then(() => {
     console.log("Connected to db");
   })
