@@ -16,18 +16,18 @@ import { AppComponent } from "./app.component";
 import { UploadComponent } from "./base-components/upload/upload.component";
 import { ListComponent } from "./base-components/list/list.component";
 import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
-import { ReportComponent } from "./report/report.component";
-import { UiBaseComponent } from "./radio-files/ui-base/ui-base.component";
-import { OptionsComponent } from "./radio-files/options/options.component";
+import { ReportComponent } from "./templates/report/report.component";
+import { UiBaseComponent } from "./templates/ui-base/ui-base.component";
+import { OptionsComponent } from "./templates/options/options.component";
 import { HeaderComponent } from "./base-components/header/header.component";
-import { VariablesComponent } from "./radio-files/variables/variables.component";
-import { InputModalComponent } from "./radio-files/variables/inputModal/inputModal.component";
+import { VariablesComponent } from "./templates/variables/variables.component";
+import { InputModalComponent } from "./templates/variables/inputModal/inputModal.component";
 import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm-dialog.component";
 import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 import { VariableComponent } from "./edit-structure/variable/variable.component";
 import { AttributeComponent } from "./edit-structure/attribute/attribute.component";
-import {DisplayService} from "./general-services/display.service";
+import {DisplayService} from "./services/display.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 
@@ -64,7 +64,7 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "view/:name", component: UiBaseComponent},
+        {path: "template/:name", component: UiBaseComponent},
         {path: "upload", component: UploadComponent},
         {path: "list", component: ListComponent},
         {path: "edit/:name", component: EditStructureComponent},

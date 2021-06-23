@@ -1,4 +1,4 @@
-import * as M from "./radio_model";
+import * as M from "./model";
 
 export function normalExtractor(): M.TextExtractor {
   return new class {

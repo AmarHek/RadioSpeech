@@ -1,8 +1,7 @@
 import {Component, DoCheck, OnInit} from "@angular/core";
 import { faLaptopMedical } from "@fortawesome/free-solid-svg-icons";
 
-import { DisplayService } from "../../general-services/display.service";
-import {DictManagerService} from "../../gastro-files/dict-manager.service";
+import { DisplayService } from "../../services/display.service";
 
 @Component({
   selector: "app-header",
@@ -12,9 +11,8 @@ import {DictManagerService} from "../../gastro-files/dict-manager.service";
 export class HeaderComponent implements OnInit, DoCheck {
 
   public displayNavbar: boolean;
-  public mode: string;
   public ui: string;
-  public title: string;
+  public title = "RadioSpeech";
 
   faUser: any;
   constructor(private displayService: DisplayService) {}
@@ -22,8 +20,6 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.displayNavbar = true;
     this.faUser = faLaptopMedical;
-    this.setMode();
-    this.setTitle();
     this.setUi();
   }
 
@@ -33,34 +29,14 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.displayNavbar = this.displayService.displayHeader;
   }
 
-  private setMode(): void {
-    this.displayService.getMode().subscribe((value) => {
-      this.mode = value;
-    });
-  }
-
-  private setTitle(): void {
-    this.displayService.getTitle().subscribe((value) => {
-      this.title = value;
-    });
-  }
-
   private setUi(): void {
     this.displayService.getUi().subscribe((value) => {
       this.ui = value;
     });
   }
 
-  cycleMode(): void {
-    this.displayService.cycleMode();
-  }
-
   cycleUi(): void {
     this.displayService.cycleUI();
-  }
-
-  setNewMode(new_mode: string): void {
-    this.displayService.setMode(new_mode);
   }
 
   setNewUi(new_ui: string): void {

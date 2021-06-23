@@ -5,11 +5,11 @@ import { Location } from "@angular/common";
 import { ViewChild } from "@angular/core";
 
 import { environment } from "../../../environments/environment";
-import * as M from "../../../helper-classes/radio_model";
-import {DataParserService} from "../dataParser.service";
+import * as M from "../../../helper-classes/model";
+import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import { DictManagerService } from "../../gastro-files/dict-manager.service";
-import { InputParserRadioService } from "../input-parser-radio.service";
+import { DictManager } from "../../services/dict-manager.service";
+import { InputParserRadioService } from "../../services/input-parser-radio.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -41,7 +41,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserRadioService,
-              private dictManager: DictManagerService) {
+              private dictManager: DictManager) {
   }
 
   ngOnInit() {
@@ -53,6 +53,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
   }
 
   // for migration to nodejs server
+  /*
   getDataNode() {
     this.route.paramMap.subscribe(ps => {
       if (ps.has("name")) {
@@ -69,7 +70,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
+  }*/
 
   getData() {
     this.route.paramMap.subscribe(ps => {

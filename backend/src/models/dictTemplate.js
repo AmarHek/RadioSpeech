@@ -1,4 +1,4 @@
-module.exports.CheckBoxRadio = function CheckBoxRadio(name, value, text, judgementText = undefined, conditionalID = undefined, normal, variables, enumeration = undefined, data){
+module.exports.CheckBox = function CheckBoxRadio(name, value, text, judgementText = undefined, conditionalID = undefined, normal, variables, enumeration = undefined, data){
     this.kind = "box";
     this.name = name;
     this.value = value;
@@ -11,7 +11,7 @@ module.exports.CheckBoxRadio = function CheckBoxRadio(name, value, text, judgeme
     this.data = data;
 }
 
-module.exports.GroupRadio = function GroupRadio(name, options, value = undefined, data){
+module.exports.Group = function GroupRadio(name, options, value = undefined, data){
     this.kind = "group";
     this.name = name;
     this.options = options;
@@ -19,7 +19,7 @@ module.exports.GroupRadio = function GroupRadio(name, options, value = undefined
     this.data = data;
 }
 
-module.exports.OptionRadio = function OptionRadio(name, text, judgementText = undefined, conditionalID = undefined, normal, variables, data){
+module.exports.Option = function OptionRadio(name, text, judgementText = undefined, conditionalID = undefined, normal, variables, data){
     this.kind = "option";
     this.name = name;
     this.text = text;
@@ -30,7 +30,7 @@ module.exports.OptionRadio = function OptionRadio(name, text, judgementText = un
     this.data = data;
 }
 
-module.exports.CategoryRadio = function CategoryRadio(name, optional = undefined, selectables, data){
+module.exports.Category = function CategoryRadio(name, optional = undefined, selectables, data){
     this.kind = "category";
     this.name = name;
     this.optional = optional;
@@ -38,14 +38,14 @@ module.exports.CategoryRadio = function CategoryRadio(name, optional = undefined
     this.data = data;
 }
 
-module.exports.BlockRadio = function BlockRadio(text = undefined, judgementText = undefined, data){
+module.exports.Block = function BlockRadio(text = undefined, judgementText = undefined, data){
     this.kind = "block";
     this.text = text;
     this.judgementText = judgementText;
     this.data = data;
 }
 
-module.exports.EnumerationRadio = function EnumerationRadio(text, judgementText = undefined, id, data){
+module.exports.Enumeration = function EnumerationRadio(text, judgementText = undefined, id, data){
     this.kind = "enumeration";
     this.text = text;
     this.judgementText = judgementText;
@@ -53,7 +53,7 @@ module.exports.EnumerationRadio = function EnumerationRadio(text, judgementText 
     this.data = data;
 }
 
-module.exports.ConditionalRadio = function ConditionalRadio(precondition, normalText = undefined, judgementText = undefined, data){
+module.exports.Conditional = function ConditionalRadio(precondition, normalText = undefined, judgementText = undefined, data){
     this.kind = "conditional";
     this.precondition = precondition;
     this.normalText = normalText;
@@ -61,12 +61,12 @@ module.exports.ConditionalRadio = function ConditionalRadio(precondition, normal
     this.data = data;
 }
 
-module.exports.LiteralRadio = function LiteralRadio(id, negated){
+module.exports.Literal = function LiteralRadio(id, negated){
     this.id = id;
     this.negated = negated;
 }
 
-module.exports.VariableOCRadio = function VariableOCRadio(id, textBefore, textAfter, data, value = undefined, values) {
+module.exports.VariableOC = function VariableOCRadio(id, textBefore, textAfter, data, value = undefined, values) {
     this.kind = "oc";
     this.id = id;
     this.textBefore = textBefore;
@@ -76,7 +76,7 @@ module.exports.VariableOCRadio = function VariableOCRadio(id, textBefore, textAf
     this.values = values;
 }
 
-module.exports.VariableMCRadio = function VariableMCRadio(id, textBefore, textAfter, data, values) {
+module.exports.VariableMC = function VariableMCRadio(id, textBefore, textAfter, data, values) {
     this.kind = "mc";
     this.id = id;
     this.textBefore = textBefore;
@@ -85,7 +85,7 @@ module.exports.VariableMCRadio = function VariableMCRadio(id, textBefore, textAf
     this.values = values;
 }
 
-module.exports.VariableTextRadio = function VariableTextRadio(id, textBefore, textAfter, data, value) {
+module.exports.VariableText = function VariableTextRadio(id, textBefore, textAfter, data, value) {
     this.kind = "text";
     this.id = id;
     this.textBefore = textBefore;
@@ -94,7 +94,7 @@ module.exports.VariableTextRadio = function VariableTextRadio(id, textBefore, te
     this.value = value;
 }
 
-module.exports.VariableNumberRadio = function VariableNumberRadio(id, textBefore, textAfter, data, value) {
+module.exports.VariableNumber = function VariableNumberRadio(id, textBefore, textAfter, data, value) {
     this.kind = "number";
     this.id = id;
     this.textBefore = textBefore;
@@ -103,7 +103,7 @@ module.exports.VariableNumberRadio = function VariableNumberRadio(id, textBefore
     this.value = value;
 }
 
-module.exports.VariableDateRadio = function VariableDateRadio(id, textBefore, textAfter, data, value) {
+module.exports.VariableDate = function VariableDateRadio(id, textBefore, textAfter, data, value) {
     this.kind = "date";
     this.id = id;
     this.textBefore = textBefore;
@@ -112,7 +112,7 @@ module.exports.VariableDateRadio = function VariableDateRadio(id, textBefore, te
     this.value = value;
 }
 
-module.exports.VariableRatioRadio = function VariableRatioRadio(id, textBefore, textAfter, data, numerator, denominator, fractionDigits) {
+module.exports.VariableRatio = function VariableRatioRadio(id, textBefore, textAfter, data, numerator, denominator, fractionDigits) {
     this.kind = "ratio";
     this.id = id;
     this.textBefore = textBefore;
@@ -123,7 +123,7 @@ module.exports.VariableRatioRadio = function VariableRatioRadio(id, textBefore, 
     this.fractionDigits = fractionDigits;
 }
 
-module.exports.myDictRadio = function (id, dict, name){
+module.exports.myDict = function (id, dict, name){
     this.id = id;
     this.dict = dict;
     this.name = name;

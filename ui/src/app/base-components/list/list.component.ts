@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-import { TimeStampsService } from "../../general-services/time-stamps.service";
-import { DataParserService } from "../../radio-files/dataParser.service";
-import { DisplayService } from "../../general-services/display.service";
+import { TimeStampsService } from "../../services/time-stamps.service";
+import { DataParserService } from "../../services/dataParser.service";
+import { DisplayService } from "../../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
-import * as N from "../../../helper-classes/gastro_model";
 import { Subscription } from "rxjs";
-import { DictManagerService } from "../../gastro-files/dict-manager.service";
+// import { DictManagerService } from "../../gastro-files/dict-manager.service";
 
 
 @Component({
@@ -16,12 +15,11 @@ import { DictManagerService } from "../../gastro-files/dict-manager.service";
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"]
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit {
 
   generators: string[] = [];
-  dicts: N.MyDict[] = [];
   dictSub: Subscription;
-  mode: string;
+  mode = "Radiologie";
   ui: string;
   isLoading: boolean;
 
@@ -29,24 +27,13 @@ export class ListComponent implements OnInit, OnDestroy {
     private dataParser: DataParserService,
     private timesService: TimeStampsService,
     private displayService: DisplayService,
-    private dialog: MatDialog,
-    private dictManagerService: DictManagerService) { }
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
     this.isLoading = false;
-    this.setMode();
     this.setUi();
-    console.log(this.mode);
     this.updateGenerators();
-      // } else {
-    this.updateList();
-      // }
-  }
-
-  private setMode(): void {
-    this.displayService.getMode().subscribe((value) => {
-      this.mode = value;
-    });
   }
 
   private setUi(): void {
@@ -72,11 +59,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        if (this.mode === "Radiologie") {
-          this.remove(genOrId);
-        } else if (this.mode === "Gastroenterologie") {
-          this.removeDict(genOrId);
-        }
+        this.remove(genOrId);
       }
     });
   }
@@ -97,6 +80,7 @@ export class ListComponent implements OnInit, OnDestroy {
     );
   }
 
+  /*
   updateList(): void {
 
     this.dictManagerService.getList();
@@ -116,16 +100,5 @@ export class ListComponent implements OnInit, OnDestroy {
 
   removeDict(id: string): void {
     this.dictManagerService.remove(id);
-  }
-
-  // getTopLevel(generator) {
-  //   this.http.post(environment.urlRoot + "get", JSON.stringify(generator)).subscribe(
-  //     worked => {
-  //       this.dataParser.rawParts = worked as any;
-  //       },
-  //     error => window.alert("An unknown error occurred: " + JSON.stringify(error))
-  //   );
-  // }
-
-
+  } */
 }

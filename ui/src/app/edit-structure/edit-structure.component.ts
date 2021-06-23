@@ -5,9 +5,9 @@ import * as N from "../../helper-classes/gastro_model";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";
-import { DictManagerService } from "../gastro-files/dict-manager.service";
+import { DictManager } from "../services/dict-manager.service";
 import { Subscription } from "rxjs";
-import {DisplayService} from "../general-services/display.service";
+import {DisplayService} from "../services/display.service";
 
 @Component({
   selector: "app-edit-structure",
@@ -46,9 +46,8 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private dictManager: DictManagerService,
-    private router: Router,
-    private displayService: DisplayService
+    private dictManager: DictManager,
+    private router: Router
   ) { }
   @ViewChildren("myParts") myParts;
 
@@ -174,9 +173,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   }
 
   setMode(): void {
-    this.displayService.getMode().subscribe((value) => {
-      this.mode = value;
-    });
+    this.mode = "radio";
   }
 
   // not used, check if something breaks when removing

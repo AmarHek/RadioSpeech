@@ -44,6 +44,12 @@ export interface Option {
   keys:           string[];
 }
 
+export interface Template {
+  id: string;
+  name: string;
+  parts: TopLevel[];
+}
+
 export type TopLevel = Category | Block | Enumeration | Conditional;
 
 // Main data management and display class

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import * as M from "../../helper-classes/radio_model";
-import {KeyVariable, KeySelectable, KeywordSelectable} from "../../helper-classes/keyword";
+import * as M from "../../helper-classes/model";
+import {KeyVariable, KeySelectable} from "../../helper-classes/keyword";
 import { levenshtein } from "../../helper-classes/util";
 import { getAllIndexOf } from "../../helper-classes/util";
 
