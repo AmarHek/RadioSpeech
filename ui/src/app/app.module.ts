@@ -13,8 +13,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from "./app.component";
-import { AdvancedComponent } from "./gastro-files/advanced/advanced.component";
-import { HierarchischComponent } from "./gastro-files/hierarchisch/hierarchisch.component";
 import { UploadComponent } from "./base-components/upload/upload.component";
 import { ListComponent } from "./base-components/list/list.component";
 import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
@@ -30,18 +28,12 @@ import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 import { VariableComponent } from "./edit-structure/variable/variable.component";
 import { AttributeComponent } from "./edit-structure/attribute/attribute.component";
 import {DisplayService} from "./general-services/display.service";
-import {ParserBasisService} from "./gastro-files/parser-basis.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
-import { DialogComponent } from "./gastro-files/output/dialog/dialog.component";
-import {InputParserService} from "./gastro-files/input-parser.service";
-import { DisplayComponent } from "./gastro-files/output/display/display.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdvancedComponent,
-    HierarchischComponent,
     UploadComponent,
     ListComponent,
     SortCategoriesPipe,
@@ -56,8 +48,6 @@ import { DisplayComponent } from "./gastro-files/output/display/display.componen
     DiseaseComponent,
     VariableComponent,
     AttributeComponent,
-    DialogComponent,
-    DisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -74,20 +64,17 @@ import { DisplayComponent } from "./gastro-files/output/display/display.componen
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "Radiologie/:name", component: UiBaseComponent},
-        {path: "Gastroenterologie/Fortgeschritten/:name", component: AdvancedComponent},
-        {path: "Gastroenterologie/Hierarchisch/:name", component: HierarchischComponent},
+        {path: "view/:name", component: UiBaseComponent},
         {path: "upload", component: UploadComponent},
         {path: "list", component: ListComponent},
         {path: "edit/:name", component: EditStructureComponent},
-        {path: "Gastroenterologie/output", component: DisplayComponent},
         {path: "**", redirectTo: "/upload"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}
     ),
     FontAwesomeModule
   ],
-  providers: [DisplayService, ParserBasisService, InputParserService,
+  providers: [DisplayService,
     {provide: DateAdapter, useClass: AppDateAdapter},
     {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}],
   bootstrap: [AppComponent]

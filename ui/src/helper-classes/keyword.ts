@@ -1,4 +1,4 @@
-export interface KeySelectable {
+xport interface KeySelectable {
   name: string;
   synonym: string;
   category: string;
