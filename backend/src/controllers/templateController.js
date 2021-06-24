@@ -71,7 +71,7 @@ exports.createExcelDict =  (req, res, next) => {
 
   exports.createTemplate = (req, res, next) => {
     const template  = new Template({
-      dict: req.body.dict,
+      parts: req.body.parts,
       name: req.body.name
     });
     template.save().then(result => {
@@ -85,7 +85,7 @@ exports.createExcelDict =  (req, res, next) => {
   exports.changeTemplate = (req, res, next) => {
     const newTemplate = new Template({
       _id: req.params.id,
-      dict: req.body.dict,
+      parts: req.body.parts,
       name: req.body.name
     });
     Template.updateOne({

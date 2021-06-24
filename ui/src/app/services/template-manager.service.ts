@@ -1,116 +1,111 @@
 import { Injectable } from "@angular/core";
-import * as N from "../../helper-classes/gastro_model";
+import * as M from "../../helper-classes/model";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { map } from "rxjs/operators";
 import { Subject } from "rxjs";
 
-const url = environment.urlRootMongo;
 
 @Injectable({
   providedIn: "root",
 })
 
 // -----------------------------------
-// This class administrates the list of dicts and executes all api calls
+// This class administrates the list of templates and executes all api calls
 // -----------------------------------
 
 export class TemplateManager {
-  myList: Array<N.MyDict> = [];
-  private listUpdated = new Subject<N.MyDict[]>();
-
-  myUrl = url;
-  mode = "Radiologie";
+  templates: Array<M.Template> = [];
+  private listUpdated = new Subject<M.Template[]>();
+  activeUrl = environment.urlRootMongo;
 
   constructor(private http: HttpClient) {
     this.getList();
   }
 
-  setUrl(mode: string) {
-    if (mode === "Radiologie") {
-      this.myUrl += "radio/";
-    }
-  }
-
   getList() {
     this.http
-      .get<{ message: string; myDicts: any }>(
-        this.myUrl
+      .get<{ message: string; templates: any }>(
+        this.activeUrl
       )
       .pipe(
         map((getter) => {
-          return getter.myDicts.map((retDict) => {
+          return getter.templates.map((retDict) => {
             return {
               id: retDict._id,
-              dict: retDict.dict,
               name: retDict.name,
+              parts: retDict.parts
             };
           });
         })
       )
       .subscribe((transData) => {
-        this.myList = transData;
-        this.listUpdated.next([...this.myList]);
+        this.templates = transData;
+        this.listUpdated.next([...this.templates]);
+        console.log(this.listUpdated);
+        console.log(this.templates);
       });
   }
 
+  getTemplate(name: string) {
+    // this.http.post(this.activeUrl)
+  }
+
   getListUpdateListener() {
-    return this.listUpdated.asObservable();
+    return this.listUpdated;
   }
 
   remove(id: string): void {
     this.http
-      .delete(this.myUrl + id)
+      .delete(this.activeUrl + id)
       .subscribe(() => {
-        this.myList = this.myList.filter((dict) => dict.id !== id);
-        this.listUpdated.next([...this.myList]);
+        this.templates = this.templates.filter((template) => template.id !== id);
+        this.listUpdated.next([...this.templates]);
         // this.myList = update;
       });
     // this.timesService.removeTimeStamp(index);
   }
 
-  addDict(myDict: N.MyDict) {
+  addTemplate(template: M.Template) {
     this.http
-      .post<{ message: string; dictId: string }>(
-        this.myUrl,
-        myDict
+      .post<{ message: string; templateId: string }>(
+        this.activeUrl,
+        template
       )
       .subscribe((response) => {
-        myDict.id = response.dictId;
-        this.myList.push(myDict);
+        template.id = response.templateId;
+        this.templates.push(template);
       });
   }
 
+  /*
   addExcel(postData: FormData) {
     this.http
-      .post<{ message: string; dictId: string }>(
-        this.myUrl + "excel",
+      .post<{ message: string; templateId: string }>(
+        this.activeUrl + "excel",
         postData
       )
       .subscribe((res) => {
         let str = "";
-        if (res.dictId === "false") {
+        if (res.templateId === "false") {
           str =
             "Fehler beim Hochladen der Excel Datei. Die Tabelle wurde nicht korrekt befüllt. \n Folgender Fehler ist aufgetreten: \n\n";
         }
         window.alert(str + res.message);
       });
-  }
+  }*/
 
-  updateDict(myDict: N.MyDict) {
+  updateDict(template: M.Template) {
     this.http
-      .put(this.myUrl + myDict.id, {
-        dict: myDict.dict,
-        name: myDict.name,
+      .put(this.activeUrl + template.id, {
+        parts: template.parts,
+        name: template.name,
       })
       .subscribe((response) => {
-        this.myList[this.myList.findIndex((d) => d.id === myDict.id)] = myDict;
-        this.listUpdated.next([...this.myList]);
+        this.templates[this.templates.findIndex((t) => t.id === template.id)] = template;
+        this.listUpdated.next([...this.templates]);
       });
   }
 }
-
-// This is for Radiology
-
 
 

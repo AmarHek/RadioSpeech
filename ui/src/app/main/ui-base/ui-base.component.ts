@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 
@@ -43,7 +43,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserRadioService,
-              private dictManager: TemplateManager,
+              private templateManager: TemplateManager,
               private sanitizer: DomSanitizer) {
   }
 
@@ -52,29 +52,34 @@ export class UiBaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.textSub.unsubscribe();
+    this.textSub.unsubscribe();
   }
 
-  // for migration to nodejs server
-  /*
-  getDataNode() {
+  // TODO: Fix double loading of template when reloading the page
+
+  getData() {
     this.route.paramMap.subscribe(ps => {
-      if (ps.has("name")) {
-        this.routeName = ps.get("name");
-        this.dictManager.getList();
-        this.textSub = this.dictManager.getListUpdateListener()
+      if (ps.has("id")) {
+        this.routeName = ps.get("id");
+        this.templateManager.getList();
+        this.textSub = this.templateManager.getListUpdateListener()
         .subscribe((list: any) => {
-          this.parts = list.find((d) => d.name === this.routeName);
-          if (this.parts === undefined) {
-            window.alert("Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-          } else {
+          console.log("sub");
+          const template = list.find((d) => d.name === this.routeName);
+          if (template === undefined) {
+            window.alert("Dieses Dictionary existiert nicht! " +
+              "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
+          } else if(!this.parts) {
+            this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
+            this.categories = this.dataParser.extractCategories(this.parts, false);
           }
         });
       }
     });
-  }*/
+  }
 
+  /*
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
@@ -91,7 +96,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
         );
       }
     });
-  }
+  }*/
 
   generateDownloadJson(jsonData) {
     const json = JSON.stringify(jsonData);
@@ -116,7 +121,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
       this.input = this.inputParser.autocorrect(this.input);
     }
     this.inputParser.findKeywords(this.input);
-    let [split_input, split_reduced_input] = this.inputParser.split_input_from_keywords(this.input);
+    const [split_input, split_reduced_input] = this.inputParser.split_input_from_keywords(this.input);
     console.log(split_input);
     console.log(split_reduced_input);
   }

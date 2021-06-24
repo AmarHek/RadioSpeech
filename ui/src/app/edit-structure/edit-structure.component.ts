@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewChildren } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import * as N from "../../helper-classes/gastro_model";
+import * as M from "../../helper-classes/model";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";
 import { TemplateManager } from "../services/template-manager.service";
 import { Subscription } from "rxjs";
-import {DisplayService} from "../services/display.service";
 
 @Component({
   selector: "app-edit-structure",
@@ -59,7 +58,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   kindVar: Array<string> = [];
   @ViewChild("f") signupForm: NgForm;
   // parts: M.TopLevel[] = [];
-  myEdit: N.MyDict = { name: "", dict: [], id: "" };
+  myEdit: M.Template = { name: "", parts: [], id: "" };
   new_parts: N.TopLevel[] = [];
   disTyp = "";
 
@@ -142,7 +141,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
         this.dictManager.getList();
         this.editSub = this.dictManager
           .getListUpdateListener()
-          .subscribe((list: N.MyDict[]) => {
+          .subscribe((list: M.Template[]) => {
             this.isLoading = false;
             this.myEdit = list.find((d) => d.name === this.routeName);
             if (this.myEdit === undefined) {
@@ -984,6 +983,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
     console.log("triggered");
   }
   Myprinter2() {
-    this.dictManager.addDict(this.myEdit);
+    this.dictManager.addTemplate(this.myEdit);
   }
 }

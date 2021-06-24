@@ -4,7 +4,7 @@ import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 import { TimeStampsService } from "../../services/time-stamps.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-// import { DictManagerService } from "../../gastro-files/dict-manager.service";
+import {TemplateManager} from "../../services/template-manager.service";
 
 @Component({
   selector: "app-upload",
@@ -17,10 +17,13 @@ export class UploadComponent implements OnInit {
     "Juli", "August", "September", "Oktober", "November", "Dezember"];
   mode: string;
 
+  currentFile: File;
+
   form: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
-              private timesService: TimeStampsService) { }
+              private timesService: TimeStampsService,
+              private templateManager: TemplateManager) { }
 
   ngOnInit() {
     this.initForm();
@@ -35,8 +38,12 @@ export class UploadComponent implements OnInit {
     });
   }
 
-  /*
-  uploadNew() {
+  setFile(newFile: File) {
+    this.currentFile = newFile;
+  }
+
+
+  upload() {
     const file = (document.getElementById("uploadFile") as HTMLInputElement).files[0];
     this.form.patchValue({image: file});
     this.form.get("image").updateValueAndValidity();
@@ -46,9 +53,10 @@ export class UploadComponent implements OnInit {
     console.log(this.form.value.name);
     console.log(this.form.value.image);
     console.log(postData);
-    this.dictManager.addExcel(postData);
-  }*/
+    // this.templateManager.addExcel(postData);
+  }
 
+  /*
   upload(): void {
     this.timesService.addTimeStamp(new Date());
     const reader = new FileReader();
@@ -73,5 +81,5 @@ export class UploadComponent implements OnInit {
       window.alert("The following error occurred:\n" + error);
     };
   }
-
+*/
 }

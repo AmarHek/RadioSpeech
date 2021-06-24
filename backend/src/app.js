@@ -7,6 +7,7 @@ const routes = require('./routes/templateRoutes');
 
 const app = express();
 
+// TODO: Auf env auslagern
 const url = "mongodb://127.0.0.1:27017/radio"
 
 mongoose.set('useUnifiedTopology', true);

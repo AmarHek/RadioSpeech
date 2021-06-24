@@ -1,33 +1,32 @@
-<!--<ng-container *ngIf="this.mode == 'Gastroenterologie'">
-  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
-    <div class="spinner-grow mySpinner" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
+  <div class="spinner-grow mySpinner" role="status">
+    <span class="sr-only">Loading...</span>
   </div>
-  <ng-container *ngIf="!isLoading">
-    <table>
-      <tr *ngFor="let dict of dicts; let i = index" class="list-row">
-        <td>
-          <ul>
-            <li><a [routerLink]="['/', this.mode, this.ui, dict.name]">{{dict.name}}</a></li>
-          </ul>
-        </td>
-        <td>
-          <button class="btn btn-danger ml-3" (click)="removeAlert(dict.id)">Entfernen</button>
-        </td>
-        <td>
-          <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', dict.name]">Edit</button>
-        </td>
-      </tr>
-    </table>
-  </ng-container>
-
-  <div *ngIf="dicts.length === 0 && !isLoading">
-    Es wurde noch nichts hochgeladen
-  </div>
+</div>
+<ng-container *ngIf="!isLoading">
+  <table>
+    <tr *ngFor="let template of templates; let i = index" class="list-row">
+      <td>
+        <ul>
+          <li><a [routerLink]="['/', 'main', template.id]">{{template.name}}</a></li>
+        </ul>
+      </td>
+      <td>
+        <button class="btn btn-danger ml-3" (click)="removeAlert(template.id)">Entfernen</button>
+      </td>
+      <!--
+      <td>
+        <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', template.name]">Edit</button>
+      </td>-->
+    </tr>
+  </table>
 </ng-container>
--->
 
+<div *ngIf="templates.length === 0 && !isLoading">
+  Es wurde noch nichts hochgeladen
+</div>
+
+<!--
 <table>
     <tr *ngFor="let generator of generators" class="list-row">
       <td>
@@ -44,3 +43,5 @@
 <div *ngIf="generators.length === 0">
   Es wurde noch nichts hochgeladen
 </div>
+
+-->

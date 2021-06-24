@@ -7,7 +7,8 @@ import { DisplayService } from "../../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
 import { Subscription } from "rxjs";
-// import { DictManagerService } from "../../gastro-files/dict-manager.service";
+import {TemplateManager} from "../../services/template-manager.service";
+import {Template} from "../../../helper-classes/model";
 
 
 @Component({
@@ -15,25 +16,27 @@ import { Subscription } from "rxjs";
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"]
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   generators: string[] = [];
-  dictSub: Subscription;
+  templates: Template[] = [];
+  templateSub: Subscription;
   mode = "Radiologie";
   ui: string;
   isLoading: boolean;
 
   constructor(private http: HttpClient,
-    private dataParser: DataParserService,
-    private timesService: TimeStampsService,
-    private displayService: DisplayService,
-    private dialog: MatDialog
+              private dataParser: DataParserService,
+              private timesService: TimeStampsService,
+              private displayService: DisplayService,
+              private dialog: MatDialog,
+              private templateManager: TemplateManager
   ) { }
 
   ngOnInit() {
     this.isLoading = false;
     this.setUi();
-    this.updateGenerators();
+    this.update();
   }
 
   private setUi(): void {
@@ -42,11 +45,11 @@ export class ListComponent implements OnInit {
     });
   }
 
-  removeAlert(genOrId: string) {
+  removeAlert(id: string) {
     const dialogData = new ConfirmDialogModel(
       "warning",
       "Entfernen bestätigen",
-      "Möchten Sie die Schablone '" + genOrId + "' wirklich entfernen?");
+      "Möchten Sie die Schablone '" + id + "' wirklich entfernen?");
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -59,11 +62,11 @@ export class ListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.remove(genOrId);
+        this.remove(id);
       }
     });
   }
-
+/*
   remove(generator: string): void {
     this.http.post(environment.urlRootScala + "remove", JSON.stringify(generator)).subscribe(
       result => { this.updateGenerators(); },
@@ -78,27 +81,23 @@ export class ListComponent implements OnInit {
       },
       error => window.alert("unknown error: " + JSON.stringify(error))
     );
-  }
+  }*/
 
-  /*
-  updateList(): void {
-
-    this.dictManagerService.getList();
-    this.dictSub = this.dictManagerService.getListUpdateListener().subscribe((list: N.MyDict[]) => {
-      this.dicts = list;
+  update(): void {
+    this.templateManager.getList();
+    this.templateSub = this.templateManager.getListUpdateListener().subscribe((list: Template[]) => {
+      this.templates = list;
       this.isLoading = false;
-      console.log("onInit");
-      console.log(this.dicts);
     });
   }
 
   ngOnDestroy(): void {
     if (this.mode === "Gastroenterologie") {
-      this.dictSub.unsubscribe();
+      this.templateSub.unsubscribe();
     }
   }
 
-  removeDict(id: string): void {
-    this.dictManagerService.remove(id);
-  } */
+  remove(id: string): void {
+    this.templateManager.remove(id);
+  }
 }

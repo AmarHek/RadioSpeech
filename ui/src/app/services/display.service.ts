@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {Observable, BehaviorSubject} from "rxjs";
 
 const LAST_UI_STORED = "last_ui_stored";
-const NAVBAR_HEADER_TOGGLE = "template";
+const NAVBAR_HEADER_TOGGLE = "main";
 
 @Injectable({
   providedIn: "root"

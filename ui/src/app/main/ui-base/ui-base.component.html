@@ -19,7 +19,8 @@
               class="btn btn-outline-secondary">Neu Laden</button>
       <button id="back" title="Go back to last page" (click)="pageBack()"
               class="btn btn-outline-secondary">Zurück</button>
-      <a class="btn btn-clear btn-sm" title="Download JSON" [href]="downJson" download="data.json">JSDown</a>
+      <a class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
+        [href]="downJson" download="befund.json">Download JSON</a>
     </div>
 
     <!--
