@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  urlRootRadio: 'http://localhost:1337/',
-  urlRootEndo: 'http://localhost:3000/endo/upload/'
+  urlRootScala: "http://localhost:1337/",
+  urlRootMongo: "http://localhost:3000/radio/database/"
 };
 
 /*

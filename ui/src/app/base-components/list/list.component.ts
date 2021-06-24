@@ -65,14 +65,14 @@ export class ListComponent implements OnInit {
   }
 
   remove(generator: string): void {
-    this.http.post(environment.urlRootRadio + "remove", JSON.stringify(generator)).subscribe(
+    this.http.post(environment.urlRootScala + "remove", JSON.stringify(generator)).subscribe(
       result => { this.updateGenerators(); },
       error => window.alert("unknown error: " + JSON.stringify(error))
     );
   }
 
   updateGenerators(): void {
-    this.http.post(environment.urlRootRadio + "list", "").subscribe(
+    this.http.post(environment.urlRootScala + "list", "").subscribe(
       result => {
         this.generators = result as any;
       },

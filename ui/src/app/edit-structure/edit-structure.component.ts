@@ -5,7 +5,7 @@ import * as N from "../../helper-classes/gastro_model";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";
-import { DictManager } from "../services/dict-manager.service";
+import { TemplateManager } from "../services/template-manager.service";
 import { Subscription } from "rxjs";
 import {DisplayService} from "../services/display.service";
 
@@ -46,7 +46,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private dictManager: DictManager,
+    private dictManager: TemplateManager,
     private router: Router
   ) { }
   @ViewChildren("myParts") myParts;

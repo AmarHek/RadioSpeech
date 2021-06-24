@@ -57,7 +57,7 @@ export class UploadComponent implements OnInit {
       const dat = new Date();
       const base64 = (reader.result as string).replace(/^.*?base64,/, "");
       const data = { name: this.name + " " + dat.getDate() + " " + this.months[dat.getMonth()] + " " + dat.getFullYear() , data: base64 };
-      this.http.post(environment.urlRootRadio + "upload", data, { "observe": "response" } ).subscribe((result) => {
+      this.http.post(environment.urlRootScala + "upload", data, { "observe": "response" } ).subscribe((result) => {
         window.alert("Upload Erfolgreich");
         this.router.navigate(["list"]);
 

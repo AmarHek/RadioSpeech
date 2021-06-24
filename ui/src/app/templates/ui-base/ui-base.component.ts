@@ -1,21 +1,21 @@
-import {Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { Location } from "@angular/common";
-import { ViewChild } from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {Location} from "@angular/common";
 
-import { environment } from "../../../environments/environment";
+import {environment} from "../../../environments/environment";
 import * as M from "../../../helper-classes/model";
 import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import { DictManager } from "../../services/dict-manager.service";
-import { InputParserRadioService } from "../../services/input-parser-radio.service";
-import { Subscription } from "rxjs";
+import {TemplateManager} from "../../services/template-manager.service";
+import {InputParserRadioService} from "../../services/input-parser-radio.service";
+import {Subscription} from "rxjs";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: "app-workspace",
-  templateUrl: "./radio-ui.html",
-  styleUrls: ["./radio-ui.scss"],
+  templateUrl: "./ui-base.component.html",
+  styleUrls: ["./ui-base.component.scss"],
 })
 
 export class UiBaseComponent implements OnInit, OnDestroy {
@@ -29,6 +29,8 @@ export class UiBaseComponent implements OnInit, OnDestroy {
   report = "";
   judgement = "";
 
+  downJson: SafeUrl;
+
   // for node server
   private textSub: Subscription;
   routeName: string;
@@ -41,7 +43,8 @@ export class UiBaseComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserRadioService,
-              private dictManager: DictManager) {
+              private dictManager: TemplateManager,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -75,17 +78,24 @@ export class UiBaseComponent implements OnInit, OnDestroy {
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.get("name")) {
-        this.http.post(environment.urlRootRadio + "get", JSON.stringify(ps.get("name"))).subscribe(
+        this.http.post(environment.urlRootScala + "get", JSON.stringify(ps.get("name"))).subscribe(
           worked => {
             this.parts = this.dataParser.convertModel(worked as any, true);
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts, false);
             this.inputParser.init(this.parts);
+            console.log(this.parts);
+            this.generateDownloadJson(this.parts);
           },
           error => window.alert("An unknown error occurred: " + JSON.stringify(error))
         );
       }
     });
+  }
+
+  generateDownloadJson(jsonData) {
+    const json = JSON.stringify(jsonData);
+    this.downJson = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(json));
   }
 
   updateText(): void {
