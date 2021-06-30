@@ -1,0 +1,14 @@
+.buttons {
+  float: left;
+  margin-block-start: 8px;
+}
+
+h5 {
+  margin-block-end: 5px;
+}
+
+.content {
+  margin-block-start: 8px;
+  margin-block-end: 2px;
+  margin-bottom: 0;
+}

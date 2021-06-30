@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light"  *ngIf="displayNavbar">
+  <a class="navbar-brand" href="#">{{title}}  <fa-icon class="ml-1" [icon]="faUser"></fa-icon></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/upload' >Upload Datei<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/list'>Uploadliste</a>
+      </li>
+      <li class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/uploadMat'>Material hochladen</a>
+      </li>
+      <li class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/displayMat'>Lernsuche</a>
+      </li>
+      <!--
+      <li class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/edit'>Edit Structure</a>
+      </li>-->
+      <!--
+      <li class="nav-item">
+        <label for="layout" class="col-form-label">Layout: </label>
+        <button id="layout" (click)="cycleUi()" class="btn btn-outline-secondary">{{ui}}</button>
+      </li>-->
+    </ul>
+  </div>
+</nav>

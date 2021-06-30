@@ -1,0 +1,38 @@
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+  <div class="settings">
+    <div>
+      <label class="mr-3" for="imageFile">Bild-Datei: </label>
+      <input class="mr-3" type="file" id="imageFile" [formControl]="$any(uploadForm).controls['imageFile']"/>
+    </div>
+    <div>
+      <label class="mr-3" for="reportFile">Berichts-Datei (.txt): </label>
+      <input class="mr-3" type="file" id="reportFile" [formControl]="$any(uploadForm).controls['reportFile']"/>
+    </div>
+    <div>
+      <label class="mr-3" for="partsFile">Ausgefüllte JSON: </label>
+      <input class="mr-3" type="file" id="partsFile" [formControl]="$any(uploadForm).controls['partsFile']"/>
+    </div>
+    <div>
+      <label class="mr-3" for="defaultFile">Template JSON: </label>
+      <input class="mr-3" type="file" id="defaultFile" [formControl]="$any(uploadForm).controls['defaultFile']"/>
+    </div>
+    <div>
+      <label class="mr-3" for="modality">Modalität: </label>
+      <input class="mr-3" type="text" id="modality" [formControl]="$any(uploadForm).controls['modality']">
+    </div>
+
+    <div>
+      <!--<ng-container *ngFor="let control of uploadForm.controls['pathologies'].controls; index as i">-->
+      <ng-container *ngFor="let pathology of pathologies; index as i">
+        <label for="checkbox-{{i}}">{{pathology}}</label>
+        <input  type="checkbox" id="checkbox-{{i}}">
+      </ng-container>
+    </div>
+
+
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+
+  </div>
+</form>
