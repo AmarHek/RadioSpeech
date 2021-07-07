@@ -95,7 +95,7 @@ export class TemplateManager {
       });
   }*/
 
-  updateDict(template: M.Template) {
+  updateTemplate(template: M.Template) {
     this.http
       .put(this.activeUrl + template.id, {
         parts: template.parts,

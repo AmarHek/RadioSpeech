@@ -7,7 +7,7 @@ import { getAllIndexOf } from "../../helper-classes/util";
 @Injectable({
   providedIn: "root"
 })
-export class InputParserRadioService {
+export class InputParserService {
 
   selectableKeywords: KeySelectable[] = [];
   variableKeywords: KeyVariable[] = [];

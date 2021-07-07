@@ -964,7 +964,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
 
   // update dict after making changes and saving them
   updateDict() {
-    this.dictManager.updateDict(this.myEdit);
+    this.dictManager.updateTemplate(this.myEdit);
     this.router.navigate(["/list"]);
   }
 

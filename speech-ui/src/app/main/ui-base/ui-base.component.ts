@@ -8,7 +8,7 @@ import * as M from "../../../helper-classes/model";
 import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
 import {TemplateManager} from "../../services/template-manager.service";
-import {InputParserRadioService} from "../../services/input-parser-radio.service";
+import {InputParserService} from "../../services/input-parser.service";
 import {Subscription} from "rxjs";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
@@ -42,7 +42,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private dataParser: DataParserService,
               private _location: Location,
-              private inputParser: InputParserRadioService,
+              private inputParser: InputParserService,
               private templateManager: TemplateManager,
               private sanitizer: DomSanitizer) {
   }
