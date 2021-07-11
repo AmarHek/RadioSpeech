@@ -6,9 +6,9 @@ const materialSchema = new mongoose.Schema({
         contentType: String
     },
     modality: { type: String, required: true },
-    report: { type: String, required: true },
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
     defaultParts: { type: mongoose.Schema.Types.Mixed, required: true},
+    checked: { type: Boolean },
     pathologies: [{ name: String, present: Boolean }]
 });
 

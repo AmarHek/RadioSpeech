@@ -1,24 +1,15 @@
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
   <div class="settings">
     <div>
-      <label class="mr-3" for="imageFile">Bild-Datei: </label>
+      <label class="mr-3" for="imageFile">Aufnahme(n): </label>
       <input class="mr-3" type="file" id="imageFile" [formControl]="$any(uploadForm).controls['imageFile']"/>
     </div>
     <div>
-      <label class="mr-3" for="reportFile">Berichts-Datei (.txt): </label>
-      <input class="mr-3" type="file" id="reportFile" [formControl]="$any(uploadForm).controls['reportFile']"/>
+      <label class="mr-3" for="imageFile">Voraufnahme(n): </label>
+      <input class="mr-3" type="file" id="preimageFile" [formControl]="$any(uploadForm).controls['imageFile']"/>
     </div>
     <div>
-      <label class="mr-3" for="partsFile">Ausgefüllte JSON: </label>
-      <input class="mr-3" type="file" id="partsFile" [formControl]="$any(uploadForm).controls['partsFile']"/>
-    </div>
-    <div>
-      <label class="mr-3" for="defaultFile">Template JSON: </label>
-      <input class="mr-3" type="file" id="defaultFile" [formControl]="$any(uploadForm).controls['defaultFile']"/>
-    </div>
-    <div>
-      <label class="mr-3" for="modality">Modalität: </label>
-      <input class="mr-3" type="text" id="modality" [formControl]="$any(uploadForm).controls['modality']">
+
     </div>
 
     <div>
@@ -31,7 +22,7 @@
 
 
     <div>
-      <button type="submit">Submit</button>
+      <button class="btn btn-primary" type="submit">Hochladen</button>
     </div>
 
   </div>
