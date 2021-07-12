@@ -65,7 +65,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
         this.textSub = this.templateManager.getListUpdateListener()
         .subscribe((list: any) => {
           console.log("sub");
-          const template = list.find((d) => d.id === this.routeName);
+          const template = list.find((d) => d.name === this.routeName);
           if (template === undefined) {
             window.alert("Dieses Dictionary existiert nicht! " +
               "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");

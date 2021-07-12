@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { TimeStampsService } from "../../services/time-stamps.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TemplateManager} from "../../services/template-manager.service";
+import {getFileExtension} from "../../../helper-classes/util";
 
 @Component({
   selector: "app-upload",
@@ -18,8 +19,9 @@ export class UploadComponent implements OnInit {
   mode: string;
 
   currentFile: File;
+  showWarning = false;
 
-  form: FormGroup;
+  uploadForm: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
               private timesService: TimeStampsService,
@@ -30,30 +32,45 @@ export class UploadComponent implements OnInit {
   }
 
   private initForm() {
-    this.form = new FormGroup({
+    this.uploadForm = new FormGroup({
       "name": new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      "image": new FormControl(null, {validators: [Validators.required]})
+      "file": new FormControl(null, {validators: [Validators.required]})
     });
   }
 
-  setFile(newFile: File) {
-    this.currentFile = newFile;
+  onFileSelect(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.checkFileExtension(file);
+      this.uploadForm.get("file").setValue(file);
+    }
   }
 
+  checkFileExtension(file: File) {
+    this.showWarning = false;
+    const extension = getFileExtension(file.name);
+    if (!(extension === "xlsx" || extension === "json")) {
+      this.showWarning = true;
+    }
+  }
 
   upload() {
-    const file = (document.getElementById("uploadFile") as HTMLInputElement).files[0];
-    this.form.patchValue({image: file});
-    this.form.get("image").updateValueAndValidity();
-
+    const extension = getFileExtension(this.uploadForm.value.file.name);
     const postData = new FormData();
-    postData.append("file", this.form.value.image, this.form.value.name);
-    console.log(this.form.value.name);
-    console.log(this.form.value.image);
-    console.log(postData);
-    // this.templateManager.addExcel(postData);
+    postData.append("name", this.uploadForm.value.name);
+    postData.append("file", this.uploadForm.value.file);
+    const date = new Date();
+    const timestamp = date.getDay() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    postData.append("timestamp", timestamp);
+    if (extension === "xlsx") {
+      // this.templateManager.addExcel(postData);
+    } else if (extension === "json") {
+      this.templateManager.addJSON(postData);
+    } else {
+      window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
+    }
   }
 
   /*

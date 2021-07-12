@@ -47,6 +47,7 @@ export interface Option {
 export interface Template {
   id: string;
   name: string;
+  timestamp: Date;
   parts: TopLevel[];
 }
 

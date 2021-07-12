@@ -34,6 +34,7 @@ export class TemplateManager {
             return {
               id: retDict._id,
               name: retDict.name,
+              timestamp: retDict.timestamp,
               parts: retDict.parts
             };
           });
@@ -76,6 +77,21 @@ export class TemplateManager {
         template.id = response.templateId;
         this.templates.push(template);
       });
+  }
+
+  addTimestamp(template: M.Template) {
+    if (!template.timestamp) {
+      template.timestamp = new Date();
+    }
+  }
+
+  addJSON(postData: FormData) {
+    this.http.post<{message: string, templateId: string }>(
+      this.activeUrl + "json",
+      postData
+    ).subscribe((res) => {
+      window.alert(res.message);
+    });
   }
 
   /*

@@ -1,13 +1,14 @@
-<form>
+<form [formGroup]="uploadForm">
   <div class="settings">
     <div>
       <label class="mr-3" for="uploadFile">Datei: </label>
-      <input class="mr-3" type="file" id="uploadFile"/>
+      <input class="mr-3" type="file" id="uploadFile" (change)="onFileSelect($event)">
+      <span *ngIf="this.showWarning" class="alert-warning">Dateityp wird nicht unterstützt.</span>
     </div>
     <div>
       <label class="mr-3" for="NameOfFile">Name: </label>
       <input class="mr-3" type="text" name="name" id="NameOfFile" formControlName="name">
-      <button class="btn btn-info ml-3" (click)="upload()">Upload</button>
+      <button class="btn btn-info ml-3" (click)="upload()" type="submit">Upload</button>
     </div>
   </div>
 </form>

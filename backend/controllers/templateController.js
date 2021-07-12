@@ -1,5 +1,5 @@
 const Template = require('../models/templateSchema');
-const fs = require('file-system');
+const fs = require('fs');
 const {
     parser,
   } = require('../excels/excelParser');
@@ -44,13 +44,13 @@ exports.createExcelDict =  (req, res, next) => {
         });
       });
 
-  
+
     }
      try {
-  
+
       var parsed = parser(data);
       var fName = req.file.filename.split(".")[0];
-  
+
       const endo = new Endo({
         dict: parsed.dict,
         name: fName
@@ -69,58 +69,77 @@ exports.createExcelDict =  (req, res, next) => {
     }
   };*/
 
-  exports.createTemplate = (req, res, next) => {
-    const template  = new Template({
-      parts: req.body.parts,
-      name: req.body.name
+exports.createJSONTemplate = (req, res, next) => {
+  // TODO: Check JSON for errors and add sufficient messages
+  let rawData = fs.readFileSync(req.file.path);
+  let parts = JSON.parse(rawData.toString());
+  const template = new Template({
+    parts: parts,
+    name: req.body.name,
+    timestamp: req.body.timestamp
+  });
+  template.save().then(result => {
+    res.status(201).json({
+      message: "Template added successfully",
+      postId: result._id
     });
-    template.save().then(result => {
-      res.status(201).json({
-        message: 'Template added successfully',
-        postId: result._id
-      });
-    });
-  };
+  });
+};
 
-  exports.changeTemplate = (req, res, next) => {
-    const newTemplate = new Template({
-      _id: req.params.id,
-      parts: req.body.parts,
-      name: req.body.name
+exports.createTemplate = (req, res, next) => {
+  const template  = new Template({
+    parts: req.body.parts,
+    name: req.body.name,
+    timestamp: req.body.timestamp
+  });
+  template.save().then(result => {
+    res.status(201).json({
+      message: 'Template added successfully',
+      postId: result._id
     });
-    Template.updateOne({
-        _id: req.params.id
-      }, newTemplate)
-      .then(result => {
-        console.log(result);
-        res.status(200).json({
-          message: "Update successful"
-        });
-      });
-  };
+  });
+};
 
-  exports.deleteTemplate = (req, res, next) => {
-    Template.deleteOne({
+exports.changeTemplate = (req, res, next) => {
+  const newTemplate = new Template({
+    _id: req.params.id,
+    parts: req.body.parts,
+    name: req.body.name,
+    timestamp: req.body.timestamp
+  });
+  Template.updateOne({
       _id: req.params.id
-    }).then(
-      result => {
-        console.log(result);
-        res.status(200).json({
-          message: "Template deleted"
-        });
+    }, newTemplate)
+    .then(result => {
+      console.log(result);
+      res.status(200).json({
+        message: "Update successful"
       });
-  };
+    });
+};
 
-  exports.getTemplates = (req, res, next) => {
-    Template.find()
-      .then(templates => {
-        console.log(templates);
-        res.status(200).json({
-          message: "Templates fetched",
-          templates: templates
-        });
+exports.deleteTemplate = (req, res, next) => {
+  Template.deleteOne({
+    _id: req.params.id
+  }).then(
+    result => {
+      console.log(result);
+      res.status(200).json({
+        message: "Template deleted"
       });
-  };
+    });
+};
+
+exports.getTemplates = (req, res, next) => {
+  Template.find()
+    .then(templates => {
+      console.log(templates);
+      res.status(200).json({
+        message: "Templates fetched",
+        templates: templates
+      });
+    });
+};
 
 
 
@@ -135,7 +154,7 @@ exports.createExcelDict =  (req, res, next) => {
     console.log(req.file.filename);
     var sheet_name_list = workbook.SheetNames;
     var data = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-    
+
     fs.unlinkSync('backend/excels/' + req.file.filename);
     let parsed = parser(data);
     if (typeof (parsed) == "string") {
@@ -163,8 +182,8 @@ exports.createExcelDict =  (req, res, next) => {
           });
         });
       });
-  
-  
+
+
     }
 
   };*/

@@ -3,9 +3,9 @@ const multer = require("multer");
 const router = express.Router();
 const TemplateController = require("../controllers/templateController");
 const MaterialController = require("../controllers/materialController");
-const storage = multer.diskStorage({
+const storageExcel = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "backend/excels");
+    cb(null, "./excels");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
@@ -14,9 +14,19 @@ const storage = multer.diskStorage({
   }
 });
 
+const storageJSON = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./json");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");
+    cb(null, name);
+  }
+});
+
 const storageMaterial = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "backend/images");
+    cb(null, "./images");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname + '-' + Date.now())
@@ -26,8 +36,12 @@ const storageMaterial = multer.diskStorage({
 // TODO Excel parser
 /*
 router.post("/excel", multer({
-  storage: storage
+  storage: storageExcel
 }).single("file"), TemplateController.createExcelTemplate );*/
+
+router.post("/json", multer({
+  storage: storageJSON
+}).single("file"), TemplateController.createJSONTemplate);
 
 router.post("", TemplateController.createTemplate);
 router.put("/:id", TemplateController.changeTemplate);

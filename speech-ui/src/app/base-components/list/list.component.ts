@@ -92,9 +92,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.mode === "Gastroenterologie") {
-      this.templateSub.unsubscribe();
-    }
+    this.templateSub.unsubscribe();
   }
 
   remove(id: string): void {
