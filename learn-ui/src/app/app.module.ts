@@ -56,9 +56,8 @@ import { DisplayMaterialComponent } from "./material/display-material/display-ma
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "main/:id", component: UiBaseComponent},
         {path: "list", component: ListComponent},
-        {path: "uploadMat", component: UploadMaterialComponent},
+        {path: "main/:id", component: UiBaseComponent},
         {path: "displayMat", component: DisplayMaterialComponent},
         {path: "**", redirectTo: "/list"},
       ],

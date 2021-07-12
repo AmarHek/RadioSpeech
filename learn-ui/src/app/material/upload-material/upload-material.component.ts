@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import {Form, FormArray, FormControl, FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {MaterialManagerService} from "../../services/material-manager.service";
-import * as MM from "../../../helper-classes/materialModel";
-import * as M from "../../../helper-classes/model";
 
 @Component({
   selector: "app-upload-material",

@@ -7,15 +7,21 @@ export interface Pathology {
 
 export interface Material {
   id:             string;
-  img: {
+  mainScan: {
+    data:           string;
+    contentType:    string;
+  };
+  lateralScan: {
+    data:           string;
+    contentType:    string;
+  };
+  preScan: {
     data:           string;
     contentType:    string;
   };
   modality:       string;
-  report:         string;
   parts:          M.TopLevel[];
-  defaultParts:   M.TopLevel[];
   pathologies:    Pathology[];
-
+  judged:         boolean;
 }
 
