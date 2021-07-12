@@ -1,0 +1,35 @@
+.settings {
+  display:grid;
+  grid-template-columns: max-content;
+  grid-gap:5px;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+label:hover {
+  box-shadow: 0 0 2px black;
+  border-radius: 2px;
+}
+
+label:active {
+  box-shadow: 0 0 2px black;
+  border-radius: 2px;
+}
+
+td.box {
+  vertical-align: text-top;
+  position: relative;
+  top: 1px;
+  bottom: -2px;
+  color: black;
+  padding-right: 5px;
+}
+
+td.title {
+  // display: block;
+  position: relative;
+  min-width: 210px;
+  max-width: 220px;
+  word-wrap: break-word;
+  margin-right: 1px;
+}

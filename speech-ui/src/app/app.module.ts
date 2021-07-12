@@ -15,7 +15,6 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { AppComponent } from "./app.component";
 import { UploadComponent } from "./base-components/upload/upload.component";
 import { ListComponent } from "./base-components/list/list.component";
-import { SortCategoriesPipe } from "./pipes/sort-categories.pipe";
 import { ReportComponent } from "./main/report/report.component";
 import { UiBaseComponent } from "./main/ui-base/ui-base.component";
 import { OptionsComponent } from "./main/options/options.component";
@@ -30,13 +29,14 @@ import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm
 import {DisplayService} from "./services/display.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
+import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
+import { DisplayMaterialComponent } from "./material/display-material/display-material.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     ListComponent,
-    SortCategoriesPipe,
     ReportComponent,
     UiBaseComponent,
     OptionsComponent,
@@ -44,6 +44,8 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
     VariablesComponent,
     InputModalComponent,
     ConfirmDialogComponent,
+    UploadMaterialComponent,
+    DisplayMaterialComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,9 +62,11 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "main/:id", component: UiBaseComponent},
-        {path: "upload", component: UploadComponent},
         {path: "list", component: ListComponent},
+        {path: "upload", component: UploadComponent},
+        {path: "main/:id", component: UiBaseComponent},
+        {path: "uploadMat", component: UploadMaterialComponent},
+        {path: "displayMat", component: DisplayMaterialComponent},
         {path: "**", redirectTo: "/upload"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}

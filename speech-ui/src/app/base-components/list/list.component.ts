@@ -18,7 +18,6 @@ import {Template} from "../../../helper-classes/model";
 })
 export class ListComponent implements OnInit, OnDestroy {
 
-  generators: string[] = [];
   templates: Template[] = [];
   templateSub: Subscription;
   mode = "Radiologie";

@@ -118,7 +118,5 @@ export function getBase64Image(img) {
 }
 
 export function getFileExtension(filename: string) {
-  console.log(filename);
-  console.log(filename.split("."));
-  return filename.split(".").pop();
+  return filename.split(".").pop().toLowerCase();
 }

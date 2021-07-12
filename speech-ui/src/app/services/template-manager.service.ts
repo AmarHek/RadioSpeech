@@ -15,7 +15,7 @@ import { Subject } from "rxjs";
 // -----------------------------------
 
 export class TemplateManager {
-  templates: Array<M.Template> = [];
+  templates: M.Template[] = [];
   private listUpdated = new Subject<M.Template[]>();
   activeUrl = environment.urlRootMongo;
 
@@ -43,8 +43,6 @@ export class TemplateManager {
       .subscribe((transData) => {
         this.templates = transData;
         this.listUpdated.next([...this.templates]);
-        console.log(this.listUpdated);
-        console.log(this.templates);
       });
   }
 
