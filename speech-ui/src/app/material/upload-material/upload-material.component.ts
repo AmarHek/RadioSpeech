@@ -44,6 +44,7 @@ export class UploadMaterialComponent implements OnInit {
   onFileSelect(event, scanType: string) {
     if (event.target.files.length > 0) {
       const files = event.target.files;
+      console.log(files);
       if (this.checkFileExtensions(files)) {
         this.uploadForm.get(scanType).setValue(files);
         this.checkForm();
@@ -87,6 +88,6 @@ export class UploadMaterialComponent implements OnInit {
     return JSON.stringify(json);
   }
 
-  
+
 
 }
