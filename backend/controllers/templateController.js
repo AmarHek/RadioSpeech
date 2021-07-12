@@ -73,10 +73,11 @@ exports.createJSONTemplate = (req, res, next) => {
   // TODO: Check JSON for errors and add sufficient messages
   let rawData = fs.readFileSync(req.file.path);
   let parts = JSON.parse(rawData.toString());
+  const timestamp = new Date();
   const template = new Template({
     parts: parts,
     name: req.body.name,
-    timestamp: req.body.timestamp
+    timestamp: timestamp
   });
   template.save().then(result => {
     res.status(201).json({

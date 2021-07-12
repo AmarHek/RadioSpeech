@@ -79,12 +79,6 @@ export class TemplateManager {
       });
   }
 
-  addTimestamp(template: M.Template) {
-    if (!template.timestamp) {
-      template.timestamp = new Date();
-    }
-  }
-
   addJSON(postData: FormData) {
     this.http.post<{message: string, templateId: string }>(
       this.activeUrl + "json",

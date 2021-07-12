@@ -2,7 +2,7 @@
   <div class="settings">
     <div>
       <label class="mr-3" for="uploadFile">Datei: </label>
-      <input class="mr-3" type="file" id="uploadFile" (change)="onFileSelect($event)">
+      <input class="mr-3" type="file" id="uploadFile" formControlName="filename" (change)="onFileSelect($event)">
       <span *ngIf="this.showWarning" class="alert-warning">Dateityp wird nicht unterstützt.</span>
     </div>
     <div>

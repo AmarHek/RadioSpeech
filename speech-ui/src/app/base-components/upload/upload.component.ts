@@ -36,7 +36,8 @@ export class UploadComponent implements OnInit {
       "name": new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      "file": new FormControl(null, {validators: [Validators.required]})
+      "file": new FormControl(null, {validators: [Validators.required]}),
+      "filename": new FormControl(null, {validators: [Validators.required]})
     });
   }
 
@@ -61,9 +62,6 @@ export class UploadComponent implements OnInit {
     const postData = new FormData();
     postData.append("name", this.uploadForm.value.name);
     postData.append("file", this.uploadForm.value.file);
-    const date = new Date();
-    const timestamp = date.getDay() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    postData.append("timestamp", timestamp);
     if (extension === "xlsx") {
       // this.templateManager.addExcel(postData);
     } else if (extension === "json") {
@@ -71,6 +69,7 @@ export class UploadComponent implements OnInit {
     } else {
       window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
     }
+    this.uploadForm.reset();
   }
 
   /*
