@@ -1,1 +1,21 @@
-<p>display-material works!</p>
+<div *ngIf="materials.length === 0">
+  Keine unbefundeten Einträge gefunden.
+</div>
+
+<ng-container *ngIf="materials.length > 0">
+  <table>
+    <tr>
+      <th>Frontalaufnahme</th>
+      <th>Lateralaufnahme</th>
+      <th>Voraufnahme</th>
+      <th>Modalität</th>
+    </tr>
+    <tr *ngFor="let material of materials">
+      <td><img alt="Aufnahme nicht vorhanden"
+               /></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+</ng-container>

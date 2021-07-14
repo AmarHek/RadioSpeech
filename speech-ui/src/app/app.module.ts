@@ -31,6 +31,7 @@ import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
 import { DisplayMaterialComponent } from "./material/display-material/display-material.component";
+import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { DisplayMaterialComponent } from "./material/display-material/display-ma
     ConfirmDialogComponent,
     UploadMaterialComponent,
     DisplayMaterialComponent,
+    JudgeMatComponent,
   ],
   imports: [
     BrowserModule,

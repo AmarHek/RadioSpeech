@@ -104,6 +104,10 @@ export function getDateFormatted(date: Date, addTime: boolean): string {
   return result;
 }
 
+export function arrayBufferToBase64(buffer: ArrayBuffer) {
+  return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+}
+
 export function getBase64Image(img) {
   const canvas = document.createElement("canvas");
   canvas.width = img.width;

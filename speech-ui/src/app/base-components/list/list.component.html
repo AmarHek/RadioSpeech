@@ -25,23 +25,3 @@
 <div *ngIf="templates.length === 0 && !isLoading">
   Es wurde noch nichts hochgeladen
 </div>
-
-<!--
-<table>
-    <tr *ngFor="let generator of generators" class="list-row">
-      <td>
-        <ul>
-          <li><a [routerLink]="['/', 'template', generator]">{{generator}}</a></li>
-        </ul>
-      </td>
-      <td>
-        <button class="btn btn-danger ml-3" (click)="removeAlert(generator)">Entfernen</button>
-      </td>
-    </tr>
-</table>
-
-<div *ngIf="generators.length === 0">
-  Es wurde noch nichts hochgeladen
-</div>
-
--->
