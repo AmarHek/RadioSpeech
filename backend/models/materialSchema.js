@@ -19,4 +19,4 @@ const materialSchema = new mongoose.Schema({
     judged: { type: Boolean }
 });
 
-module.exports = mongoose.model('Material', materialSchema);
+module.exports = mongoose.model("Material", materialSchema, "material");

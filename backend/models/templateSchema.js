@@ -6,4 +6,4 @@ const templateSchema = new mongoose.Schema({
     timestamp: { type: Date }
 });
 
-module.exports = mongoose.model('Template', templateSchema);
+module.exports = mongoose.model('Template', templateSchema, "templates");

@@ -1,19 +1,22 @@
-<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="uploadForm" (ngSubmit)="submit()">
   <table class="settings">
     <tr>
       <td><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="mainScans" (change)="onFileSelect($event,
-      'mainScans')"/></td>
+      <td><input class="mr-3" type="file" multiple="multiple" id="mainScans"
+                 formControlName="mainFiles"
+                 (change)="onFileSelect($event, 'mainScans')"/></td>
     </tr>
     <tr>
       <td><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="lateralScans" (change)="onFileSelect($event,
-      'lateralScans')"/></td>
+      <td><input class="mr-3" type="file" multiple="multiple" id="lateralScans"
+                 formControlName="lateralFiles"
+                 (change)="onFileSelect($event,'lateralScans')"/></td>
     </tr>
     <tr>
       <td><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="preImageFile" (change)="onFileSelect($event,
-      'preScans')"/>
+      <td><input class="mr-3" type="file" multiple="multiple" id="preImageFile"
+                 formControlName="preFiles"
+                 (change)="onFileSelect($event,'preScans')"/>
       </td>
     </tr>
 

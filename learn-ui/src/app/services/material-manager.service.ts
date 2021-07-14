@@ -23,7 +23,6 @@ export class MaterialManagerService {
             id: mat._id,
             img: mat.img,
             modality: mat.modality,
-            report: mat.report,
             parts: mat.parts,
             defaultParts: mat.defaultParts,
             pathologies: mat.pathologies

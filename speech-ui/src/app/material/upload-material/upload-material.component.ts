@@ -34,6 +34,9 @@ export class UploadMaterialComponent implements OnInit {
 
   private initForm() {
     this.uploadForm = new FormGroup({
+      "mainFiles": new FormControl(),
+      "lateralFiles": new FormControl(),
+      "preFiles": new FormControl(),
       "mainScans": new FormControl([], {validators: [Validators.required]}),
       "lateralScans": new FormControl([]),
       "preScans": new FormControl([]),
@@ -44,9 +47,8 @@ export class UploadMaterialComponent implements OnInit {
   onFileSelect(event, scanType: string) {
     if (event.target.files.length > 0) {
       const files = event.target.files;
-      console.log(files);
       if (this.checkFileExtensions(files)) {
-        this.uploadForm.get(scanType).setValue(files);
+        this.uploadForm.get(scanType).setValue(Array.from(files));
         this.checkForm();
       }
     }
@@ -88,6 +90,38 @@ export class UploadMaterialComponent implements OnInit {
     return JSON.stringify(json);
   }
 
+  submit(): void {
+    const mainScans = this.uploadForm.get("mainScans").value;
+    const lateralScans = this.uploadForm.get("lateralScans").value;
+    const preScans = this.uploadForm.get("preScans").value;
+
+    console.log(mainScans, lateralScans, preScans);
+
+    const n_files = this.uploadForm.get("mainScans").value.length;
+    const postData: FormData[] = [];
+
+    for (let i = 0; i < n_files; i++) {
+      const formData = new FormData();
+      formData.append("mainScan", mainScans[i]);
+      if (lateralScans.length > 0) {
+        formData.append("lateralScan", lateralScans[i]);
+      }
+      if (preScans.length > 0) {
+        formData.append("preScan", preScans[i]);
+      }
+      // TODO: Add parts upload (+ syntax check), which overrides the default parts
+      formData.append("parts", this.uploadForm.get("parts").value);
+      // TODO: Add choice for this later
+      formData.append("modality", "xray");
+
+      postData.push(formData);
+    }
+
+    this.materialManager.addMaterials(postData);
+    this.initForm();
+
+
+  }
 
 
 }

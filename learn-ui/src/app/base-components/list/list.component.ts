@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-import { TimeStampsService } from "../../services/time-stamps.service";
 import { DataParserService } from "../../services/dataParser.service";
 import { DisplayService } from "../../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
@@ -27,7 +26,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient,
               private dataParser: DataParserService,
-              private timesService: TimeStampsService,
               private displayService: DisplayService,
               private dialog: MatDialog,
               private templateManager: TemplateManager

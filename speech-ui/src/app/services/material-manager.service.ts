@@ -8,7 +8,7 @@ import { map } from "rxjs/operators";
   providedIn: "root"
 })
 export class MaterialManagerService {
-  activeUrl = environment.urlRootMongo + "/material";
+  activeUrl = environment.urlRootMongo + "material";
   materials: M.Material[] = [];
 
   constructor(private http: HttpClient) { }
@@ -36,13 +36,17 @@ export class MaterialManagerService {
     });
   }
 
-  addMaterial(postData: FormData) {
-    this.http.post<{ messsage: string}>(
-      this.activeUrl,
-      postData
-    ).subscribe((response) => {
-      window.alert(response.messsage);
-    });
+  async addMaterials(postData: FormData[]) {
+    let message = "";
+    for (const formData of postData) {
+      await this.http.post<{ messsage: string }>(
+        this.activeUrl,
+        formData
+      ).subscribe((response) => {
+        message = response.messsage;
+      });
+    }
+    window.alert(message);
   }
 
   deleteMaterial(id: string): void {

@@ -3,15 +3,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const routes = require('./routes/routes');
+const materialRoutes = require('./routes/materialRoutes');
+const templateRoutes = require('./routes/templateRoutes');
+
 
 const app = express();
 
 // TODO: Auf env auslagern
 const url = "mongodb://127.0.0.1:27017/radio"
 
-mongoose.set('useUnifiedTopology', true);
-mongoose.connect(url,{useNewUrlParser: true})
+mongoose.connect(url,
+    {useNewUrlParser: true,
+            useUnifiedTopology: true
+    })
   .then(() => {
     console.log("Connected to db");
   })
@@ -38,7 +42,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/radio/database", routes);
+app.use("/radio/database", materialRoutes);
+app.use("/radio/database", templateRoutes);
 
 //app.get("/*", (req,res)=> res.sendFile(path.join(__dirname)));
 
