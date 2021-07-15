@@ -19,11 +19,14 @@ export class DisplayMaterialComponent implements OnInit {
     this.materialManager.getMaterialsToJudge();
     this.materialManager.getMaterialUpdateListener().subscribe((mats: Material[]) => {
       this.materials = mats;
-      console.log(this.materials);
+      for (let material of this.materials) {
+        console.log(material.mainScan.data);
+        console.log(this.convertBuffer(material.mainScan.data));
+      }
     });
   }
 
-  convertBufferToBase64(buffer: ArrayBuffer) {
+  convertBuffer(buffer) {
     return arrayBufferToBase64(buffer);
   }
 

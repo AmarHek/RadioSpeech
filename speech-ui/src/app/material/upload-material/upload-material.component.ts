@@ -5,6 +5,7 @@ import {TemplateManager} from "../../services/template-manager.service";
 import * as M from "../../../helper-classes/model";
 import {Template} from "../../../helper-classes/model";
 import {getFileExtension} from "../../../helper-classes/util";
+import {nanoid} from "nanoid";
 
 @Component({
   selector: "app-upload-material",
@@ -95,13 +96,16 @@ export class UploadMaterialComponent implements OnInit {
     const lateralScans = this.uploadForm.get("lateralScans").value;
     const preScans = this.uploadForm.get("preScans").value;
 
-    console.log(mainScans, lateralScans, preScans);
-
     const n_files = this.uploadForm.get("mainScans").value.length;
     const postData: FormData[] = [];
 
     for (let i = 0; i < n_files; i++) {
       const formData = new FormData();
+      // TODO: Add parts upload (+ syntax check), which overrides the default parts
+      formData.append("parts", this.uploadForm.get("parts").value);
+      // TODO: Add choice for this later
+      formData.append("modality", "xray");
+      formData.append("id", nanoid());
       formData.append("mainScan", mainScans[i]);
       if (lateralScans.length > 0) {
         formData.append("lateralScan", lateralScans[i]);
@@ -109,10 +113,6 @@ export class UploadMaterialComponent implements OnInit {
       if (preScans.length > 0) {
         formData.append("preScan", preScans[i]);
       }
-      // TODO: Add parts upload (+ syntax check), which overrides the default parts
-      formData.append("parts", this.uploadForm.get("parts").value);
-      // TODO: Add choice for this later
-      formData.append("modality", "xray");
 
       postData.push(formData);
     }
