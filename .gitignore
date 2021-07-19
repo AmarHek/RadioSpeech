@@ -7,8 +7,7 @@ ui/node_modules
 
 backend/node_modules
 backend/.idea
-backend/images
-backend/json
+backend/data
 backend/excels/*.xlsx
 
 /.idea
