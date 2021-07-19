@@ -3,26 +3,20 @@ const fs = require('fs');
 const path = require("path");
 
 exports.addMaterial = (req, res, next) => {
-    console.log("This should be working");
-    console.log(req.body);
     try {
-        let lateralScan = (req.files.lateralScan !== null);
-        let preScan = (req.files.preScan !== null);
         const material = new Material({
             scans: {
                 id: req.body.id,
-                mainScan: true,
-                lateralScan: lateralScan,
-                preScan: preScan
+                mainScan: req.files.mainScan[0].mimetype,
+                lateralScan: (req.files.lateralScan !== undefined) ? req.files.lateralScan[0].mimetype : "None",
+                preScan: (req.files.preScan !== undefined) ? req.files.preScan[0].mimetype : "None"
             },
             modality: req.body.modality,
             parts: JSON.parse(req.body.parts),
             judged: false
         });
-
-        console.log(material);
-
-        material.save().then(() => {
+        material.save().then((mat) => {
+            console.log("Material with id " + mat._id + " added successfully");
             res.status(201).json({
                 message: 'Material added successfully'
             });
@@ -54,7 +48,7 @@ exports.deleteMaterial = (req, res, next) => {
     }
 };
 
-exports.getMaterial = (req, res, next) => {
+exports.getAllMaterial = (req, res, next) => {
   Material.find()
     .then(materials => {
       console.log(materials);
@@ -65,11 +59,22 @@ exports.getMaterial = (req, res, next) => {
     });
 };
 
-exports.getUnjudgedMats = (req, res, next) => {
-    Material.find({judged: false}).then(materials => {
-        res.status(200).json({
-            message: "Materials fetched",
-            materials: materials
-        });
+exports.queryMaterial = (req, res, next) => {
+    Material.find(req.query).then(mats => {
+        const materials = [];
+        console.log(mats);
+        for (const mat of mats) {
+            const id = mat.scans.id;
+            const mainScan = fs.readFileSync('data/images/' + id + '/mainScan.jpeg', 'base64');
+            console.log(mainScan);
+        }
     });
+}
+
+function readScans(scans) {
+
+}
+
+function readImage(path, mimetype) {
+
 }

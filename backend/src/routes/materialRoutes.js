@@ -2,7 +2,6 @@ const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 const MaterialController = require("../controllers/materialController");
-const nanoid = require("nanoid");
 const path = require("path");
 const fs = require("fs");
 
@@ -10,11 +9,8 @@ const storageImages = multer.diskStorage({
 // TODO: Path dependencies!
   destination: (req, file, cb) => {
     if (!fs.existsSync(path.join("data/images/", req.body.id))) {
-    fs.mkdir(path.join("data/images/", req.body.id), (err) => {
-      if (err) {
-        return console.error(err);
-      }
-    });}
+    fs.mkdirSync(path.join("data/images/", req.body.id));
+    }
       cb(null, path.join("data/images/", req.body.id))
   },
 
@@ -43,8 +39,8 @@ const upload = multer({
 }])
 
 router.post("/material", upload, MaterialController.addMaterial)
-router.get("/material", MaterialController.getMaterial)
-router.get("/material/unjudged", MaterialController.getUnjudgedMats);
+router.get("/material/all", MaterialController.getAllMaterial)
+router.get("/material/query", MaterialController.queryMaterial);
 router.delete("/material/:id", MaterialController.deleteMaterial)
 
 module.exports = router;

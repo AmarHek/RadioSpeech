@@ -134,7 +134,6 @@ exports.deleteTemplate = (req, res, next) => {
 exports.getTemplates = (req, res, next) => {
   Template.find()
     .then(templates => {
-      console.log(templates);
       res.status(200).json({
         message: "Templates fetched",
         templates: templates
