@@ -2,7 +2,7 @@
   "name": "radiospeech-server",
   "version": "1.0.0",
   "scripts": {
-    "start:server": "nodemon ./backend/myServer.js"
+    "start:server": "nodemon ./src/server.ts"
   },
   "private": true,
   "dependencies": {
