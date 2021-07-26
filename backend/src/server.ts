@@ -1,3 +1,5 @@
+import * as app from 'app';
+
 const { debug } = require('console');
 const http = require('http');
 const app = require('./app');

@@ -1,24 +1,8 @@
-const {
-    CheckBoxRadio,
-    GroupRadio,
-    OptionRadio,
-    CategoryRadio,
-    BlockRadio,
-    EnumerationRadio,
-    ConditionalRadio,
-    LiteralRadio,
-    VariableOCRadio,
-    VariableMCRadio,
-    VariableTextRadio,
-    VariableNumberRadio,
-    VariableDateRadio,
-    VariableRatioRadio,
-    myDictRadio
-  } = require('../models/template')
+import * as M from './templateModel';
 
-
-module.exports.parserRadio = function parser(json){
-  var customDict = new myDictRadio("random", [], "name");
+/*
+export function parser(json: any){
+  let customDict = new myDictRadio("random", [], "name");
 
     json.forEach(element => {
         // blocks and aufzählung have a value in "typ"
@@ -48,4 +32,6 @@ module.exports.parserRadio = function parser(json){
 
 
     });
-}
+}*/
+
+// TODO: Finish parser

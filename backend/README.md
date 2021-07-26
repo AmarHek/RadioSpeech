@@ -7,7 +7,7 @@ Folder models:
 
 - templateSchema.ts defines how a template looks like in the database (a template and its name), 
 have in mind that an id is automatically added as well
-- template.ts defines how a dict and its substructures look like when an excel file is converted
+- templateModel.ts defines how a dict and its substructures look like when an excel file is converted
 
 Folder Routes:
 - Defines Routes for API, the options are "get all dicts", "modify one dict", "delete one dict", 

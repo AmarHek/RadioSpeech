@@ -1,8 +1,6 @@
-const Template = require('../models/templateSchema');
-const fs = require('fs');
-const {
-    parser,
-  } = require('../excel/excelParser');
+import { Template } from '../models/templateSchema';
+import fs from 'fs';
+import { parser } from '../excel/excelParser';
 
 /*
 exports.createExcelDict =  (req, res, next) => {
@@ -81,7 +79,7 @@ exports.createJSONTemplate = (req, res, next) => {
   });
   template.save().then(result => {
     res.status(201).json({
-      message: "Template added successfully",
+      message: "TemplateModel added successfully",
       postId: result._id
     });
   });
@@ -95,7 +93,7 @@ exports.createTemplate = (req, res, next) => {
   });
   template.save().then(result => {
     res.status(201).json({
-      message: 'Template added successfully',
+      message: 'TemplateModel added successfully',
       postId: result._id
     });
   });
@@ -126,7 +124,7 @@ exports.deleteTemplate = (req, res, next) => {
     result => {
       console.log(result);
       res.status(200).json({
-        message: "Template deleted"
+        message: "TemplateModel deleted"
       });
     });
 };
@@ -164,13 +162,13 @@ exports.getTemplates = (req, res, next) => {
       });
     } else {
       var fName = req.file.filename.split(".")[0];
-      Template.findOne({
+      TemplateModel.findOne({
         name: fName
       }).then(myres => {
         if (myres !== null) {
           fName += "_cpy";
         }
-        const radio = new Template({
+        const radio = new TemplateModel({
           dict: parsed.dict,
           name: fName
         });

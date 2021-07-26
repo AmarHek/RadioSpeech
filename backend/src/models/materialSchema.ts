@@ -1,6 +1,23 @@
-const mongoose = require('mongoose');
+import mongoose, {Schema, Document} from 'mongoose';
+import * as M from '../excel/templateModel';
 
-const materialSchema = new mongoose.Schema({
+export interface Material extends Document {
+    scans: {
+        id: string;
+        mainScan: string;
+        lateralScan: string;
+        preScan: string;
+    };
+    modality: string;
+    parts: M.TopLevel[];
+    pathologies: [{
+        name: string;
+        present: boolean;
+    }];
+    judged: boolean;
+}
+
+const materialSchema = new Schema({
     scans: {
         id:  {type: String, required: true},
         mainScan: {type: String, required: true},
@@ -14,4 +31,4 @@ const materialSchema = new mongoose.Schema({
     judged: { type: Boolean }
 });
 
-module.exports = mongoose.model("Material", materialSchema, "material");
+export default mongoose.model<Material>("Material", materialSchema, "material");

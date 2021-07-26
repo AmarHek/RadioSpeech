@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const templateSchema = new mongoose.Schema({
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
@@ -6,4 +6,4 @@ const templateSchema = new mongoose.Schema({
     timestamp: { type: Date }
 });
 
-module.exports = mongoose.model('Template', templateSchema, "templates");
+export const Template = mongoose.model('Template', templateSchema, "templates");

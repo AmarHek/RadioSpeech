@@ -1,11 +1,9 @@
-const express = require('express');
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-
-const materialRoutes = require('./routes/materialRoutes');
-const templateRoutes = require('./routes/templateRoutes');
-
+import * as materialRoutes from './routes/materialRoutes';
+import * as templateRoutes from './routes/templateRoutes';
 
 const app = express();
 
@@ -27,7 +25,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-
 app.set("view engine", "ejs");
 
 

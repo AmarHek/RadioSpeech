@@ -1,35 +1,39 @@
-const Material = require('../models/materialSchema');
-const fs = require('fs');
-const path = require("path");
+import Material from '../models/materialSchema';
+import fs from 'fs';
+import { Document } from 'mongoose';
+import { Request, Response, NextFunction } from 'express';
+import * as path from "path";
 
-exports.addMaterial = (req, res, next) => {
+export function addMaterial (req: Request, res: Response, next: NextFunction) {
     try {
-        const material = new Material({
-            scans: {
-                id: req.body.id,
-                mainScan: req.files.mainScan[0].mimetype,
-                lateralScan: (req.files.lateralScan !== undefined) ? req.files.lateralScan[0].mimetype : "None",
-                preScan: (req.files.preScan !== undefined) ? req.files.preScan[0].mimetype : "None"
-            },
-            modality: req.body.modality,
-            parts: JSON.parse(req.body.parts),
-            judged: false
-        });
-        material.save().then((mat) => {
-            console.log("Material with id " + mat._id + " added successfully");
-            res.status(201).json({
-                message: 'Material added successfully'
+        if (req.files) {
+            const material = new Material({
+                scans: {
+                    id: req.body.id,
+                    mainScan: req.files.mainScan[0].mimetype,
+                    lateralScan: (req.files.lateralScan !== undefined) ? req.files.lateralScan[0].mimetype : "None",
+                    preScan: (req.files.preScan !== undefined) ? req.files.preScan[0].mimetype : "None"
+                },
+                modality: req.body.modality,
+                parts: JSON.parse(req.body.parts),
+                judged: false
             });
-        });
+            material.save().then((mat: Document) => {
+                console.log("Material with id " + mat._id + " added successfully");
+                res.status(201).json({
+                    message: 'Material added successfully'
+                });
+            });
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({
           message: "Unexpected behaviour"
         })
     }
-};
+}
 
-exports.deleteMaterial = (req, res, next) => {
+export function deleteMaterial(req: Request, res: Response, next: NextFunction) {
     try {
         Material.deleteOne({
             _id: req.params.id
@@ -46,9 +50,9 @@ exports.deleteMaterial = (req, res, next) => {
             error: error
         })
     }
-};
+}
 
-exports.getAllMaterial = (req, res, next) => {
+export function getAllMaterial(req, res, next) {
   Material.find()
     .then(materials => {
       console.log(materials);
@@ -59,7 +63,7 @@ exports.getAllMaterial = (req, res, next) => {
     });
 };
 
-exports.queryMaterial = (req, res, next) => {
+export function queryMaterial(req, res, next){
     Material.find(req.query).then(mats => {
         const materials = [];
         console.log(mats);
