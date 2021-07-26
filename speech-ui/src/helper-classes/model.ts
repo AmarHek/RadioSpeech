@@ -1,47 +1,12 @@
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import * as M from "./old_model";
 
-export type Selectable = CheckBox | Group;
-
 export interface TextExtractor {
   ofCheckbox(c: CheckBox): string | undefined;
   ofOption(o: Option): string | undefined;
   ofEnumeration(e: Enumeration): string | undefined;
   ofBlock(e: Block): string | undefined;
   ofConditional(c: Conditional): string | undefined;
-}
-
-// Selectable classes, lower than category
-
-export interface CheckBox {
-  kind:           "box";
-  name:           string;
-  value:          boolean;
-  text:           string;
-  conditionalId?: string;
-  judgementText?: string;
-  normal:         boolean;
-  variables:      Variable[];
-  enumeration?:   string;
-  keys:           string[];
-}
-
-export interface Group {
-  kind:    "group";
-  name:    string;
-  options: Option[];
-  value?:  string;
-}
-
-export interface Option {
-  kind:           "option";
-  name:           string;
-  text:           string;
-  conditionalId?: string;
-  judgementText?: string;
-  normal:         boolean;
-  variables:      Variable[];
-  keys:           string[];
 }
 
 export interface Template {
@@ -85,6 +50,41 @@ export interface Conditional {
 export interface Literal {
   id:      string;
   negated: boolean;
+}
+
+// Selectable classes, lower than category
+
+export type Selectable = CheckBox | Group;
+
+export interface CheckBox {
+  kind:           "box";
+  name:           string;
+  value:          boolean;
+  text:           string;
+  conditionalId?: string;
+  judgementText?: string;
+  normal:         boolean;
+  variables:      Variable[];
+  enumeration?:   string;
+  keys:           string[];
+}
+
+export interface Group {
+  kind:    "group";
+  name:    string;
+  options: Option[];
+  value?:  string;
+}
+
+export interface Option {
+  kind:           "option";
+  name:           string;
+  text:           string;
+  conditionalId?: string;
+  judgementText?: string;
+  normal:         boolean;
+  variables:      Variable[];
+  keys:           string[];
 }
 
 // Variable types
