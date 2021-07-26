@@ -4,6 +4,12 @@ import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import * as path from "path";
 
+export interface matRequest extends Request {
+    files: {
+        mainScan: Express.Multer.File
+    }
+}
+
 export function addMaterial (req: Request, res: Response, next: NextFunction) {
     try {
         if (req.files) {
