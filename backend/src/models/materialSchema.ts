@@ -7,6 +7,7 @@ const materialSchema = new mongoose.Schema({
         lateralScan: String,
         preScan: String
     },
+    
     modality: { type: String, required: true },
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
     pathologies: [{ name: String, present: Boolean }],
