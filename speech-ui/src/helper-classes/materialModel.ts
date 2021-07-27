@@ -30,9 +30,9 @@ export interface Material {
 }
 
 export interface BoundingBox {
-  left: number,
-  top: number,
-  height: number,
-  width: number,
-  label: string
+  left: number;
+  top: number;
+  height: number;
+  width: number;
+  label: string;
 }

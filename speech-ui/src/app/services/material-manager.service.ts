@@ -3,7 +3,7 @@ import * as M from "../../helper-classes/materialModel";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import { map } from "rxjs/operators";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -40,7 +40,7 @@ export class MaterialManagerService {
 
   getMaterialsToJudge() {
     this.http.get<{message: string; materials: any }>(
-      this.activeUrl + "/unjudged"
+      this.activeUrl + "/query"
     ).pipe(
       map((getter) => {
         return getter.materials.map((mat) => {
@@ -49,6 +49,7 @@ export class MaterialManagerService {
             mainScan: mat.mainScan,
             lateralScan: mat.lateralScan,
             preScan: mat.preScan,
+            coordinates: mat.coordinates,
             modality: mat.modality,
             parts: mat.parts,
             pathologies: mat.pathologies,
@@ -66,17 +67,11 @@ export class MaterialManagerService {
     return this.materialsUpdated;
   }
 
-  async addMaterials(postData: FormData[]) {
-    // TODO Add progress bar/counter
-    let message = "";
-    for (const formData of postData) {
-      await this.http.post<{ messsage: string }>(
+  addMaterial(formData: FormData): Observable<{ messsage: string }> {
+    return this.http.post<{ messsage: string }>(
         this.activeUrl,
         formData
-      ).subscribe((response) => {
-        console.log(response.messsage);
-      });
-    }
+      );
   }
 
   deleteMaterial(id: string): void {

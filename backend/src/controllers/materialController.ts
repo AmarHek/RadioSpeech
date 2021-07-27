@@ -61,7 +61,7 @@ export function deleteMaterial(req: any, res: Response, next: NextFunction) {
     }
 }
 
-export function getAllMaterial(req: any, res: Response, next: NextFunction) {
+export function sampleMaterial(req: any, res: Response, next: NextFunction) {
   Material.find()
     .then(materials => {
       console.log(materials);
@@ -70,7 +70,7 @@ export function getAllMaterial(req: any, res: Response, next: NextFunction) {
         materials: materials
       });
     });
-};
+}
 
 export function queryMaterial(req: any, res: Response, next: NextFunction){
     Material.find(req.query).then(mats => {

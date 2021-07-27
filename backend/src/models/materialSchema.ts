@@ -2,12 +2,17 @@ import mongoose, {Schema, Document} from 'mongoose';
 import * as M from './templateModel';
 import { Pathology, BoundingBox } from "./materialModel";
 
+interface Image {
+    filename: string;
+    mimetype: string;
+}
+
 export interface MaterialDB extends Document {
     scans: {
         id: string;
-        mainScan: string;
-        lateralScan: string;
-        preScan: string;
+        mainScan: Image;
+        lateralScan?: Image;
+        preScan?: Image;
     };
     coordinates?: {
         main?: BoundingBox[];

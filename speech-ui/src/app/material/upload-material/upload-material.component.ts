@@ -97,7 +97,7 @@ export class UploadMaterialComponent implements OnInit {
     const preScans = this.uploadForm.get("preScans").value;
 
     const n_files = this.uploadForm.get("mainScans").value.length;
-    const postData: FormData[] = [];
+    let progress = 0;
 
     for (let i = 0; i < n_files; i++) {
       const formData = new FormData();
@@ -114,13 +114,11 @@ export class UploadMaterialComponent implements OnInit {
         formData.append("preScan", preScans[i]);
       }
 
-      postData.push(formData);
+      this.materialManager.addMaterial(formData).subscribe(
+
+      );
     }
-
-    this.materialManager.addMaterials(postData);
     this.initForm();
-
-
   }
 
 
