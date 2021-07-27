@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as M from "../../helper-classes/model";
+import * as M from "../../helper-classes/templateModel";
 import {KeyVariable, KeySelectable} from "../../helper-classes/keyword";
 import { levenshtein } from "../../helper-classes/util";
 import { getAllIndexOf } from "../../helper-classes/util";

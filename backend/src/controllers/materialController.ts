@@ -4,13 +4,16 @@ import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import * as path from "path";
 
+/*
 export interface matRequest extends Request {
     files: {
         mainScan: Express.Multer.File
     }
-}
+}*/
 
-export function addMaterial (req: Request, res: Response, next: NextFunction) {
+// TODO: Define request types properly
+
+export function addMaterial (req: any, res: Response, next: NextFunction) {
     try {
         if (req.files) {
             const material = new Material({
@@ -39,7 +42,7 @@ export function addMaterial (req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export function deleteMaterial(req: Request, res: Response, next: NextFunction) {
+export function deleteMaterial(req: any, res: Response, next: NextFunction) {
     try {
         Material.deleteOne({
             _id: req.params.id
@@ -58,7 +61,7 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction) 
     }
 }
 
-export function getAllMaterial(req, res, next) {
+export function getAllMaterial(req: any, res: Response, next: NextFunction) {
   Material.find()
     .then(materials => {
       console.log(materials);
@@ -69,7 +72,7 @@ export function getAllMaterial(req, res, next) {
     });
 };
 
-export function queryMaterial(req, res, next){
+export function queryMaterial(req: any, res: Response, next: NextFunction){
     Material.find(req.query).then(mats => {
         const materials = [];
         console.log(mats);
@@ -81,10 +84,10 @@ export function queryMaterial(req, res, next){
     });
 }
 
-function readScans(scans) {
+function readScans(scans: any) {
 
 }
 
-function readImage(path, mimetype) {
+function readImage(path: any, mimetype: any) {
 
 }

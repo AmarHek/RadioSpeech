@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 
 import {environment} from "../../../environments/environment";
-import * as M from "../../../helper-classes/model";
+import * as M from "../../../helper-classes/templateModel";
 import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
 import {TemplateManager} from "../../services/template-manager.service";

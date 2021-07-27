@@ -1,8 +1,12 @@
-import Template from '../models/templateSchema';
-import fs from 'fs';
-import {NextFunction, Response} from "express";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTemplates = exports.deleteTemplate = exports.changeTemplate = exports.createTemplate = exports.createJSONTemplate = void 0;
+var templateSchema_1 = __importDefault(require("../models/templateSchema"));
+var fs_1 = __importDefault(require("fs"));
 // import { parser } from '../excel/excelParser';
-
 /*
 exports.createExcelDict =  (req, res, next) => {
     var xlsx = require('xlsx');
@@ -67,84 +71,78 @@ exports.createExcelDict =  (req, res, next) => {
       });
     }
   };*/
-
-export function createJSONTemplate(req: any, res: Response, next: NextFunction) {
-  // TODO: Check JSON for errors and add sufficient messages
-  let rawData = fs.readFileSync(req.file.path);
-  let parts = JSON.parse(rawData.toString());
-  const timestamp = new Date();
-  const template = new Template({
-    parts: parts,
-    name: req.body.name,
-    timestamp: timestamp
-  });
-  template.save().then(result => {
-    res.status(201).json({
-      message: "TemplateModel added successfully",
-      postId: result._id
+function createJSONTemplate(req, res, next) {
+    // TODO: Check JSON for errors and add sufficient messages
+    var rawData = fs_1.default.readFileSync(req.file.path);
+    var parts = JSON.parse(rawData.toString());
+    var timestamp = new Date();
+    var template = new templateSchema_1.default({
+        parts: parts,
+        name: req.body.name,
+        timestamp: timestamp
     });
-  });
-}
-
-export function createTemplate(req: any, res: Response, next: NextFunction) {
-  const template  = new Template({
-    parts: req.body.parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp
-  });
-  template.save().then(result => {
-    res.status(201).json({
-      message: 'TemplateModel added successfully',
-      postId: result._id
+    template.save().then(function (result) {
+        res.status(201).json({
+            message: "TemplateModel added successfully",
+            postId: result._id
+        });
     });
-  });
 }
-
-export function changeTemplate(req: any, res: Response, next: NextFunction) {
-  const newTemplate = new Template({
-    _id: req.params.id,
-    parts: req.body.parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp
-  });
-  Template.updateOne({
-      _id: req.params.id
+exports.createJSONTemplate = createJSONTemplate;
+function createTemplate(req, res, next) {
+    var template = new templateSchema_1.default({
+        parts: req.body.parts,
+        name: req.body.name,
+        timestamp: req.body.timestamp
+    });
+    template.save().then(function (result) {
+        res.status(201).json({
+            message: 'TemplateModel added successfully',
+            postId: result._id
+        });
+    });
+}
+exports.createTemplate = createTemplate;
+function changeTemplate(req, res, next) {
+    var newTemplate = new templateSchema_1.default({
+        _id: req.params.id,
+        parts: req.body.parts,
+        name: req.body.name,
+        timestamp: req.body.timestamp
+    });
+    templateSchema_1.default.updateOne({
+        _id: req.params.id
     }, newTemplate)
-    .then(result => {
-      console.log(result);
-      res.status(200).json({
-        message: "Update successful"
-      });
+        .then(function (result) {
+        console.log(result);
+        res.status(200).json({
+            message: "Update successful"
+        });
     });
 }
-
-export function deleteTemplate(req: any, res: Response, next: NextFunction){
-  Template.deleteOne({
-    _id: req.params.id
-  }).then(
-    result => {
-      console.log(result);
-      res.status(200).json({
-        message: "TemplateModel deleted"
-      });
+exports.changeTemplate = changeTemplate;
+function deleteTemplate(req, res, next) {
+    templateSchema_1.default.deleteOne({
+        _id: req.params.id
+    }).then(function (result) {
+        console.log(result);
+        res.status(200).json({
+            message: "TemplateModel deleted"
+        });
     });
 }
-
-export function getTemplates(req: any, res: Response, next: NextFunction){
-  Template.find()
-    .then(templates => {
-      res.status(200).json({
-        message: "Templates fetched",
-        templates: templates
-      });
+exports.deleteTemplate = deleteTemplate;
+function getTemplates(req, res, next) {
+    templateSchema_1.default.find()
+        .then(function (templates) {
+        res.status(200).json({
+            message: "Templates fetched",
+            templates: templates
+        });
     });
 }
-
-
-
-
-  // Routes for Radiology start here -----------------------------
-
+exports.getTemplates = getTemplates;
+// Routes for Radiology start here -----------------------------
 /*
   exports.createExcelDictRadio =  (req, res, next) => {
     var xlsx = require('xlsx');

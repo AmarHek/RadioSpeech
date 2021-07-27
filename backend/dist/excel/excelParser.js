@@ -1,5 +1,5 @@
-import * as M from '../models/templateModel';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /*
 export function parser(json: any){
   let customDict = new myDictRadio("random", [], "name");
@@ -8,7 +8,7 @@ export function parser(json: any){
         // blocks and aufzählung have a value in "typ"
         if(element.hasOwnProperty("Typ")){
             if(element.Typ == "Block"){
-                let myblock = new BlockRadio(element["Text-Befund"], 
+                let myblock = new BlockRadio(element["Text-Befund"],
                                             element.hasOwnProperty("Text-Beurteilung") ? element["Text-Beurteilung"] : undefined,
                                             {});
                 customDict.dict.push(myblock);
@@ -33,5 +33,4 @@ export function parser(json: any){
 
     });
 }*/
-
 // TODO: Finish parser

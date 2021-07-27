@@ -1,4 +1,4 @@
-import * as M from "./model";
+import * as M from "./templateModel";
 
 export function normalExtractor(): M.TextExtractor {
   return new class {

@@ -1,8 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 
-const router = express.Router();
-const TemplateController = require("../controllers/templateController");
+import * as TemplateController from "../controllers/templateController";
 
 const storageExcel = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -25,6 +24,8 @@ const storageJSON = multer.diskStorage({
     }
 });
 
+export const router = express.Router();
+
 router.post("/json", multer({
     storage: storageJSON
 }).single("file"), TemplateController.createJSONTemplate);
@@ -40,4 +41,3 @@ router.post("/excel", multer({
   storage: storageExcel
 }).single("file"), TemplateController.createExcelTemplate );*/
 
-module.exports = router;

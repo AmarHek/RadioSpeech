@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import * as materialRoutes from './routes/materialRoutes';
 import * as templateRoutes from './routes/templateRoutes';
 
-const app = express();
+export const app = express();
 
 // TODO: Auf env auslagern
 const url = "mongodb://127.0.0.1:27017/radio"
@@ -39,10 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/radio/database", materialRoutes);
-app.use("/radio/database", templateRoutes);
+app.use("/radio/database", materialRoutes.router);
+app.use("/radio/database", templateRoutes.router);
 
 //app.get("/*", (req,res)=> res.sendFile(path.join(__dirname)));
-
-
-module.exports = app;

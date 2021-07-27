@@ -8,7 +8,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
 import { Subscription } from "rxjs";
 import {TemplateManager} from "../../services/template-manager.service";
-import {Template} from "../../../helper-classes/model";
+import {Template} from "../../../helper-classes/templateModel";
 
 
 @Component({

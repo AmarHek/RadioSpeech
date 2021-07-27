@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import {Variable} from "../../../helper-classes/model";
+import {Variable} from "../../../helper-classes/templateModel";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";

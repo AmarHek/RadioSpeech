@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewChildren } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import * as M from "../../helper-classes/model";
+import * as M from "../../helper-classes/templateModel";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";

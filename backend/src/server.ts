@@ -1,10 +1,8 @@
-import * as app from 'app';
+import { app } from './app';
+import { debug } from 'console';
+import http from 'http';
 
-const { debug } = require('console');
-const http = require('http');
-const app = require('./app');
-
-const normalizePort = val => {
+function normalizePort(val: any) {
   let port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -17,12 +15,13 @@ const normalizePort = val => {
     return port;
   }
   return false;
-};
+}
 
-const onError = error => {
+function onError(error: any) {
   if (error.svscall !== "listen") {
     throw error;
   }
+  const addr = server.address();
   const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
   switch (error.code) {
     case "EACCES":
@@ -36,13 +35,14 @@ const onError = error => {
     default:
       throw error;
   }
-};
+}
 
-const onListening = () =>{
+function onListening() {
     const addr = server.address();
     const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
     debug("Listening on " + bind);
-};
+}
+
 const port = normalizePort(process.env.PORT || "3000");
 app.set('port', port);
 

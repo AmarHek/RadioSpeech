@@ -1,9 +1,9 @@
-const express = require("express");
-const multer = require("multer");
-const router = express.Router();
-const MaterialController = require("../controllers/materialController");
-const path = require("path");
-const fs = require("fs");
+import express from "express";
+import multer from 'multer';
+
+import * as MaterialController from "../controllers/materialController";
+import path from "path";
+import fs from "fs";
 
 const storageImages = multer.diskStorage({
 // TODO: Path dependencies!
@@ -19,7 +19,7 @@ const storageImages = multer.diskStorage({
   }
 });
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req: any, file: Express.Multer.File, cb: any) => {
   if(file.mimetype === "image/jpg" || file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
@@ -38,10 +38,11 @@ const upload = multer({
   name: 'preScan', maxCount: 1
 }])
 
+export const router = express.Router();
+
 router.post("/material", upload, MaterialController.addMaterial)
 router.get("/material/all", MaterialController.getAllMaterial)
 router.get("/material/query", MaterialController.queryMaterial);
 router.delete("/material/:id", MaterialController.deleteMaterial)
 
-module.exports = router;
 

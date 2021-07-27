@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import {MaterialManagerService} from "../../services/material-manager.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TemplateManager} from "../../services/template-manager.service";
-import * as M from "../../../helper-classes/model";
-import {Template} from "../../../helper-classes/model";
+import * as M from "../../../helper-classes/templateModel";
+import {Template} from "../../../helper-classes/templateModel";
 import {getFileExtension} from "../../../helper-classes/util";
 import {nanoid} from "nanoid";
 
