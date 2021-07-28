@@ -1,11 +1,14 @@
 import express from 'express';
 import multer from 'multer';
+import fs from "fs";
 
 import * as TemplateController from "../controllers/templateController";
 
 const storageExcel = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "data/excels");
+        const path = "data/excels";
+        fs.mkdirSync(path, { recursive: true });
+        cb(null, path);
     },
     filename: (req, file, cb) => {
         const name = file.originalname.toLowerCase().split(" ").join("-");
@@ -16,7 +19,9 @@ const storageExcel = multer.diskStorage({
 
 const storageJSON = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "data/json");
+        const path = "data/json";
+        fs.mkdirSync(path, { recursive: true });
+        cb(null, path);
     },
     filename: (req, file, cb) => {
         const name = file.originalname;

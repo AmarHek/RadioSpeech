@@ -2,9 +2,9 @@ import mongoose, {Schema, Document} from 'mongoose';
 import * as M from './templateModel';
 
 export interface TemplateDB extends Document {
-    parts: M.TopLevel[];
-    name: string;
-    timestamp: Date;
+    parts:      M.TopLevel[];
+    name:       string;
+    timestamp:  Date;
 }
 
 const templateSchema = new Schema({

@@ -2,18 +2,16 @@ import express from "express";
 import multer from 'multer';
 
 import * as MaterialController from "../controllers/materialController";
-import path from "path";
+import Path from "path";
 import fs from "fs";
 
 const storageImages = multer.diskStorage({
 // TODO: Path dependencies!
   destination: (req, file, cb) => {
-    if (!fs.existsSync(path.join("data/images/", req.body.id))) {
-    fs.mkdirSync(path.join("data/images/", req.body.id));
-    }
-      cb(null, path.join("data/images/", req.body.id))
+    const path = Path.join("data/images", req.body.id);
+    fs.mkdirSync(path, {recursive: true});
+    cb(null, path);
   },
-
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "." + file.mimetype.split("/")[1])
   }
