@@ -3,7 +3,7 @@ import { debug } from 'console';
 import http from 'http';
 
 function normalizePort(val: any) {
-  let port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     //named pipe

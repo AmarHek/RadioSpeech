@@ -70,8 +70,8 @@ exports.createExcelDict =  (req, res, next) => {
 
 export function createJSONTemplate(req: any, res: Response, next: NextFunction) {
   // TODO: Check JSON for errors and add sufficient messages
-  let rawData = fs.readFileSync(req.file.path);
-  let parts = JSON.parse(rawData.toString());
+  const rawData = fs.readFileSync(req.file.path);
+  const parts = JSON.parse(rawData.toString());
   const timestamp = new Date();
   const template = new Template({
     parts: parts,

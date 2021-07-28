@@ -85,9 +85,9 @@ export function queryMaterial(req: any, res: Response, next: NextFunction){
 }
 
 function readScans(scans: any) {
-
+    return;
 }
 
 function readImage(path: any, mimetype: any) {
-
+    return;
 }
