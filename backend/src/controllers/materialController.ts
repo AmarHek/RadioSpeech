@@ -13,20 +13,50 @@ export interface matRequest extends Request {
 
 // TODO: Define request types properly
 
+export function 
+
 export function addMaterial (req: any, res: Response, next: NextFunction) {
     try {
         if (req.files) {
+            let filenameSplit = req.files.mainScan[0].originalname.split(".");
+            const mainScan = {
+                filename: filenameSplit[0] + "_main." + filenameSplit[1],
+                mimetype: req.files.mainScan[0].mimetype
+            };
+            let lateralScan = undefined;
+            if (req.files.lateralScan !== undefined) {
+                filenameSplit = req.files.lateralScan[0].originalname.split(".");
+                lateralScan = {
+                    filename: filenameSplit[0] + "_lateral." + filenameSplit[1],
+                    mimetype: req.files.lateralScan[0].mimetype
+                }
+            }
+            let preScan = undefined;
+            if (req.files.preScan !== undefined) {
+                filenameSplit = req.files.lateralScan[0].originalname.split(".");
+                preScan = {
+                    filename: filenameSplit[0] + "_pre." + filenameSplit[1],
+                    mimetype: req.files.preScan[0].mimetype
+                }
+            }
+
             const material = new Material({
                 scans: {
                     id: req.body.id,
-                    mainScan: req.files.mainScan[0].mimetype,
-                    lateralScan: (req.files.lateralScan !== undefined) ? req.files.lateralScan[0].mimetype : "None",
-                    preScan: (req.files.preScan !== undefined) ? req.files.preScan[0].mimetype : "None"
+                    mainScan: mainScan,
+                    lateralScan: lateralScan,
+                    preScan: preScan
+                },
+                coordinates: {
+                    main: [],
+                    lateral: [],
+                    pre: []
                 },
                 modality: req.body.modality,
                 parts: JSON.parse(req.body.parts),
                 judged: false
             });
+
             material.save().then((mat: Document) => {
                 console.log("Material with id " + mat._id + " added successfully");
                 res.status(201).json({
@@ -73,7 +103,7 @@ export function sampleMaterial(req: any, res: Response, next: NextFunction) {
 }
 
 export function queryMaterial(req: any, res: Response, next: NextFunction){
-    Material.find(req.query).then(mats => {
+    Material.find(req.body.query).then(mats => {
         const materials = [];
         console.log(mats);
         for (const mat of mats) {
