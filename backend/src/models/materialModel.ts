@@ -1,8 +1,23 @@
 import * as M from "./templateModel";
+import {Document} from "mongoose";
 
 export interface Pathology {
   name: string;
   present: boolean;
+}
+
+export interface BoundingBox {
+  left: number;
+  top: number;
+  height: number;
+  width: number;
+  label: string;
+}
+
+
+export interface Image {
+  data:         string;
+  contentType:  string;
 }
 
 export interface Material {
@@ -29,11 +44,6 @@ export interface Material {
   pathologies:    Pathology[];
 }
 
-export interface BoundingBox {
-  left: number;
-  top: number;
-  height: number;
-  width: number;
-  label: string;
-}
+
+
 

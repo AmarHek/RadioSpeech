@@ -7,6 +7,18 @@ export interface TemplateDB extends Document {
     timestamp:  Date;
 }
 
+/*
+const selectableSchema = new Schema({
+
+})
+
+const categorySchema = new Schema({
+    kind: "category",
+    name: String,
+    optional: Boolean,
+    selectables: selectableSchema
+})*/
+
 const templateSchema = new Schema({
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
     name: { type: String },

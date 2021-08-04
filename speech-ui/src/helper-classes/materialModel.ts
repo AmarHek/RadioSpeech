@@ -5,6 +5,19 @@ export interface Pathology {
   present: boolean;
 }
 
+export interface BoundingBox {
+  left: number;
+  top: number;
+  height: number;
+  width: number;
+  label: string;
+}
+
+export interface Image {
+  data:         string;
+  contentType:  string;
+}
+
 export interface Material {
   id:             string;
   mainScan: {
@@ -29,10 +42,3 @@ export interface Material {
   pathologies:    Pathology[];
 }
 
-export interface BoundingBox {
-  left: number;
-  top: number;
-  height: number;
-  width: number;
-  label: string;
-}

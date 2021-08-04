@@ -13,29 +13,29 @@ export interface matRequest extends Request {
 
 // TODO: Define request types properly
 
-export function 
+export function filename(originalname: string, suffix: string): string {
+    const nameSplit = originalname.split(".");
+    return nameSplit[0] + "_" + suffix + "." + nameSplit[1] as string;
+}
 
 export function addMaterial (req: any, res: Response, next: NextFunction) {
     try {
         if (req.files) {
-            let filenameSplit = req.files.mainScan[0].originalname.split(".");
             const mainScan = {
-                filename: filenameSplit[0] + "_main." + filenameSplit[1],
+                filename: filename(req.files.mainScan[0].originalname, req.files.mainScan[0].fieldname),
                 mimetype: req.files.mainScan[0].mimetype
             };
             let lateralScan = undefined;
             if (req.files.lateralScan !== undefined) {
-                filenameSplit = req.files.lateralScan[0].originalname.split(".");
                 lateralScan = {
-                    filename: filenameSplit[0] + "_lateral." + filenameSplit[1],
+                    filename: filename(req.files.lateralScan[0].originalname, req.files.lateralScan[0].fieldname),
                     mimetype: req.files.lateralScan[0].mimetype
                 }
             }
             let preScan = undefined;
             if (req.files.preScan !== undefined) {
-                filenameSplit = req.files.lateralScan[0].originalname.split(".");
                 preScan = {
-                    filename: filenameSplit[0] + "_pre." + filenameSplit[1],
+                    filename: filename(req.files.preScan[0].originalname, req.files.preScan[0].fieldname),
                     mimetype: req.files.preScan[0].mimetype
                 }
             }

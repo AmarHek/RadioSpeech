@@ -13,7 +13,7 @@ const storageImages = multer.diskStorage({
     cb(null, path);
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + "." + file.mimetype.split("/")[1])
+    cb(null, MaterialController.filename(file.originalname, file.fieldname));
   }
 });
 
