@@ -1,6 +1,6 @@
 import Template from '../models/templateSchema';
 import fs from 'fs';
-import {NextFunction, Response} from "express";
+import {Request, NextFunction, Response} from "express";
 // import { parser } from '../excel/excelParser';
 
 /*
@@ -130,14 +130,27 @@ export function deleteTemplate(req: any, res: Response, next: NextFunction){
     });
 }
 
-export function getTemplates(req: any, res: Response, next: NextFunction){
-  Template.find()
-    .then(templates => {
-      res.status(200).json({
-        message: "Templates fetched",
-        templates: templates
-      });
-    });
+export function getTemplateList(req: any, res: Response, next: NextFunction){
+  try {
+    Template.find()
+        .then(templates => {
+          res.status(200).send(templates);
+        });
+  } catch {
+    res.status(500);
+  }
+}
+
+export function getTemplateById(req: Request, res: Response, next: NextFunction): void {
+  try {
+    Template.find({_id: req.params.id}).then(
+        template => {
+          res.status(200).send(template)
+        }
+    )
+  } catch (error) {
+    res.status(404);
+  }
 }
 
 

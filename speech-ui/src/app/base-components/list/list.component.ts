@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-import { TimeStampsService } from "../../services/time-stamps.service";
 import { DataParserService } from "../../services/dataParser.service";
 import { DisplayService } from "../../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
@@ -16,32 +15,21 @@ import {Template} from "../../../helper-classes/templateModel";
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"]
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit {
 
   templates: Template[] = [];
-  templateSub: Subscription;
-  mode = "Radiologie";
-  ui: string;
   isLoading: boolean;
 
   constructor(private http: HttpClient,
               private dataParser: DataParserService,
-              private timesService: TimeStampsService,
               private displayService: DisplayService,
               private dialog: MatDialog,
               private templateManager: TemplateManager
   ) { }
 
   ngOnInit() {
-    this.isLoading = false;
-    this.setUi();
+    this.isLoading = true;
     this.update();
-  }
-
-  private setUi(): void {
-    this.displayService.getUi().subscribe((value) => {
-      this.ui = value;
-    });
   }
 
   removeAlert(id: string) {
@@ -65,36 +53,18 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     });
   }
-/*
-  remove(generator: string): void {
-    this.http.post(environment.urlRootScala + "remove", JSON.stringify(generator)).subscribe(
-      result => { this.updateGenerators(); },
-      error => window.alert("unknown error: " + JSON.stringify(error))
-    );
-  }
-
-  updateGenerators(): void {
-    this.http.post(environment.urlRootScala + "list", "").subscribe(
-      result => {
-        this.generators = result as any;
-      },
-      error => window.alert("unknown error: " + JSON.stringify(error))
-    );
-  }*/
 
   update(): void {
-    this.templateManager.getList();
-    this.templateSub = this.templateManager.getListUpdateListener().subscribe((list: Template[]) => {
-      this.templates = list;
+    this.templateManager.getList().subscribe((templates) => {
+      this.templates = templates;
+      console.log(templates);
       this.isLoading = false;
     });
   }
 
-  ngOnDestroy(): void {
-    this.templateSub.unsubscribe();
-  }
-
   remove(id: string): void {
-    this.templateManager.remove(id);
+    this.templateManager.remove(id).subscribe(res => {
+      console.log(res);
+    });
   }
 }

@@ -20,6 +20,7 @@ export function filename(originalname: string, suffix: string): string {
 
 export function addMaterial (req: any, res: Response, next: NextFunction) {
     try {
+
         if (req.files) {
             const mainScan = {
                 filename: filename(req.files.mainScan[0].originalname, req.files.mainScan[0].fieldname),
@@ -58,60 +59,57 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
             });
 
             material.save().then((mat: Document) => {
-                console.log("Material with id " + mat._id + " added successfully");
-                res.status(201).json({
-                    message: 'Material added successfully'
-                });
+                const message = "Material with id "+ mat._id + " added successfully";
+                console.log(message);
+                res.status(201).send(message);
             });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-          message: "Unexpected behaviour"
-        })
+        res.status(500).json( "Unexpected behaviour");
     }
 }
 
-export function deleteMaterial(req: any, res: Response, next: NextFunction) {
+export function deleteMaterial(req: Request, res: Response, next: NextFunction) {
     try {
         Material.deleteOne({
             _id: req.params.id
         }).then(
             result => {
                 console.log(result);
-                res.status(200).json({
-                    message: "Material deleted"
-                });
+                res.status(200).send("Material deleted");
             });
     } catch (error) {
-        res.status(404).json({
-            message: "ID not found, could not delete",
-            error: error
-        })
+        res.status(404).send(error.message);
     }
 }
 
-export function sampleMaterial(req: any, res: Response, next: NextFunction) {
+export function sampleMaterial(req: Request, res: Response, next: NextFunction) {
   Material.find()
     .then(materials => {
       console.log(materials);
-      res.status(200).json({
-        message: "Materials fetched",
-        materials: materials
-      });
+      res.status(200).send(materials);
     });
 }
 
-export function queryMaterial(req: any, res: Response, next: NextFunction){
-    Material.find(req.body.query).then(mats => {
-        const materials = [];
-        console.log(mats);
-        for (const mat of mats) {
-            const id = mat.scans.id;
-            const mainScan = fs.readFileSync('data/images/' + id + '/mainScan.jpeg', 'base64');
-            console.log(mainScan);
-        }
-    });
+export function queryMaterial(req: Request, res: Response, next: NextFunction){
+    try {
+        Material.find(req.body.query).then(mats => {
+            const materials = [];
+            console.log(mats);
+            for (const mat of mats) {
+                const id = mat.scans.id;
+                const mainScan = fs.readFileSync('data/images/' + id + '/mainScan.jpeg', 'base64');
+                console.log(mainScan);
+            }
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export function updateMaterial(req: any, res: Response, next: NextFunction){
+
 }
 
 function readScans(scans: any) {

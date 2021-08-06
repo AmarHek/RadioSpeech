@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { map } from "rxjs/operators";
-import { Subject } from "rxjs";
+import {Observable, Subject} from "rxjs";
+import {Template} from "../../helper-classes/templateModel";
 
 
 @Injectable({
@@ -14,76 +14,48 @@ import { Subject } from "rxjs";
 // This class administrates the list of templates and executes all api calls
 // -----------------------------------
 
+// TODO: Refactor this and material-manager to be more general --> specific mappings etc. go to the actual components
+
 export class TemplateManager {
-  templates: M.Template[] = [];
-  private listUpdated = new Subject<M.Template[]>();
+
   activeUrl = environment.urlRootMongo;
 
   constructor(private http: HttpClient) {
     this.getList();
   }
 
-  getList() {
-    this.http
-      .get<{ message: string; templates: any }>(
-        this.activeUrl
-      )
-      .pipe(
-        map((getter) => {
-          return getter.templates.map((retDict) => {
-            return {
-              id: retDict._id,
-              name: retDict.name,
-              timestamp: retDict.timestamp,
-              parts: retDict.parts
-            };
-          });
-        })
-      )
-      .subscribe((transData) => {
-        this.templates = transData;
-        this.listUpdated.next([...this.templates]);
-      });
+  getList(): Observable<Template[]> {
+    return this.http.get<Template[]>(this.activeUrl);
   }
 
-  getTemplate(name: string) {
-    // this.http.post(this.activeUrl)
+  getTemplate(id: string) {
+    return this.http.get(this.activeUrl + id);
   }
 
-  getListUpdateListener() {
-    return this.listUpdated;
+  remove(id: string): Observable<Object> {
+    return this.http.delete(this.activeUrl + id);
   }
 
-  remove(id: string): void {
-    this.http
-      .delete(this.activeUrl + id)
-      .subscribe(() => {
-        this.templates = this.templates.filter((template) => template.id !== id);
-        this.listUpdated.next([...this.templates]);
-        // this.myList = update;
-      });
-    // this.timesService.removeTimeStamp(index);
-  }
-
-  addTemplate(template: M.Template) {
-    this.http
-      .post<{ message: string; templateId: string }>(
+  addTemplate(template: M.Template): Observable<Object> {
+    return this.http.post<{ message: string; templateId: string }>(
         this.activeUrl,
         template
-      )
-      .subscribe((response) => {
-        template.id = response.templateId;
-        this.templates.push(template);
-      });
+      );
   }
 
-  addJSON(postData: FormData) {
-    this.http.post<{message: string, templateId: string }>(
+  addJSON(jsonData: FormData): Observable<Object> {
+    return this.http.post<{message: string, templateId: string }>(
       this.activeUrl + "json",
-      postData
-    ).subscribe((res) => {
-      window.alert(res.message);
-    });
+      jsonData
+    );
+  }
+
+  updateTemplate(template: M.Template): Observable<any> {
+    return this.http
+      .put(this.activeUrl + template._id, {
+        parts: template.parts,
+        name: template.name,
+      });
   }
 
   /*
@@ -103,17 +75,7 @@ export class TemplateManager {
       });
   }*/
 
-  updateTemplate(template: M.Template) {
-    this.http
-      .put(this.activeUrl + template.id, {
-        parts: template.parts,
-        name: template.name,
-      })
-      .subscribe((response) => {
-        this.templates[this.templates.findIndex((t) => t.id === template.id)] = template;
-        this.listUpdated.next([...this.templates]);
-      });
-  }
+
 }
 
 

@@ -38,8 +38,9 @@ const upload = multer({
 
 export const router = express.Router();
 
-router.post("/material", upload, MaterialController.addMaterial)
-router.get("/material/all", MaterialController.sampleMaterial)
+router.post("/material", upload, MaterialController.addMaterial);
+router.post("/material/:id", MaterialController.updateMaterial);
+router.get("/material/all", MaterialController.sampleMaterial);
 router.get("/material/query", MaterialController.queryMaterial);
 router.delete("/material/:id", MaterialController.deleteMaterial)
 

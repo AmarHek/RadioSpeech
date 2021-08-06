@@ -37,7 +37,8 @@ router.post("/json", multer({
 
 router.post("", TemplateController.createTemplate);
 router.put("/:id", TemplateController.changeTemplate);
-router.get('', TemplateController.getTemplates);
+router.get('', TemplateController.getTemplateList);
+router.get("/:id", TemplateController.getTemplateById)
 router.delete("/:id", TemplateController.deleteTemplate);
 
 // TODO Excel parser

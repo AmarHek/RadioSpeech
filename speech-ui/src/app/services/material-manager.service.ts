@@ -9,58 +9,24 @@ import {Observable, Subject} from "rxjs";
   providedIn: "root"
 })
 export class MaterialManagerService {
-  activeUrl = environment.urlRootMongo + "material";
+  dataUrl = environment.urlRootMongo + "material";
   materials: M.Material[] = [];
   private materialsUpdated = new Subject<M.Material[]>();
 
   constructor(private http: HttpClient) { }
 
+  // TODO: Fuse this with template-manager (maybe) + fix hard-coded urls
+
   getMaterials() {
-    this.http.get<{message: string; materials: any }>(
-      this.activeUrl
-    ).pipe(
-      map((getter) => {
-        return getter.materials.map((mat) => {
-          return {
-            id: mat._id,
-            mainScan: mat.mainScan,
-            lateralScan: mat.lateralScan,
-            preScan: mat.preScan,
-            modality: mat.modality,
-            parts: mat.parts,
-            pathologies: mat.pathologies,
-            judged: mat.judged
-          };
-        });
-      })
-    ).subscribe((transData) => {
-      this.materials = transData;
-    });
+    return this.http.get<{message: string; materials: any }>(
+      this.dataUrl
+    )
   }
 
   getMaterialsToJudge() {
-    this.http.get<{message: string; materials: any }>(
-      this.activeUrl + "/query"
-    ).pipe(
-      map((getter) => {
-        return getter.materials.map((mat) => {
-          return {
-            id: mat._id,
-            mainScan: mat.mainScan,
-            lateralScan: mat.lateralScan,
-            preScan: mat.preScan,
-            coordinates: mat.coordinates,
-            modality: mat.modality,
-            parts: mat.parts,
-            pathologies: mat.pathologies,
-            judged: mat.judged
-          };
-        });
-      })
-    ).subscribe((transData) => {
-      this.materials = transData;
-      this.materialsUpdated.next([...this.materials]);
-    });
+    return this.http.get<{message: string; materials: any }>(
+      this.dataUrl + "/query"
+    )
   }
 
   getMaterialUpdateListener() {
@@ -69,15 +35,14 @@ export class MaterialManagerService {
 
   addMaterial(formData: FormData): Observable<{ messsage: string }> {
     return this.http.post<{ messsage: string }>(
-        this.activeUrl,
+        this.dataUrl,
         formData
       );
   }
 
-  deleteMaterial(id: string): void {
-    this.http.delete(this.activeUrl + id)
-      .subscribe(() => {
-        this.materials = this.materials.filter((material) => material.id !== id);
-      });
+  deleteMaterial(id: string): Observable<Object> {
+    return this.http.delete(this.dataUrl + id);
   }
+
+
 }

@@ -21,7 +21,7 @@ export interface Image {
 }
 
 export interface Material {
-  id:             string;
+  _id:             string;
   mainScan: {
     data:           string;
     contentType:    string;

@@ -10,7 +10,7 @@ export interface TextExtractor {
 }
 
 export interface Template {
-  id: string;
+  _id: string;
   name: string;
   timestamp: Date;
   parts: TopLevel[];

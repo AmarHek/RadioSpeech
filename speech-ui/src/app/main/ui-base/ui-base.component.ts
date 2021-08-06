@@ -11,6 +11,7 @@ import {TemplateManager} from "../../services/template-manager.service";
 import {InputParserService} from "../../services/input-parser.service";
 import {Subscription} from "rxjs";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {Template} from "../../../helper-classes/templateModel";
 
 @Component({
   selector: "app-workspace",
@@ -33,7 +34,7 @@ export class UiBaseComponent implements OnInit, OnDestroy {
 
   // for node server
   private textSub: Subscription;
-  routeName: string;
+  templateID: string;
 
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
@@ -60,16 +61,12 @@ export class UiBaseComponent implements OnInit, OnDestroy {
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.has("id")) {
-        this.routeName = ps.get("id");
-        this.templateManager.getList();
-        this.textSub = this.templateManager.getListUpdateListener()
-        .subscribe((list: any) => {
-          console.log("sub");
-          const template = list.find((d) => d.name === this.routeName);
+        this.templateID = ps.get("id");
+        this.templateManager.getTemplate(this.templateID).subscribe((template: Template) => {
           if (template === undefined) {
             window.alert("Dieses Dictionary existiert nicht! " +
               "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-          } else if (!this.parts) {
+          } else {
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts, false);
@@ -78,25 +75,6 @@ export class UiBaseComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  /*
-  getData() {
-    this.route.paramMap.subscribe(ps => {
-      if (ps.get("name")) {
-        this.http.post(environment.urlRootScala + "get", JSON.stringify(ps.get("name"))).subscribe(
-          worked => {
-            this.parts = this.dataParser.convertModel(worked as any, true);
-            this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-            this.categories = this.dataParser.extractCategories(this.parts, false);
-            this.inputParser.init(this.parts);
-            console.log(this.parts);
-            this.generateDownloadJson(this.parts);
-          },
-          error => window.alert("An unknown error occurred: " + JSON.stringify(error))
-        );
-      }
-    });
-  }*/
 
   generateDownloadJson(jsonData) {
     const json = JSON.stringify(jsonData);

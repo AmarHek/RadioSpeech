@@ -28,8 +28,8 @@ export class UploadMaterialComponent implements OnInit {
 
   private updateTemplateList(): void {
     this.templateManager.getList();
-    this.templateManager.getListUpdateListener().subscribe((list: Template[]) => {
-      this.templates = list;
+    this.templateManager.getList().subscribe((templates) => {
+      this.templates = templates;
     });
   }
 

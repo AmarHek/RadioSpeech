@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
-import { TimeStampsService } from "../../services/time-stamps.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TemplateManager} from "../../services/template-manager.service";
 import {getFileExtension} from "../../../helper-classes/util";
@@ -24,7 +23,6 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
-              private timesService: TimeStampsService,
               private templateManager: TemplateManager) { }
 
   ngOnInit() {
