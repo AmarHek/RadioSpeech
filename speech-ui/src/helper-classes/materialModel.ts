@@ -19,27 +19,18 @@ export interface Image {
 }
 
 export interface Material {
-  _id:              string;
-  mainScan: {
-    data:           string;
-    contentType:    string;
-  };
-  lateralScan: {
-    data:           string;
-    contentType:    string;
-  };
-  preScan: {
-    data:           string;
-    contentType:    string;
-  };
+  _id:            string;
+  mainScan:       Image;
+  lateralScan:    Image;
+  preScan:        Image;
   coordinates?: {
-    main?:          BoundingBox[];
-    lateral?:       BoundingBox[];
-    pre?:           BoundingBox[];
+    main?:         BoundingBox[];
+    lateral?:      BoundingBox[];
+    pre?:          BoundingBox[];
   }
-  modality:         string;
-  parts:            M.TopLevel[];
-  pathologies:      Pathology[];
+  modality:       string;
+  parts:          M.TopLevel[];
+  pathologies:    Pathology[];
 }
 
 export interface MaterialUpdate {

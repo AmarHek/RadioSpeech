@@ -1,8 +1,10 @@
-import Material from '../models/materialSchema';
+import MaterialSchema, {ImageDB, MaterialDB} from '../models/materialSchema';
 import fs from 'fs';
 import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import * as path from "path";
+import {Image, Material} from "../models/materialModel";
+import assert from "assert";
 
 /*
 export interface matRequest extends Request {
@@ -41,7 +43,7 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
                 }
             }
 
-            const material = new Material({
+            const material = new MaterialSchema({
                 scans: {
                     id: req.body.id,
                     mainScan: mainScan,
@@ -72,7 +74,7 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
 
 export function deleteMaterial(req: Request, res: Response, next: NextFunction) {
     try {
-        Material.deleteOne({
+        MaterialSchema.deleteOne({
             _id: req.params.id
         }).then(
             result => {
@@ -84,38 +86,82 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction) 
     }
 }
 
+export function updateMaterial(req: any, res: Response, next: NextFunction){
+
+}
+
 export function sampleMaterial(req: Request, res: Response, next: NextFunction) {
-  Material.find()
+  MaterialSchema.find()
     .then(materials => {
       console.log(materials);
       res.status(200).send(materials);
     });
 }
 
+/*export function queryMaterial(req: Request, res: Response, next: NextFunction){
+    try {
+        MaterialSchema.find(req.body.query).then(matsDB => {
+            assert(matsDB.length > 0);
+            const materials = [];
+            for (const matDB of matsDB) {
+                const scan_id = matDB.scans.id;
+                const mainScan = readScan(scan_id, matDB.scans.mainScan);
+                const lateralScan = (matDB.scans.lateralScan !== undefined) ?
+                    readScan(scan_id, matDB.scans.lateralScan) : undefined;
+                const preScan = (matDB.scans.preScan !== undefined) ?
+                    readScan(scan_id, matDB.scans.preScan) : undefined;
+                const mat = generateMaterial(matDB, mainScan, lateralScan, preScan);
+                materials.push(mat);
+            }
+            res.status(200).send(materials);
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}*/
+
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
-        Material.find(req.body.query).then(mats => {
-            const materials = [];
-            console.log(mats);
-            for (const mat of mats) {
-                const id = mat.scans.id;
-                const mainScan = fs.readFileSync('data/images/' + id + '/mainScan.jpeg', 'base64');
-                console.log(mainScan);
-            }
+        MaterialSchema.find(req.body.query).then(matsDB => {
+            assert(matsDB.length > 0);
+            res.status(200).send(matsDB);
         });
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
-export function updateMaterial(req: any, res: Response, next: NextFunction){
 
+// Utility functions
+
+function readScan(scan_id: string, imageFile: ImageDB, imgRoot: string = 'data/images'): Image {
+    try {
+        const img_path = path.join(imgRoot, scan_id, imageFile.filename);
+        const img_base64 = fs.readFileSync(img_path, 'base64');
+        return {
+            data: img_base64,
+            contentType: imageFile.mimetype
+        };
+    } catch (error) {
+        return error;
+    }
 }
 
-function readScans(scans: any) {
-    return;
-}
+function generateMaterial(matDB: MaterialDB, mainScan: Image, lateralScan?: Image, preScan?: Image): Material{
+    const material: Material = {
+        _id: matDB._id,
+        mainScan: mainScan,
+        coordinates: matDB.coordinates,
+        modality: matDB.modality,
+        parts: matDB.parts,
+        pathologies: matDB.pathologies
+    }
+    if (lateralScan !== undefined) {
+        material.lateralScan = lateralScan;
+    }
+    if (preScan !== undefined) {
+        material.preScan = preScan;
+    }
 
-function readImage(path: any, mimetype: any) {
-    return;
+    return material;
 }

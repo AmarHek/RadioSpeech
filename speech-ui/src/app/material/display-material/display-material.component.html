@@ -11,7 +11,8 @@
       <th>Modalität</th>
     </tr>
     <tr *ngFor="let material of materials">
-      <td><img alt="Aufnahme nicht vorhanden"
+      <td><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+      alt="Aufnahme nicht vorhanden"
                /></td>
       <td></td>
       <td></td>

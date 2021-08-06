@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import path from "path";
 
 import * as materialRoutes from './routes/materialRoutes';
 import * as templateRoutes from './routes/templateRoutes';
@@ -35,6 +36,8 @@ app.use((req, res, next) => {
     'GET, POST, PATCH, PUT, DELETE, OPTIONS');
   next();
 });
+console.log(path.join(__dirname, "../data/images"));
+app.use(express.static(path.join(__dirname,"../data/images")));
 
 app.use("/radio/database", materialRoutes.router);
 app.use("/radio/database", templateRoutes.router);
