@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {TemplateManager} from "../../services/template-manager.service";
+import {BackendCallerService} from "../../services/backend-caller.service";
 import {getFileExtension} from "../../../helper-classes/util";
 
 @Component({
@@ -23,7 +23,7 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
-              private templateManager: TemplateManager) { }
+              private templateManager: BackendCallerService) { }
 
   ngOnInit() {
     this.initForm();
@@ -63,7 +63,7 @@ export class UploadComponent implements OnInit {
     if (extension === "xlsx") {
       // this.templateManager.addExcel(postData);
     } else if (extension === "json") {
-      this.templateManager.addJSON(postData);
+      this.templateManager.addTemplateFromJSON(postData);
     } else {
       window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
     }

@@ -1,5 +1,4 @@
 import * as M from "./templateModel";
-import {Document} from "mongoose";
 
 export interface Pathology {
   name: string;
@@ -42,6 +41,16 @@ export interface Material {
   modality:       string;
   parts:          M.TopLevel[];
   pathologies:    Pathology[];
+}
+
+export interface MaterialUpdate {
+  parts:        M.TopLevel[];
+  coordinates: {
+    main?:      BoundingBox[];
+    lateral?:   BoundingBox[];
+    pre?:       BoundingBox[];
+  };
+  judged:       boolean
 }
 
 

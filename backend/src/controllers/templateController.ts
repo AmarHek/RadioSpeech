@@ -80,7 +80,7 @@ export function createJSONTemplate(req: any, res: Response, next: NextFunction) 
   });
   template.save().then(result => {
     res.status(201).json({
-      message: "TemplateModel added successfully",
+      message: "Template added successfully",
       postId: result._id
     });
   });
@@ -94,7 +94,7 @@ export function createTemplate(req: any, res: Response, next: NextFunction) {
   });
   template.save().then(result => {
     res.status(201).json({
-      message: 'TemplateModel added successfully',
+      message: 'Template added successfully',
       postId: result._id
     });
   });
@@ -145,7 +145,7 @@ export function getTemplateById(req: Request, res: Response, next: NextFunction)
   try {
     Template.find({_id: req.params.id}).then(
         template => {
-          res.status(200).send(template)
+          res.status(200).send(template[0])
         }
     )
   } catch (error) {

@@ -66,7 +66,7 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json( "Unexpected behaviour");
+        res.status(500).send( "Unexpected behaviour");
     }
 }
 

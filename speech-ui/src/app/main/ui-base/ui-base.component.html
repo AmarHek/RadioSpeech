@@ -15,9 +15,7 @@
               class="btn btn-outline-secondary">Rest normal</button>
       <button id="reset-button" (click)="reset()"
               class="btn btn-outline-secondary">Zurücksetzen</button>
-      <button id="refresh" title="Seite neu laden" (click)="refreshPage()"
-              class="btn btn-outline-secondary">Neu Laden</button>
-      <button id="back" title="Go back to last page" (click)="pageBack()"
+      <button id="back" title="Go back to list" [routerLink]="['/', 'list']"
               class="btn btn-outline-secondary">Zurück</button>
       <a class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
         [href]="downJson" download="befund.json">Download JSON</a>

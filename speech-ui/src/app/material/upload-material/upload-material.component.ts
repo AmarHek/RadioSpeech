@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import {MaterialManagerService} from "../../services/material-manager.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {TemplateManager} from "../../services/template-manager.service";
+import {BackendCallerService} from "../../services/backend-caller.service";
 import * as M from "../../../helper-classes/templateModel";
 import {Template} from "../../../helper-classes/templateModel";
 import {getFileExtension} from "../../../helper-classes/util";
@@ -14,8 +13,7 @@ import {nanoid} from "nanoid";
 })
 export class UploadMaterialComponent implements OnInit {
 
-  constructor(private materialManager: MaterialManagerService,
-              private templateManager: TemplateManager) { }
+  constructor(private backendCaller: BackendCallerService) { }
 
   uploadForm: FormGroup;
   templates: M.Template[];
@@ -27,8 +25,7 @@ export class UploadMaterialComponent implements OnInit {
   }
 
   private updateTemplateList(): void {
-    this.templateManager.getList();
-    this.templateManager.getList().subscribe((templates) => {
+    this.backendCaller.getTemplateList().subscribe((templates) => {
       this.templates = templates;
     });
   }
@@ -99,6 +96,8 @@ export class UploadMaterialComponent implements OnInit {
     const n_files = this.uploadForm.get("mainScans").value.length;
     let progress = 0;
 
+    // TODO: Add progress bar
+
     for (let i = 0; i < n_files; i++) {
       const formData = new FormData();
       // TODO: Add parts upload (+ syntax check), which overrides the default parts
@@ -114,8 +113,7 @@ export class UploadMaterialComponent implements OnInit {
         formData.append("preScan", preScans[i]);
       }
 
-      this.materialManager.addMaterial(formData).subscribe(
-
+      this.backendCaller.addMaterial(formData).subscribe(
       );
     }
     this.initForm();

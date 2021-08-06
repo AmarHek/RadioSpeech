@@ -32,6 +32,7 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
 import { DisplayMaterialComponent } from "./material/display-material/display-material.component";
 import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
       ],
       {useHash: true, relativeLinkResolution: "legacy"}
     ),
-    FontAwesomeModule
+    FontAwesomeModule,
+    CommonModule
   ],
   providers: [DisplayService,
     {provide: DateAdapter, useClass: AppDateAdapter},

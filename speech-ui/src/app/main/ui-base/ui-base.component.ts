@@ -1,13 +1,12 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 
-import {environment} from "../../../environments/environment";
 import * as M from "../../../helper-classes/templateModel";
 import {DataParserService} from "../../services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import {TemplateManager} from "../../services/template-manager.service";
+import {BackendCallerService} from "../../services/backend-caller.service";
 import {InputParserService} from "../../services/input-parser.service";
 import {Subscription} from "rxjs";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
@@ -19,7 +18,7 @@ import {Template} from "../../../helper-classes/templateModel";
   styleUrls: ["./ui-base.component.scss"],
 })
 
-export class UiBaseComponent implements OnInit, OnDestroy {
+export class UiBaseComponent implements OnInit {
 
   parts: M.TopLevel[];
   defaultParts: M.TopLevel[];
@@ -44,16 +43,12 @@ export class UiBaseComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserService,
-              private templateManager: TemplateManager,
+              private templateManager: BackendCallerService,
               private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.getData();
-  }
-
-  ngOnDestroy(): void {
-    this.textSub.unsubscribe();
   }
 
   // TODO: Fix double loading of template when reloading the page
@@ -114,14 +109,6 @@ export class UiBaseComponent implements OnInit, OnDestroy {
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 5);
     setTimeout(() => this.resetText(), 5);
-  }
-
-  refreshPage() {
-    window.location.reload();
-  }
-
-  pageBack() {
-    this._location.back();
   }
 
 }

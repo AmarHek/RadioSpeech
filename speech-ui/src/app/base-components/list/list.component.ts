@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
 import { DataParserService } from "../../services/dataParser.service";
 import { DisplayService } from "../../services/display.service";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
-import { Subscription } from "rxjs";
-import {TemplateManager} from "../../services/template-manager.service";
+import {BackendCallerService} from "../../services/backend-caller.service";
 import {Template} from "../../../helper-classes/templateModel";
 
 
@@ -24,7 +22,7 @@ export class ListComponent implements OnInit {
               private dataParser: DataParserService,
               private displayService: DisplayService,
               private dialog: MatDialog,
-              private templateManager: TemplateManager
+              private backendCaller: BackendCallerService
   ) { }
 
   ngOnInit() {
@@ -55,7 +53,7 @@ export class ListComponent implements OnInit {
   }
 
   update(): void {
-    this.templateManager.getList().subscribe((templates) => {
+    this.backendCaller.getTemplateList().subscribe((templates) => {
       this.templates = templates;
       console.log(templates);
       this.isLoading = false;
@@ -63,7 +61,7 @@ export class ListComponent implements OnInit {
   }
 
   remove(id: string): void {
-    this.templateManager.remove(id).subscribe(res => {
+    this.backendCaller.deleteTemplate(id).subscribe(res => {
       console.log(res);
     });
   }

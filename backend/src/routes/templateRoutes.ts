@@ -31,15 +31,15 @@ const storageJSON = multer.diskStorage({
 
 export const router = express.Router();
 
-router.post("/json", multer({
+router.post("/template/json", multer({
     storage: storageJSON
 }).single("file"), TemplateController.createJSONTemplate);
 
-router.post("", TemplateController.createTemplate);
-router.put("/:id", TemplateController.changeTemplate);
-router.get('', TemplateController.getTemplateList);
-router.get("/:id", TemplateController.getTemplateById)
-router.delete("/:id", TemplateController.deleteTemplate);
+router.post("/template", TemplateController.createTemplate);
+router.put("/template/:id", TemplateController.changeTemplate);
+router.get('/template', TemplateController.getTemplateList);
+router.get("/template/:id", TemplateController.getTemplateById)
+router.delete("/template/:id", TemplateController.deleteTemplate);
 
 // TODO Excel parser
 /*

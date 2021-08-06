@@ -5,7 +5,7 @@ import * as M from "../../helper-classes/templateModel";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";
-import { TemplateManager } from "../services/template-manager.service";
+import { BackendCallerService } from "../services/backend-caller.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -45,7 +45,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private dictManager: TemplateManager,
+    private dictManager: BackendCallerService,
     private router: Router
   ) { }
   @ViewChildren("myParts") myParts;
@@ -138,7 +138,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
       if (ps.has("name")) {
         this.routeName = ps.get("name");
         this.isLoading = true;
-        this.dictManager.getList();
+        this.dictManager.getTemplateList();
         this.editSub = this.dictManager
           .getListUpdateListener()
           .subscribe((list: M.Template[]) => {
