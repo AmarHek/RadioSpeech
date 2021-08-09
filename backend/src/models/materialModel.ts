@@ -38,16 +38,6 @@ export interface Material {
   judged:         boolean;
 }
 
-export interface MaterialUpdate {
-  parts:        M.TopLevel[];
-  coordinates: {
-    main?:      BoundingBox[];
-    lateral?:   BoundingBox[];
-    pre?:       BoundingBox[];
-  };
-  judged:       boolean
-}
-
 
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as M from "../../../helper-classes/templateModel";
-import {Material, MaterialUpdate} from "../../../helper-classes/materialModel";
+import {Material} from "../../../helper-classes/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {ActivatedRoute} from "@angular/router";
 import {DataParserService} from "../../services/dataParser.service";
@@ -66,7 +66,9 @@ export class JudgeMatComponent implements OnInit {
   }
 
   submit() {
-
+    this.backendCaller.updateMaterial(this.material).subscribe(res => {
+      window.alert(res.message);
+    });
   }
 
 }

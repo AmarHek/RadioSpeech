@@ -2,10 +2,9 @@ import { Injectable } from "@angular/core";
 import * as M from "../../helper-classes/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import {Observable, Subject} from "rxjs";
+import {Observable} from "rxjs";
 import {Template} from "../../helper-classes/templateModel";
 import {Material} from "../../helper-classes/materialModel";
-import * as path from "path";
 
 
 @Injectable({
@@ -67,7 +66,7 @@ addTemplateFromExcel(postData: FormData) {
     return this.http.delete(this.templateUrl + id);
   }
 
-  updateTemplate(template: M.Template): Observable<any> {
+  updateTemplate(template: M.Template) {
     return this.http
       .put(this.templateUrl + template._id, {
         parts: template.parts,
@@ -107,6 +106,14 @@ addTemplateFromExcel(postData: FormData) {
       this.materialUrl + "query/",
       query
     )
+  }
+
+  updateMaterial(material: Material) {
+    return this.http.put<{message: string}>(this.materialUrl + material._id, {
+      parts: material.parts,
+      coordinates: material.coordinates,
+      judged: true
+    });
   }
 
 }

@@ -100,7 +100,7 @@ export function createTemplate(req: any, res: Response, next: NextFunction) {
   });
 }
 
-export function updateTemplate(req: any, res: Response, next: NextFunction) {
+export function updateTemplate(req: Request, res: Response, next: NextFunction) {
   const newTemplate = new Template({
     _id: req.params.id,
     parts: req.body.parts,
@@ -112,9 +112,7 @@ export function updateTemplate(req: any, res: Response, next: NextFunction) {
     }, newTemplate)
     .then(result => {
       console.log(result);
-      res.status(200).json({
-        message: "Update successful"
-      });
+      res.status(200).send("Update successful");
     });
 }
 

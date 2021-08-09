@@ -1,7 +1,7 @@
 import MaterialSchema from '../models/materialSchema';
 import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
-import assert from "assert";
+import { Material } from "../models/materialModel";
 
 /*
 export interface matRequest extends Request {
@@ -83,21 +83,41 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction) 
     }
 }
 
-export function updateMaterial(req: any, res: Response, next: NextFunction){
-
+export function updateMaterial(req: Request, res: Response, next: NextFunction){
+    try {
+        MaterialSchema.updateOne({
+            _id: req.params.id
+        }, {
+            parts: req.body.parts,
+            coordinates: req.body.coordinates,
+            judged: req.body.judged
+        }).then(response => {
+            console.log(response);
+            if (response.ok === 1) {
+                if (response.nModified === 1) {
+                    res.status(200).json({message: "Update successful"});
+                } else {
+                    res.status(200).json({message: "No changes detected with your submit."});
+                }
+            } else {
+                res.status(409).json({message: "Something went wrong during the update."});
+            }
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 }
 
 export function sampleMaterial(req: Request, res: Response, next: NextFunction) {
   MaterialSchema.find()
-    .then(materials => {
-      console.log(materials);
+    .then((materials: Material[]) => {
       res.status(200).send(materials);
     });
 }
 
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
-        MaterialSchema.find(req.body).then(mats => {
+        MaterialSchema.find(req.body).then((mats: Material[]) => {
             res.status(200).send(mats);
         });
     } catch (error) {
@@ -107,9 +127,7 @@ export function queryMaterial(req: Request, res: Response, next: NextFunction){
 
 export function getMaterialById(req: Request, res: Response, next: NextFunction){
     try {
-        console.log()
         MaterialSchema.find({_id: req.params.id}).then(mats => {
-            console.log(mats);
             res.status(200).send(mats[0]);
         });
     } catch (error) {
