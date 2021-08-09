@@ -1,14 +1,18 @@
 <div class="main">
   <div class="header">
     <div class="buttons">
-      <button id="normal-button" (click)="makeNormal()"
-              class="btn btn-outline-secondary">Rest normal</button>
-      <button id="reset-button" (click)="reset()"
-              class="btn btn-outline-secondary">Zurücksetzen</button>
-      <button id="back" title="Go back to list" [routerLink]="['/', 'list']"
+      <button id="back" title="Go back to list"
+              [routerLink]="['/', 'listMat']"
               class="btn btn-outline-secondary">Zurück</button>
-      <a class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
-         [href]="downJson" download="befund.json">Download JSON</a>
+      <button id="open-images"
+              (click)="openImageInWindow()"
+              class="btn btn-outline-secondary">Bilder anzeigen</button>
+      <button id="normal-button"
+              (click)="makeNormal()"
+              class="btn btn-outline-secondary">Rest normal</button>
+      <button id="submit" title="Änderungen speichern"
+              (click)="submit()"
+              class="btn btn-outline-primary">Speichern</button>
     </div>
   </div>
 

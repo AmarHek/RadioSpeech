@@ -8,7 +8,7 @@ import fs from "fs";
 const storageImages = multer.diskStorage({
 // TODO: Path dependencies!
   destination: (req, file, cb) => {
-    const path = Path.join("data/images", req.body.id);
+    const path = Path.join("data/images/", req.body.id);
     fs.mkdirSync(path, {recursive: true});
     cb(null, path);
   },
@@ -38,10 +38,11 @@ const upload = multer({
 
 export const router = express.Router();
 
-router.post("/material", upload, MaterialController.addMaterial);
+router.post("/material/", upload, MaterialController.addMaterial);
 router.put("/material/:id", MaterialController.updateMaterial);
-router.get("/material/sample", MaterialController.sampleMaterial);
-router.post("/material/query", MaterialController.queryMaterial);
+router.get("/material/sample/", MaterialController.sampleMaterial);
+router.get("/material/:id", MaterialController.getMaterialById)
+router.post("/material/query/", MaterialController.queryMaterial);
 router.delete("/material/:id", MaterialController.deleteMaterial)
 
 

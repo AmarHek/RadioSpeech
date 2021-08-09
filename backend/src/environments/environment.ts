@@ -4,5 +4,8 @@
 
 export const environment = {
   production: false,
-  urlRootMongo: "mongodb://127.0.0.1:27017/radio"
+  server: "http://localhost:3000",
+  database: "radio/database",
+  template: "template",
+  material: "material"
 };

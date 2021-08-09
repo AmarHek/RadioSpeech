@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {Material} from "../../../helper-classes/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {Router} from "@angular/router";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-display-material",
@@ -13,6 +14,7 @@ export class ListMaterialComponent implements OnInit {
   constructor(private backendCaller: BackendCallerService,
               private router: Router) { }
 
+  serverUrl = environment.server;
   materials: Material[] = [];
   query: Object;
 

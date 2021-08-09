@@ -32,18 +32,18 @@
         <th>Befunden</th>
       </tr>
       <tr *ngFor="let material of this.materials">
-        <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+        <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
                              width="300px"
                              alt="Fehler beim Laden der Aufnahme"
                              (click)="openEditor(material._id)"/></td>
         <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
-          <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
+          <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                                width="300px"
                                alt="Aufnahme nicht vorhanden"
                                (click)="openEditor(material._id)"/></td>
         </ng-container>
         <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
-          <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.preScan.filename}}"
+          <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                                width="300px"
                                alt="Aufnahme nicht vorhanden"
                                (click)="openEditor(material._id)"/></td>

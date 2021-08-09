@@ -5,6 +5,7 @@ import { environment } from "../../environments/environment";
 import {Observable, Subject} from "rxjs";
 import {Template} from "../../helper-classes/templateModel";
 import {Material} from "../../helper-classes/materialModel";
+import * as path from "path";
 
 
 @Injectable({
@@ -19,25 +20,28 @@ import {Material} from "../../helper-classes/materialModel";
 
 export class BackendCallerService {
 
-  rootUrl = environment.urlRootMongo;
-  templateUrl = "template/"
-  materialUrl = "material/"
+  templateUrl = environment.server + environment.database + environment.template;
+  materialUrl = environment.server + environment.database + environment.material;
 
 
   constructor(private http: HttpClient) {}
 
+  getTemplateById(id: string): Observable<Template> {
+      return this.http.get<Template>(this.templateUrl + id);
+  }
+
   // TEMPLATE API
 
-  addTemplate(template: M.Template): Observable<Object> {
+  addTemplate(template: M.Template): Observable<{ message: string; templateId: string }> {
     return this.http.post<{ message: string; templateId: string }>(
-      this.rootUrl + this.templateUrl,
+      this.templateUrl,
       template
     );
   }
 
-  addTemplateFromJSON(jsonData: FormData): Observable<Object> {
+  addTemplateFromJSON(jsonData: FormData): Observable<{message: string, templateId: string }> {
     return this.http.post<{message: string, templateId: string }>(
-      this.rootUrl + this.templateUrl + "json",
+      this.templateUrl + "json/",
       jsonData
     );
   }
@@ -60,47 +64,47 @@ addTemplateFromExcel(postData: FormData) {
 }*/
 
   deleteTemplate(id: string): Observable<Object> {
-    return this.http.delete(this.rootUrl + this.templateUrl + id);
+    return this.http.delete(this.templateUrl + id);
   }
 
   updateTemplate(template: M.Template): Observable<any> {
     return this.http
-      .put(this.rootUrl + this.templateUrl + template._id, {
+      .put(this.templateUrl + template._id, {
         parts: template.parts,
         name: template.name,
       });
   }
 
   getTemplateList(): Observable<Template[]> {
-    return this.http.get<Template[]>(this.rootUrl + this.templateUrl);
-  }
-
-  getTemplate(id: string) {
-    return this.http.get(this.rootUrl + this.templateUrl + id);
+    return this.http.get<Template[]>(this.templateUrl);
   }
 
   // MATERIAL API
 
   addMaterial(formData: FormData): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
-      this.rootUrl + this.materialUrl,
+      this.materialUrl,
       formData
     );
   }
 
+  getMaterialById(id: string): Observable<Material> {
+    return this.http.get<Material>(this.materialUrl + id);
+  }
+
   deleteMaterial(id: string): Observable<Object> {
-    return this.http.delete(this.rootUrl + this.materialUrl + id);
+    return this.http.delete(this.materialUrl + id);
   }
 
   getMaterials(): Observable<Material[]> {
     return this.http.get<Material[]>(
-      this.rootUrl + this.materialUrl + "sample"
+      this.materialUrl + "sample/"
     )
   }
 
   queryMaterials(query: Object): Observable<Material[]> {
     return this.http.post<Material[]>(
-      this.rootUrl + this.materialUrl + "query",
+      this.materialUrl + "query/",
       query
     )
   }

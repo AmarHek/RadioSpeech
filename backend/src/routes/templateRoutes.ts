@@ -6,7 +6,7 @@ import * as TemplateController from "../controllers/templateController";
 
 const storageExcel = multer.diskStorage({
     destination: (req, file, cb) => {
-        const path = "data/excels";
+        const path = "data/excels/";
         fs.mkdirSync(path, { recursive: true });
         cb(null, path);
     },
@@ -19,7 +19,7 @@ const storageExcel = multer.diskStorage({
 
 const storageJSON = multer.diskStorage({
     destination: (req, file, cb) => {
-        const path = "data/json";
+        const path = "data/json/";
         fs.mkdirSync(path, { recursive: true });
         cb(null, path);
     },
@@ -31,13 +31,13 @@ const storageJSON = multer.diskStorage({
 
 export const router = express.Router();
 
-router.post("/template/json", multer({
+router.post("/template/json/", multer({
     storage: storageJSON
 }).single("file"), TemplateController.createJSONTemplate);
 
-router.post("/template", TemplateController.createTemplate);
-router.put("/template/:id", TemplateController.changeTemplate);
-router.get('/template', TemplateController.getTemplateList);
+router.post("/template/", TemplateController.createTemplate);
+router.put("/template/:id", TemplateController.updateTemplate);
+router.get('/template/', TemplateController.getTemplateList);
 router.get("/template/:id", TemplateController.getTemplateById)
 router.delete("/template/:id", TemplateController.deleteTemplate);
 

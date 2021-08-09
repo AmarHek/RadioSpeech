@@ -100,7 +100,7 @@ export function createTemplate(req: any, res: Response, next: NextFunction) {
   });
 }
 
-export function changeTemplate(req: any, res: Response, next: NextFunction) {
+export function updateTemplate(req: any, res: Response, next: NextFunction) {
   const newTemplate = new Template({
     _id: req.params.id,
     parts: req.body.parts,

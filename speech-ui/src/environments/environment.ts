@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  urlRootMongo: "http://localhost:3000/radio/database/"
-
+  server: "http://localhost:3000/",
+  database: "radio/database/",
+  template: "template/",
+  material: "material/"
 };
 
 /*

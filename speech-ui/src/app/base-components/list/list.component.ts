@@ -48,6 +48,7 @@ export class ListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.remove(id);
+        this.update();
       }
     });
   }

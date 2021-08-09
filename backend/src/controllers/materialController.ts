@@ -97,10 +97,22 @@ export function sampleMaterial(req: Request, res: Response, next: NextFunction) 
 
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
-        MaterialSchema.find(req.body).then(matsDB => {
-            res.status(200).send(matsDB);
+        MaterialSchema.find(req.body).then(mats => {
+            res.status(200).send(mats);
         });
     } catch (error) {
         res.status(500).send(error.message);
+    }
+}
+
+export function getMaterialById(req: Request, res: Response, next: NextFunction){
+    try {
+        console.log()
+        MaterialSchema.find({_id: req.params.id}).then(mats => {
+            console.log(mats);
+            res.status(200).send(mats[0]);
+        });
+    } catch (error) {
+        res.status(404).send(error.message);
     }
 }

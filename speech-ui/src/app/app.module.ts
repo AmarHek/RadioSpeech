@@ -33,6 +33,7 @@ import { UploadMaterialComponent } from "./material/upload-material/upload-mater
 import { ListMaterialComponent } from "./material/list-material/list-material.component";
 import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
 import {CommonModule} from "@angular/common";
+import { ImageDisplayComponent } from './material/image-display/image-display.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {CommonModule} from "@angular/common";
     UploadMaterialComponent,
     ListMaterialComponent,
     JudgeMatComponent,
+    ImageDisplayComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,7 @@ import {CommonModule} from "@angular/common";
         {path: "upload",        component: UploadComponent},
         {path: "main/:id",      component: UiBaseComponent},
         {path: "uploadMat",     component: UploadMaterialComponent},
-        {path: "displayMat",    component: ListMaterialComponent},
+        {path: "listMat",       component: ListMaterialComponent},
         {path: "judgeMat/:id",  component: JudgeMatComponent},
         {path: "**", redirectTo: "/upload"},
       ],

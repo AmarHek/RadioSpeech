@@ -34,6 +34,7 @@ export interface Material {
   modality:       string;
   parts:          M.TopLevel[];
   pathologies:    Pathology[];
+  judged:         boolean;
 }
 
 export interface MaterialUpdate {

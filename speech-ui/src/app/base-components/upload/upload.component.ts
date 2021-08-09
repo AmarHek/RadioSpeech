@@ -23,7 +23,7 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup;
 
   constructor(private http: HttpClient, private router: Router,
-              private templateManager: BackendCallerService) { }
+              private backendCaller: BackendCallerService) { }
 
   ngOnInit() {
     this.initForm();
@@ -63,7 +63,9 @@ export class UploadComponent implements OnInit {
     if (extension === "xlsx") {
       // this.templateManager.addExcel(postData);
     } else if (extension === "json") {
-      this.templateManager.addTemplateFromJSON(postData);
+      this.backendCaller.addTemplateFromJSON(postData).subscribe((res) => {
+        window.alert(res.message);
+      });
     } else {
       window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
     }

@@ -31,10 +31,6 @@ export class UiBaseComponent implements OnInit {
 
   downJson: SafeUrl;
 
-  // for node server
-  private textSub: Subscription;
-  templateID: string;
-
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
@@ -43,7 +39,7 @@ export class UiBaseComponent implements OnInit {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserService,
-              private templateManager: BackendCallerService,
+              private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer) {
   }
 
@@ -56,8 +52,8 @@ export class UiBaseComponent implements OnInit {
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.has("id")) {
-        this.templateID = ps.get("id");
-        this.templateManager.getTemplate(this.templateID).subscribe((template: Template) => {
+        const templateID = ps.get("id");
+        this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
           if (template === undefined) {
             window.alert("Dieses Dictionary existiert nicht! " +
               "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
