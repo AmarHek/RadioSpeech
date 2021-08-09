@@ -11,6 +11,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from "@angular/material/button";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { CommonModule } from "@angular/common";
 
 import { AppComponent } from "./app.component";
 import { UploadComponent } from "./base-components/upload/upload.component";
@@ -32,8 +33,8 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepic
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
 import { ListMaterialComponent } from "./material/list-material/list-material.component";
 import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
-import {CommonModule} from "@angular/common";
 import { ImageDisplayComponent } from './material/image-display/image-display.component';
+import {PopoutService} from "./services/popout.service";
 
 @NgModule({
   declarations: [
@@ -80,7 +81,7 @@ import { ImageDisplayComponent } from './material/image-display/image-display.co
     FontAwesomeModule,
     CommonModule
   ],
-  providers: [DisplayService,
+  providers: [DisplayService, PopoutService,
     {provide: DateAdapter, useClass: AppDateAdapter},
     {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}],
   bootstrap: [AppComponent]

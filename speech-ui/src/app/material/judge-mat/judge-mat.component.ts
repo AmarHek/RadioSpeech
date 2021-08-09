@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import * as M from "../../../helper-classes/templateModel";
 import {Material} from "../../../helper-classes/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {ActivatedRoute} from "@angular/router";
 import {DataParserService} from "../../services/dataParser.service";
+import {PopoutService} from "../../services/popout.service";
+import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from '../../services/popout.tokens';
 
 @Component({
   selector: 'app-judge-mat',
@@ -19,11 +21,16 @@ export class JudgeMatComponent implements OnInit {
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
-              private dataParser: DataParserService) { }
+              private dataParser: DataParserService,
+              private popoutService: PopoutService) { }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onWindowClose(event: Event) {
+    this.popoutService.closePopoutModal();
+  }
 
   ngOnInit(): void {
     this.getData();
-    this.openImageInWindow();
   }
 
   getData() {
@@ -37,6 +44,7 @@ export class JudgeMatComponent implements OnInit {
           } else {
             this.material = material;
             this.categories = this.dataParser.extractCategories(this.material.parts, false);
+            this.openImagePopout();
           }
         });
       }
@@ -61,14 +69,20 @@ export class JudgeMatComponent implements OnInit {
     this.updateText();
   }
 
-  openImageInWindow() {
-
-  }
-
   submit() {
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
     });
+  }
+
+  openImagePopout() {
+    const modalData: PopoutData = {
+      scans: this.material.scans,
+      coordinates: this.material.coordinates
+    }
+
+    this.popoutService.openPopoutModal(modalData);
+
   }
 
 }

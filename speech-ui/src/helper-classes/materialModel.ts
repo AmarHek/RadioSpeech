@@ -26,10 +26,10 @@ export interface Material {
     lateralScan?: Image;
     preScan?: Image;
   }
-  coordinates?: {
-    main?:         BoundingBox[];
-    lateral?:      BoundingBox[];
-    pre?:          BoundingBox[];
+  coordinates: {
+    main:         BoundingBox[];
+    lateral:      BoundingBox[];
+    pre:          BoundingBox[];
   }
   modality:       string;
   parts:          M.TopLevel[];
