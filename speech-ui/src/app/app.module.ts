@@ -30,7 +30,7 @@ import {DisplayService} from "./services/display.service";
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
-import { DisplayMaterialComponent } from "./material/display-material/display-material.component";
+import { ListMaterialComponent } from "./material/list-material/list-material.component";
 import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
 import {CommonModule} from "@angular/common";
 
@@ -47,7 +47,7 @@ import {CommonModule} from "@angular/common";
     InputModalComponent,
     ConfirmDialogComponent,
     UploadMaterialComponent,
-    DisplayMaterialComponent,
+    ListMaterialComponent,
     JudgeMatComponent,
   ],
   imports: [
@@ -65,11 +65,12 @@ import {CommonModule} from "@angular/common";
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "list", component: ListComponent},
-        {path: "upload", component: UploadComponent},
-        {path: "main/:id", component: UiBaseComponent},
-        {path: "uploadMat", component: UploadMaterialComponent},
-        {path: "displayMat", component: DisplayMaterialComponent},
+        {path: "list",          component: ListComponent},
+        {path: "upload",        component: UploadComponent},
+        {path: "main/:id",      component: UiBaseComponent},
+        {path: "uploadMat",     component: UploadMaterialComponent},
+        {path: "displayMat",    component: ListMaterialComponent},
+        {path: "judgeMat/:id",  component: JudgeMatComponent},
         {path: "**", redirectTo: "/upload"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}

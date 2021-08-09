@@ -1,0 +1,62 @@
+<div class="main">
+
+  <div class="row">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem (click)="changeQuery(true)">Ja</button>
+          <button ngbDropdownItem (click)="changeQuery(false)">Nein</button>
+        </div>
+      </div>
+    </div>
+    <!--
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Pathologien (in progress)</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+            <input id="box1" type="checkbox" ngbDropdownItem><label for="box1">Kardiomegalie</label>
+            <input id="box2" type="checkbox" ngbDropdownItem><label for="box2">Pneuomnie</label>
+          </div>
+        </div>
+      </div>-->
+  </div>
+
+  <div class="table" *ngIf="this.materials.length > 0; else noEntry">
+    <table>
+      <tr>
+        <th>Frontalaufnahme</th>
+        <th>Lateralaufnahme</th>
+        <th>Voraufnahme</th>
+        <th>Modalität</th>
+        <th>Befunden</th>
+      </tr>
+      <tr *ngFor="let material of this.materials">
+        <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+                             width="300px"
+                             alt="Fehler beim Laden der Aufnahme"
+                             (click)="openEditor(material._id)"/></td>
+        <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
+          <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
+                               width="300px"
+                               alt="Aufnahme nicht vorhanden"
+                               (click)="openEditor(material._id)"/></td>
+        </ng-container>
+        <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
+          <td class="img"><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.preScan.filename}}"
+                               width="300px"
+                               alt="Aufnahme nicht vorhanden"
+                               (click)="openEditor(material._id)"/></td>
+        </ng-container>
+        <td class="text">{{displayModality(material.modality)}}</td>
+        <td class="button"><button class="btn btn-outline-primary custom-button" (click)="openEditor(material._id)">Start</button></td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+<ng-template #noEntry>Keine Einträge gefunden.</ng-template>
+<ng-template #noScan><td class="text">Keine Aufnahme vorhanden</td></ng-template>
+
+

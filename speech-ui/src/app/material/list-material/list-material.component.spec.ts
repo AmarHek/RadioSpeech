@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DisplayMaterialComponent } from './display-material.component';
+import { ListMaterialComponent } from './list-material.component';
 
 describe('DisplayMaterialComponent', () => {
-  let component: DisplayMaterialComponent;
-  let fixture: ComponentFixture<DisplayMaterialComponent>;
+  let component: ListMaterialComponent;
+  let fixture: ComponentFixture<ListMaterialComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DisplayMaterialComponent ]
+      declarations: [ ListMaterialComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DisplayMaterialComponent);
+    fixture = TestBed.createComponent(ListMaterialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

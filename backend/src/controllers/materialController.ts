@@ -97,8 +97,7 @@ export function sampleMaterial(req: Request, res: Response, next: NextFunction) 
 
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
-        MaterialSchema.find(req.body.query).then(matsDB => {
-            assert(matsDB.length > 0);
+        MaterialSchema.find(req.body).then(matsDB => {
             res.status(200).send(matsDB);
         });
     } catch (error) {
