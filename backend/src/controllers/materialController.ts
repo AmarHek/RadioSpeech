@@ -1,9 +1,6 @@
-import MaterialSchema, {ImageDB, MaterialDB} from '../models/materialSchema';
-import fs from 'fs';
+import MaterialSchema from '../models/materialSchema';
 import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
-import * as path from "path";
-import {Image, Material} from "../models/materialModel";
 import assert from "assert";
 
 /*
@@ -98,28 +95,6 @@ export function sampleMaterial(req: Request, res: Response, next: NextFunction) 
     });
 }
 
-/*export function queryMaterial(req: Request, res: Response, next: NextFunction){
-    try {
-        MaterialSchema.find(req.body.query).then(matsDB => {
-            assert(matsDB.length > 0);
-            const materials = [];
-            for (const matDB of matsDB) {
-                const scan_id = matDB.scans.id;
-                const mainScan = readScan(scan_id, matDB.scans.mainScan);
-                const lateralScan = (matDB.scans.lateralScan !== undefined) ?
-                    readScan(scan_id, matDB.scans.lateralScan) : undefined;
-                const preScan = (matDB.scans.preScan !== undefined) ?
-                    readScan(scan_id, matDB.scans.preScan) : undefined;
-                const mat = generateMaterial(matDB, mainScan, lateralScan, preScan);
-                materials.push(mat);
-            }
-            res.status(200).send(materials);
-        });
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}*/
-
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
         MaterialSchema.find(req.body.query).then(matsDB => {
@@ -129,39 +104,4 @@ export function queryMaterial(req: Request, res: Response, next: NextFunction){
     } catch (error) {
         res.status(500).send(error.message);
     }
-}
-
-
-// Utility functions
-
-function readScan(scan_id: string, imageFile: ImageDB, imgRoot: string = 'data/images'): Image {
-    try {
-        const img_path = path.join(imgRoot, scan_id, imageFile.filename);
-        const img_base64 = fs.readFileSync(img_path, 'base64');
-        return {
-            data: img_base64,
-            contentType: imageFile.mimetype
-        };
-    } catch (error) {
-        return error;
-    }
-}
-
-function generateMaterial(matDB: MaterialDB, mainScan: Image, lateralScan?: Image, preScan?: Image): Material{
-    const material: Material = {
-        _id: matDB._id,
-        mainScan: mainScan,
-        coordinates: matDB.coordinates,
-        modality: matDB.modality,
-        parts: matDB.parts,
-        pathologies: matDB.pathologies
-    }
-    if (lateralScan !== undefined) {
-        material.lateralScan = lateralScan;
-    }
-    if (preScan !== undefined) {
-        material.preScan = preScan;
-    }
-
-    return material;
 }

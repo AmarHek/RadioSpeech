@@ -12,20 +12,15 @@ export class DisplayMaterialComponent implements OnInit {
 
   constructor(private backendCaller: BackendCallerService) { }
 
-  materials: any[] = [];
+  public materials: Material[] = [];
 
   ngOnInit(): void {
     this.backendCaller.queryMaterials({judged: false}).subscribe((mats: Material[]) => {
       this.materials = mats;
-      console.log(this.materials);
+      for ( let material of this.materials) {
+        console.log(material.scans.id);
+      }
     });
   }
-
-  convertBuffer(buffer) {
-    return arrayBufferToBase64(buffer);
-  }
-
-
-
 
 }

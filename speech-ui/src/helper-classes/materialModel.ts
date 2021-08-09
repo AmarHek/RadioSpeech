@@ -14,15 +14,18 @@ export interface BoundingBox {
 }
 
 export interface Image {
-  data:         string;
-  contentType:  string;
+  filename: string;
+  mimetype: string;
 }
 
 export interface Material {
   _id:            string;
-  mainScan:       Image;
-  lateralScan:    Image;
-  preScan:        Image;
+  scans: {
+    id: string;
+    mainScan: Image;
+    lateralScan?: Image;
+    preScan?: Image;
+  }
   coordinates?: {
     main?:         BoundingBox[];
     lateral?:      BoundingBox[];

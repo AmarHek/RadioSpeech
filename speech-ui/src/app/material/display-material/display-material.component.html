@@ -2,7 +2,7 @@
   Keine unbefundeten Einträge gefunden.
 </div>
 
-<ng-container *ngIf="materials.length > 0">
+<ng-container *ngIf="this.materials.length > 0">
   <table>
     <tr>
       <th>Frontalaufnahme</th>
@@ -10,7 +10,7 @@
       <th>Voraufnahme</th>
       <th>Modalität</th>
     </tr>
-    <tr *ngFor="let material of materials">
+    <tr *ngFor="let material of this.materials">
       <td><img src="http://localhost:3000/{{material.scans.id}}/{{material.scans.mainScan.filename}}"
       alt="Aufnahme nicht vorhanden"
                /></td>

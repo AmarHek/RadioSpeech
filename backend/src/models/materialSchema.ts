@@ -1,19 +1,14 @@
 import mongoose, {Schema, Document} from 'mongoose';
 import * as M from './templateModel';
-import { Pathology, BoundingBox } from "./materialModel";
+import {Pathology, BoundingBox, Image, Material} from "./materialModel";
 
-
-export interface ImageDB extends Document {
-    filename: string;
-    mimetype: string;
-}
-
+/*
 export interface MaterialDB extends Document {
     scans: {
         id: string;
-        mainScan: ImageDB;
-        lateralScan?: ImageDB;
-        preScan?: ImageDB;
+        mainScan: Image;
+        lateralScan?: Image;
+        preScan?: Image;
     };
     coordinates?: {
         main?: BoundingBox[];
@@ -24,8 +19,7 @@ export interface MaterialDB extends Document {
     parts: M.TopLevel[];
     pathologies: Pathology[];
     judged: boolean;
-}
-
+}*/
 
 const imageSchema = new Schema({
     filename: String,
@@ -50,4 +44,4 @@ const materialSchema = new Schema({
     judged: { type: Boolean }
 });
 
-export default mongoose.model<MaterialDB>("Material", materialSchema, "material");
+export default mongoose.model<Material>("Material", materialSchema, "material");
