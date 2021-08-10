@@ -1,9 +1,8 @@
-<img src="{{serverUrl}}{{scans.id}}/{{scans.mainScan.filename}}"
+<div class="columns">
+
+<img src="{{serverUrl}}{{scans.id}}/{{currentScan.filename}}"
      height="100%"
      alt="Fehler beim Laden der Aufnahme"/>
-<img src="{{serverUrl}}{{scans.id}}/{{scans.lateralScan.filename}}"
-     height="100%"
-     alt="Fehler beim Laden der Aufnahme"/>
-<img src="{{serverUrl}}{{scans.id}}/{{scans.preScan.filename}}"
-     height="100%"
-     alt="Fehler beim Laden der Aufnahme"/>
+<canvas width="500" height="500"></canvas>
+
+</div>

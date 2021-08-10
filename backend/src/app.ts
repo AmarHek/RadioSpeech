@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from "path";
+import {environment} from "./environments/environment";
 
 import * as materialRoutes from './routes/materialRoutes';
 import * as templateRoutes from './routes/templateRoutes';

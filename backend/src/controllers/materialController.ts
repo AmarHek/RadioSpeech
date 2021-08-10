@@ -117,7 +117,7 @@ export function sampleMaterial(req: Request, res: Response, next: NextFunction) 
 
 export function queryMaterial(req: Request, res: Response, next: NextFunction){
     try {
-        MaterialSchema.find(req.body).then((mats: Material[]) => {
+        MaterialSchema.find(req.body).limit(20).then((mats: Material[]) => {
             res.status(200).send(mats);
         });
     } catch (error) {

@@ -12,6 +12,8 @@ export class ImageDisplayComponent implements OnInit {
 
   serverUrl = environment.server;
 
+  currentScan: Image;
+
   scans: {
     id: string;
     mainScan: Image;
@@ -30,6 +32,8 @@ export class ImageDisplayComponent implements OnInit {
   ngOnInit(): void {
     this.scans = this.data.scans;
     this.coordinates = this.data.coordinates;
+
+    this.currentScan = this.scans.mainScan;
   }
 
 }

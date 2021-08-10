@@ -1,4 +1,7 @@
 export const environment = {
-  production: true,
-  urlRoot: '../',
+  production: false,
+  server: "../",
+  database: "radio/database/",
+  template: "template/",
+  material: "material/"
 };
