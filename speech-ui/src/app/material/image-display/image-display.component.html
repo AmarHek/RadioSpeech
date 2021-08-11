@@ -1,8 +1,16 @@
 <div class="columns">
+  <div class="button">
+    <button class="btn btn-outline-primary"><</button>
+  </div>
 
-<img src="{{serverUrl}}{{scans.id}}/{{currentScan.filename}}"
-     height="100%"
-     alt="Fehler beim Laden der Aufnahme"/>
-<canvas width="500" height="500"></canvas>
+  <div class="image-container"
+       [ngStyle]="{width: currentWidth, height: currentHeight}">
+    <img src="{{currentScanUrl}}"
+         alt="Fehler beim Laden der Aufnahme"/>
+    <canvas class="boxCanvas" width="{{this.currentWidth}}" height="{{this.currentHeight}}"></canvas>
+  </div>
 
+  <div class="button">
+    <button class="btn btn-outline-primary">></button>
+  </div>
 </div>

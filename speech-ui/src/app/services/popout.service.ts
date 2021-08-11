@@ -57,12 +57,13 @@ export class PopoutService implements OnDestroy {
         windowInstance.document.body.innerText = '';
 
         // Create an injector with modal data
+        this.injector.create()
         const injector = this.createInjector(data);
 
         // Attach the portal
         let componentInstance;
         windowInstance.document.title = 'Image Display';
-        componentInstance = this.attachContainer(outlet, injector);
+        componentInstance = this.attachContainer(outlet, this.injector);
 
         POPOUT_MODALS['windowInstance'] = windowInstance;
         POPOUT_MODALS['outlet'] = outlet;

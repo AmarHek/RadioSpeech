@@ -1,0 +1,29 @@
+body{text-align: center;background: #f2f6f8;}
+.img{position:absolute;z-index:1;}
+
+.columns {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  grid-column-gap: 5px;
+  grid-template-areas:
+    "button canvas button";
+}
+
+.image-container {
+  grid-area: canvas;
+  height: 100%;
+  display:inline-block;
+  margin: 0 auto;
+  position: relative;
+}
+
+.boxCanvas {
+  position: relative;
+  z-index:  20;
+}
+
+.button {
+  grid-area: button;
+
+}

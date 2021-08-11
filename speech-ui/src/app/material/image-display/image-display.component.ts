@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {BoundingBox, Image} from "../../../helper-classes/materialModel";
 import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
+import {getImageDimensions} from "../../../helper-classes/util";
 
 @Component({
   selector: 'app-image-display',
@@ -12,7 +13,10 @@ export class ImageDisplayComponent implements OnInit {
 
   serverUrl = environment.server;
 
-  currentScan: Image;
+  currentScanUrl: string;
+  currentMode: string;
+  currentWidth: number;
+  currentHeight: number;
 
   scans: {
     id: string;
@@ -20,6 +24,7 @@ export class ImageDisplayComponent implements OnInit {
     lateralScan?: Image;
     preScan?: Image;
   }
+
 
   coordinates: {
     main: BoundingBox[];
@@ -33,7 +38,27 @@ export class ImageDisplayComponent implements OnInit {
     this.scans = this.data.scans;
     this.coordinates = this.data.coordinates;
 
-    this.currentScan = this.scans.mainScan;
+    this.currentMode = "main";
+    this.setCurrentScan(this.scans.mainScan.filename);
+  }
+
+  setCurrentScan(filename: string) {
+    this.currentScanUrl = this.serverUrl + this.scans.id + "/" + filename;
+    this.setCurrentDimensions();
+  }
+
+  setCurrentDimensions() {
+    let img = new Image();
+    img.src = this.currentScanUrl;
+    img.onload = (event) => {
+      let loadedImage = event.currentTarget as HTMLImageElement;
+      this.currentWidth = loadedImage.width;
+      this.currentHeight = loadedImage.height;
+    }
+  }
+
+  changeImage() {
+
   }
 
 }

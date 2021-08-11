@@ -131,3 +131,21 @@ export function getBase64Image(img) {
 export function getFileExtension(filename: string) {
   return filename.split(".").pop().toLowerCase();
 }
+
+export function getImageDimensions(imgUrl): [number, number] {
+
+  let width: number;
+  let height: number;
+  let img = new Image();
+
+  img.src = imgUrl;
+  img.onload = (event) => {
+    let loadedImage = event.currentTarget as HTMLImageElement;
+    width = loadedImage.width;
+    height = loadedImage.height;
+  }
+
+  console.log("UTIL HERE");
+  console.log(width, height);
+  return [width, height];
+}
