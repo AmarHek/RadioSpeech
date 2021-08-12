@@ -31,7 +31,7 @@ export class PopoutService implements OnDestroy {
   openOnce(url, target) {
     // Open a blank "target" window
     // or get the reference to the existing "target" window
-    const winRef = window.open('', target, '', true);
+    const winRef = window.open('', target, '', false);
     // If the "target" window was just opened, change its url
     if (winRef.location.href === 'about:blank') {
       winRef.location.href = url;
@@ -44,6 +44,7 @@ export class PopoutService implements OnDestroy {
       // Create a PortalOutlet with the body of the new window document
       const outlet = new DomPortalOutlet(windowInstance.document.body,
         this.componentFactoryResolver, this.applicationRef, this.injector);
+
       // Copy styles from parent window
       document.querySelectorAll('style').forEach(htmlElement => {
         windowInstance.document.head.appendChild(htmlElement.cloneNode(true));
@@ -55,15 +56,12 @@ export class PopoutService implements OnDestroy {
       this.styleSheetElement.onload = () => {
         // Clear popout modal content
         windowInstance.document.body.innerText = '';
-
         // Create an injector with modal data
-        this.injector.create()
         const injector = this.createInjector(data);
-
         // Attach the portal
         let componentInstance;
         windowInstance.document.title = 'Image Display';
-        componentInstance = this.attachContainer(outlet, this.injector);
+        componentInstance = this.attachContainer(outlet, injector);
 
         POPOUT_MODALS['windowInstance'] = windowInstance;
         POPOUT_MODALS['outlet'] = outlet;
@@ -81,11 +79,9 @@ export class PopoutService implements OnDestroy {
   }
 
   closePopoutModal() {
-    Object.keys(POPOUT_MODALS).forEach(modalName => {
-      if (POPOUT_MODALS['windowInstance']) {
-        POPOUT_MODALS['windowInstance'].close();
-      }
-    });
+    if (POPOUT_MODALS['windowInstance']) {
+      POPOUT_MODALS['windowInstance'].close();
+    }
   }
 
   attachContainer(outlet, injector) {
@@ -103,13 +99,13 @@ export class PopoutService implements OnDestroy {
   getStyleSheetElement() {
     const styleSheetElement = document.createElement('link');
     document.querySelectorAll('link').forEach(htmlElement => {
+      console.log(htmlElement);
       if (htmlElement.rel === 'stylesheet') {
         const absoluteUrl = new URL(htmlElement.href).href;
         styleSheetElement.rel = 'stylesheet';
         styleSheetElement.href = absoluteUrl;
       }
     });
-    console.log(styleSheetElement.sheet);
     return styleSheetElement;
   }
 }

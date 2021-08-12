@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
 import * as M from "../../../helper-classes/templateModel";
 import {Material} from "../../../helper-classes/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
@@ -12,7 +12,7 @@ import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from '../../services/popou
   templateUrl: './judge-mat.component.html',
   styleUrls: ['./judge-mat.component.scss']
 })
-export class JudgeMatComponent implements OnInit {
+export class JudgeMatComponent implements OnInit, OnDestroy {
 
   material: Material;
   categories: M.Category[];
@@ -31,6 +31,10 @@ export class JudgeMatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+  }
+
+  ngOnDestroy(): void {
+    this.popoutService.closePopoutModal();
   }
 
   getData() {
@@ -75,6 +79,10 @@ export class JudgeMatComponent implements OnInit {
     });
   }
 
+  next() {
+
+  }
+
   openImagePopout() {
     const modalData: PopoutData = {
       scans: this.material.scans,
@@ -83,6 +91,9 @@ export class JudgeMatComponent implements OnInit {
 
     this.popoutService.openPopoutModal(modalData);
 
+  }
+
+  test() {
   }
 
 }

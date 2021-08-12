@@ -73,7 +73,7 @@ import {PopoutService} from "./services/popout.service";
         {path: "main/:id",      component: UiBaseComponent},
         {path: "uploadMat",     component: UploadMaterialComponent},
         {path: "listMat",       component: ListMaterialComponent},
-        {path: "judgeMat/:id",  component: JudgeMatComponent},
+        {path: "mainMat/:id",   component: JudgeMatComponent},
         {path: "**", redirectTo: "/upload"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}

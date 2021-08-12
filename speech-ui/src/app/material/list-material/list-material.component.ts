@@ -45,7 +45,7 @@ export class ListMaterialComponent implements OnInit {
   }
 
   openEditor(matID: string) {
-    this.router.navigate(['/', 'judgeMat', matID]).then();
+    this.router.navigate(['/', 'mainMat', matID]).then();
   }
 
 }

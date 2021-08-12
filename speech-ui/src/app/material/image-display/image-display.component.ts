@@ -13,18 +13,15 @@ export class ImageDisplayComponent implements OnInit {
 
   serverUrl = environment.server;
 
-  currentScanUrl: string;
+  image_id: string;
+  images: Image[];
+
+  possibleModes: string[];
   currentMode: string;
+
+  currentScanUrl: string;
   currentWidth: number;
   currentHeight: number;
-
-  scans: {
-    id: string;
-    mainScan: Image;
-    lateralScan?: Image;
-    preScan?: Image;
-  }
-
 
   coordinates: {
     main: BoundingBox[];
@@ -35,15 +32,30 @@ export class ImageDisplayComponent implements OnInit {
   constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData) { }
 
   ngOnInit(): void {
-    this.scans = this.data.scans;
-    this.coordinates = this.data.coordinates;
+    this.image_id = this.data.scans.id;
+    this.initScansAndModes();
 
-    this.currentMode = "main";
-    this.setCurrentScan(this.scans.mainScan.filename);
+    this.currentMode = this.possibleModes[0];
+    this.setCurrentImage(this.images[0].filename);
+
+    this.coordinates = this.data.coordinates;
   }
 
-  setCurrentScan(filename: string) {
-    this.currentScanUrl = this.serverUrl + this.scans.id + "/" + filename;
+  initScansAndModes() {
+    this.images = [this.data.scans.mainScan];
+    this.possibleModes = ["main"];
+    if (this.data.scans.lateralScan !== undefined) {
+      this.images.push(this.data.scans.lateralScan);
+      this.possibleModes.push("lateral");
+    }
+    if (this.data.scans.preScan !== undefined) {
+      this.images.push(this.data.scans.preScan);
+      this.possibleModes.push("pre");
+    }
+  }
+
+  setCurrentImage(filename: string) {
+    this.currentScanUrl = this.serverUrl + this.image_id + "/" + filename;
     this.setCurrentDimensions();
   }
 
@@ -57,8 +69,31 @@ export class ImageDisplayComponent implements OnInit {
     }
   }
 
-  changeImage() {
-
+  changeImageLeft() {
+    if (this.possibleModes.length > 1) {
+      const index = this.possibleModes.indexOf(this.currentMode);
+      const nextIndex = (index === 0) ? (this.possibleModes.length - 1) : (index - 1);
+      this.currentMode = this.possibleModes[nextIndex];
+      this.setCurrentImage(this.images[nextIndex].filename)
+    }
   }
 
+  changeImageRight() {
+    if (this.possibleModes.length > 1) {
+      const index = this.possibleModes.indexOf(this.currentMode);
+      const nextIndex = (index + 1) % this.possibleModes.length;
+      this.currentMode = this.possibleModes[nextIndex];
+      this.setCurrentImage(this.images[nextIndex].filename)
+    }
+  }
+
+  test() {
+    this.coordinates.main.push({
+      left: 25,
+      top:  25,
+      height: 25,
+      width:  25,
+      label: "test"
+    });
+  }
 }
