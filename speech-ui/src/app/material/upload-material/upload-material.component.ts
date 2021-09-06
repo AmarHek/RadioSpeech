@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import * as M from "../../../helper-classes/templateModel";
-import {Template} from "../../../helper-classes/templateModel";
 import {getFileExtension} from "../../../helper-classes/util";
 import {nanoid} from "nanoid";
 
@@ -13,32 +12,32 @@ import {nanoid} from "nanoid";
 })
 export class UploadMaterialComponent implements OnInit {
 
-  constructor(private backendCaller: BackendCallerService) { }
-
   uploadForm: FormGroup;
   templates: M.Template[];
   disableSubmit = false;
+
+  constructor(private backendCaller: BackendCallerService) { }
 
   ngOnInit(): void {
     this.initForm();
     this.updateTemplateList();
   }
 
-  private updateTemplateList(): void {
+  updateTemplateList(): void {
     this.backendCaller.getTemplateList().subscribe((templates) => {
       this.templates = templates;
     });
   }
 
-  private initForm() {
+  initForm() {
     this.uploadForm = new FormGroup({
-      "mainFiles": new FormControl(),
-      "lateralFiles": new FormControl(),
-      "preFiles": new FormControl(),
-      "mainScans": new FormControl([], {validators: [Validators.required]}),
-      "lateralScans": new FormControl([]),
-      "preScans": new FormControl([]),
-      "parts": new FormControl(null, {validators: [Validators.required]})
+      mainFiles: new FormControl(),
+      lateralFiles: new FormControl(),
+      preFiles: new FormControl(),
+      mainScans: new FormControl([], {validators: [Validators.required]}),
+      lateralScans: new FormControl([]),
+      preScans: new FormControl([]),
+      parts: new FormControl(null, {validators: [Validators.required]})
     });
   }
 
@@ -93,12 +92,12 @@ export class UploadMaterialComponent implements OnInit {
     const lateralScans = this.uploadForm.get("lateralScans").value;
     const preScans = this.uploadForm.get("preScans").value;
 
-    const n_files = this.uploadForm.get("mainScans").value.length;
-    let progress = 0;
+    const nFiles = this.uploadForm.get("mainScans").value.length;
+    const progress = 0;
 
     // TODO: Add progress bar
 
-    for (let i = 0; i < n_files; i++) {
+    for (let i = 0; i < nFiles; i++) {
       const formData = new FormData();
       // TODO: Add parts upload (+ syntax check), which overrides the default parts
       formData.append("parts", this.uploadForm.get("parts").value);

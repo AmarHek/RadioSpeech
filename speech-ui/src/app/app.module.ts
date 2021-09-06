@@ -32,9 +32,10 @@ import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "../helper-classes/format-datepicker";
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
 import { ListMaterialComponent } from "./material/list-material/list-material.component";
-import { JudgeMatComponent } from './material/judge-mat/judge-mat.component';
-import { ImageDisplayComponent } from './material/image-display/image-display.component';
+import { JudgeMatComponent } from "./material/judge-mat/judge-mat.component";
+import { ImageDisplayComponent } from "./material/image-display/image-display.component";
 import {PopoutService} from "./services/popout.service";
+import { LoginComponent } from './base-components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {PopoutService} from "./services/popout.service";
     ListMaterialComponent,
     JudgeMatComponent,
     ImageDisplayComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,13 +70,14 @@ import {PopoutService} from "./services/popout.service";
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
+        {path: "login",         component: LoginComponent},
         {path: "list",          component: ListComponent},
         {path: "upload",        component: UploadComponent},
         {path: "main/:id",      component: UiBaseComponent},
         {path: "uploadMat",     component: UploadMaterialComponent},
         {path: "listMat",       component: ListMaterialComponent},
         {path: "mainMat/:id",   component: JudgeMatComponent},
-        {path: "**", redirectTo: "/upload"},
+        {path: "**", redirectTo: "/login"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}
     ),
