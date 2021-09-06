@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { DataParserService } from "../../services/dataParser.service";
 import { DisplayService } from "../../services/display.service";
@@ -48,7 +48,6 @@ export class ListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.remove(id);
-        this.update();
       }
     });
   }
@@ -64,6 +63,14 @@ export class ListComponent implements OnInit {
   remove(id: string): void {
     this.backendCaller.deleteTemplate(id).subscribe(res => {
       console.log(res);
+      this.update();
     });
+  }
+
+  displayDate(date: string | Date): string {
+    if (typeof(date) === "string") {
+      date = new Date(date);
+    }
+    return date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
   }
 }

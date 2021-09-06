@@ -29,13 +29,13 @@ export class UploadComponent implements OnInit {
     this.initForm();
   }
 
-  private initForm() {
+  initForm() {
     this.uploadForm = new FormGroup({
-      "name": new FormControl(null, {
+      name: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      "file": new FormControl(null, {validators: [Validators.required]}),
-      "filename": new FormControl(null, {validators: [Validators.required]})
+      file: new FormControl(null, {validators: [Validators.required]}),
+      filename: new FormControl(null, {validators: [Validators.required]})
     });
   }
 

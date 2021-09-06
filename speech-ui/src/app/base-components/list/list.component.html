@@ -8,7 +8,7 @@
     <tr *ngFor="let template of templates; let i = index" class="list-row">
       <td>
         <ul>
-          <li><a [routerLink]="['/', 'main', template._id]">{{template.name}} vom {{template.timestamp}}</a></li>
+          <li><a [routerLink]="['/', 'main', template._id]">{{template.name}} vom {{displayDate(template.timestamp)}}</a></li>
         </ul>
       </td>
       <td>
