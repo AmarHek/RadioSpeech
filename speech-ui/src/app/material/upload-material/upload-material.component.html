@@ -2,29 +2,35 @@
   <table class="settings">
     <tr>
       <td><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="mainScans"
-                 formControlName="mainFiles"
-                 (change)="onFileSelect($event, 'mainScans')"/></td>
+      <td>
+        <button type="button" class="btn btn-outline-primary" (click)="fileInput1.click()">Datei wählen</button>
+        <input hidden class="mr-3" type="file" multiple="multiple" id="mainScans"
+               formControlName="mainFiles" #fileInput1
+               (change)="onFileSelect($event, 'mainScans')"/></td>
     </tr>
     <tr>
       <td><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="lateralScans"
-                 formControlName="lateralFiles"
-                 (change)="onFileSelect($event,'lateralScans')"/></td>
+      <td>
+        <button type="button" class="btn btn-outline-primary" (click)="fileInput2.click()">Dateien auswählen</button>
+        <input hidden type="file" multiple="multiple" id="lateralScans"
+               formControlName="lateralFiles" #fileInput2
+               (change)="onFileSelect($event,'lateralScans')"/></td>
     </tr>
     <tr>
       <td><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
-      <td><input class="mr-3" type="file" multiple="multiple" id="preImageFile"
-                 formControlName="preFiles"
-                 (change)="onFileSelect($event,'preScans')"/>
+      <td>
+        <button type="button" class="btn btn-outline-primary" (click)="fileInput3.click()">Datei wählen</button>
+        <input hidden type="file" multiple="multiple" id="preImageFile"
+               formControlName="preFiles" #fileInput3
+               (change)="onFileSelect($event,'preScans')"/>
       </td>
     </tr>
 
     <tr><h5>Schablone auswählen:</h5></tr>
     <tr *ngFor="let template of templates">
-      <td class="box"><input type="radio" id="{{template.id}}" formControlName="parts"
+      <td class="box"><input type="radio" id="{{template._id}}" formControlName="parts"
                              value="{{stringify(template.parts)}}"></td>
-      <td class="title"><label for="{{template.id}}">{{template.name}}</label></td>
+      <td class="title"><label for="{{template._id}}">{{template.name}}</label></td>
     </tr>
 
     <tr>

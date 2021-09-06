@@ -51,6 +51,8 @@ export class UploadMaterialComponent implements OnInit {
     }
   }
 
+  // TODO: Refactor this to make it simpler (i.e. use mimetype instead of checkFileExtension etc.)
+
   checkFileExtensions(files: File[]): boolean {
     for (const file of files) {
       const extension = getFileExtension(file.name);
@@ -83,8 +85,8 @@ export class UploadMaterialComponent implements OnInit {
     }
   }
 
-  stringify(json: JSON) {
-    return JSON.stringify(json);
+  stringify(dict) {
+    return JSON.stringify(dict);
   }
 
   submit(): void {
