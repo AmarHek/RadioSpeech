@@ -1,25 +1,25 @@
-<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
-  <div class="spinner-grow mySpinner" role="status">
-    <span class="sr-only">Loading...</span>
+<div class="main">
+
+  <div>
+    <h4>Schablonenliste</h4>
+    <table  class="liste">
+      <tr *ngFor="let template of templates; let i = index" class="list-row">
+        <td class="text"><ul><li><a style="text-decoration: none;" [routerLink]="['/', 'main', template._id]">{{template.name}}</a></li></ul></td>
+        <td class="text">vom {{displayDate(template.timestamp)}}</td>
+        <td class="button"><button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">Edit</button></td>
+        <td class="button"><button class="btn btn-danger ml-3" (click)="removeAlert(template._id)">Entfernen</button></td>
+      </tr>
+    </table>
   </div>
-</div>
-<ng-container *ngIf="!isLoading">
-  <table>
-    <tr *ngFor="let template of templates; let i = index" class="list-row">
-      <td><ul><li>
-        <a [routerLink]="['/', 'main', template._id]">{{template.name}} vom {{displayDate(template.timestamp)}}</a>
-      </li></ul></td>
-      <td>
-        <button class="btn btn-danger ml-3" (click)="removeAlert(template._id)">Entfernen</button>
-      </td>
-      <!--
-      <td>
-        <button class="btn btn-secondary ml-3" [routerLink]="['/', 'edit', template.name]">Edit</button>
-      </td>-->
-    </tr>
-  </table>
-</ng-container>
+
+  <div class="buttons">
+    <button class="btn btn-outline-primary" (click)="openUploadDialog()">Schablone hochladen</button>
+    <button class="btn btn-outline-primary disabled">Neue Schablone erstellen</button>
+  </div>
+
 
 <div *ngIf="templates.length === 0 && !isLoading">
   Es wurde noch nichts hochgeladen
+</div>
+
 </div>

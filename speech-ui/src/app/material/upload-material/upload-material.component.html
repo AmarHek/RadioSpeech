@@ -1,43 +1,48 @@
 <form [formGroup]="uploadForm" (ngSubmit)="submit()">
-  <table class="settings">
-    <tr>
-      <td><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
-      <td>
-        <button type="button" class="btn btn-outline-primary" (click)="fileInput1.click()">Datei wählen</button>
-        <input hidden class="mr-3" type="file" multiple="multiple" id="mainScans"
-               formControlName="mainFiles" #fileInput1
-               (change)="onFileSelect($event, 'mainScans')"/></td>
-    </tr>
-    <tr>
-      <td><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
-      <td>
-        <button type="button" class="btn btn-outline-primary" (click)="fileInput2.click()">Dateien auswählen</button>
-        <input hidden type="file" multiple="multiple" id="lateralScans"
-               formControlName="lateralFiles" #fileInput2
-               (change)="onFileSelect($event,'lateralScans')"/></td>
-    </tr>
-    <tr>
-      <td><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
-      <td>
-        <button type="button" class="btn btn-outline-primary" (click)="fileInput3.click()">Datei wählen</button>
-        <input hidden type="file" multiple="multiple" id="preImageFile"
-               formControlName="preFiles" #fileInput3
-               (change)="onFileSelect($event,'preScans')"/>
-      </td>
-    </tr>
+  <div class="uploadForm">
+    <h4></h4>
+    <table class="files">
+      <tr>
+        <td class="label"><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput1.click()">Datei(en) auswählen</button>
+          <input hidden class="mr-3" type="file" multiple="multiple" id="mainScans"
+                 formControlName="mainFiles" #fileInput1
+                 (change)="onFileSelect($event, 'mainScans')"/></td>
+      </tr>
+      <tr>
+        <td class="label"><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput2.click()">Datei(en) auswählen</button>
+          <input hidden type="file" multiple="multiple" id="lateralScans"
+                 formControlName="lateralFiles" #fileInput2
+                 (change)="onFileSelect($event,'lateralScans')"/></td>
+      </tr>
+      <tr>
+        <td class="label"><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput3.click()">Datei(en) auswählen</button>
+          <input hidden type="file" multiple="multiple" id="preImageFile"
+                 formControlName="preFiles" #fileInput3
+                 (change)="onFileSelect($event,'preScans')"/>
+        </td>
+      </tr>
+    </table>
 
-    <tr><h5>Schablone auswählen:</h5></tr>
-    <tr *ngFor="let template of templates">
-      <td class="box"><input type="radio" id="{{template._id}}" formControlName="parts"
-                             value="{{stringify(template.parts)}}"></td>
-      <td class="title"><label for="{{template._id}}">{{template.name}}</label></td>
-    </tr>
+    <mat-divider></mat-divider>
 
-    <tr>
-      <td>
-        <button class="btn btn-primary" type="submit" [disabled]="disableSubmit || uploadForm.invalid">Hochladen</button>
-      </td>
-    </tr>
+    <h4>Schablone auswählen:</h4>
+    <table>
+      <tr *ngFor="let template of templates">
+        <td class="box"><input type="radio" id="{{template._id}}" formControlName="parts"
+                               value="{{stringify(template.parts)}}"></td>
+        <td class="text"><label for="{{template._id}}">{{template.name}}</label></td>
+      </tr>
+    </table>
 
-  </table>
+    <button class="btn btn-primary" type="submit" [disabled]="disableSubmit || uploadForm.invalid">Hochladen</button>
+
+
+
+  </div>
 </form>

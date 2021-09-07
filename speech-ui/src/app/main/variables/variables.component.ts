@@ -4,6 +4,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {displayableQuotient} from "../../../helper-classes/util";
+import {MatDialogService} from "../../services/mat-dialog.service";
 
 @Component({
   selector: "app-variables",
@@ -20,7 +21,8 @@ export class VariablesComponent implements OnInit {
 
   hasButtonBeenClickedOnce: Map<string, boolean> = new Map();
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+              private dialogService: MatDialogService) { }
 
   ngOnInit(): void {
     this.initButtonClickedMap();
@@ -33,16 +35,6 @@ export class VariablesComponent implements OnInit {
         this.hasButtonBeenClickedOnce[variable.id] = false;
       }
     }
-  }
-
-  defaultConfig(): MatDialogConfig {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-
-    return dialogConfig;
   }
 
   parseButtonText(variable: Variable) {
@@ -76,7 +68,7 @@ export class VariablesComponent implements OnInit {
   }
 
   modalInput(variable: Variable) {
-    const dialogConfig = this.defaultConfig();
+    const dialogConfig = this.dialogService.defaultConfig();
 
     dialogConfig.data = {
       kind: variable.kind,

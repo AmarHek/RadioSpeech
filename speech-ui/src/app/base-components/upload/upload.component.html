@@ -1,14 +1,32 @@
-<form [formGroup]="uploadForm">
+<div mat-dialog-title>
+    <h5>Schablone hochladen</h5>
+</div>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content [formGroup]="uploadForm">
   <div class="settings">
-    <div>
-      <label class="mr-3" for="uploadFile">Datei: </label>
-      <input class="mr-3" type="file" id="uploadFile" formControlName="filename" (change)="onFileSelect($event)">
+    <table>
+      <tr><td><label class="mr-3" for="uploadFile">Datei: </label></td>
+      <td>
+        <button class="btn btn-outline-primary" (click)="inputField.click()"></button>
+        <input hidden #inputField class="mr-3"
+               type="file" id="uploadFile" formControlName="filename"
+               (change)="onFileSelect($event)">
+      </td></tr>
+      <tr>
       <span *ngIf="this.showWarning" class="alert-warning">Dateityp wird nicht unterstützt.</span>
-    </div>
+      </tr>
+    </table>
     <div>
       <label class="mr-3" for="NameOfFile">Name: </label>
       <input class="mr-3" type="text" name="name" id="NameOfFile" formControlName="name">
       <button class="btn btn-info ml-3" (click)="upload()" type="submit">Upload</button>
     </div>
   </div>
-</form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="buttons">
+  <button class="btn btn-primary" (click)="upload()">Hochladen</button>
+  <button class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+</mat-dialog-actions>

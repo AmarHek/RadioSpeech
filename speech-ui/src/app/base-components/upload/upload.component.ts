@@ -1,7 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
-import { Router } from "@angular/router";
+import {MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {getFileExtension} from "../../../helper-classes/util";
@@ -17,12 +15,11 @@ export class UploadComponent implements OnInit {
     "Juli", "August", "September", "Oktober", "November", "Dezember"];
   mode: string;
 
-  currentFile: File;
   showWarning = false;
 
   uploadForm: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router,
+  constructor(private dialogRef: MatDialogRef<UploadComponent>,
               private backendCaller: BackendCallerService) { }
 
   ngOnInit() {
@@ -70,6 +67,10 @@ export class UploadComponent implements OnInit {
       window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
     }
     this.uploadForm.reset();
+  }
+
+  close() {
+    this.dialogRef.close(false);
   }
 
   /*

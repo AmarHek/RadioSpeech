@@ -1,9 +1,18 @@
-.settings {
+.files {
   display:grid;
   grid-template-columns: max-content;
   grid-gap:5px;
   margin-top: 10px;
   margin-left: 20px;
+}
+
+.buttons {
+  float: right;
+  padding: 5px;
+}
+
+button {
+  margin-left: 5px;
 }
 
 #uploadFile {

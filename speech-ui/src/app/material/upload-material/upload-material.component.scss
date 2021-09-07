@@ -1,9 +1,16 @@
-.settings {
+$border-color: hsl(200, 70%, 80%);
+$background-color: hsl(202, 73%, 96%);
+
+.uploadForm {
+  background: $background-color;
+  border: 1px solid $border-color;
+  padding: 20px;
+}
+
+.files {
   display:grid;
   grid-template-columns: max-content;
   grid-gap:5px;
-  margin-top: 10px;
-  margin-left: 20px;
 }
 
 label:hover {
@@ -25,11 +32,14 @@ td.box {
   padding-right: 5px;
 }
 
-td.title {
-  // display: block;
-  position: relative;
-  min-width: 210px;
-  max-width: 220px;
-  word-wrap: break-word;
-  margin-right: 1px;
+td.label {
+  min-width: 200px;
+}
+
+td.button {
+  min-width: 150px;
+}
+
+td.text {
+  min-width: 50px;
 }
