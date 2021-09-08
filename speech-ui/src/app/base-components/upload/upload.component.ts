@@ -10,13 +10,8 @@ import {getFileExtension} from "../../../helper-classes/util";
   styleUrls: ["./upload.component.scss"]
 })
 export class UploadComponent implements OnInit {
-  name = "";
-  months: string[] = ["Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember"];
-  mode: string;
-
+  currentFile: File;
   showWarning = false;
-
   uploadForm: FormGroup;
 
   constructor(private dialogRef: MatDialogRef<UploadComponent>,
@@ -38,9 +33,9 @@ export class UploadComponent implements OnInit {
 
   onFileSelect(event) {
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.checkFileExtension(file);
-      this.uploadForm.get("file").setValue(file);
+      this.currentFile = event.target.files[0];
+      this.checkFileExtension(this.currentFile);
+      this.uploadForm.get("file").setValue(this.currentFile);
     }
   }
 
@@ -62,15 +57,20 @@ export class UploadComponent implements OnInit {
     } else if (extension === "json") {
       this.backendCaller.addTemplateFromJSON(postData).subscribe((res) => {
         window.alert(res.message);
+        this.uploadForm.reset();
+        this.currentFile = null;
+        this.close();
       });
     } else {
       window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
+      this.uploadForm.reset();
+      this.currentFile = null;
+      this.close();
     }
-    this.uploadForm.reset();
   }
 
   close() {
-    this.dialogRef.close(false);
+    this.dialogRef.close();
   }
 
   /*

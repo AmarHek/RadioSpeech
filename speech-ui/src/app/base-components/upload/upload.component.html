@@ -1,32 +1,39 @@
-<div mat-dialog-title>
+<div mat-dialog-title class="header">
     <h5>Schablone hochladen</h5>
 </div>
 
 <mat-divider></mat-divider>
 
 <mat-dialog-content [formGroup]="uploadForm">
-  <div class="settings">
-    <table>
-      <tr><td><label class="mr-3" for="uploadFile">Datei: </label></td>
-      <td>
-        <button class="btn btn-outline-primary" (click)="inputField.click()"></button>
-        <input hidden #inputField class="mr-3"
-               type="file" id="uploadFile" formControlName="filename"
-               (change)="onFileSelect($event)">
-      </td></tr>
+  <div>
+    <table class="files">
       <tr>
-      <span *ngIf="this.showWarning" class="alert-warning">Dateityp wird nicht unterstützt.</span>
+        <td><label class="mr-3" for="NameOfFile">Name: </label></td>
+        <td><input class="mr-3 inputField" type="text" name="name" id="NameOfFile" formControlName="name"></td>
+      </tr>
+      <tr>
+        <td><label class="mr-3" for="filename">Datei: </label></td>
+        <td><input readonly
+                   [value]="currentFile !== undefined ? currentFile.name : null"
+                   class="mr-3 inputField" type="text" id="filename"></td>
+        <td>
+          <button class="btn btn-outline-primary" (click)="inputField.click()" id="UploadButton">Durchsuchen...</button>
+          <input hidden #inputField class="mr-3"
+                 type="file" id="uploadFile" formControlName="filename"
+                 (change)="onFileSelect($event)">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><span *ngIf="this.showWarning" class="alert-warning">Dateityp nicht unterstützt.</span></td>
       </tr>
     </table>
-    <div>
-      <label class="mr-3" for="NameOfFile">Name: </label>
-      <input class="mr-3" type="text" name="name" id="NameOfFile" formControlName="name">
-      <button class="btn btn-info ml-3" (click)="upload()" type="submit">Upload</button>
-    </div>
   </div>
 </mat-dialog-content>
 
+<mat-divider></mat-divider>
+
 <mat-dialog-actions class="buttons">
-  <button class="btn btn-primary" (click)="upload()">Hochladen</button>
-  <button class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+  <button id="uploadButton" class="btn btn-primary" (click)="upload()">Hochladen</button>
+  <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
 </mat-dialog-actions>

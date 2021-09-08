@@ -35,17 +35,13 @@ export class ListComponent implements OnInit {
     });
   }
 
-  removeAlert(id: string) {
+  removeAlert(id: string, name: string) {
     const dialogData = new ConfirmDialogModel(
       "warning",
       "Entfernen bestätigen",
-      "Möchten Sie die Schablone '" + id + "' wirklich entfernen?");
+      "Möchten Sie die Schablone '" + name + "' wirklich entfernen?");
 
-    const dialogConfig = this.dialogService.defaultConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-    dialogConfig.width = "400px";
-    dialogConfig.data = dialogData;
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
     dialogConfig.position = { top: "50px" };
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
@@ -72,7 +68,7 @@ export class ListComponent implements OnInit {
   }
 
   openUploadDialog() {
-    const dialogConfig = this.dialogService.defaultConfig();
+    const dialogConfig = this.dialogService.defaultConfig("470px");
     const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {

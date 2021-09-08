@@ -15,6 +15,6 @@
 </div>
 
 <div mat-dialog-actions class="buttons" *ngIf="type === 'warning'">
-  <button mat-raised-button color="warn" (click)="onConfirm()">Bestätigen</button>
-  <button mat-raised-button color="primary" (click)="onDismiss()">Abbrechen</button>
+  <button class="btn btn-outline-danger" (click)="onConfirm()">Bestätigen</button>
+  <button class="btn btn-outline-secondary" (click)="onDismiss()">Abbrechen</button>
 </div>

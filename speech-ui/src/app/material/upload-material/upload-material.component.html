@@ -1,6 +1,11 @@
+<div mat-dialog-title class="header">
+  <h5>Aufnahmen hochladen</h5>
+</div>
+
+<mat-divider></mat-divider>
+
 <form [formGroup]="uploadForm" (ngSubmit)="submit()">
   <div class="uploadForm">
-    <h4></h4>
     <table class="files">
       <tr>
         <td class="label"><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
@@ -31,18 +36,21 @@
 
     <mat-divider></mat-divider>
 
-    <h4>Schablone auswählen:</h4>
-    <table>
-      <tr *ngFor="let template of templates">
-        <td class="box"><input type="radio" id="{{template._id}}" formControlName="parts"
-                               value="{{stringify(template.parts)}}"></td>
-        <td class="text"><label for="{{template._id}}">{{template.name}}</label></td>
-      </tr>
-    </table>
+    <h5>Schablone auswählen:</h5>
+    <mat-radio-group formControlName="parts">
+      <ng-container *ngFor="let template of templates">
+      <mat-radio-button value="{{stringify(template.parts)}}">
+        {{template.name}}
+      </mat-radio-button>
+      </ng-container>
+    </mat-radio-group>
 
-    <button class="btn btn-primary" type="submit" [disabled]="disableSubmit || uploadForm.invalid">Hochladen</button>
-
-
+    <mat-dialog-actions class="buttons">
+      <button type="submit" id="submitButton" class="btn btn-primary"
+              [disabled]="disableSubmit || uploadForm.invalid"
+              (click)="submit()">Hochladen</button>
+      <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+    </mat-dialog-actions>
 
   </div>
 </form>

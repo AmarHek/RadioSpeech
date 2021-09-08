@@ -1,28 +1,19 @@
 <div class="main">
 
+  <h4>Aufnahmenliste</h4>
+
   <div class="row">
-    <div class="col">
-      <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="changeQuery(true)">Ja</button>
-          <button ngbDropdownItem (click)="changeQuery(false)">Nein</button>
-        </div>
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem (click)="changeQuery(true)">Ja</button>
+        <button ngbDropdownItem (click)="changeQuery(false)">Nein</button>
       </div>
+      <button class="btn btn-outline-primary" id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen</button>
     </div>
-    <!--
-      <div class="col">
-        <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Pathologien (in progress)</button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-            <input id="box1" type="checkbox" ngbDropdownItem><label for="box1">Kardiomegalie</label>
-            <input id="box2" type="checkbox" ngbDropdownItem><label for="box2">Pneuomnie</label>
-          </div>
-        </div>
-      </div>-->
   </div>
 
-  <div class="table" *ngIf="this.materials.length > 0; else noEntry">
+  <div class="tableView" *ngIf="this.materials.length > 0; else noEntry">
     <table>
       <tr>
         <th>Frontalaufnahme</th>
@@ -57,7 +48,12 @@
   </div>
 </div>
 
-<ng-template #noEntry>Keine Einträge gefunden.</ng-template>
+<ng-template #noEntry>
+  <div class="tableView">
+    Keine Einträge gefunden.
+  </div>
+</ng-template>
+
 <ng-template #noScan><td class="text">Keine Aufnahme vorhanden</td></ng-template>
 
 

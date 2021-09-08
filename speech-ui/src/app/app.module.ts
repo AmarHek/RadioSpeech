@@ -36,6 +36,7 @@ import { JudgeMatComponent } from "./material/judge-mat/judge-mat.component";
 import { ImageDisplayComponent } from "./material/image-display/image-display.component";
 import {PopoutService} from "./services/popout.service";
 import { LoginComponent } from './base-components/login/login.component';
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
@@ -70,19 +71,19 @@ import { LoginComponent } from './base-components/login/login.component';
     BrowserAnimationsModule,
     RouterModule.forRoot(
       [
-        {path: "login",         component: LoginComponent},
-        {path: "list",          component: ListComponent},
-        {path: "upload",        component: UploadComponent},
-        {path: "main/:id",      component: UiBaseComponent},
-        {path: "uploadMat",     component: UploadMaterialComponent},
-        {path: "listMat",       component: ListMaterialComponent},
-        {path: "mainMat/:id",   component: JudgeMatComponent},
+        {path: "login", component: LoginComponent},
+        {path: "list", component: ListComponent},
+        {path: "main/:id", component: UiBaseComponent},
+        {path: "listMat", component: ListMaterialComponent},
+        {path: "mainMat/:id", component: JudgeMatComponent},
+        {path: "learn", component: ListMaterialComponent},
         {path: "**", redirectTo: "/login"},
       ],
       {useHash: true, relativeLinkResolution: "legacy"}
     ),
     FontAwesomeModule,
-    CommonModule
+    CommonModule,
+    MatRadioModule
   ],
   providers: [DisplayService, PopoutService,
     {provide: DateAdapter, useClass: AppDateAdapter},

@@ -1,6 +1,10 @@
 $border-color: hsl(200, 70%, 80%);
 $background-color: hsl(202, 73%, 96%);
 
+.header {
+  margin-bottom: 10px;
+}
+
 .uploadForm {
   background: $background-color;
   border: 1px solid $border-color;

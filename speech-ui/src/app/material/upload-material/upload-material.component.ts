@@ -4,6 +4,7 @@ import {BackendCallerService} from "../../services/backend-caller.service";
 import * as M from "../../../helper-classes/templateModel";
 import {getFileExtension} from "../../../helper-classes/util";
 import {nanoid} from "nanoid";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: "app-upload-material",
@@ -16,7 +17,8 @@ export class UploadMaterialComponent implements OnInit {
   templates: M.Template[];
   disableSubmit = false;
 
-  constructor(private backendCaller: BackendCallerService) { }
+  constructor(private backendCaller: BackendCallerService,
+              private dialogRef: MatDialogRef<UploadMaterialComponent>) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -114,11 +116,14 @@ export class UploadMaterialComponent implements OnInit {
         formData.append("preScan", preScans[i]);
       }
 
-      this.backendCaller.addMaterial(formData).subscribe(
-      );
+      this.backendCaller.addMaterial(formData).subscribe();
     }
     this.initForm();
+    this.close();
   }
 
+  close() {
+    this.dialogRef.close();
+  }
 
 }

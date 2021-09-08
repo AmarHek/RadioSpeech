@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.displayNavbar = this.displayService.displayHeader;
   }
 
-  private setUi(): void {
+  setUi(): void {
     this.displayService.getUi().subscribe((value) => {
       this.ui = value;
     });

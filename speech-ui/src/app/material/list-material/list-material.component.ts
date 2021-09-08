@@ -3,6 +3,9 @@ import {Material} from "../../../helper-classes/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
+import {MatDialogService} from "../../services/mat-dialog.service";
+import {UploadMaterialComponent} from "../upload-material/upload-material.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: "app-display-material",
@@ -11,17 +14,19 @@ import {environment} from "../../../environments/environment";
 })
 export class ListMaterialComponent implements OnInit {
 
-  constructor(private backendCaller: BackendCallerService,
-              private router: Router) { }
-
   serverUrl = environment.server;
   materials: Material[] = [];
-  query: Object;
+  query: Record<string, unknown>;
+
+  constructor(private backendCaller: BackendCallerService,
+              private router: Router,
+              private dialogService: MatDialogService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.query = {
       judged: false
-    }
+    };
     this.getData();
   }
 
@@ -34,7 +39,7 @@ export class ListMaterialComponent implements OnInit {
   changeQuery(newValue: boolean) {
     this.query = {
       judged: newValue
-    }
+    };
     this.getData();
   }
 
@@ -45,7 +50,16 @@ export class ListMaterialComponent implements OnInit {
   }
 
   openEditor(matID: string) {
-    this.router.navigate(['/', 'mainMat', matID]).then();
+    this.router.navigate(["/", "mainMat", matID]).then();
+  }
+
+  openUploadDialog() {
+    const dialogConfig = this.dialogService.defaultConfig("600px");
+    const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.getData();
+    });
   }
 
 }
