@@ -5,89 +5,103 @@ $background-color: hsl(202, 73%, 96%);
   height: 100%;
   width: 100%;
   background-color: $background-color;
+  display: inline-grid;
   color: black;
-  overflow: auto;
+  overflow: hidden;
 }
 
+// Header part and its elements
+
 .header{
-  font-size: 100%;
-  font-weight: bold;
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-template-rows: 50% 50%;
+  grid-template-areas:
+  "inputArea buttons"
+  "inputText inputTex";
+
+  font-size: 120%;
+  font-weight: 700;
   text-align: center;
   border-bottom: 1px solid $border-color;
-  height: 9%;
+  height: 90px;
 }
 
 .inputArea{
-  padding-top: 5px;
-  padding-left: 10px;
+  grid-area: inputArea;
+  padding: 5px 10px;
   float: left;
-  width: 75%;
 }
-
 .inputLabel{
-  width: 8%;
-  font-size: large;
+  padding: 5px;
 }
-
 .inputBox{
-  margin-top: 2px;
   padding: 3px;
-  width: 92%;
+  width: 80%;
 }
 
 .buttons{
+  grid-area: buttons;
   padding-top: 5px;
   padding-right: 5px;
-  width: 25%;
+  width: 100%;
   float: right;
 }
-
 .btn{
   margin-left: 5px;
 }
-
-.inputText{
-  grid-area: inputText;
-  font-size: 3em;
-}
-
 #normal-button {
   font-weight: bold;
   color: black;
 }
 
+.inputText{
+  grid-area: inputText;
+  font-weight: 700;
+  font-size: 120%;
+  text-align: center;
+}
+
+// Everything below the header
+
+// Content: Grid for Report and Options components
+
 .content {
-  height: 91%;
+  height: 99%;
+  margin: 3px;
   background-color: white;
-  border: 1px $border-color;
+  overflow: hidden;
+
   display: grid;
   grid-template-columns: 20% 80%;
   grid-column-gap: 5px;
   grid-template-areas:
     "report  options";
+
 }
 
 .report{
   grid-area: report;
-  height: 98.5%;
+  height: 100%;
   border: 1px solid $border-color;
-  margin: 5px;
   background-color: $background-color;
+  overflow-y: auto;
 }
 
 .options{
   grid-area: options;
-  height: 98.5%;
+  height: 100%;
   width: 99.5%;
-  margin-top: 5px;
   border: 1px solid $border-color;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: auto;
   background-color: $background-color;
 }
 
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 /* Track */
@@ -99,7 +113,7 @@ $background-color: hsl(202, 73%, 96%);
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: grey;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 /* Handle on hover */

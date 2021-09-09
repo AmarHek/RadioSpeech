@@ -6,25 +6,15 @@ $background-color: hsl(202, 73%, 96%);
 }
 
 .uploadForm {
-  background: $background-color;
-  border: 1px solid $border-color;
-  padding: 20px;
+  padding: 5px;
+  margin: 5px;
 }
 
 .files {
   display:grid;
   grid-template-columns: max-content;
-  grid-gap:5px;
-}
-
-label:hover {
-  box-shadow: 0 0 2px black;
-  border-radius: 2px;
-}
-
-label:active {
-  box-shadow: 0 0 2px black;
-  border-radius: 2px;
+  grid-gap: 5px;
+  padding-bottom: 10px;
 }
 
 td.box {
@@ -37,13 +27,28 @@ td.box {
 }
 
 td.label {
-  min-width: 200px;
-}
-
-td.button {
   min-width: 150px;
 }
 
-td.text {
-  min-width: 50px;
+td.button {
+  min-width: 180px;
+}
+
+.buttons {
+  float: right;
+  padding: 5px;
+}
+#cancelButton {
+  margin-left: 5px;
+}
+
+.templateSelect {
+  margin: 5px 0;
+}
+
+.verticalRadioGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  column-gap: 5px;
 }

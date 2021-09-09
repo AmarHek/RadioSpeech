@@ -1,12 +1,15 @@
 <div mat-dialog-title class="header">
-  <h5>Aufnahmen hochladen</h5>
+  <h4>Aufnahmen hochladen</h4>
 </div>
 
 <mat-divider></mat-divider>
 
-<form [formGroup]="uploadForm" (ngSubmit)="submit()">
-  <div class="uploadForm">
+<mat-dialog-content class="uploadForm" [formGroup]="uploadForm" (ngSubmit)="submit()">
     <table class="files">
+      <tr>
+        <td class="label"><label class="mr-3" for="identifier">Identifier: </label></td>
+        <td class="button"><input type="text" id="identifier"></td>
+      </tr>
       <tr>
         <td class="label"><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
         <td class="button">
@@ -31,26 +34,34 @@
                  formControlName="preFiles" #fileInput3
                  (change)="onFileSelect($event,'preScans')"/>
         </td>
+        <td class="button"><select id="preImageFiles" name="preImageFiles">
+
+        </select></td>
       </tr>
     </table>
 
     <mat-divider></mat-divider>
 
+  <div class="templateSelect">
     <h5>Schablone auswählen:</h5>
-    <mat-radio-group formControlName="parts">
+    <mat-radio-group class="verticalRadioGroup" formControlName="parts">
       <ng-container *ngFor="let template of templates">
-      <mat-radio-button value="{{stringify(template.parts)}}">
-        {{template.name}}
-      </mat-radio-button>
+        <mat-radio-button style="font-size: 120%" value="{{stringify(template.parts)}}">
+          {{template.name}}
+        </mat-radio-button>
       </ng-container>
     </mat-radio-group>
-
-    <mat-dialog-actions class="buttons">
-      <button type="submit" id="submitButton" class="btn btn-primary"
-              [disabled]="disableSubmit || uploadForm.invalid"
-              (click)="submit()">Hochladen</button>
-      <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
-    </mat-dialog-actions>
-
   </div>
-</form>
+
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions class="buttons">
+  <button type="submit" id="submitButton" class="btn btn-primary"
+          [disabled]="disableSubmit || uploadForm.invalid"
+          (click)="submit()">Hochladen</button>
+  <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+</mat-dialog-actions>
+
+

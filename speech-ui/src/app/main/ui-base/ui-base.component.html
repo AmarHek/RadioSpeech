@@ -2,15 +2,10 @@
   <div class="header">
     <div class="inputArea">
       <label class="inputLabel" for="input">Eingabe:</label>
-        <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
-               (input)="onInput($event)" placeholder="Befund eingeben...">
+      <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
+             (input)="onInput($event)" placeholder="Befund eingeben...">
     </div>
     <div class="buttons">
-      <!--
-        <button id="test" title="button zum testen" (click)="test()"
-                class="btn btn-outline-secondary">Test
-        </button>
-      -->
       <button id="normal-button" (click)="makeNormal()"
               class="btn btn-outline-secondary">Rest normal</button>
       <button id="reset-button" (click)="reset()"
@@ -18,15 +13,11 @@
       <button id="back" title="Go back to list" [routerLink]="['/', 'list']"
               class="btn btn-outline-secondary">Zurück</button>
       <a class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
-        [href]="downJson" download="befund.json">Download JSON</a>
+         [href]="downJson" download="befund.json">Download JSON</a>
     </div>
 
-    <!--
-    <div id="listening" class="btn btn-sm btn-danger float-left">Aus
-    </div>-->
-
-    <div class="inputText" id="inputText">
-      <br>
+    <div class="inputText" id="inputText" >
+      {{foundKeywords}}
     </div>
   </div>
 

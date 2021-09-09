@@ -24,6 +24,7 @@ export class UiBaseComponent implements OnInit {
   defaultParts: M.TopLevel[];
 
   input = "";
+  foundKeywords = "";
 
   categories: M.Category[];
   report = "";
@@ -45,6 +46,8 @@ export class UiBaseComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
+
+    this.foundKeywords = "Detected keywords go here";
   }
 
   // TODO: Fix double loading of template when reloading the page

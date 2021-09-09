@@ -5,43 +5,42 @@ $background-color: hsl(202, 73%, 96%);
   height: 100%;
   width: 100%;
   background-color: $background-color;
-  border: 1px solid $border-color;
+  display: inline-grid;
   color: black;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .header{
-  font-size: 100%;
-  font-weight: bold;
+  font-size: 120%;
+  font-weight: 700;
   border-bottom: 1px solid $border-color;
-  height: 5%;
+  height: 47px;
 }
 
 .buttons{
   padding-top: 5px;
   padding-right: 5px;
 }
-
 .buttonsRight{
   float: right;
 }
 .buttonsLeft{
   float: left;
 }
-
 .btn{
   margin-left: 5px;
 }
-
 #normal-button {
   font-weight: bold;
   color: black;
 }
 
 .content {
-  height: 95%;
+  height: 99%;
+  margin: 3px;
   background-color: white;
-  border: 1px $border-color;
+  overflow: hidden;
+
   display: grid;
   grid-template-columns: 20% 80%;
   grid-column-gap: 5px;
@@ -51,25 +50,25 @@ $background-color: hsl(202, 73%, 96%);
 
 .report{
   grid-area: report;
-  height: 99%;
+  height: 100%;
   border: 1px solid $border-color;
-  margin: 5px;
   background-color: $background-color;
 }
 
 .options{
   grid-area: options;
-  height: 99%;
+  height: 100%;
   width: 99.5%;
-  margin-top: 5px;
   border: 1px solid $border-color;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: auto;
   background-color: $background-color;
 }
 
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 /* Track */
