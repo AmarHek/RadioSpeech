@@ -59,7 +59,6 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
 
             material.save().then((mat: Document) => {
                 const message = "Material with id "+ mat._id + " added successfully";
-                console.log(message);
                 res.status(201).send(message);
             });
         }

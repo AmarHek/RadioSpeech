@@ -37,6 +37,7 @@ import { ImageDisplayComponent } from "./material/image-display/image-display.co
 import {PopoutService} from "./services/popout.service";
 import { LoginComponent } from './base-components/login/login.component';
 import {MatRadioModule} from "@angular/material/radio";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import {MatRadioModule} from "@angular/material/radio";
     ),
     FontAwesomeModule,
     CommonModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTooltipModule
   ],
   providers: [DisplayService, PopoutService,
     {provide: DateAdapter, useClass: AppDateAdapter},

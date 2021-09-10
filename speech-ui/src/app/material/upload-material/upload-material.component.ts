@@ -5,6 +5,7 @@ import * as M from "../../../helper-classes/templateModel";
 import {getFileExtension} from "../../../helper-classes/util";
 import {nanoid} from "nanoid";
 import {MatDialogRef} from "@angular/material/dialog";
+import {FilesSortingService} from "../../services/files-sorting.service";
 
 @Component({
   selector: "app-upload-material",
@@ -15,14 +16,29 @@ export class UploadMaterialComponent implements OnInit {
 
   uploadForm: FormGroup;
   templates: M.Template[];
-  disableSubmit = false;
+
+  mainFlags: boolean[] = [];
+  lateralRedFlags: boolean[] = [];
+  lateralYellowFlags: boolean[] = [];
+  preRedFlags: boolean[] = [];
+  preYellowFlags: boolean[] = [];
 
   constructor(private backendCaller: BackendCallerService,
-              private dialogRef: MatDialogRef<UploadMaterialComponent>) { }
+              private dialogRef: MatDialogRef<UploadMaterialComponent>,
+              private filesSorter: FilesSortingService) { }
 
   ngOnInit(): void {
     this.initForm();
     this.updateTemplateList();
+  }
+
+  initForm() {
+    this.uploadForm = new FormGroup({
+      mainScans: new FormControl([], {validators: [Validators.required]}),
+      lateralScans: new FormControl([]),
+      preScans: new FormControl([]),
+      parts: new FormControl(null, {validators: [Validators.required]})
+    });
   }
 
   updateTemplateList(): void {
@@ -31,16 +47,13 @@ export class UploadMaterialComponent implements OnInit {
     });
   }
 
-  initForm() {
-    this.uploadForm = new FormGroup({
-      mainFiles: new FormControl(),
-      lateralFiles: new FormControl(),
-      preFiles: new FormControl(),
-      mainScans: new FormControl([], {validators: [Validators.required]}),
-      lateralScans: new FormControl([]),
-      preScans: new FormControl([]),
-      parts: new FormControl(null, {validators: [Validators.required]})
-    });
+  stringify(dict) {
+    return JSON.stringify(dict);
+  }
+
+  updateIdentifier(id: string) {
+    this.filesSorter.setIdentifier(id);
+    this.checkFiles();
   }
 
   onFileSelect(event, scanType: string) {
@@ -48,13 +61,12 @@ export class UploadMaterialComponent implements OnInit {
       const files = event.target.files;
       if (this.checkFileExtensions(files)) {
         this.uploadForm.get(scanType).setValue(Array.from(files));
-        this.checkForm();
+        this.checkFiles();
       }
     }
   }
 
-  // TODO: Refactor this to make it simpler (i.e. use mimetype instead of checkFileExtension etc.)
-
+  // TODO: Refactor this to make it simpler (i.e. use file.type instead of checkFileExtension etc.)
   checkFileExtensions(files: File[]): boolean {
     for (const file of files) {
       const extension = getFileExtension(file.name);
@@ -66,60 +78,50 @@ export class UploadMaterialComponent implements OnInit {
     return true;
   }
 
-  checkForm(): void {
-    this.disableSubmit = false;
-    const mainFiles = this.uploadForm.get("mainScans").value;
-    const lateralFiles = this.uploadForm.get("lateralScans").value;
-    const preFiles = this.uploadForm.get("preScans").value;
-    if (mainFiles.length > 0) {
-      if (lateralFiles.length > 0 && lateralFiles.length !== mainFiles.length) {
-        window.alert("Warnung: Anzahl an lateralen Scans entspricht nicht der Anzahl an frontalen Scans.");
-        this.disableSubmit = true;
-      } else if (preFiles.length > 0 && preFiles.length !== mainFiles.length) {
-        window.alert("Warnung: Anzahl an Voraufnahmen entspricht nicht der Anzahl an frontalen Scans.");
-        this.disableSubmit = true;
-      }
-    } else if (lateralFiles.length > 0) {
-      if (preFiles.length > 0 && preFiles.length !== lateralFiles.length) {
-        window.alert("Warnung: Anzahl an Voraufnahmen entspricht nicht der Anzahl an lateralen Scans.");
-        this.disableSubmit = true;
-      }
-    }
-  }
+  checkFiles(): void {
+    const mainFiles: File[] = this.uploadForm.get("mainScans").value;
+    const lateralFiles: File[] = this.uploadForm.get("lateralScans").value;
+    const preFiles: File[] = this.uploadForm.get("preScans").value;
 
-  stringify(dict) {
-    return JSON.stringify(dict);
+    this.mainFlags = this.filesSorter.identifierSearch(mainFiles);
+    this.lateralRedFlags = this.filesSorter.identifierSearch(lateralFiles);
+    this.preRedFlags = this.filesSorter.identifierSearch(preFiles);
+
+    this.lateralYellowFlags = this.filesSorter.fileMatchSearch(mainFiles, lateralFiles);
+    this.preYellowFlags = this.filesSorter.fileMatchSearch(mainFiles, preFiles);
   }
 
   submit(): void {
-    const mainScans = this.uploadForm.get("mainScans").value;
-    const lateralScans = this.uploadForm.get("lateralScans").value;
-    const preScans = this.uploadForm.get("preScans").value;
-
-    const nFiles = this.uploadForm.get("mainScans").value.length;
-    const progress = 0;
-
-    // TODO: Add progress bar
-
-    for (let i = 0; i < nFiles; i++) {
-      const formData = new FormData();
-      // TODO: Add parts upload (+ syntax check), which overrides the default parts
-      formData.append("parts", this.uploadForm.get("parts").value);
-      // TODO: Add choice for this later
-      formData.append("modality", "xray");
-      formData.append("id", nanoid());
-      formData.append("mainScan", mainScans[i]);
-      if (lateralScans.length > 0) {
-        formData.append("lateralScan", lateralScans[i]);
-      }
-      if (preScans.length > 0) {
-        formData.append("preScan", preScans[i]);
-      }
-
-      this.backendCaller.addMaterial(formData).subscribe();
+    let choice = true;
+    if (this.mainFlags.includes(false) || this.lateralYellowFlags.includes(false) || this.lateralRedFlags.includes(false)
+    || this.preYellowFlags.includes(false) || this.preRedFlags.includes(false)) {
+      choice = window.confirm("Eine oder mehre Dateien konnten nicht korrekt zugeordnet werden. " +
+        "Diese werden beim Upload ignoriert. Sind Sie sicher, dass Sie fortfahren möchten?");
     }
-    this.initForm();
-    this.close();
+
+    if (choice) {
+      const mainScans = this.uploadForm.get("mainScans").value;
+      const lateralScans = this.uploadForm.get("lateralScans").value;
+      const preScans = this.uploadForm.get("preScans").value;
+
+      const fileTuples: [File, File, File][] = this.filesSorter.getFileTuples(mainScans, lateralScans, preScans);
+      const progress = 0;
+
+      for (const fileTuple of fileTuples) {
+        const formData = new FormData();
+        formData.append("parts", this.uploadForm.get("parts").value);
+        // TODO: Add choice for this later
+        formData.append("modality", "xray");
+        formData.append("id", nanoid());
+        formData.append("mainScan", fileTuple[0]);
+        formData.append("lateralScan", fileTuple[1]);
+        formData.append("preScan", fileTuple[2]);
+
+        this.backendCaller.addMaterial(formData).subscribe();
+      }
+
+      this.close();
+    }
   }
 
   close() {

@@ -101,7 +101,7 @@ addTemplateFromExcel(postData: FormData) {
     )
   }
 
-  queryMaterials(query: Object): Observable<Material[]> {
+  queryMaterials(query: Record<string, unknown>): Observable<Material[]> {
     return this.http.post<Material[]>(
       this.materialUrl + "query/",
       query
