@@ -1,0 +1,1423 @@
+{
+	"id": "6027cc2cd060044b50d36243",
+	"parts": [
+		{
+			"kind": "disease",
+			"name": "Polyp",
+			"categories": [
+				{
+					"kind": "category",
+					"name": "Form",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ Ip (gestielt)",
+								"gestielt",
+								"Paris 1p",
+								"Paris 1 p",
+								"Paris Typ Ip",
+								"Paris Typ I p"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein gestielter Polyp (Paris-Typ I p). ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ Is (sessil)",
+								"sessil",
+								"Paris 1 s",
+								"Paris 1s",
+								"Paris Typ Is",
+								"Paris Typ I s",
+								"Paris 1es",
+								"Paris 1 es",
+								"Paris Typ I es",
+								"Paris Typ Ies"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein sessiler Polyp (Paris-Typ I s). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Kombination Typ I s und p",
+								"Kombination Typ I es und p",
+								"Kombination 1 es und p",
+								"Kombination Typ I es und Ip",
+								"Kombination 1 es und 1p"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich eine Kombination aus Paris-Typ I s und Paris-Typ I p. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ IIa (flach erhaben)",
+								"flach erhaben",
+								"flach mit erhabenen Anteilen",
+								"Paris 2a",
+								"Paris 2 a",
+								"Paris Typ IIa",
+								"Paris Typ II a"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein flacher Polyp mit erhabenen Anteilen (Paris-Typ II a). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Kombination Typ II a und Is (breitbasig)",
+								"Kombination Typ II a und I es",
+								"Kombination Typ IIa und Typ I es",
+								"Kombination Typ IIa und I es",
+								"Kombination 2a und 1 es",
+								"breitbasig"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein breitbasiger Polyp (Paris-Typ II a und Paris-Typ I s). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ IIb (flach im Schleimhautniv.)",
+								"flach im Schleimhautniveau",
+								"Paris 2b",
+								"Paris 2 b",
+								"Paris Typ IIb",
+								"Paris Typ II b"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein flacher Polyp im Schleimhautniveau (Paris-Typ II b). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ IIc (flach eingesenkt)",
+								"flach eingesenkt",
+								"flach mit eingesenkten Arealen",
+								"Paris 2c",
+								"Paris 2 c",
+								"Paris Typ IIc",
+								"Paris Typ II c"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein flacher Polyp im leicht eingesenkten Arealen (Paris-Typ IIc). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Kombination Typ II a und c",
+								"Kombination 2a und c",
+								"Kombination 2 a und c",
+								"Kombination Typ IIa und c",
+								"Kombination Typ IIa und IIc",
+								"Kombination 2a und 2c"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich eine Kombination aus  Paris-Typ II a und Paris-Typ II c. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Paris-Typ III (exulzeriert und exkaviert)",
+								"exulzeriert",
+								"exkaviert",
+								"Paris 3",
+								"Paris Typ III"
+							],
+							"text": "Polypen Einzelbeschreibung: Es zeigt sich ein Polyp mit exulzerierter, exkavierter Läsion (Paris-Typ III). ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Lokalisierung",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"gesamtes Kolon",
+								"gesamtes Colon"
+							],
+							"text": "Der Polyp befindet sich im gesamten Kolon. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Zökum"
+							],
+							"text": "Der Polyp befindet sich im Zökum %0.",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Rektum"
+							],
+							"text": "Der Polyp befindet sich im Rektum %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Sigma"
+							],
+							"text": "Der Polyp befindet sich im Sigma %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"distales Sigma",
+								"dist Sigma"
+							],
+							"text": "Der Polyp befindet sich im distalen Sigma %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"proximales Sigma",
+								"prox Sigma"
+							],
+							"text": "Der Polyp befindet sich im proximalen Sigma %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon descendens",
+								"Kolon descendens"
+							],
+							"text": "Der Polyp befindet sich im Colon descendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"distales Colon descendens",
+								"dist Colon desc",
+								"distales Kolon descendens"
+							],
+							"text": "Der Polyp befindet sich im distalen Colon descendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"proximales Colon descendens",
+								"prox Colon desc",
+								"proximales Kolon descendens"
+							],
+							"text": "Der Polyp befindet sich im proximalen Colon descendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"linke Flexur"
+							],
+							"text": "Der Polyp befindet sich in der linken Flexur %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon transversum",
+								"Kolon transversum"
+							],
+							"text": "Der Polyp befindet sich im Colon transversum %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"linksseitiges Colon transversum",
+								"linksseitiges Kolon transversum"
+							],
+							"text": "Der Polyp befindet sich im linksseitigen Colon transversum %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"mittleres Colon transversum",
+								"mittleres Kolon transversum"
+							],
+							"text": "Der Polyp befindet sich im mittleren Colon transversum %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"rechtsseitiges Colon transversum",
+								"rechtsseitiges Kolon transversum"
+							],
+							"text": "Der Polyp befindet sich im rechtsseitigen Colon transversum %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"rechte Flexur"
+							],
+							"text": "Der Polyp befindet sich in der rechten Flexur %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon ascendens",
+								"Kolon ascendens"
+							],
+							"text": "Der Polyp befindet sich im Colon ascendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"proximales Colon ascendens",
+								"proximales Kolon ascendens"
+							],
+							"text": "Der Polyp befindet sich im proximalen Colon ascendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"distales Colon ascendens",
+								"distales Kolon ascendens"
+							],
+							"text": "Der Polyp befindet sich im distalen Colon ascendens %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "bei",
+									"textAfter": "(entsprechend einer begradigten Gerätelänge)",
+									"unit": "cm"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Ileocoecalklappe"
+							],
+							"text": "Der Polyp befindet sich in der Ileocoecalklappe. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Coecum",
+								"Koekum",
+								"Koecum",
+								"Coekum"
+							],
+							"text": "Der Polyp befindet sich im Coecum. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"terminales Ileum",
+								"term Ileum"
+							],
+							"text": "Der Polyp befindet sich im terminalen Ileum. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Größe",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"[d] Millimeter"
+							],
+							"text": "Die Größe ist %0.",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Oberfläche",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"intakt"
+							],
+							"text": "Er hat eine intakte Oberfläche. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"erodiert"
+							],
+							"text": "Er hat eine erodierte Oberfläche. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"blutend"
+							],
+							"text": "Er hat eine blutende Oberfläche. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "NICE Klassifikation",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"NICE Typ I",
+								"Nice 1"
+							],
+							"text": "Die Klassifikation des Polypen ist NICE Typ I. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"NICE Typ II",
+								"Nice 2"
+							],
+							"text": "Die Klassifikation des Polypen ist NICE Typ II. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"NICE Typ III",
+								"Nice 3"
+							],
+							"text": "Die Klassifikation des Polypen ist NICE Typ III. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"NICE Typ nicht eindeutig"
+							],
+							"text": "Die Klassifikation des Polypen ist nicht eindeutig. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Stielinfiltration",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"Unterspritzung NaCl",
+								"Unterspritzung mit NaCl",
+								"Unterspritzung Natriumchlorid",
+								"Unterspritzung mit Natriumchlorid"
+							],
+							"text": "Unterspritzung der Basis %0 mit Natriumchlorid.",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "mit",
+									"textAfter": "",
+									"unit": "ml"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Unterspritzung Adrenalin",
+								"Unterspritzung mit Adrenalin"
+							],
+							"text": "Unterspritzung der Basis %0 mit Adrenalin.",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "mit",
+									"textAfter": "",
+									"unit": "ml"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"ohne Unterspritzung"
+							],
+							"text": "Keine Unterspritzung der Basis.",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Polypektomie",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"keine Abtragung"
+							],
+							"text": "Keine Abtragung. Polypektomie sollte erfolgen. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"komplette Abtragung"
+							],
+							"text": "Der Polyp wird komplett abgetragen.",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Zangen-Abtragung",
+								"Zangenabtragung",
+								"Zangen Abtragung"
+							],
+							"text": "Der Polyp wird mit einer Biopsiezange %0 entfernt. %1 ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "oc",
+									"values": [
+										"enbloc",
+										"piecemeal"
+									]
+								},
+								{
+									"kind": "text",
+									"textBefore": "Zusatz",
+									"textAfter": ".",
+									"unit": "(?=fertig)"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Polypenfalle"
+							],
+							"text": "Der Polyp wird mit der Polypenfalle %0 entfernt. %1",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "oc",
+									"values": [
+										"enbloc",
+										"piecemeal"
+									]
+								},
+								{
+									"kind": "text",
+									"textBefore": "Zusatz",
+									"textAfter": ".",
+									"unit": "(?=fertig)"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Netzabtragung",
+								"Netz"
+							],
+							"text": "Der Polyp wird mittels Netzabtragung %0 entfernt. %1",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "oc",
+									"values": [
+										"enbloc",
+										"piecemeal"
+									]
+								},
+								{
+									"kind": "text",
+									"textBefore": "Zusatz",
+									"textAfter": ".",
+									"unit": "(?=fertig)"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Kaltschlinge"
+							],
+							"text": "Der Polyp wird mit der Kaltschlinge %0 abgetragen. %1",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "oc",
+									"values": [
+										"enbloc",
+										"piecemeal"
+									]
+								},
+								{
+									"kind": "text",
+									"textBefore": "Zusatz",
+									"textAfter": ".",
+									"unit": "(?=fertig)"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Diathermieschlinge",
+								"Diathermalschlinge"
+							],
+							"text": "Der Polyp wird mit der Diathermalschlinge %0 abgetragen. %1",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "oc",
+									"values": [
+										"enbloc",
+										"piecemeal"
+									]
+								},
+								{
+									"kind": "text",
+									"textBefore": "Zusatz",
+									"textAfter": ".",
+									"unit": "(?=fertig)"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Zangenbiopsie",
+								"Biopsiezange"
+							],
+							"text": "Mit der Biopsiezange wird eine Probe entnommen. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Komplikationen",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"Keine"
+							],
+							"text": "Keine Komplikationen. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Prophylaxe Wundverschluss",
+								"Wundverschluss"
+							],
+							"text": "Keine Komplikationen. Zur Prophylaxe Wundverschluss %0. ",
+							"normal": false,
+							"variables": [
+								{
+									"kind": "text",
+									"textBefore": "mit",
+									"textAfter": "(s)",
+									"unit": "Clip"
+								}
+							],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Prophylaxe OTSC",
+								"OTSC"
+							],
+							"text": "Keine Komplikationen. Zur Prophylaxe Wundverschluss. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Prophylaxe Adrenalin"
+							],
+							"text": "Keine Komplikationen. Zur Prophylaxe Injektion von Adrenalin. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Prophylaxe Endoloop",
+								"Endoloop",
+								"Endolop"
+							],
+							"text": "Keine Komplikationen. Endoloop zur Prophylaxe. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Schmerzen"
+							],
+							"text": "Nach der Therapie treten Schmerzen auf. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Sickerblutung"
+							],
+							"text": "Hiernach Sickerblutung. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Sickerblutung und Perforation"
+							],
+							"text": "Hiernach Sickerblutung und Perforation. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"arterielle Blutung"
+							],
+							"text": "Hiernach arterielle Blutung. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Perforation"
+							],
+							"text": "Hiernach Perforation. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Gefäß",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"PE [d]"
+							],
+							"text": "Der Polyp befindet sich in Gefäß %0.",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"kind": "disease",
+			"name": "Divertikulose",
+			"categories": [
+				{
+					"kind": "category",
+					"name": "Anzahl",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"einzelne Divertikel",
+								"einzeln",
+								"einzelne"
+							],
+							"text": "Divertikulose Beschreibung: Mit einzelnen Divertikeln. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"mehrere Divertikel",
+								"mehrere"
+							],
+							"text": "Divertikulose Beschreibung: Mit mehreren Divertikeln. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"viele Divertikel",
+								"viele"
+							],
+							"text": "Divertikulose Beschreibung: Mit vielen Divertikeln. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"viele und große Divertikel",
+								"viele große Divertikel",
+								"viele große",
+								"viele und große"
+							],
+							"text": "Divertikulose Beschreibung: Mit vielen großen Divertikeln. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Hauptlokalisation",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"gesamtes Colon",
+								"gesamtes Kolon"
+							],
+							"text": "Hauptlokalisation im gesamten Colon. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon ascendens",
+								"Kolon ascendens"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Colon ascendens. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon transversum",
+								"Kolon transversum"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Colon transversums. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"rechte Flexur"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich der rechten Flexur. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"linke Flexur"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich der linken Flexur. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Colon descendens",
+								"Kolon descendens",
+								"Colon desc"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Colon descendens. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Sigma"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Sigmas. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Rektum"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Rektums. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Coecum",
+								"Koecum",
+								"Koekum"
+							],
+							"text": "Hauptlokalisation vor allem im Bereich des Coecums. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Lumeneinengung",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"mit Einengung",
+								"mit Lumeneinengung"
+							],
+							"text": "Divertikulose mit Lumeneinengung. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"ohne Einengung",
+								"ohne Lumeneinengung"
+							],
+							"text": "Divertikulose ohne Lumeneinengung. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Blutung",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"keine Blutung"
+							],
+							"text": "Es gibt keine Blutung. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"sickernd"
+							],
+							"text": "Es gibt eine sickernde Divertikelblutung. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"spritzend und arteriell",
+								"spritzend arteriell"
+							],
+							"text": "Es gibt eine spritzend, arterielle Divertikelblutung. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Empfehlung",
+					"condition": "",
+					"selectables": [
+						{
+							"kind": "box",
+							"name": [
+								"OP allgemein"
+							],
+							"text": "Eine OP sollte erfolgen. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"OP zur Blutstillung"
+							],
+							"text": "Eine OP zur Blutstillung sollte erfolgen. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Wiedervorstellung"
+							],
+							"text": "Es sollte eine Wiedervorstellung stattfinden. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"Kontrolluntersuchung"
+							],
+							"text": "Es sollte eine Kontrolluntersuchung stattfinden. ",
+							"normal": false,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						},
+						{
+							"kind": "box",
+							"name": [
+								"keine weitere Empfehlung"
+							],
+							"text": "Ansonsten keine weitere Empfehlung. ",
+							"normal": true,
+							"variables": [],
+							"choiceGroup": null,
+							"listGroup": null,
+							"judgementText": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"name": "vollständig"
+}
