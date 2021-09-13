@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import {BoundingBox, Image} from "../../helper-classes/materialModel";
+import {BoundingBox, Image} from "../models/materialModel";
 
 export interface PopoutData {
   scans: {

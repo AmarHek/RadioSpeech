@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {BoundingBox, Image} from "../../../helper-classes/materialModel";
+import {BoundingBox, Image} from "../../models/materialModel";
 import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
-import {getImageDimensions} from "../../../helper-classes/util";
+import {getImageDimensions} from "../../helpers/util";
 
 @Component({
   selector: 'app-image-display',

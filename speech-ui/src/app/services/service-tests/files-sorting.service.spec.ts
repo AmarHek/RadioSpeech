@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilesSortingService } from '../services/files-sorting.service';
+import { FilesSortingService } from '../files-sorting.service';
 
 describe('FilesSortingService', () => {
   let service: FilesSortingService;

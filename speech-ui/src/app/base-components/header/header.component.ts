@@ -2,6 +2,8 @@ import {Component, DoCheck, OnInit} from "@angular/core";
 import { faLaptopMedical } from "@fortawesome/free-solid-svg-icons";
 
 import { DisplayService } from "../../services/display.service";
+import {AuthenticationService} from "../../services/authentication.service";
+import {Role, User} from "../../models/user";
 
 @Component({
   selector: "app-header",
@@ -10,37 +12,34 @@ import { DisplayService } from "../../services/display.service";
 })
 export class HeaderComponent implements OnInit, DoCheck {
 
+
   public displayNavbar: boolean;
   public ui: string;
   public title = "RadioSpeech";
 
+  private user: User;
+
   faUser: any;
-  constructor(private displayService: DisplayService) {}
+  constructor(private displayService: DisplayService,
+              private authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
+    this.authenticationService.user.subscribe(x => this.user = x);
     this.displayNavbar = true;
     this.faUser = faLaptopMedical;
-    this.setUi();
   }
 
   ngDoCheck(): void {
-    // TODO: change, so the value is based on class
     this.displayService.updateDisplay();
     this.displayNavbar = this.displayService.displayHeader;
   }
 
-  setUi(): void {
-    this.displayService.getUi().subscribe((value) => {
-      this.ui = value;
-    });
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
   }
 
-  cycleUi(): void {
-    this.displayService.cycleUI();
-  }
-
-  setNewUi(new_ui: string): void {
-    this.displayService.setUi(new_ui);
+  logout() {
+    this.authenticationService.logout();
   }
 
 }

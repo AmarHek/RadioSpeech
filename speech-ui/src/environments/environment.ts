@@ -7,7 +7,8 @@ export const environment = {
   server: "http://localhost:3000/",
   database: "radio/database/",
   template: "template/",
-  material: "material/"
+  material: "material/",
+  apiUrl: "http://localhost:4000"
 };
 
 /*

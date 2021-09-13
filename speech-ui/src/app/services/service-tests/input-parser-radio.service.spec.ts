@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { InputParserService } from '../services/input-parser.service';
+import { InputParserService } from '../input-parser.service';
 
 describe('InputParserRadioService', () => {
   let service: InputParserService;

@@ -1,5 +1,5 @@
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import * as M from "./old_model";
+import * as M from "../helpers/old_model";
 
 export interface TextExtractor {
   ofCheckbox(c: CheckBox): string | undefined;

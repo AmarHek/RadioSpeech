@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import * as M from "../../helper-classes/templateModel";
-import {KeyVariable, KeySelectable} from "../../helper-classes/keyword";
-import { levenshtein } from "../../helper-classes/util";
-import { getAllIndexOf } from "../../helper-classes/util";
+import * as M from "../models/templateModel";
+import {KeyVariable, KeySelectable} from "../models/keyword";
+import { levenshtein } from "../helpers/util";
+import { getAllIndexOf } from "../helpers/util";
 
 @Injectable({
   providedIn: "root"

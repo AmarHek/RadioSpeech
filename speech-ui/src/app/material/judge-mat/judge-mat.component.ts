@@ -1,6 +1,6 @@
 import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
-import * as M from "../../../helper-classes/templateModel";
-import {Material} from "../../../helper-classes/materialModel";
+import * as M from "../../models/templateModel";
+import {Material} from "../../models/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {ActivatedRoute} from "@angular/router";
 import {DataParserService} from "../../services/dataParser.service";

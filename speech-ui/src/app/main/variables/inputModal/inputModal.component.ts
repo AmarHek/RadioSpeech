@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {displayableQuotient} from "../../../../helper-classes/util";
+import {displayableQuotient} from "../../../helpers/util";
 
 
 @Component({

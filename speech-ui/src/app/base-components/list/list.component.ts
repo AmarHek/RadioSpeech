@@ -2,9 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
 import {BackendCallerService} from "../../services/backend-caller.service";
-import {Template} from "../../../helper-classes/templateModel";
+import {Template} from "../../models/templateModel";
 import {MatDialogService} from "../../services/mat-dialog.service";
 import {UploadComponent} from "../upload/upload.component";
+import {Role, User} from "../../models/user";
+import {AuthenticationService} from "../../services/authentication.service";
 
 
 @Component({
@@ -17,12 +19,16 @@ export class ListComponent implements OnInit {
   templates: Template[] = [];
   isLoading: boolean;
 
+  private user: User;
+
   constructor(private dialog: MatDialog,
               private backendCaller: BackendCallerService,
-              private dialogService: MatDialogService
+              private dialogService: MatDialogService,
+              private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
+    this.authenticationService.user.subscribe(x => this.user = x);
     this.isLoading = true;
     this.update();
   }
@@ -33,6 +39,10 @@ export class ListComponent implements OnInit {
       console.log(templates);
       this.isLoading = false;
     });
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
   }
 
   removeAlert(id: string, name: string) {
