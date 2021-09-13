@@ -1,0 +1,55 @@
+$border-color: hsl(200, 70%, 80%);
+$background-color: hsl(202, 73%, 96%);
+
+.main {
+  min-height: 90%;
+  height: auto;
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+.tableView {
+  padding: 10px;
+}
+
+table, th, td {
+  border: 1px solid $border-color;
+  text-align: center;
+  min-width: 150px;
+  font-size: 15pt;
+}
+
+td.img {
+  padding: 5px;
+  text-align: center;
+  width: 400px;
+}
+
+img {
+  cursor: pointer;
+}
+
+td.text {
+  white-space: pre-line;
+}
+
+.custom-button {
+  font-size: 15pt;
+  padding: 10px 20px;
+}
+
+.row {
+  padding: 10px;
+  border-bottom: 1px solid $border-color;
+}
+
+#submitButton {
+  float: right;
+}

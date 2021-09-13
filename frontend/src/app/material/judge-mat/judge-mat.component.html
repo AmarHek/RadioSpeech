@@ -1,0 +1,28 @@
+<div class="main">
+  <div class="header">
+    <div class="buttons buttonsLeft">
+      <button id="back" title="Go back to list"
+              [routerLink]="['/', 'listMat']"
+              class="btn btn-outline-secondary">Zurück</button>
+      <button id="test" title="Test"
+              (click)="test()"
+              class="btn btn-outline-primary">Test</button>
+    </div>
+    <div class="buttons buttonsRight">
+      <button id="open-images"
+              (click)="openImagePopout()"
+              class="btn btn-outline-secondary">Bilder anzeigen</button>
+      <button id="normal-button"
+              (click)="makeNormal()"
+              class="btn btn-outline-secondary">Rest normal</button>
+      <button id="submit" title="Änderungen speichern"
+              (click)="submit()"
+              class="btn btn-outline-primary">Speichern</button>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="categories">
+    <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
+    <app-options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
+  </div>
+</div>

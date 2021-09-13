@@ -1,0 +1,18 @@
+<div class="columns">
+  <div class="button">
+    <button class="btn btn-outline-primary"
+            (click)="changeImageLeft()"><</button>
+  </div>
+
+  <div class="image-container"
+       [ngStyle]="{width: currentWidth, height: currentHeight}">
+    <img src="{{currentScanUrl}}"
+         alt="Fehler beim Laden der Aufnahme"/>
+    <canvas class="boxCanvas" width="{{this.currentWidth}}" height="{{this.currentHeight}}"></canvas>
+  </div>
+
+  <div class="button">
+    <button class="btn btn-outline-primary"
+            (click)="changeImageRight()">></button>
+  </div>
+</div>

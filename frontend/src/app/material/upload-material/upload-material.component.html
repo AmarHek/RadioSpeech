@@ -1,0 +1,99 @@
+<div mat-dialog-title class="header">
+  <h4>Aufnahmen hochladen</h4>
+</div>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="uploadForm" [formGroup]="uploadForm" (ngSubmit)="submit()">
+    <table class="files">
+      <tr>
+        <td class="label"><label class="mr-3" for="identifier">Identifier: </label></td>
+        <td class="button"><input #identifierInput (change)="updateIdentifier(identifierInput.value)" matTooltip="String-Pattern für Bildzuordnung eingeben.
+        Variable Ziffern mit * kennzeichnen."
+          type="text" id="identifier"></td>
+      </tr>
+      <tr>
+        <td class="label"><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput1.click()">Datei(en) auswählen</button>
+          <input hidden class="mr-3" type="file" multiple="multiple" id="mainScans" #fileInput1
+                 (change)="onFileSelect($event, 'mainScans')"/></td>
+        <td class="button">
+          <select class="dropdown" id="mainImageFiles" name="mainImageFiles"
+                  [ngStyle]="{'background-color': (mainFlags.includes(false)) ? 'red' : 'white'}"
+                  [disabled]="this.uploadForm.get('mainScans').value.length === 0">
+            <option>Dateien</option>
+            <ng-container *ngFor="let file of this.uploadForm.get('mainScans').value; index as i">
+              <option disabled [ngStyle]="{'background-color': (mainFlags[i] ? 'white' : 'red')}">{{file.name}}</option>
+            </ng-container>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label"><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput2.click()">Datei(en) auswählen</button>
+          <input hidden type="file" multiple="multiple" id="lateralScans" #fileInput2
+                 (change)="onFileSelect($event,'lateralScans')"/></td>
+        <td class="button">
+          <select class="dropdown" id="lateralImageFiles" name="lateralImageFiles"
+                  [ngStyle]="{'background-color': (lateralRedFlags.includes(false)) ? 'red' :
+                            (lateralYellowFlags.includes(false)) ? 'yellow' : 'white'}"
+                  [disabled]="this.uploadForm.get('lateralScans').value.length === 0">
+            <option>Dateien</option>
+            <ng-container *ngFor="let file of this.uploadForm.get('lateralScans').value; index as i">
+              <option disabled [ngStyle]="{'background-color': !lateralRedFlags[i] ? 'red':
+                                              !lateralYellowFlags[i] ? 'yellow' : 'white'}">
+                {{file.name}}</option>
+            </ng-container>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label"><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
+        <td class="button">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput3.click()">Datei(en) auswählen</button>
+          <input hidden type="file" multiple="multiple" id="preImageFile" #fileInput3
+                 (change)="onFileSelect($event,'preScans')"/>
+        </td>
+        <td class="button">
+          <select class="dropdown" id="preImageFiles" name="preImageFiles"
+                  [ngStyle]="{'background-color': (preRedFlags.includes(false)) ? 'red' :
+                            (preYellowFlags.includes(false)) ? 'yellow' : 'white'}"
+                  [disabled]="this.uploadForm.get('preScans').value.length === 0">
+            <option>Dateien</option>
+            <ng-container *ngFor="let file of this.uploadForm.get('preScans').value; index as i">
+              <option disabled [ngStyle]="{'background-color': !preRedFlags[i] ? 'red':
+                                              !preYellowFlags[i] ? 'yellow' : 'white'}">
+                {{file.name}}</option>
+            </ng-container>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <mat-divider></mat-divider>
+
+  <div class="templateSelect">
+    <h5>Schablone auswählen:</h5>
+    <mat-radio-group class="verticalRadioGroup" formControlName="parts">
+      <ng-container *ngFor="let template of templates">
+        <mat-radio-button style="font-size: 120%" value="{{stringify(template.parts)}}">
+          {{template.name}}
+        </mat-radio-button>
+      </ng-container>
+    </mat-radio-group>
+  </div>
+
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions class="buttons">
+  <button type="submit" id="submitButton" class="btn btn-primary"
+          [disabled]="uploadForm.invalid"
+          (click)="submit()">Hochladen</button>
+  <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+</mat-dialog-actions>
+
+
