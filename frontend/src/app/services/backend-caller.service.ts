@@ -15,8 +15,6 @@ import {Material} from "../models/materialModel";
 // This class administrates the list of templates and executes all api calls
 // -----------------------------------
 
-// TODO: Refactor this and material-manager to be more general --> specific mappings etc. go to the actual components
-
 export class BackendCallerService {
 
   templateUrl = environment.server + environment.database + environment.template;
@@ -38,7 +36,7 @@ export class BackendCallerService {
     );
   }
 
-  addTemplateFromJSON(jsonData: FormData): Observable<{message: string, templateId: string }> {
+  addTemplateFromJSON(jsonData: FormData): Observable<{message: string; templateId: string }> {
     return this.http.post<{message: string, templateId: string }>(
       this.templateUrl + "json/",
       jsonData
@@ -80,8 +78,8 @@ addTemplateFromExcel(postData: FormData) {
 
   // MATERIAL API
 
-  addMaterial(formData: FormData): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(
+  addMaterial(formData: FormData): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
       this.materialUrl,
       formData
     );
@@ -91,21 +89,21 @@ addTemplateFromExcel(postData: FormData) {
     return this.http.get<Material>(this.materialUrl + id);
   }
 
-  deleteMaterial(id: string): Observable<Object> {
+  deleteMaterial(id: string) {
     return this.http.delete(this.materialUrl + id);
   }
 
   getMaterials(): Observable<Material[]> {
     return this.http.get<Material[]>(
       this.materialUrl + "sample/"
-    )
+    );
   }
 
   queryMaterials(query: Record<string, unknown>): Observable<Material[]> {
     return this.http.post<Material[]>(
       this.materialUrl + "query/",
       query
-    )
+    );
   }
 
   updateMaterial(material: Material) {

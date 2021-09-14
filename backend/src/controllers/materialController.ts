@@ -17,7 +17,7 @@ export function filename(originalname: string, suffix: string): string {
     return nameSplit[0] + "_" + suffix + "." + nameSplit[1] as string;
 }
 
-export function addMaterial (req: any, res: Response, next: NextFunction) {
+export function addMaterial (req: any, res: Response, next: NextFunction): void {
     try {
 
         if (req.files) {
@@ -59,16 +59,20 @@ export function addMaterial (req: any, res: Response, next: NextFunction) {
 
             material.save().then((mat: Document) => {
                 const message = "Material with id "+ mat._id + " added successfully";
-                res.status(201).send(message);
+                res.status(201).json({
+                    success: true,
+                    message: message});
             });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send( "Unexpected behaviour");
+        res.status(500).json({
+            success: false,
+            message: error.message});
     }
 }
 
-export function deleteMaterial(req: Request, res: Response, next: NextFunction) {
+export function deleteMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
         MaterialSchema.deleteOne({
             _id: req.params.id
@@ -82,7 +86,7 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction) 
     }
 }
 
-export function updateMaterial(req: Request, res: Response, next: NextFunction){
+export function updateMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
         MaterialSchema.updateOne({
             _id: req.params.id
@@ -107,14 +111,14 @@ export function updateMaterial(req: Request, res: Response, next: NextFunction){
     }
 }
 
-export function sampleMaterial(req: Request, res: Response, next: NextFunction) {
+export function sampleMaterial(req: Request, res: Response, next: NextFunction): void {
   MaterialSchema.find()
     .then((materials: Material[]) => {
       res.status(200).send(materials);
     });
 }
 
-export function queryMaterial(req: Request, res: Response, next: NextFunction){
+export function queryMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
         MaterialSchema.find(req.body).limit(20).then((mats: Material[]) => {
             res.status(200).send(mats);
@@ -124,7 +128,7 @@ export function queryMaterial(req: Request, res: Response, next: NextFunction){
     }
 }
 
-export function getMaterialById(req: Request, res: Response, next: NextFunction){
+export function getMaterialById(req: Request, res: Response, next: NextFunction): void {
     try {
         MaterialSchema.find({_id: req.params.id}).then(mats => {
             res.status(200).send(mats[0]);
