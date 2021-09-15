@@ -5,12 +5,12 @@ import {BackendCallerService} from "../../services/backend-caller.service";
 import {ActivatedRoute} from "@angular/router";
 import {DataParserService} from "../../services/dataParser.service";
 import {PopoutService} from "../../services/popout.service";
-import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from '../../services/popout.tokens';
+import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from "../../services/popout.tokens";
 
 @Component({
-  selector: 'app-judge-mat',
-  templateUrl: './judge-mat.component.html',
-  styleUrls: ['./judge-mat.component.scss']
+  selector: "app-judge-mat",
+  templateUrl: "./judge-mat.component.html",
+  styleUrls: ["./judge-mat.component.scss"]
 })
 export class JudgeMatComponent implements OnInit, OnDestroy {
 
@@ -24,7 +24,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private popoutService: PopoutService) { }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener("window:beforeunload", ["$event"])
   onWindowClose(event: Event) {
     this.popoutService.closePopoutModal();
   }
@@ -47,7 +47,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
               "Bitte zur Aufnahmenliste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
           } else {
             this.material = material;
-            this.categories = this.dataParser.extractCategories(this.material.parts, false);
+            this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
             this.openImagePopout();
           }
         });
@@ -56,7 +56,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   }
 
   updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.material.parts);
+    [this.report, this.judgement] = this.dataParser.makeText(this.material.template.parts);
   }
 
   resetText(): void {
@@ -69,7 +69,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   }
 
   makeNormal() {
-    this.dataParser.makeNormal(this.material.parts);
+    this.dataParser.makeNormal(this.material.template.parts);
     this.updateText();
   }
 
@@ -87,7 +87,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
     const modalData: PopoutData = {
       scans: this.material.scans,
       coordinates: this.material.coordinates
-    }
+    };
 
     this.popoutService.openPopoutModal(modalData);
 

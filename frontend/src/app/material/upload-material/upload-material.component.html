@@ -76,14 +76,19 @@
 
   <div class="templateSelect">
     <h5>Schablone auswählen:</h5>
-    <mat-radio-group class="verticalRadioGroup" formControlName="parts">
+    <mat-radio-group class="verticalRadioGroup" formControlName="template">
       <ng-container *ngFor="let template of templates">
-        <mat-radio-button style="font-size: 120%" value="{{stringify(template.parts)}}">
+        <mat-radio-button style="font-size: 120%" value="{{stringify(template)}}">
           {{template.name}}
         </mat-radio-button>
       </ng-container>
     </mat-radio-group>
   </div>
+
+  <ng-container *ngIf="uploading">
+    <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
+    <div class="alert" *ngFor="let message of messages">{{message}}</div>
+  </ng-container>
 
 </mat-dialog-content>
 

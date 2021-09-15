@@ -36,6 +36,10 @@ export class ListMaterialComponent implements OnInit {
     });
   }
 
+  reload() {
+    this.getData();
+  }
+
   changeQuery(newValue: boolean) {
     this.query = {
       judged: newValue
@@ -58,7 +62,7 @@ export class ListMaterialComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {
-      this.getData();
+      this.reload();
     });
   }
 

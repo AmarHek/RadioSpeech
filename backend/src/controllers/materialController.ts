@@ -53,7 +53,7 @@ export function addMaterial (req: any, res: Response, next: NextFunction): void 
                     pre: []
                 },
                 modality: req.body.modality,
-                parts: JSON.parse(req.body.parts),
+                template: JSON.parse(req.body.template),
                 judged: false
             });
 

@@ -108,7 +108,7 @@ addTemplateFromExcel(postData: FormData) {
 
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + material._id, {
-      parts: material.parts,
+      parts: material.template,
       coordinates: material.coordinates,
       judged: true
     });

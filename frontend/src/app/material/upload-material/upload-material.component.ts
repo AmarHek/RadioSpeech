@@ -23,6 +23,11 @@ export class UploadMaterialComponent implements OnInit {
   preRedFlags: boolean[] = [];
   preYellowFlags: boolean[] = [];
 
+  supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
+  progress = 0;
+  uploading = false;
+  messages: string[] = [];
+
   constructor(private backendCaller: BackendCallerService,
               private dialogRef: MatDialogRef<UploadMaterialComponent>,
               private filesSorter: FilesSortingService) { }
@@ -37,7 +42,7 @@ export class UploadMaterialComponent implements OnInit {
       mainScans: new FormControl([], {validators: [Validators.required]}),
       lateralScans: new FormControl([]),
       preScans: new FormControl([]),
-      parts: new FormControl(null, {validators: [Validators.required]})
+      template: new FormControl(null, {validators: [Validators.required]})
     });
   }
 
@@ -53,24 +58,22 @@ export class UploadMaterialComponent implements OnInit {
 
   updateIdentifier(id: string) {
     this.filesSorter.setIdentifier(id);
-    this.checkFiles();
+    this.flagFiles();
   }
 
   onFileSelect(event, scanType: string) {
     if (event.target.files.length > 0) {
       const files = event.target.files;
-      if (this.checkFileExtensions(files)) {
+      if (this.fileFilter(files)) {
         this.uploadForm.get(scanType).setValue(Array.from(files));
-        this.checkFiles();
+        this.flagFiles();
       }
     }
   }
 
-  // TODO: Refactor this to make it simpler (i.e. use file.type instead of checkFileExtension etc.)
-  checkFileExtensions(files: File[]): boolean {
+  fileFilter(files: File[]): boolean {
     for (const file of files) {
-      const extension = getFileExtension(file.name);
-      if (!(extension === "png" || extension === "jpeg" || extension === "jpg")) {
+      if (!(this.supportedFileTypes.includes(file.type))) {
         window.alert("Die Datei " + file.name + " besitzt ein nicht unterstütztes Dateiformat. Bitte nur PNG oder JPEG hochladen.");
         return false;
       }
@@ -78,7 +81,7 @@ export class UploadMaterialComponent implements OnInit {
     return true;
   }
 
-  checkFiles(): void {
+  flagFiles(): void {
     const mainFiles: File[] = this.uploadForm.get("mainScans").value;
     const lateralFiles: File[] = this.uploadForm.get("lateralScans").value;
     const preFiles: File[] = this.uploadForm.get("preScans").value;
@@ -92,6 +95,7 @@ export class UploadMaterialComponent implements OnInit {
   }
 
   submit(): void {
+    this.uploading = true;
     let choice = true;
     if (this.mainFlags.includes(false) || this.lateralYellowFlags.includes(false) || this.lateralRedFlags.includes(false)
     || this.preYellowFlags.includes(false) || this.preRedFlags.includes(false)) {
@@ -105,11 +109,10 @@ export class UploadMaterialComponent implements OnInit {
       const preScans = this.uploadForm.get("preScans").value;
 
       const fileTuples: [File, File, File][] = this.filesSorter.getFileTuples(mainScans, lateralScans, preScans);
-      const progress = 0;
 
       for (const fileTuple of fileTuples) {
         const formData = new FormData();
-        formData.append("parts", this.uploadForm.get("parts").value);
+        formData.append("template", this.uploadForm.get("template").value);
         // TODO: Add choice for this later
         formData.append("modality", "xray");
         formData.append("id", nanoid());
@@ -117,11 +120,18 @@ export class UploadMaterialComponent implements OnInit {
         formData.append("lateralScan", fileTuple[1]);
         formData.append("preScan", fileTuple[2]);
 
-        this.backendCaller.addMaterial(formData).subscribe();
+        this.backendCaller.addMaterial(formData).subscribe( result => {
+          this.progress += 100/(fileTuples.length);
+          if (result.success === false) {
+            this.messages.push(fileTuple[0].name + ": " + result.message);
+          }
+        });
       }
-
-      this.close();
+      setTimeout(() => this.close(), 2000);
+    } else {
+      this.uploading = false;
     }
+
   }
 
   close() {

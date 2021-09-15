@@ -37,6 +37,7 @@ import { fakeBackendProvider } from "./helpers/fake-backend";
 import { JwtInterceptor } from "./helpers/jwt.interceptor";
 import { ErrorInterceptor } from "./helpers/error.interceptor";
 import {AppRoutingModule} from "./app-routing.module";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 // import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 // import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 // import { VariableComponent } from "./edit-structure/variable/variable.component";
@@ -60,25 +61,26 @@ import {AppRoutingModule} from "./app-routing.module";
     ImageDisplayComponent,
     LoginComponent,
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    FontAwesomeModule,
-    HttpClientModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDividerModule,
-    MatButtonModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    FontAwesomeModule,
-    CommonModule,
-    MatRadioModule,
-    MatTooltipModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+        FontAwesomeModule,
+        HttpClientModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDividerModule,
+        MatButtonModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FontAwesomeModule,
+        CommonModule,
+        MatRadioModule,
+        MatTooltipModule,
+        MatProgressBarModule
+    ],
   providers: [DisplayService, PopoutService,
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },

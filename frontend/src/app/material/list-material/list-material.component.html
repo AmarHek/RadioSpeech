@@ -4,44 +4,62 @@
 
   <div class="row">
     <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
+      <button class="btn btn-outline-primary" style="margin-right: 10px;" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button ngbDropdownItem (click)="changeQuery(true)">Ja</button>
         <button ngbDropdownItem (click)="changeQuery(false)">Nein</button>
       </div>
-      <button class="btn btn-outline-primary" id="submitButton" (click)="openUploadDialog()">Aufnahmen hochladen</button>
+      <button class="btn btn-outline-secondary" (click)="reload()" id="reloadButton">Aufnahmen neu Laden</button>
+      <button class="btn btn-outline-primary" style="float: right;"
+              id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen</button>
     </div>
   </div>
 
   <div class="tableView" *ngIf="this.materials.length > 0; else noEntry">
     <table>
       <tr>
-        <th>Frontalaufnahme</th>
-        <th>Lateralaufnahme</th>
-        <th>Voraufnahme</th>
-        <th>Modalität</th>
-        <th>Befunden</th>
+        <th class="body">Frontalaufnahme</th>
+        <th class="body">Lateralaufnahme</th>
+        <th class="body">Voraufnahme</th>
+        <th class="meta">Meta</th>
       </tr>
       <tr *ngFor="let material of this.materials">
-        <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+        <td class="img">
+          <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
                              width="300px"
                              alt="Fehler beim Laden der Aufnahme"
-                             (click)="openEditor(material._id)"/></td>
-        <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
-          <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
+          (click)="openEditor(material._id)"/>
+          <span>{{material.scans.mainScan.filename}}</span>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
+            <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                                width="300px"
                                alt="Aufnahme nicht vorhanden"
-                               (click)="openEditor(material._id)"/></td>
-        </ng-container>
-        <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
-          <td class="img"><img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
+                               (click)="openEditor(material._id)"/>
+            <span>{{material.scans.lateralScan.filename}}</span>
+          </ng-container>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
+
+            <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                                width="300px"
                                alt="Aufnahme nicht vorhanden"
-                               (click)="openEditor(material._id)"/></td>
-        </ng-container>
-        <td class="text">{{displayModality(material.modality)}}</td>
-        <td class="button"><button class="btn btn-outline-primary custom-button"
-                                   (click)="openEditor(material._id)">Start</button></td>
+                               (click)="openEditor(material._id)"/>
+            <span>{{material.scans.preScan.filename}}</span>
+          </ng-container>
+        </td>
+        <td class="meta">
+          <ul>
+            <li>Modalität: {{material.modality}}</li>
+            <li>Template: {{material.template.name}}</li>
+            <li>Boxen vorhanden in: {{checkboxes(material.coordinates)}}</li>
+          </ul>
+              <button class="btn btn-outline-primary custom-button"
+                        (click)="openEditor(material._id)">Start Befundung</button>
+          <button class="btn btn-danger custom-button" (click)="delete(material._id)">Entfernen</button>
+        </td>
       </tr>
 
     </table>
@@ -49,7 +67,7 @@
 </div>
 
 <ng-template #noEntry>
-  <div class="tableView">
+  <div style="padding: 10px;">
     Keine Einträge gefunden.
   </div>
 </ng-template>

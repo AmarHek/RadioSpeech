@@ -1,4 +1,5 @@
 import * as M from "./templateModel";
+import {Template} from "./templateModel";
 
 export interface Pathology {
   name: string;
@@ -25,14 +26,14 @@ export interface Material {
     mainScan: Image;
     lateralScan?: Image;
     preScan?: Image;
-  }
+  };
   coordinates: {
     main:         BoundingBox[];
     lateral:      BoundingBox[];
     pre:          BoundingBox[];
-  }
+  };
   modality:       string;
-  parts:          M.TopLevel[];
+  template:       Template;
   pathologies:    Pathology[];
   judged:         boolean;
 }
