@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {Material} from "../../models/materialModel";
+import {BoundingBox, Material} from "../../models/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
@@ -47,10 +47,12 @@ export class ListMaterialComponent implements OnInit {
     this.getData();
   }
 
-  displayModality(modality: string) {
-    if (modality === "xray") {
-      return "CR";
-    }
+  checkBoxes(coordinates: Record<string, BoundingBox[]>): string {
+
+  }
+
+  delete(id: string) {
+
   }
 
   openEditor(matID: string) {

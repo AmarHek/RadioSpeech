@@ -35,7 +35,7 @@
           <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                                width="300px"
-                               alt="Aufnahme nicht vorhanden"
+                               alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.lateralScan.filename}}</span>
           </ng-container>
@@ -45,17 +45,17 @@
 
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                                width="300px"
-                               alt="Aufnahme nicht vorhanden"
+                               alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.preScan.filename}}</span>
           </ng-container>
         </td>
         <td class="meta">
-          <ul>
-            <li>Modalität: {{material.modality}}</li>
-            <li>Template: {{material.template.name}}</li>
-            <li>Boxen vorhanden in: {{checkboxes(material.coordinates)}}</li>
-          </ul>
+          <table>
+            <tr>Modalität: {{material.modality}}</tr>
+            <tr>Template: {{material.template.name}}</tr>
+            <tr>Boxen vorhanden in: {{checkBoxes(material.coordinates)}}</tr>
+          </table>
               <button class="btn btn-outline-primary custom-button"
                         (click)="openEditor(material._id)">Start Befundung</button>
           <button class="btn btn-danger custom-button" (click)="delete(material._id)">Entfernen</button>
