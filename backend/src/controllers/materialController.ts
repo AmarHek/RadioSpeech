@@ -2,6 +2,8 @@ import MaterialSchema from '../models/materialSchema';
 import { Document } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { Material } from "../models/materialModel";
+import fs from "fs";
+import Path from "path";
 
 /*
 export interface matRequest extends Request {
@@ -19,7 +21,6 @@ export function filename(originalname: string, suffix: string): string {
 
 export function addMaterial (req: any, res: Response, next: NextFunction): void {
     try {
-
         if (req.files) {
             const mainScan = {
                 filename: filename(req.files.mainScan[0].originalname, req.files.mainScan[0].fieldname),
@@ -74,10 +75,13 @@ export function addMaterial (req: any, res: Response, next: NextFunction): void 
 
 export function deleteMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
+        console.log(req.params, req.body);
         MaterialSchema.deleteOne({
             _id: req.params.id
         }).then(
             result => {
+                const dir = Path.join("data/images/", req.body.scanID);
+                fs.rmdirSync(dir, { recursive: true });
                 console.log(result);
                 res.status(200).send("Material deleted");
             });

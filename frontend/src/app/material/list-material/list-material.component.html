@@ -15,13 +15,13 @@
     </div>
   </div>
 
-  <div class="tableView" *ngIf="this.materials.length > 0; else noEntry">
+  <div class="tableview" *ngIf="this.materials.length > 0; else noEntry">
     <table>
       <tr>
         <th class="body">Frontalaufnahme</th>
         <th class="body">Lateralaufnahme</th>
         <th class="body">Voraufnahme</th>
-        <th class="meta">Meta</th>
+        <th class="meta">Metadaten</th>
       </tr>
       <tr *ngFor="let material of this.materials">
         <td class="img">
@@ -52,13 +52,22 @@
         </td>
         <td class="meta">
           <table>
-            <tr>Modalität: {{material.modality}}</tr>
-            <tr>Template: {{material.template.name}}</tr>
-            <tr>Boxen vorhanden in: {{checkBoxes(material.coordinates)}}</tr>
+            <tr>
+              <td class="metadata">Modalität:</td>
+              <td>{{material.modality}}</td>
+            </tr>
+            <tr>
+              <td>Template:</td>
+              <td>{{material.template.name}}</td>
+            </tr>
+            <tr>
+              <td>Boxen vorhanden in:</td>
+              <td>{{checkBoxes(material.coordinates)}}</td>
+            </tr>
           </table>
               <button class="btn btn-outline-primary custom-button"
                         (click)="openEditor(material._id)">Start Befundung</button>
-          <button class="btn btn-danger custom-button" (click)="delete(material._id)">Entfernen</button>
+          <button class="btn btn-danger custom-button" (click)="delete(material._id, material.scans.id)">Entfernen</button>
         </td>
       </tr>
 

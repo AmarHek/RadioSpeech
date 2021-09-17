@@ -10,11 +10,11 @@
 <mat-divider></mat-divider>
 
 <div mat-dialog-actions class="buttons" *ngIf="type === 'confirm'">
-  <button mat-raised-button color="primary" (click)="onConfirm()">Bestätigen</button>
-  <button mat-raised-button (click)="onDismiss()">Abbrechen</button>
+  <button class="btn btn-primary" (click)="onConfirm()">Bestätigen</button>
+  <button class="btn btn-outline-secondary cancelButton" (click)="onDismiss()">Abbrechen</button>
 </div>
 
 <div mat-dialog-actions class="buttons" *ngIf="type === 'warning'">
-  <button class="btn btn-outline-danger" (click)="onConfirm()">Bestätigen</button>
-  <button class="btn btn-outline-secondary" (click)="onDismiss()">Abbrechen</button>
+  <button class="btn btn-danger" (click)="onConfirm()">Bestätigen</button>
+  <button class="btn btn-outline-secondary cancelButton" (click)="onDismiss()">Abbrechen</button>
 </div>

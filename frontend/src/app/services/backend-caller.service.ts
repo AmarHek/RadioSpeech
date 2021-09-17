@@ -89,8 +89,8 @@ addTemplateFromExcel(postData: FormData) {
     return this.http.get<Material>(this.materialUrl + id);
   }
 
-  deleteMaterial(id: string) {
-    return this.http.delete(this.materialUrl + id);
+  deleteMaterial(objectID: string, scanID: string) {
+    return this.http.post(this.materialUrl + objectID, {"scanID": scanID});
   }
 
   getMaterials(): Observable<Material[]> {

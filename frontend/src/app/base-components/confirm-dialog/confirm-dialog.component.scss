@@ -1,6 +1,5 @@
 .buttons {
   float: right;
-  margin-block-start: 8px;
 }
 
 h5 {
@@ -11,4 +10,8 @@ h5 {
   margin-block-start: 8px;
   margin-block-end: 2px;
   margin-bottom: 0;
+}
+
+.cancelButton {
+  margin-left: 5px;
 }

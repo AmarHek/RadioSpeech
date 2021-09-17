@@ -6,6 +6,10 @@ import {environment} from "../../../environments/environment";
 import {MatDialogService} from "../../services/mat-dialog.service";
 import {UploadMaterialComponent} from "../upload-material/upload-material.component";
 import {MatDialog} from "@angular/material/dialog";
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel
+} from "../../base-components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: "app-display-material",
@@ -48,11 +52,44 @@ export class ListMaterialComponent implements OnInit {
   }
 
   checkBoxes(coordinates: Record<string, BoundingBox[]>): string {
+    const res: string[] = [];
+    if (coordinates.main.length > 0) {
+      res.push("Hauptaufnahme");
+    }
+    if (coordinates.lateral.length > 0) {
+      res.push("Lateralaufnahme");
+    }
+    if (coordinates.pre.length > 0) {
+      res.push("Voraufnahme");
+    }
+
+    if (res.length > 0) {
+      return res.join(",");
+    } else {
+      return "Keiner Aufnahme";
+    }
 
   }
 
-  delete(id: string) {
+  delete(objectID: string, scanID: string) {
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Entfernen bestätigen",
+      "Möchten Sie diesen Eintrag wirklich entfernen?");
 
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.backendCaller.deleteMaterial(objectID, scanID).subscribe(() => {
+          window.alert("Eintrag erfolgreich gelöscht.");
+          this.getData();
+        });
+      }
+    });
   }
 
   openEditor(matID: string) {
