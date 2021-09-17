@@ -43,6 +43,6 @@ router.put("/material/:id", MaterialController.updateMaterial);
 router.get("/material/sample/", MaterialController.sampleMaterial);
 router.get("/material/:id", MaterialController.getMaterialById)
 router.post("/material/query/", MaterialController.queryMaterial);
-router.post("/material/:id", MaterialController.deleteMaterial)
+router.post("/material/delete/", MaterialController.deleteMaterial)
 
 

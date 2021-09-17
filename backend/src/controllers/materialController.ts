@@ -75,18 +75,16 @@ export function addMaterial (req: any, res: Response, next: NextFunction): void 
 
 export function deleteMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
-        console.log(req.params, req.body);
+        console.log(req.body);
         MaterialSchema.deleteOne({
-            _id: req.params.id
-        }).then(
-            result => {
+            _id: req.body.objectID
+        }).then(() => {
                 const dir = Path.join("data/images/", req.body.scanID);
                 fs.rmdirSync(dir, { recursive: true });
-                console.log(result);
-                res.status(200).send("Material deleted");
+                res.status(200).json({message:"Material deleted"});
             });
     } catch (error) {
-        res.status(404).send(error.message);
+        res.status(404).json({message: error.message});
     }
 }
 

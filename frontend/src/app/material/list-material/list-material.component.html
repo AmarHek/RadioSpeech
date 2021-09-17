@@ -15,8 +15,8 @@
     </div>
   </div>
 
-  <div class="tableview" *ngIf="this.materials.length > 0; else noEntry">
-    <table>
+  <div class="tableDiv" *ngIf="this.materials.length > 0; else noEntry">
+    <table class="listMatTable">
       <tr>
         <th class="body">Frontalaufnahme</th>
         <th class="body">Lateralaufnahme</th>
@@ -26,7 +26,7 @@
       <tr *ngFor="let material of this.materials">
         <td class="img">
           <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
-                             width="300px"
+                             width="200px"
                              alt="Fehler beim Laden der Aufnahme"
           (click)="openEditor(material._id)"/>
           <span>{{material.scans.mainScan.filename}}</span>
@@ -34,7 +34,7 @@
         <td class="img">
           <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
-                               width="300px"
+                               width="200px"
                                alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.lateralScan.filename}}</span>
@@ -44,7 +44,7 @@
           <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
 
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
-                               width="300px"
+                               width="200px"
                                alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.preScan.filename}}</span>

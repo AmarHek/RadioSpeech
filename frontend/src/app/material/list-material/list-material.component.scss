@@ -9,20 +9,22 @@ $background-color: hsl(202, 73%, 96%);
   margin: 10px;
   padding: 20px;
   border-radius: 5px;
+  width: auto;
 }
 
 .body, .img,  {
   border: 1px solid $border-color;
   text-align: center;
-  min-width: 150px;
   font-size: 15pt;
+  width: auto;
+  max-width: 350px;
 }
 
 .img {
   padding: 5px;
   text-align: center;
-  width: 400px;
 }
+
 img {
   cursor: pointer;
 }
@@ -32,6 +34,7 @@ img {
   white-space: pre-line;
   padding: 10px;
   font-size: 15pt;
+  min-width: 150px;
 }
 
 .custom-button {
@@ -45,6 +48,12 @@ img {
   border-bottom: 1px solid $border-color;
 }
 
-.tableview {
+.tableDiv {
   margin: 10px;
+  width: auto;
+}
+
+.listMatTable {
+  table-layout: fixed;
+  width: auto;
 }

@@ -84,7 +84,7 @@ export class ListMaterialComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.backendCaller.deleteMaterial(objectID, scanID).subscribe(() => {
+        this.backendCaller.deleteMaterial(objectID, scanID).subscribe(res => {
           window.alert("Eintrag erfolgreich gelöscht.");
           this.getData();
         });
