@@ -88,9 +88,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
       scans: this.material.scans,
       coordinates: this.material.coordinates
     };
-
     this.popoutService.openPopoutModal(modalData);
-
   }
 
   test() {

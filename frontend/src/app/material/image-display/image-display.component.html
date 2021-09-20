@@ -1,7 +1,15 @@
 <div class="columns">
   <div class="button">
     <button class="btn btn-outline-primary"
-            (click)="changeImageLeft()"><</button>
+            (click)="this.setCurrentImage('mainScan')">Hauptaufnahme</button>
+    <button class="btn btn-outline-primary"
+            (click)="this.setCurrentImage('lateralScan')"
+            [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
+    <button class="btn btn-outline-primary"
+            (click)="this.setCurrentImage('preScan')"
+            [disabled]="this.scans.preScan === undefined">Voraufnahme</button>
+    <button class="btn btn-outline-secondary"
+            (click)="toggleBoxDisplay()">Boxen anzeigen</button>
   </div>
 
   <div class="image-container"
@@ -9,10 +17,5 @@
     <img src="{{currentScanUrl}}"
          alt="Fehler beim Laden der Aufnahme"/>
     <canvas class="boxCanvas" width="{{this.currentWidth}}" height="{{this.currentHeight}}"></canvas>
-  </div>
-
-  <div class="button">
-    <button class="btn btn-outline-primary"
-            (click)="changeImageRight()">></button>
   </div>
 </div>

@@ -1,6 +1,6 @@
-import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, OnDestroy } from '@angular/core';
-import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from './popout.tokens';
+import { ComponentPortal, DomPortalOutlet, PortalInjector } from "@angular/cdk/portal";
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, OnDestroy } from "@angular/core";
+import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from "./popout.tokens";
 import {ImageDisplayComponent} from "../material/image-display/image-display.component";
 
 @Injectable()
@@ -18,8 +18,8 @@ export class PopoutService implements OnDestroy {
 
   openPopoutModal(data) {
     const windowInstance = this.openOnce(
-      'assets/modal/popout.html',
-      'MODAL_POPOUT'
+      "assets/modal/popout.html",
+      "MODAL_POPOUT"
     );
 
     // Wait for window instance to be created
@@ -31,9 +31,9 @@ export class PopoutService implements OnDestroy {
   openOnce(url, target) {
     // Open a blank "target" window
     // or get the reference to the existing "target" window
-    const winRef = window.open('', target, '', false);
+    const winRef = window.open("", target, "", true);
     // If the "target" window was just opened, change its url
-    if (winRef.location.href === 'about:blank') {
+    if (winRef.location.href === "about:blank") {
       winRef.location.href = url;
     }
     return winRef;
@@ -46,7 +46,7 @@ export class PopoutService implements OnDestroy {
         this.componentFactoryResolver, this.applicationRef, this.injector);
 
       // Copy styles from parent window
-      document.querySelectorAll('style').forEach(htmlElement => {
+      document.querySelectorAll("style").forEach(htmlElement => {
         windowInstance.document.head.appendChild(htmlElement.cloneNode(true));
       });
       // Copy stylesheet link from parent window
@@ -55,32 +55,32 @@ export class PopoutService implements OnDestroy {
 
       this.styleSheetElement.onload = () => {
         // Clear popout modal content
-        windowInstance.document.body.innerText = '';
+        windowInstance.document.body.innerText = "";
         // Create an injector with modal data
         const injector = this.createInjector(data);
         // Attach the portal
         let componentInstance;
-        windowInstance.document.title = 'Image Display';
+        windowInstance.document.title = "Image Display";
         componentInstance = this.attachContainer(outlet, injector);
 
-        POPOUT_MODALS['windowInstance'] = windowInstance;
-        POPOUT_MODALS['outlet'] = outlet;
-        POPOUT_MODALS['componentInstance'] = componentInstance;
+        POPOUT_MODALS["windowInstance"] = windowInstance;
+        POPOUT_MODALS["outlet"] = outlet;
+        POPOUT_MODALS["componentInstance"] = componentInstance;
       };
     }
   }
 
   isPopoutWindowOpen() {
-    return POPOUT_MODALS['windowInstance'] && !POPOUT_MODALS['windowInstance'].closed;
+    return POPOUT_MODALS["windowInstance"] && !POPOUT_MODALS["windowInstance"].closed;
   }
 
   focusPopoutWindow() {
-    POPOUT_MODALS['windowInstance'].focus();
+    POPOUT_MODALS["windowInstance"].focus();
   }
 
   closePopoutModal() {
-    if (POPOUT_MODALS['windowInstance']) {
-      POPOUT_MODALS['windowInstance'].close();
+    if (POPOUT_MODALS["windowInstance"]) {
+      POPOUT_MODALS["windowInstance"].close();
     }
   }
 
@@ -97,12 +97,12 @@ export class PopoutService implements OnDestroy {
   }
 
   getStyleSheetElement() {
-    const styleSheetElement = document.createElement('link');
-    document.querySelectorAll('link').forEach(htmlElement => {
+    const styleSheetElement = document.createElement("link");
+    document.querySelectorAll("link").forEach(htmlElement => {
       console.log(htmlElement);
-      if (htmlElement.rel === 'stylesheet') {
+      if (htmlElement.rel === "stylesheet") {
         const absoluteUrl = new URL(htmlElement.href).href;
-        styleSheetElement.rel = 'stylesheet';
+        styleSheetElement.rel = "stylesheet";
         styleSheetElement.href = absoluteUrl;
       }
     });

@@ -26,7 +26,7 @@
       <tr *ngFor="let material of this.materials">
         <td class="img">
           <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
-                             width="200px"
+                             width="300px"
                              alt="Fehler beim Laden der Aufnahme"
           (click)="openEditor(material._id)"/>
           <span>{{material.scans.mainScan.filename}}</span>
@@ -34,7 +34,7 @@
         <td class="img">
           <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
-                               width="200px"
+                               width="300px"
                                alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.lateralScan.filename}}</span>
@@ -44,25 +44,25 @@
           <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
 
             <img src="{{serverUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
-                               width="200px"
+                               width="300px"
                                alt="Fehler beim Laden der Aufnahme"
                                (click)="openEditor(material._id)"/>
             <span>{{material.scans.preScan.filename}}</span>
           </ng-container>
         </td>
         <td class="meta">
-          <table>
+          <table class="metatable">
             <tr>
               <td class="metadata">Modalität:</td>
-              <td>{{material.modality}}</td>
+              <td class="metadata">{{material.modality}}</td>
             </tr>
             <tr>
-              <td>Template:</td>
-              <td>{{material.template.name}}</td>
+              <td class="metadata">Template:</td>
+              <td class="metadata">{{material.template.name}}</td>
             </tr>
             <tr>
-              <td>Boxen vorhanden in:</td>
-              <td>{{checkBoxes(material.coordinates)}}</td>
+              <td class="metadata">Boxen vorhanden in:</td>
+              <td class="metadata">{{checkBoxes(material.coordinates)}}</td>
             </tr>
           </table>
               <button class="btn btn-outline-primary custom-button"
