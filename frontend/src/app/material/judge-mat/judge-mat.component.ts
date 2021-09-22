@@ -31,6 +31,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getData();
+    console.log(POPOUT_MODALS["componentInstance"]);
   }
 
   ngOnDestroy(): void {

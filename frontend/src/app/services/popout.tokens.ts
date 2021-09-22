@@ -7,15 +7,15 @@ export interface PopoutData {
     mainScan: Image;
     lateralScan?: Image;
     preScan?: Image;
-  }
+  };
   coordinates: {
     main: BoundingBox[];
     lateral: BoundingBox[];
     pre: BoundingBox[];
-  }
+  };
 }
 
-export const POPOUT_MODAL_DATA = new InjectionToken<PopoutData>('POPOUT_MODAL_DATA');
+export const POPOUT_MODAL_DATA = new InjectionToken<PopoutData>("POPOUT_MODAL_DATA");
 
-export let POPOUT_MODALS = {
+export const POPOUT_MODALS = {
 }

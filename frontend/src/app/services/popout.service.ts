@@ -45,10 +45,6 @@ export class PopoutService implements OnDestroy {
       const outlet = new DomPortalOutlet(windowInstance.document.body,
         this.componentFactoryResolver, this.applicationRef, this.injector);
 
-      // Copy styles from parent window
-      document.querySelectorAll("style").forEach(htmlElement => {
-        windowInstance.document.head.appendChild(htmlElement.cloneNode(true));
-      });
       // Copy stylesheet link from parent window
       this.styleSheetElement = this.getStyleSheetElement();
       windowInstance.document.head.appendChild(this.styleSheetElement);
@@ -59,9 +55,8 @@ export class PopoutService implements OnDestroy {
         // Create an injector with modal data
         const injector = this.createInjector(data);
         // Attach the portal
-        let componentInstance;
         windowInstance.document.title = "Image Display";
-        componentInstance = this.attachContainer(outlet, injector);
+        const componentInstance = this.attachContainer(outlet, injector);
 
         POPOUT_MODALS["windowInstance"] = windowInstance;
         POPOUT_MODALS["outlet"] = outlet;
@@ -99,7 +94,6 @@ export class PopoutService implements OnDestroy {
   getStyleSheetElement() {
     const styleSheetElement = document.createElement("link");
     document.querySelectorAll("link").forEach(htmlElement => {
-      console.log(htmlElement);
       if (htmlElement.rel === "stylesheet") {
         const absoluteUrl = new URL(htmlElement.href).href;
         styleSheetElement.rel = "stylesheet";
