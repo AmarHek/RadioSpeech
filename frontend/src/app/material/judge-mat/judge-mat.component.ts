@@ -92,7 +92,4 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
     this.popoutService.openPopoutModal(modalData);
   }
 
-  test() {
-  }
-
 }

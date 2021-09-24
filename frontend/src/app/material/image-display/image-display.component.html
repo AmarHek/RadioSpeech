@@ -1,21 +1,25 @@
-<div class="columns">
-  <div class="button">
+<div style="background: hsl(202, 73%, 96%); margin: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
+            grid-column-gap: 5px; grid-template-columns: 10% 90%;
+            display: grid">
+  <div style="display: block; margin: 20px;">
     <button class="btn btn-outline-primary"
+            style="width: 150px; margin: 2px; padding: 10px;"
             (click)="this.setCurrentImage('mainScan')">Hauptaufnahme</button>
     <button class="btn btn-outline-primary"
+            style="width: 150px; margin: 2px; padding: 10px;"
             (click)="this.setCurrentImage('lateralScan')"
             [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
     <button class="btn btn-outline-primary"
+            style="width: 150px; margin: 2px; padding: 10px;"
             (click)="this.setCurrentImage('preScan')"
             [disabled]="this.scans.preScan === undefined">Voraufnahme</button>
     <button class="btn btn-outline-secondary"
+            style="width: 150px; margin: 2px; padding: 10px;"
             (click)="toggleBoxDisplay()">Boxen anzeigen</button>
   </div>
 
-  <div class="image-container"
-       [ngStyle]="{width: currentWidth, height: currentHeight}">
-    <img src="{{currentScanUrl}}"
-         alt="Fehler beim Laden der Aufnahme"/>
-    <canvas class="boxCanvas" width="{{this.currentWidth}}" height="{{this.currentHeight}}"></canvas>
+  <div style="margin: 5px;" [ngStyle]="{width: currentWidth, height: currentHeight}">
+      <img src="{{currentScanUrl}}" id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
   </div>
+
 </div>

@@ -1,29 +1,47 @@
-body{text-align: center;background: #f2f6f8;}
-.img{position:absolute;z-index:1;}
+body {
+  text-align: center;
+  background: #f2f6f8;}
+//.img{position:absolute;z-index:1;}
 
 .columns {
   height: 100%;
   display: grid;
-  grid-template-columns: 10% 80% 10%;
+  grid-template-columns: 10% 90%;
   grid-column-gap: 5px;
   grid-template-areas:
-    "button canvas button";
+    "button image-container";
 }
 
-.image-container {
-  grid-area: canvas;
-  height: 100%;
+.imageContainer {
+  grid-area: image-container;
   display:inline-block;
-  margin: 0 auto;
+  margin: 20px 60px;
+  border: 1px solid blue;
+}
+
+.insideWrapper {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
-.boxCanvas {
-  position: relative;
-  z-index: 20;
+.image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.displayCanvas {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  // z-index: 20;
 }
 
 .button {
   grid-area: button;
-
 }
