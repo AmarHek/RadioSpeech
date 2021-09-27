@@ -16,10 +16,19 @@
     <button class="btn btn-outline-secondary"
             style="width: 150px; margin: 2px; padding: 10px;"
             (click)="toggleBoxDisplay()">Boxen anzeigen</button>
+    <button class="btn btn-outline-secondary"
+            style="width: 150px; margin: 2px; padding: 10px;"
+            (click)="startEditor()">Starte Boxeditor</button>
+    <button class="btn btn-outline-secondary"
+            style="width: 150px; margin: 2px; padding: 10px;"
+            (click)="test()">Test</button>
   </div>
 
-  <div style="margin: 5px;" [ngStyle]="{width: currentWidth, height: currentHeight}">
-      <img src="{{currentScanUrl}}" id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
+  <div style="position: relative" [ngStyle]="{width: currentWidth, height: currentHeight}">
+      <img style="position: absolute; left: 0; top: 0; z-index: 0" src="{{currentScanUrl}}"
+           id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
+      <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="drawCanvas"
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
 </div>

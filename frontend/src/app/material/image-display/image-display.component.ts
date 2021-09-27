@@ -2,8 +2,6 @@ import { Component, OnInit, Inject } from "@angular/core";
 import {BoundingBox, Image} from "../../models/materialModel";
 import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
-import { Annotorious } from "@recogito/annotorious";
-import "@recogito/annotorious/dist/annotorious.min.css";
 import {getImageDimensions} from "../../helpers/util";
 
 @Component({
@@ -42,6 +40,7 @@ export class ImageDisplayComponent implements OnInit {
     this.scans = this.data.scans;
     this.coordinates = this.data.coordinates;
     this.setCurrentImage("mainScan");
+
   }
 
   setCurrentImage(mode: string) {
@@ -64,13 +63,11 @@ export class ImageDisplayComponent implements OnInit {
     this.displayBoxes = !this.displayBoxes;
   }
 
+  startEditor() {
+
+  }
+
   test() {
-    this.coordinates.main.push({
-      left: 25,
-      top:  25,
-      height: 25,
-      width:  25,
-      label: "test"
-    });
+
   }
 }
