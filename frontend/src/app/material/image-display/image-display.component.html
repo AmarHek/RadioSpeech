@@ -1,6 +1,6 @@
 <div style="background: hsl(202, 73%, 96%); margin: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
             grid-column-gap: 5px; grid-template-columns: 10% 90%;
-            display: grid">
+            display: grid; align-content: center">
   <div style="display: block; margin: 20px;">
     <button class="btn btn-outline-primary"
             style="width: 150px; margin: 2px; padding: 10px;"
@@ -16,19 +16,18 @@
     <button class="btn btn-outline-secondary"
             style="width: 150px; margin: 2px; padding: 10px;"
             (click)="toggleBoxDisplay()">Boxen anzeigen</button>
-    <button class="btn btn-outline-secondary"
+    <button *ngIf="isAdmin" class="btn btn-outline-secondary"
             style="width: 150px; margin: 2px; padding: 10px;"
             (click)="startEditor()">Starte Boxeditor</button>
-    <button class="btn btn-outline-secondary"
-            style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="test()">Test</button>
   </div>
 
-  <div style="position: relative" [ngStyle]="{width: currentWidth, height: currentHeight}">
-      <img style="position: absolute; left: 0; top: 0; z-index: 0" src="{{currentScanUrl}}"
-           id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
-      <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="drawCanvas"
-              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+  <div style="position: relative; margin: 5px;" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
+    <img style="position: absolute; left: 0; top: 0; z-index: 0" src="{{currentScanUrl}}"
+         id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
+    <canvas #boxLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="boxCanvas"
+            width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+    <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="drawCanvas"
+            width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
 </div>

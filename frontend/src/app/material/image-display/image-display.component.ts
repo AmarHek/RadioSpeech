@@ -2,7 +2,8 @@ import { Component, OnInit, Inject } from "@angular/core";
 import {BoundingBox, Image} from "../../models/materialModel";
 import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
-import {getImageDimensions} from "../../helpers/util";
+import {Role, User} from "../../models/user";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: "app-image-display",
@@ -34,9 +35,13 @@ export class ImageDisplayComponent implements OnInit {
     pre: BoundingBox[];
   };
 
-  constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData) { }
+  private user: User;
+
+  constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData,
+              private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.authenticationService.user.subscribe(x => this.user = x);
     this.scans = this.data.scans;
     this.coordinates = this.data.coordinates;
     this.setCurrentImage("mainScan");
@@ -44,6 +49,7 @@ export class ImageDisplayComponent implements OnInit {
   }
 
   setCurrentImage(mode: string) {
+    this.currentMode = mode;
     const filename = this.scans[mode].filename;
     this.currentScanUrl = this.serverUrl + this.scans.id + "/" + filename;
     this.setCurrentDimensions();
@@ -67,7 +73,7 @@ export class ImageDisplayComponent implements OnInit {
 
   }
 
-  test() {
-
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
   }
 }
