@@ -2,31 +2,45 @@
             grid-column-gap: 5px; grid-template-columns: 10% 90%;
             display: grid; align-content: center">
   <div style="display: block; margin: 20px;">
-    <button class="btn btn-outline-primary"
+    <button class="btn"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="this.setCurrentImage('mainScan')">Hauptaufnahme</button>
-    <button class="btn btn-outline-primary"
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.main.length > 0
+            && this.currentMode !== 'main'),
+            'btn-primary': this.currentMode === 'main',
+            'btn-outline-primary': this.currentMode !== 'main'}"
+            (click)="this.changeMode('main')">Hauptaufnahme</button>
+    <button class="btn"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="this.setCurrentImage('lateralScan')"
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.lateral.length > 0
+            && this.currentMode !== 'lateral'),
+            'btn-primary': this.currentMode === 'lateral',
+            'btn-outline-primary': this.currentMode !== 'lateral'}"
+            (click)="this.changeMode('lateral')"
             [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
     <button class="btn btn-outline-primary"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="this.setCurrentImage('preScan')"
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.pre.length > 0
+            && this.currentMode !== 'pre'),
+            'btn-primary': this.currentMode === 'pre',
+            'btn-outline-primary': this.currentMode !== 'pre'}"
+            (click)="this.changeMode('pre')"
             [disabled]="this.scans.preScan === undefined">Voraufnahme</button>
-    <button class="btn btn-outline-secondary"
+    <button class="btn"
+            [ngClass]="this.displayBoxes? 'btn-success': 'btn-outline-success'"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="toggleBoxDisplay()">Boxen anzeigen</button>
-    <button *ngIf="isAdmin" class="btn btn-outline-secondary"
+            (click)="toggleBoxes()">Boxen anzeigen</button>
+    <button *ngIf="isAdmin" class="btn"
+            [ngClass]="this.enableEdit? 'btn-success': 'btn-outline-success'"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="startEditor()">Starte Boxeditor</button>
+            (click)="enableEditor()">Zeichenebene aktiv</button>
   </div>
 
   <div style="position: relative; margin: 5px;" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
     <img style="position: absolute; left: 0; top: 0; z-index: 0" src="{{currentScanUrl}}"
          id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
-    <canvas #boxLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="boxCanvas"
-            width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-    <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="drawCanvas"
+    <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="boxCanvas"
+            width="{{2*currentWidth}}" height="{{2*currentHeight}}"></canvas>
+    <canvas #editLayer *ngIf="enableEdit" style="position: absolute; left: 0; top: 0; z-index: 2" id="drawCanvas"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 

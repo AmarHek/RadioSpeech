@@ -1,10 +1,11 @@
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from "@angular/cdk/portal";
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, OnDestroy } from "@angular/core";
-import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from "./popout.tokens";
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from "@angular/core";
+import {POPOUT_MODAL_DATA, POPOUT_MODALS} from "./popout.tokens";
 import {ImageDisplayComponent} from "../material/image-display/image-display.component";
 
+
 @Injectable()
-export class PopoutService implements OnDestroy {
+export class PopoutService {
   styleSheetElement;
 
   constructor(
@@ -13,8 +14,6 @@ export class PopoutService implements OnDestroy {
     private applicationRef: ApplicationRef
   ) {
   }
-
-  ngOnDestroy() {}
 
   openPopoutModal(data) {
     const windowInstance = this.openOnce(
