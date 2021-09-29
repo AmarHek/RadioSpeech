@@ -4,6 +4,8 @@ import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
 import {Role, User} from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
+import {fromEvent} from "rxjs";
+import {switchMap, takeUntil} from "rxjs/operators";
 
 const BOX_LINE_WIDTH = 3;
 const DISPLAY_BOX_COLOR = "blue";
@@ -41,7 +43,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   private drawLayerElement;
   private editLayerElement;
-  private context: CanvasRenderingContext2D;
+  private drawContext: CanvasRenderingContext2D;
+  private editContext: CanvasRenderingContext2D;
 
   private user: User;
 
@@ -62,7 +65,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.drawLayerElement = this.drawLayer.nativeElement;
-    this.context = this.drawLayerElement.getContext("2d");
+    this.drawContext = this.drawLayerElement.getContext("2d");
+    this.editLayerElement = this.editLayer.nativeElement;
+    this.editContext = this.editLayerElement.getContext("2d");
   }
 
   changeMode(mode: string) {
@@ -71,6 +76,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.setCurrentImage();
     this.setCurrentDimensions();
 
+    this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxes();
     }
@@ -93,23 +99,17 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
+    this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxes();
-    } else {
-      this.clearCanvas();
     }
   }
 
   clearCanvas() {
-    // this.drawLayerElement = this.drawLayer.nativeElement;
-    // this.context = this.drawLayerElement.getContext("2d");
-    this.context.clearRect(0, 0, this.drawLayerElement.width, this.drawLayerElement.height);
+    this.drawContext.clearRect(0, 0, this.drawLayerElement.width, this.drawLayerElement.height);
   }
 
   drawBoxes() {
-    this.clearCanvas();
-    // this.drawLayerElement = this.drawLayer.nativeElement;
-    // this.context = this.drawLayerElement.getContext("2d");
     const coordinates = this.coordinates[this.currentMode];
     for (const bbox of coordinates) {
       this.drawRect(bbox);
@@ -118,21 +118,80 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   drawRect(bbox: BoundingBox) {
-    this.context.beginPath();
-    this.context.rect(bbox.left, bbox.top, bbox.width, bbox.height);
-    this.context.lineWidth = BOX_LINE_WIDTH;
-    this.context.strokeStyle = DISPLAY_BOX_COLOR;
-    this.context.stroke();
+    this.drawContext.beginPath();
+    this.drawContext.rect(bbox.left, bbox.top, bbox.width, bbox.height);
+    this.setCanvasProperties(this.drawContext, BOX_LINE_WIDTH, "square", DISPLAY_BOX_COLOR);
+    this.drawContext.stroke();
   }
 
   addLabel(bbox: BoundingBox) {
-    this.context.font = "bold 14pt Arial";
-    this.context.fillStyle = DISPLAY_BOX_COLOR;
-    this.context.fillText(bbox.label, bbox.left, bbox.top + bbox.height + 20);
+    this.drawContext.font = "bold 14pt Arial";
+    this.drawContext.fillStyle = DISPLAY_BOX_COLOR;
+    this.drawContext.fillText(bbox.label, bbox.left, bbox.top + bbox.height + 20);
   }
 
   enableEditor() {
     this.enableEdit = !this.enableEdit;
+    if (this.enableEdit) {
+      this.rectangleDrawing();
+    } else {
+      this.editLayerElement.replaceWith(this.editLayerElement.cloneNode(true));
+      this.editContext = this.editLayerElement.getContext("2d");
+    }
+  }
+
+  rectangleDrawing() {
+
+    // first coordinates when clicked
+    let startX = 0;
+    let startY = 0;
+
+    const rect = this.editLayerElement.getBoundingClientRect();
+
+    fromEvent(this.editLayerElement, "mousedown")
+      .pipe(
+        switchMap((e: MouseEvent) => {
+
+          startX = e.clientX - rect.left;
+          startY = e.clientY - rect.top;
+
+          return fromEvent(this.editLayerElement, "mousemove").pipe(
+
+            takeUntil(fromEvent(this.editLayerElement, "mouseup")),
+            takeUntil(fromEvent(this.editLayerElement, "mouseleave"))
+          );
+
+        })
+      ).subscribe((event: MouseEvent) => {
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const width = x - startX;
+      const height = y - startY;
+
+
+      this.setCanvasProperties(this.editContext, BOX_LINE_WIDTH, "square", EDIT_BOX_COLOR);
+
+      this.editContext.beginPath();
+
+      // if I comment this line, the rectangles will stay, but they
+      // won't be clear, making multiples rectangles inside the
+      // main rectangle
+      this.editContext.clearRect(0,0, this.editLayerElement.width, this.editLayerElement.height);
+
+      this.editContext.rect(startX, startY, width, height);
+
+      this.editContext.stroke();
+
+    });
+
+  }
+
+  setCanvasProperties(context, lineWidth, lineCap, strokeStyle) {
+    context.lineWidth = lineWidth;
+    context.lineCap = lineCap;
+    context.strokeStyle = strokeStyle;
   }
 
   get isAdmin() {

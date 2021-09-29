@@ -32,15 +32,15 @@
     <button *ngIf="isAdmin" class="btn"
             [ngClass]="this.enableEdit? 'btn-success': 'btn-outline-success'"
             style="width: 150px; margin: 2px; padding: 10px;"
-            (click)="enableEditor()">Zeichenebene aktiv</button>
+            (click)="enableEditor()">Editor aktivieren</button>
   </div>
 
   <div style="position: relative; margin: 5px;" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
     <img style="position: absolute; left: 0; top: 0; z-index: 0" src="{{currentScanUrl}}"
          id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
     <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="boxCanvas"
-            width="{{2*currentWidth}}" height="{{2*currentHeight}}"></canvas>
-    <canvas #editLayer *ngIf="enableEdit" style="position: absolute; left: 0; top: 0; z-index: 2" id="drawCanvas"
+            width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
+    <canvas #editLayer disabled="!enableEdit" style="position: absolute; left: 0; top: 0; z-index: 2" id="drawCanvas"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
