@@ -31,7 +31,6 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getData();
-    console.log(POPOUT_MODALS["componentInstance"]);
   }
 
   ngOnDestroy(): void {
@@ -72,6 +71,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   makeNormal() {
     this.dataParser.makeNormal(this.material.template.parts);
     this.updateText();
+    console.log(POPOUT_MODALS["componentInstance"]);
   }
 
   submit() {
