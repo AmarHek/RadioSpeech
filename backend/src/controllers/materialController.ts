@@ -110,7 +110,7 @@ export function updateMaterial(req: Request, res: Response, next: NextFunction):
             }
         });
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({message: error.message });
     }
 }
 

@@ -2,10 +2,10 @@ import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
 import * as M from "../../models/templateModel";
 import {Material} from "../../models/materialModel";
 import {BackendCallerService} from "../../services/backend-caller.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DataParserService} from "../../services/dataParser.service";
 import {PopoutService} from "../../services/popout.service";
-import {POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData} from "../../services/popout.tokens";
+import {POPOUT_MODALS, PopoutData} from "../../services/popout.tokens";
 
 @Component({
   selector: "app-judge-mat",
@@ -21,6 +21,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
+              private router: Router,
               private dataParser: DataParserService,
               private popoutService: PopoutService) { }
 
@@ -77,11 +78,8 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   submit() {
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
+      this.router.navigateByUrl("/listMat");
     });
-  }
-
-  next() {
-
   }
 
   openImagePopout() {

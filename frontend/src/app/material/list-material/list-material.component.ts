@@ -64,7 +64,7 @@ export class ListMaterialComponent implements OnInit {
     }
 
     if (res.length > 0) {
-      return res.join(",");
+      return res.join(", ");
     } else {
       return "Keiner Aufnahme";
     }
