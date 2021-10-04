@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef, AfterViewInit} from "@angular/core";
+import {Component, OnInit, Inject, ViewChild, ElementRef, AfterViewInit, TemplateRef} from "@angular/core";
 import {BoundingBox, Image} from "../../models/materialModel";
 import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
 import {environment} from "../../../environments/environment";
@@ -6,6 +6,9 @@ import {Role, User} from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
+import {UploadComponent} from "../../base-components/upload/upload.component";
+import {MatDialogService} from "../../services/mat-dialog.service";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -48,6 +51,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   startY = 0;
   width = 0;
   height = 0;
+  newLabel = "";
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
@@ -78,10 +82,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
   };
 
+  @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
+  dialogRef: MatDialogRef<any>;
+
   private user: User;
 
   constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData,
-              private authenticationService: AuthenticationService) { }
+              private authenticationService: AuthenticationService,
+              private dialogService: MatDialogService,
+              private dialog: MatDialog) { }
 
   get isAdmin() {
     return this.user && this.user.role === Role.Admin;
@@ -97,11 +106,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.enableEdit = false;
     this.enableDelete = false;
 
-    this.coordinates.main.push({left: 40, top: 50, height: 50, width: 50, label: "test"});
+    /*this.coordinates.main.push({left: 40, top: 50, height: 50, width: 50, label: "test"});
     this.coordinates.main.push({left: 700, top: 500, height: 50, width: 200, label: "test2"});
 
     this.coordinates.lateral.push({left: 100, top: 100, height: 100, width: 100, label: "test3"});
-    this.coordinates.lateral.push({left: 400, top: 400, height: 100, width: 100, label: "test4"});
+    this.coordinates.lateral.push({left: 400, top: 400, height: 100, width: 100, label: "test4"});*/
 
     this.initMain();
   }
@@ -299,25 +308,38 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   saveNewBox() {
-    if (this.width === 0 || this.height === 0) {
-      window.alert("Keine Box gezeichnet!");
-    } else {
-      const newLabel = window.prompt("Label für die Box eingeben");
-      if (newLabel !== null) {
-        this.fixNegativeCoordinates();
-        this.coordinates[this.currentMode].push({
-          left: this.startX / this.currentScaleFactor,
-          top: this.startY / this.currentScaleFactor,
-          height: this.height / this.currentScaleFactor,
-          width: this.width / this.currentScaleFactor,
-          label: newLabel,
-        });
-        this.editContext.clearRect(0,0, this.editLayerElement.width, this.editLayerElement.height);
-        if (this.displayBoxes) {
-          this.drawBoxes();
+    if (!(this.width === 0 || this.height === 0)) {
+      const dialogConfig = this.dialogService.defaultConfig("470px");
+      this.dialogRef = this.dialog.open(this.labelDialog, dialogConfig);
+      this.dialogRef.afterClosed().subscribe((val: boolean) => {
+        if (val && this.newLabel.length > 0) {
+          this.fixNegativeCoordinates();
+          this.coordinates[this.currentMode].push({
+            left: this.startX / this.currentScaleFactor,
+            top: this.startY / this.currentScaleFactor,
+            height: this.height / this.currentScaleFactor,
+            width: this.width / this.currentScaleFactor,
+            label: this.newLabel,
+          });
+          this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
+          this.newLabel = "";
+          this.width = 0;
+          this.height = 0;
+          if (this.displayBoxes) {
+            this.drawBoxes();
+          }
         }
-      }
+      });
     }
+  }
+
+  close() {
+    this.newLabel = "";
+    this.dialogRef.close(false);
+  }
+
+  save() {
+    this.dialogRef.close(true);
   }
 
   private fixNegativeCoordinates() {

@@ -58,3 +58,17 @@
   </div>
 
 </div>
+
+<ng-template #labelDialog>
+  <h4 style="margin-bottom: 5px" matDialogTitle>Label-Dialog</h4>
+  <mat-divider></mat-divider>
+  <mat-dialog-content style="margin: 10px 0">
+    <div style="margin: 0">Neues Label eingeben:</div>
+    <input style="margin: 0" matInput type="text" id="labelInput" [(ngModel)]="newLabel">
+  </mat-dialog-content>
+  <mat-divider></mat-divider>
+  <mat-dialog-actions style="float: right">
+    <button class="btn btn-primary" (click)="save()">Speichern</button>
+    <button style="margin-left:3px" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+  </mat-dialog-actions>
+</ng-template>
