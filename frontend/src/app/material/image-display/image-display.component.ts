@@ -10,6 +10,7 @@ import {switchMap, takeUntil} from "rxjs/operators";
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
+const TEXT_COLOR = "#98FF98";
 
 const MAX_IMAGE_HEIGHT = 900;
 
@@ -43,10 +44,19 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   enableEdit: boolean;
   enableDelete: boolean;
 
+  startX = 0;
+  startY = 0;
+  width = 0;
+  height = 0;
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
+
+  @ViewChild("labelLayer", {static: false }) labelLayer: ElementRef;
+  private labelLayerElement;
+  private labelContext: CanvasRenderingContext2D;
 
   private deleteLayerElement;
   private deleteContext: CanvasRenderingContext2D;
@@ -99,6 +109,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.drawLayerElement = this.drawLayer.nativeElement;
     this.drawContext = this.drawLayerElement.getContext("2d");
+    this.labelLayerElement = this.labelLayer.nativeElement;
+    this.labelContext = this.labelLayerElement.getContext("2d");
   }
 
   initMain() {
@@ -113,8 +125,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     context.strokeStyle = strokeStyle;
   }
 
-  clearCanvas(layerElement, context: CanvasRenderingContext2D) {
-    context.clearRect(0, 0, layerElement.width, layerElement.height);
+  clearCanvas() {
+    this.drawContext.clearRect(0, 0, this.drawLayerElement.width, this.drawLayerElement.height);
+    this.labelContext.clearRect(0, 0, this.labelLayerElement.width, this.labelLayerElement.height);
   }
 
   setCurrentImage() {
@@ -151,14 +164,17 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
-    this.clearCanvas(this.drawLayerElement, this.drawContext);
+    this.clearCanvas();
+    if (this.enableDelete) {
+      this.enableDelete = false;
+    }
     if (this.displayBoxes) {
       this.drawBoxes();
     }
   }
 
   toggleDelete() {
-    if (this.displayBoxes === false) {
+    if (!this.displayBoxes) {
       this.toggleBoxes();
     }
     this.enableDelete = !this.enableDelete;
@@ -169,10 +185,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   drawBoxes() {
-    this.clearCanvas(this.drawLayerElement, this.drawContext);
+    this.clearCanvas();
     const coordinates = this.coordinates[this.currentMode];
     for (const bbox of coordinates) {
-      this.drawRect(this.drawContext, bbox, "blue");
+      this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR);
       this.addLabel(bbox);
     }
   }
@@ -218,7 +234,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   removeAlert(bbox: BoundingBox) {
-    const result = parent.confirm("Soll diese Box wirklich gelöscht werden?");
+    const result = parent.confirm("Soll diese Box (Label: " + bbox.label + ") wirklich gelöscht werden?");
     if (result) {
       const idx = this.coordinates[this.currentMode].indexOf(bbox);
       this.coordinates[this.currentMode].splice(idx, 1);
@@ -239,9 +255,16 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   addLabel(bbox: BoundingBox) {
-    this.drawContext.font = "bold 14pt Arial";
-    this.drawContext.fillStyle = DISPLAY_BOX_COLOR;
-    this.drawContext.fillText(
+    this.labelContext.font = "bold 18pt Arial";
+    this.labelContext.fillStyle = TEXT_COLOR;
+    this.labelContext.strokeStyle = "black";
+    this.labelContext.lineWidth = 1;
+    this.labelContext.fillText(
+      bbox.label,
+      this.currentScaleFactor * bbox.left,
+      this.currentScaleFactor * bbox.top + this.currentScaleFactor * bbox.height
+      + BOX_LINE_WIDTH + 20);
+    this.labelContext.strokeText(
       bbox.label,
       this.currentScaleFactor * bbox.left,
       this.currentScaleFactor * bbox.top + this.currentScaleFactor * bbox.height
@@ -249,45 +272,63 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   rectangleDrawing() {
-    // first coordinates when clicked
-    let startX = 0;
-    let startY = 0;
-
-    const rect = this.editLayerElement.getBoundingClientRect();
-
+    let rect = this.editLayerElement.getBoundingClientRect();
     fromEvent(this.editLayerElement, "mousedown")
       .pipe(
         switchMap((e: MouseEvent) => {
-
-          startX = e.clientX - rect.left;
-          startY = e.clientY - rect.top;
-
+          rect = this.editLayerElement.getBoundingClientRect();
+          this.startX = e.clientX - rect.left;
+          this.startY = e.clientY - rect.top;
           return fromEvent(this.editLayerElement, "mousemove").pipe(
-
             takeUntil(fromEvent(this.editLayerElement, "mouseup")),
             takeUntil(fromEvent(this.editLayerElement, "mouseleave"))
           );
-
         })
       ).subscribe((event: MouseEvent) => {
-
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-
-      const width = x - startX;
-      const height = y - startY;
+      this.width = x - this.startX;
+      this.height = y - this.startY;
 
       this.setCanvasProperties(this.editContext, BOX_LINE_WIDTH, "square", EDIT_BOX_COLOR);
-
       this.editContext.beginPath();
-
       this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
-
-      this.editContext.rect(startX, startY, width, height);
-
+      this.editContext.rect(this.startX, this.startY, this.width, this.height);
       this.editContext.stroke();
-
     });
+  }
 
+  saveNewBox() {
+    if (this.width === 0 || this.height === 0) {
+      window.alert("Keine Box gezeichnet!");
+    } else {
+      const newLabel = window.prompt("Label für die Box eingeben");
+      if (newLabel !== null) {
+        this.fixNegativeCoordinates();
+        this.coordinates[this.currentMode].push({
+          left: this.startX / this.currentScaleFactor,
+          top: this.startY / this.currentScaleFactor,
+          height: this.height / this.currentScaleFactor,
+          width: this.width / this.currentScaleFactor,
+          label: newLabel,
+        });
+        this.editContext.clearRect(0,0, this.editLayerElement.width, this.editLayerElement.height);
+        if (this.displayBoxes) {
+          this.drawBoxes();
+        }
+      }
+    }
+  }
+
+  private fixNegativeCoordinates() {
+    // in case the box is drawn from bottom right to top left: adjust negative width and height
+    if (this.width < 0) {
+      this.width = - this.width;
+      this.startX = this.startX - this.width;
+    }
+    if (this.height < 0) {
+      this.height = - this.height;
+      this.startY = this.startY - this.height;
+    }
   }
 }

@@ -37,6 +37,9 @@
             [ngClass]="this.enableEdit? 'btn-success': 'btn-outline-success'"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="toggleEditor()">Editor aktivieren</button>
+    <button *ngIf="isAdmin && this.enableEdit" class="btn btn-outline-success"
+            style="width: 180px; margin: 2px; padding: 10px;"
+            (click)="saveNewBox()">Box Speichern</button>
   </div>
 
   <div style="position: relative; margin: 5px;" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
@@ -44,11 +47,13 @@
          height="{{currentHeight}}" width="{{currentWidth}}"
          src="{{currentScanUrl}}"
          id="image" class="image" alt="Fehler beim Laden der Aufnahme"/>
-    <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="boxCanvas"
+    <canvas #drawLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="drawCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
-    <canvas *ngIf="enableDelete" #deleteLayer style="position: absolute; left: 0; top: 0; z-index: 2" id="boxCanvas"
+    <canvas #labelLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="labelCanvas"
+            width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
+    <canvas *ngIf="enableDelete" #deleteLayer style="position: absolute; left: 0; top: 0; z-index: 2" id="deleteCanvas"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-    <canvas *ngIf="enableEdit" #editLayer style="position: absolute; left: 0; top: 0; z-index: 3" id="drawCanvas"
+    <canvas *ngIf="enableEdit" #editLayer style="position: absolute; left: 0; top: 0; z-index: 3" id="editCanvas"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
