@@ -90,10 +90,11 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction):
 
 export function updateMaterial(req: Request, res: Response, next: NextFunction): void {
     try {
+        console.log(req.body);
         MaterialSchema.updateOne({
             _id: req.params.id
         }, {
-            parts: req.body.parts,
+            template: req.body.template,
             coordinates: req.body.coordinates,
             judged: req.body.judged
         }).then(response => {
