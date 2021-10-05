@@ -6,7 +6,6 @@ import {Role, User} from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {UploadComponent} from "../../base-components/upload/upload.component";
 import {MatDialogService} from "../../services/mat-dialog.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
@@ -24,7 +23,7 @@ const MAX_IMAGE_HEIGHT = 900;
 })
 export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
-  serverUrl = environment.server;
+  serverUrl = environment.apiUrl;
   scans: {
     id: string;
     mainScan: Image;
@@ -46,6 +45,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   displayBoxes: boolean;
   enableEdit: boolean;
   enableDelete: boolean;
+  enableZoom: boolean;
 
   startX = 0;
   startY = 0;
@@ -84,6 +84,19 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
   dialogRef: MatDialogRef<any>;
+
+  @ViewChild("sourceImage") sourceImage: ElementRef;
+  @ViewChild("zoomDiv") zoomDiv: ElementRef;
+  private zoomLayerElement;
+  private lensElement;
+  @ViewChild("lensContainer") set zoom(container: ElementRef) {
+    if (this.enableZoom) {
+      const containerElement = container.nativeElement;
+      this.zoomLayerElement = containerElement.children[1];
+      this.lensElement = containerElement.children[0];
+      this.imageZoom();
+    }
+  }
 
   private user: User;
 
@@ -191,6 +204,16 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   toggleEditor() {
     this.enableEdit = !this.enableEdit;
+  }
+
+  toggleZoom() {
+    this.enableZoom = !this.enableZoom;
+    if (this.enableDelete) {
+      this.toggleDelete();
+    }
+    if (this.enableEdit) {
+      this.toggleEditor();
+    }
   }
 
   drawBoxes() {
@@ -340,6 +363,66 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   save() {
     this.dialogRef.close(true);
+  }
+
+  private imageZoom() {
+    const img = this.sourceImage.nativeElement as HTMLImageElement;
+    const result = this.zoomDiv.nativeElement as HTMLDivElement;
+    // calculate ratio between result div and lens
+    const cx = result.offsetWidth / this.lensElement.offsetWidth;
+    const cy = result.offsetHeight / this.lensElement.offsetHeight;
+    // Set background properties for the result div
+    result.style.backgroundImage = "url('" + img.src + "')";
+    result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+    // Execute a function when someone moves the cursor over the image or the lens
+    this.lensElement.addEventListener("mousemove", moveLens);
+    this.zoomLayerElement.addEventListener("mousemove", moveLens);
+
+    const parent = this;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    function moveLens(e) {
+      let x;
+      let y;
+      // Prevent any other actions that may occur when moving over the image
+      e.preventDefault();
+      // Get the cursor's x and y positions:
+      const pos = getCursorPos(e);
+      // Calculate the position of the lens:
+      x = pos.x - (parent.lensElement.offsetWidth / 2);
+      y = pos.y - (parent.lensElement.offsetHeight / 2);
+      // Prevent the lens from being positioned outside the image:
+      if (x > img.width - parent.lensElement.offsetWidth) {
+        x = img.width - parent.lensElement.offsetWidth;
+      }
+      if (x < 0) {
+        x = 0;
+      }
+      if (y > img.height - parent.lensElement.offsetHeight) {
+        y = img.height - parent.lensElement.offsetHeight;
+      }
+      if (y < 0) {
+        y = 0;
+      }
+      // Set the position of the lens:
+      parent.lensElement.style.left = x + "px";
+      parent.lensElement.style.top = y + "px";
+      // Display what the lens "sees":
+      result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+    }
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    function getCursorPos(e) {
+      let x = 0;
+      let y = 0;
+      // Get the x and y positions of the image
+      const a = img.getBoundingClientRect();
+      // Calculate the cursor's x and y coordinates, relative to the image:
+      x = e.pageX - a.left;
+      y = e.pageY - a.top;
+      // Consider any page scrolling
+      x = x - window.pageXOffset;
+      y = y - window.pageYOffset;
+      return {x, y};
+    }
   }
 
   private fixNegativeCoordinates() {

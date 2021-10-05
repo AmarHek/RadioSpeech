@@ -4,11 +4,10 @@
 
 export const environment = {
   production: false,
-  server: "http://localhost:3000/",
+  apiUrl: "http://localhost:3000/",
   database: "radio/database/",
   template: "template/",
-  material: "material/",
-  apiUrl: "http://localhost:4000"
+  material: "material/"
 };
 
 /*

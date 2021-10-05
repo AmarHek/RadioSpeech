@@ -17,8 +17,8 @@ import {Material} from "../models/materialModel";
 
 export class BackendCallerService {
 
-  templateUrl = environment.server + environment.database + environment.template;
-  materialUrl = environment.server + environment.database + environment.material;
+  templateUrl = environment.apiUrl + environment.database + environment.template;
+  materialUrl = environment.apiUrl + environment.database + environment.material;
 
 
   constructor(private http: HttpClient) {}

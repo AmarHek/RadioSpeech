@@ -18,7 +18,7 @@ import {
 })
 export class ListMaterialComponent implements OnInit {
 
-  serverUrl = environment.server;
+  serverUrl = environment.apiUrl;
   materials: Material[] = [];
   query: Record<string, unknown>;
 

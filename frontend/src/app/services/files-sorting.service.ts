@@ -16,7 +16,6 @@ export class FilesSortingService {
     const nIntegers = (id.split("*").length - 1);
     const preString = id.split("*").join("");
     this.identifier = new RegExp("^" + preString + "\\d{" + nIntegers + "}" + "\\D");
-    console.log(this.identifier);
   }
 
   // searches for the identifier in filenames and returns boolean value based on if a match is found or not

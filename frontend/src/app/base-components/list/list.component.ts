@@ -36,7 +36,6 @@ export class ListComponent implements OnInit {
   update(): void {
     this.backendCaller.getTemplateList().subscribe((templates) => {
       this.templates = templates;
-      console.log(templates);
       this.isLoading = false;
     });
   }
@@ -65,7 +64,6 @@ export class ListComponent implements OnInit {
 
   remove(id: string): void {
     this.backendCaller.deleteTemplate(id).subscribe(res => {
-      console.log(res);
       this.update();
     });
   }

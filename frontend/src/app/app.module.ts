@@ -30,7 +30,7 @@ import { ListMaterialComponent } from "./material/list-material/list-material.co
 import { JudgeMatComponent } from "./material/judge-mat/judge-mat.component";
 import { ImageDisplayComponent } from "./material/image-display/image-display.component";
 import { PopoutService } from "./services/popout.service";
-import { LoginComponent } from './base-components/login/login.component';
+import { LoginComponent } from "./base-components/login/login.component";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { fakeBackendProvider } from "./helpers/fake-backend";
