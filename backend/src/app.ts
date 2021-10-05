@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from "path";
-import {environment} from "./environments/environment";
 
 import * as materialRoutes from './routes/materialRoutes';
 import * as templateRoutes from './routes/templateRoutes';
@@ -32,9 +31,9 @@ app.set("view engine", "ejs");
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept');
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Methods',
-    'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    'GET, POST, PUT, DELETE');
   next();
 });
 console.log(path.join(__dirname, "../data/images"));
