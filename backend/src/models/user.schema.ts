@@ -1,9 +1,9 @@
 import mongoose, {Schema, Document} from 'mongoose';
 
 export enum Role {
-  Student = "Student",
-  Doctor = "Doctor",
-  Admin = "Admin"
+  User = "user",
+  Moderator = "moderator",
+  Admin = "admin"
 }
 
 export interface User extends Document {
@@ -15,7 +15,9 @@ export interface User extends Document {
 const userSchema = new Schema({
   username: { type: String },
   password: { type: String },
-  role: { type: Role }
+  role: { type: Role,
+          enum: ["user", "moderator", "admin"],
+          default: 'user'}
 })
 
 export default mongoose.model<User>('User', userSchema, "users");

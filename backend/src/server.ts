@@ -21,8 +21,8 @@ function onError(error: any) {
   if (error.svscall !== "listen") {
     throw error;
   }
-  const addr = server.address();
-  const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
+  const address = server.address();
+  const bind = typeof address === "string" ? "pipe" + address : "port" + port;
   switch (error.code) {
     case "EACCES":
       console.error(bind + " Requires elevated privileges");
@@ -38,8 +38,8 @@ function onError(error: any) {
 }
 
 function onListening() {
-    const addr = server.address();
-    const bind = typeof addr === "string" ? "pipe" + addr : "port" + port;
+    const address = server.address();
+    const bind = typeof address === "string" ? "pipe" + address : "port" + port;
     debug("Listening on " + bind);
 }
 

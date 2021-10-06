@@ -2,9 +2,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from "path";
+import cors from "cors";
 
-import * as materialRoutes from './routes/materialRoutes';
-import * as templateRoutes from './routes/templateRoutes';
+
+import * as materialRoutes from './routes/material.routes';
+import * as templateRoutes from './routes/template.routes';
 
 export const app = express();
 
@@ -16,15 +18,20 @@ mongoose.connect(url,
             useUnifiedTopology: true
     })
   .then(() => {
-    console.log("Connected to db");
+    console.log("Connected to Database");
   })
-  .catch(() => {
-    console.log("Connection lost");
+  .catch((err) => {
+    console.error("Connection error", err);
   });
 
+const corsOptions = {
+    origin: "http://localhost:3001"
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: true
 }));
 app.set("view engine", "ejs");
 
