@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import * as M from "../models/templateModel";
+import * as M from "../../models/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {Template} from "../models/templateModel";
-import {Material} from "../models/materialModel";
+import {Template} from "../../models/templateModel";
+import {Material} from "../../models/materialModel";
 
 
 @Injectable({

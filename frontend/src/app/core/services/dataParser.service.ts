@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import * as O from "../helpers/old_model";
-import * as G from "../models/generator";
-import * as M from "../models/templateModel";
+import * as O from "../../helpers/old_model";
+import * as G from "../../models/generator";
+import * as M from "../../models/templateModel";
 
 @Injectable({
   providedIn: "root"

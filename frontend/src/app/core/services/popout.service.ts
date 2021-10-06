@@ -1,7 +1,8 @@
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from "@angular/cdk/portal";
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from "@angular/core";
+
 import {POPOUT_MODAL_DATA, POPOUT_MODALS} from "./popout.tokens";
-import {ImageDisplayComponent} from "../../material/image-display/image-display.component";
+import { ImageDisplayComponent } from "@app/shared";
 
 
 @Injectable()

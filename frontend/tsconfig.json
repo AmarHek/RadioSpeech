@@ -6,6 +6,8 @@
 		"@app/*": ["app/*"],
 		"@app/core/*": ["app/core/*"],
 		"@app/shared/*": ["app/shared/*"],
+		"@app/models/*": ["app/models/*"],
+		"@app/helpers/*": ["app/helpers/*"],
 		"@env/*": ["environments/*"]
 	},
     "downlevelIteration": true,
