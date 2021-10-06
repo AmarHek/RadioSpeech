@@ -1,13 +1,14 @@
 import {Component, OnInit, Inject, ViewChild, ElementRef, AfterViewInit, TemplateRef} from "@angular/core";
-import {BoundingBox, Image} from "../../models/materialModel";
-import {POPOUT_MODAL_DATA, PopoutData} from "../../services/popout.tokens";
-import {environment} from "../../../environments/environment";
-import {Role, User} from "../../models/user";
-import {AuthenticationService} from "../../services/authentication.service";
+import {POPOUT_MODAL_DATA, PopoutData} from "../../core/services/popout.tokens";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {MatDialogService} from "../../services/mat-dialog.service";
+import {MatDialogService} from "../../core/services/mat-dialog.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+
+import {environment} from "../../../environments/environment";
+import {AuthenticationService} from "../../core/services/authentication.service";
+import {BoundingBox, Image} from "../../core/models/materialModel";
+import {Role, User} from "../../core/models/user";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -23,7 +24,7 @@ const MAX_IMAGE_HEIGHT = 900;
 })
 export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
-  serverUrl = environment.apiUrl;
+  serverUrl = environment.backend;
   scans: {
     id: string;
     mainScan: Image;

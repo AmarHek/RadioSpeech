@@ -6,8 +6,9 @@ import { ListComponent } from "./base-components/list/list.component";
 import { UiBaseComponent } from "./main/ui-base/ui-base.component";
 import { ListMaterialComponent } from "./material/list-material/list-material.component";
 import { JudgeMatComponent } from "./material/judge-mat/judge-mat.component";
-import { AuthGuard } from "./helpers/auth.guard";
-import { Role } from "./models/user";
+import { AuthGuard } from "./core/helpers/auth.guard";
+import { Role } from "./core/models/user";
+import {AdminComponent} from "./base-components/admin/admin.component";
 
 const routes: Routes = [
   {
@@ -17,29 +18,38 @@ const routes: Routes = [
   {
     path: "list",
     component: ListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
   },
   {
     path: "main/:id",
     component: UiBaseComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
   },
   {
     path: "listMat",
     component: ListMaterialComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] }
+    data: { roles: [Role.Moderator, Role.Admin] }
   },
   {
     path: "mainMat/:id",
     component: JudgeMatComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] }
+    data: { roles: [Role.Moderator, Role.Admin] }
   },
   {
-    path: "learn",
+    path: "radiolearn",
     component: ListMaterialComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
+  },
+  {
+    path: "admin",
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
   },
   {path: "**", redirectTo: "/list"}
 ];

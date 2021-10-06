@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {BoundingBox, Material} from "../../models/materialModel";
-import {BackendCallerService} from "../../services/backend-caller.service";
+import {BoundingBox, Material} from "../../core/models/materialModel";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
-import {MatDialogService} from "../../services/mat-dialog.service";
+import {MatDialogService} from "../../core/services/mat-dialog.service";
 import {UploadMaterialComponent} from "../upload-material/upload-material.component";
 import {MatDialog} from "@angular/material/dialog";
 import {
@@ -18,7 +18,7 @@ import {
 })
 export class ListMaterialComponent implements OnInit {
 
-  serverUrl = environment.apiUrl;
+  serverUrl = environment.backend;
   materials: Material[] = [];
   query: Record<string, unknown>;
 

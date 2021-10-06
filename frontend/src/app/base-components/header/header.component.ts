@@ -1,9 +1,9 @@
 import {Component, DoCheck, OnInit} from "@angular/core";
 import { faLaptopMedical } from "@fortawesome/free-solid-svg-icons";
 
-import { DisplayService } from "../../services/display.service";
-import {AuthenticationService} from "../../services/authentication.service";
-import {Role, User} from "../../models/user";
+import { DisplayService } from "../../core/services/display.service";
+import {AuthenticationService} from "../../core/services/authentication.service";
+import {Role, User} from "../../core/models/user";
 
 @Component({
   selector: "app-header",

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import * as M from "../../models/templateModel";
-import {DataParserService} from "../../services/dataParser.service";
-import {DisplayService} from "../../services/display.service";
-import {Clickable, Group} from "../../helpers/old_model";
+import * as M from "../../core/models/templateModel";
+import {DataParserService} from "../../core/services/dataParser.service";
+import {DisplayService} from "../../core/services/display.service";
+import {Clickable, Group} from "../../core/helpers/old_model";
 
 @Component({
   selector: "app-options",
@@ -22,17 +22,16 @@ export class OptionsComponent implements OnInit {
 
   @Output() clickEvent = new EventEmitter<any>();
 
-  constructor(private dataParser: DataParserService,
-              private display: DisplayService) { }
+  constructor(private dataParser: DataParserService) { }
 
   ngOnInit(): void {
     this.setMinRowLength(this.categories);
-    this.maxRowLength = this.display.maxRowLength;
+    this.maxRowLength = 6;
     this.determineWidth();
     this.initRows();
   }
 
-  public initRows() {
+  initRows() {
     if (this.minRowLength > this.maxRowLength) {
       window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
         " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
@@ -40,10 +39,6 @@ export class OptionsComponent implements OnInit {
       this.maxRowLength = this.minRowLength;
     }
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
-  }
-
-  private determineWidth() {
-    this.width = 88 / this.maxRowLength;
   }
 
   setMinRowLength(cats: M.Category[]) {
@@ -60,7 +55,7 @@ export class OptionsComponent implements OnInit {
     this.minRowLength = minRowLength;
   }
 
-  public update(sel: M.Selectable, option?: string) {
+  update(sel: M.Selectable, option?: string) {
     if (sel.kind === "group") {
       if (sel.value === option) {
         sel.value = null;
@@ -69,7 +64,7 @@ export class OptionsComponent implements OnInit {
     this.clickEvent.emit();
   }
 
-  public updateFromVariable(parent: Clickable, group?: Group) {
+  updateFromVariable(parent: Clickable, group?: Group) {
     if (parent.kind === "box") {
       parent.value = true;
     } else {
@@ -80,5 +75,9 @@ export class OptionsComponent implements OnInit {
       }
     }
     this.clickEvent.emit();
+  }
+
+  private determineWidth() {
+    this.width = 88 / this.maxRowLength;
   }
 }

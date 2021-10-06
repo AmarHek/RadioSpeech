@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import {Variable} from "../../models/templateModel";
+import {Variable} from "../../core/models/templateModel";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {InputModalComponent} from "./inputModal/inputModal.component";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {displayableQuotient} from "../../helpers/util";
-import {MatDialogService} from "../../services/mat-dialog.service";
+import {displayableQuotient} from "../../core/helpers/util";
+import {MatDialogService} from "../../core/services/mat-dialog.service";
 
 @Component({
   selector: "app-variables",

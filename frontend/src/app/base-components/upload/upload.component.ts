@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {BackendCallerService} from "../../services/backend-caller.service";
-import {getFileExtension} from "../../helpers/util";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
+import {getFileExtension} from "../../core/helpers/util";
 
 @Component({
   selector: "app-upload",

@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewChildren } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import * as M from "../models/templateModel";
+import * as M from "../core/models/templateModel";
 import { faAngleDown, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { NgForm } from "@angular/forms";
-import { BackendCallerService } from "../services/backend-caller.service";
+import { BackendCallerService } from "../core/services/backend-caller.service";
 import { Subscription } from "rxjs";
 
 @Component({

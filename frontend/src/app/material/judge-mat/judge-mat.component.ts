@@ -1,11 +1,12 @@
 import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
-import * as M from "../../models/templateModel";
-import {Material} from "../../models/materialModel";
-import {BackendCallerService} from "../../services/backend-caller.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DataParserService} from "../../services/dataParser.service";
-import {PopoutService} from "../../services/popout.service";
-import {POPOUT_MODALS, PopoutData} from "../../services/popout.tokens";
+
+import * as M from "../../core/models/templateModel";
+import {Material} from "../../core/models/materialModel";
+import {DataParserService} from "../../core/services/dataParser.service";
+import {PopoutService} from "../../core/services/popout.service";
+import {POPOUT_MODALS, PopoutData} from "../../core/services/popout.tokens";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
 
 @Component({
   selector: "app-judge-mat",

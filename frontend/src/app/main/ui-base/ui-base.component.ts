@@ -3,14 +3,14 @@ import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 
-import * as M from "../../models/templateModel";
-import {DataParserService} from "../../services/dataParser.service";
+import * as M from "../../core/models/templateModel";
+import {DataParserService} from "../../core/services/dataParser.service";
 import {OptionsComponent} from "../options/options.component";
-import {BackendCallerService} from "../../services/backend-caller.service";
-import {InputParserService} from "../../services/input-parser.service";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
+import {InputParserService} from "../../core/services/input-parser.service";
 import {Subscription} from "rxjs";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {Template} from "../../models/templateModel";
+import {Template} from "../../core/models/templateModel";
 
 @Component({
   selector: "app-workspace",

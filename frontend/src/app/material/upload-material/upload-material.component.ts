@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {BackendCallerService} from "../../services/backend-caller.service";
-import * as M from "../../models/templateModel";
-import {getFileExtension} from "../../helpers/util";
 import {nanoid} from "nanoid";
 import {MatDialogRef} from "@angular/material/dialog";
-import {FilesSortingService} from "../../services/files-sorting.service";
+
+import * as M from "../../core/models/templateModel";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
+import {FilesSortingService} from "../../core/services/files-sorting.service";
 
 @Component({
   selector: "app-upload-material",

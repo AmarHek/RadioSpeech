@@ -1,12 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent, ConfirmDialogModel } from "../confirm-dialog/confirm-dialog.component";
-import {BackendCallerService} from "../../services/backend-caller.service";
-import {Template} from "../../models/templateModel";
-import {MatDialogService} from "../../services/mat-dialog.service";
+import {BackendCallerService} from "../../core/services/backend-caller.service";
+import {Template} from "../../core/models/templateModel";
+import {MatDialogService} from "../../core/services/mat-dialog.service";
 import {UploadComponent} from "../upload/upload.component";
-import {Role, User} from "../../models/user";
-import {AuthenticationService} from "../../services/authentication.service";
+
+import {Role, User} from "../../core/models/user";
+import {AuthenticationService} from "../../core/services/authentication.service";
 
 
 @Component({

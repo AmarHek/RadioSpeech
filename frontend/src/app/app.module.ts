@@ -22,22 +22,21 @@ import { HeaderComponent } from "./base-components/header/header.component";
 import { VariablesComponent } from "./main/variables/variables.component";
 import { InputModalComponent } from "./main/variables/inputModal/inputModal.component";
 import { ConfirmDialogComponent } from "./base-components/confirm-dialog/confirm-dialog.component";
-import { DisplayService } from "./services/display.service";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
-import { APP_DATE_FORMATS, AppDateAdapter } from "./helpers/format-datepicker";
+import { APP_DATE_FORMATS, AppDateAdapter } from "./core/helpers/format-datepicker";
 import { UploadMaterialComponent } from "./material/upload-material/upload-material.component";
 import { ListMaterialComponent } from "./material/list-material/list-material.component";
 import { JudgeMatComponent } from "./material/judge-mat/judge-mat.component";
 import { ImageDisplayComponent } from "./material/image-display/image-display.component";
-import { PopoutService } from "./services/popout.service";
 import { LoginComponent } from "./base-components/login/login.component";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { fakeBackendProvider } from "./helpers/fake-backend";
-import { JwtInterceptor } from "./helpers/jwt.interceptor";
-import { ErrorInterceptor } from "./helpers/error.interceptor";
+import { fakeBackendProvider } from "./core/helpers/fake-backend";
+import { JwtInterceptor } from "./core/helpers/jwt.interceptor";
+import { ErrorInterceptor } from "./core/helpers/error.interceptor";
 import {AppRoutingModule} from "./app-routing.module";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { AdminComponent } from "./base-components/admin/admin.component";
 // import { EditStructureComponent } from "./edit-structure/edit-structure.component";
 // import { DiseaseComponent } from "./edit-structure/disease/disease.component";
 // import { VariableComponent } from "./edit-structure/variable/variable.component";
@@ -60,6 +59,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     JudgeMatComponent,
     ImageDisplayComponent,
     LoginComponent,
+    AdminComponent,
   ],
     imports: [
         BrowserModule,
@@ -81,7 +81,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatTooltipModule,
         MatProgressBarModule
     ],
-  providers: [DisplayService, PopoutService,
+  providers: [
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
