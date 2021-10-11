@@ -1,23 +1,21 @@
-import mongoose, {Schema, Document} from 'mongoose';
+import * as mongoose from 'mongoose';
+import { Role } from './role.model';
 
-export enum Role {
-  User = "user",
-  Moderator = "moderator",
-  Admin = "admin"
+export interface UserDoc extends Document {
+    username: string;
+    password: string;
+    role: Role;
 }
 
-export interface User extends Document {
-  username: string;
-  password: string;
-  role: Role;
-}
-
-const userSchema = new Schema({
-  username: { type: String },
-  password: { type: String },
-  role: { type: Role,
-          enum: ["user", "moderator", "admin"],
-          default: 'user'}
-})
-
-export default mongoose.model<User>('User', userSchema, "users");
+export const User = mongoose.model<UserDoc>(
+    "User",
+    new mongoose.Schema({
+      username: { type: String },
+      password: { type: String },
+      role: {
+          type: String,
+          enum: Role,
+          default: Role.User
+      }
+    })
+);

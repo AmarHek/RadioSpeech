@@ -1,0 +1,70 @@
+import { authConfig } from "../config/auth.config";
+import { User, Role } from "../models";
+import * as jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
+import { Request, Response } from "express";
+
+export function signUp(req: Request, res: Response) {
+
+    if (req.body !== null) {
+
+        const user = new User({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, 8)
+        });
+
+        if (req.body.role) {
+            if (Object.values(Role).includes(req.body.role)) {
+                user.role = req.body.role;
+            } else {
+                res.status(500).send({ message: "Invalid User Role!"});
+                return;
+            }
+        } else {
+            user.role = Role.User;
+        }
+
+        user.save().then(() => {
+            res.send({ message: "Benutzer wurde erfolgreich registriert!" });
+        })
+
+    }
+}
+
+export function signIn(req: Request, res: Response) {
+    User.findOne( {
+        username: req.body.username
+    })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+            }
+
+            if (!user) {
+                return res.status(404).send({ message: "Benutzer nicht gefunden." });
+            }
+
+            const passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
+
+            if (!passwordIsValid) {
+                return res.status(401).send( {
+                    accessToken: null,
+                    message: "Falsches Passwort"
+                });
+            }
+
+            const token = jwt.sign({ id: user.id }, authConfig.secret, {
+                expiresIn: 86400 // 24 Stunden
+            });
+
+            res.status(200).send({
+                id: user._id,
+                username: user.username,
+                role: user.role,
+                accessToken: token
+            })
+        })
+}

@@ -1,7 +1,7 @@
 import mongoose, {Schema, Document} from 'mongoose';
 import * as M from './template.model';
 
-export interface TemplateDB extends Document {
+export interface TemplateDoc extends Document {
     parts:      M.TopLevel[];
     name:       string;
     timestamp:  Date;
@@ -25,4 +25,4 @@ const templateSchema = new Schema({
     timestamp: { type: Date }
 });
 
-export default mongoose.model<TemplateDB>('Template', templateSchema, "templates");
+export default mongoose.model<TemplateDoc>('Template', templateSchema, "templates");
