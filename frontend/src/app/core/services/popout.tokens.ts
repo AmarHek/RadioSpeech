@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import {BoundingBox, Image} from "../../models/materialModel";
+import {BoundingBox, Image} from "@app/models";
 
 export interface PopoutData {
   scans: {
@@ -13,6 +13,7 @@ export interface PopoutData {
     lateral: BoundingBox[];
     pre: BoundingBox[];
   };
+  restricted?: boolean;
 }
 
 export const POPOUT_MODAL_DATA = new InjectionToken<PopoutData>("POPOUT_MODAL_DATA");

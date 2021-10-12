@@ -10,6 +10,7 @@ import { JudgeMatComponent } from "@app/feature/judge-mat/judge-mat.component";
 import { ListComponent } from "@app/feature/list/list.component";
 import { ListMaterialComponent } from "@app/feature/list-material/list-material.component";
 import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
+import { AccountManagementComponent } from "./account-management/account-management.component";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
     JudgeMatComponent,
     ListComponent,
     ListMaterialComponent,
-    UiBaseComponent
+    UiBaseComponent,
+    AccountManagementComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
     JudgeMatComponent,
     ListComponent,
     ListMaterialComponent,
-    UiBaseComponent
+    UiBaseComponent,
+    AccountManagementComponent
   ]
 })
 export class FeatureModule { }

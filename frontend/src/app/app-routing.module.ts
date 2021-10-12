@@ -1,14 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { LoginComponent } from "./view/login/login.component";
-import { ListComponent } from "./feature/list/list.component";
-import { UiBaseComponent } from "./feature/ui-base/ui-base.component";
-import { ListMaterialComponent } from "./feature/list-material/list-material.component";
-import { JudgeMatComponent } from "./feature/judge-mat/judge-mat.component";
-import { AuthGuard } from "./helpers/auth.guard";
-import { Role } from "./models/user";
-import {AdminComponent} from "./view/admin/admin.component";
+import { LoginComponent, AdminComponent } from "@app/view";
+import { ListComponent, UiBaseComponent, ListMaterialComponent, JudgeMatComponent } from "@app/feature";
+import { AuthGuard } from "@app/helpers";
+import { Role } from "@app/models";
 
 const routes: Routes = [
   {

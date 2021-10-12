@@ -58,6 +58,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("labelLayer", {static: false }) labelLayer: ElementRef;
   private labelLayerElement;
   private labelContext: CanvasRenderingContext2D;
@@ -82,10 +83,14 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   dialogRef: MatDialogRef<any>;
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("sourceImage") sourceImage: ElementRef;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("zoomDiv") zoomDiv: ElementRef;
   private zoomLayerElement;
   private lensElement;
@@ -98,34 +103,28 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private user: User;
+  private restricted = true;
 
   constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData,
-              private authenticationService: AuthenticationService,
               private dialogService: MatDialogService,
               private dialog: MatDialog) { }
 
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
-  }
-
   ngOnInit(): void {
-    this.authenticationService.user.subscribe(x => this.user = x);
-
     this.scans = this.data.scans;
     this.coordinates = this.data.coordinates;
 
+    if (this.data.restricted !== undefined) {
+      this.restricted = this.data.restricted;
+    }
     this.displayBoxes = false;
     this.enableEdit = false;
     this.enableDelete = false;
 
-    /*this.coordinates.main.push({left: 40, top: 50, height: 50, width: 50, label: "test"});
-    this.coordinates.main.push({left: 700, top: 500, height: 50, width: 200, label: "test2"});
-
-    this.coordinates.lateral.push({left: 100, top: 100, height: 100, width: 100, label: "test3"});
-    this.coordinates.lateral.push({left: 400, top: 400, height: 100, width: 100, label: "test4"});*/
-
     this.initMain();
+  }
+
+  get isAllowed() {
+    return !this.restricted;
   }
 
   ngAfterViewInit(): void {

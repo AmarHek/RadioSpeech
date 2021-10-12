@@ -13,7 +13,6 @@ export class HeaderComponent implements OnInit, DoCheck {
 
 
   displayNavbar: boolean;
-  ui: string;
   title = "RadioSpeech";
   faUser: any;
 
@@ -31,6 +30,10 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     this.displayService.updateDisplay();
     this.displayNavbar = this.displayService.displayHeader;
+  }
+
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
   get isAdmin() {

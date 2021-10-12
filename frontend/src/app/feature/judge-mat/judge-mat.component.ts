@@ -2,11 +2,15 @@ import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 
 import * as M from "@app/models/templateModel";
-import {Material} from "@app/models";
-import {DataParserService} from "@app/core/services/dataParser.service";
-import {PopoutService} from "@app/core/services/popout.service";
-import {POPOUT_MODALS, PopoutData} from "@app/core/services/popout.tokens";
-import {BackendCallerService} from "@app/core/services/backend-caller.service";
+import {Material, Role, User} from "@app/models";
+import {
+  DataParserService,
+  PopoutService,
+  POPOUT_MODALS,
+  PopoutData,
+  BackendCallerService,
+  AuthenticationService
+} from "@app/core";
 
 @Component({
   selector: "app-judge-mat",
@@ -20,11 +24,14 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   report = "";
   judgement = "";
 
+  private user: User;
+
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
               private router: Router,
               private dataParser: DataParserService,
-              private popoutService: PopoutService) { }
+              private popoutService: PopoutService,
+              private authenticationService: AuthenticationService) { }
 
   @HostListener("window:beforeunload", ["$event"])
   onWindowClose(event: Event) {
@@ -32,6 +39,7 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
   }
 
@@ -84,9 +92,11 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
   }
 
   openImagePopout() {
+    const restricted = !(this.user.role === Role.Admin || this.user.role === Role.Moderator);
     const modalData: PopoutData = {
       scans: this.material.scans,
-      coordinates: this.material.coordinates
+      coordinates: this.material.coordinates,
+      restricted
     };
     this.popoutService.openPopoutModal(modalData);
   }

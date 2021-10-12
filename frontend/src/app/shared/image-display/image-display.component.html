@@ -33,15 +33,15 @@
             style="width: 180px; margin: 2px; padding: 10px;"
             [ngClass]="this.enableZoom? 'btn-success': 'btn-outline-success'"
             (click)="toggleZoom()">Toggle Zoom</button>
-    <button *ngIf="isAdmin" class="btn"
+    <button *ngIf="isAllowed" class="btn"
             [ngClass]="this.enableDelete? 'btn-success': 'btn-outline-success'"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="toggleDelete()">Löschen aktivieren</button>
-    <button *ngIf="isAdmin" class="btn"
+    <button *ngIf="isAllowed" class="btn"
             [ngClass]="this.enableEdit? 'btn-success': 'btn-outline-success'"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="toggleEditor()">Editor aktivieren</button>
-    <button *ngIf="isAdmin && this.enableEdit" class="btn btn-outline-success"
+    <button *ngIf="isAllowed && this.enableEdit" class="btn btn-outline-success"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="saveNewBox()">Box Speichern</button>
   </div>

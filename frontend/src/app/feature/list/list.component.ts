@@ -39,8 +39,8 @@ export class ListComponent implements OnInit {
     });
   }
 
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
   removeAlert(id: string, name: string) {
