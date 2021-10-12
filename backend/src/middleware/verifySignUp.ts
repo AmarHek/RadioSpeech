@@ -20,7 +20,7 @@ export function checkDuplicateUsername(req: Request, res: Response, next: NextFu
 
 export function checkRoleExists(req: Request, res: Response, next: NextFunction): void {
     if (req.body.role) {
-        if (Object.values(Role).includes(req.body.role)) {
+        if (Object.values(Role).includes(req.body.role) === false) {
             res.status(400).send({
                 message: `Fehler! Die Rolle ${req.body.role} existiert nicht!`
             });

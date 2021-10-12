@@ -17,7 +17,7 @@ export function signUp(req: Request, res: Response) {
             if (Object.values(Role).includes(req.body.role)) {
                 user.role = req.body.role;
             } else {
-                res.status(500).send({ message: "Invalid User Role!"});
+                res.status(500).send({ message: "Die Rolle existiert nicht!"});
                 return;
             }
         } else {

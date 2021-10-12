@@ -5,7 +5,7 @@ import {signIn, signUp} from "../controllers/auth.controller";
 export const router = express.Router();
 
 router.post(
-    "/auth/signUp",
+    "/signUp",
     [
         checkDuplicateUsername,
         checkRoleExists
@@ -13,4 +13,4 @@ router.post(
     signUp
 );
 
-router.post("/auth/signIn", signIn);
+router.post("/signIn", signIn);

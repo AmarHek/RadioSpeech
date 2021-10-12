@@ -9,6 +9,7 @@ import * as materialRoutes from './routes/material.routes';
 import * as templateRoutes from './routes/template.routes';
 import * as authRoutes from "./routes/auth.routes";
 import * as userRoutes from "./routes/user.routes"
+import { corsOptions } from "./config/cors.config";
 
 export const app = express();
 
@@ -28,10 +29,6 @@ mongoose.connect(url,
     console.error("Connection error", err);
     process.exit();
   });
-
-const corsOptions = {
-    origin: "http://localhost:3001"
-};
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -53,7 +50,7 @@ app.use(express.static(path.join(__dirname,"../data/images")));
 
 app.use("/radio/database", materialRoutes.router);
 app.use("/radio/database", templateRoutes.router);
-app.use("/api", authRoutes.router);
-app.use("/api", userRoutes.router);
+app.use("/radio/authentication/this/is/very/safe/133742069", authRoutes.router);
+app.use("/radio/test", userRoutes.router);
 
 //app.get("/*", (req,res)=> res.sendFile(path.join(__dirname)));
