@@ -33,18 +33,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.set("view engine", "ejs");
+app.set("view engine", "pug");
 
 app.use(express.static(path.join(__dirname, "../data/images")));
 app.use(express.static(path.join(__dirname, "../dist/radiospeech/")));
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token, Origin, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE');
-  next();
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token, Origin, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods',
+        'GET, POST, PUT, DELETE');
+    next();
 });
 
 app.use("/radio/database", materialRoutes.router);

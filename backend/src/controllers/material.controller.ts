@@ -58,7 +58,7 @@ export function addMaterial (req: any, res: Response, next: NextFunction): void 
                     message: message});
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
         res.status(500).json({
             success: false,
@@ -76,7 +76,7 @@ export function deleteMaterial(req: Request, res: Response, next: NextFunction):
                 fs.rmdirSync(dir, { recursive: true });
                 res.status(200).json({message:"Material deleted"});
             });
-    } catch (error) {
+    } catch (error: any) {
         res.status(404).json({message: error.message});
     }
 }
@@ -102,7 +102,7 @@ export function updateMaterial(req: Request, res: Response, next: NextFunction):
                 res.status(409).json({message: "Something went wrong during the update."});
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({message: error.message });
     }
 }
@@ -119,7 +119,7 @@ export function queryMaterial(req: Request, res: Response, next: NextFunction): 
         MaterialSchema.find(req.body).limit(20).then((mats: Material[]) => {
             res.status(200).send(mats);
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).send(error.message);
     }
 }
@@ -129,7 +129,7 @@ export function getMaterialById(req: Request, res: Response, next: NextFunction)
         MaterialSchema.find({_id: req.params.id}).then(mats => {
             res.status(200).send(mats[0]);
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(404).send(error.message);
     }
 }

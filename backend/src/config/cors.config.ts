@@ -1,3 +1,3 @@
 export const corsOptions = {
-    origin: "http://localhost:8000"
+    origin: "http://localhost:4200"
 };
