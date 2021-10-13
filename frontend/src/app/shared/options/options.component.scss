@@ -5,7 +5,7 @@ td.category{
   vertical-align: top;
   position: relative;
   top: -1px;
-  *overflow: hidden;
+  overflow: hidden;
 }
 
 td.box {
@@ -13,7 +13,7 @@ td.box {
   position: relative;
   top: 1px;
   bottom: -2px;
-  *overflow: hidden;
+  overflow: hidden;
   color: black;
 }
 

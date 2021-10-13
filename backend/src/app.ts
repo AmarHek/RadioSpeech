@@ -16,8 +16,6 @@ export const app = express();
 // TODO: Auf env auslagern
 
 const url = "mongodb://" + C.dbConfig.HOST + ":" + C.dbConfig.PORT + "/" + C.dbConfig.DB;
-
-
 mongoose.connect(url,
     {useNewUrlParser: true,
             useUnifiedTopology: true
@@ -37,6 +35,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.set("view engine", "ejs");
 
+app.use(express.static(path.join(__dirname, "../data/images")));
+app.use(express.static(path.join(__dirname, "../dist/radiospeech/")));
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers',
@@ -45,12 +46,8 @@ app.use((req, res, next) => {
     'GET, POST, PUT, DELETE');
   next();
 });
-console.log(path.join(__dirname, "../data/images"));
-app.use(express.static(path.join(__dirname,"../data/images")));
 
 app.use("/radio/database", materialRoutes.router);
 app.use("/radio/database", templateRoutes.router);
 app.use("/radio/authentication/this/is/very/safe/133742069", authRoutes.router);
 app.use("/radio/test", userRoutes.router);
-
-//app.get("/*", (req,res)=> res.sendFile(path.join(__dirname)));
