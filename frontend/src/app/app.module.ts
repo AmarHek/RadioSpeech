@@ -9,7 +9,7 @@ import { FeatureModule } from "@app/feature/feature.module";
 import { ViewModule } from "@app/view/view.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
-import { fakeBackendProvider, JwtInterceptor, ErrorInterceptor, APP_DATE_FORMATS, AppDateAdapter } from "@app/helpers";
+import { JwtInterceptor, ErrorInterceptor, APP_DATE_FORMATS, AppDateAdapter } from "@app/helpers";
 import { PopoutService } from "@app/core";
 
 @NgModule({

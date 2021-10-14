@@ -26,6 +26,10 @@ export class ListComponent implements OnInit {
               private authenticationService: AuthenticationService
   ) { }
 
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.isLoading = true;
@@ -37,10 +41,6 @@ export class ListComponent implements OnInit {
       this.templates = templates;
       this.isLoading = false;
     });
-  }
-
-  get isMod() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
   removeAlert(id: string, name: string) {
