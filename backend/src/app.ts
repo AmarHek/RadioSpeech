@@ -28,20 +28,12 @@ mongoose.connect(url,
     process.exit();
   });
 
+/*
 app.use(cors({
-    origin: function(origin, callback){
-        // allow requests with no origin
-        // (like mobile apps or curl requests)
-        if(!origin)
-            return callback(null, true);
-        if(!allowedOrigins.includes(origin)){
-            const msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    }
-}));
+    origin: "https://radiospeech.informatik.uni-wuerzburg.de"
+}))
+ */
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
