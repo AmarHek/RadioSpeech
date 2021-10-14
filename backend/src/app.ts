@@ -9,7 +9,7 @@ import * as materialRoutes from './routes/material.routes';
 import * as templateRoutes from './routes/template.routes';
 import * as authRoutes from "./routes/auth.routes";
 import * as userRoutes from "./routes/user.routes"
-import { corsOptions } from "./config/cors.config";
+import { allowedOrigins } from "./config/cors.config";
 
 export const app = express();
 
@@ -28,7 +28,20 @@ mongoose.connect(url,
     process.exit();
   });
 
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: function(origin, callback){
+        // allow requests with no origin
+        // (like mobile apps or curl requests)
+        if(!origin)
+            return callback(null, true);
+        if(!allowedOrigins.includes(origin)){
+            const msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
