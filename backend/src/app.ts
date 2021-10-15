@@ -43,8 +43,8 @@ app.use(express.static(path.join(__dirname, "../data/images")));
 app.use(express.static(path.join(__dirname, "../dist/radiospeech/")));
 app.set("view engine", "pug");
 
-app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: __dirname})
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
 });
 
 app.use((req, res, next) => {
