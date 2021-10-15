@@ -14,7 +14,7 @@ import {UploadMaterialComponent, ConfirmDialogComponent, ConfirmDialogModel} fro
 })
 export class ListMaterialComponent implements OnInit {
 
-  serverUrl = environment.backend;
+  imageUrl = environment.backend + "images/";
   materials: Material[] = [];
   query: Record<string, unknown>;
 

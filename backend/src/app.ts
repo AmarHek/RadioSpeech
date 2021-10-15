@@ -28,22 +28,23 @@ mongoose.connect(url,
     process.exit();
   });
 
-/*
+
 app.use(cors({
-    origin: "https://radiospeech.informatik.uni-wuerzburg.de"
+    origin: "*"
 }))
- */
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(express.static(path.join(__dirname, "../data/images")));
-app.use(express.static(path.join(__dirname, "../dist/radiospeech/")));
-app.set("view engine", "pug");
+app.use("/images", express.static(path.join(__dirname, "../data/images")));
+app.use("/dist", express.static(path.join(__dirname, "../dist/radiospeech/")));
+console.log(path.join(__dirname, "../dist/radiospeech/"));
+app.set("view engine", "ejs");
 
-app.get('*', (req, res) => {
+
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
 });
 
