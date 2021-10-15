@@ -1,4 +1,13 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef, AfterViewInit, TemplateRef} from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  TemplateRef,
+  HostListener
+} from "@angular/core";
 import {POPOUT_MODAL_DATA, PopoutData} from "@app/core/services/popout.tokens";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
@@ -6,8 +15,7 @@ import {MatDialogService} from "@app/core/services/mat-dialog.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
-import {AuthenticationService} from "@app/core";
-import {BoundingBox, Image, Role, User} from "@app/models";
+import {BoundingBox, Image} from "@app/models";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -52,6 +60,22 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   width = 0;
   height = 0;
   newLabel = "";
+
+  lensSize = 300;
+
+  @HostListener("mousewheel", ["$event"])
+  scroll(event: WheelEvent) {
+    console.log("Entered mouse wheel");
+    if(this.enableZoom) {
+      const wheelDelta = Math.max(-1, Math.min(1, (event.deltaY || -event.detail)));
+      if (wheelDelta > 0) {
+        this.lensSize += 20;
+      } else {
+        this.lensSize -= 20;
+      }
+      this.imageZoom();
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
@@ -153,7 +177,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   setCurrentImage() {
     const filename = this.scans[this.currentMode + "Scan"].filename;
-    this.currentScanUrl = this.serverUrl + this.scans.id + "/" + filename;
+    this.currentScanUrl = this.serverUrl + "images/" + this.scans.id + "/" + filename;
   }
 
   setCurrentDimensions() {
@@ -181,6 +205,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     if (this.displayBoxes) {
       this.drawBoxes();
     }
+    this.toggleZoom();
   }
 
   toggleBoxes() {
@@ -374,6 +399,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     result.style.backgroundImage = "url('" + img.src + "')";
     result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
     // Execute a function when someone moves the cursor over the image or the lens
+    this.lensElement.removeEventListener("mousemove", moveLens);
+    this.zoomLayerElement.removeEventListener("mousemove", moveLens);
     this.lensElement.addEventListener("mousemove", moveLens);
     this.zoomLayerElement.addEventListener("mousemove", moveLens);
 
@@ -410,8 +437,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function getCursorPos(e) {
-      let x = 0;
-      let y = 0;
+      let x: number;
+      let y: number;
       // Get the x and y positions of the image
       const a = img.getBoundingClientRect();
       // Calculate the cursor's x and y coordinates, relative to the image:

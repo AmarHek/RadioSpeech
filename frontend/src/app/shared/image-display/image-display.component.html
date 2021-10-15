@@ -57,7 +57,8 @@
     <canvas #labelLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="labelCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <div #lensContainer *ngIf="enableZoom">
-      <div style="position: absolute; border: 1px solid #d4d4d4; width: 300px; height: 300px;" id="lens" ></div>
+      <div style="position: absolute; border: 1px solid #d4d4d4;"
+           [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
       <div style="position: absolute; left: 0; top: 0; z-index: 2" id="zoomCanvas"
            [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
     </div>

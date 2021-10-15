@@ -9,7 +9,6 @@ import * as materialRoutes from './routes/material.routes';
 import * as templateRoutes from './routes/template.routes';
 import * as authRoutes from "./routes/auth.routes";
 import * as userRoutes from "./routes/user.routes"
-import { allowedOrigins } from "./config/cors.config";
 
 export const app = express();
 
@@ -39,12 +38,10 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/images", express.static(path.join(__dirname, "../data/images")));
-app.use("/dist", express.static(path.join(__dirname, "../dist/radiospeech/")));
-console.log(path.join(__dirname, "../dist/radiospeech/"));
+app.use("/app", express.static(path.join(__dirname, "../dist/radiospeech")));
 app.set("view engine", "ejs");
 
-
-app.get('/', (req, res) => {
+app.get('/app/*', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
 });
 
