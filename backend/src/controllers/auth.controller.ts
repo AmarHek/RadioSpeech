@@ -8,8 +8,6 @@ export function signUp(req: Request, res: Response) {
 
     if (req.body !== null) {
 
-
-
         const user = new User({
             username: req.body.username,
             password: bcrypt.hashSync(req.body.password, 8)
