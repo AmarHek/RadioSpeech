@@ -38,10 +38,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.set("view engine", "pug");
 
 app.use(express.static(path.join(__dirname, "../data/images")));
 app.use(express.static(path.join(__dirname, "../dist/radiospeech/")));
+app.set("view engine", "pug");
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html', {root: __dirname})
+});
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
