@@ -38,10 +38,10 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/images", express.static(path.join(__dirname, "../data/images")));
-app.use("/app", express.static(path.join(__dirname, "../dist/radiospeech")));
+app.use("/", express.static(path.join(__dirname, "../dist/radiospeech")));
 app.set("view engine", "ejs");
 
-app.get('/app/*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
 });
 
