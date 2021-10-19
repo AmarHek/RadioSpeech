@@ -11,6 +11,7 @@ import { ListComponent } from "@app/feature/list/list.component";
 import { ListMaterialComponent } from "@app/feature/list-material/list-material.component";
 import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
 import { AccountManagementComponent } from "./account-management/account-management.component";
+import {AdminComponent} from "@app/feature/admin/admin.component";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { AccountManagementComponent } from "./account-management/account-managem
     ListComponent,
     ListMaterialComponent,
     UiBaseComponent,
-    AccountManagementComponent
+    AccountManagementComponent,
+    AdminComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { AccountManagementComponent } from "./account-management/account-managem
     ListComponent,
     ListMaterialComponent,
     UiBaseComponent,
-    AccountManagementComponent
+    AccountManagementComponent,
+    AdminComponent
   ]
 })
 export class FeatureModule { }
