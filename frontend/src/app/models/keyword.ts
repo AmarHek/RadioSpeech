@@ -21,3 +21,9 @@ export interface KeyVariable {
   position: number;
   active: boolean;
 }
+
+export interface ColoredText {
+  text: string;
+  color: string;
+  position: number;
+}

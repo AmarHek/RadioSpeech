@@ -4,9 +4,9 @@ import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
-import {DataParserService, BackendCallerService, InputParserService} from "@app/core";
+import {DataParserService, BackendCallerService, InputParserService, AuthenticationService} from "@app/core";
 import {OptionsComponent} from "@app/shared";
-import {Template, Category, TopLevel} from "@app/models";
+import {Template, Category, TopLevel, User, Role} from "@app/models";
 
 @Component({
   selector: "app-workspace",
@@ -31,16 +31,28 @@ export class UiBaseComponent implements OnInit {
 
   downJson: SafeUrl;
 
+  user: User;
+
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserService,
               private backendCaller: BackendCallerService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private authenticationService: AuthenticationService) {
+  }
+
+  get isModerator() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
   }
 
   ngOnInit() {
+    this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
     this.foundKeywords = "Detected keywords go here";
   }
@@ -86,10 +98,9 @@ export class UiBaseComponent implements OnInit {
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
-    this.inputParser.findKeywords(this.input);
-    const [splitInput, splitReducedInput] = this.inputParser.splitInputFromKeywords(this.input);
-    console.log(splitInput);
-    console.log(splitReducedInput);
+    this.inputParser.parseInput(this.input);
+    // console.log("found Selectables: ", this.inputParser.foundSelectables);
+    console.log(this.inputParser.foundVariables);
   }
 
   makeNormal() {

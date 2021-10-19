@@ -28,7 +28,7 @@
       || variable.kind === 'date' || variable.kind === 'ratio'">
         {{variable.textBefore}}
         <button class="modal-button"
-                [ngClass]="{'selected': (hasButtonBeenClickedOnce[variable.id] && parentActive)}"
+                [ngClass]="{'selected': parentActive}"
                 id="{{variable.id}} btn" (click)="submit(variable)">{{parseButtonText(variable)}}</button>
         {{variable.textAfter}}
       </td>

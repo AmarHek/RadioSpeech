@@ -21,6 +21,14 @@ export class HeaderComponent implements OnInit, DoCheck {
   constructor(private displayService: DisplayService,
               private authenticationService: AuthenticationService) {}
 
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
   ngOnInit(): void {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.displayNavbar = true;
@@ -30,14 +38,6 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     this.displayService.updateDisplay();
     this.displayNavbar = this.displayService.displayHeader;
-  }
-
-  get isMod() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
-  }
-
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
   }
 
   logout() {

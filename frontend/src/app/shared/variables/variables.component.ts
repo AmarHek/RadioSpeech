@@ -5,7 +5,7 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {displayableQuotient} from "@app/helpers";
 import {MatDialogService} from "@app/core";
 
-import {InputModalComponent} from "../inputModal/inputModal.component";
+import {InputModalComponent} from "@app/shared";
 
 @Component({
   selector: "app-variables",
