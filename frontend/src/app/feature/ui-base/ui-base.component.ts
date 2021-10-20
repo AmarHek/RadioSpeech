@@ -6,7 +6,8 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {DataParserService, BackendCallerService, InputParserService, AuthenticationService} from "@app/core";
 import {OptionsComponent} from "@app/shared";
-import {Template, Category, TopLevel, User, Role} from "@app/models";
+import {Template, Category, TopLevel, User, Role, Variable} from "@app/models";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-workspace",
@@ -95,12 +96,62 @@ export class UiBaseComponent implements OnInit {
   }
 
   onInput(ev) {
+    if(ev.inputType === "deleteContentBackward") {
+      this.reset();
+    }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
     this.inputParser.parseInput(this.input);
-    // console.log("found Selectables: ", this.inputParser.foundSelectables);
-    console.log(this.inputParser.foundVariables);
+    console.log(this.inputParser.foundClickables);
+    this.assignValues();
+    setTimeout(() => this.updateText(), 5);
+    console.log(this.categories);
+  }
+
+  assignValues() {
+    for (const key of this.inputParser.foundClickables) {
+      if (key.name === "Rest normal") {
+        this.makeNormal();
+      } else {
+        const foundVariables = this.inputParser.foundVariables.get(key.category + " " + key.name);
+        const cat = this.categories.find(c =>
+          c.name === key.category
+        );
+        const sel = cat.selectables.find(s =>
+          s.name === key.name || s.name === key.group
+        );
+        let variables: Variable[];
+        if (sel.kind === "box") {
+          sel.value = true;
+          variables = sel.variables;
+        } else {
+          sel.value = key.name;
+          const option = sel.options.find(o => o.name === key.name);
+          variables = option.variables;
+        }
+        if (variables.length > 0 && foundVariables !== undefined) {
+          for (const varKey of foundVariables) {
+            const vari = variables.find(v => v.id === varKey.id);
+            if (vari.kind === "oc") {
+              vari.value = varKey.name;
+            } else if (vari.kind === "mc") {
+              const val = vari.values.find(v => v[0] === varKey.name);
+              val[1] = true;
+            } else if (vari.kind === "ratio") {
+              vari.numerator = varKey.value[0] as number;
+              vari.denominator = varKey.value[1] as number;
+            } else if (vari.kind === "text") {
+              vari.value = varKey.value as string;
+            } else if (vari.kind === "number") {
+              vari.value = varKey.value as number;
+            } else {
+              vari.value = varKey.value as NgbDateStruct;
+            }
+          }
+        }
+      }
+    }
   }
 
   makeNormal() {
@@ -111,8 +162,8 @@ export class UiBaseComponent implements OnInit {
   reset() {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
-    setTimeout(() => this.optionsComponent.initRows(), 5);
-    setTimeout(() => this.resetText(), 5);
+    setTimeout(() => this.optionsComponent.initRows(), 1);
+    setTimeout(() => this.resetText(), 1);
   }
 
 }

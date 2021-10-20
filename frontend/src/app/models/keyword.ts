@@ -1,4 +1,6 @@
-export interface KeySelectable {
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+
+export interface KeyClickable {
   name: string;
   synonym: string;
   category: string;
@@ -15,7 +17,7 @@ export interface KeyVariable {
   kind: string;
   name?: string;
   synonym?: string;
-  value?: string;
+  value?: string | [number, number] | NgbDateStruct | number;
   textBefore: string;
   textAfter: string;
   position: number;

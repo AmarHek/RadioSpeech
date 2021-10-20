@@ -1,32 +1,30 @@
 import { Injectable } from "@angular/core";
-import { levenshtein, getAllIndexOf } from "@app/helpers";
+import { levenshtein, getAllIndexOf, getNextHighestValue } from "@app/helpers";
 
 import * as M from "../../models/templateModel";
-import {KeyVariable, KeySelectable} from "../../models/keyword";
+import {KeyVariable, KeyClickable} from "../../models/keyword";
 
 @Injectable({
   providedIn: "root"
 })
 export class InputParserService {
 
-  selectableKeywords: KeySelectable[] = [];
+  clickableKeywords: KeyClickable[] = [];
   varKeyDictionary: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
 
-  lastKeyword: KeySelectable;  // input buffer for last spoken keyword
+  lastKeyword: KeyClickable;  // input buffer for last spoken keyword
 
-  foundSelectables: KeySelectable[] = [];
+  foundClickables: KeyClickable[] = [];
   foundVariables: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
 
   primaryDictionary: Set<string>;
 
-  constructor() {}
+  constructor() {
+  }
 
   init(rootEl: M.TopLevel[]): void {
     this.initializeKeywords(rootEl);
     this.initializeDictionary();
-
-    console.log(this.selectableKeywords);
-    console.log(this.varKeyDictionary);
   }
 
   autocorrect(inputString: string): string {
@@ -57,40 +55,27 @@ export class InputParserService {
 
   parseInput(input: string) {
     // Possibly reinitialize when starting
-    this.findSelectables(input);
-    const varText = this.getTextBetweenSelectables(input);
-    console.log(this.foundSelectables);
-    console.log(varText);
-    if (varText.length > this.foundSelectables.length) {
+    this.findClickables(input);
+    const varText = this.getTextBetweenClickables(input);
+    if (varText.length > this.foundClickables.length) {
       // This means that the first variable text is from the previous input
       // if lastKeyword is not null, use that, otherwise use dummy varKey
       // for now just ignore though
       const overText = varText.shift();
-      /*
-      this.foundVariables.push({
-        category: "dummy",
-        selectable: "dummy",
-        id: "dummy",
-        kind: "dummy",
-        textBefore: "",
-        textAfter: "",
-        position: 0,
-        active: false
-      });*/
     }
     for (let i = 0; i < varText.length; i++) {
-      this.findVariableKeywords(varText[i], this.foundSelectables[i]);
+      this.findVariableKeywords(varText[i], this.foundClickables[i]);
     }
   }
 
   // Finds all KeySelectables in an input string
-  findSelectables(input: string) {
-    let foundKeywordsTemp: KeySelectable[] = [];
-    for (const keyword of this.selectableKeywords) {
+  findClickables(input: string) {
+    let foundKeywordsTemp: KeyClickable[] = [];
+    for (const keyword of this.clickableKeywords) {
       const positions: number[] = getAllIndexOf(keyword.synonym, input, false);
       if (positions.length >= 1) {
         for (const pos of positions) {
-          const keywordWithPos: KeySelectable = JSON.parse(JSON.stringify(keyword));
+          const keywordWithPos: KeyClickable = JSON.parse(JSON.stringify(keyword));
           keywordWithPos.position = pos;
           foundKeywordsTemp.push(keywordWithPos);
         }
@@ -99,10 +84,10 @@ export class InputParserService {
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
     // Filter duplicates?
     foundKeywordsTemp.sort(this.compareKeywords);
-    this.foundSelectables = foundKeywordsTemp;
+    this.foundClickables = foundKeywordsTemp;
   }
 
-  findVariableKeywords(input: string, keySel: KeySelectable) {
+  findVariableKeywords(input: string, keySel: KeyClickable) {
     const relativePosition = keySel.position + keySel.synonym.length + 1;
     const id: string = keySel.category + " " + keySel.name;
     const foundVariablesTemp: KeyVariable[] = [];
@@ -128,9 +113,22 @@ export class InputParserService {
           const positions: number[] = getAllIndexOf(varKey.textBefore, input, false);
           for (const pos of positions) {
             const posValueStart = pos + varKey.textBefore.length;
-
+            let posValueEnd: number;
+            if (varKey.textAfter.length === 0) {
+              posValueEnd = getNextHighestValue(splitters, posValueStart);
+              if (posValueEnd === -1) {
+                posValueEnd = input.length;
+              } else {
+                posValueEnd--;
+              }
+            } else {
+              posValueEnd = input.indexOf(varKey.textAfter, pos);
+            }
+            const valueString = input.substring(posValueStart, posValueEnd).trim();
             const newVarKey = JSON.parse(JSON.stringify(varKey));
             newVarKey.position = pos;
+            newVarKey.value = this.parseValue(valueString, newVarKey.kind);
+            foundVariablesTemp.push(newVarKey);
           }
         }
       }
@@ -140,12 +138,12 @@ export class InputParserService {
   }
 
   // Removes all synonyms/keywords that are substrings of another synonym/keyword
-  filterOverlap(foundKeywords: KeySelectable[]): KeySelectable[] {
+  filterOverlap(foundKeywords: KeyClickable[]): KeyClickable[] {
     // filters out keyword synonyms that are substrings of another keyword
     const fKCopy = JSON.parse(JSON.stringify(foundKeywords));
-    let toRemove: KeySelectable[] = [];
+    let toRemove: KeyClickable[] = [];
     for (const keyword of fKCopy) {
-      const overlap: KeySelectable[] = fKCopy.filter((kw) =>
+      const overlap: KeyClickable[] = fKCopy.filter((kw) =>
         keyword.synonym !== kw.synonym && // do not filter out the same synonym
         keyword.position <= kw.position && // kw must be right of keyword
         kw.position < (keyword.position + keyword.synonym.length) && // kw must be contained within keyword
@@ -159,19 +157,17 @@ export class InputParserService {
     return fKCopy;
   }
 
-  getTextBetweenSelectables(input: string): string[] {
+  getTextBetweenClickables(input: string): string[] {
     const result: string[] = [];
 
     const splitRight: number[] = [];
     const splitLeft: number[] = [0];
 
-    for (const keyword of this.foundSelectables) {
+    for (const keyword of this.foundClickables) {
       splitRight.push(keyword.position);
       splitLeft.push(keyword.position + keyword.synonym.length);
     }
     splitRight.push(input.length);
-
-    console.log(splitLeft, splitRight);
 
     if (splitRight[0] === 0) {
       splitLeft.shift();
@@ -185,7 +181,7 @@ export class InputParserService {
   }
 
   // sorts keywords based on their position in the input string
-  compareKeywords(arg1: KeySelectable | KeyVariable, arg2: KeySelectable | KeyVariable): number {
+  compareKeywords(arg1: KeyClickable | KeyVariable, arg2: KeyClickable | KeyVariable): number {
     if (arg1.position > arg2.position) {
       return 1;
     } else if (arg1.position < arg2.position) {
@@ -195,12 +191,8 @@ export class InputParserService {
     }
   }
 
-  assignValues(foundKeywords: KeySelectable[], foundVariables: KeyVariable[], parts: M.TopLevel[]): M.TopLevel[] {
-    return;
-  }
-
   private initializeKeywords(rootEl: M.TopLevel[]): void {
-    let selKeys: KeySelectable[] = [];
+    let selKeys: KeyClickable[] = [];
     selKeys.push({
       name: "Rest normal",
       synonym: "Rest normal",
@@ -210,17 +202,17 @@ export class InputParserService {
     });
     for (const el of rootEl) {
       if (el.kind === "category") {
-        const tempSelectables: KeySelectable[] = this.getSelectableKeywords(el.selectables, el.name);
+        const tempSelectables: KeyClickable[] = this.getClickableKeywords(el.selectables, el.name);
         selKeys = selKeys.concat(tempSelectables);
         this.extractVariableKeywords(el.selectables, el.name);
       }
     }
-    this.selectableKeywords = selKeys;
+    this.clickableKeywords = selKeys;
   }
 
   private initializeDictionary(): void {
     this.primaryDictionary = new Set<string>();
-    for (const selKey of this.selectableKeywords) {
+    for (const selKey of this.clickableKeywords) {
       const split: string[] = selKey.synonym.split(" ");
       split.forEach((word) => this.primaryDictionary.add(word));
     }
@@ -266,8 +258,8 @@ export class InputParserService {
   }
 
   // Creates list of Keywords for Selectables from Selectables of category
-  private getSelectableKeywords(selectables: M.Selectable[], category: string): KeySelectable[] {
-    const selKeys: KeySelectable[] = [];
+  private getClickableKeywords(selectables: M.Selectable[], category: string): KeyClickable[] {
+    const selKeys: KeyClickable[] = [];
     for (const sel of selectables) {
       if (sel.kind === "box") {
         for (const synonym of sel.keys) {
@@ -359,4 +351,17 @@ export class InputParserService {
     return splitters;
   }
 
+  private parseValue(valueString: string, varKind: string) {
+    if (varKind === "text") {
+      return valueString;
+    } else if (varKind === "number") {
+      return Number(valueString);
+    } else if (varKind === "date") {
+      const date = valueString.split(/[.-\/]+/);
+      return {year: date[2], month: date[1], day: date[0]};
+    } else if (varKind === "ratio") {
+      const ratioNumbers = valueString.split(/[\s:\/]+/);
+      return [Number(ratioNumbers[0]), Number(ratioNumbers[1])];
+    }
+  }
 }

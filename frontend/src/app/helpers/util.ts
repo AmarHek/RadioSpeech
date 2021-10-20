@@ -149,3 +149,12 @@ export function getImageDimensions(imgUrl): [number, number] {
   console.log(width, height);
   return [width, height];
 }
+
+export function getNextHighestValue(array, testValue): number {
+  for (const value of array) {
+    if (value > testValue) {
+      return value;
+    }
+  }
+  return -1;
+}

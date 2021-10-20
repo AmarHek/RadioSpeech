@@ -39,15 +39,21 @@ export class VariablesComponent implements OnInit {
   }
 
   parseButtonText(variable: Variable) {
-    if (!this.hasButtonBeenClickedOnce[variable.id] || !this.parentActive) {
-      return ".....";
-    } else if (variable.kind === "text" || variable.kind === "number") {
-      return variable.value;
+    const base = ".....";
+    if (!this.parentActive) {
+      return base;
+    } else if (variable.kind === "text") {
+      return variable.value !== "" ? variable.value : base;
+    } else if (variable.kind === "number") {
+      return variable.value !== 0 ? variable.value : base;
     } else if (variable.kind === "date") {
-      return variable.value.day + "." + variable.value.month + "." + variable.value.year;
+      return (variable.value.day !== undefined &&
+        variable.value.month !== undefined &&
+        variable.value.year !== undefined) ?
+      variable.value.day + "." + variable.value.month + "." + variable.value.year : base;
     } else if (variable.kind === "ratio") {
-      return displayableQuotient(variable.numerator,
-        variable.denominator, variable.fractionDigits);
+      return (variable.numerator !== 0 && variable.denominator !== 0) ? displayableQuotient(variable.numerator,
+        variable.denominator, variable.fractionDigits) : base;
     }
   }
 
