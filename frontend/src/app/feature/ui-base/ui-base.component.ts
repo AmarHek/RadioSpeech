@@ -6,7 +6,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {DataParserService, BackendCallerService, InputParserService, AuthenticationService} from "@app/core";
 import {OptionsComponent} from "@app/shared";
-import {Template, Category, TopLevel, User, Role, Variable} from "@app/models";
+import {Template, Category, TopLevel, User, Role, Variable, ColoredText} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -24,7 +24,7 @@ export class UiBaseComponent implements OnInit {
   defaultParts: TopLevel[];
 
   input = "";
-  foundKeywords = "";
+  foundKeywords: ColoredText[] = [];
 
   categories: Category[];
   report = "";
@@ -55,9 +55,9 @@ export class UiBaseComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
-    this.foundKeywords = "Detected keywords go here";
   }
 
+  // gets parts from node server via id in url
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (ps.has("id")) {
@@ -77,6 +77,7 @@ export class UiBaseComponent implements OnInit {
     });
   }
 
+  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
   generateDownloadJson(jsonData) {
     const json = JSON.stringify(jsonData);
     this.downJson = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(json));
@@ -110,6 +111,7 @@ export class UiBaseComponent implements OnInit {
     console.log(this.categories);
   }
 
+  // Assigns all found keywords in inputParser to this.parts
   assignValues() {
     for (const key of this.inputParser.foundClickables) {
       if (key.name === "Rest normal") {
@@ -131,6 +133,7 @@ export class UiBaseComponent implements OnInit {
           const option = sel.options.find(o => o.name === key.name);
           variables = option.variables;
         }
+        // assign variable values
         if (variables.length > 0 && foundVariables !== undefined) {
           for (const varKey of foundVariables) {
             const vari = variables.find(v => v.id === varKey.id);
@@ -160,6 +163,8 @@ export class UiBaseComponent implements OnInit {
     this.updateText();
   }
 
+  // for when the radiologist finishes: empty parts and input
+  // Will not be necessary once the input is streamed
   next() {
     this.reset();
     this.input = "";

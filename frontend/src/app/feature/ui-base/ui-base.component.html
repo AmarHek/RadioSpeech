@@ -17,6 +17,7 @@
     </div>
 
     <div class="inputText" id="inputText" >
+      <ng-container *ngIf="foundKeywords.length === 0">Detected keywords go here</ng-container>
       {{foundKeywords}}
     </div>
   </div>
