@@ -33,7 +33,7 @@ export class InputParserService {
             synonym,
             category,
             position: -1,
-            active: false
+            nVariables: sel.variables.length
           });
         }
       } else if (sel.kind === "group") {
@@ -45,7 +45,7 @@ export class InputParserService {
               category,
               group: sel.name,
               position: -1,
-              active: false
+              nVariables: option.variables.length
             });
           }
         }
@@ -76,8 +76,7 @@ export class InputParserService {
               synonym: key,
               textBefore: variable.textBefore,
               textAfter: variable.textAfter,
-              position: -1,
-              active: false
+              position: -1
             });
           }
         }
@@ -89,8 +88,7 @@ export class InputParserService {
           kind: variable.kind,
           textBefore: variable.textBefore,
           textAfter: variable.textAfter,
-          position: -1,
-          active: false
+          position: -1
         });
       }
     }
@@ -120,7 +118,7 @@ export class InputParserService {
   }
 
   // takes the value and kind of a variable and parses the string accordingly
-  // text: nothing happens; number: converts to number; date: extracts day, month and year; ratio: extracs num. and den.
+  // text: nothing happens; number: converts to number; date: extracts day, month and year; ratio: extracts num. and den.
   private static parseValue(valueString: string, varKind: string) {
     if (varKind === "text") {
       return valueString;
@@ -319,7 +317,7 @@ export class InputParserService {
 
   getColoredText(input: string): ColoredText[] {
     const result: ColoredText[] = [];
-    // go through each found Clickable and get substrings
+    // go through each found Clickable and check for variable completion
     for (const clickKey of this.foundClickables) {
 
     }
@@ -334,7 +332,7 @@ export class InputParserService {
       synonym: "Rest normal",
       category: "normal",
       position: -1,
-      active: false
+      nVariables: 0
     });
     for (const el of rootEl) {
       if (el.kind === "category") {

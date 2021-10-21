@@ -6,8 +6,7 @@ export interface KeyClickable {
   category: string;
   group?: string;
   position: number;
-  active: boolean;
-  variableText?: string;
+  nVariables: number;
 }
 
 export interface KeyVariable {
@@ -21,7 +20,6 @@ export interface KeyVariable {
   textBefore: string;
   textAfter: string;
   position: number;
-  active: boolean;
 }
 
 export interface ColoredText {
