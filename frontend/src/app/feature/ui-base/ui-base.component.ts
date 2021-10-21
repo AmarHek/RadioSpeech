@@ -104,6 +104,7 @@ export class UiBaseComponent implements OnInit {
     }
     this.inputParser.parseInput(this.input);
     console.log(this.inputParser.foundClickables);
+    console.log(this.inputParser.foundVariables);
     this.assignValues();
     setTimeout(() => this.updateText(), 5);
     console.log(this.categories);
@@ -157,6 +158,11 @@ export class UiBaseComponent implements OnInit {
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
+  }
+
+  next() {
+    this.reset();
+    this.input = "";
   }
 
   reset() {

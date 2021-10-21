@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { levenshtein, getAllIndexOf, getNextHighestValue } from "@app/helpers";
 
 import * as M from "../../models/templateModel";
-import {KeyVariable, KeyClickable} from "../../models/keyword";
+import {KeyVariable, KeyClickable, ColoredText} from "../../models/keyword";
 
 @Injectable({
   providedIn: "root"
@@ -25,6 +25,11 @@ export class InputParserService {
   init(rootEl: M.TopLevel[]): void {
     this.initializeKeywords(rootEl);
     this.initializeDictionary();
+  }
+
+  reset() {
+    this.foundClickables = [];
+    this.foundVariables = new Map<string, KeyVariable[]>();
   }
 
   autocorrect(inputString: string): string {
@@ -54,6 +59,7 @@ export class InputParserService {
   }
 
   parseInput(input: string) {
+    this.reset();
     // Possibly reinitialize when starting
     this.findClickables(input);
     const varText = this.getTextBetweenClickables(input);
@@ -189,6 +195,16 @@ export class InputParserService {
     } else {
       return 0;
     }
+  }
+
+  getColoredText(input: string): ColoredText[] {
+    const result: ColoredText[] = [];
+    // go through each found Clickable and get substrings
+    for (const clickKey of this.foundClickables) {
+
+    }
+
+    return result;
   }
 
   private initializeKeywords(rootEl: M.TopLevel[]): void {

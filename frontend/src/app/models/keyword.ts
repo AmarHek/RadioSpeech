@@ -27,5 +27,4 @@ export interface KeyVariable {
 export interface ColoredText {
   text: string;
   color: string;
-  position: number;
 }
