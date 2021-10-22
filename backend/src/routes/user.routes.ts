@@ -1,8 +1,17 @@
 import {verifyToken, isAdmin, isModerator, checkDuplicateUsername, verifyPassword,} from "../middleware";
-import { getUserById, deleteUserById, changeUsername, changePassword } from "../controllers/user.controller";
+import {getUserById, deleteUserById, changeUsername, changePassword, getUsers} from "../controllers/user.controller";
 import express from "express";
 
 export const router = express.Router();
+
+router.get(
+    "",
+    [
+        verifyToken,
+        isAdmin
+    ],
+    getUsers
+)
 
 router.get(
     "/:id",

@@ -12,7 +12,8 @@ export class UserService {
     return this.http.get<User[]>(`${environment.backend}/users`);
   }
 
-  getById(id: number) {
+  getById(id: string) {
     return this.http.get<User>(`${environment.backend}/users/${id}`);
   }
+
 }
