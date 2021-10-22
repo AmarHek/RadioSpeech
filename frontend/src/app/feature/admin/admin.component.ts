@@ -1,7 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, ComponentRef, OnInit, ViewChild} from "@angular/core";
 import {Role, User} from "@app/models";
 import {AuthenticationService, UserService} from "@app/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: "app-admin",
@@ -12,13 +11,12 @@ export class AdminComponent implements OnInit {
 
   users: User[];
 
+  // @ViewChild("signUp") signUp: ComponentRef<>;
 
   constructor(private userService: UserService) { }
 
-
-
   ngOnInit(): void {
-    this.userService.getAll().subscribe(users => this.users = users);
+    this.getUserList();
   }
 
   getUserList() {
@@ -32,10 +30,12 @@ export class AdminComponent implements OnInit {
   deleteUser(id: string) {
     const result = window.confirm("Sicher, dass Sie den User löschen möchten?");
     if (result) {
+      console.log(id);
       this.userService.deleteUser(id).subscribe((res) => {
         window.alert(res.message);
       });
     }
+    this.getUserList();
   }
 
 }

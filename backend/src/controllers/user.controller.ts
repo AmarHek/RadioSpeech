@@ -5,8 +5,9 @@ import * as bcrypt from "bcrypt";
 export const getUsers = (req: Request, res: Response) => {
     try {
         User.find().then(users => {
-            const result = users.map((user: UserDoc) => {
+            const result = users.map((user) => {
                 return {
+                    id: user._id,
                     username: user.username,
                     role: user.role
                 }
@@ -27,6 +28,7 @@ export const getUserById = (req: Request, res: Response) => {
             } else {
                 const user = users[0];
                 res.status(200).send({
+                    id: user._id,
                     username: user.username,
                     role: user.role
                 });
@@ -39,7 +41,7 @@ export const deleteUserById = (req: Request, res: Response) => {
         _id: req.params.id
     }).exec((err) => {
         if (err) {
-            res.status(500).send({message: err});
+            res.status(500).send({message: err.message});
             return;
         } else {
             res.status(200).send({message: "User erfolgreich gelöscht."});
