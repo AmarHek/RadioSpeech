@@ -27,16 +27,16 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  // convenience getter for easy access to form fields
+  get fc() {
+    return this.loginForm.controls;
+  }
+
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username: ["", Validators.required],
       password: ["", Validators.required]
     });
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
   }
 
   onSubmit() {
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    this.authenticationService.login(this.fc.username.value, this.fc.password.value)
       .pipe(first())
       .subscribe({
         next: () => {

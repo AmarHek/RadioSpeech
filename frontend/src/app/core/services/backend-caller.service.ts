@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import * as M from "../../models/templateModel";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
+import { environment } from "@env/environment";
 import {Observable} from "rxjs";
-import {Template} from "../../models/templateModel";
-import {Material} from "../../models/materialModel";
+import {Template} from "@app/models";
+import {Material} from "@app/models";
 
 
 @Injectable({
@@ -60,7 +60,7 @@ addTemplateFromExcel(postData: FormData) {
     });
 }*/
 
-  deleteTemplate(id: string): Observable<Object> {
+  deleteTemplate(id: string) {
     return this.http.delete(this.templateUrl + id);
   }
 

@@ -2,7 +2,13 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { LoginComponent, AdminComponent } from "@app/view";
-import { ListComponent, UiBaseComponent, ListMaterialComponent, JudgeMatComponent } from "@app/feature";
+import {
+  ListComponent,
+  UiBaseComponent,
+  ListMaterialComponent,
+  JudgeMatComponent,
+  AccountManagementComponent
+} from "@app/feature";
 import { AuthGuard } from "@app/helpers";
 import { Role } from "@app/models";
 
@@ -15,13 +21,13 @@ const routes: Routes = [
     path: "list",
     component: ListComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "main/:id",
     component: UiBaseComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "listMat",
@@ -39,13 +45,19 @@ const routes: Routes = [
     path: "radiolearn",
     component: ListMaterialComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.Moderator, Role.Admin] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "admin",
     component: AdminComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
+  },
+  {
+    path: "manageAccount",
+    component: AccountManagementComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin, Role.Moderator, Role.User]}
   },
   {path: "**", redirectTo: "/list"}
 ];

@@ -17,6 +17,7 @@ import { UploadComponent } from "@app/shared/upload/upload.component";
 import { UploadMaterialComponent } from "@app/shared/upload-material/upload-material.component";
 import { VariablesComponent } from "@app/shared/variables/variables.component";
 import { ImageDisplayComponent } from "@app/shared/image-display/image-display.component";
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ImageDisplayComponent } from "@app/shared/image-display/image-display.c
     UploadComponent,
     UploadMaterialComponent,
     VariablesComponent,
-    ImageDisplayComponent
+    ImageDisplayComponent,
+    SignUpComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +51,8 @@ import { ImageDisplayComponent } from "@app/shared/image-display/image-display.c
     UploadComponent,
     UploadMaterialComponent,
     VariablesComponent,
-    ImageDisplayComponent
+    ImageDisplayComponent,
+    SignUpComponent
   ],
 })
 export class SharedModule { }

@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "@env/environment";
-import { User } from "@app/models";
+import {User} from "@app/models";
 
 
 @Injectable({
@@ -43,4 +43,5 @@ export class AuthenticationService {
     this.userSubject.next(null);
     this.router.navigate(["/login"]).then();
   }
+
 }
