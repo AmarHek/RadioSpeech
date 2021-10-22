@@ -1,26 +1,43 @@
-import {verifyToken, isAdmin, isModerator} from "../middleware";
-import {userBoard, moderatorBoard, adminBoard, allAccess} from "../controllers/user.controller";
+import {verifyToken, isAdmin, isModerator, checkDuplicateUsername, verifyPassword,} from "../middleware";
+import { getUserById, deleteUserById, changeUsername, changePassword } from "../controllers/user.controller";
 import express from "express";
 
 export const router = express.Router();
 
-router.get("/all", allAccess);
-
-router.get("/user", [verifyToken], userBoard);
-
 router.get(
-    "/mod",
+    "/:id",
     [
         verifyToken,
-        isModerator],
-    moderatorBoard
-);
+        isAdmin
+    ],
+    getUserById
+)
 
-router.get(
-    "/admin",
+router.delete(
+    "/:id",
     [
         verifyToken,
-        isAdmin],
-    adminBoard
-);
+        isAdmin
+    ],
+    deleteUserById
+)
+
+router.post(
+    "/changeUsername/:id",
+    [
+        verifyToken,
+        verifyPassword,
+        checkDuplicateUsername
+    ],
+    changeUsername
+)
+
+router.post(
+    "/changePassword/:id",
+    [
+        verifyToken,
+        verifyPassword
+    ],
+    changePassword
+)
 

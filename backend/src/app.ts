@@ -57,4 +57,4 @@ app.use((req, res, next) => {
 app.use("/radio/database", materialRoutes.router);
 app.use("/radio/database", templateRoutes.router);
 app.use("/radio/auth", authRoutes.router);
-app.use("/radio/test", userRoutes.router);
+app.use("/radio/users", userRoutes.router);

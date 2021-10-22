@@ -1,19 +1,77 @@
 import {Request, Response} from "express";
+import {User, UserDoc} from "../models";
+import * as bcrypt from "bcrypt";
 
-export const allAccess = (req: Request, res: Response) => {
-    res.status(200).send("Öffentlicher Inhalt.");
+export const getUsers = (req: Request, res: Response) => {
+    try {
+        User.find().then(users => {
+            const result = users.map((user: UserDoc) => {
+                return {
+                    username: user.username,
+                    role: user.role
+                }
+            })
+            res.status(200).send(result);
+        });
+    } catch (error) {
+        res.status(404);
+    }
 }
 
-export const userBoard = (req: Request, res: Response) => {
-    res.status(200).send("User Inhalt.");
-};
+export const getUserById = (req: Request, res: Response) => {
+       User.find(
+            {_id: req.params.id}
+        ).exec((err, users) => {
+            if (err) {
+                res.status(500).send({message: err});
+            } else {
+                const user = users[0];
+                res.status(200).send({
+                    username: user.username,
+                    role: user.role
+                });
+            }
+        });
+}
 
-export const adminBoard = (req: Request, res: Response) => {
-    res.status(200).send("Admin Inhalt.");
-};
+export const deleteUserById = (req: Request, res: Response) => {
+    User.deleteOne({
+        _id: req.params.id
+    }).exec((err) => {
+        if (err) {
+            res.status(500).send({message: err});
+            return;
+        } else {
+            res.status(200).send({message: "User erfolgreich gelöscht."});
+        }
+    })
+}
 
-export const moderatorBoard = (req: Request, res: Response) => {
-    res.status(200).send("Moderator Inhalt.");
-};
+export const changeUsername = (req: Request, res: Response) => {
+    User.updateOne({
+        _id: req.params.id
+    }, {
+        username: req.body.newUsername
+    }).exec((err) => {
+       if (err) {
+           res.status(500).send({message: err});
+       } else {
+           res.status(200).send({message: "Username erfolgreich geändert."});
+       }
+    });
+}
 
-
+export const changePassword = (req: Request, res: Response) => {
+    const newPassword = bcrypt.hashSync(req.body.newPassword, 8);
+    User.updateOne({
+        _id: req.params.id
+    }, {
+        password: newPassword
+    }).exec((err) => {
+        if (err) {
+            res.status(500).send({message: err});
+        } else {
+            res.status(200).send({message: "Passwort erfolgreich geändert."});
+        }
+    });
+}

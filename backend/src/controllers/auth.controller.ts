@@ -57,7 +57,7 @@ export function signIn(req: Request, res: Response) {
             }
 
             const token = jwt.sign({ id: user.id }, authConfig.secret, {
-                expiresIn: 86400 // 24 Stunden
+                expiresIn: 7 * 86400 // 7 Tage
             });
 
             res.status(200).send({

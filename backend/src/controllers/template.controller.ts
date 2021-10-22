@@ -68,7 +68,7 @@ exports.createExcelDict =  (req, res, next) => {
     }
   };*/
 
-export function createJSONTemplate(req: any, res: Response, next: NextFunction) {
+export function createJSONTemplate(req: any, res: Response) {
   // TODO: Check JSON for errors and add sufficient messages
   const rawData = fs.readFileSync(req.file.path);
   const parts = JSON.parse(rawData.toString());
@@ -86,7 +86,7 @@ export function createJSONTemplate(req: any, res: Response, next: NextFunction) 
   });
 }
 
-export function createTemplate(req: any, res: Response, next: NextFunction) {
+export function createTemplate(req: any, res: Response) {
   const template  = new Template({
     parts: req.body.parts,
     name: req.body.name,
@@ -100,7 +100,7 @@ export function createTemplate(req: any, res: Response, next: NextFunction) {
   });
 }
 
-export function updateTemplate(req: Request, res: Response, next: NextFunction) {
+export function updateTemplate(req: Request, res: Response) {
   const newTemplate = new Template({
     _id: req.params.id,
     parts: req.body.parts,
@@ -116,7 +116,7 @@ export function updateTemplate(req: Request, res: Response, next: NextFunction) 
     });
 }
 
-export function deleteTemplate(req: any, res: Response, next: NextFunction){
+export function deleteTemplate(req: any, res: Response){
   Template.deleteOne({
     _id: req.params.id
   }).then(
@@ -128,7 +128,7 @@ export function deleteTemplate(req: any, res: Response, next: NextFunction){
     });
 }
 
-export function getTemplateList(req: any, res: Response, next: NextFunction){
+export function getTemplateList(req: any, res: Response){
   try {
     Template.find()
         .then(templates => {
@@ -139,15 +139,15 @@ export function getTemplateList(req: any, res: Response, next: NextFunction){
   }
 }
 
-export function getTemplateById(req: Request, res: Response, next: NextFunction): void {
+export function getTemplateById(req: Request, res: Response): void {
   try {
     Template.find({_id: req.params.id}).then(
         template => {
           res.status(200).send(template[0])
         }
     )
-  } catch (error) {
-    res.status(404);
+  } catch (error: any) {
+    res.status(404).send(error.message);
   }
 }
 
