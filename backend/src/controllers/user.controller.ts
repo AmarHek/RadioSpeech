@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {User, UserDoc} from "../models";
+import {User} from "../models";
 import * as bcrypt from "bcrypt";
 
 export const getUsers = (req: Request, res: Response) => {

@@ -19,12 +19,16 @@
             <div *ngIf="fc.password.errors.required">Passwort ist erforderlich</div>
           </div>
         </div>
-        <button [disabled]="loading" class="btn btn-primary">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Login
-        </button>
-        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        <div class="form-group">
+          <button style="float:right" [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Login
+          </button>
+        </div>
       </form>
+    </div>
+    <div *ngIf="error" class="card-footer">
+      <div class="alert alert-danger mt-3">{{error}}</div>
     </div>
   </div>
 </div>

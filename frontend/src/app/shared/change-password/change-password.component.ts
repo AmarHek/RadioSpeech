@@ -38,8 +38,8 @@ export class ChangePasswordComponent implements OnInit {
       return;
     } else {
       this.userService.changePassword(this.userID,
-        this.changeForm["password"].value,
-        this.changeForm["newPassword"].value)
+        this.f["password"].value,
+        this.f["newPassword"].value)
         .subscribe(
           res => {
             window.alert(res.message);

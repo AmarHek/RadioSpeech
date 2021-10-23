@@ -1,5 +1,6 @@
 import {Role, User} from "../models";
 import { Request, Response, NextFunction} from "express";
+import * as bcrypt from "bcrypt";
 
 export function checkDuplicateUsername(req: Request, res: Response, next: NextFunction): void {
     User.findOne({
@@ -29,4 +30,3 @@ export function checkRoleExists(req: Request, res: Response, next: NextFunction)
     }
     next();
 }
-

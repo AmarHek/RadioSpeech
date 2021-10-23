@@ -34,8 +34,8 @@ export class ChangeUsernameComponent implements OnInit {
       return;
     } else {
       this.userService.changeUsername(this.userID,
-        this.changeForm["newUsername"].value,
-        this.changeForm["password"].value)
+        this.f["newUsername"].value,
+        this.f["password"].value)
         .subscribe(
           res => {
             window.alert(res.message);
