@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
 
   signUpForm: FormGroup;
   submitted = false;
+  error = "";
 
   roles = [Role.User, Role.Moderator, Role.Admin];
 
@@ -26,29 +27,33 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     this.signUpForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required, Validators.minLength(6)],
-      confirmPass: ["", Validators.required],
-      role: [Role.User, Validators.required]
-    }, {validator: mustMatch("password", "confirmPass")});
-  }
-
-  changeRole(event) {
-    this.signUpForm.get("role").setValue(event.target.value, {
-      onlySelf: true
+      username: ["", [Validators.required]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
+      confirmPass: ["", [Validators.required]],
+      role: [Role.User, [Validators.required]]
+    }, {
+      validator: mustMatch("password", "confirmPass")
     });
   }
 
   onSubmit() {
+    console.log(this.signUpForm);
     this.submitted = true;
-
     if (this.signUpForm.invalid) {
       return;
     } else {
       this.userService.signUp(this.sc["username"].value, this.sc["password"].value, this.sc["role"].value)
-        .subscribe((res) => {
-          window.alert(res.message);
-        });
+        .subscribe(
+          res => {
+            window.alert(res.message);
+            this.error = "";
+            this.signUpForm.reset();
+            this.submitted = false;
+          },
+          err => {
+            this.error = err;
+          }
+        );
     }
   }
 

@@ -18,6 +18,8 @@ import { UploadMaterialComponent } from "@app/shared/upload-material/upload-mate
 import { VariablesComponent } from "@app/shared/variables/variables.component";
 import { ImageDisplayComponent } from "@app/shared/image-display/image-display.component";
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ChangeUsernameComponent } from './change-username/change-username.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     UploadMaterialComponent,
     VariablesComponent,
     ImageDisplayComponent,
-    SignUpComponent
+    SignUpComponent,
+    ChangePasswordComponent,
+    ChangeUsernameComponent
   ],
   imports: [
     CommonModule,
