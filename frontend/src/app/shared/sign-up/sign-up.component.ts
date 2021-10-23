@@ -18,7 +18,7 @@ export class SignUpComponent implements OnInit {
   roles = [Role.User, Role.Moderator, Role.Admin];
 
   constructor(private formBuilder: FormBuilder,
-              private userService: UserService,) { }
+              private userService: UserService) { }
 
   // convenience getter for easy access to form fields
   get sc() {
@@ -37,7 +37,6 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signUpForm);
     this.submitted = true;
     if (this.signUpForm.invalid) {
       return;

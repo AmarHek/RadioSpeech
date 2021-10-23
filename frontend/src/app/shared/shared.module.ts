@@ -17,9 +17,9 @@ import { UploadComponent } from "@app/shared/upload/upload.component";
 import { UploadMaterialComponent } from "@app/shared/upload-material/upload-material.component";
 import { VariablesComponent } from "@app/shared/variables/variables.component";
 import { ImageDisplayComponent } from "@app/shared/image-display/image-display.component";
-import { SignUpComponent } from './sign-up/sign-up.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { ChangeUsernameComponent } from './change-username/change-username.component';
+import { SignUpComponent } from "./sign-up/sign-up.component";
+import { ChangePasswordComponent } from "./change-password/change-password.component";
+import { ChangeUsernameComponent } from "./change-username/change-username.component";
 
 @NgModule({
   declarations: [
@@ -47,16 +47,18 @@ import { ChangeUsernameComponent } from './change-username/change-username.compo
     MatProgressBarModule,
     NgbModule
   ],
-  exports: [
-    ConfirmDialogComponent,
-    InputModalComponent,
-    OptionsComponent,
-    ReportComponent,
-    UploadComponent,
-    UploadMaterialComponent,
-    VariablesComponent,
-    ImageDisplayComponent,
-    SignUpComponent
-  ],
+    exports: [
+        ConfirmDialogComponent,
+        InputModalComponent,
+        OptionsComponent,
+        ReportComponent,
+        UploadComponent,
+        UploadMaterialComponent,
+        VariablesComponent,
+        ImageDisplayComponent,
+        SignUpComponent,
+        ChangeUsernameComponent,
+        ChangePasswordComponent
+    ],
 })
 export class SharedModule { }

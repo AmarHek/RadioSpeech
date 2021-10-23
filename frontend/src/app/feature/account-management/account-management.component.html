@@ -1,1 +1,15 @@
-<p>account-management works!</p>
+<div class="main">
+  <div class="buttons">
+    <button class="btn"
+            [ngClass]="this.changeUsername ? 'btn-primary' : 'btn-outline-primary'"
+            (click)="setChangeUsername()">Nutzername ändern</button>
+    <button class="btn"
+            [ngClass]="this.changePassword ? 'btn-primary' : 'btn-outline-primary'"
+            (click)="setChangePassword()">Passwort ändern</button>
+  </div>
+
+  <div class="card-view">
+    <app-change-username *ngIf="changeUsername" [userID]="userID"></app-change-username>
+    <app-change-password *ngIf="changePassword" [userID]="userID"></app-change-password>
+  </div>
+</div>
