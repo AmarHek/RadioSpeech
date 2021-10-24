@@ -18,7 +18,9 @@
 
     <div class="inputText" id="inputText" >
       <ng-container *ngIf="foundKeywords.length === 0">Detected keywords go here</ng-container>
-      {{foundKeywords}}
+      <ng-container *ngFor="let keyword of foundKeywords">
+        <span [ngStyle]="{'background-color': keyword.color}">{{keyword.text}}</span>
+      <span>&nbsp;</span></ng-container>
     </div>
   </div>
 

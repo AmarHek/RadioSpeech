@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
-import { levenshtein, getAllIndexOf, getNextHighestValue } from "@app/helpers";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
-import * as M from "../../models/templateModel";
-import {KeyVariable, KeyClickable, ColoredText} from "../../models/keyword";
+import * as M from "@app/models/templateModel";
+import {KeyVariable, KeyClickable, ColoredText} from "@app/models";
+import { levenshtein, getAllIndexOf, getNextHighestValue, getClickableKeywords,
+         getSplitters, parseValue, countUniqueVariableKeywords, filterUniqueOptions,
+         getVariableKeywords} from "@app/helpers";
 
 @Injectable({
   providedIn: "root"
@@ -20,142 +23,6 @@ export class InputParserService {
   primaryDictionary: Set<string>;
 
   constructor() {
-  }
-
-  // Creates list of Keywords for Selectables from Selectables of category
-  private static getClickableKeywords(selectables: M.Selectable[], category: string): KeyClickable[] {
-    const selKeys: KeyClickable[] = [];
-    for (const sel of selectables) {
-      if (sel.kind === "box") {
-        for (const synonym of sel.keys) {
-          selKeys.push({
-            name: sel.name,
-            synonym,
-            category,
-            position: -1,
-            nVariables: sel.variables.length
-          });
-        }
-      } else if (sel.kind === "group") {
-        for (const option of sel.options) {
-          for (const synonym of option.keys) {
-            selKeys.push({
-              name: option.name,
-              synonym,
-              category,
-              group: sel.name,
-              position: -1,
-              nVariables: option.variables.length
-            });
-          }
-        }
-      }
-    }
-    return selKeys;
-  }
-
-  // Takes list of variables and generates Keyword Variables list
-  private static getVariableKeywords(variables: M.Variable[], category: string, selectable: string): KeyVariable[] {
-    const varKeys: KeyVariable[] = [];
-    for (const variable of variables) {
-      if (variable.kind === "oc" || variable.kind === "mc") {
-        for (let i = 0; i < variable.values.length; i++) {
-          let name: string;
-          if (variable.kind === "mc") {
-            name = variable.values[i][0];
-          } else {
-            name = variable.values[i];
-          }
-          for (const key of variable.keys[i]) {
-            varKeys.push({
-              category,
-              selectable,
-              id: variable.id,
-              kind: variable.kind,
-              name,
-              synonym: key,
-              textBefore: variable.textBefore,
-              textAfter: variable.textAfter,
-              position: -1,
-              positionEnd: -1
-            });
-          }
-        }
-      } else {
-        varKeys.push({
-          category,
-          selectable,
-          id: variable.id,
-          kind: variable.kind,
-          textBefore: variable.textBefore,
-          textAfter: variable.textAfter,
-          position: -1,
-          positionEnd: -1
-        });
-      }
-    }
-
-    return varKeys;
-  }
-
-  // Gets current list of possible variables and input-string.
-  // Since not all variables have "textAfter", we must search for all possible split or end keywords to extract the
-  // value strings
-  private static getSplitters(varKeys: KeyVariable[], input: string): number[] {
-    const splitWords: string[] = [];
-    let splitters: number[] = [];
-    for (const varKey of varKeys) {
-      if (varKey.textBefore.length > 0) {
-        splitWords.push(varKey.textBefore);
-      }
-      if (varKey.synonym !== undefined) {
-        splitWords.push(varKey.synonym);
-      }
-    }
-    for (const splitWord of splitWords) {
-      splitters = splitters.concat(getAllIndexOf(splitWord, input, true));
-    }
-    splitters = [...new Set(splitters)].sort();
-    return splitters;
-  }
-
-  // takes the value and kind of a variable and parses the string accordingly
-  // text: nothing happens; number: converts to number; date: extracts day, month and year; ratio: extracts num. and den.
-  private static parseValue(valueString: string, varKind: string) {
-    if (varKind === "text") {
-      return valueString;
-    } else if (varKind === "number") {
-      if (!isNaN(+valueString)) {
-        return Number(valueString);
-      }
-    } else if (varKind === "date") {
-      const dateString = valueString
-        .match(/(0?[1-9]|[12]\d|30|31)[^\w\d\r\n:](0?[1-9]|1[0-2])[^\w\d\r\n:](\d{4}|\d{2})/);
-      if (dateString !== null) {
-        const date = dateString[0].split(/[.-\/]+/g);
-        return {year: date[2], month: date[1], day: date[0]};
-      }
-    } else if (varKind === "ratio") {
-      const ratioString = valueString.match(/\d* .* \d*/);
-      if (ratioString !== null) {
-        const ratioNumbers = ratioString[0].split(/[\s:\/]+/);
-        return [Number(ratioNumbers[0]), Number(ratioNumbers[1])];
-      }
-    }
-    return undefined;
-  }
-
-  // takes list of variable keywords and counts number of uniquely appearing variable IDs
-  private static countUniqueVariableKeywords(variableKeywords: KeyVariable[]): number {
-    const foundIDs: string[] = [];
-    let result = 0;
-    for (const varKey of variableKeywords) {
-      if (!foundIDs.includes(varKey.id)) {
-        result++;
-        foundIDs.push(varKey.id);
-      }
-    }
-    return result;
   }
 
   init(rootEl: M.TopLevel[]): void {
@@ -235,14 +102,14 @@ export class InputParserService {
   }
 
   // find all Variable Keywords in input string (typically just a fraction of the entire string)
-  findVariableKeywords(input: string, keySel: KeyClickable) {
-    const relativePosition = keySel.position + keySel.synonym.length + 1;
-    const id: string = keySel.category + " " + keySel.name;
+  findVariableKeywords(input: string, clickKey: KeyClickable) {
+    const relativePosition = clickKey.position + clickKey.synonym.length + 1;
+    const id: string = clickKey.category + " " + clickKey.name;
     const foundVariablesTemp: KeyVariable[] = [];
     const possibleVariables = this.varKeyDictionary.get(id);
 
     if (input.length > 0 && possibleVariables !== undefined) {
-      const splitters: number[] = InputParserService.getSplitters(possibleVariables, input);
+      const splitters: number[] = getSplitters(possibleVariables, input);
       for (const varKey of possibleVariables) {
         if (varKey.kind === "oc" || varKey.kind === "mc") {
           // gets all positions of this keyword within the input. One keyword is generated per input
@@ -264,7 +131,7 @@ export class InputParserService {
                   pos + varKey.synonym.length + 1 + varKey.textAfter.length) === varKey.textAfter) {
                 newVarKey.positionEnd = pos + varKey.synonym.length + 1 + varKey.textAfter.length + relativePosition;
               } else {
-                newVarKey.positionEnd = pos + varKey.synonym.length;
+                newVarKey.positionEnd = pos + varKey.synonym.length + relativePosition;
               }
               foundVariablesTemp.push(newVarKey);
             }
@@ -290,7 +157,7 @@ export class InputParserService {
             // no need to check for existence of textAfter and textBefore since they always need to be present here
             // (if textAfter exists in this case. textBefore must always exist)
             newVarKey.positionEnd = posValueEnd + relativePosition;
-            newVarKey.value = InputParserService.parseValue(valueString, newVarKey.kind);
+            newVarKey.value = parseValue(valueString, newVarKey.kind);
             foundVariablesTemp.push(newVarKey);
           }
         }
@@ -359,22 +226,105 @@ export class InputParserService {
     // go through each found Clickable and check for variable completion
     for (const clickKey of this.foundClickables) {
       if (clickKey.nVariables > 0) {
+        // get variables of clickKey
+        const foundVariables: KeyVariable[] = this.foundVariables.get(clickKey.category + " " + clickKey.name);
+        //const foundVariables: KeyVariable[] = InputParserService.filterUniqueOptions(
+        //  this.foundVariables.get(clickKey.category + " " + clickKey.name));
         // check text Color of clickKey for variable filling
-        const numberFoundUniqueVariables = 
+        const numberFoundUniqueVariables = countUniqueVariableKeywords(foundVariables);
+        let color: string;
+        // TODO: Think how to handle the coloring. Also text that *could* be a keyword goes unnoticed like this
+        // TODO: But do we need feedback for such text or is ignoring sufficient?
         if (clickKey.nVariables === numberFoundUniqueVariables) {
-
+          color = "green";
+        } else if (clickKey.nVariables < numberFoundUniqueVariables) {
+          color = "yellow";
+        } else {
+          color = "red";
+        }
+        // finally push the result (must be here because variables must come right after to preserve text order
+        result.push({
+          text: clickKey.synonym,
+          color
+        });
+        // now handle the variables
+        for (const varKey of foundVariables) {
+          // easy for oc and mc: add textAfter if in substring (orange), add name (lightgreen)
+          // and add textAfter if included (orange)
+          if (varKey.kind === "mc" || varKey.kind === "oc") {
+            const substring = input.substring(varKey.position, varKey.positionEnd);
+            if (varKey.textBefore.length > 0 && substring.includes(varKey.textBefore)) {
+              result.push({
+                text: varKey.textBefore,
+                color: "orange"
+              });
+            }
+            result.push({
+              text: varKey.name,
+              color: "lightgreen"
+            });
+            if (varKey.textAfter.length > 0 && substring.includes(varKey.textAfter)) {
+              result.push({
+                text: varKey.textAfter,
+                color: "orange"
+              });
+            }
+          } else {
+            // remaining variables are easy: add textBefore, since always present
+            // color the value text lightblue if parsing did not work (i.e. value is undefined) otherwise lightgreen
+            // add textAfter, if exists
+            result.push({
+              text: varKey.textBefore,
+              color: "orange"
+            });
+            // check the value
+            if (varKey.value === undefined) {
+              // if value could not be parsed, just add the text as light blue
+              result.push({
+                text: input.substring(varKey.position + 1 + varKey.textBefore.length, varKey.positionEnd),
+                color: "lightblue"
+              });
+            } else {
+              // otherwise parse the values accordingly
+              let resultText: string;
+              if (varKey.kind === "date") {
+                const value = varKey.value as NgbDateStruct;
+                resultText = value.day + "." + value.month + "." + value.year;
+              } else if (varKey.kind === "ratio") {
+                const value = varKey.value as [number, number];
+                resultText = value[0] + "/" + value[1];
+              } else {
+                resultText = varKey.value as string;
+              }
+              result.push({
+                text: resultText,
+                color: "lightgreen"
+              });
+            }
+            // check textAfter
+            if (varKey.textAfter.length > 0) {
+              result.push({
+                  text: varKey.textAfter,
+                  color: "orange"
+                }
+              );
+            }
+          }
         }
       } else {
-        // no variables means clickKey is immediately green
+        // no variables means clickKey is immediately green, easiest case
+        result.push({
+          text: clickKey.synonym,
+          color: "green"
+        });
       }
     }
-
     return result;
   }
 
   private initializeKeywords(rootEl: M.TopLevel[]): void {
-    let selKeys: KeyClickable[] = [];
-    selKeys.push({
+    let clickKeys: KeyClickable[] = [];
+    clickKeys.push({
       name: "Rest normal",
       synonym: "Rest normal",
       category: "normal",
@@ -383,18 +333,18 @@ export class InputParserService {
     });
     for (const el of rootEl) {
       if (el.kind === "category") {
-        const tempSelectables: KeyClickable[] = InputParserService.getClickableKeywords(el.selectables, el.name);
-        selKeys = selKeys.concat(tempSelectables);
+        const tempSelectables: KeyClickable[] = getClickableKeywords(el.selectables, el.name);
+        clickKeys = clickKeys.concat(tempSelectables);
         this.extractVariableKeywords(el.selectables, el.name);
       }
     }
-    this.clickableKeywords = selKeys;
+    this.clickableKeywords = clickKeys;
   }
 
   private initializeDictionary(): void {
     this.primaryDictionary = new Set<string>();
-    for (const selKey of this.clickableKeywords) {
-      const split: string[] = selKey.synonym.split(" ");
+    for (const clickKey of this.clickableKeywords) {
+      const split: string[] = clickKey.synonym.split(" ");
       split.forEach((word) => this.primaryDictionary.add(word));
     }
     for (const variables of this.varKeyDictionary.values()) {
@@ -422,14 +372,14 @@ export class InputParserService {
     for (const sel of selectables) {
       if (sel.kind === "box") {
         id = category + " " + sel.name;
-        varKeys = InputParserService.getVariableKeywords(sel.variables, category, sel.name);
+        varKeys = getVariableKeywords(sel.variables, category, sel.name);
         if (varKeys.length > 0) {
           this.varKeyDictionary.set(id, varKeys);
         }
       } else if (sel.kind === "group") {
         for (const option of sel.options) {
           id = category + " " + option.name;
-          varKeys = InputParserService.getVariableKeywords(option.variables, category, option.name);
+          varKeys = getVariableKeywords(option.variables, category, option.name);
           if (varKeys.length > 0) {
             this.varKeyDictionary.set(id, varKeys);
           }

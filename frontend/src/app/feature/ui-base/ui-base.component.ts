@@ -104,11 +104,9 @@ export class UiBaseComponent implements OnInit {
       this.input = this.inputParser.autocorrect(this.input);
     }
     this.inputParser.parseInput(this.input);
-    console.log(this.inputParser.foundClickables);
-    console.log(this.inputParser.foundVariables);
     this.assignValues();
+    this.foundKeywords = this.inputParser.getColoredText(this.input);
     setTimeout(() => this.updateText(), 5);
-    console.log(this.categories);
   }
 
   // Assigns all found keywords in inputParser to this.parts
