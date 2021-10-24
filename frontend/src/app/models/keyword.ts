@@ -20,6 +20,7 @@ export interface KeyVariable {
   textBefore: string;
   textAfter: string;
   position: number;
+  positionEnd: number; // for easier processing later when making ColoredText
 }
 
 export interface ColoredText {

@@ -142,15 +142,17 @@ export class UiBaseComponent implements OnInit {
             } else if (vari.kind === "mc") {
               const val = vari.values.find(v => v[0] === varKey.name);
               val[1] = true;
-            } else if (vari.kind === "ratio") {
-              vari.numerator = varKey.value[0] as number;
-              vari.denominator = varKey.value[1] as number;
-            } else if (vari.kind === "text") {
-              vari.value = varKey.value as string;
-            } else if (vari.kind === "number") {
-              vari.value = varKey.value as number;
-            } else {
-              vari.value = varKey.value as NgbDateStruct;
+            } else if (varKey.value !== undefined) {
+              if (vari.kind === "ratio") {
+                vari.numerator = varKey.value[0] as number;
+                vari.denominator = varKey.value[1] as number;
+              } else if (vari.kind === "text") {
+                vari.value = varKey.value as string;
+              } else if (vari.kind === "number") {
+                vari.value = varKey.value as number;
+              } else {
+                vari.value = varKey.value as NgbDateStruct;
+              }
             }
           }
         }

@@ -76,7 +76,8 @@ export class InputParserService {
               synonym: key,
               textBefore: variable.textBefore,
               textAfter: variable.textAfter,
-              position: -1
+              position: -1,
+              positionEnd: -1
             });
           }
         }
@@ -88,7 +89,8 @@ export class InputParserService {
           kind: variable.kind,
           textBefore: variable.textBefore,
           textAfter: variable.textAfter,
-          position: -1
+          position: -1,
+          positionEnd: -1
         });
       }
     }
@@ -123,14 +125,37 @@ export class InputParserService {
     if (varKind === "text") {
       return valueString;
     } else if (varKind === "number") {
-      return Number(valueString);
+      if (!isNaN(+valueString)) {
+        return Number(valueString);
+      }
     } else if (varKind === "date") {
-      const date = valueString.split(/[.-\/]+/);
-      return {year: date[2], month: date[1], day: date[0]};
+      const dateString = valueString
+        .match(/(0?[1-9]|[12]\d|30|31)[^\w\d\r\n:](0?[1-9]|1[0-2])[^\w\d\r\n:](\d{4}|\d{2})/);
+      if (dateString !== null) {
+        const date = dateString[0].split(/[.-\/]+/g);
+        return {year: date[2], month: date[1], day: date[0]};
+      }
     } else if (varKind === "ratio") {
-      const ratioNumbers = valueString.split(/[\s:\/]+/);
-      return [Number(ratioNumbers[0]), Number(ratioNumbers[1])];
+      const ratioString = valueString.match(/\d* .* \d*/);
+      if (ratioString !== null) {
+        const ratioNumbers = ratioString[0].split(/[\s:\/]+/);
+        return [Number(ratioNumbers[0]), Number(ratioNumbers[1])];
+      }
     }
+    return undefined;
+  }
+
+  // takes list of variable keywords and counts number of uniquely appearing variable IDs
+  private static countUniqueVariableKeywords(variableKeywords: KeyVariable[]): number {
+    const foundIDs: string[] = [];
+    let result = 0;
+    for (const varKey of variableKeywords) {
+      if (!foundIDs.includes(varKey.id)) {
+        result++;
+        foundIDs.push(varKey.id);
+      }
+    }
+    return result;
   }
 
   init(rootEl: M.TopLevel[]): void {
@@ -176,6 +201,7 @@ export class InputParserService {
     this.findClickables(input);
     const varText = this.getTextBetweenClickables(input);
     if (varText.length > this.foundClickables.length) {
+      // TODO
       // This means that the first variable text is from the previous input
       // if lastKeyword is not null, use that, otherwise use dummy varKey
       // for now just ignore though
@@ -225,10 +251,20 @@ export class InputParserService {
           if (positions.length >= 1) {
             for (const pos of positions) {
               const newVarKey: KeyVariable = JSON.parse(JSON.stringify(varKey));
-              if (input.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
+              // check if textBefore is present, if textBefore exists, and adjust position
+              if (varKey.textBefore.length > 0 &&
+                input.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
                 newVarKey.position = pos + relativePosition - varKey.textBefore.length;
               } else {
                 newVarKey.position = pos + relativePosition;
+              }
+              // check if textAfter is present, if textBefore exists, and adjust end-position
+              if (varKey.textAfter.length > 0 &&
+                input.substring(pos + varKey.synonym.length + 1,
+                  pos + varKey.synonym.length + 1 + varKey.textAfter.length) === varKey.textAfter) {
+                newVarKey.positionEnd = pos + varKey.synonym.length + 1 + varKey.textAfter.length + relativePosition;
+              } else {
+                newVarKey.positionEnd = pos + varKey.synonym.length;
               }
               foundVariablesTemp.push(newVarKey);
             }
@@ -250,7 +286,10 @@ export class InputParserService {
             }
             const valueString = input.substring(posValueStart, posValueEnd).trim();
             const newVarKey = JSON.parse(JSON.stringify(varKey));
-            newVarKey.position = pos;
+            newVarKey.position = pos + relativePosition;
+            // no need to check for existence of textAfter and textBefore since they always need to be present here
+            // (if textAfter exists in this case. textBefore must always exist)
+            newVarKey.positionEnd = posValueEnd + relativePosition;
             newVarKey.value = InputParserService.parseValue(valueString, newVarKey.kind);
             foundVariablesTemp.push(newVarKey);
           }
@@ -319,7 +358,15 @@ export class InputParserService {
     const result: ColoredText[] = [];
     // go through each found Clickable and check for variable completion
     for (const clickKey of this.foundClickables) {
+      if (clickKey.nVariables > 0) {
+        // check text Color of clickKey for variable filling
+        const numberFoundUniqueVariables = 
+        if (clickKey.nVariables === numberFoundUniqueVariables) {
 
+        }
+      } else {
+        // no variables means clickKey is immediately green
+      }
     }
 
     return result;
@@ -390,6 +437,5 @@ export class InputParserService {
       }
     }
   }
-
 
 }
