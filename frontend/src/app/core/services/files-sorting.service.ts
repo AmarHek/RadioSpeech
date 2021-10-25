@@ -12,10 +12,14 @@ export class FilesSortingService {
   }
 
   setIdentifier(id: string) {
-    // TODO: Currently only string + n integers possible, make more options available
-    const nIntegers = (id.split("*").length - 1);
-    const preString = id.split("*").join("");
-    this.identifier = new RegExp("^" + preString + "\\d{" + nIntegers + "}" + "\\D");
+    if (id.length === 0) {
+      this.identifier = new RegExp(".*");
+    } else {
+      // TODO: Currently only string + n integers possible, make more options available
+      const nIntegers = (id.split("*").length - 1);
+      const preString = id.split("*").join("");
+      this.identifier = new RegExp("^" + preString + "\\d{" + nIntegers + "}" + "\\D");
+    }
   }
 
   // searches for the identifier in filenames and returns boolean value based on if a match is found or not

@@ -36,8 +36,9 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    this.displayService.updateDisplay();
+    this.displayService.update();
     this.displayNavbar = this.displayService.displayHeader;
+    this.title = this.displayService.title;
   }
 
   logout() {

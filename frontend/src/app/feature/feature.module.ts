@@ -12,7 +12,9 @@ import { ListComponent } from "@app/feature/list/list.component";
 import { ListMaterialComponent } from "@app/feature/list-material/list-material.component";
 import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
 import { AccountManagementComponent } from "./account-management/account-management.component";
-import {AdminComponent} from "@app/feature/admin/admin.component";
+import { AdminComponent } from "@app/feature/admin/admin.component";
+import { RadiolearnComponent } from "./radiolearn/radiolearn.component";
+import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.component";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {AdminComponent} from "@app/feature/admin/admin.component";
     ListMaterialComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent
+    AdminComponent,
+    RadiolearnComponent,
+    RadiolearnViewComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,9 @@ import {AdminComponent} from "@app/feature/admin/admin.component";
     ListMaterialComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent
+    AdminComponent,
+    RadiolearnComponent,
+    RadiolearnViewComponent
   ]
 })
 export class FeatureModule { }

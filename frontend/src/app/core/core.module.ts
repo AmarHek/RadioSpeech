@@ -1,7 +1,16 @@
 import {NgModule, Optional, SkipSelf} from "@angular/core";
 import { CommonModule } from "@angular/common";
-import {AuthenticationService, BackendCallerService, DataParserService, DisplayService,
-        FilesSortingService, InputParserService, MatDialogService, PopoutService, UserService} from "@app/core";
+import {
+  AuthenticationService,
+  BackendCallerService,
+  DataParserService,
+  DisplayService,
+  FilesSortingService,
+  InputParserService,
+  MatDialogService,
+  PopoutService,
+  UserService,
+  RadiolearnService} from "@app/core";
 
 
 @NgModule({
@@ -9,8 +18,18 @@ import {AuthenticationService, BackendCallerService, DataParserService, DisplayS
   imports: [
     CommonModule
   ],
-  providers: [AuthenticationService, BackendCallerService, DataParserService, DisplayService,
-  FilesSortingService, InputParserService, MatDialogService, PopoutService, UserService]
+  providers: [
+    AuthenticationService,
+    BackendCallerService,
+    DataParserService,
+    DisplayService,
+    FilesSortingService,
+    InputParserService,
+    MatDialogService,
+    PopoutService,
+    UserService,
+    RadiolearnService
+  ]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() core: CoreModule) {

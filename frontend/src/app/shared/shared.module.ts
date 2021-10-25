@@ -8,6 +8,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 import { ConfirmDialogComponent } from "@app/shared/confirm-dialog/confirm-dialog.component";
 import { InputModalComponent } from "@app/shared/inputModal/inputModal.component";
@@ -21,44 +22,46 @@ import { SignUpComponent } from "./sign-up/sign-up.component";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
 import { ChangeUsernameComponent } from "./change-username/change-username.component";
 
+
 @NgModule({
-  declarations: [
-    ConfirmDialogComponent,
-    InputModalComponent,
-    OptionsComponent,
-    ReportComponent,
-    UploadComponent,
-    UploadMaterialComponent,
-    VariablesComponent,
-    ImageDisplayComponent,
-    SignUpComponent,
-    ChangePasswordComponent,
-    ChangeUsernameComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatProgressBarModule,
-    NgbModule
-  ],
-  exports: [
-    ConfirmDialogComponent,
-    InputModalComponent,
-    OptionsComponent,
-    ReportComponent,
-    UploadComponent,
-    UploadMaterialComponent,
-    VariablesComponent,
-    ImageDisplayComponent,
-    SignUpComponent,
-    ChangeUsernameComponent,
-    ChangePasswordComponent
-  ],
+    declarations: [
+      ConfirmDialogComponent,
+      InputModalComponent,
+      OptionsComponent,
+      ReportComponent,
+      UploadComponent,
+      UploadMaterialComponent,
+      VariablesComponent,
+      ImageDisplayComponent,
+      SignUpComponent,
+      ChangePasswordComponent,
+      ChangeUsernameComponent
+    ],
+    imports: [
+      CommonModule,
+      FormsModule,
+      ReactiveFormsModule,
+      MatDialogModule,
+      MatDividerModule,
+      MatInputModule,
+      MatTooltipModule,
+      MatRadioModule,
+      MatProgressBarModule,
+      NgbModule,
+      MatCheckboxModule
+    ],
+    exports: [
+        ConfirmDialogComponent,
+        InputModalComponent,
+        OptionsComponent,
+        ReportComponent,
+        UploadComponent,
+        UploadMaterialComponent,
+        VariablesComponent,
+        ImageDisplayComponent,
+        SignUpComponent,
+        ChangeUsernameComponent,
+        ChangePasswordComponent
+    ]
 })
 export class SharedModule { }

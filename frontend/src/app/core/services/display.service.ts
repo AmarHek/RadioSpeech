@@ -11,15 +11,29 @@ export class DisplayService {
 
   // TODO: Do something with layouts so all possible layouts are contained in a list, perhaps dropdown menu
 
-  public displayHeader: boolean;
+  displayHeader: boolean;
+  title: string;
 
   constructor(private router: Router) {
     this.displayHeader = true;
   }
 
-  public updateDisplay() {
+  update() {
+    this.updateDisplay();
+    this.updateTitle();
+  }
+
+  private updateDisplay() {
     this.displayHeader = !(this.router.url.includes(NAVBAR_HEADER_TOGGLE_1) ||
       this.router.url.includes(NAVBAR_HEADER_TOGGLE_2));
+  }
+
+  private updateTitle() {
+    if (this.router.url.includes("radiolearn")) {
+      this.title = "RadioLearn";
+    } else {
+      this.title = "RadioSpeech";
+    }
   }
 
 }
