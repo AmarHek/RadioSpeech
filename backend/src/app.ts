@@ -41,10 +41,6 @@ app.use("/images", express.static(path.join(__dirname, "../data/images")));
 app.use("/", express.static(path.join(__dirname, "../dist/radiospeech")));
 app.set("view engine", "ejs");
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
-});
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers',
@@ -58,3 +54,8 @@ app.use("/radio/database", materialRoutes.router);
 app.use("/radio/database", templateRoutes.router);
 app.use("/radio/auth", authRoutes.router);
 app.use("/radio/auth", userRoutes.router);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
+});
+
