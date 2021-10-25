@@ -8,7 +8,7 @@
 			"version": "1.0.0",
 			"watch": [
 				"./backend/src/**/*"
-			]
+			],
 			"env": {
 				"NODE_ENV": "production"
 			},
