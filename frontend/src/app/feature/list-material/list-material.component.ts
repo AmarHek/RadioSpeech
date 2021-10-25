@@ -17,6 +17,7 @@ export class ListMaterialComponent implements OnInit {
   imageUrl = environment.backend + "images/";
   materials: Material[] = [];
   query: Record<string, unknown>;
+  showJudged = false;
 
   constructor(private backendCaller: BackendCallerService,
               private router: Router,
@@ -32,7 +33,7 @@ export class ListMaterialComponent implements OnInit {
 
   getData() {
     this.backendCaller.queryMaterials(this.query).subscribe((mats: Material[]) => {
-      this.materials = mats;
+      this.materials = mats.reverse();
     });
   }
 
@@ -40,9 +41,9 @@ export class ListMaterialComponent implements OnInit {
     this.getData();
   }
 
-  changeQuery(newValue: boolean) {
+  toggleShowJudged() {
     this.query = {
-      judged: newValue
+      judged: this.showJudged
     };
     this.getData();
   }

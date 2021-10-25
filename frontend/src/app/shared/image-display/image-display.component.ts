@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+
 import {
   Component,
   OnInit,
@@ -16,6 +18,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
 import {BoundingBox, Image} from "@app/models";
+import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -77,12 +80,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("labelLayer", {static: false }) labelLayer: ElementRef;
   private labelLayerElement;
   private labelContext: CanvasRenderingContext2D;
@@ -107,14 +108,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   dialogRef: MatDialogRef<any>;
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("sourceImage") sourceImage: ElementRef;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild("zoomDiv") zoomDiv: ElementRef;
   private zoomLayerElement;
   private lensElement;
@@ -290,13 +287,22 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   removeAlert(bbox: BoundingBox) {
-    const result = parent.confirm("Soll diese Box (Label: " + bbox.label + ") wirklich gelöscht werden?");
-    if (result) {
-      const idx = this.coordinates[this.currentMode].indexOf(bbox);
-      this.coordinates[this.currentMode].splice(idx, 1);
-      this.drawBoxes();
-      this.enableDelete = false;
-    }
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Box löschen bestätigen",
+      "Soll diese Box (Label: " + bbox.label + ") wirklich gelöscht werden?"
+    );
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const idx = this.coordinates[this.currentMode].indexOf(bbox);
+        this.coordinates[this.currentMode].splice(idx, 1);
+        this.drawBoxes();
+        this.enableDelete = false;
+      }
+    });
   }
 
   drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, color: string) {

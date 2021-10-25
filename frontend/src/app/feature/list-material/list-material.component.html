@@ -3,15 +3,14 @@
   <h4>Aufnahme zum Befunden auswählen</h4>
 
   <div class="row">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" style="margin-right: 10px;" id="dropdownBasic1" ngbDropdownToggle>Bereits bearbeitete Einträge anzeigen</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem (click)="changeQuery(true)">Ja</button>
-        <button ngbDropdownItem (click)="changeQuery(false)">Nein</button>
-      </div>
+    <div class="d-inline-block">
       <button class="btn btn-outline-secondary" (click)="reload()" id="reloadButton">Aufnahmen neu Laden</button>
+      <mat-checkbox style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="toggleShowJudged()">
+        Bearbeitete Einträge anzeigen
+      </mat-checkbox>
       <button class="btn btn-outline-primary" style="float: right;"
-              id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen</button>
+              id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
+      </button>
     </div>
   </div>
 

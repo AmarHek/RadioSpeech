@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDialogComponent, ConfirmDialogModel } from "@app/shared/confirm-dialog/confirm-dialog.component";
 
 import {BackendCallerService, MatDialogService, AuthenticationService} from "@app/core";
 import {Template} from "@app/models";
-import {UploadComponent} from "@app/shared";
+import { ConfirmDialogComponent, ConfirmDialogModel, UploadComponent } from "@app/shared";
 import {Role, User} from "@app/models";
 
 
