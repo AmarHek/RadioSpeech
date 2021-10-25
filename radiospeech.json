@@ -1,0 +1,10 @@
+{
+    "apps": [
+        {
+            "name": "radiospeech",
+            "script": "npm",
+            "args" : "start",
+			"version": "1.0.0"
+        }
+    ]
+}
