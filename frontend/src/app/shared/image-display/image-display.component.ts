@@ -197,12 +197,12 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   changeMode(mode: string) {
     this.currentMode = mode;
     this.enableDelete = false;
+    this.enableZoom = false;
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
       this.drawBoxes();
     }
-    this.toggleZoom();
   }
 
   toggleBoxes() {
