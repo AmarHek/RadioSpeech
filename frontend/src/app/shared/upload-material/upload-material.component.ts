@@ -36,6 +36,7 @@ export class UploadMaterialComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.updateTemplateList();
+    this.filesSorter.setIdentifier("");
   }
 
   initForm() {
@@ -58,20 +59,18 @@ export class UploadMaterialComponent implements OnInit {
   }
 
   updateIdentifier(id: string) {
-    if (!this.ignoreFlags) {
-      this.filesSorter.setIdentifier(id);
-      this.flagFiles();
-    }
+    this.ignoreFlags = false;
+    this.filesSorter.setIdentifier(id);
+    this.flagFiles();
   }
 
   setIgnoreFlags(id: string) {
-    this.ignoreFlags = !this.ignoreFlags;
     if (this.ignoreFlags) {
-      this.filesSorter.setIdentifier("");
+      this.setAllFlagsToTrue();
     } else {
       this.filesSorter.setIdentifier(id);
+      this.flagFiles();
     }
-    this.flagFiles();
   }
 
   onFileSelect(event, scanType: string) {
@@ -106,6 +105,20 @@ export class UploadMaterialComponent implements OnInit {
 
     this.lateralYellowFlags = this.filesSorter.fileMatchSearch(mainFiles, lateralFiles);
     this.preYellowFlags = this.filesSorter.fileMatchSearch(mainFiles, preFiles);
+  }
+
+  setAllFlagsToTrue(): void {
+    for (let i = 0; i < this.mainFlags.length; i++) {
+      this.mainFlags[i] = true;
+    }
+    for (let i = 0; i < this.lateralRedFlags.length; i++) {
+      this.lateralRedFlags[i] = true;
+      this.lateralYellowFlags[i] = true;
+    }
+    for (let i = 0; i < this.preRedFlags.length; i++) {
+      this.preRedFlags[i] = true;
+      this.preYellowFlags[i] = true;
+    }
   }
 
   submit(): void {

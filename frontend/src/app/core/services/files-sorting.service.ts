@@ -30,7 +30,10 @@ export class FilesSortingService {
   fileMatchSearch(baseFiles: File[], checkFiles: File[]): boolean[] {
     return checkFiles.map((file: File) => baseFiles.some((baseFile: File) => {
       const match = baseFile.name.match(this.identifier);
-      if (match !== undefined) {
+      if (file.name === baseFile.name) {
+        return false;
+      }
+      if (match !== null && match !== undefined) {
         const id = match[0];
         return file.name.includes(id);
       } else {

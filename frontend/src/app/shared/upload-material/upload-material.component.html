@@ -8,12 +8,15 @@
     <table class="files">
       <tr>
         <td class="label"><label class="mr-3" for="identifier">Identifier: </label></td>
-        <td class="button"><input #identifierInput (change)="updateIdentifier(identifierInput.value)"
+        <td class="button"><input #identifierInput [defaultValue]=""
+                                  (change)="updateIdentifier(identifierInput.value)"
                                   matTooltip="String-Pattern für Bildzuordnung eingeben.
         Variable Ziffern mit * kennzeichnen."
           type="text" id="identifier"></td>
         <td><mat-checkbox style="font-size: 120%; margin-left: 20px"
-                          (click)="setIgnoreFlags(identifierInput.value)"
+                          [(ngModel)]="ignoreFlags"
+                          (ngModelChange)="setIgnoreFlags(identifierInput.value)"
+                          [ngModelOptions]="{standalone: true}"
                           matTooltip="Ohne Dateienkontrolle hochladen">ID ignorieren</mat-checkbox></td>
       </tr>
       <tr>
