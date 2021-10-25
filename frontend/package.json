@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build",
+    "build:prod": "ng build --configuration=production && cp -r dist ../backend/dist",
+	"build:dev": "ng build --configuration=development && cp -r dist ../backend/dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
