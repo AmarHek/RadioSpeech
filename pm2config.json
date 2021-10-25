@@ -1,0 +1,19 @@
+{
+    "apps": [
+        {
+            "name": "radiospeech",
+			"cwd": "./backend/src/server.ts",
+            "script": "npm",
+            "args" : "start",
+			"version": "1.0.0",
+			"watch": [
+				"./backend/src/**/*"
+			]
+			"env": {
+				"NODE_ENV": "production"
+			},
+			"autorestart": true,
+			"restart_delay": 1000
+        }
+    ]
+}
