@@ -47,18 +47,18 @@ import { ChangeUsernameComponent } from "./change-username/change-username.compo
     MatProgressBarModule,
     NgbModule
   ],
-    exports: [
-        ConfirmDialogComponent,
-        InputModalComponent,
-        OptionsComponent,
-        ReportComponent,
-        UploadComponent,
-        UploadMaterialComponent,
-        VariablesComponent,
-        ImageDisplayComponent,
-        SignUpComponent,
-        ChangeUsernameComponent,
-        ChangePasswordComponent
-    ],
+  exports: [
+    ConfirmDialogComponent,
+    InputModalComponent,
+    OptionsComponent,
+    ReportComponent,
+    UploadComponent,
+    UploadMaterialComponent,
+    VariablesComponent,
+    ImageDisplayComponent,
+    SignUpComponent,
+    ChangeUsernameComponent,
+    ChangePasswordComponent
+  ],
 })
 export class SharedModule { }
