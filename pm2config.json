@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "radiospeech",
-			"cwd": "./backend/src/server.ts",
+			"cwd": "./backend/",
             "script": "npm",
             "args" : "start",
 			"env": {
