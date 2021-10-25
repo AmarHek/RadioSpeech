@@ -8,3 +8,5 @@ export * from "./services/mat-dialog.service";
 export * from "./services/popout.service";
 export * from "./services/popout.tokens";
 export * from "./services/user.service";
+export * from "./services/radiolearn.service";
+

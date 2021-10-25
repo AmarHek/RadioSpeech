@@ -7,7 +7,8 @@ import {
   UiBaseComponent,
   ListMaterialComponent,
   JudgeMatComponent,
-  AccountManagementComponent
+  AccountManagementComponent,
+  RadiolearnComponent, RadiolearnViewComponent
 } from "@app/feature";
 import { AuthGuard } from "@app/helpers";
 import { Role } from "@app/models";
@@ -43,7 +44,13 @@ const routes: Routes = [
   },
   {
     path: "radiolearn",
-    component: ListMaterialComponent,
+    component: RadiolearnComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
+  },
+  {
+    path: "radiolearn/:id",
+    component: RadiolearnViewComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
