@@ -1,6 +1,6 @@
-<div style="background: hsl(202, 73%, 96%); margin: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
+<div style="background: hsl(202, 73%, 96%); padding: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
             grid-column-gap: 5px; grid-template-columns: 220px 1000px 600px;
-            display: grid; align-content: center">
+            display: grid; align-content: center; overflow: hidden; height: 100%">
   <div style="display: block; margin: 20px;">
     <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
@@ -29,7 +29,7 @@
             [ngClass]="this.displayBoxes? 'btn-success': 'btn-outline-success'"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="toggleBoxes()">Boxen anzeigen</button>
-    <button class="btn"
+    <button class="btn" matTooltip="Zoom mit Mausrad. Sollte die Zoombox anfangen, langsamer zu werden, einfach Zoom nochmal aus und an-toggeln."
             style="width: 180px; margin: 2px; padding: 10px;"
             [ngClass]="this.enableZoom? 'btn-success': 'btn-outline-success'"
             (click)="toggleZoom()">Toggle Zoom</button>

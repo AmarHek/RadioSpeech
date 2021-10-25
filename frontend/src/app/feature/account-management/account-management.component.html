@@ -8,7 +8,7 @@
             (click)="setChangePassword()">Passwort ändern</button>
   </div>
 
-  <div class="card-view">
+  <div class="card-view col-md-4">
     <app-change-username *ngIf="changeUsername" [userID]="userID"></app-change-username>
     <app-change-password *ngIf="changePassword" [userID]="userID"></app-change-password>
   </div>

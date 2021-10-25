@@ -1,33 +1,37 @@
-<app-sign-up></app-sign-up>
+<div class="main">
+  <div class="col-md-5">
+    <app-sign-up></app-sign-up>
+  </div>
 
-<div class="col-md-6 offset-md-3 mt-5">
-  <div class="card">
-    <h4 class="card-header">User List</h4>
-    <div class="card-body">
-      <table>
-        <tr>
-          <th class="text">Username</th>
-          <th class="text">Role</th>
-          <th class="text">Löschen</th>
-          <th class="text">Rolle ändern</th>
-        </tr>
-        <tr *ngFor="let user of users">
-          <td class="text">{{user.username}}</td>
-          <td class="text">{{user.role}}</td>
-          <td class="button">
-            <button class="btn btn-danger" (click)="deleteUser(user.id)">Löschen</button>
-          </td>
-          <td class="button">
-            <button class="btn btn-outline-primary" (click)="changeRole(user.id)">Rolle ändern</button>
-          </td>
-        </tr>
-      </table>
-      <div class="form-group">
-        <button style="float:right" class="btn btn-primary" (click)="getUserList()">Liste neu laden</button>
+  <div class="col-md-5 mt-4">
+    <div class="card">
+      <h4 class="card-header">User List</h4>
+      <div class="card-body">
+        <table>
+          <tr>
+            <th class="text">Username</th>
+            <th class="text">Role</th>
+            <th class="text">Löschen</th>
+            <th class="text">Rolle ändern</th>
+          </tr>
+          <tr *ngFor="let user of users">
+            <td class="text">{{user.username}}</td>
+            <td class="text">{{user.role}}</td>
+            <td class="button">
+              <button class="btn btn-danger" (click)="deleteUser(user.id)">Löschen</button>
+            </td>
+            <td class="button">
+              <button class="btn btn-outline-primary" (click)="changeRole(user.id)">Rolle ändern</button>
+            </td>
+          </tr>
+        </table>
+        <div class="form-group">
+          <button style="float:right" class="btn btn-primary" (click)="getUserList()">Liste neu laden</button>
+        </div>
       </div>
-    </div>
-    <div *ngIf="users === undefined">
-      Keine User vorhanden
+      <div *ngIf="users === undefined">
+        Keine User vorhanden
+      </div>
     </div>
   </div>
 </div>

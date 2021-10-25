@@ -1,31 +1,29 @@
-<div class="col-md-6">
-  <div class="card">
-    <h4 class="card-header">Nutzername ändern</h4>
-    <div class="card-body">
-      <form [formGroup]="changeForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="newUsername">Neuer Nutzername</label>
-          <input id="newUsername" type="text" formControlName="newUsername" class="form-control"
-                 [ngClass]="{'is-invalid': submitted && f.newUsername.errors }"/>
-          <div *ngIf="submitted && f.newUsername.errors" class="invalid-feedback">
-            <div *ngIf="f.newUsername.errors.required">Nutzername ist erforderlich</div>
-          </div>
+<div class="card">
+  <h4 class="card-header">Nutzername ändern</h4>
+  <div class="card-body">
+    <form [formGroup]="changeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="newUsername">Neuer Nutzername</label>
+        <input id="newUsername" type="text" formControlName="newUsername" class="form-control"
+               [ngClass]="{'is-invalid': submitted && f.newUsername.errors }"/>
+        <div *ngIf="submitted && f.newUsername.errors" class="invalid-feedback">
+          <div *ngIf="f.newUsername.errors.required">Nutzername ist erforderlich</div>
         </div>
-        <div class="form-group">
-          <label for="password">Passwort</label>
-          <input id="password" type="password" formControlName="password" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Passwort ist erforderlich</div>
-          </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input id="password" type="password" formControlName="password" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Passwort ist erforderlich</div>
         </div>
-        <div class="form-group">
-          <button style="float:right" class="btn btn-primary">Abschicken</button>
-        </div>
-      </form>
-    </div>
-    <div *ngIf="error" class="card-footer">
-      <div class="alert alert-danger mt-3">{{error}}</div>
-    </div>
+      </div>
+      <div class="form-group">
+        <button style="float:right" class="btn btn-primary">Abschicken</button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="error" class="card-footer">
+    <div class="alert alert-danger mt-3">{{error}}</div>
   </div>
 </div>
