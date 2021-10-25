@@ -22,6 +22,8 @@ export class UploadMaterialComponent implements OnInit {
   preRedFlags: boolean[] = [];
   preYellowFlags: boolean[] = [];
 
+  ignoreFlags = false;
+
   supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
   progress = 0;
   uploading = false;
@@ -56,7 +58,19 @@ export class UploadMaterialComponent implements OnInit {
   }
 
   updateIdentifier(id: string) {
-    this.filesSorter.setIdentifier(id);
+    if (!this.ignoreFlags) {
+      this.filesSorter.setIdentifier(id);
+      this.flagFiles();
+    }
+  }
+
+  setIgnoreFlags(id: string) {
+    this.ignoreFlags = !this.ignoreFlags;
+    if (this.ignoreFlags) {
+      this.filesSorter.setIdentifier("");
+    } else {
+      this.filesSorter.setIdentifier(id);
+    }
     this.flagFiles();
   }
 
@@ -73,7 +87,8 @@ export class UploadMaterialComponent implements OnInit {
   fileFilter(files: File[]): boolean {
     for (const file of files) {
       if (!(this.supportedFileTypes.includes(file.type))) {
-        window.alert("Die Datei " + file.name + " besitzt ein nicht unterstütztes Dateiformat. Bitte nur PNG oder JPEG hochladen.");
+        window.alert("Die Datei " + file.name + " besitzt ein nicht unterstütztes Dateiformat. " +
+          "Bitte nur PNG oder JPEG hochladen.");
         return false;
       }
     }
