@@ -184,8 +184,7 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵ
         { provide: _angular_material_core__WEBPACK_IMPORTED_MODULE_8__.DateAdapter, useClass: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.AppDateAdapter },
         { provide: _angular_material_core__WEBPACK_IMPORTED_MODULE_8__.MAT_DATE_FORMATS, useValue: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.APP_DATE_FORMATS },
         { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_9__.HTTP_INTERCEPTORS, useClass: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.JwtInterceptor, multi: true },
-        { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_9__.HTTP_INTERCEPTORS, useClass: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.ErrorInterceptor, multi: true },
-        _app_helpers__WEBPACK_IMPORTED_MODULE_5__.fakeBackendProvider
+        { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_9__.HTTP_INTERCEPTORS, useClass: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.ErrorInterceptor, multi: true }
     ], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_10__.BrowserModule,
             _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__.BrowserAnimationsModule,

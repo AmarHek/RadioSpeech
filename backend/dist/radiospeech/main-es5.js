@@ -416,7 +416,7 @@
           provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_9__.HTTP_INTERCEPTORS,
           useClass: _app_helpers__WEBPACK_IMPORTED_MODULE_5__.ErrorInterceptor,
           multi: true
-        }, _app_helpers__WEBPACK_IMPORTED_MODULE_5__.fakeBackendProvider],
+        }],
         imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_10__.BrowserModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__.BrowserAnimationsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_9__.HttpClientModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_4__.AppRoutingModule, _app_feature_feature_module__WEBPACK_IMPORTED_MODULE_1__.FeatureModule, _app_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__.SharedModule, _app_view_view_module__WEBPACK_IMPORTED_MODULE_2__.ViewModule]]
       });
 
