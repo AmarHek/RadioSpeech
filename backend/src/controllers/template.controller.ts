@@ -140,15 +140,14 @@ export function getTemplateList(req: any, res: Response){
 }
 
 export function getTemplateById(req: Request, res: Response): void {
-  try {
-    Template.find({_id: req.params.id}).then(
-        template => {
-          res.status(200).send(template[0])
+    Template.findOne({_id: req.params.id}).exec(
+        (err, template) => {
+          if(err) {
+            res.status(500).send({message: err});
+          }
+          res.status(200).send(template)
         }
     )
-  } catch (error: any) {
-    res.status(404).send(error.message);
-  }
 }
 
 

@@ -37,7 +37,7 @@ export class BackendCallerService {
   }
 
   addTemplateFromJSON(jsonData: FormData): Observable<{message: string; templateId: string }> {
-    return this.http.post<{message: string, templateId: string }>(
+    return this.http.post<{message: string; templateId: string }>(
       this.templateUrl + "json/",
       jsonData
     );
