@@ -23,8 +23,6 @@ $background-color: hsl(202, 73%, 96%);
   font-size: 120%;
   font-weight: 700;
   text-align: center;
-  border-bottom: 1px solid $border-color;
-  height: 90px;
 }
 
 .inputArea{
@@ -60,6 +58,7 @@ $background-color: hsl(202, 73%, 96%);
   font-weight: 700;
   font-size: 120%;
   text-align: center;
+  align-self: center;
 }
 
 // Everything below the header
