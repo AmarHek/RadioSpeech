@@ -35,7 +35,7 @@ $background-color: hsl(202, 73%, 96%);
 }
 .inputBox{
   padding: 3px;
-  width: 80%;
+  width: 70%;
 }
 
 .buttons{
@@ -87,6 +87,7 @@ $background-color: hsl(202, 73%, 96%);
   overflow-y: auto;
 }
 
+
 .options{
   grid-area: options;
   height: 100%;
@@ -96,6 +97,7 @@ $background-color: hsl(202, 73%, 96%);
   overflow-x: auto;
   background-color: $background-color;
 }
+
 
 /* width */
 ::-webkit-scrollbar {

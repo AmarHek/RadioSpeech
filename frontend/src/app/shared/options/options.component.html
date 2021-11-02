@@ -1,9 +1,10 @@
 <table>
   <tbody>
-    <tr *ngFor="let row of rows">
-      <td class="category"
-          [style.width.%]="10"
-          [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name}}</td>
+  <tr *ngFor="let row of rows">
+    <td class="category"
+        [style.width.%]="10"
+        [ngStyle]="{'color': row.optional ? 'grey' : 'black'}" (click)="onSelect(row)">{{row.name}}</td>
+    <ng-container *ngIf="lastFoundCat==row.name||selectedCategory==row||layoutId==0">
       <ng-container *ngFor="let sel of row.selectables" class="col-3">
         <ng-container *ngIf="sel.kind === 'box'">
           <td class="box">
@@ -47,6 +48,7 @@
           </ng-container>
         </ng-container>
       </ng-container>
-    </tr>
+    </ng-container>
+  </tr>
   </tbody>
 </table>

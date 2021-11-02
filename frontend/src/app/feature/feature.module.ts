@@ -15,7 +15,8 @@ import { AccountManagementComponent } from "./account-management/account-managem
 import { AdminComponent } from "@app/feature/admin/admin.component";
 import { RadiolearnComponent } from "./radiolearn/radiolearn.component";
 import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.component";
-
+import {MatSelectModule} from "@angular/material/select";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -29,15 +30,17 @@ import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.compo
     RadiolearnComponent,
     RadiolearnViewComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgbModule,
-    FormsModule,
-    SharedModule,
-    ReactiveFormsModule,
-    MatCheckboxModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        NgbModule,
+        FormsModule,
+        SharedModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatButtonModule
+    ],
   exports: [
     JudgeMatComponent,
     ListComponent,

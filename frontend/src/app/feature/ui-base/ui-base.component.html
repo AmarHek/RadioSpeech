@@ -4,6 +4,11 @@
       <label class="inputLabel" for="input">Eingabe:</label>
       <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
              (input)="onInput($event)" placeholder="Befund eingeben...">
+      <select style="font-size: 18px;  margin-left: 15px; padding: 5px; border-radius: 5px; background: #edf7fc; border-width: 2px">
+        <option *ngFor="let layout of layouts" [value]="layout.displayName" (click)="layoutChanged(layout)">
+          {{layout.displayName}}
+        </option>
+      </select>
     </div>
     <div class="buttons">
       <a *ngIf="isAdmin" class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
@@ -26,6 +31,6 @@
 
   <div class="content" *ngIf="categories">
     <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
-    <app-options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
+    <app-options class="options" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id" [lastFoundCat]="inputParser.lastFoundCat"></app-options>
   </div>
 </div>

@@ -9,6 +9,11 @@ import {OptionsComponent} from "@app/shared";
 import {Template, Category, TopLevel, User, Role, Variable, ColoredText} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
+interface Layout{
+  id: number;
+  displayName: string;
+}
+
 @Component({
   selector: "app-workspace",
   templateUrl: "./ui-base.component.html",
@@ -17,8 +22,16 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 export class UiBaseComponent implements OnInit {
 
+
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
+
+  layouts: Layout[] = [
+    {id: 0, displayName: "Default Layout"},
+    {id: 1, displayName: "Expand Categories"}
+  ]
+
+  private currentLayout = this.layouts[0];
 
   parts: TopLevel[];
   defaultParts: TopLevel[];
@@ -55,6 +68,10 @@ export class UiBaseComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
+  }
+
+  layoutChanged(newLayout: Layout){
+    this.currentLayout = newLayout;
   }
 
   // gets parts from node server via id in url
