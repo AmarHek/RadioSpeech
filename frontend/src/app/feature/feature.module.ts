@@ -17,6 +17,10 @@ import { RadiolearnComponent } from "./radiolearn/radiolearn.component";
 import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.component";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatListModule} from "@angular/material/list";
 
 
 @NgModule({
@@ -30,17 +34,21 @@ import {MatButtonModule} from "@angular/material/button";
     RadiolearnComponent,
     RadiolearnViewComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        NgbModule,
-        FormsModule,
-        SharedModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatButtonModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgbModule,
+    FormsModule,
+    SharedModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatChipsModule,
+    MatListModule
+  ],
   exports: [
     JudgeMatComponent,
     ListComponent,

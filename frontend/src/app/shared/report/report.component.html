@@ -1,6 +1,3 @@
-<div class="button">
-  <button id="copy-button" (click)="copyAll()" class="btn btn-outline-secondary">Kopieren</button>
-</div>
 
 <div class="report-text">
   <label for="report"></label>
@@ -14,4 +11,7 @@
               id="judgement" class="w-100" [(ngModel)]="judgement"></textarea>
 </div>
 
+  <button style="position: fixed; bottom: 15px; right: 15px;" mat-fab color="primary" id="copy-button" (click)="copyAll()">
+    <mat-icon>content_copy</mat-icon>
+  </button>
 

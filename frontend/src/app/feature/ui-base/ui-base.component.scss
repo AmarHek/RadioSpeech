@@ -10,34 +10,6 @@ $background-color: hsl(202, 73%, 96%);
   overflow: hidden;
 }
 
-// Header part and its elements
-
-.header{
-  display: grid;
-  grid-template-columns: 75% 25%;
-  grid-template-rows: 50% 50%;
-  grid-template-areas:
-  "inputArea buttons"
-  "inputText inputTex";
-
-  font-size: 120%;
-  font-weight: 700;
-  text-align: center;
-}
-
-.inputArea{
-  grid-area: inputArea;
-  padding: 5px 10px;
-  float: left;
-}
-.inputLabel{
-  padding: 5px;
-}
-.inputBox{
-  padding: 3px;
-  width: 70%;
-}
-
 .buttons{
   grid-area: buttons;
   padding-top: 5px;
@@ -48,6 +20,46 @@ $background-color: hsl(202, 73%, 96%);
 .btn{
   margin-left: 5px;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.flex-container{
+  display: grid;
+  grid-template-columns: 10% 75% 15%;
+  grid-template-areas: "list details report";
+
+}
+
+.mat-button{
+  font-weight: bold;
+  font-size: small;
+  background: #2c40aa;
+  margin-left: 10px;
+}
+
+.mat-selection-list{
+  width: 150px;
+  height: 100%;
+  overflow-x: hidden;
+  border-right: 1px solid #3f51b5;
+}
+
+.spacer-div{
+  height: 64px;
+  flex-shrink: 0;
+}
+
+::ng-deep .mat-toolbar{
+  z-index: 998;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
 #normal-button {
   font-weight: bold;
   color: black;
@@ -65,37 +77,18 @@ $background-color: hsl(202, 73%, 96%);
 
 // Content: Grid for Report and Options components
 
-.content {
-  height: 99%;
-  margin: 3px;
-  background-color: white;
-  overflow: hidden;
-
-  display: grid;
-  grid-template-columns: 20% 80%;
-  grid-column-gap: 5px;
-  grid-template-areas:
-    "report  options";
-
-}
-
 .report{
   grid-area: report;
   height: 100%;
-  border: 1px solid $border-color;
   background-color: $background-color;
   overflow-y: auto;
 }
 
 
 .options{
-  grid-area: options;
+  grid-area: details;
   height: 100%;
   width: 99.5%;
-  border: 1px solid $border-color;
-  overflow-y: scroll;
-  overflow-x: auto;
-  background-color: $background-color;
 }
 
 

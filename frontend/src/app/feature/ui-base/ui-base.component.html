@@ -1,36 +1,49 @@
-<div class="main">
-  <div class="header">
-    <div class="inputArea">
-      <label class="inputLabel" for="input">Eingabe:</label>
-      <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
-             (input)="onInput($event)" placeholder="Befund eingeben...">
-      <select style="font-size: 18px;  margin-left: 15px; padding: 5px; border-radius: 5px; background: #edf7fc; border-width: 2px">
-        <option *ngFor="let layout of layouts" [value]="layout.displayName" (click)="layoutChanged(layout)">
-          {{layout.displayName}}
-        </option>
-      </select>
-    </div>
-    <div class="buttons">
-      <a *ngIf="isAdmin" class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
-         [href]="downJson" download="befund.json">Download JSON</a>
-      <button id="normal-button" (click)="makeNormal()"
-              class="btn btn-outline-secondary">Rest normal</button>
-      <button id="reset-button" (click)="reset()"
-              class="btn btn-outline-secondary">Zurücksetzen</button>
-      <button id="back" title="Go back to list" [routerLink]="['/', 'list']"
-              class="btn btn-outline-secondary">Zurück</button>
-    </div>
+<div style="display: flex; height: 100vh; flex-direction: column">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button [routerLink]="['/', 'list']">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <span style="font-size: 22px">Radiospeech</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
+    <button mat-button (click)="makeNormal()">Rest normal</button>
+    <button mat-button (click)="reset()">Zurücksetzen</button>
+  </mat-toolbar>
+  <div class="spacer-div"></div>
 
-    <div class="inputText" id="inputText" >
-      <ng-container *ngIf="foundKeywords.length === 0">Detected keywords go here</ng-container>
-      <ng-container *ngFor="let keyword of foundKeywords">
-        <span [ngStyle]="{'background-color': keyword.color}">{{keyword.text}}</span>
-      <span>&nbsp;</span></ng-container>
-    </div>
-  </div>
+  <mat-form-field class="example-chip-list" appearance="fill" style="margin-bottom: -21px">
+    <mat-label>Eingabe</mat-label>
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let value of values"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(value)">
+        {{value}}
+        <button matChipRemove *ngIf="removable">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Befund eingeben ..."
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)" [(ngModel)]="this.input" (input)="onInput($event)">
+    </mat-chip-list>
+  </mat-form-field>
 
-  <div class="content" *ngIf="categories">
+
+  <div class="flex-container">
+
+  <mat-selection-list [multiple]="false">
+    <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+      {{cat.name}}
+    </mat-list-option>
+  </mat-selection-list>
+  <app-options [selectedCat]="selectedCat" *ngIf="categories" class="options" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id" [lastFoundCat]="inputParser.lastFoundCat"></app-options>
     <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
-    <app-options class="options" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id" [lastFoundCat]="inputParser.lastFoundCat"></app-options>
   </div>
 </div>
+
+
+
