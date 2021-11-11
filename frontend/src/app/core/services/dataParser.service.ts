@@ -68,8 +68,8 @@ export class DataParserService {
 
     for (const category of categories) {
       const splits = this.getSplits(category, maxRowLength);
-      const split_cats = this.splitCategory(category, splits);
-      rows = rows.concat(split_cats);
+      const splitCats = this.splitCategory(category, splits);
+      rows = rows.concat(splitCats);
     }
 
     return rows;
@@ -87,13 +87,13 @@ export class DataParserService {
       } else {
         name = "";
       }
-      let temp_sels: M.Selectable[] = [];
-      temp_sels = category.selectables.slice(pos, pos + split);
+      let tempSels: M.Selectable[] = [];
+      tempSels = category.selectables.slice(pos, pos + split);
       res.push({
         kind: "category",
-        name: name,
+        name,
         optional: category.optional,
-        selectables: temp_sels
+        selectables: tempSels
       });
       pos += split;
     }
