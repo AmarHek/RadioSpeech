@@ -82,10 +82,13 @@ export class DataParserService {
     let pos = 0;
     for (const split of splits) {
       let name: string;
+      //information of category name necessary for all rows, for expand layout, so 1 / 0 indicate shown or not shown
       if (pos === 0) {
-        name = category.name;
+        //1 => show this category name
+        name = "1"+category.name;
       } else {
-        name = "";
+        //0 => don't show this category name as its the n-th row for a category
+        name = "0"+category.name;
       }
       let temp_sels: M.Selectable[] = [];
       temp_sels = category.selectables.slice(pos, pos + split);

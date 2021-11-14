@@ -9,7 +9,6 @@ import {OptionsComponent} from "@app/shared";
 import {Template, Category, TopLevel, User, Role, Variable, ColoredText} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {FormControl} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material/chips";
 
 interface Layout{
@@ -28,8 +27,8 @@ export class UiBaseComponent implements OnInit {
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  values: string[] = [];
-  selectedCat: string = "";
+  chips: string[] = [];
+  selectedCat: string = "undefined";
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement> | undefined;
 
@@ -42,7 +41,7 @@ export class UiBaseComponent implements OnInit {
     {id: 1, displayName: "Expand Categories"}
   ]
 
-  currentLayout = this.layouts[0];
+  currentLayout = this.layouts[1];
 
   parts: TopLevel[];
   defaultParts: TopLevel[];
@@ -76,23 +75,24 @@ export class UiBaseComponent implements OnInit {
     return this.user && this.user.role === Role.Admin;
   }
 
+  //HANDLE CHIPS
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
     // Add new value
     if (value) {
-      this.values.push(value);
+      this.chips.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
   }
 
-  remove(fruit: string): void {
-    const index = this.values.indexOf(fruit);
+  remove(chip: string): void {
+    const index = this.chips.indexOf(chip);
 
     if (index >= 0) {
-      this.values.splice(index, 1);
+      this.chips.splice(index, 1);
     }
   }
 
@@ -106,6 +106,7 @@ export class UiBaseComponent implements OnInit {
   }
 
   layoutChanged(newLayout: Layout){
+    this.selectedCat = "undefined";
     this.currentLayout = newLayout;
   }
 

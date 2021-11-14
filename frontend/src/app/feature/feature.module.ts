@@ -21,6 +21,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -34,21 +35,22 @@ import {MatListModule} from "@angular/material/list";
     RadiolearnComponent,
     RadiolearnViewComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgbModule,
-    FormsModule,
-    SharedModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatChipsModule,
-    MatListModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        NgbModule,
+        FormsModule,
+        SharedModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatChipsModule,
+        MatListModule,
+        MatMenuModule
+    ],
   exports: [
     JudgeMatComponent,
     ListComponent,
