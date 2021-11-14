@@ -27,7 +27,7 @@ $background-color: hsl(202, 73%, 96%);
 
 .flex-container-expand{
   display: grid;
-  grid-template-columns: 10% 75% 15%;
+  grid-template-columns: 9% 79% 12%;
   grid-template-areas: "list details report";
 }
 
@@ -49,7 +49,7 @@ $background-color: hsl(202, 73%, 96%);
 }
 
 .mat-selection-list{
-  width: 150px;
+  width: 170px;
   height: 88vh;
   overflow-x: hidden;
   border-right: 1px solid #3f51b5;

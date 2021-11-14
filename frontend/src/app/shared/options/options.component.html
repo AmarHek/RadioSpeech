@@ -7,7 +7,7 @@
       <ng-container *ngIf="row.name.includes(selectedCat)||layoutId==0">
         <ng-container *ngFor="let sel of row.selectables" class="col-3">
           <ng-container *ngIf="sel.kind === 'box'">
-            <td class="box">
+            <td class="box" style="padding-left: 10px;">
               <input type="checkbox" [(ngModel)]="sel.value"
                      (click)="update(sel)" id="{{row.name}} {{sel.name}} box"/>
             </td>
@@ -26,7 +26,7 @@
 
           <ng-container *ngIf="sel.kind === 'group'">
             <ng-container *ngFor="let option of sel.options">
-              <td class="radio box">
+              <td class="radio box" style="padding-left: 10px">
                 <input type="radio"
                        id="{{row.name}} {{sel.name + option.name}} box"
                        (click)="update(sel, option.name)"
