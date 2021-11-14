@@ -20,6 +20,8 @@ export class VariablesComponent implements OnInit {
 
   @Output() clickEvent = new EventEmitter<any>();
 
+  @Input() currentLayout: number;
+
   hasButtonBeenClickedOnce: Map<string, boolean> = new Map();
 
   constructor(private dialog: MatDialog,
