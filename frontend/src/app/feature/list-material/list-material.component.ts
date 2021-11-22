@@ -16,7 +16,6 @@ export class ListMaterialComponent implements OnInit {
 
   imageUrl = environment.backend + "images/";
   materials: Material[] = [];
-  query: Record<string, unknown>;
   showJudged = false;
 
   constructor(private backendCaller: BackendCallerService,
@@ -42,17 +41,6 @@ export class ListMaterialComponent implements OnInit {
         window.alert(err.message);
       });
     }
-  }
-
-  reload() {
-    this.getData();
-  }
-
-  toggleShowJudged() {
-    this.query = {
-      judged: this.showJudged
-    };
-    this.getData();
   }
 
   checkBoxes(coordinates: Record<string, BoundingBox[]>): string {
@@ -107,13 +95,12 @@ export class ListMaterialComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {
-      this.reload();
+      this.getData();
     });
   }
 
   loadRandom() {
     this.backendCaller.getRandomUnjudged().subscribe(res => {
-      console.log(res);
       this.openEditor(res.material._id);
     }, err => {
       window.alert(err.message);

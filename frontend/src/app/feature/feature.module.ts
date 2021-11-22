@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -29,16 +30,17 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     RadiolearnComponent,
     RadiolearnViewComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        NgbModule,
-        FormsModule,
-        SharedModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
-        MatSlideToggleModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgbModule,
+    FormsModule,
+    SharedModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatPaginatorModule
+  ],
   exports: [
     JudgeMatComponent,
     ListComponent,
