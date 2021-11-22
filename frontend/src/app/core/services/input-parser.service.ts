@@ -4,8 +4,7 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import * as M from "@app/models/templateModel";
 import {KeyVariable, KeyClickable, ColoredText} from "@app/models";
 import { levenshtein, getAllIndexOf, getNextHighestValue, getClickableKeywords,
-         getSplitters, parseValue, countUniqueVariableKeywords, filterUniqueOptions,
-         getVariableKeywords} from "@app/helpers";
+         getSplitters, parseValue, countUniqueVariableKeywords, getVariableKeywords} from "@app/helpers";
 
 @Injectable({
   providedIn: "root"
@@ -96,7 +95,9 @@ export class InputParserService {
       }
     }
     // this removes keywords that are substrings of other keywords (e.g. "Aufnahme" and "Aufnahme von heute")
+    console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
+    console.log(foundKeywordsTemp);
     foundKeywordsTemp.sort(this.compareKeywords);
     this.foundClickables = foundKeywordsTemp;
   }

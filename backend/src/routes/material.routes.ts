@@ -38,11 +38,15 @@ const upload = multer({
 
 export const router = express.Router();
 
-router.post("/material/", upload, MaterialController.addMaterial);
-router.put("/material/:id", MaterialController.updateMaterial);
-router.get("/material/sample/", MaterialController.sampleMaterial);
-router.get("/material/:id", MaterialController.getMaterialById)
-router.post("/material/query/", MaterialController.queryMaterial);
+router.post("/material/add/", upload, MaterialController.addMaterial);
+router.get("/material/get/:id", MaterialController.getMaterialById)
+router.put("/material/update/:id", MaterialController.updateMaterial);
 router.post("/material/delete/", MaterialController.deleteMaterial)
+router.get("/material/listAll/", MaterialController.listAll);
+router.get("/material/listJudged/", MaterialController.listJudged);
+router.get("/material/listUnjudged/", MaterialController.listUnjudged);
+router.post("/material/listByPathology/", MaterialController.listByPathology);
+router.get("/material/randomJudged/", MaterialController.getRandomJudged);
+router.get("/material/randomUnjudged/", MaterialController.getRandomUnjudged);
 
 

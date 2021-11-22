@@ -80,13 +80,17 @@ addTemplateFromExcel(postData: FormData) {
 
   addMaterial(formData: FormData): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.materialUrl,
+      this.materialUrl + "add/",
       formData
     );
   }
 
-  getMaterialById(id: string): Observable<Material> {
-    return this.http.get<Material>(this.materialUrl + id);
+  updateMaterial(material: Material) {
+    return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
+      template: material.template,
+      coordinates: material.coordinates,
+      judged: true
+    });
   }
 
   deleteMaterial(objectID: string, scanID: string): Observable<{ message: string }> {
@@ -94,10 +98,8 @@ addTemplateFromExcel(postData: FormData) {
       {objectID, scanID});
   }
 
-  getMaterials(): Observable<Material[]> {
-    return this.http.get<Material[]>(
-      this.materialUrl + "sample/"
-    );
+  getMaterialById(id: string): Observable<Material> {
+    return this.http.get<Material>(this.materialUrl + "get/" + id);
   }
 
   queryMaterials(query: Record<string, unknown>): Observable<Material[]> {
@@ -105,14 +107,6 @@ addTemplateFromExcel(postData: FormData) {
       this.materialUrl + "query/",
       query
     );
-  }
-
-  updateMaterial(material: Material) {
-    return this.http.put<{message: string}>(this.materialUrl + material._id, {
-      template: material.template,
-      coordinates: material.coordinates,
-      judged: true
-    });
   }
 
 }
