@@ -111,4 +111,13 @@ export class ListMaterialComponent implements OnInit {
     });
   }
 
+  loadRandom() {
+    this.backendCaller.getRandomUnjudged().subscribe(res => {
+      console.log(res);
+      this.openEditor(res.material._id);
+    }, err => {
+      window.alert(err.message);
+    });
+  }
+
 }

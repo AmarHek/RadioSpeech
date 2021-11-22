@@ -4,7 +4,8 @@
 
   <div class="row">
     <div class="d-inline-block">
-      <button class="btn btn-outline-secondary" (click)="reload()" id="reloadButton">Aufnahmen neu Laden</button>
+      <button class="btn btn-outline-primary" style="margin-right: 20px;" (click)="loadRandom()" id="randomButton">Zufall</button>
+      <button class="btn btn-outline-primary" (click)="reload()" id="reloadButton">Aufnahmen neu Laden</button>
       <mat-slide-toggle style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="toggleShowJudged()">
         Bearbeitete Einträge zeigen
       </mat-slide-toggle>

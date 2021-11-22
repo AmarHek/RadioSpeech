@@ -143,7 +143,7 @@ export function listByPathology(req: Request, res: Response): void {
 
 export function getRandomJudged(req: Request, res: Response): void {
     // count all judged Mats
-    MaterialSchema.count({judged: true}).exec((err, count) => {
+    MaterialSchema.countDocuments({judged: true}).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
@@ -151,11 +151,11 @@ export function getRandomJudged(req: Request, res: Response): void {
             const random = Math.floor(Math.random() * count);
             // query one judged material, but skip random count
             MaterialSchema.findOne({judged: true}).skip(random).exec(
-                (err, mats) => {
+                (err, material) => {
                 if (err) {
                     res.status(500).send({message: err});
                 }
-                res.status(200).send(mats);
+                res.status(200).send({material});
             });
         }
     })
@@ -163,7 +163,7 @@ export function getRandomJudged(req: Request, res: Response): void {
 
 export function getRandomUnjudged(req: Request, res: Response): void {
     // count all UN-judged Mats
-    MaterialSchema.count({judged: false}).exec((err, count) => {
+    MaterialSchema.countDocuments({judged: false}).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
@@ -171,11 +171,11 @@ export function getRandomUnjudged(req: Request, res: Response): void {
             const random = Math.floor(Math.random() * count);
             // query one UN-judged material, but skip random count
             MaterialSchema.findOne({judged: false}).skip(random).exec(
-                (err, mats) => {
+                (err, material) => {
                     if (err) {
                         res.status(500).send({message: err});
                     }
-                    res.status(200).send(mats);
+                    res.status(200).send({material});
                 });
         }
     })
