@@ -25,16 +25,23 @@ export class ListMaterialComponent implements OnInit {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.query = {
-      judged: false
-    };
     this.getData();
   }
 
   getData() {
-    this.backendCaller.queryMaterials(this.query).subscribe((mats: Material[]) => {
-      this.materials = mats.reverse();
-    });
+    if (this.showJudged) {
+      this.backendCaller.listJudged().subscribe(res => {
+        this.materials = res.materials.reverse();
+      }, err => {
+        window.alert(err.message);
+      });
+    } else {
+      this.backendCaller.listUnjudged().subscribe(res => {
+        this.materials = res.materials.reverse();
+      }, err => {
+        window.alert(err.message);
+      });
+    }
   }
 
   reload() {
@@ -82,8 +89,10 @@ export class ListMaterialComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.backendCaller.deleteMaterial(objectID, scanID).subscribe(res => {
-          window.alert("Eintrag erfolgreich gelöscht.");
+          window.alert(res.message);
           this.getData();
+        }, err => {
+          window.alert(err.message);
         });
       }
     });

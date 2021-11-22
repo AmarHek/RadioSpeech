@@ -51,15 +51,17 @@ export class JudgeMatComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(ps => {
       if (ps.has("id")) {
         const matID = ps.get("id");
-        this.backendCaller.getMaterialById(matID).subscribe((material: Material) => {
-          if (material === undefined) {
+        this.backendCaller.getMaterialById(matID).subscribe(res => {
+          if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
               "Bitte zur Aufnahmenliste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
           } else {
-            this.material = material;
+            this.material = res.material;
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
             this.openImagePopout();
           }
+        }, err => {
+          window.alert(err.message);
         });
       }
     });

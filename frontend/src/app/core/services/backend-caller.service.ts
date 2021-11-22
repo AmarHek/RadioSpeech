@@ -98,15 +98,24 @@ addTemplateFromExcel(postData: FormData) {
       {objectID, scanID});
   }
 
-  getMaterialById(id: string): Observable<Material> {
-    return this.http.get<Material>(this.materialUrl + "get/" + id);
+  getMaterialById(id: string) {
+    return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
-  queryMaterials(query: Record<string, unknown>): Observable<Material[]> {
-    return this.http.post<Material[]>(
-      this.materialUrl + "query/",
-      query
-    );
+  listJudged() {
+    return this.http.get<{message: string; materials: Material[]}>(this.materialUrl + "listJudged/");
+  }
+
+  listUnjudged() {
+    return this.http.get<{message: string; materials: Material[]}>(this.materialUrl + "listUnjudged/");
+  }
+
+  getRandomJudged() {
+    return this.http.get<{message: string; material: Material}>(this.materialUrl + "randomJudged/");
+  }
+
+  getRandomUnjudged() {
+    return this.http.get<{message: string; material: Material}>(this.materialUrl + "randomUnjudged/");
   }
 
 }
