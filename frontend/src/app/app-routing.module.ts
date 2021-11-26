@@ -8,7 +8,8 @@ import {
   ListMaterialComponent,
   JudgeMatComponent,
   AccountManagementComponent,
-  RadiolearnComponent, RadiolearnViewComponent
+  RadiolearnComponent,
+  RadiolearnViewComponent
 } from "@app/feature";
 import { AuthGuard } from "@app/helpers";
 import { Role } from "@app/models";

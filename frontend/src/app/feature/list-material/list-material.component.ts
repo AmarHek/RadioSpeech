@@ -6,6 +6,7 @@ import {environment} from "@env/environment";
 import {BoundingBox, Material} from "@app/models";
 import {BackendCallerService, MatDialogService} from "@app/core";
 import {UploadMaterialComponent, ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: "app-display-material",
@@ -18,29 +19,47 @@ export class ListMaterialComponent implements OnInit {
   materials: Material[] = [];
   showJudged = false;
 
+  collectionSize = 0;
+  pageSize = 10;
+  page = 1;
+
   constructor(private backendCaller: BackendCallerService,
               private router: Router,
               private dialogService: MatDialogService,
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.loadData().then();
   }
 
   getData() {
-    if (this.showJudged) {
-      this.backendCaller.listJudged().subscribe(res => {
-        this.materials = res.materials.reverse();
-      }, err => {
-        window.alert(err.message);
-      });
-    } else {
-      this.backendCaller.listUnjudged().subscribe(res => {
-        this.materials = res.materials.reverse();
-      }, err => {
-        window.alert(err.message);
-      });
-    }
+    this.backendCaller.listByJudged(this.showJudged, (this.page -1) * this.pageSize, this.pageSize)
+      .subscribe(res => {
+      this.materials = res.materials.reverse();
+    }, err => {
+      window.alert(err.message);
+    });
+  }
+
+  getLength() {
+    this.backendCaller.getDocCount(this.showJudged).subscribe(res => {
+      console.log("Count: ", res.count);
+      this.collectionSize = res.count;
+    }, err => {
+      console.log(err);
+      window.alert(err.message);
+    });
+  }
+
+  async loadData() {
+    await this.getLength();
+    this.getData();
+  }
+
+  changePage(event) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadData().then();
   }
 
   checkBoxes(coordinates: Record<string, BoundingBox[]>): string {
@@ -100,7 +119,7 @@ export class ListMaterialComponent implements OnInit {
   }
 
   loadRandom() {
-    this.backendCaller.getRandomUnjudged().subscribe(res => {
+    this.backendCaller.getRandomByJudged(this.showJudged).subscribe(res => {
       this.openEditor(res.material._id);
     }, err => {
       window.alert(err.message);

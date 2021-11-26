@@ -102,20 +102,48 @@ addTemplateFromExcel(postData: FormData) {
     return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
-  listJudged() {
-    return this.http.get<{message: string; materials: Material[]}>(this.materialUrl + "listJudged/");
+  listByJudged(judged: boolean, skip: number, length: number) {
+    // skip: mongoose skip parameter, how many documents to skip
+    // length: how many documents to return
+    return this.http.post<{message: string; materials: Material[]}>(
+      this.materialUrl + "listByJudged/",
+      {judged, skip, length});
   }
 
-  listUnjudged() {
-    return this.http.get<{message: string; materials: Material[]}>(this.materialUrl + "listUnjudged/");
+  listByPathology(pathology: string, skip: number, length: number) {
+    // skip: mongoose skip parameter, how many documents to skip
+    // length: how many documents to return
+    return this.http.post<{message: string; materials: Material[]}>(
+      this.materialUrl + "listByJudged/",
+      {pathology, skip, length}
+    );
   }
 
-  getRandomJudged() {
-    return this.http.get<{message: string; material: Material}>(this.materialUrl + "randomJudged/");
+  getRandomByJudged(judged: boolean) {
+    return this.http.post<{message: string; material: Material}>(
+      this.materialUrl + "randomByJudged/",
+      {judged}
+    );
   }
 
-  getRandomUnjudged() {
-    return this.http.get<{message: string; material: Material}>(this.materialUrl + "randomUnjudged/");
+  getRandomByPathology(pathology = "") {
+    return this.http.post<{message: string; material: Material}>(
+      this.materialUrl + "randomByPathology/",
+      {pathology}
+    );
+  }
+
+  getDocCount(judged: boolean, pathology: string = "") {
+    let query;
+    if (pathology.length > 0) {
+      query = {judged, pathology};
+    } else {
+      query = {judged};
+    }
+    return this.http.post<{message: string, count: number}>(
+      this.materialUrl + "queryDocCount/",
+      query
+    );
   }
 
 }

@@ -4,55 +4,67 @@
 
   <div class="row">
     <div class="d-inline-block">
-      <button class="btn btn-outline-primary" style="margin-right: 20px;" (click)="loadRandom()" id="randomButton">Zufall</button>
-      <button class="btn btn-outline-primary" (click)="getData()" id="reloadButton">Aufnahmen neu Laden</button>
-      <mat-slide-toggle style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="getData()">
-        Bearbeitete Einträge zeigen
-      </mat-slide-toggle>
       <button class="btn btn-outline-primary" style="float: right;"
               id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
       </button>
+      <button class="btn btn-outline-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
+      <button class="btn btn-outline-primary" (click)="getData()" id="reloadButton">Neu Laden</button>
+      <mat-slide-toggle style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="loadData()">
+        Bearbeitete Einträge zeigen
+      </mat-slide-toggle>
+
     </div>
   </div>
 
-  <mat-paginator class="bg-transparent"
-                 style="font-size: 100%;"
-                 [length]="100"
-                 [pageSize]="10"
-                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div *ngIf="this.materials.length > 0; else noEntry">
 
-  <div class="tableDiv" *ngIf="this.materials.length > 0; else noEntry">
-    <table class="listMatTable">
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+
+    <table  class="table table-striped">
+      <thead>
       <tr>
-        <th class="body">Frontalaufnahme</th>
-        <th class="body">Lateralaufnahme</th>
-        <th class="body">Voraufnahme</th>
-        <th class="meta">Metadaten</th>
+        <th scope="col">#</th>
+        <th scope="col">Frontalaufnahme</th>
+        <th scope="col">Lateralaufnahme</th>
+        <th scope="col">Voraufnahme</th>
+        <th scope="col">Meta</th>
       </tr>
-      <tr *ngFor="let material of this.materials">
+      </thead>
+      <tbody>
+      <tr *ngFor="let material of this.materials; let i = index">
+        <th scope="row">{{i+1}}</th>
         <td class="img">
           <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
-                             width="300px"
-                             alt="Fehler beim Laden der Aufnahme"
-          (click)="openEditor(material._id)"/>
+               width="300px"
+               alt="Fehler beim Laden der Aufnahme"
+               (click)="openEditor(material._id)"/> <br>
           <span>{{material.scans.mainScan.filename}}</span>
         </td>
         <td class="img">
           <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
-                               width="300px"
-                               alt="Fehler beim Laden der Aufnahme"
-                               (click)="openEditor(material._id)"/>
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
             <span>{{material.scans.lateralScan.filename}}</span>
           </ng-container>
         </td>
         <td class="img">
           <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
-
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
-                               width="300px"
-                               alt="Fehler beim Laden der Aufnahme"
-                               (click)="openEditor(material._id)"/>
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
             <span>{{material.scans.preScan.filename}}</span>
           </ng-container>
         </td>
@@ -71,13 +83,26 @@
               <td class="metadata">{{checkBoxes(material.coordinates)}}</td>
             </tr>
           </table>
-              <button class="btn btn-outline-primary custom-button"
-                        (click)="openEditor(material._id)">Start Befundung</button>
+          <button class="btn btn-outline-primary custom-button"
+                  (click)="openEditor(material._id)">Start Befundung</button>
           <button class="btn btn-danger custom-button" (click)="delete(material._id, material.scans.id)">Entfernen</button>
         </td>
       </tr>
-
+      </tbody>
     </table>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+
   </div>
 </div>
 

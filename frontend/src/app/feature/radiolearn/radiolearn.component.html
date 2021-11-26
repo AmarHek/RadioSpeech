@@ -1,1 +1,88 @@
-<p>radiolearn works!</p>
+<div class="main">
+
+  <h4>Aufnahme wählen</h4>
+
+  <div class="row">
+    <div class="d-inline-block">
+      <button class="btn btn-outline-primary" style="margin-right: 10px;" id="reloadButton"
+              (click)="loadData()">Neu Laden</button>
+      <button class="btn btn-outline-primary" id="randomButton" (click)="loadRandom()">Zufall</button>
+    </div>
+  </div>
+
+  <div *ngIf="this.materials.length > 0; else noEntry">
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Frontalaufnahme</th>
+        <th scope="col">Lateralaufnahme</th>
+        <th scope="col">Voraufnahme</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let material of this.materials; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td class="img">
+          <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+               width="300px"
+               alt="Fehler beim Laden der Aufnahme"
+               (click)="openEditor(material._id)"/> <br>
+          <span>{{material.scans.mainScan.filename}}</span>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
+            <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
+            <span>{{material.scans.lateralScan.filename}}</span>
+          </ng-container>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
+            <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
+            <span>{{material.scans.preScan.filename}}</span>
+          </ng-container>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #noEntry>
+  <div style="padding: 10px;">
+    Keine Einträge gefunden.
+  </div>
+</ng-template>
+
+<ng-template #noScan><span>Keine Aufnahme vorhanden</span></ng-template>

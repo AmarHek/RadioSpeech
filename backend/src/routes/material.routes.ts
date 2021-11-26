@@ -43,10 +43,10 @@ router.get("/material/get/:id", MaterialController.getMaterialById)
 router.put("/material/update/:id", MaterialController.updateMaterial);
 router.post("/material/delete/", MaterialController.deleteMaterial)
 router.get("/material/listAll/", MaterialController.listAll);
-router.get("/material/listJudged/", MaterialController.listJudged);
-router.get("/material/listUnjudged/", MaterialController.listUnjudged);
+router.post("/material/listByJudged/", MaterialController.listByJudged);
 router.post("/material/listByPathology/", MaterialController.listByPathology);
-router.get("/material/randomJudged/", MaterialController.getRandomJudged);
-router.get("/material/randomUnjudged/", MaterialController.getRandomUnjudged);
+router.post("/material/randomByJudged/", MaterialController.getRandomByJudged);
+router.post("/material/randomByPathology/", MaterialController.getRandomByPathology);
+router.post("/material/queryDocCount/", MaterialController.queryDocCount);
 
 

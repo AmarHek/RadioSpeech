@@ -27,38 +27,15 @@ $background-color: hsl(202, 73%, 96%);
   text-align: center;
 }
 
-.text {
-  padding: 5px;
-  text-align: center;
-}
-
 img {
   cursor: pointer;
 }
 
-.meta {
-  text-align: left;
-  white-space: pre-line;
-  padding: 10px;
-  font-size: 15pt;
-  width: 500px;
-}
-
-.metatable {
-  border-spacing: 10px;
-  border-collapse: separate;
-}
-.metadata {
-  word-break: break-word;
-}
-
-.custom-button {
-  font-size: 15pt;
-  padding: 10px 20px;
-  margin: 5px;
+.custom-select {
 }
 
 .row {
   padding: 10px;
   border-bottom: 1px solid $border-color;
 }
+

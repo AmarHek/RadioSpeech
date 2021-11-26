@@ -113,17 +113,11 @@ export function listAll(req: Request, res: Response): void {
     });
 }
 
-export function listJudged(req: Request, res: Response): void {
-    MaterialSchema.find({judged: true}).exec((err, materials) => {
-        if (err) {
-            res.status(404).send({message: err});
-        }
-        res.status(200).send({materials});
-    });
-}
-
-export function listUnjudged(req: Request, res: Response): void {
-    MaterialSchema.find({judged: false}).exec((err, materials) => {
+export function listByJudged(req: Request, res: Response): void {
+    MaterialSchema.find({judged: req.body.judged})
+        .skip(req.body.skip)
+        .limit(req.body.length)
+        .exec((err, materials) => {
         if (err) {
             res.status(404).send({message: err});
         }
@@ -132,7 +126,12 @@ export function listUnjudged(req: Request, res: Response): void {
 }
 
 export function listByPathology(req: Request, res: Response): void {
-    MaterialSchema.find({pathologies: req.body.pathology}).exec(
+    MaterialSchema.find({
+        judged: true,
+        pathologies: req.body.pathology})
+        .skip(req.body.skip)
+        .limit(req.body.length)
+        .exec(
         (err, materials) => {
         if (err) {
             res.status(500).send({message: err});
@@ -141,16 +140,15 @@ export function listByPathology(req: Request, res: Response): void {
     });
 }
 
-export function getRandomJudged(req: Request, res: Response): void {
-    // count all judged Mats
-    MaterialSchema.countDocuments({judged: true}).exec((err, count) => {
+export function getRandomByJudged(req: Request, res: Response): void {
+    MaterialSchema.countDocuments({judged: req.body.judged}).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
             // get random entry
             const random = Math.floor(Math.random() * count);
             // query one judged material, but skip random count
-            MaterialSchema.findOne({judged: true}).skip(random).exec(
+            MaterialSchema.findOne({judged: req.body.judged}).skip(random).exec(
                 (err, material) => {
                 if (err) {
                     res.status(500).send({message: err});
@@ -161,16 +159,24 @@ export function getRandomJudged(req: Request, res: Response): void {
     })
 }
 
-export function getRandomUnjudged(req: Request, res: Response): void {
-    // count all UN-judged Mats
-    MaterialSchema.countDocuments({judged: false}).exec((err, count) => {
+export function getRandomByPathology(req: Request, res: Response): void {
+    let query: Record<string, boolean | string>;
+    if (req.body.pathology.length > 0) {
+        query = {
+            judged: true,
+            pathology: req.body.pathology
+        }
+    } else {
+        query = { judged: true }
+    }
+    MaterialSchema.countDocuments(query).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
             // get random entry
             const random = Math.floor(Math.random() * count);
-            // query one UN-judged material, but skip random count
-            MaterialSchema.findOne({judged: false}).skip(random).exec(
+            // query one judged material, but skip random count
+            MaterialSchema.findOne(query).skip(random).exec(
                 (err, material) => {
                     if (err) {
                         res.status(500).send({message: err});
@@ -178,5 +184,26 @@ export function getRandomUnjudged(req: Request, res: Response): void {
                     res.status(200).send({material});
                 });
         }
-    })
+    });
+}
+
+export function queryDocCount(req: Request, res: Response): void {
+    let query;
+    if (req.body.pathology !== undefined) {
+        query = {
+            judged: req.body.judged,
+            pathologies: req.body.pathology
+        }
+    } else {
+        query = {
+            judged: req.body.judged
+        }
+    }
+    MaterialSchema.countDocuments(query).exec((err, count) => {
+        if (err) {
+            res.status(500).send({message: err});
+        } else {
+            res.status(201).send({count});
+        }
+    });
 }
