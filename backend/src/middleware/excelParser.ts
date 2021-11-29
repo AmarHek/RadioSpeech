@@ -22,8 +22,6 @@ interface Row {
     Typ: string;
     Gliederung: string;
     Optional: string;
-    Wenn: string;
-    "Baustein ID": string;
     "Baustein Befund": string;
     "data-bau": string;
     Normal: string;
