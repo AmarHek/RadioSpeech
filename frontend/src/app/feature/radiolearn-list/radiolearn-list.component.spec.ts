@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JudgeMatComponent } from './judge-mat.component';
+import { RadiolearnListComponent } from './radiolearn-list.component';
 
-describe('JudgeMatComponent', () => {
-  let component: JudgeMatComponent;
-  let fixture: ComponentFixture<JudgeMatComponent>;
+describe('DisplayMaterialComponent', () => {
+  let component: RadiolearnListComponent;
+  let fixture: ComponentFixture<RadiolearnListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ JudgeMatComponent ]
+      declarations: [ RadiolearnListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JudgeMatComponent);
+    fixture = TestBed.createComponent(RadiolearnListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

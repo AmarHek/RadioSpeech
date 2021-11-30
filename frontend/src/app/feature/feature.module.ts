@@ -1,12 +1,10 @@
 import { SharedModule } from "@app/shared/shared.module";
-import { JudgeMatComponent } from "@app/feature/judge-mat/judge-mat.component";
+import { RadiolearnUiComponent } from "@app/feature/radiolearn-ui/radiolearn-ui.component";
 import { ListComponent } from "@app/feature/list/list.component";
-import { ListMaterialComponent } from "@app/feature/list-material/list-material.component";
+import { RadiolearnListComponent } from "@app/feature/radiolearn-list/radiolearn-list.component";
 import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
 import { AccountManagementComponent } from "./account-management/account-management.component";
 import { AdminComponent } from "@app/feature/admin/admin.component";
-import { RadiolearnComponent } from "./radiolearn/radiolearn.component";
-import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.component";
 
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -22,14 +20,12 @@ import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
-    JudgeMatComponent,
+    RadiolearnUiComponent,
     ListComponent,
-    ListMaterialComponent,
+    RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent,
-    RadiolearnComponent,
-    RadiolearnViewComponent
+    AdminComponent
   ],
   imports: [
     CommonModule,
@@ -44,14 +40,12 @@ import {MatTableModule} from "@angular/material/table";
     MatTableModule
   ],
   exports: [
-    JudgeMatComponent,
+    RadiolearnUiComponent,
     ListComponent,
-    ListMaterialComponent,
+    RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent,
-    RadiolearnComponent,
-    RadiolearnViewComponent
+    AdminComponent
   ]
 })
 export class FeatureModule { }

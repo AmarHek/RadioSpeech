@@ -102,44 +102,25 @@ addTemplateFromExcel(postData: FormData) {
     return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
-  listByJudged(judged: boolean, skip: number, length: number) {
+  listByQuery(skip: number, length: number, judged: boolean, pathology="") {
+    const query = {skip, length, judged, pathology};
     // skip: mongoose skip parameter, how many documents to skip
     // length: how many documents to return
     return this.http.post<{message: string; materials: Material[]}>(
-      this.materialUrl + "listByJudged/",
-      {judged, skip, length});
+      this.materialUrl + "listByQuery/",
+      query);
   }
 
-  listByPathology(pathology: string, skip: number, length: number) {
-    // skip: mongoose skip parameter, how many documents to skip
-    // length: how many documents to return
-    return this.http.post<{message: string; materials: Material[]}>(
-      this.materialUrl + "listByJudged/",
-      {pathology, skip, length}
-    );
-  }
-
-  getRandomByJudged(judged: boolean) {
+  getRandom(judged: boolean, pathology = "") {
+    const query = {judged, pathology};
     return this.http.post<{message: string; material: Material}>(
-      this.materialUrl + "randomByJudged/",
-      {judged}
-    );
-  }
-
-  getRandomByPathology(pathology = "") {
-    return this.http.post<{message: string; material: Material}>(
-      this.materialUrl + "randomByPathology/",
-      {pathology}
+      this.materialUrl + "random/",
+      query
     );
   }
 
   getDocCount(judged: boolean, pathology: string = "") {
-    let query;
-    if (pathology.length > 0) {
-      query = {judged, pathology};
-    } else {
-      query = {judged};
-    }
+    const query = {judged, pathology};
     return this.http.post<{message: string, count: number}>(
       this.materialUrl + "queryDocCount/",
       query

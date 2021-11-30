@@ -14,10 +14,10 @@ import {
 
 @Component({
   selector: "app-judge-mat",
-  templateUrl: "./judge-mat.component.html",
-  styleUrls: ["./judge-mat.component.scss"]
+  templateUrl: "./radiolearn-ui.component.html",
+  styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class JudgeMatComponent implements OnInit, OnDestroy {
+export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   material: Material;
   categories: M.Category[];

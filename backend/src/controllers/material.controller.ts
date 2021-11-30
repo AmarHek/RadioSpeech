@@ -113,8 +113,18 @@ export function listAll(req: Request, res: Response): void {
     });
 }
 
-export function listByJudged(req: Request, res: Response): void {
-    MaterialSchema.find({judged: req.body.judged})
+export function listByQuery(req: Request, res: Response): void {
+    let query: Record<string, boolean | string>;
+    if (req.body.pathology.length > 0) {
+        query = {
+            judged: req.body.judged,
+            pathology: req.body.pathology
+        }
+    } else {
+        query = { judged: req.body.judged }
+    }
+    console.log(query);
+    MaterialSchema.find(query)
         .skip(req.body.skip)
         .limit(req.body.length)
         .exec((err, materials) => {
@@ -125,49 +135,15 @@ export function listByJudged(req: Request, res: Response): void {
     });
 }
 
-export function listByPathology(req: Request, res: Response): void {
-    MaterialSchema.find({
-        judged: true,
-        pathologies: req.body.pathology})
-        .skip(req.body.skip)
-        .limit(req.body.length)
-        .exec(
-        (err, materials) => {
-        if (err) {
-            res.status(500).send({message: err});
-        }
-        res.status(200).send({materials});
-    });
-}
-
-export function getRandomByJudged(req: Request, res: Response): void {
-    MaterialSchema.countDocuments({judged: req.body.judged}).exec((err, count) => {
-        if (err) {
-            res.status(500).send({message: err});
-        } else {
-            // get random entry
-            const random = Math.floor(Math.random() * count);
-            // query one judged material, but skip random count
-            MaterialSchema.findOne({judged: req.body.judged}).skip(random).exec(
-                (err, material) => {
-                if (err) {
-                    res.status(500).send({message: err});
-                }
-                res.status(200).send({material});
-            });
-        }
-    })
-}
-
-export function getRandomByPathology(req: Request, res: Response): void {
+export function getRandom(req: Request, res: Response): void {
     let query: Record<string, boolean | string>;
     if (req.body.pathology.length > 0) {
         query = {
-            judged: true,
+            judged: req.body.judged,
             pathology: req.body.pathology
         }
     } else {
-        query = { judged: true }
+        query = { judged: req.body.judged }
     }
     MaterialSchema.countDocuments(query).exec((err, count) => {
         if (err) {
@@ -189,7 +165,7 @@ export function getRandomByPathology(req: Request, res: Response): void {
 
 export function queryDocCount(req: Request, res: Response): void {
     let query;
-    if (req.body.pathology !== undefined) {
+    if (req.body.pathology.length > 0) {
         query = {
             judged: req.body.judged,
             pathologies: req.body.pathology
@@ -199,10 +175,12 @@ export function queryDocCount(req: Request, res: Response): void {
             judged: req.body.judged
         }
     }
+    console.log("Count", query);
     MaterialSchema.countDocuments(query).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
+            console.log(count);
             res.status(201).send({count});
         }
     });
