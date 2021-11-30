@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import * as O from "../../helpers/old_model";
 import * as G from "../../models/generator";
 import * as M from "../../models/templateModel";
 
@@ -10,24 +9,6 @@ import * as M from "../../models/templateModel";
 export class DataParserService {
 
   constructor() {}
-
-  convertModel(parts: O.TopLevel[], parseOptional: boolean): M.TopLevel[] {
-    const newParts: M.TopLevel[] = [];
-    for (const part of parts) {
-      if (part.kind === "block") {
-        newParts.push(M.convertBlock(part));
-      } else if (part.kind === "enumeration") {
-        newParts.push(M.convertEnum(part));
-      } else if (part.kind === "category") {
-        let newPart = M.convertCategory(part);
-        if (parseOptional) {
-          newPart = this.parseOptionalCategory(newPart);
-        }
-        newParts.push(newPart);
-      }
-    }
-    return newParts;
-  }
 
   extractCategories(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
     const res: M.Category[] = [];

@@ -1,17 +1,17 @@
 <div style="background: hsl(202, 73%, 96%); padding: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
-            grid-column-gap: 5px; grid-template-columns: 220px 1000px 600px;
+            grid-column-gap: 5px; grid-template-columns: 300px 900px 600px;
             display: grid; align-content: center; overflow: hidden; height: 100%">
   <div style="display: block; margin: 20px;">
     <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.main.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.main.length > 0
             && this.currentMode !== 'main'),
             'btn-primary': this.currentMode === 'main',
             'btn-outline-primary': this.currentMode !== 'main'}"
             (click)="this.changeMode('main')">Hauptaufnahme</button>
     <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.lateral.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.lateral.length > 0
             && this.currentMode !== 'lateral'),
             'btn-primary': this.currentMode === 'lateral',
             'btn-outline-primary': this.currentMode !== 'lateral'}"
@@ -19,17 +19,18 @@
             [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
     <button class="btn btn-outline-primary"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.coordinates.pre.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.pre.length > 0
             && this.currentMode !== 'pre'),
             'btn-primary': this.currentMode === 'pre',
             'btn-outline-primary': this.currentMode !== 'pre'}"
             (click)="this.changeMode('pre')"
             [disabled]="this.scans.preScan === undefined">Voraufnahme</button>
     <button class="btn"
-            [ngClass]="this.displayBoxes? 'btn-success': 'btn-outline-success'"
+            [disabled]="!boxDisplayConfirmed"
+            [ngClass]="(this.displayBoxes && this.boxDisplayConfirmed) ? 'btn-success': 'btn-outline-success'"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="toggleBoxes()">Boxen anzeigen</button>
-    <button class="btn" matTooltip="Zoom mit Mausrad. Sollte die Zoombox anfangen, langsamer zu werden, einfach Zoom nochmal aus und an-toggeln."
+    <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
             [ngClass]="this.enableZoom? 'btn-success': 'btn-outline-success'"
             (click)="toggleZoom()">Toggle Zoom</button>
@@ -44,6 +45,17 @@
     <button *ngIf="isAllowed && this.enableEdit" class="btn btn-outline-success"
             style="width: 180px; margin: 2px; padding: 10px;"
             (click)="saveNewBox()">Box Speichern</button>
+
+    <div style="text-align: justify; margin-top: 10px; padding: 10px; border: 1px solid hsl(200, 70%, 80%);
+    border-radius: 5px;">
+      <h6>Info:</h6>
+      <ul>
+        <li>Zoom mit Mausrad. Wird die Zoom-Box langsamer, Zoom aus und an-toggeln.</li>
+        <li>Pop-ups erscheinen immer im Hauptfenster.</li>
+        <li>Gelber Button bedeutet, dass Bounding-Boxen vorhanden sind.</li>
+        <li>Bounding-Boxen werden erst angezeigt, wenn der Befund geprüft wurde.</li>
+      </ul>
+    </div>
   </div>
 
   <div style="position: relative; margin: 5px;" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
@@ -68,8 +80,10 @@
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
-  <div #zoomDiv style="margin: 20px; width: 600px; height: 600px; border: 1px solid #d4d4d4;"
-    id="zoom"></div>
+  <div><h3 style="margin: 20px">Zoom</h3>
+    <div #zoomDiv style="margin: 20px; width: 600px; height: 600px; border: 1px solid #d4d4d4;"
+         id="zoom"></div>
+  </div>
 
 </div>
 

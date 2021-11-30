@@ -54,6 +54,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   currentHeight: number;
 
   displayBoxes: boolean;
+  boxDisplayConfirmed: boolean;
   enableEdit: boolean;
   enableDelete: boolean;
   enableZoom: boolean;
@@ -136,6 +137,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     if (this.data.restricted !== undefined) {
       this.restricted = this.data.restricted;
     }
+    this.boxDisplayConfirmed = !this.restricted;
     this.displayBoxes = false;
     this.enableEdit = false;
     this.enableDelete = false;
@@ -205,13 +207,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   toggleBoxes() {
-    this.displayBoxes = !this.displayBoxes;
-    this.clearCanvas();
-    if (this.enableDelete) {
-      this.enableDelete = false;
-    }
-    if (this.displayBoxes) {
-      this.drawBoxes();
+    if (this.boxDisplayConfirmed) {
+      this.displayBoxes = !this.displayBoxes;
+      this.clearCanvas();
+      if (this.enableDelete) {
+        this.enableDelete = false;
+      }
+      if (this.displayBoxes) {
+        this.drawBoxes();
+      }
     }
   }
 

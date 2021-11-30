@@ -55,6 +55,7 @@ export class RadiolearnListComponent implements OnInit {
 
   setPathology(newPathology: string) {
     this.pathology = newPathology;
+    this.radiolearnService.currentPathology = newPathology;
     this.loadData().then();
   }
 

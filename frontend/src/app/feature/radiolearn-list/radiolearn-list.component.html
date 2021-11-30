@@ -8,7 +8,7 @@
               id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
       </button>
       <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
-      <button class="btn btn-outline-primary" (click)="getData()" id="reloadButton">Neu Laden</button>
+      <button class="btn btn-outline-primary" style="float: right" (click)="getData()" id="reloadButton">Neu Laden</button>
       <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="loadData()">
         Bearbeitete Einträge zeigen
       </mat-slide-toggle>

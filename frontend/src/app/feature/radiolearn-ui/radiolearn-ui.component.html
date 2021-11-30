@@ -2,17 +2,21 @@
   <div class="header">
     <div class="buttons">
       <button id="back" title="Go back to list"
-              [routerLink]="['/', 'listMat']"
-              class="btn btn-outline-secondary">Zurück</button>
-      <button id="open-images"
-              (click)="openImagePopout()"
-              class="btn btn-outline-secondary">Bilder anzeigen</button>
-      <button id="normal-button"
-              (click)="makeNormal()"
-              class="btn btn-outline-secondary">Rest normal</button>
+              [routerLink]="['/', 'radiolearn', 'list']"
+              class="btn btn-outline-primary">Zurück zur Liste</button>
+      <button id="next" title="Go back to list"
+              (click)="next()"
+              class="btn btn-outline-primary">Nächste Aufnahme</button>
       <button id="submit" title="Änderungen speichern"
               (click)="submit()"
-              class="btn btn-outline-primary">Speichern</button>
+              class="btn btn-primary">Abschicken</button>
+      <button id="open-images"
+              (click)="openImagePopout()"
+              class="btn btn-outline-primary float-end">Bilder anzeigen</button>
+      <button id="normal-button"
+              (click)="makeNormal()"
+              class="btn btn-outline-primary float-end">Rest normal</button>
+
     </div>
   </div>
 
