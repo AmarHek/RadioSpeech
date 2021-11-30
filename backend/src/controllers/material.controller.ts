@@ -175,9 +175,9 @@ export function queryDocCount(req: Request, res: Response): void {
             judged: req.body.judged
         }
     }
-    console.log("Count", query);
     MaterialSchema.countDocuments(query).exec((err, count) => {
         if (err) {
+            console.log(err);
             res.status(500).send({message: err});
         } else {
             console.log(count);

@@ -1,10 +1,4 @@
-import * as M from "./templateModel";
 import {Template} from "./templateModel";
-
-export interface Pathology {
-  name: string;
-  present: boolean;
-}
 
 export interface BoundingBox {
   left: number;
@@ -34,7 +28,7 @@ export interface Material {
   };
   modality:       string;
   template:       Template;
-  pathologies:    Pathology[];
+  pathologies:    string[];
   judged:         boolean;
 }
 

@@ -7,16 +7,16 @@
       <button *ngIf="isMod" class="btn btn-outline-primary" style="float: right;"
               id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
       </button>
-      <button class="btn btn-outline-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
+      <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
       <button class="btn btn-outline-primary" (click)="getData()" id="reloadButton">Neu Laden</button>
       <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="loadData()">
         Bearbeitete Einträge zeigen
       </mat-slide-toggle>
 
       <button style="margin-left: 10px;" class="btn btn-outline-primary" id="dropdownBasic1"  ngbDropdownToggle>
-        Pathologie</button>
+        Pathologie wählen</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button (click)="setPathology('')" ngbDropdownItem><em>Nichts</em></button>
+        <button (click)="setPathology('')" ngbDropdownItem><em>Keine</em></button>
         <ng-container *ngFor="let pathology of this.possiblePathologies">
           <button (click)="setPathology(pathology)" ngbDropdownItem>{{pathology}}</button>
         </ng-container>

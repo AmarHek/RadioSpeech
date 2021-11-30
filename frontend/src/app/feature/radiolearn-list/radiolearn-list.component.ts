@@ -65,7 +65,7 @@ export class RadiolearnListComponent implements OnInit {
         this.materials = res.materials.reverse();
         }, err => {
           window.alert(err.message);
-        });
+      });
   }
 
   getLength() {
@@ -122,7 +122,7 @@ export class RadiolearnListComponent implements OnInit {
       this.backendCaller.getRandom(this.showJudged, this.pathology).subscribe(res => {
         this.openEditor(res.material._id);
       }, err => {
-        window.alert(err.message);
+        window.alert(err);
       });
   }
 
