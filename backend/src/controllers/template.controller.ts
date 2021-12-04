@@ -1,7 +1,7 @@
 import Template from '../models/template.schema';
 import fs from 'fs';
-import {Request, NextFunction, Response} from "express";
-// import { parser } from '../excel/excelParser';
+import {Request, Response} from "express";
+import {parseXLSToJson} from "../middleware";
 
 /*
 exports.createExcelDict =  (req, res, next) => {
@@ -67,6 +67,25 @@ exports.createExcelDict =  (req, res, next) => {
       });
     }
   };*/
+
+export function createExcelTemplate(req: any, res: Response) {
+    const rawData = fs.readFileSync(req.file.path);
+    const jsonString = parseXLSToJson(rawData.toString("binary"))
+    const parts = JSON.parse(jsonString);
+    const timestamp = new Date();
+    const template = new Template({
+        parts: parts,
+        name: req.body.name,
+        timestamp: timestamp
+    });
+    template.save().then(result => {
+        res.status(201).json({
+            message: "Template added successfully",
+            postId: result._id
+        });
+    });
+
+}
 
 export function createJSONTemplate(req: any, res: Response) {
   // TODO: Check JSON for errors and add sufficient messages
