@@ -224,10 +224,11 @@ export class UiBaseComponent implements OnInit {
   }
 
   reset() {
+    const reset = confirm("Formular zurücksetzen?")
+    if (!reset) return;
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }
-
 }
