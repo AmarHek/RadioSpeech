@@ -3,7 +3,6 @@ import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import {DataParserService} from "@app/core";
 
 import * as M from "@app/models/templateModel";
-import {Category} from "@app/helpers";
 
 @Component({
   selector: "app-options",
@@ -25,7 +24,6 @@ export class OptionsComponent implements OnInit {
 
   @Output() clickEvent = new EventEmitter<any>();
   @Input() layoutId: number;
-  @Input() lastFoundCat: string;
   @Input() selectedCat: string;
 
   constructor(private dataParser: DataParserService) { }

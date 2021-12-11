@@ -37,8 +37,8 @@ export class UiBaseComponent implements OnInit {
   private optionsComponent: OptionsComponent;
 
   layouts: Layout[] = [
-    {id: 0, displayName: "Default Layout"},
-    {id: 1, displayName: "Expand Categories"}
+    {id: 0, displayName: "Standard Layout"},
+    {id: 1, displayName: "Kategorien Aufklappen"}
   ]
 
   currentLayout = this.layouts[1];
@@ -150,9 +150,9 @@ export class UiBaseComponent implements OnInit {
   }
 
   onInput(ev) {
-    if(ev.inputType === "deleteContentBackward") {
-      this.reset();
-    }
+    // if(ev.inputType === "deleteContentBackward") {
+    //   this.reset();
+    // }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }

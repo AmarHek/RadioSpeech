@@ -1,56 +1,61 @@
-<div style="display: flex; height: 100vh; flex-direction: column" class="disable-select">
-  <mat-toolbar color="primary" class="app-toolbar">
-    <button mat-icon-button [routerLink]="['/', 'list']">
-      <mat-icon>arrow_back_ios</mat-icon>
-    </button>
-    <span style="font-size: 22px">Radiospeech</span>
-    <span class="spacer"></span>
+<html>
+<body>
+<div id="outer">
+  <div id="inner_fixed">
 
-    <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item *ngFor="let layout of layouts" (click)="layoutChanged(layout)">{{layout.displayName}}</button>
-    </mat-menu>
-
-    <button mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
-    <button mat-button (click)="makeNormal()">Rest normal</button>
-    <button mat-button (click)="reset()">Zurücksetzen</button>
-  </mat-toolbar>
-  <div class="spacer-div"></div>
-
-  <mat-form-field class="example-chip-list" appearance="fill">
-    <mat-label>Eingabe</mat-label>
-    <mat-chip-list #chipList>
-      <mat-chip
-        *ngFor="let chip of chips"
-        [selectable]="selectable"
-        [removable]="removable"
-        (removed)="remove(chip)">
-        {{chip}}
-        <button matChipRemove *ngIf="removable">
-          <mat-icon>cancel</mat-icon>
+      <mat-toolbar color="primary">
+        <button mat-icon-button [routerLink]="['/', 'list']">
+          <mat-icon>arrow_back_ios</mat-icon>
         </button>
-      </mat-chip>
-      <input
-        placeholder="Befund eingeben ..."
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)" [(ngModel)]="this.input" (input)="onInput($event)">
-    </mat-chip-list>
-  </mat-form-field>
+        <span style="font-size: 22px">Radiospeech</span>
+        <span class="spacer"></span>
+        <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let layout of layouts" (click)="layoutChanged(layout)">{{layout.displayName}}</button>
+        </mat-menu>
+        <button mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
+        <button mat-button (click)="makeNormal()">Rest normal</button>
+        <button mat-button (click)="reset()">Zurücksetzen</button>
+      </mat-toolbar>
 
+      <mat-form-field class="example-chip-list" appearance="fill">
+        <mat-label>Eingabe</mat-label>
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let chip of chips"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(chip)">
+            {{chip}}
+            <button matChipRemove *ngIf="removable">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Befund eingeben ..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)" [(ngModel)]="this.input" (input)="onInput($event)">
+        </mat-chip-list>
+      </mat-form-field>
 
-  <div [ngClass]="currentLayout.id==0 ? 'flex-container-default' : 'flex-container-expand'">
-    <mat-selection-list [multiple]="false" *ngIf="currentLayout.id==1">
-      <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
-        {{cat.name}}
-      </mat-list-option>
-    </mat-selection-list>
-
-    <app-options [selectedCat]="selectedCat" *ngIf="categories" class="options" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id" [lastFoundCat]="inputParser.lastFoundCat"></app-options>
-
-    <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
   </div>
+
+  <div id="inner_remaining">
+    <!--      <div [ngClass]="currentLayout.id==0 ? 'flex-container-default' : 'flex-container-expand'">-->
+        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id==1">
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+            {{cat.name}}
+          </mat-list-option>
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+            {{cat.name}}
+          </mat-list-option>
+        </mat-selection-list>
+
+        <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories" class="options" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
+        <app-report  class="report" [report]="report" [judgement]="judgement"></app-report>
+  </div>
+
 </div>
-
-
-
+</body>
+</html>
