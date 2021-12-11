@@ -4,8 +4,7 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import * as M from "@app/models/templateModel";
 import {KeyVariable, KeyClickable, ColoredText} from "@app/models";
 import { levenshtein, getAllIndexOf, getNextHighestValue, getClickableKeywords,
-         getSplitters, parseValue, countUniqueVariableKeywords, filterUniqueOptions,
-         getVariableKeywords} from "@app/helpers";
+         getSplitters, parseValue, countUniqueVariableKeywords, getVariableKeywords} from "@app/helpers";
 
 @Injectable({
   providedIn: "root"
@@ -21,10 +20,6 @@ export class InputParserService {
   foundVariables: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
 
   primaryDictionary: Set<string>;
-
-  catKeys: string[] = [];
-  lastFoundCat: string = "";
-  lastCatIndex = -1;
 
   constructor() {
   }
@@ -80,24 +75,6 @@ export class InputParserService {
     }
     for (let i = 0; i < varText.length; i++) {
       this.findVariableKeywords(varText[i], this.foundClickables[i]);
-    }
-
-    const lowerInput = input.toLowerCase();
-
-    for(const cat of this.catKeys){
-      const lowerCat = cat.toLowerCase();
-      if(lowerInput.includes(lowerCat)){
-        const foundCatAtIndex = lowerInput.lastIndexOf(lowerCat);
-        if(foundCatAtIndex > this.lastCatIndex){
-          console.log("Found category " + cat)
-          this.lastCatIndex = lowerInput.lastIndexOf(lowerCat);
-          this.lastFoundCat = cat;
-        }
-      }
-    }
-    if(input==""){
-      this.lastFoundCat = "x";
-      this.lastCatIndex = -1;
     }
   }
 
@@ -355,7 +332,6 @@ export class InputParserService {
     });
     for (const el of rootEl) {
       if (el.kind === "category") {
-        this.catKeys.push(el.name)
         const tempSelectables: KeyClickable[] = getClickableKeywords(el.selectables, el.name);
         clickKeys = clickKeys.concat(tempSelectables);
         this.extractVariableKeywords(el.selectables, el.name);
