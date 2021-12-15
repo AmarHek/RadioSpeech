@@ -14,20 +14,22 @@ export class UploadComponent implements OnInit {
   currentFile: File;
   showWarning = false;
   uploadForm: FormGroup;
+  submitted = false;
 
   constructor(private dialogRef: MatDialogRef<UploadComponent>,
               private backendCaller: BackendCallerService) { }
 
-  ngOnInit() {
-    this.initForm();
+  // convenience getter for easy access to form fields
+  get fc() {
+    return this.uploadForm.controls;
   }
 
-  initForm() {
+  ngOnInit() {
     this.uploadForm = new FormGroup({
       name: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      file: new FormControl(null, {validators: [Validators.required]}),
+      file: new FormControl(""),
       filename: new FormControl(null, {validators: [Validators.required]})
     });
   }
@@ -49,6 +51,7 @@ export class UploadComponent implements OnInit {
   }
 
   upload() {
+    this.submitted = true;
     console.log(this.uploadForm.value.file);
     const extension = getFileExtension(this.uploadForm.value.file.name);
     const postData = new FormData();

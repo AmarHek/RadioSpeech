@@ -17,3 +17,10 @@ export const mustMatch = (controlName: string, matchingControlName: string) => (
     matchingControl.setErrors(null);
   }
 };
+
+export const fileValidator = (controlName: string) => (formGroup: FormGroup) => {
+  const file = formGroup.controls[controlName];
+
+
+
+}
