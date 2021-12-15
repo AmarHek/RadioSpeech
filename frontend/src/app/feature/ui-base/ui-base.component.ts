@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
@@ -29,9 +29,6 @@ export class UiBaseComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   chips: string[] = [];
   selectedCat: string = "undefined";
-
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement> | undefined;
-
 
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
