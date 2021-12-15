@@ -47,9 +47,6 @@
           <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
             {{cat.name}}
           </mat-list-option>
-          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
-            {{cat.name}}
-          </mat-list-option>
         </mat-selection-list>
 
         <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories" [ngClass]="currentLayout.id==0 ? 'options-default' : 'options-expand'" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
