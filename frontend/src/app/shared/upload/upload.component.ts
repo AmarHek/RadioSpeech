@@ -49,6 +49,7 @@ export class UploadComponent implements OnInit {
   }
 
   upload() {
+    console.log(this.uploadForm.value.file);
     const extension = getFileExtension(this.uploadForm.value.file.name);
     const postData = new FormData();
     postData.append("name", this.uploadForm.value.name);

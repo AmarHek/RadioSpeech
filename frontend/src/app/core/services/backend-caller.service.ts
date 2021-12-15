@@ -43,22 +43,13 @@ export class BackendCallerService {
     );
   }
 
-  /*
-addTemplateFromExcel(postData: FormData) {
-  this.http
-    .post<{ message: string; templateId: string }>(
-      this.activeUrl + "excel",
-      postData
-    )
-    .subscribe((res) => {
-      let str = "";
-      if (res.templateId === "false") {
-        str =
-          "Fehler beim Hochladen der Excel Datei. Die Tabelle wurde nicht korrekt befüllt. \n Folgender Fehler ist aufgetreten: \n\n";
-      }
-      window.alert(str + res.message);
-    });
-}*/
+  addTemplateFromExcel(postData: FormData) {
+    return this.http
+      .post<{ message: string; templateId: string }>(
+        this.templateUrl + "excel/",
+        postData
+      );
+  }
 
   deleteTemplate(id: string) {
     return this.http.delete(this.templateUrl + id);

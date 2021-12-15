@@ -107,7 +107,7 @@ export interface VariableNumber extends VariableCommon {
 
 export interface VariableDate extends VariableCommon {
     kind:  "date";
-    value: Date; // TODO: Parsing from this to NgbDatestruct
+    value: NgbDateStruct; // TODO: Parsing from this to NgbDatestruct
 }
 
 export interface VariableRatio extends VariableCommon {
@@ -115,4 +115,10 @@ export interface VariableRatio extends VariableCommon {
     numerator:      number;
     denominator:    number;
     fractionDigits: number;
+}
+
+interface NgbDateStruct {
+    year: number,
+    month: number,
+    day: number
 }
