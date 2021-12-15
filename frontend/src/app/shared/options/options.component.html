@@ -3,7 +3,7 @@
     <tr *ngFor="let row of rows">
           <td *ngIf="layoutId==0" class="category"
               [style.width.%]="10"
-              [ngStyle]="{'color': row.optional ? 'grey' : 'black'}" (click)="onSelect(row)">{{row.name.charAt(0) == '1' ? row.name.substring(1) : ""}}</td>
+              [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name.charAt(0) == '1' ? row.name.substring(1) : ""}}</td>
       <ng-container *ngIf="row.name.includes(selectedCat)||layoutId==0">
         <ng-container *ngFor="let sel of row.selectables" class="col-3">
           <ng-container *ngIf="sel.kind === 'box'">

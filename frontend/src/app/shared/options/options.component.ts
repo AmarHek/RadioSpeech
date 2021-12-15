@@ -20,8 +20,6 @@ export class OptionsComponent implements OnInit {
   width: number;
   rows: M.Category[];
 
-  private selectedCategory: M.Category;
-
   @Output() clickEvent = new EventEmitter<any>();
   @Input() layoutId: number;
   @Input() selectedCat: string;
@@ -33,10 +31,6 @@ export class OptionsComponent implements OnInit {
     this.maxRowLength = 6;
     this.determineWidth();
     this.initRows();
-  }
-
-  onSelect(row: M.Category){
-    this.selectedCategory = row;
   }
 
   initRows() {
