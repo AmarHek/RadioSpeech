@@ -1,6 +1,19 @@
 $border-color: hsl(200, 70%, 80%);
 $background-color: hsl(202, 73%, 96%);
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#outer {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
 .main {
   height: 100%;
   width: 100%;
@@ -10,50 +23,117 @@ $background-color: hsl(202, 73%, 96%);
   overflow: hidden;
 }
 
-.header{
-  font-size: 120%;
-  font-weight: 700;
-  border-bottom: 1px solid $border-color;
-  height: 47px;
-}
-
 .buttons{
+  grid-area: buttons;
   padding-top: 5px;
   padding-right: 5px;
+  width: 100%;
+  float: right;
 }
 .btn{
   margin-left: 5px;
 }
 
-.content {
-  height: 99%;
-  margin: 3px;
-  background-color: white;
-  overflow: hidden;
-
-  display: grid;
-  grid-template-columns: 20% 80%;
-  grid-column-gap: 5px;
-  grid-template-areas:
-    "report  options";
+.spacer {
+  flex: 1 1 auto;
 }
 
-.report{
-  grid-area: report;
+
+.flex-container-default{
+  position: fixed;
+  top: 145px;
+  display: grid;
   height: 100%;
-  border: 1px solid $border-color;
-  background-color: $background-color;
+  overflow: auto;
+  grid-template-columns: 0 85% 0;
+  grid-template-areas: "list details";
+}
+
+#inner_fixed{
+  z-index: 0;
+  margin-bottom: 1px;
+}
+
+#inner_remaining {
+  flex-grow : 1;
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden
+}
+.mat-button{
+  font-weight: bold;
+  font-size: small;
+  background: #2c40aa;
+  margin-left: 10px;
+}
+
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.flex-container-expand{
+  display: grid;
+  grid-template-columns: 9% 79% 12%;
+  grid-template-areas: "list details report";
+}
+
+.spacer-div{
+  height: 64px;
+  flex-shrink: 0;
+}
+
+::ng-deep .mat-toolbar{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+::ng-deep .mat-form-field{
+  width: 100%;
+  overflow: hidden;
+}
+
+#normal-button {
+  font-weight: bold;
+  color: black;
+}
+
+.inputText{
+  grid-area: inputText;
+  font-weight: 700;
+  font-size: 120%;
+  text-align: center;
+  align-self: center;
+}
+
+// Everything below the header
+
+// Content: Grid for Report and Options components
+
+.mat-selection-list{
+  width: 10%;
+  height: 100%;
+  float: left;
+  overflow-y: auto;
+  border-right: 1px solid #3f51b5;
 }
 
 .options{
-  grid-area: options;
   height: 100%;
-  width: 99.5%;
-  border: 1px solid $border-color;
-  overflow-y: scroll;
-  overflow-x: auto;
-  background-color: $background-color;
+  width: 90%;
+  overflow: auto;
 }
+
+.report{
+  float: right;
+  right: 0;
+  height: 100%;
+  width: 10%;
+  overflow-y: auto;
+}
+
 
 /* width */
 ::-webkit-scrollbar {

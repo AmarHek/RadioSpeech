@@ -7,13 +7,15 @@
         <button mat-icon-button [routerLink]="['/', 'list']">
           <mat-icon>arrow_back_ios</mat-icon>
         </button>
-        <span style="font-size: 22px">Radiospeech</span>
+        <span style="font-size: 22px; cursor: pointer">RadioSpeech</span>
         <span class="spacer"></span>
         <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item *ngFor="let layout of layouts" (click)="layoutChanged(layout)">{{layout.displayName}}</button>
+          <button mat-menu-item *ngFor="let layout of layouts"
+                  (click)="layoutChanged(layout)">{{layout.displayName}}
+          </button>
         </mat-menu>
-        <button mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
+        <button *ngIf="isAdmin" mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
         <button mat-button (click)="makeNormal()">Rest normal</button>
         <button mat-button (click)="reset()">Zurücksetzen</button>
       </mat-toolbar>
@@ -43,16 +45,15 @@
 
   <div id="inner_remaining">
     <!--      <div [ngClass]="currentLayout.id==0 ? 'flex-container-default' : 'flex-container-expand'">-->
-        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id==1">
-          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
-            {{cat.name}}
-          </mat-list-option>
+        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1">
           <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
             {{cat.name}}
           </mat-list-option>
         </mat-selection-list>
 
-        <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories" [ngClass]="currentLayout.id==0 ? 'options-default' : 'options-expand'" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
+        <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories"
+                     [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
+                     (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
         <app-report  class="report" [report]="report" [judgement]="judgement"></app-report>
   </div>
 
