@@ -21,6 +21,8 @@ import { ImageDisplayComponent } from "@app/shared/image-display/image-display.c
 import { SignUpComponent } from "./sign-up/sign-up.component";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
 import { ChangeUsernameComponent } from "./change-username/change-username.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -37,19 +39,21 @@ import { ChangeUsernameComponent } from "./change-username/change-username.compo
       ChangePasswordComponent,
       ChangeUsernameComponent
     ],
-    imports: [
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      MatDialogModule,
-      MatDividerModule,
-      MatInputModule,
-      MatTooltipModule,
-      MatRadioModule,
-      MatProgressBarModule,
-      NgbModule,
-      MatCheckboxModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatRadioModule,
+    MatProgressBarModule,
+    NgbModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule
+  ],
     exports: [
         ConfirmDialogComponent,
         InputModalComponent,

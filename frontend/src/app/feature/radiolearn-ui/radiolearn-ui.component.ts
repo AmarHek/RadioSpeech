@@ -25,7 +25,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   categories: M.Category[];
   report = "";
   judgement = "";
+  selectedCat = "undefined";
 
+  submitText: string;
   private user: User;
 
   constructor(private backendCaller: BackendCallerService,
@@ -48,6 +50,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
+    if (this.isMod) {
+      this.submitText = "Speichern";
+    } else {
+      this.submitText = "Prüfen";
+    }
   }
 
   ngOnDestroy(): void {
@@ -79,6 +86,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  onSelected(cat: string){
+    this.selectedCat = cat;
   }
 
   updateText(): void {

@@ -58,7 +58,12 @@ export class UploadComponent implements OnInit {
     postData.append("name", this.uploadForm.value.name);
     postData.append("file", this.uploadForm.value.file);
     if (extension === "xlsx") {
-      // this.backendCaller.addExcel(postData);
+      this.backendCaller.addTemplateFromExcel(postData).subscribe((res) => {
+        window.alert(res.message);
+        this.uploadForm.reset();
+        this.currentFile = null;
+        this.close();
+      });
     } else if (extension === "json") {
       this.backendCaller.addTemplateFromJSON(postData).subscribe((res) => {
         window.alert(res.message);
