@@ -139,7 +139,6 @@ export function extractCategory(rows: Row[]): Category {
         }
     }
     const optional = rows[0]["Optional"] != undefined
-
     return {
         kind: "category",
         name: rows[0]["Gliederung"],
@@ -200,7 +199,6 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
     }
     return variables
 }
-
 
 function extractSelectableKeys(rows: Row[]): string[] {
     return trimArray(rows[0]["data-bau"].split(";"))

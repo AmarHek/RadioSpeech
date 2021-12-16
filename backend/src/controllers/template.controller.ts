@@ -3,6 +3,7 @@ import fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 
+
 export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const jsonString = parseXLSToJson(rawData.toString("binary"));
@@ -20,6 +21,7 @@ export function createExcelTemplate(req: any, res: Response) {
         });
     });
 }
+
 
 export function createJSONTemplate(req: any, res: Response) {
   // TODO: Check JSON for errors and add sufficient messages

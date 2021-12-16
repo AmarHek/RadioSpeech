@@ -1,6 +1,19 @@
 $border-color: hsl(200, 70%, 80%);
 $background-color: hsl(202, 73%, 96%);
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#outer {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
 .main {
   height: 100%;
   width: 100%;
@@ -8,36 +21,6 @@ $background-color: hsl(202, 73%, 96%);
   display: inline-grid;
   color: black;
   overflow: hidden;
-}
-
-// Header part and its elements
-
-.header{
-  display: grid;
-  grid-template-columns: 75% 25%;
-  grid-template-rows: 50% 50%;
-  grid-template-areas:
-  "inputArea buttons"
-  "inputText inputTex";
-
-  font-size: 120%;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 1px solid $border-color;
-  height: 90px;
-}
-
-.inputArea{
-  grid-area: inputArea;
-  padding: 5px 10px;
-  float: left;
-}
-.inputLabel{
-  padding: 5px;
-}
-.inputBox{
-  padding: 3px;
-  width: 80%;
 }
 
 .buttons{
@@ -50,6 +33,68 @@ $background-color: hsl(202, 73%, 96%);
 .btn{
   margin-left: 5px;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+.flex-container-default{
+  position: fixed;
+  top: 145px;
+  display: grid;
+  height: 100%;
+  overflow: auto;
+  grid-template-columns: 0 85% 0;
+  grid-template-areas: "list details";
+}
+
+#inner_fixed{
+  z-index: 0;
+  margin-bottom: -27px;
+}
+
+#inner_remaining {
+  flex-grow : 1;
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden
+}
+.mat-button{
+  font-weight: bold;
+  font-size: small;
+  background: #2c40aa;
+  margin-left: 10px;
+}
+
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.flex-container-expand{
+  display: grid;
+  grid-template-columns: 9% 79% 12%;
+  grid-template-areas: "list details report";
+}
+
+.spacer-div{
+  height: 64px;
+  flex-shrink: 0;
+}
+
+::ng-deep .mat-toolbar{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+::ng-deep .mat-form-field{
+  width: 100%;
+  overflow: hidden;
+}
+
 #normal-button {
   font-weight: bold;
   color: black;
@@ -60,43 +105,43 @@ $background-color: hsl(202, 73%, 96%);
   font-weight: 700;
   font-size: 120%;
   text-align: center;
+  align-self: center;
 }
 
 // Everything below the header
 
 // Content: Grid for Report and Options components
 
-.content {
-  height: 99%;
-  margin: 3px;
-  background-color: white;
-  overflow: hidden;
+.mat-selection-list{
+  width: 10%;
+  height: 100%;
+  float: left;
+  overflow-y: auto;
+  border-right: 1px solid #3f51b5;
+}
 
-  display: grid;
-  grid-template-columns: 20% 80%;
-  grid-column-gap: 5px;
-  grid-template-areas:
-    "report  options";
+.options-default{
+  height: 100%;
+  width: 90%;
+  overflow: auto;
+}
 
+.options-expand{
+  height: 100%;
+  max-width: 80%;
+  overflow: auto;
 }
 
 .report{
-  grid-area: report;
+  float: right;
+  right: 0;
   height: 100%;
-  border: 1px solid $border-color;
-  background-color: $background-color;
+  width: 10%;
   overflow-y: auto;
 }
 
-.options{
-  grid-area: options;
-  height: 100%;
-  width: 99.5%;
-  border: 1px solid $border-color;
-  overflow-y: scroll;
-  overflow-x: auto;
-  background-color: $background-color;
-}
+
+
 
 /* width */
 ::-webkit-scrollbar {

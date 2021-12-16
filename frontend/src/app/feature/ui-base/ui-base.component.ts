@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
@@ -8,6 +8,13 @@ import {DataParserService, BackendCallerService, InputParserService, Authenticat
 import {OptionsComponent} from "@app/shared";
 import {Template, Category, TopLevel, User, Role, Variable, ColoredText} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {MatChipInputEvent} from "@angular/material/chips";
+
+interface Layout{
+  id: number;
+  displayName: string;
+}
 
 @Component({
   selector: "app-workspace",
@@ -17,8 +24,24 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 export class UiBaseComponent implements OnInit {
 
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  chips: string[] = [];
+  selectedCat: string = "undefined";
+
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement> | undefined;
+
+
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
+
+  layouts: Layout[] = [
+    {id: 0, displayName: "Standard Layout"},
+    {id: 1, displayName: "Kategorien Aufklappen"}
+  ]
+
+  currentLayout = this.layouts[1];
 
   parts: TopLevel[];
   defaultParts: TopLevel[];
@@ -38,7 +61,7 @@ export class UiBaseComponent implements OnInit {
               private route: ActivatedRoute,
               private dataParser: DataParserService,
               private _location: Location,
-              private inputParser: InputParserService,
+              public inputParser: InputParserService,
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService) {
@@ -52,9 +75,39 @@ export class UiBaseComponent implements OnInit {
     return this.user && this.user.role === Role.Admin;
   }
 
+  //HANDLE CHIPS
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add new value
+    if (value) {
+      this.chips.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  remove(chip: string): void {
+    const index = this.chips.indexOf(chip);
+
+    if (index >= 0) {
+      this.chips.splice(index, 1);
+    }
+  }
+
+  onSelected(cat: string){
+    this.selectedCat = cat;
+  }
+
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
+  }
+
+  layoutChanged(newLayout: Layout){
+    this.selectedCat = "undefined";
+    this.currentLayout = newLayout;
   }
 
   // gets parts from node server via id in url
@@ -97,9 +150,9 @@ export class UiBaseComponent implements OnInit {
   }
 
   onInput(ev) {
-    if(ev.inputType === "deleteContentBackward") {
-      this.reset();
-    }
+    // if(ev.inputType === "deleteContentBackward") {
+    //   this.reset();
+    // }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
@@ -171,10 +224,11 @@ export class UiBaseComponent implements OnInit {
   }
 
   reset() {
+    const reset = confirm("Formular zurücksetzen?")
+    if (!reset) return;
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }
-
 }

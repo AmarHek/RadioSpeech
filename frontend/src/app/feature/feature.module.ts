@@ -14,8 +14,13 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTableModule} from "@angular/material/table";
+import {MatSelectModule} from "@angular/material/select";
+import {MatButtonModule} from "@angular/material/button";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -27,18 +32,23 @@ import {MatTableModule} from "@angular/material/table";
     AccountManagementComponent,
     AdminComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgbModule,
-    FormsModule,
-    SharedModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    MatPaginatorModule,
-    MatTableModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        NgbModule,
+        FormsModule,
+        SharedModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSlideToggleModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatChipsModule,
+        MatListModule,
+        MatMenuModule
+    ],
   exports: [
     RadiolearnUiComponent,
     ListComponent,

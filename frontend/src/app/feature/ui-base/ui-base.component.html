@@ -1,31 +1,61 @@
-<div class="main">
-  <div class="header">
-    <div class="inputArea">
-      <label class="inputLabel" for="input">Eingabe:</label>
-      <input class="inputBox" id="input" name="Befund" type="text" [(ngModel)]="this.input"
-             (input)="onInput($event)" placeholder="Befund eingeben...">
-    </div>
-    <div class="buttons">
-      <a *ngIf="isAdmin" class="btn btn-outline-secondary" title="Download JSON" (click)=generateDownloadJson(parts)
-         [href]="downJson" download="befund.json">Download JSON</a>
-      <button id="normal-button" (click)="makeNormal()"
-              class="btn btn-outline-secondary">Rest normal</button>
-      <button id="reset-button" (click)="reset()"
-              class="btn btn-outline-secondary">Zurücksetzen</button>
-      <button id="back" title="Go back to list" [routerLink]="['/', 'list']"
-              class="btn btn-outline-secondary">Zurück</button>
-    </div>
+<html>
+<body class="disable-select">
+<div id="outer">
+  <div id="inner_fixed">
 
-    <div class="inputText" id="inputText" >
-      <ng-container *ngIf="foundKeywords.length === 0">Detected keywords go here</ng-container>
-      <ng-container *ngFor="let keyword of foundKeywords">
-        <span [ngStyle]="{'background-color': keyword.color}">{{keyword.text}}</span>
-      <span>&nbsp;</span></ng-container>
-    </div>
+      <mat-toolbar color="primary">
+        <button mat-icon-button [routerLink]="['/', 'list']">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <span style="font-size: 22px">Radiospeech</span>
+        <span class="spacer"></span>
+        <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let layout of layouts" (click)="layoutChanged(layout)">{{layout.displayName}}</button>
+        </mat-menu>
+        <button mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
+        <button mat-button (click)="makeNormal()">Rest normal</button>
+        <button mat-button (click)="reset()">Zurücksetzen</button>
+      </mat-toolbar>
+
+      <mat-form-field class="example-chip-list" appearance="fill">
+        <mat-label>Eingabe</mat-label>
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let chip of chips"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(chip)">
+            {{chip}}
+            <button matChipRemove *ngIf="removable">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Befund eingeben ..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)" [(ngModel)]="this.input" (input)="onInput($event)">
+        </mat-chip-list>
+      </mat-form-field>
+
   </div>
 
-  <div class="content" *ngIf="categories">
-    <app-report class="report" [report]="report" [judgement]="judgement"></app-report>
-    <app-options class="options" (clickEvent)="onClick()" [categories]="categories"></app-options>
+  <div id="inner_remaining">
+    <!--      <div [ngClass]="currentLayout.id==0 ? 'flex-container-default' : 'flex-container-expand'">-->
+        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id==1">
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+            {{cat.name}}
+          </mat-list-option>
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+            {{cat.name}}
+          </mat-list-option>
+        </mat-selection-list>
+
+        <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories" [ngClass]="currentLayout.id==0 ? 'options-default' : 'options-expand'" (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
+        <app-report  class="report" [report]="report" [judgement]="judgement"></app-report>
   </div>
+
 </div>
+</body>
+</html>

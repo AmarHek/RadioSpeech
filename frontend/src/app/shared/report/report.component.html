@@ -1,17 +1,17 @@
-<div class="button">
-  <button id="copy-button" (click)="copyAll()" class="btn btn-outline-secondary">Kopieren</button>
-</div>
 
 <div class="report-text">
   <label for="report"></label>
   <textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Berichtserstellung überschrieben"
-            id="report" class="w-100" [(ngModel)]="report" #textContent ></textarea>
+            id="report"  [(ngModel)]="report" #textContent style="border: 1px solid gray"></textarea>
 </div>
 
 <div class="judgement-text">
     <label for="judgement"></label>
 		<textarea placeholder="Wenn Sie hier etwas eingeben, wird es bei der Beurteilungsgenerierung überschrieben"
-              id="judgement" class="w-100" [(ngModel)]="judgement"></textarea>
+              id="judgement"  [(ngModel)]="judgement" style="border: 1px solid gray"></textarea>
 </div>
 
+  <button style="position: fixed; bottom: 15px; right: 15px;" mat-fab color="primary" id="copy-button" (click)="copyAll()">
+    <mat-icon>content_copy</mat-icon>
+  </button>
 

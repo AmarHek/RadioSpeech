@@ -84,6 +84,12 @@ export interface VariableCommon {
     keys?:      string[][];
 }
 
+export interface CustomDate{
+    year: number;
+    month: number;
+    day: number
+}
+
 export interface VariableOC extends VariableCommon {
     kind:   "oc";
     value?: string;
