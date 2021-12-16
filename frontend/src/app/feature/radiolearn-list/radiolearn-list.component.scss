@@ -17,11 +17,17 @@ $background-color: hsl(202, 73%, 96%);
   text-align: center;
   font-size: 15pt;
   width: auto;
-  max-width: 400px;
+  max-width: 350px;
+  min-width: 200px;
   word-break: break-word;
 }
 
 .img {
+  padding: 5px;
+  text-align: center;
+}
+
+.text {
   padding: 5px;
   text-align: center;
 }
@@ -35,14 +41,13 @@ img {
   white-space: pre-line;
   padding: 10px;
   font-size: 15pt;
-  min-width: 150px;
+  width: 500px;
 }
 
 .metatable {
   border-spacing: 10px;
   border-collapse: separate;
 }
-
 .metadata {
   word-break: break-word;
 }
@@ -56,14 +61,4 @@ img {
 .row {
   padding: 10px;
   border-bottom: 1px solid $border-color;
-}
-
-.tableDiv {
-  margin: 10px;
-  width: auto;
-}
-
-.listMatTable {
-  table-layout: fixed;
-  width: auto;
 }

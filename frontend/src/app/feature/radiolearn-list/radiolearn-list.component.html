@@ -1,0 +1,130 @@
+<div class="main">
+
+  <h4>Aufnahme zum Befunden auswählen</h4>
+
+  <div class="row">
+    <div ngbDropdown class="d-inline-block">
+      <button *ngIf="isMod" class="btn btn-outline-primary" style="float: right;"
+              id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
+      </button>
+      <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
+      <button class="btn btn-outline-primary" style="float: right" (click)="getData()" id="reloadButton">Neu Laden</button>
+      <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="loadData()">
+        Bearbeitete Einträge zeigen
+      </mat-slide-toggle>
+
+      <button style="margin-left: 10px;" class="btn btn-outline-primary" id="dropdownBasic1"  ngbDropdownToggle>
+        Pathologie wählen</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button (click)="setPathology('')" ngbDropdownItem><em>Keine</em></button>
+        <ng-container *ngFor="let pathology of this.possiblePathologies">
+          <button (click)="setPathology(pathology)" ngbDropdownItem>{{pathology}}</button>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="this.materials.length > 0; else noEntry">
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+
+    <table  class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Frontalaufnahme</th>
+        <th scope="col">Lateralaufnahme</th>
+        <th scope="col">Voraufnahme</th>
+        <th *ngIf="(isMod)" scope="col">Meta</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let material of this.materials; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td class="img">
+          <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+               width="300px"
+               alt="Fehler beim Laden der Aufnahme"
+               (click)="openEditor(material._id)"/> <br>
+          <span *ngIf="isMod">{{material.scans.mainScan.filename}}</span>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
+            <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
+            <span *ngIf="isMod">{{material.scans.lateralScan.filename}}</span>
+          </ng-container>
+        </td>
+        <td class="img">
+          <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
+            <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
+                 width="300px"
+                 alt="Fehler beim Laden der Aufnahme"
+                 (click)="openEditor(material._id)"/> <br>
+            <span *ngIf="isMod">{{material.scans.preScan.filename}}</span>
+          </ng-container>
+        </td>
+        <ng-container *ngIf="(isMod)">
+          <td class="meta">
+            <table class="metatable">
+              <tr>
+                <td class="metadata">Modalität:</td>
+                <td class="metadata">{{material.modality}}</td>
+              </tr>
+              <tr>
+                <td class="metadata">Template:</td>
+                <td class="metadata">{{material.template.name}}</td>
+              </tr>
+              <tr>
+                <td class="metadata">Boxen vorhanden in:</td>
+                <td class="metadata">{{checkBoxes(material.coordinates)}}</td>
+              </tr>
+            </table>
+            <button class="btn btn-outline-primary custom-button"
+                    (click)="openEditor(material._id)">Start Befundung
+            </button>
+            <button class="btn btn-danger custom-button" (click)="delete(material._id, material.scans.id)">Entfernen
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
+        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
+        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
+        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
+      </select>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #noEntry>
+  <div style="padding: 10px;">
+    Keine Einträge gefunden.
+  </div>
+</ng-template>
+
+<ng-template #noScan><td class="text">Keine Aufnahme vorhanden</td></ng-template>
+
+

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListMaterialComponent } from './list-material.component';
+import { RadiolearnUiComponent } from './radiolearn-ui.component';
 
-describe('DisplayMaterialComponent', () => {
-  let component: ListMaterialComponent;
-  let fixture: ComponentFixture<ListMaterialComponent>;
+describe('JudgeMatComponent', () => {
+  let component: RadiolearnUiComponent;
+  let fixture: ComponentFixture<RadiolearnUiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListMaterialComponent ]
+      declarations: [ RadiolearnUiComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListMaterialComponent);
+    fixture = TestBed.createComponent(RadiolearnUiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

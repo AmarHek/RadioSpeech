@@ -51,7 +51,7 @@ body {
 
 #inner_fixed{
   z-index: 0;
-  margin-bottom: -27px;
+  margin-bottom: 1px;
 }
 
 #inner_remaining {
@@ -120,15 +120,9 @@ body {
   border-right: 1px solid #3f51b5;
 }
 
-.options-default{
+.options{
   height: 100%;
   width: 90%;
-  overflow: auto;
-}
-
-.options-expand{
-  height: 100%;
-  max-width: 80%;
   overflow: auto;
 }
 

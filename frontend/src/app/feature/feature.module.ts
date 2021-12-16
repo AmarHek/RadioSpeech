@@ -1,3 +1,11 @@
+import { SharedModule } from "@app/shared/shared.module";
+import { RadiolearnUiComponent } from "@app/feature/radiolearn-ui/radiolearn-ui.component";
+import { ListComponent } from "@app/feature/list/list.component";
+import { RadiolearnListComponent } from "@app/feature/radiolearn-list/radiolearn-list.component";
+import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
+import { AccountManagementComponent } from "./account-management/account-management.component";
+import { AdminComponent } from "@app/feature/admin/admin.component";
+
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -5,16 +13,7 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-
-import { SharedModule } from "@app/shared/shared.module";
-import { JudgeMatComponent } from "@app/feature/judge-mat/judge-mat.component";
-import { ListComponent } from "@app/feature/list/list.component";
-import { ListMaterialComponent } from "@app/feature/list-material/list-material.component";
-import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
-import { AccountManagementComponent } from "./account-management/account-management.component";
-import { AdminComponent } from "@app/feature/admin/admin.component";
-import { RadiolearnComponent } from "./radiolearn/radiolearn.component";
-import { RadiolearnViewComponent } from "./radiolearn-view/radiolearn-view.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -26,14 +25,12 @@ import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
-    JudgeMatComponent,
+    RadiolearnUiComponent,
     ListComponent,
-    ListMaterialComponent,
+    RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent,
-    RadiolearnComponent,
-    RadiolearnViewComponent
+    AdminComponent
   ],
     imports: [
         CommonModule,
@@ -43,6 +40,7 @@ import {MatMenuModule} from "@angular/material/menu";
         SharedModule,
         ReactiveFormsModule,
         MatCheckboxModule,
+        MatSlideToggleModule,
         MatSelectModule,
         MatButtonModule,
         MatToolbarModule,
@@ -52,14 +50,12 @@ import {MatMenuModule} from "@angular/material/menu";
         MatMenuModule
     ],
   exports: [
-    JudgeMatComponent,
+    RadiolearnUiComponent,
     ListComponent,
-    ListMaterialComponent,
+    RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent,
-    RadiolearnComponent,
-    RadiolearnViewComponent
+    AdminComponent
   ]
 })
 export class FeatureModule { }

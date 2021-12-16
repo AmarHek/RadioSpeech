@@ -1,0 +1,39 @@
+<html>
+<body class="disable-select">
+<div id="outer">
+  <div id="inner_fixed">
+    <mat-toolbar color="primary">
+      <button mat-icon-button [routerLink]="['/', 'radiolearn', 'list']">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <span [routerLink]="['/', 'radiolearn', 'list']" style="font-size: 22px; cursor: pointer">RadioLearn</span>
+      <span class="spacer"></span>
+
+      <button mat-button id="next"
+              (click)="next()">Nächste Aufnahme</button>
+      <button mat-button id="submit"
+              (click)="submit()">{{submitText}}
+      </button>
+      <button mat-button id="open-images"
+              (click)="openImagePopout()">Scans anzeigen
+      </button>
+      <button mat-button
+        id="normal-button"
+              (click)="makeNormal()"
+              class="btn btn-outline-primary float-end">Rest normal
+      </button>
+    </mat-toolbar>
+  </div>
+
+  <div id="inner_remaining">
+
+    <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories"
+                 class="options"
+                 (clickEvent)="onClick()" [categories]="categories" [layoutId]="0"></app-options>
+    <app-report  class="report" [report]="report" [judgement]="judgement"></app-report>
+  </div>
+
+</div>
+</body>
+</html>
+

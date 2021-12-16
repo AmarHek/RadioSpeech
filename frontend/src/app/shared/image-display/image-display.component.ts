@@ -54,6 +54,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   currentHeight: number;
 
   displayBoxes: boolean;
+  boxDisplayConfirmed: boolean;
   enableEdit: boolean;
   enableDelete: boolean;
   enableZoom: boolean;
@@ -68,7 +69,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   @HostListener("mousewheel", ["$event"])
   scroll(event: WheelEvent) {
-    console.log("Entered mouse wheel");
     if(this.enableZoom) {
       const wheelDelta = Math.max(-1, Math.min(1, (event.deltaY || -event.detail)));
       if (wheelDelta > 0) {
@@ -137,6 +137,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     if (this.data.restricted !== undefined) {
       this.restricted = this.data.restricted;
     }
+    this.boxDisplayConfirmed = !this.restricted;
     this.displayBoxes = false;
     this.enableEdit = false;
     this.enableDelete = false;
@@ -206,13 +207,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   toggleBoxes() {
-    this.displayBoxes = !this.displayBoxes;
-    this.clearCanvas();
-    if (this.enableDelete) {
-      this.enableDelete = false;
-    }
-    if (this.displayBoxes) {
-      this.drawBoxes();
+    if (this.boxDisplayConfirmed) {
+      this.displayBoxes = !this.displayBoxes;
+      this.clearCanvas();
+      if (this.enableDelete) {
+        this.enableDelete = false;
+      }
+      if (this.displayBoxes) {
+        this.drawBoxes();
+      }
     }
   }
 
@@ -251,7 +254,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     const rect = this.drawLayerElement.getBoundingClientRect();
     const parent = this;
     for (const bbox of coordinates) {
-      console.log(bbox);
       this.deleteLayerElement.addEventListener("mousemove", (e) => {
         const x = bbox.left * parent.currentScaleFactor;
         const y = bbox.top * parent.currentScaleFactor;
@@ -279,7 +281,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
           y <= e.clientY - rect.top &&
           e.clientY - rect.top <= y + h
         ) {
-          console.log("It works!");
           parent.removeAlert(bbox);
         }
       });

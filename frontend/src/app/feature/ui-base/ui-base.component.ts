@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
@@ -24,19 +24,21 @@ interface Layout{
 
 export class UiBaseComponent implements OnInit {
 
-  selectable = true;
-  removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  chips: string[] = [];
-  selectedCat: string = "undefined";
+  @ViewChild("fruitInput") fruitInput: ElementRef<HTMLInputElement> | undefined;
 
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  chips: string[] = [];
+  selectedCat = "undefined";
+
   layouts: Layout[] = [
     {id: 0, displayName: "Standard Layout"},
     {id: 1, displayName: "Kategorien Aufklappen"}
-  ]
+  ];
 
   currentLayout = this.layouts[1];
 
@@ -52,7 +54,7 @@ export class UiBaseComponent implements OnInit {
 
   downJson: SafeUrl;
 
-  user: User;
+  private user: User;
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -72,9 +74,14 @@ export class UiBaseComponent implements OnInit {
     return this.user && this.user.role === Role.Admin;
   }
 
+  ngOnInit() {
+    this.authenticationService.user.subscribe(x => this.user = x);
+    this.getData();
+  }
+
   //HANDLE CHIPS
   add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value = (event.value || "").trim();
 
     // Add new value
     if (value) {
@@ -82,7 +89,7 @@ export class UiBaseComponent implements OnInit {
     }
 
     // Clear the input value
-    event.chipInput!.clear();
+    event.chipInput?.clear();
   }
 
   remove(chip: string): void {
@@ -95,11 +102,6 @@ export class UiBaseComponent implements OnInit {
 
   onSelected(cat: string){
     this.selectedCat = cat;
-  }
-
-  ngOnInit() {
-    this.authenticationService.user.subscribe(x => this.user = x);
-    this.getData();
   }
 
   layoutChanged(newLayout: Layout){
@@ -221,8 +223,10 @@ export class UiBaseComponent implements OnInit {
   }
 
   reset() {
-    const reset = confirm("Formular zurücksetzen?")
-    if (!reset) return;
+    const reset = confirm("Formular zurücksetzen?");
+    if (!reset) {
+      return;
+    }
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 1);

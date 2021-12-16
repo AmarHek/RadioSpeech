@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import * as O from "../../helpers/old_model";
 import * as G from "../../models/generator";
 import * as M from "../../models/templateModel";
 
@@ -10,24 +9,6 @@ import * as M from "../../models/templateModel";
 export class DataParserService {
 
   constructor() {}
-
-  convertModel(parts: O.TopLevel[], parseOptional: boolean): M.TopLevel[] {
-    const newParts: M.TopLevel[] = [];
-    for (const part of parts) {
-      if (part.kind === "block") {
-        newParts.push(M.convertBlock(part));
-      } else if (part.kind === "enumeration") {
-        newParts.push(M.convertEnum(part));
-      } else if (part.kind === "category") {
-        let newPart = M.convertCategory(part);
-        if (parseOptional) {
-          newPart = this.parseOptionalCategory(newPart);
-        }
-        newParts.push(newPart);
-      }
-    }
-    return newParts;
-  }
 
   extractCategories(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
     const res: M.Category[] = [];
@@ -68,8 +49,8 @@ export class DataParserService {
 
     for (const category of categories) {
       const splits = this.getSplits(category, maxRowLength);
-      const split_cats = this.splitCategory(category, splits);
-      rows = rows.concat(split_cats);
+      const splitCats = this.splitCategory(category, splits);
+      rows = rows.concat(splitCats);
     }
 
     return rows;
@@ -90,13 +71,13 @@ export class DataParserService {
         //0 => don't show this category name as its the n-th row for a category
         name = "0"+category.name;
       }
-      let temp_sels: M.Selectable[] = [];
-      temp_sels = category.selectables.slice(pos, pos + split);
+      let tempSels: M.Selectable[] = [];
+      tempSels = category.selectables.slice(pos, pos + split);
       res.push({
         kind: "category",
-        name: name,
+        name,
         optional: category.optional,
-        selectables: temp_sels
+        selectables: tempSels
       });
       pos += split;
     }

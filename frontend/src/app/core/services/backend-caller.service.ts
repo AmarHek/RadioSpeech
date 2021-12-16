@@ -43,14 +43,13 @@ export class BackendCallerService {
     );
   }
 
-  addTemplateFromExcel(excelData: FormData): Observable<{message: string; templateId: string }> {
-    console.log(this.templateUrl+"excel/")
-    return this.http.post<{message: string; templateId: string}>(
-      this.templateUrl + "excel/",
-      excelData
-    );
+  addTemplateFromExcel(postData: FormData) {
+    return this.http
+      .post<{ message: string; templateId: string }>(
+        this.templateUrl + "excel/",
+        postData
+      );
   }
-
 
   deleteTemplate(id: string) {
     return this.http.delete(this.templateUrl + id);
@@ -72,13 +71,17 @@ export class BackendCallerService {
 
   addMaterial(formData: FormData): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.materialUrl,
+      this.materialUrl + "add/",
       formData
     );
   }
 
-  getMaterialById(id: string): Observable<Material> {
-    return this.http.get<Material>(this.materialUrl + id);
+  updateMaterial(material: Material) {
+    return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
+      template: material.template,
+      coordinates: material.coordinates,
+      judged: true
+    });
   }
 
   deleteMaterial(objectID: string, scanID: string): Observable<{ message: string }> {
@@ -86,25 +89,33 @@ export class BackendCallerService {
       {objectID, scanID});
   }
 
-  getMaterials(): Observable<Material[]> {
-    return this.http.get<Material[]>(
-      this.materialUrl + "sample/"
-    );
+  getMaterialById(id: string) {
+    return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
-  queryMaterials(query: Record<string, unknown>): Observable<Material[]> {
-    return this.http.post<Material[]>(
-      this.materialUrl + "query/",
+  listByQuery(skip: number, length: number, judged: boolean, pathology="") {
+    const query = {skip, length, judged, pathology};
+    // skip: mongoose skip parameter, how many documents to skip
+    // length: how many documents to return
+    return this.http.post<{message: string; materials: Material[]}>(
+      this.materialUrl + "listByQuery/",
+      query);
+  }
+
+  getRandom(judged: boolean, pathology = "") {
+    const query = {judged, pathology};
+    return this.http.post<{message: string; material: Material}>(
+      this.materialUrl + "random/",
       query
     );
   }
 
-  updateMaterial(material: Material) {
-    return this.http.put<{message: string}>(this.materialUrl + material._id, {
-      template: material.template,
-      coordinates: material.coordinates,
-      judged: true
-    });
+  getDocCount(judged: boolean, pathology: string = "") {
+    const query = {judged, pathology};
+    return this.http.post<{message: string, count: number}>(
+      this.materialUrl + "queryDocCount/",
+      query
+    );
   }
 
 }

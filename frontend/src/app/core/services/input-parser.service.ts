@@ -95,7 +95,9 @@ export class InputParserService {
       }
     }
     // this removes keywords that are substrings of other keywords (e.g. "Aufnahme" and "Aufnahme von heute")
+    console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
+    console.log(foundKeywordsTemp);
     foundKeywordsTemp.sort(this.compareKeywords);
     this.foundClickables = foundKeywordsTemp;
   }

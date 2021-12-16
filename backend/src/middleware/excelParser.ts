@@ -84,7 +84,7 @@ export function parseXLSToJson(binary_string: string): string {
 
 export function extractBlock(row: Row): Block {
     const judgementText = row["Text Beurteilung"] == undefined ? null as any : row["Text Beurteilung"]
-    let text = row["Text Befund"]
+    const text = row["Text Befund"]
     return {
         kind: "block",
         text: text,
@@ -93,7 +93,7 @@ export function extractBlock(row: Row): Block {
 }
 
 export function extractEnumeration(row: Row): Enumeration {
-    let judgementText = row["Text Beurteilung"] == undefined ? null as any : row["Text Beurteilung"];
+    const judgementText = row["Text Beurteilung"] == undefined ? null as any : row["Text Beurteilung"];
     return {
         kind: "enumeration",
         text: row["Text Befund"],
@@ -109,12 +109,12 @@ export function extractCategory(rows: Row[]): Category {
         const row = rows[i];
         if (row["Choice-Gruppe"] != undefined) {
             //Find relevant rows for group that starts here, and extract group
-            let relevantRows = new Array<Row>();
+            const relevantRows = new Array<Row>();
             let j = i + 1;
-            let currentChoiceGroup = row["Choice-Gruppe"];
+            const currentChoiceGroup = row["Choice-Gruppe"];
             relevantRows.push(row)
             for (; j < rows.length; j++) {
-                let subRow = rows[j]
+                const subRow = rows[j]
                 if (subRow["Choice-Gruppe"] != undefined && subRow["Choice-Gruppe"] != currentChoiceGroup) break;//new choice group
                 if (subRow["Typ"] != undefined || subRow["Gliederung"] != undefined) break; // new TopLevel
                 if (subRow["Choice-Gruppe"] == undefined && subRow["Baustein Befund"] != undefined) break; //checkbox
@@ -125,7 +125,7 @@ export function extractCategory(rows: Row[]): Category {
             selectables.push(group)
         } else {
             //Find relevant rows for checkbox that starts here, and extract checkbox
-            let relevantRows = new Array<Row>();
+            const relevantRows = new Array<Row>();
             let j = i + 1;
             relevantRows.push(row)
             for (; j < rows.length; j++) {
@@ -138,8 +138,7 @@ export function extractCategory(rows: Row[]): Category {
             selectables.push(box)
         }
     }
-    let optional = rows[0]["Optional"] != undefined
-
+    const optional = rows[0]["Optional"] != undefined
     return {
         kind: "category",
         name: rows[0]["Gliederung"],
@@ -177,7 +176,7 @@ export function extractGroup(rows: Row[]): Group {
 export function extractOption(rows: Row[]): Option {
     const variables = extractSelectableVariables(rows)
     const keys = extractSelectableKeys(rows)
-    let text = rows[0]["Text Befund"]
+    const text = rows[0]["Text Befund"]
     const judgementText = rows[0]["Text Beurteilung"] == undefined ? null as any : rows[0]["Text Beurteilung"]
     return {
         keys: keys,
@@ -201,7 +200,6 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
     return variables
 }
 
-
 function extractSelectableKeys(rows: Row[]): string[] {
     return trimArray(rows[0]["data-bau"].split(";"))
 }
@@ -210,8 +208,8 @@ function extractBox(rows: Row[]): CheckBox {
     const variables = extractSelectableVariables(rows)
     const keys = extractSelectableKeys(rows)
 
-    let judgementText = rows[0]["Text Beurteilung"] == undefined ? null as any : rows[0]["Text Beurteilung"]
-    let enumeration = rows[0]["Aufzählung"] == undefined ? null as any : rows[0]["Aufzählung"]
+    const judgementText = rows[0]["Text Beurteilung"] == undefined ? null as any : rows[0]["Text Beurteilung"]
+    const enumeration = rows[0]["Aufzählung"] == undefined ? null as any : rows[0]["Aufzählung"]
 
     let text = null as any
     if (rows[0]["Text Befund"] != undefined) {
@@ -361,7 +359,3 @@ function trim2DArray(array: string[][]): string[][] {
     }
     return array
 }
-
-
-
-

@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
               private authenticationService: AuthenticationService
   ) {
     if (this.authenticationService.userValue) {
-      this.router.navigate(["/"]);
+      this.router.navigate(["/"]).then();
     }
   }
 
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         next: () => {
           // get return url from query parameters or default to home page
           const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
-          this.router.navigateByUrl(returnUrl);
+          this.router.navigateByUrl(returnUrl).then();
         },
         error: error => {
           this.error = error;

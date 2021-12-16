@@ -20,7 +20,7 @@ const materialSchema = new mongoose.Schema({
     },
     modality: { type: String, required: true },
     template: { type: mongoose.Schema.Types.Mixed, required: true},
-    pathologies: [{ name: String, present: Boolean }],
+    pathologies: {type: [String]},
     judged: { type: Boolean }
 });
 
