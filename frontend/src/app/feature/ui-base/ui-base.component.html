@@ -7,7 +7,7 @@
         <button mat-icon-button [routerLink]="['/', 'list']">
           <mat-icon>arrow_back_ios</mat-icon>
         </button>
-        <span style="font-size: 22px; cursor: pointer">RadioSpeech</span>
+        <span style="font-size: 22px; cursor: pointer" [routerLink]="['/', 'list']">RadioSpeech</span>
         <span class="spacer"></span>
         <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
         <mat-menu #menu="matMenu">

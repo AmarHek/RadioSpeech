@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {MatDialogRef} from "@angular/material/dialog";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {BackendCallerService} from "@app/core";
-import {getFileExtension} from "@app/helpers";
+import {fileValidator, getFileExtension} from "@app/helpers";
 
 @Component({
   selector: "app-upload",
@@ -11,12 +11,12 @@ import {getFileExtension} from "@app/helpers";
   styleUrls: ["./upload.component.scss"]
 })
 export class UploadComponent implements OnInit {
-  currentFile: File;
-  showWarning = false;
+
   uploadForm: FormGroup;
   submitted = false;
 
   constructor(private dialogRef: MatDialogRef<UploadComponent>,
+              private formBuilder: FormBuilder,
               private backendCaller: BackendCallerService) { }
 
   // convenience getter for easy access to form fields
@@ -24,58 +24,51 @@ export class UploadComponent implements OnInit {
     return this.uploadForm.controls;
   }
 
+  get file() {
+    return this.uploadForm.get("file");
+  }
+
   ngOnInit() {
-    this.uploadForm = new FormGroup({
+    this.uploadForm = this.formBuilder.group({
       name: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      file: new FormControl(""),
-      filename: new FormControl(null, {validators: [Validators.required]})
+      file: new FormControl(null, {validators: [Validators.required]})
+    }, {
+      validator: fileValidator("file")
     });
   }
 
   onFileSelect(event) {
     if (event.target.files.length > 0) {
-      this.currentFile = event.target.files[0];
-      this.checkFileExtension(this.currentFile);
-      this.uploadForm.get("file").setValue(this.currentFile);
+      this.uploadForm.get("file").setValue(event.target.files[0]);
     }
   }
 
-  checkFileExtension(file: File) {
-    this.showWarning = false;
-    const extension = getFileExtension(file.name);
-    if (!(extension === "xlsx" || extension === "json")) {
-      this.showWarning = true;
-    }
-  }
-
-  upload() {
+  onSubmit() {
     this.submitted = true;
-    console.log(this.uploadForm.value.file);
-    const extension = getFileExtension(this.uploadForm.value.file.name);
-    const postData = new FormData();
-    postData.append("name", this.uploadForm.value.name);
-    postData.append("file", this.uploadForm.value.file);
-    if (extension === "xlsx") {
-      this.backendCaller.addTemplateFromExcel(postData).subscribe((res) => {
-        window.alert(res.message);
-        this.uploadForm.reset();
-        this.currentFile = null;
-        this.close();
-      });
-    } else if (extension === "json") {
-      this.backendCaller.addTemplateFromJSON(postData).subscribe((res) => {
-        window.alert(res.message);
-        this.uploadForm.reset();
-        this.currentFile = null;
-        this.close();
-      });
+    if (this.uploadForm.invalid) {
+      return;
     } else {
-      window.alert("Nicht unterstützter Dateityp! Datei muss .xlsx oder .json sein.");
-      this.uploadForm.reset();
-      this.currentFile = null;
-      this.close();
+      const extension = getFileExtension(this.uploadForm.value.file.name);
+      const postData = new FormData();
+      postData.append("name", this.uploadForm.value.name);
+      postData.append("file", this.uploadForm.value.file);
+      if (extension === "xlsx") {
+        this.backendCaller.addTemplateFromExcel(postData)
+          .subscribe((res) => {
+          window.alert(res.message);
+          this.uploadForm.reset();
+          this.close();
+        });
+      } else if (extension === "json") {
+        this.backendCaller.addTemplateFromJSON(postData)
+          .subscribe((res) => {
+          window.alert(res.message);
+          this.uploadForm.reset();
+          this.close();
+        });
+      }
     }
   }
 

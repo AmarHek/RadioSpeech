@@ -1,4 +1,6 @@
 import { FormGroup } from "@angular/forms";
+import {getFileExtension} from "@app/helpers/util";
+
 
 // custom validator to check that two fields match
 export const mustMatch = (controlName: string, matchingControlName: string) => (formGroup: FormGroup) => {
@@ -19,8 +21,21 @@ export const mustMatch = (controlName: string, matchingControlName: string) => (
 };
 
 export const fileValidator = (controlName: string) => (formGroup: FormGroup) => {
-  const file = formGroup.controls[controlName];
+  const allowedFiles = ["json", "xlsx"];
+  const control = formGroup.controls[controlName];
+
+  if (control.errors && !control.errors.filetype) {
+    return;
+  }
+
+  const extension = getFileExtension(control.value.name);
+  if(!allowedFiles.includes(extension)) {
+    control.setErrors({filetype: true});
+    return ({filetype: true});
+  } else {
+    control.setErrors(null);
+    return null;
+  }
 
 
-
-}
+};

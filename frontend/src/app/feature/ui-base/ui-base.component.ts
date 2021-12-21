@@ -60,7 +60,7 @@ export class UiBaseComponent implements OnInit {
               private route: ActivatedRoute,
               private dataParser: DataParserService,
               private _location: Location,
-              public inputParser: InputParserService,
+              private inputParser: InputParserService,
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService) {
