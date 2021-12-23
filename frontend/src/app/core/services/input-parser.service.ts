@@ -182,6 +182,8 @@ export class InputParserService {
       );
       toRemove = toRemove.concat(overlap);
     }
+    console.log("found:", foundKeywords);
+    console.log("remove:", toRemove);
     for (const removable of toRemove) {
       fKCopy.splice(fKCopy.indexOf(removable), 1);
     }
@@ -232,83 +234,85 @@ export class InputParserService {
         //const foundVariables: KeyVariable[] = InputParserService.filterUniqueOptions(
         //  this.foundVariables.get(clickKey.category + " " + clickKey.name));
         // check text Color of clickKey for variable filling
-        const numberFoundUniqueVariables = countUniqueVariableKeywords(foundVariables);
-        let color: string;
-        // TODO: Think how to handle the coloring. Also text that *could* be a keyword goes unnoticed like this
-        // TODO: But do we need feedback for such text or is ignoring sufficient?
-        if (clickKey.nVariables === numberFoundUniqueVariables) {
-          color = "green";
-        } else if (clickKey.nVariables < numberFoundUniqueVariables) {
-          color = "yellow";
-        } else {
-          color = "red";
-        }
-        // finally push the result (must be here because variables must come right after to preserve text order
-        result.push({
-          text: clickKey.synonym,
-          color
-        });
-        // now handle the variables
-        for (const varKey of foundVariables) {
-          // easy for oc and mc: add textAfter if in substring (orange), add name (lightgreen)
-          // and add textAfter if included (orange)
-          if (varKey.kind === "mc" || varKey.kind === "oc") {
-            const substring = input.substring(varKey.position, varKey.positionEnd);
-            if (varKey.textBefore.length > 0 && substring.includes(varKey.textBefore)) {
+        if (foundVariables !== undefined) {
+          const numberFoundUniqueVariables = countUniqueVariableKeywords(foundVariables);
+          let color: string;
+          // TODO: Think how to handle the coloring. Also text that *could* be a keyword goes unnoticed like this
+          // TODO: But do we need feedback for such text or is ignoring sufficient?
+          if (clickKey.nVariables === numberFoundUniqueVariables) {
+            color = "green";
+          } else if (clickKey.nVariables < numberFoundUniqueVariables) {
+            color = "yellow";
+          } else {
+            color = "red";
+          }
+          // finally, push the result (must be here because variables must come right after to preserve text order
+          result.push({
+            text: clickKey.synonym,
+            color
+          });
+          // now handle the variables
+          for (const varKey of foundVariables) {
+            // easy for oc and mc: add textAfter if in substring (orange), add name (lightgreen)
+            // and add textAfter if included (orange)
+            if (varKey.kind === "mc" || varKey.kind === "oc") {
+              const substring = input.substring(varKey.position, varKey.positionEnd);
+              if (varKey.textBefore.length > 0 && substring.includes(varKey.textBefore)) {
+                result.push({
+                  text: varKey.textBefore,
+                  color: "orange"
+                });
+              }
+              result.push({
+                text: varKey.name,
+                color: "lightgreen"
+              });
+              if (varKey.textAfter.length > 0 && substring.includes(varKey.textAfter)) {
+                result.push({
+                  text: varKey.textAfter,
+                  color: "orange"
+                });
+              }
+            } else {
+              // remaining variables are easy: add textBefore, since always present
+              // color the value text lightblue if parsing did not work (i.e. value is undefined) otherwise lightgreen
+              // add textAfter, if exists
               result.push({
                 text: varKey.textBefore,
                 color: "orange"
               });
-            }
-            result.push({
-              text: varKey.name,
-              color: "lightgreen"
-            });
-            if (varKey.textAfter.length > 0 && substring.includes(varKey.textAfter)) {
-              result.push({
-                text: varKey.textAfter,
-                color: "orange"
-              });
-            }
-          } else {
-            // remaining variables are easy: add textBefore, since always present
-            // color the value text lightblue if parsing did not work (i.e. value is undefined) otherwise lightgreen
-            // add textAfter, if exists
-            result.push({
-              text: varKey.textBefore,
-              color: "orange"
-            });
-            // check the value
-            if (varKey.value === undefined) {
-              // if value could not be parsed, just add the text as light blue
-              result.push({
-                text: input.substring(varKey.position + 1 + varKey.textBefore.length, varKey.positionEnd),
-                color: "lightblue"
-              });
-            } else {
-              // otherwise parse the values accordingly
-              let resultText: string;
-              if (varKey.kind === "date") {
-                const value = varKey.value as NgbDateStruct;
-                resultText = value.day + "." + value.month + "." + value.year;
-              } else if (varKey.kind === "ratio") {
-                const value = varKey.value as [number, number];
-                resultText = value[0] + "/" + value[1];
+              // check the value
+              if (varKey.value === undefined) {
+                // if value could not be parsed, just add the text as light blue
+                result.push({
+                  text: input.substring(varKey.position + 1 + varKey.textBefore.length, varKey.positionEnd),
+                  color: "lightblue"
+                });
               } else {
-                resultText = varKey.value as string;
-              }
-              result.push({
-                text: resultText,
-                color: "lightgreen"
-              });
-            }
-            // check textAfter
-            if (varKey.textAfter.length > 0) {
-              result.push({
-                  text: varKey.textAfter,
-                  color: "orange"
+                // otherwise parse the values accordingly
+                let resultText: string;
+                if (varKey.kind === "date") {
+                  const value = varKey.value as NgbDateStruct;
+                  resultText = value.day + "." + value.month + "." + value.year;
+                } else if (varKey.kind === "ratio") {
+                  const value = varKey.value as [number, number];
+                  resultText = value[0] + "/" + value[1];
+                } else {
+                  resultText = varKey.value as string;
                 }
-              );
+                result.push({
+                  text: resultText,
+                  color: "lightgreen"
+                });
+              }
+              // check textAfter
+              if (varKey.textAfter.length > 0) {
+                result.push({
+                    text: varKey.textAfter,
+                    color: "orange"
+                  }
+                );
+              }
             }
           }
         }

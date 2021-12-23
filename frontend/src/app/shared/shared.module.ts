@@ -23,6 +23,7 @@ import { ChangePasswordComponent } from "./change-password/change-password.compo
 import { ChangeUsernameComponent } from "./change-username/change-username.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import { RadiolearnDifferencesComponent } from './radiolearn-differences/radiolearn-differences.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {MatIconModule} from "@angular/material/icon";
       ImageDisplayComponent,
       SignUpComponent,
       ChangePasswordComponent,
-      ChangeUsernameComponent
+      ChangeUsernameComponent,
+      RadiolearnDifferencesComponent
     ],
   imports: [
     CommonModule,

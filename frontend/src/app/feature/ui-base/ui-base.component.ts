@@ -40,7 +40,7 @@ export class UiBaseComponent implements OnInit {
     {id: 1, displayName: "Kategorien Aufklappen"}
   ];
 
-  currentLayout = this.layouts[1];
+  currentLayout = this.layouts[0];
 
   parts: TopLevel[];
   defaultParts: TopLevel[];
@@ -222,11 +222,16 @@ export class UiBaseComponent implements OnInit {
     this.input = "";
   }
 
-  reset() {
-    const reset = confirm("Formular zurücksetzen?");
+  resetDialog() {
+    const reset = confirm("Formular zurücksetzen=");
     if (!reset) {
       return;
+    } else {
+      this.reset();
     }
+  }
+
+  reset() {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 1);

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 
 import * as M from "@app/models/templateModel";
@@ -9,8 +9,9 @@ import {
   POPOUT_MODALS,
   PopoutData,
   BackendCallerService,
-  AuthenticationService, RadiolearnService
+  AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
+import {OptionsComponent} from "@app/shared";
 
 @Component({
   selector: "app-judge-mat",
@@ -18,6 +19,8 @@ import {
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
 export class RadiolearnUiComponent implements OnInit, OnDestroy {
+
+  @ViewChild(OptionsComponent) optionChild: OptionsComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -36,14 +39,15 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               private dataParser: DataParserService,
               private popoutService: PopoutService,
               private authenticationService: AuthenticationService,
-              private radiolearnService: RadiolearnService) { }
+              private radiolearnService: RadiolearnService,
+              private dialogService: MatDialogService) { }
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
   @HostListener("window:beforeunload", ["$event"])
-  onWindowClose(event: Event) {
+  onWindowClose() {
     this.popoutService.closePopoutModal();
   }
 
@@ -85,6 +89,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
           window.alert(err.message);
         });
       }
+      if (this.optionChild !== undefined) {
+        this.optionChild.initRows();
+      }
     });
   }
 
@@ -122,7 +129,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   save() {
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
-      this.router.navigateByUrl("/radiolearn/list").then();
+      this.next();
     });
   }
 
@@ -131,6 +138,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
     POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
+
     this.next();
   }
 

@@ -12,6 +12,9 @@ import * as M from "@app/models/templateModel";
 export class OptionsComponent implements OnInit {
 
   @Input() categories: M.Category[];
+  @Output() clickEvent = new EventEmitter<any>();
+  @Input() layoutId: number;
+  @Input() selectedCat: string;
 
   // TODO Make these configurable
 
@@ -19,10 +22,6 @@ export class OptionsComponent implements OnInit {
   maxRowLength: number;
   width: number;
   rows: M.Category[];
-
-  @Output() clickEvent = new EventEmitter<any>();
-  @Input() layoutId: number;
-  @Input() selectedCat: string;
 
   constructor(private dataParser: DataParserService) { }
 
@@ -63,6 +62,8 @@ export class OptionsComponent implements OnInit {
         sel.value = null;
       }
     }
+    console.log(this.categories);
+    console.log(this.rows);
     this.clickEvent.emit();
   }
 
