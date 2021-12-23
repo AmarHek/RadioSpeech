@@ -23,7 +23,7 @@ import { ChangePasswordComponent } from "./change-password/change-password.compo
 import { ChangeUsernameComponent } from "./change-username/change-username.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import { RadiolearnDifferencesComponent } from './radiolearn-differences/radiolearn-differences.component';
+import { RadiolearnErrorsComponent } from './radiolearn-errors/radiolearn-errors.component';
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { RadiolearnDifferencesComponent } from './radiolearn-differences/radiole
       SignUpComponent,
       ChangePasswordComponent,
       ChangeUsernameComponent,
-      RadiolearnDifferencesComponent
+      RadiolearnErrorsComponent
     ],
   imports: [
     CommonModule,

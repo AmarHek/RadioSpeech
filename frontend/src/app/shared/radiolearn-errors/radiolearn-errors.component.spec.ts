@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RadiolearnDifferencesComponent } from './radiolearn-differences.component';
+import { RadiolearnErrorsComponent } from './radiolearn-errors.component';
 
 describe('RadiolearnDifferencesComponent', () => {
-  let component: RadiolearnDifferencesComponent;
-  let fixture: ComponentFixture<RadiolearnDifferencesComponent>;
+  let component: RadiolearnErrorsComponent;
+  let fixture: ComponentFixture<RadiolearnErrorsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RadiolearnDifferencesComponent ]
+      declarations: [ RadiolearnErrorsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RadiolearnDifferencesComponent);
+    fixture = TestBed.createComponent(RadiolearnErrorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
