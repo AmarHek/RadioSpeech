@@ -12,6 +12,7 @@ import {
   AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
 import {OptionsComponent} from "@app/shared";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: "app-judge-mat",
@@ -40,6 +41,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               private popoutService: PopoutService,
               private authenticationService: AuthenticationService,
               private radiolearnService: RadiolearnService,
+              private dialog: MatDialog,
               private dialogService: MatDialogService) { }
 
   get isMod() {
@@ -139,7 +141,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
 
-    this.next();
+    const dialogConfig = this.dialogService.defaultConfig("1000px");
+    const dialogRef = this.dialog.open()
+
   }
 
   next() {

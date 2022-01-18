@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import {BoundingBox, Template, Variable} from "@app/models";
+import {BoundingBox, Category, Template, Variable} from "@app/models";
+import {CategoryError, SelectableError, VariableError} from "@app/models/errorModel";
 
 @Injectable({
   providedIn: "root"
@@ -72,8 +73,39 @@ export class RadiolearnService {
     return variables;
   }
 
-  compareTemplates(originalTemplate: Template, studentTemplate: Template) {
+  compareTemplates(originalTemplate: Template, studentTemplate: Template): CategoryError[] {
+    const errors = [];
+
+    // check if templates have same length
+    if (originalTemplate.parts.length !== studentTemplate.parts.length) {
+      return [];
+    }
+
+    // iterate through categories
+    for (let i = 0; i < originalTemplate.parts.length; i++) {
+      if (originalTemplate.parts[i].kind === "category") {
+        // get category errors and only push if at least one error is found
+        const catError = this.compareCategories(originalTemplate.parts[i] as Category,
+          studentTemplate.parts[i] as Category);
+        if (catError.errors.length > 0) {
+          errors.push(catError);
+        }
+      }
+    }
+
+    return errors;
+  }
+
+  compareCategories(originalCategory: Category, studentCategory: Category): CategoryError {
     return;
+  }
+
+  compareSelectables(): SelectableError {
+
+  }
+
+  compareVariables(): VariableError {
+
   }
 
 }
