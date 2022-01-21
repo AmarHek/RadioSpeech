@@ -7,16 +7,18 @@ export type SelectableError = GroupError | CheckboxError;
 
 export interface GroupError {
   kind: "group";
+  name: string;
   should: string;
   actual: string;
-  varErr?: VariableError[];
+  varErr: VariableError[];
 }
 
 export interface CheckboxError {
   kind: "box";
-  should: string;
-  actual: string;
-  varErr?: VariableError[];
+  name: string;
+  should: boolean;
+  actual: boolean;
+  varErr: VariableError[];
 }
 
 export type VariableError = VariableRatioError | VariableMCError | VariableValueError;
