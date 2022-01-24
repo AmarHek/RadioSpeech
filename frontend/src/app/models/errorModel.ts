@@ -25,22 +25,20 @@ export type VariableError = VariableRatioError | VariableMCError | VariableValue
 
 export interface VariableCommonError {
   id: string;
-  parentKind: "box" | "group";
-  optionName?: string;
 }
 
-export interface VariableMCError extends VariableCommonError{
+export interface VariableMCError extends VariableCommonError {
   kind: "mc";
   should: string[];
   actual: string[];
 }
 
-export interface VariableRatioError {
+export interface VariableRatioError extends VariableCommonError{
   kind: "ratio";
   shouldNum: number;
-  shouldDenum: number;
+  shouldDenom: number;
   actualNum: number;
-  actualDenum: number;
+  actualDenom: number;
 }
 
 export interface VariableValueError extends VariableCommonError {

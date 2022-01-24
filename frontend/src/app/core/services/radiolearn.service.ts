@@ -1,6 +1,19 @@
 import { Injectable } from "@angular/core";
-import {BoundingBox, Category, CheckBox, Group, Selectable, Template, Variable} from "@app/models";
-import {CategoryError, CheckboxError, GroupError, SelectableError, VariableError} from "@app/models/errorModel";
+import {
+  BoundingBox,
+  Category,
+  Selectable,
+  Template,
+  Variable,
+  VariableMC, VariableNumber, VariableOC,
+  VariableRatio, VariableText
+} from "@app/models";
+import {
+  CategoryError,
+  SelectableError,
+  VariableError,
+  VariableMCError, VariableRatioError, VariableValueError
+} from "@app/models/errorModel";
 
 @Injectable({
   providedIn: "root"
@@ -78,7 +91,8 @@ export class RadiolearnService {
 
     // check if templates have same length
     if (originalTemplate.parts.length !== studentTemplate.parts.length) {
-      // TODO Exception handling here? Maybe on higher level
+      // For debugging purposes
+      console.error("Length of parts is not the same. Please check your methods.");
       return [];
     }
 
@@ -90,13 +104,12 @@ export class RadiolearnService {
           studentTemplate.parts[i] as Category);
         if (catError.errors.length > 0) {
           errors.push(catError);
-        } else if (catError.name === "ExceptionDummy") {
+        } else if (catError.name === "ExceptionDummy") { // This is for debugging
           console.error("Something went wrong on OG " + (originalTemplate.parts[i] as Category).name + " and Stud " +
             (studentTemplate.parts[i] as Category).name);
         }
       }
     }
-
     return errors;
   }
 
@@ -104,6 +117,7 @@ export class RadiolearnService {
     // If categories are not the same, something went wrong before and an exception dummy is returned for error handling
     if (originalCategory.selectables.length !== studentCategory.selectables.length ||
       originalCategory.name !== studentCategory.name) {
+      // Debugging
       console.error("Different categories!");
       return {
         name: "ExceptionDummy",
@@ -111,11 +125,13 @@ export class RadiolearnService {
       };
     }
 
+    // Generate empty category error
     const catError = {
       name: studentCategory.name,
       errors: []
     };
 
+    // Iterate through selectables (each category has at least one selectable)
     for (let i = 0; i < originalCategory.selectables.length; i++) {
       let selError: SelectableError;
       // Check if names are the same, otherwise error
@@ -128,7 +144,7 @@ export class RadiolearnService {
         continue;
       }
       // Only add error, if should and actual are different or if there are variable errors
-      if ((selError.should !== selError.actual) || selError.varErr.length > 0) {
+      if (selError !== undefined) {
         catError.errors.push(selError);
       }
     }
@@ -137,30 +153,149 @@ export class RadiolearnService {
 
   compareSelectable(originalSel: Selectable, studentSel: Selectable): SelectableError {
     let selError;
-    if (originalSel.kind === "box") {
+    if (originalSel.kind === "box" && studentSel.kind === "box") {
+      // for box just get variable error and add should and actual values
+      // it's okay if should and actual are the same, check for actual error happens in higher level
+      const varErr = this.compareVariables(originalSel.variables, studentSel.variables);
       selError = {
         name: originalSel.name,
         should: originalSel.value,
         actual: studentSel.value,
-        varErr: []
+        varErr
       };
-    } else if (originalSel.kind === "group") {
+    } else if (originalSel.kind === "group" && studentSel.kind === "group") {
+      // Variable error is only necessary for correct option (because comparison of variables between options makes no sense)
+      // If original option is null, variable error is empty (for obvious reasons)
+      let varErr: VariableError[] = [];
+      if (originalSel.value !== null) {
+        // find variables of corresponding option in option list
+        const originalVars: Variable[] = originalSel.options.find(option => option.name === originalSel.value).variables;
+        const studentVars: Variable[] = studentSel.options.find(option => option.name === originalSel.value).variables;
+        // get variable errors
+        varErr = this.compareVariables(originalVars, studentVars);
+      }
+      // generate selectable error
       selError = {
         name: originalSel.name,
-        should: originalSel.value !== null ? originalSel.value | "Nichts",
-        actual: studentSel.value !== null ? studentSel.value | "Nichts",
-        varErr: []
-      }
+        should: (originalSel.value !== null ? originalSel.value : "Nichts"),
+        actual: (studentSel.value !== null ? studentSel.value : "Nichts"),
+        varErr
+      };
+    } else {
+      // Debugging stuff
+      console.error("Selectable kind is not the same!");
     }
 
-    const varErr = this.compareVariables(originalSel.variables, studentSel.variables);
-
-    return selError;
+    // return error, if there is one, otherwise return undefined
+    if ((selError.should !== selError.actual) && (selError.varErr.length > 0)) {
+      return selError;
+    } else {
+      return undefined;
+    }
   }
 
-  compareVariables(originalVars: Variable[], studentVars: Variable[]): VariableError {
-    return;
+  compareVariables(originalVars: Variable[], studentVars: Variable[]): VariableError[] {
+    const varErr: VariableError[] = [];
+
+    if (originalVars === undefined || studentVars === undefined || (originalVars.length !== studentVars.length)) {
+      console.error("One or more function parameters are problematic!");
+    } else {
+      // iterate through variables
+      for (let i = 0; i < originalVars.length; i++) {
+        // get variables with proper type
+        let err: VariableError;
+        const shouldVar = originalVars[i];
+        const actualVar = studentVars[i];
+        // differentiate variable types
+        if (shouldVar.kind === "mc") {
+          err = this.compareVariableMC(shouldVar as VariableMC, actualVar as VariableMC);
+        } else if (shouldVar.kind === "ratio") {
+          err = this.compareVariableRatio(shouldVar as VariableRatio, actualVar as VariableRatio);
+        } else if (shouldVar.kind === "oc") {
+          err = this.compareVariableOC(shouldVar as VariableOC, actualVar as VariableOC);
+        } else if (shouldVar.kind === "text") {
+          err = this.compareVariableValue(shouldVar as VariableText, actualVar as VariableText);
+        } else {
+          err = this.compareVariableValue(shouldVar as VariableNumber, actualVar as VariableNumber);
+        }
+
+        if (err !== undefined) {
+          varErr.push(err);
+        }
+      }
+    }
+    return varErr;
+  }
+
+  compareVariableMC(originalVar: VariableMC, studentVar: VariableMC): VariableMCError {
+    const shouldValues = originalVar.values;
+    const actualValues = studentVar.values;
+    const should: string[] = [];
+    const actual: string[] = [];
+    // check if arrays are different and only iterate, if they are:
+    if (shouldValues !== actualValues) {
+      for (let j = 0; j < shouldValues.length; j++) {
+        // only add "true" selections to should and actual
+        if (shouldValues[j][1]) {
+          should.push(shouldValues[j][0]);
+        }
+        if (actualValues[j][1]) {
+          actual.push(actualValues[j][0]);
+        }
+      }
+    }
+    if (should !== actual) {
+      return {
+        id: originalVar.id,
+        kind: "mc",
+        should,
+        actual
+      };
+    } else {
+      return undefined;
+    }
+  }
+
+  compareVariableRatio(originalVar: VariableRatio, studentVar: VariableRatio): VariableRatioError {
+    if (originalVar.numerator !== studentVar.numerator || originalVar.denominator !== studentVar.denominator) {
+      return {
+        id: originalVar.id,
+        kind: "ratio",
+        shouldNum: originalVar.numerator,
+        shouldDenom: originalVar.denominator,
+        actualNum: studentVar.numerator,
+        actualDenom: studentVar.denominator
+      };
+    } else {
+      return undefined;
+    }
+  }
+
+  compareVariableOC(originalVar: VariableOC, studentVar: VariableOC): VariableValueError {
+    if (originalVar.value !== studentVar.value) {
+      return {
+        id: originalVar.id,
+        kind: "value",
+        should: (originalVar.value !== null ? originalVar.value : "Nichts"),
+        actual: (studentVar.value !== null ? studentVar.value : "Nichts")
+      };
+    } else {
+      return undefined;
+    }
+  }
+
+  compareVariableValue(originalVar: VariableText | VariableNumber,
+                       studentVar: VariableText | VariableNumber): VariableValueError {
+    if (originalVar.value !== studentVar.value) {
+      return {
+        id: originalVar.id,
+        kind: "value",
+        should: originalVar.value,
+        actual: studentVar.value
+      };
+    } else {
+      return undefined;
+    }
   }
 
 }
-

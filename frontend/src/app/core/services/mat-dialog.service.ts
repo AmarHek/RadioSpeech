@@ -9,7 +9,7 @@ export class MatDialogService {
 
   constructor() { }
 
-  defaultConfig(width?: string, data?: ConfirmDialogModel): MatDialogConfig {
+  defaultConfig(width?: string, data?): MatDialogConfig {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;

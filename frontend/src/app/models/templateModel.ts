@@ -95,7 +95,6 @@ export interface VariableCommon {
   id:         string;
   textBefore: string;
   textAfter:  string;
-  // TODO: Refactor because only OC and MC need keys (aka synonyms)
   keys?:      string[][];
 }
 

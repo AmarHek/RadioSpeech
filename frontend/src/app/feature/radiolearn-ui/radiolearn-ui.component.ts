@@ -13,6 +13,7 @@ import {
 } from "@app/core";
 import {OptionsComponent} from "@app/shared";
 import {MatDialog} from "@angular/material/dialog";
+import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
 
 @Component({
   selector: "app-judge-mat",
@@ -137,13 +138,19 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   check() {
     //
-    this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
+    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
+    console.log(errors);
     POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
 
-    const dialogConfig = this.dialogService.defaultConfig("1000px");
-    const dialogRef = this.dialog.open()
+    const dialogConfig = this.dialogService.defaultConfig("1000px", {errors});
+    const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
 
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.next();
+      }
+    });
   }
 
   next() {
