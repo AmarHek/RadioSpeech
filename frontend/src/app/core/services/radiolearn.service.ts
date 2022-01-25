@@ -98,6 +98,7 @@ export class RadiolearnService {
 
     // iterate through categories
     for (let i = 0; i < originalTemplate.parts.length; i++) {
+      // console.log(originalTemplate.parts[i], studentTemplate.parts[i]);
       if (originalTemplate.parts[i].kind === "category") {
         // get category errors and only push if at least one error is found
         const catError = this.compareCategories(originalTemplate.parts[i] as Category,
@@ -187,7 +188,7 @@ export class RadiolearnService {
     }
 
     // return error, if there is one, otherwise return undefined
-    if ((selError.should !== selError.actual) && (selError.varErr.length > 0)) {
+    if ((selError.should !== selError.actual) || (selError.varErr.length > 0)) {
       return selError;
     } else {
       return undefined;

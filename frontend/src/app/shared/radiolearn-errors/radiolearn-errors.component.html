@@ -1,1 +1,33 @@
-<p>radiolearn-differences works!</p>
+<div mat-dialog-title>
+  <h5>Fehleranalyse</h5>
+</div>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div *ngIf="errors.length === 0">
+    Alles richtig!
+  </div>
+  <div class="table-div">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Kategorie</th>
+        <th scope="col">Selectable: Eingabe</th>
+        <th scope="col">Selectable: Lösung</th>
+        <!--<th scope="col">Variable: Eingabe</th>
+        <th scope="col">Variable: Lösung</th>-->
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions style="float: right">
+  <button mat-raised-button color="primary" (click)="next()">Nächste Aufnahme</button>
+  <button mat-raised-button (click)="close()">Schließen</button>
+</mat-dialog-actions>

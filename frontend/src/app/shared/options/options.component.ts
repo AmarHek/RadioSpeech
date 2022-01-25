@@ -62,8 +62,6 @@ export class OptionsComponent implements OnInit {
         sel.value = null;
       }
     }
-    console.log(this.categories);
-    console.log(this.rows);
     this.clickEvent.emit();
   }
 

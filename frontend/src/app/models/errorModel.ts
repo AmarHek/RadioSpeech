@@ -46,3 +46,14 @@ export interface VariableValueError extends VariableCommonError {
   should: string | number;
   actual: string | number;
 }
+
+// auxiliary error for table computation
+export interface ErrorTableRow {
+  catName: string;
+  catRowSize: number;
+  writeCat: boolean;
+  selError: SelectableError;
+  selRowSize: number;
+  writeSel: boolean;
+  varErr: VariableError;
+}
