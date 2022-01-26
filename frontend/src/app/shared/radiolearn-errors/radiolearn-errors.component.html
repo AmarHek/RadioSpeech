@@ -3,9 +3,9 @@
 </div>
 <mat-divider></mat-divider>
 <mat-dialog-content>
-  <div *ngIf="errors.length === 0">
-    Alles richtig!
-  </div>
+  <ng-container *ngIf="errorRows.length === 0">
+    <span class="all-correct">Alles richtig!</span>
+  </ng-container>
   <div class="table-div">
     <table class="table table-striped">
       <thead>
@@ -13,12 +13,62 @@
         <th scope="col">Kategorie</th>
         <th scope="col">Selectable: Eingabe</th>
         <th scope="col">Selectable: Lösung</th>
-        <!--<th scope="col">Variable: Eingabe</th>
-        <th scope="col">Variable: Lösung</th>-->
+        <th scope="col">Variable: Eingabe</th>
+        <th scope="col">Variable: Lösung</th>
       </tr>
       </thead>
       <tbody>
-
+        <tr *ngFor="let errorRow of errorRows">
+          <td *ngIf="errorRow.catRowSize > 0" [attr.rowspan]="errorRow.catRowSize">
+            {{errorRow.catName}}
+          </td>
+          <ng-container *ngIf="errorRow.selRowSize > 0">
+            <ng-container *ngIf="errorRow.selError.kind === 'box'">
+              <td [attr.rowspan]="errorRow.selRowSize"
+                  [ngClass]="{'false': errorRow.selError.actual !== errorRow.selError.should,
+                  'correct': errorRow.selError.actual === errorRow.selError.should}">
+                {{parseBoxError(errorRow.selError.name, errorRow.selError.actual)}}
+              </td>
+              <td [attr.rowspan]="errorRow.selRowSize"
+                  [ngClass]="{'false': errorRow.selError.actual !== errorRow.selError.should,
+                  'correct': errorRow.selError.actual === errorRow.selError.should}">
+                {{parseBoxError(errorRow.selError.name, errorRow.selError.should)}}
+              </td>
+            </ng-container>
+            <ng-container *ngIf="errorRow.selError.kind === 'group'">
+              <td [attr.rowspan]="errorRow.selRowSize"
+                  [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts',
+                  'false': errorRow.selError.actual !== errorRow.selError.should,
+                  'correct': errorRow.selError.actual === errorRow.selError.should}">
+                {{errorRow.selError.actual}}
+              </td>
+              <td [attr.rowspan]="errorRow.selRowSize"
+                  [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts',
+                  'false': errorRow.selError.actual !== errorRow.selError.should,
+                  'correct': errorRow.selError.actual === errorRow.selError.should}">
+                {{errorRow.selError.should}}
+              </td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="errorRow.varError !== null">
+            <ng-container *ngIf="errorRow.varError.kind === 'mc'">
+              <td>{{errorRow.varError.actual.join(", ")}}</td>
+              <td>{{errorRow.varError.should.join(", ")}}</td>
+            </ng-container>
+            <ng-container *ngIf="errorRow.varError.kind === 'value'">
+              <td [ngClass]="{'italic-font': errorRow.varError.actual === 'Nichts'}">{{errorRow.varError.actual}}</td>
+              <td [ngClass]="{'italic-font': errorRow.varError.should === 'Nichts'}">{{errorRow.varError.should}}</td>
+            </ng-container>
+            <ng-container *ngIf="errorRow.varError.kind === 'ratio'">
+              <td>{{errorRow.varError.actualNum}} / {{errorRow.varError.actualDenom}}</td>
+              <td>{{errorRow.varError.shouldNum}} / {{errorRow.varError.shouldDenom}}</td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="errorRow.varError === null">
+            <td>-</td>
+            <td>-</td>
+          </ng-container>
+        </tr>
       </tbody>
     </table>
   </div>

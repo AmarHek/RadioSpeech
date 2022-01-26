@@ -103,7 +103,7 @@ export class RadiolearnService {
         // get category errors and only push if at least one error is found
         const catError = this.compareCategories(originalTemplate.parts[i] as Category,
           studentTemplate.parts[i] as Category);
-        if (catError.errors.length > 0) {
+        if (catError.selErrors.length > 0) {
           errors.push(catError);
         } else if (catError.name === "ExceptionDummy") { // This is for debugging
           console.error("Something went wrong on OG " + (originalTemplate.parts[i] as Category).name + " and Stud " +
@@ -122,14 +122,14 @@ export class RadiolearnService {
       console.error("Different categories!");
       return {
         name: "ExceptionDummy",
-        errors: []
+        selErrors: []
       };
     }
 
     // Generate empty category error
     const catError = {
       name: studentCategory.name,
-      errors: []
+      selErrors: []
     };
 
     // Iterate through selectables (each category has at least one selectable)
@@ -146,7 +146,7 @@ export class RadiolearnService {
       }
       // Only add error, if should and actual are different or if there are variable errors
       if (selError !== undefined) {
-        catError.errors.push(selError);
+        catError.selErrors.push(selError);
       }
     }
     return catError;
@@ -159,10 +159,11 @@ export class RadiolearnService {
       // it's okay if should and actual are the same, check for actual error happens in higher level
       const varErr = this.compareVariables(originalSel.variables, studentSel.variables);
       selError = {
+        kind: "box",
         name: originalSel.name,
         should: originalSel.value,
         actual: studentSel.value,
-        varErr
+        varErrors: varErr
       };
     } else if (originalSel.kind === "group" && studentSel.kind === "group") {
       // Variable error is only necessary for correct option (because comparison of variables between options makes no sense)
@@ -177,10 +178,11 @@ export class RadiolearnService {
       }
       // generate selectable error
       selError = {
+        kind: "group",
         name: originalSel.name,
         should: (originalSel.value !== null ? originalSel.value : "Nichts"),
         actual: (studentSel.value !== null ? studentSel.value : "Nichts"),
-        varErr
+        varErrors: varErr
       };
     } else {
       // Debugging stuff
@@ -188,7 +190,7 @@ export class RadiolearnService {
     }
 
     // return error, if there is one, otherwise return undefined
-    if ((selError.should !== selError.actual) || (selError.varErr.length > 0)) {
+    if ((selError.should !== selError.actual) || (selError.varErrors.length > 0)) {
       return selError;
     } else {
       return undefined;
@@ -245,7 +247,7 @@ export class RadiolearnService {
         }
       }
     }
-    if (should !== actual) {
+    if (should !== actual && should.length > 0 && actual.length > 0) {
       return {
         id: originalVar.id,
         kind: "mc",

@@ -1,1 +1,22 @@
+.correct {
+  background-color: rgba(42,137,199,0.81);
+}
 
+.false {
+  background-color: rgba(244,22,22,0.69);
+}
+
+.false-variable {
+  background-color: rgba(171,174,63,0.69);
+  border-color: #d5d452;
+}
+
+.all-correct {
+  font-weight: bold;
+  font-size: large;
+  background-color: #00784a;
+}
+
+.italic-font {
+  font-style: italic;
+}

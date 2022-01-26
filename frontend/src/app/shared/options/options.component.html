@@ -1,10 +1,10 @@
   <table style="margin: 20px">
     <tbody>
     <tr *ngFor="let row of rows">
-          <td *ngIf="layoutId==0" class="category"
+          <td *ngIf="layoutId===0" class="category"
               [style.width.%]="10"
-              [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name.charAt(0) == '1' ? row.name.substring(1) : ""}}</td>
-      <ng-container *ngIf="row.name.includes(selectedCat)||layoutId==0">
+              [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name.charAt(0) === '1' ? row.name.substring(1) : ""}}</td>
+      <ng-container *ngIf="row.name.includes(selectedCat)||layoutId===0">
         <ng-container *ngFor="let sel of row.selectables" class="col-3">
           <ng-container *ngIf="sel.kind === 'box'">
             <td class="box" style="padding-left: 10px;">

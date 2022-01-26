@@ -1,6 +1,6 @@
 export interface CategoryError {
   name: string;
-  errors: SelectableError[];
+  selErrors: SelectableError[];
 }
 
 export type SelectableError = GroupError | CheckboxError;
@@ -10,7 +10,7 @@ export interface GroupError {
   name: string;
   should: string;
   actual: string;
-  varErr: VariableError[];
+  varErrors: VariableError[];
 }
 
 export interface CheckboxError {
@@ -18,7 +18,7 @@ export interface CheckboxError {
   name: string;
   should: boolean;
   actual: boolean;
-  varErr: VariableError[];
+  varErrors: VariableError[];
 }
 
 export type VariableError = VariableRatioError | VariableMCError | VariableValueError;
@@ -51,9 +51,7 @@ export interface VariableValueError extends VariableCommonError {
 export interface ErrorTableRow {
   catName: string;
   catRowSize: number;
-  writeCat: boolean;
   selError: SelectableError;
   selRowSize: number;
-  writeSel: boolean;
-  varErr: VariableError;
+  varError: VariableError;
 }
