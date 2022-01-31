@@ -19,7 +19,9 @@ export class RadiolearnListComponent implements OnInit {
 
   showJudged = false;
   pathology = "";
-  possiblePathologies = ["Cardiomegaly", "Enlarged Cardiomediastinum", "Pleural Effusion"];
+  possiblePathologies = ["Enlarged Cardiomediastinum", "Cardiomegaly", "Lung Lesion",
+  "Lung Opacity", "Edema", "Consolidation", "Pneumonia", "Atelectasis", "Pneumothorax", "Pleural Effusion",
+  "Pleural Other", "Fracture", "Support Devices"];
 
   collectionSize = 0;
   pageSize = 10;
@@ -43,9 +45,7 @@ export class RadiolearnListComponent implements OnInit {
       this.user = x;
       this.showJudged = !this.isMod;
     });
-    if (this.isMod) {
-      this.loadData().then();
-    }
+    this.loadData().then();
   }
 
   async loadData() {

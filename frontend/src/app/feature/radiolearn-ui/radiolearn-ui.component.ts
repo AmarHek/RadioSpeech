@@ -56,7 +56,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.authenticationService.user.subscribe(x => this.user = x);
-    this.getData();
+    await this.getData();
     if (this.isMod) {
       this.submitText = "Speichern";
     } else {
@@ -68,11 +68,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.popoutService.closePopoutModal();
   }
 
-  getData() {
-    this.route.paramMap.subscribe(ps => {
+  async getData() {
+    this.route.paramMap.subscribe(async (ps) => {
       if (ps.has("id")) {
         const matID = ps.get("id");
-        this.backendCaller.getMaterialById(matID).subscribe(res => {
+        await this.backendCaller.getMaterialById(matID).subscribe(res => {
           if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
               "Bitte zur Aufnahmenliste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
@@ -83,6 +83,12 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               this.material.template = this.radiolearnService.resetTemplate(this.material.template);
             }
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
+            console.log("Neue Kategorien", this.categories);
+            if (this.optionChild !== undefined) {
+              console.log("Alte Kategorien:", this.categories);
+              this.optionChild.categories = this.categories;
+              this.optionChild.initRows();
+            }
             if (this.isMod) {
               this.updateText();
             }
@@ -91,9 +97,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         }, err => {
           window.alert(err.message);
         });
-      }
-      if (this.optionChild !== undefined) {
-        this.optionChild.initRows();
       }
     });
   }
@@ -118,7 +121,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   makeNormal() {
     this.dataParser.makeNormal(this.material.template.parts);
     this.updateText();
-    console.log(POPOUT_MODALS["componentInstance"]);
   }
 
   submit() {
@@ -137,13 +139,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   check() {
-    //
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
-    console.log(errors);
+
     POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
-
-    const dialogConfig = this.dialogService.defaultConfig("1000px", {errors});
+    const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
     const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
@@ -158,6 +158,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
       if (res.material._id === this.material._id) {
         this.next();
       } else {
+        this.resetText();
         this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
       }
     });

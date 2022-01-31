@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter, OnChanges} from "@angular/core";
 
 import {DataParserService} from "@app/core";
 
@@ -9,9 +9,10 @@ import * as M from "@app/models/templateModel";
   templateUrl: "./options.component.html",
   styleUrls: ["./options.component.scss"]
 })
-export class OptionsComponent implements OnInit {
+export class OptionsComponent implements OnInit, OnChanges {
 
   @Input() categories: M.Category[];
+  @Input() paramMapID: string; // for detecting changes
   @Output() clickEvent = new EventEmitter<any>();
   @Input() layoutId: number;
   @Input() selectedCat: string;
@@ -39,7 +40,12 @@ export class OptionsComponent implements OnInit {
         ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
       this.maxRowLength = this.minRowLength;
     }
+    console.log("Innerhalb von Options", this.categories);
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
+  }
+
+  ngOnChanges() {
+    // this.initRows();
   }
 
   setMinRowLength(cats: M.Category[]) {

@@ -23,9 +23,6 @@ export class RadiolearnErrorsComponent implements OnInit {
     this.countMajorAndMinorErrors();
     this.errorRows = this.data.errors;
     this.rollOutErrors();
-
-    console.log(this.errorRows);
-    console.log(this.minorErrorCount, this.majorErrorCount);
   }
 
   close() {
@@ -46,6 +43,7 @@ export class RadiolearnErrorsComponent implements OnInit {
     let selRowSize: number;
 
     for (const catErr of this.data.errors) {
+
       for (const selErr of catErr.selErrors) {
         // set up rowspan of category error only for 0th element
         if (catErr.selErrors.indexOf(selErr) === 0) {
@@ -55,6 +53,7 @@ export class RadiolearnErrorsComponent implements OnInit {
           catName = "";
           catRowSize = 0;
         }
+
         // only iterate, if there are any variable errors and differentiate the cases
         if (selErr.varErrors.length > 0) {
           // iterate variables, one row per variable
@@ -66,6 +65,9 @@ export class RadiolearnErrorsComponent implements OnInit {
             } else {
               selError = null;
               selRowSize = 0;
+              // important: set catRowSize to 0 here, otherwise all selRows will contain a catRowSize, leading to errors
+              catRowSize = 0;
+              catName = "";
             }
             // push row in variable case
             this.errorRows.push({
@@ -76,6 +78,7 @@ export class RadiolearnErrorsComponent implements OnInit {
               varError: varErr
             });
           }
+
         } else {
           // for no variables, row needs to be pushed separately in this case
           this.errorRows.push({
