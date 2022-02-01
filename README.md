@@ -1,28 +1,24 @@
 # Radiologie Befundung
 
+backend contains all code for the node-server
+frontent is the angular project
+build contains .exes and folders for deployment
+test-build contains the same folders, but for testing environment
+
 ## Build for production
 
 ```bash
-# build client (Angular) app and insert into server
-cd ui/
-ng build --prod --output-path ../server/src/main/resources/org/felher/server/
-
-# build server
-cd ../server
-sbt packageZipTarball
-
-# copy to server
-scp target/universal/server-0.1.0-SNAPSHOT.tar.gz <username>@132.187.15.156:server-0.1.0-SNAPSHOT.tar.gz
 
 # login on server
-ssh <username>@132.187.15.156
+ssh <username>@radiospeechvm
 
-# unpack
-tar -xzf server-0.1.0-SNAPSHOT.tar.gz
+# build client (Angular) app and insert into server (automatically done)
+cd frontend/
+ng build:prod
 
-# start server
-cd server-0.1.0-SNAPSHOT
-bin/server &
+# either host server 
+cd ..
+pm2 start pm2config.json
 
 logout
 ```
