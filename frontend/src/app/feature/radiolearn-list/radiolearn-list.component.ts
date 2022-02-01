@@ -43,6 +43,9 @@ export class RadiolearnListComponent implements OnInit {
   pageSize = 10;
   page = 1;
 
+  showLaterals: boolean;
+  showPres: boolean;
+
   private user: User;
 
   constructor(private backendCaller: BackendCallerService,
@@ -66,7 +69,22 @@ export class RadiolearnListComponent implements OnInit {
 
   async loadData() {
     await this.getLength();
-    this.getData();
+    await this.getData();
+    this.setColumns();
+  }
+
+  setColumns() {
+    // loops through materials and checks if lateral and pre columns should be shown
+    this.showLaterals = false;
+    this.showPres = false;
+    for (const material of this.materials) {
+      if (material.scans.lateralScan !== undefined) {
+        this.showLaterals = true;
+      }
+      if (material.scans.preScan !== undefined) {
+        this.showPres = true;
+      }
+    }
   }
 
   setPathology(newPathology: string) {
