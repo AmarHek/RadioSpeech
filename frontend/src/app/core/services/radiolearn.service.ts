@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   BoundingBox,
-  Category,
+  Category, Group, Option,
   Selectable,
   Template,
   Variable,
@@ -21,6 +21,7 @@ import {
 export class RadiolearnService {
 
   currentPathology = "";
+  colorBlindMode = false;
 
   constructor() { }
 
@@ -86,7 +87,13 @@ export class RadiolearnService {
     return variables;
   }
 
-  compareTemplates(originalTemplate: Template, studentTemplate: Template): CategoryError[] {
+  compareTemplates(originalTemplate: Template, studentTemplate: Template, templateType: string = "XRay", ): CategoryError[] {
+    if (templateType === "XRay") {
+      return this.compareTemplatesXRay(originalTemplate, studentTemplate);
+    }
+  }
+
+  compareTemplatesXRay(originalTemplate: Template, studentTemplate: Template): CategoryError[] {
     const errors = [];
 
     // check if templates have same length
@@ -98,16 +105,36 @@ export class RadiolearnService {
 
     // iterate through categories
     for (let i = 0; i < originalTemplate.parts.length; i++) {
-      // console.log(originalTemplate.parts[i], studentTemplate.parts[i]);
       if (originalTemplate.parts[i].kind === "category") {
-        // get category errors and only push if at least one error is found
-        const catError = this.compareCategories(originalTemplate.parts[i] as Category,
-          studentTemplate.parts[i] as Category);
-        if (catError.selErrors.length > 0) {
-          errors.push(catError);
-        } else if (catError.name === "ExceptionDummy") { // This is for debugging
-          console.error("Something went wrong on OG " + (originalTemplate.parts[i] as Category).name + " and Stud " +
-            (studentTemplate.parts[i] as Category).name);
+        const originalCategory: Category = originalTemplate.parts[i] as Category;
+        const studentCategory: Category = studentTemplate.parts[i] as Category;
+
+        // first check the three special cases and push accordingly (the sub-methods do all required checks themselves)
+        if (originalCategory.name === "PE") {
+          const peError = this.comparePE(originalCategory, studentCategory);
+          if (peError !== undefined) {
+            errors.push(peError);
+          }
+        } else if (originalCategory.name === "Instrumentierung") {
+          const instError = this.compareInstrumentation(originalCategory, studentCategory);
+          if (instError !== undefined) {
+            errors.push(instError);
+          }
+        } else if (originalCategory.name === "Weichteile") {
+          const wtErrors = this.compareInstrumentation(originalCategory, studentCategory);
+          if (wtErrors !== undefined) {
+            errors.push(wtErrors);
+          }
+        } else {
+          // get category errors and only push if at least one error is found
+          const catError = this.compareCategories(originalTemplate.parts[i] as Category,
+            studentTemplate.parts[i] as Category);
+          if (catError.selErrors.length > 0) {
+            errors.push(catError);
+          } else if (catError.name === "ExceptionDummy") { // This is for debugging
+            console.error("Something went wrong on OG " + (originalTemplate.parts[i] as Category).name + " and Stud " +
+              (studentTemplate.parts[i] as Category).name);
+          }
         }
       }
     }
@@ -149,6 +176,7 @@ export class RadiolearnService {
         catError.selErrors.push(selError);
       }
     }
+
     return catError;
   }
 
@@ -163,6 +191,7 @@ export class RadiolearnService {
         name: originalSel.name,
         should: originalSel.value,
         actual: studentSel.value,
+        normal: studentSel.normal,
         varErrors: varErr
       };
     } else if (originalSel.kind === "group" && studentSel.kind === "group") {
@@ -182,6 +211,7 @@ export class RadiolearnService {
         name: originalSel.name,
         should: (originalSel.value !== null ? originalSel.value : "Nichts"),
         actual: (studentSel.value !== null ? studentSel.value : "Nichts"),
+        normal: this.getGroupNormal(studentSel),
         varErrors: varErr
       };
     } else {
@@ -299,6 +329,47 @@ export class RadiolearnService {
     } else {
       return undefined;
     }
+  }
+
+
+  // special cases for PE, Instrumentierung and Weichteile because of multiple choice cases
+
+  comparePE(originalCat: Category, studentCat: Category): CategoryError {
+    // Mehrere Fälle durchgehen:
+    // 1. Fall: Lösung sagt kein PE, dann normal durchiterieren und alles, was nicht 'kein PE' ist, als falsch werten
+    //  (der Text für Lösung ist dabei immer kein PE)
+    // 2. Fall: Durchgehen, welche Auswahlmöglichkeiten stimmen und sammeln
+    //  Gleiches für Studentenauswahl
+    //  Dann abgleichen: gleiche Auswahlen werden präferiert, ansonsten z.B. O gering - S deutlich machen
+    //  und die entsprechenden Variablen prüfen (also Variablen von O gering mit denen von S deutlich vergleichen)
+    return;
+  }
+
+  compareInstrumentation(originalCat: Category, studentCat: Category): CategoryError {
+    // Bei der Instrumentierung sind nur die Doppel- und Dreifachfälle speziell zu behandeln, i.e. ZVK, 2. ZVK
+    // 1., 2., 3. Pleuradrainage etc.
+    // Die restlichen Selectables können wie gehabt geprüft werden
+    return;
+  }
+
+  compareWT(originalCat: Category, studentCat: Category): CategoryError {
+    // Hier vereinfachte Form von Instrumentierung wegen WT-Emphysem
+
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < originalCat.selectables.length; i++) {
+      return;
+    }
+  }
+
+  getGroupNormal(group: Group) {
+    // checks the options of a group and returns that option's normal value
+    for (const option of group.options) {
+      if (group.value === option.name) {
+        return option.normal;
+      }
+    }
+    // if no normal value is given, return false by default
+    return false;
   }
 
 }

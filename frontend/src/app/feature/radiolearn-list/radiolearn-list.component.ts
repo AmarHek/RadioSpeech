@@ -23,6 +23,22 @@ export class RadiolearnListComponent implements OnInit {
   "Lung Opacity", "Edema", "Consolidation", "Pneumonia", "Atelectasis", "Pneumothorax", "Pleural Effusion",
   "Pleural Other", "Fracture", "Support Devices"];
 
+  possiblePathologiesGerman: Map<string, string> = new Map<string, string>([
+    ["Enlarged Cardiomediastinum", "Vergrößertes Kardiomediastinum"],
+    ["Cardiomegaly", "Kardiomegalie"],
+    ["Lung Lesion", "Lungenläsion"],
+    ["Lung Opacity", "Lungentrübung"],
+    ["Edema", "Ödem"],
+    ["Consolidation", "Konsolidierung"],
+    ["Pneumonia", "Pneumonie"],
+    ["Atelectasis", "Atelektase"],
+    ["Pneumothorax", "Pneumothorax"],
+    ["Pleural Effusion", "Pleuraerguss"],
+    ["Pleural Other", "Pleural andere"],
+    ["Fracture", "Fraktur"],
+    ["Support Devices", "Stutzgerät"]
+  ]);
+
   collectionSize = 0;
   pageSize = 10;
   page = 1;

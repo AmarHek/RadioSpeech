@@ -47,13 +47,13 @@
           <ng-container *ngIf="errorRow.selRowSize > 0">
             <ng-container *ngIf="errorRow.selError.kind === 'box'">
               <td [attr.rowspan]="errorRow.selRowSize"
-                  [ngClass]="{'table-danger': errorRow.selError.actual !== errorRow.selError.should,
+                  [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts',
+                  'table-danger': errorRow.selError.actual !== errorRow.selError.should,
                   'table-success': errorRow.selError.actual === errorRow.selError.should}">
                 {{parseBoxError(errorRow.selError.name, errorRow.selError.actual)}}
               </td>
               <td [attr.rowspan]="errorRow.selRowSize"
-                  [ngClass]="{'table-danger': errorRow.selError.actual !== errorRow.selError.should,
-                  'table-success': errorRow.selError.actual === errorRow.selError.should}">
+                  [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts'}">
                 {{parseBoxError(errorRow.selError.name, errorRow.selError.should)}}
               </td>
             </ng-container>
@@ -65,9 +65,7 @@
                 {{errorRow.selError.actual}}
               </td>
               <td [attr.rowspan]="errorRow.selRowSize"
-                  [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts',
-                  'table-danger': errorRow.selError.actual !== errorRow.selError.should,
-                  'table-success': errorRow.selError.actual === errorRow.selError.should}">
+                  [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts'}">
                 {{errorRow.selError.should}}
               </td>
             </ng-container>
@@ -77,8 +75,7 @@
                 <td [ngClass]="{'table-danger': errorRow.varError.actual !== errorRow.varError.should,
                                 'table-success': errorRow.varError.actual === errorRow.varError.should}">
                   {{errorRow.varError.actual.join(", ")}}</td>
-                <td [ngClass]="{'table-danger': errorRow.varError.actual !== errorRow.varError.should,
-                                'table-success': errorRow.varError.actual === errorRow.varError.should}">
+                <td>
                   {{errorRow.varError.should.join(", ")}}</td>
               </ng-container>
               <ng-container *ngIf="errorRow.varError.kind === 'value'">
@@ -86,17 +83,16 @@
                                 'table-danger': errorRow.varError.actual !== errorRow.varError.should,
                                 'table-success': errorRow.varError.actual === errorRow.varError.should}">
                   {{errorRow.varError.actual}}</td>
-                <td [ngClass]="{'italic-font': errorRow.varError.should === 'Nichts',
-                                'table-danger': errorRow.varError.actual !== errorRow.varError.should,
-                                'table-success': errorRow.varError.actual === errorRow.varError.should}">
+                <td [ngClass]="{'italic-font': errorRow.varError.should === 'Nichts'}">
                   {{errorRow.varError.should}}</td>
               </ng-container>
               <ng-container *ngIf="errorRow.varError.kind === 'ratio'">
-                <td [ngClass]="{'table-danger': errorRow.varError.actual !== errorRow.varError.should,
-                                'table-success': errorRow.varError.actual === errorRow.varError.should}">
+                <td [ngClass]="{'table-danger': ((errorRow.varError.actualNum !== errorRow.varError.shouldNum) ||
+                (errorRow.varError.actualDenom !== errorRow.varError.shouldDenom)),
+                                'table-success': ((errorRow.varError.actualNum === errorRow.varError.shouldNum) &&
+                (errorRow.varError.actualDenom === errorRow.varError.shouldDenom))}">
                   {{errorRow.varError.actualNum}} / {{errorRow.varError.actualDenom}}</td>
-                <td [ngClass]="{'table-danger': errorRow.varError.actual !== errorRow.varError.should,
-                                'table-success': errorRow.varError.actual === errorRow.varError.should}">
+                <td>
                   {{errorRow.varError.shouldNum}} / {{errorRow.varError.shouldDenom}}</td>
               </ng-container>
             </ng-container>

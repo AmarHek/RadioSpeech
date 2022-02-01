@@ -10,6 +10,7 @@ export interface GroupError {
   name: string;
   should: string;
   actual: string;
+  normal: boolean;
   varErrors: VariableError[];
 }
 
@@ -18,6 +19,7 @@ export interface CheckboxError {
   name: string;
   should: boolean;
   actual: boolean;
+  normal: boolean;
   varErrors: VariableError[];
 }
 

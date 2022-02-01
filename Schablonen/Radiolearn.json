@@ -2363,7 +2363,7 @@
 						"name": "Keine Raumforderung",
 						"text": "Kein Nachweis einer malignitätssuspekten Raumforderung im Summationsbild.",
 						"judgementText": "Kein suspekter Rundherd pulmonal.",
-						"normal": false,
+						"normal": true,
 						"variables": [],
 						"keys": [
 							"keine Raumforderung"
@@ -2596,12 +2596,16 @@
 							],
 							[
 								"links"
+							],
+							[
+								"beidseitig"
 							]
 						],
 						"value": null,
 						"values": [
 							"re.",
-							"li."
+							"li.",
+							"bds."
 						]
 					},
 					{
