@@ -16,6 +16,12 @@ interface Layout{
   displayName: string;
 }
 
+enum ChipColors {
+  RED = "mat-chip-red",
+  GREEN = "mat-chip-green",
+  YELLOW = "mat-chip-yellow"
+}
+
 @Component({
   selector: "app-workspace",
   templateUrl: "./ui-base.component.html",
@@ -32,8 +38,9 @@ export class UiBaseComponent implements OnInit {
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  chips: string[] = [];
   selectedCat = "undefined";
+
+  chips: InputChip[] = [];
 
   layouts: Layout[] = [
     {id: 0, displayName: "Standard Layout"},
@@ -79,22 +86,28 @@ export class UiBaseComponent implements OnInit {
     this.getData();
   }
 
+  randomIntFromInterval(min, max) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
   //HANDLE CHIPS
   add(event: MatChipInputEvent): void {
     const value = (event.value || "").trim();
 
-    // Add new value
+    //todo determine proper color here
+    let random = this.randomIntFromInterval(0, Object.keys(ChipColors).length-1)
+    let chip = new InputChip(value, Object.values(ChipColors)[random])
+
+    // Add new chip
     if (value) {
-      this.chips.push(value);
+      this.chips.push(chip);
     }
 
     // Clear the input value
     event.chipInput?.clear();
   }
 
-  remove(chip: string): void {
+  remove(chip: InputChip): void {
     const index = this.chips.indexOf(chip);
-
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
@@ -236,5 +249,14 @@ export class UiBaseComponent implements OnInit {
     this.categories = this.dataParser.extractCategories(this.parts, false);
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
+  }
+}
+
+class InputChip{
+  content: string;
+  color: ChipColors;
+  constructor(content: string, color: ChipColors) {
+    this.content = content;
+    this.color = color;
   }
 }

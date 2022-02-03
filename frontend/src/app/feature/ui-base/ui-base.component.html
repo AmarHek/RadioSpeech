@@ -27,8 +27,9 @@
             *ngFor="let chip of chips"
             [selectable]="selectable"
             [removable]="removable"
+            [ngClass]="chip.color"
             (removed)="remove(chip)">
-            {{chip}}
+            {{chip.content}}
             <button matChipRemove *ngIf="removable">
               <mat-icon>cancel</mat-icon>
             </button>
