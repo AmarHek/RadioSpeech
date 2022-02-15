@@ -6,6 +6,7 @@ import {dbConfig} from "./config";
 import cors from "cors";
 
 import {matRouter, templateRouter, userRouter, authRouter} from './routes';
+import {initData} from "./init";
 
 export const app = express();
 
@@ -18,6 +19,7 @@ mongoose.connect(url,
     })
   .then(() => {
     console.log("Connected to Database");
+    initData();
   })
   .catch((err) => {
     console.error("Connection error", err);

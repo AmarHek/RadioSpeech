@@ -39,10 +39,6 @@ templateRouter.post("/template/json/", multer({
     storage: storageJSON
 }).single("file"), TemplateController.createJSONTemplate);
 
-templateRouter.post("/template/excel", multer({
-    storage: storageExcel
-}).single("file"), TemplateController.createExcelTemplate );
-
 templateRouter.post("/template/", TemplateController.createTemplate);
 templateRouter.put("/template/:id", TemplateController.updateTemplate);
 templateRouter.get('/template/', TemplateController.getTemplateList);
