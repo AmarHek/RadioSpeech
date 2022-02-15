@@ -1,0 +1,92 @@
+[
+	{
+		"name": "Instrumentierung",
+		"englishName": "Support Devices",
+		"templateMaps": []
+	},
+	{
+		"name": "Pleuraler Erguss",
+		"englishName": "Pleural Effusion",
+		"templateMaps": []
+	},
+	{
+		"name": "Pneumothorax",
+		"englishName": "Pneumothorax",
+		"templateMaps": []
+	},
+	{
+		"name": "Vergrößertes Kardiomediastinum",
+		"englishName": "Enlarged Cardiomediastinum",
+		"templateMaps": []
+	},
+	{
+		"name": "Aorta",
+		"englishName": "Aorta",
+		"templateMaps": []
+	},
+	{
+		"name": "Kardiomegalie",
+		"englishName": "Cardiomegaly",
+		"templateMaps": []
+	},
+	{
+		"name": "Hilus",
+		"englishName": "Hilus",
+		"templateMaps": []
+	},
+	{
+		"name": "Edema",
+		"englishName": "Edema",
+		"templateMaps": []
+	},
+	{
+		"name": "Emphysem",
+		"englishName": "Emphysem",
+		"templateMaps": []
+	},
+	{
+		"name": "Atelektase",
+		"englishName": "Atelectasis",
+		"templateMaps": []
+	},
+	{
+		"name": "Pneumonie",
+		"englishName": "Pneumonia",
+		"templateMaps": []
+	},
+	{
+		"name": "Konsolidierung",
+		"englishName": "Consolidation",
+		"templateMaps": []
+	},
+	{
+		"name": "Lungenläsion",
+		"englishName": "Lung Lesion",
+		"templateMaps": []
+	},
+	{
+		"name": "Lungentrübung",
+		"englishName": "Lung Opacity",
+		"templateMaps": []
+	},
+	{
+		"name": "Oberbauch",
+		"englishName": "Upper abdomen",
+		"templateMaps": []
+	},
+	{
+		"name": "Weichteile",
+		"englishName": "Soft tissue",
+		"templateMaps": []
+	},
+	{
+		"name": "Fraktur",
+		"englishName": "Fracture",
+		"templateMaps": []
+	},
+	{
+		"name": "Skelett",
+		"englishName": "Skeleton",
+		"templateMaps": []
+	}
+]
