@@ -1,8 +1,8 @@
 import * as Path from "path";
 import * as fs from "fs";
 import * as mongoose from "mongoose";
-import Template from './models/template.schema';
-import * as TemplateController from "src/co"
+import Template from "@app/models";
+import * as TemplateController from ""
 
 // on app start, initialize all relative directories for file saving etc.
 export function initDirectories() {
