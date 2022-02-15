@@ -1,11 +1,17 @@
 import {Template} from "./templateModel";
+import {Pathology} from "@app/models/pathologyModel";
 
 export interface BoundingBox {
   left: number;
   top: number;
   height: number;
   width: number;
-  label: string;
+}
+
+export interface Annotation {
+  boxes: BoundingBox[];
+  pathology: Pathology;
+  correct: boolean;
 }
 
 export interface Image {
@@ -22,9 +28,9 @@ export interface Material {
     preScan?: Image;
   };
   coordinates: {
-    main:         BoundingBox[];
-    lateral:      BoundingBox[];
-    pre:          BoundingBox[];
+    main:         Annotation[];
+    lateral:      Annotation[];
+    pre:          Annotation[];
   };
   modality:       string;
   template:       Template;

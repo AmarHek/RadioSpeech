@@ -10,9 +10,13 @@ export interface BoundingBox {
   top: number;
   height: number;
   width: number;
-  label: string;
 }
 
+export interface Annotation {
+  boxes: BoundingBox[];
+  pathology: Pathology;
+  correct: boolean;
+}
 
 export interface Image {
   filename: string;
@@ -28,9 +32,9 @@ export interface Material {
     preScan?: Image;
   }
   coordinates: {
-    main:         BoundingBox[];
-    lateral:      BoundingBox[];
-    pre:          BoundingBox[];
+    main:         Annotation[];
+    lateral:      Annotation[];
+    pre:          Annotation[]
   }
   modality:       string;
   template:       Template;
