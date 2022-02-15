@@ -1,10 +1,10 @@
 import express from "express";
 import {checkDuplicateUsername, checkRoleExists, isAdmin, verifyToken} from "../middleware";
-import {signIn, signUp} from "../controllers/auth.controller";
+import {signIn, signUp} from "../controllers";
 
-export const router = express.Router();
+export const authRouter = express.Router();
 
-router.post(
+authRouter.post(
     "/signUp",
     [
         verifyToken,
@@ -15,4 +15,4 @@ router.post(
     signUp
 );
 
-router.post("/signIn", signIn);
+authRouter.post("/signIn", signIn);

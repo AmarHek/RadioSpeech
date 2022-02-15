@@ -1,10 +1,10 @@
 import {verifyToken, isAdmin, checkDuplicateUsername, verifyPassword} from "../middleware";
-import {getUserById, deleteUserById, changeUsername, changePassword, getUsers} from "../controllers/user.controller";
+import {getUserById, deleteUserById, changeUsername, changePassword, getUsers} from "../controllers";
 import express from "express";
 
-export const router = express.Router();
+export const userRouter = express.Router();
 
-router.get(
+userRouter.get(
     "/users",
     [
         verifyToken,
@@ -13,7 +13,7 @@ router.get(
     getUsers
 )
 
-router.get(
+userRouter.get(
     "/users/:id",
     [
         verifyToken,
@@ -22,7 +22,7 @@ router.get(
     getUserById
 )
 
-router.delete(
+userRouter.delete(
     "/users/:id",
     [
         verifyToken,
@@ -31,7 +31,7 @@ router.delete(
     deleteUserById
 )
 
-router.post(
+userRouter.post(
     "/users/changeUsername/:id",
     [
         verifyToken,
@@ -41,7 +41,7 @@ router.post(
     changeUsername
 )
 
-router.post(
+userRouter.post(
     "/users/changePassword/:id",
     [
         verifyToken,

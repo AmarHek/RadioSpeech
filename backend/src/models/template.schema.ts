@@ -7,22 +7,10 @@ export interface TemplateDoc extends Document {
     timestamp:  Date;
 }
 
-/*
-const selectableSchema = new Schema({
-
-})
-
-const categorySchema = new Schema({
-    kind: "category",
-    name: String,
-    optional: Boolean,
-    selectables: selectableSchema
-})*/
-
 const templateSchema = new Schema({
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
     name: { type: String },
     timestamp: { type: Date }
 });
 
-export default mongoose.model<TemplateDoc>('Template', templateSchema, "templates");
+export const TemplateDB = mongoose.model<TemplateDoc>('Template', templateSchema, "templates");

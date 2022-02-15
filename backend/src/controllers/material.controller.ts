@@ -1,7 +1,6 @@
-import MaterialSchema from '../models/material.schema';
+import { MaterialDB } from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
-import { Material } from "../models/material.model";
 import fs from "fs";
 import Path from "path";
 
@@ -33,7 +32,7 @@ export function addMaterial (req: any, res: Response): void {
              }
          }
 
-         const material = new MaterialSchema({
+         const material = new MaterialDB({
              scans: {
                  id: req.body.id,
                  mainScan: mainScan,
@@ -60,7 +59,7 @@ export function addMaterial (req: any, res: Response): void {
 }
 
 export function deleteMaterial(req: Request, res: Response): void {
-    MaterialSchema.deleteOne({
+    MaterialDB.deleteOne({
         _id: req.body.objectID
     }).exec((err) => {
         if (err) {
@@ -74,7 +73,7 @@ export function deleteMaterial(req: Request, res: Response): void {
 }
 
 export function updateMaterial(req: Request, res: Response): void {
-    MaterialSchema.updateOne({
+    MaterialDB.updateOne({
         _id: req.params.id
     }, {
         template: req.body.template,
@@ -93,7 +92,7 @@ export function updateMaterial(req: Request, res: Response): void {
 }
 
 export function getMaterialById(req: Request, res: Response): void {
-    MaterialSchema.findOne({_id: req.params.id}).exec((err, material) => {
+    MaterialDB.findOne({_id: req.params.id}).exec((err, material) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
@@ -103,8 +102,8 @@ export function getMaterialById(req: Request, res: Response): void {
 }
 
 export function listAll(req: Request, res: Response): void {
-  MaterialSchema.find()
-    .exec((err, materials: Material[]) => {
+    MaterialDB.find()
+    .exec((err, materials) => {
         if(err) {
             res.status(500).send({message: err});
         } else {
@@ -124,7 +123,7 @@ export function listByQuery(req: Request, res: Response): void {
         query = { judged: req.body.judged }
     }
     console.log(query);
-    MaterialSchema.find(query)
+    MaterialDB.find(query)
         .skip(req.body.skip)
         .limit(req.body.length)
         .exec((err, materials) => {
@@ -145,14 +144,14 @@ export function getRandom(req: Request, res: Response): void {
     } else {
         query = { judged: req.body.judged }
     }
-    MaterialSchema.countDocuments(query).exec((err, count) => {
+    MaterialDB.countDocuments(query).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
             // get random entry
             const random = Math.floor(Math.random() * count);
             // query one judged material, but skip random count
-            MaterialSchema.findOne(query).skip(random).exec(
+            MaterialDB.findOne(query).skip(random).exec(
                 (err, material) => {
                     if (err) {
                         res.status(500).send({message: err});
@@ -175,7 +174,7 @@ export function queryDocCount(req: Request, res: Response): void {
             judged: req.body.judged
         }
     }
-    MaterialSchema.countDocuments(query).exec((err, count) => {
+    MaterialDB.countDocuments(query).exec((err, count) => {
         if (err) {
             console.log(err);
             res.status(500).send({message: err});

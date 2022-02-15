@@ -36,15 +36,15 @@ const upload = multer({
   name: 'preScan', maxCount: 1
 }])
 
-export const router = express.Router();
+export const matRouter = express.Router();
 
-router.post("/material/add/", upload, MaterialController.addMaterial);
-router.get("/material/get/:id", MaterialController.getMaterialById)
-router.put("/material/update/:id", MaterialController.updateMaterial);
-router.post("/material/delete/", MaterialController.deleteMaterial)
-router.get("/material/listAll/", MaterialController.listAll);
-router.post("/material/listByQuery/", MaterialController.listByQuery);
-router.post("/material/random/", MaterialController.getRandom);
-router.post("/material/queryDocCount/", MaterialController.queryDocCount);
+matRouter.post("/material/add/", upload, MaterialController.addMaterial);
+matRouter.get("/material/get/:id", MaterialController.getMaterialById)
+matRouter.put("/material/update/:id", MaterialController.updateMaterial);
+matRouter.post("/material/delete/", MaterialController.deleteMaterial)
+matRouter.get("/material/listAll/", MaterialController.listAll);
+matRouter.post("/material/listByQuery/", MaterialController.listByQuery);
+matRouter.post("/material/random/", MaterialController.getRandom);
+matRouter.post("/material/queryDocCount/", MaterialController.queryDocCount);
 
 

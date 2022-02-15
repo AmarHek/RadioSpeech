@@ -1,5 +1,5 @@
-import Template from '../models/template.schema';
-import fs from 'fs';
+import {TemplateDB} from '../models';
+import * as fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 
@@ -9,7 +9,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const jsonString = parseXLSToJson(rawData.toString("binary"));
     const parts = JSON.parse(jsonString);
     const timestamp = new Date();
-    const template = new Template({
+    const template = new TemplateDB({
         parts: parts,
         name: req.body.name,
         timestamp: timestamp
@@ -28,7 +28,7 @@ export function createJSONTemplate(req: any, res: Response) {
   const rawData = fs.readFileSync(req.file.path);
   const parts = JSON.parse(rawData.toString());
   const timestamp = new Date();
-  const template = new Template({
+  const template = new TemplateDB({
     parts: parts,
     name: req.body.name,
     timestamp: timestamp
@@ -42,7 +42,7 @@ export function createJSONTemplate(req: any, res: Response) {
 }
 
 export function createTemplate(req: any, res: Response) {
-  const template  = new Template({
+  const template  = new TemplateDB({
     parts: req.body.parts,
     name: req.body.name,
     timestamp: req.body.timestamp
@@ -56,13 +56,13 @@ export function createTemplate(req: any, res: Response) {
 }
 
 export function updateTemplate(req: Request, res: Response) {
-  const newTemplate = new Template({
+  const newTemplate = new TemplateDB({
     _id: req.params.id,
     parts: req.body.parts,
     name: req.body.name,
     timestamp: req.body.timestamp
   });
-  Template.updateOne({
+  TemplateDB.updateOne({
       _id: req.params.id
     }, newTemplate)
     .then(result => {
@@ -72,7 +72,7 @@ export function updateTemplate(req: Request, res: Response) {
 }
 
 export function deleteTemplate(req: any, res: Response){
-  Template.deleteOne({
+  TemplateDB.deleteOne({
     _id: req.params.id
   }).then(
     result => {
@@ -85,7 +85,7 @@ export function deleteTemplate(req: any, res: Response){
 
 export function getTemplateList(req: any, res: Response){
   try {
-    Template.find()
+    TemplateDB.find()
         .then(templates => {
           res.status(200).send(templates);
         });
@@ -95,7 +95,7 @@ export function getTemplateList(req: any, res: Response){
 }
 
 export function getTemplateById(req: Request, res: Response): void {
-    Template.findOne({_id: req.params.id}).exec(
+    TemplateDB.findOne({_id: req.params.id}).exec(
         (err, template) => {
           if(err) {
             res.status(500).send({message: err});

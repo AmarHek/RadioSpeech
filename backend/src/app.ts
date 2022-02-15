@@ -2,19 +2,16 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from "path";
-import * as C from "./config/db.config";
+import {dbConfig} from "./config";
 import cors from "cors";
 
-import * as materialRoutes from './routes/material.routes';
-import * as templateRoutes from './routes/template.routes';
-import * as authRoutes from "./routes/auth.routes";
-import * as userRoutes from "./routes/user.routes"
+import {matRouter, templateRouter, userRouter, authRouter} from './routes';
 
 export const app = express();
 
 // TODO: Auf env auslagern
 
-const url = "mongodb://" + C.dbConfig.HOST + ":" + C.dbConfig.PORT + "/" + C.dbConfig.DB;
+const url = "mongodb://" + dbConfig.HOST + ":" + dbConfig.PORT + "/" + dbConfig.DB;
 mongoose.connect(url,
     {useNewUrlParser: true,
             useUnifiedTopology: true
@@ -50,10 +47,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/radio/database", materialRoutes.router);
-app.use("/radio/database", templateRoutes.router);
-app.use("/radio/auth", authRoutes.router);
-app.use("/radio/auth", userRoutes.router);
+app.use("/radio/database", matRouter);
+app.use("/radio/database", templateRouter);
+app.use("/radio/auth", authRouter);
+app.use("/radio/auth", userRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));

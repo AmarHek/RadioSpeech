@@ -24,4 +24,4 @@ const materialSchema = new mongoose.Schema({
     judged: { type: Boolean }
 });
 
-export default mongoose.model<Material>("Material", materialSchema, "material");
+export const MaterialDB = mongoose.model<Material>("Material", materialSchema, "material");

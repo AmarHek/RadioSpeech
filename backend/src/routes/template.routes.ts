@@ -29,22 +29,22 @@ const storageJSON = multer.diskStorage({
     }
 });
 
-export const router = express.Router();
+export const templateRouter = express.Router();
 
-router.post("/template/excel", multer({
+templateRouter.post("/template/excel", multer({
     storage: storageExcel
 }).single("file"), TemplateController.createExcelTemplate);
 
-router.post("/template/json/", multer({
+templateRouter.post("/template/json/", multer({
     storage: storageJSON
 }).single("file"), TemplateController.createJSONTemplate);
 
-router.post("/template/excel", multer({
+templateRouter.post("/template/excel", multer({
     storage: storageExcel
 }).single("file"), TemplateController.createExcelTemplate );
 
-router.post("/template/", TemplateController.createTemplate);
-router.put("/template/:id", TemplateController.updateTemplate);
-router.get('/template/', TemplateController.getTemplateList);
-router.get("/template/:id", TemplateController.getTemplateById)
-router.delete("/template/:id", TemplateController.deleteTemplate);
+templateRouter.post("/template/", TemplateController.createTemplate);
+templateRouter.put("/template/:id", TemplateController.updateTemplate);
+templateRouter.get('/template/', TemplateController.getTemplateList);
+templateRouter.get("/template/:id", TemplateController.getTemplateById)
+templateRouter.delete("/template/:id", TemplateController.deleteTemplate);
