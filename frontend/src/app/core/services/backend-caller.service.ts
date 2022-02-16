@@ -79,7 +79,7 @@ export class BackendCallerService {
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
       template: material.template,
-      coordinates: material.coordinates,
+      coordinates: material.annotations,
       judged: true
     });
   }

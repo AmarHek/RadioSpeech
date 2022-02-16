@@ -168,7 +168,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const restricted = !(this.user.role === Role.Admin || this.user.role === Role.Moderator);
     const modalData: PopoutData = {
       scans: this.material.scans,
-      coordinates: this.material.coordinates,
+      annotations: this.material.annotations,
       restricted
     };
     this.popoutService.openPopoutModal(modalData);

@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import {BoundingBox, Image} from "@app/models";
+import {Annotation, BoundingBox, Image} from "@app/models";
 
 export interface PopoutData {
   scans: {
@@ -8,10 +8,10 @@ export interface PopoutData {
     lateralScan?: Image;
     preScan?: Image;
   };
-  coordinates: {
-    main: BoundingBox[];
-    lateral: BoundingBox[];
-    pre: BoundingBox[];
+  annotations: {
+    main:     Annotation[];
+    lateral:  Annotation[];
+    pre:      Annotation[];
   };
   restricted?: boolean;
 }
@@ -19,4 +19,4 @@ export interface PopoutData {
 export const POPOUT_MODAL_DATA = new InjectionToken<PopoutData>("POPOUT_MODAL_DATA");
 
 export const POPOUT_MODALS = {
-}
+};

@@ -27,16 +27,16 @@ function initDirectories() {
 
 // load default json files on startup (can be deleted from the database later)
 function loadDefaultTemplates() {
-    if (!fs.existsSync("./assets/Radiolearn.json")) {
-        console.warn("Radiolearn.json asset missing!")
+    if (!fs.existsSync(Path.join(__dirname, "./assets/Radiolearn.json"))) {
+        console.warn("Radiolearn.json missing!")
     } else {
-        saveTemplate("./assets/Radiolearn.json", "Radiolearn");
+        saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn");
     }
 
-    if (!fs.existsSync("./assets/RoentgenNormal.json")) {
-        console.warn("RoentgenNormal.json asset missing!")
+    if (!fs.existsSync(Path.join(__dirname, "./assets/RoentgenNormal.json"))) {
+        console.warn("RoentgenNormal.json missing!")
     } else {
-        saveTemplate("./assets/RoentgenNormal.json", "RöntgenNormal");
+        saveTemplate(Path.join(__dirname, "./assets/RoentgenNormal.json"), "RöntgenNormal");
     }
 }
 

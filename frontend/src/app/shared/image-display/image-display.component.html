@@ -4,14 +4,14 @@
   <div style="display: block; margin: 20px;">
     <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.main.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.main.length > 0
             && this.currentMode !== 'main'),
             'btn-primary': this.currentMode === 'main',
             'btn-outline-primary': this.currentMode !== 'main'}"
             (click)="this.changeMode('main')">Hauptaufnahme</button>
     <button class="btn"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.lateral.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.lateral.length > 0
             && this.currentMode !== 'lateral'),
             'btn-primary': this.currentMode === 'lateral',
             'btn-outline-primary': this.currentMode !== 'lateral'}"
@@ -19,7 +19,7 @@
             [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
     <button class="btn btn-outline-primary"
             style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.coordinates.pre.length > 0
+            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.pre.length > 0
             && this.currentMode !== 'pre'),
             'btn-primary': this.currentMode === 'pre',
             'btn-outline-primary': this.currentMode !== 'pre'}"

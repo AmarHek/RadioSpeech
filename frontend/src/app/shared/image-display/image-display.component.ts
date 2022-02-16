@@ -10,15 +10,14 @@ import {
   TemplateRef,
   HostListener
 } from "@angular/core";
-import {POPOUT_MODAL_DATA, PopoutData} from "@app/core/services/popout.tokens";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {MatDialogService} from "@app/core/services/mat-dialog.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
-import {BoundingBox, Image} from "@app/models";
+import {Annotation, BoundingBox, Image} from "@app/models";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
+import {POPOUT_MODAL_DATA, PopoutData, MatDialogService} from "@app/core";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -41,10 +40,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     lateralScan?: Image;
     preScan?: Image;
   };
-  coordinates: {
-    main: BoundingBox[];
-    lateral: BoundingBox[];
-    pre: BoundingBox[];
+  annotations: {
+    main:     Annotation[];
+    lateral:  Annotation[];
+    pre:      Annotation[];
   };
   currentMode: string;
   currentScanUrl: string;
@@ -132,7 +131,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.scans = this.data.scans;
-    this.coordinates = this.data.coordinates;
+    this.annotations = this.data.annotations;
 
     if (this.data.restricted !== undefined) {
       this.restricted = this.data.restricted;
@@ -242,7 +241,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   drawBoxes() {
     this.clearCanvas();
-    const coordinates = this.coordinates[this.currentMode];
+    const coordinates = this.annotations[this.currentMode];
     for (const bbox of coordinates) {
       this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR);
       this.addLabel(bbox);
@@ -250,7 +249,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   addDeleteListeners() {
-    const coordinates = this.coordinates[this.currentMode];
+    const coordinates = this.annotations[this.currentMode];
     const rect = this.drawLayerElement.getBoundingClientRect();
     const parent = this;
     for (const bbox of coordinates) {
@@ -291,15 +290,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     const dialogData = new ConfirmDialogModel(
       "warning",
       "Box löschen bestätigen",
-      "Soll diese Box (Label: " + bbox.label + ") wirklich gelöscht werden?"
+      "Soll diese Box wirklich gelöscht werden?"
     );
     const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const idx = this.coordinates[this.currentMode].indexOf(bbox);
-        this.coordinates[this.currentMode].splice(idx, 1);
+        const idx = this.annotations[this.currentMode].indexOf(bbox);
+        this.annotations[this.currentMode].splice(idx, 1);
         this.drawBoxes();
         this.enableDelete = false;
       }
@@ -317,20 +316,19 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     context.stroke();
   }
 
-  addLabel(bbox: BoundingBox) {
+  addLabel(annotation: Annotation) {
     this.labelContext.font = "bold 18pt Arial";
     this.labelContext.fillStyle = TEXT_COLOR;
     this.labelContext.strokeStyle = "black";
     this.labelContext.lineWidth = 1;
     this.labelContext.fillText(
-      bbox.label,
-      this.currentScaleFactor * bbox.left,
-      this.currentScaleFactor * bbox.top + this.currentScaleFactor * bbox.height
-      + BOX_LINE_WIDTH + 20);
+      annotation.pathology.name,
+      this.currentScaleFactor * annotation.labelLeft,
+      this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20);
     this.labelContext.strokeText(
-      bbox.label,
-      this.currentScaleFactor * bbox.left,
-      this.currentScaleFactor * bbox.top + this.currentScaleFactor * bbox.height
+      annotation.pathology.name,
+      this.currentScaleFactor * annotation.labelLeft,
+      this.currentScaleFactor * annotation.labelTop
       + BOX_LINE_WIDTH + 20);
   }
 
@@ -368,7 +366,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
       this.dialogRef.afterClosed().subscribe((val: boolean) => {
         if (val && this.newLabel.length > 0) {
           this.fixNegativeCoordinates();
-          this.coordinates[this.currentMode].push({
+          this.annotations[this.currentMode].push({
             left: this.startX / this.currentScaleFactor,
             top: this.startY / this.currentScaleFactor,
             height: this.height / this.currentScaleFactor,

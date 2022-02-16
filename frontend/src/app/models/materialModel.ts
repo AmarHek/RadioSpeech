@@ -12,6 +12,8 @@ export interface Annotation {
   boxes: BoundingBox[];
   pathology: Pathology;
   correct: boolean;
+  labelLeft: number;
+  labelTop: number;
 }
 
 export interface Image {
@@ -27,7 +29,7 @@ export interface Material {
     lateralScan?: Image;
     preScan?: Image;
   };
-  coordinates: {
+  annotations: {
     main:         Annotation[];
     lateral:      Annotation[];
     pre:          Annotation[];
