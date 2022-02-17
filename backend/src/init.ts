@@ -1,6 +1,6 @@
 import * as Path from "path";
 import * as fs from "fs";
-import {TemplateDB} from "./models";
+import {PathologyDB, TemplateDB} from "./models";
 
 export function initData() {
     console.log("Initializing directories...");
@@ -11,7 +11,8 @@ export function initData() {
     loadDefaultTemplates();
     console.log("...finished");
 
-
+    console.log("Initializing default pathologies...")
+    initPathologies().then(() => console.log("...finished"));
 
 }
 
@@ -52,10 +53,31 @@ function saveTemplate(path: string, name: string) {
                 timestamp: new Date()
             });
             template.save().then(res => {
-                console.log("Successfully saved " + res);
+                console.log("Successfully saved " + res.name);
             });
 
         }
     })
 }
 
+async function initPathologies() {
+    if (!fs.existsSync(Path.join(__dirname, "./assets/pathology.json"))) {
+        console.warn("pathology.json missing!")
+    } else {
+        console.log("Emptying pathology collection.");
+        await PathologyDB.deleteMany({});
+        const rawData = fs.readFileSync(Path.join(__dirname, "./assets/pathology.json"), "utf-8");
+        const pathologies = JSON.parse(rawData);
+        console.log("Reading default pathologies from pathology.json asset.");
+        for (const pathology of pathologies) {
+            const newPathology = new PathologyDB({
+                name: pathology.name,
+                englishName: pathology.englishName,
+                templateMaps: pathology.templateMaps
+            });
+            newPathology.save().then(res => {
+                console.log("Successfully saved " + res.name);
+            })
+        }
+    }
+}

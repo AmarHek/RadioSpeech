@@ -58,11 +58,12 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   enableDelete: boolean;
   enableZoom: boolean;
 
+  // coordinates of the currently drawn box
   startX = 0;
   startY = 0;
   width = 0;
   height = 0;
-  newLabel = "";
+  tempAnnotations: Annotation[] = []; // currently drawn annotations
 
   lensSize = 300;
 

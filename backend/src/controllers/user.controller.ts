@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
-import {User} from "../models";
+import {UserDB} from "../models";
 import * as bcrypt from "bcrypt";
 
 export const getUsers = (req: Request, res: Response) => {
     try {
-        User.find().then(users => {
+        UserDB.find().then(users => {
             const result = users.map((user) => {
                 return {
                     id: user._id,
@@ -20,7 +20,7 @@ export const getUsers = (req: Request, res: Response) => {
 }
 
 export const getUserById = (req: Request, res: Response) => {
-       User.find(
+       UserDB.find(
             {_id: req.params.id}
         ).exec((err, users) => {
             if (err) {
@@ -37,7 +37,7 @@ export const getUserById = (req: Request, res: Response) => {
 }
 
 export const deleteUserById = (req: Request, res: Response) => {
-    User.deleteOne({
+    UserDB.deleteOne({
         _id: req.params.id
     }).exec((err) => {
         if (err) {
@@ -50,7 +50,7 @@ export const deleteUserById = (req: Request, res: Response) => {
 }
 
 export const changeUsername = (req: Request, res: Response) => {
-    User.updateOne({
+    UserDB.updateOne({
         _id: req.params.id
     }, {
         username: req.body.newUsername
@@ -65,7 +65,7 @@ export const changeUsername = (req: Request, res: Response) => {
 
 export const changePassword = (req: Request, res: Response) => {
     const newPassword = bcrypt.hashSync(req.body.newPassword, 8);
-    User.updateOne({
+    UserDB.updateOne({
         _id: req.params.id
     }, {
         password: newPassword

@@ -1,5 +1,5 @@
 import { authConfig } from "../config/auth.config";
-import { User, Role } from "../models";
+import { UserDB, Role } from "../models";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
@@ -8,7 +8,7 @@ export function signUp(req: Request, res: Response) {
 
     if (req.body !== null) {
 
-        const user = new User({
+        const user = new UserDB({
             username: req.body.username,
             password: bcrypt.hashSync(req.body.password, 8)
         });
@@ -32,7 +32,7 @@ export function signUp(req: Request, res: Response) {
 }
 
 export function signIn(req: Request, res: Response) {
-    User.findOne( {
+    UserDB.findOne( {
         username: req.body.username
     })
         .exec((err, user) => {

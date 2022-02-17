@@ -1,6 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import { authConfig } from "../config/auth.config";
-import { User, Role } from "../models";
+import { UserDB, Role } from "../models";
 import { Response, NextFunction} from "express";
 
 export const verifyToken = (req: any, res: Response, next: NextFunction) => {
@@ -22,7 +22,7 @@ export const verifyToken = (req: any, res: Response, next: NextFunction) => {
 };
 
 export const isAdmin = (req: any, res: Response, next: NextFunction) => {
-    User.findById(req.userId).exec((err, user) => {
+    UserDB.findById(req.userId).exec((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
@@ -39,7 +39,7 @@ export const isAdmin = (req: any, res: Response, next: NextFunction) => {
 }
 
 export const isModerator = (req: any, res: Response, next: NextFunction) => {
-    User.findById(req.userId).exec((err, user) => {
+    UserDB.findById(req.userId).exec((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
             return;

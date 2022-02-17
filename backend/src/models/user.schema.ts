@@ -4,10 +4,10 @@ import { Role } from './role.model';
 export interface UserDoc extends Document {
     username: string;
     password: string;
-    role: Role;
+    role:     Role;
 }
 
-export const User = mongoose.model<UserDoc>(
+export const UserDB = mongoose.model<UserDoc>(
     "User",
     new mongoose.Schema({
       username: { type: String },
@@ -17,5 +17,6 @@ export const User = mongoose.model<UserDoc>(
           enum: Role,
           default: Role.User
       }
-    })
+    }),
+    "users"
 );

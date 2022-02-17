@@ -1,9 +1,9 @@
-import {Role, User} from "../models";
+import {Role, UserDB} from "../models";
 import { Request, Response, NextFunction} from "express";
 import * as bcrypt from "bcrypt";
 
 export function checkDuplicateUsername(req: Request, res: Response, next: NextFunction): void {
-    User.findOne({
+    UserDB.findOne({
         username: req.body.username
     }).exec((err, user) => {
         if (err) {
