@@ -1,10 +1,5 @@
 import {Template} from "./template.model";
 
-export interface Pathology {
-  name: string;
-  present: boolean;
-}
-
 export interface BoundingBox {
   left: number;
   top: number;
@@ -14,8 +9,10 @@ export interface BoundingBox {
 
 export interface Annotation {
   boxes: BoundingBox[];
-  pathology: Pathology;
+  label: string;
   correct: boolean;
+  labelLeft: number;
+  labelTop: number;
 }
 
 export interface Image {
@@ -31,14 +28,14 @@ export interface Material {
     lateralScan?: Image;
     preScan?: Image;
   }
-  coordinates: {
+  annotations: {
     main:         Annotation[];
     lateral:      Annotation[];
     pre:          Annotation[]
   }
   modality:       string;
   template:       Template;
-  pathologies:    Pathology[];
+  pathologies:    string[];
   judged:         boolean;
 }
 

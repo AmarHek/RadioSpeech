@@ -10,7 +10,7 @@ export interface BoundingBox {
 
 export interface Annotation {
   boxes: BoundingBox[];
-  pathology: Pathology;
+  label: string;
   correct: boolean;
   labelLeft: number;
   labelTop: number;

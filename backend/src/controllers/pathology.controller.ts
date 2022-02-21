@@ -6,6 +6,6 @@ export function getPathologyList(req: Request, res: Response) {
         if (err) {
             res.status(500).send({message: err});
         }
-        res.status(200).send(pathologyList);
+        res.status(200).send({pathologyList});
     });
 }

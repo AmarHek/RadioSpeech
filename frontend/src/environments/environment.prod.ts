@@ -4,5 +4,6 @@ export const environment = {
   authentication: "radio/auth/",
   database: "radio/database/",
   template: "template/",
-  material: "material/"
+  material: "material/",
+  pathology: "pathology/"
 };

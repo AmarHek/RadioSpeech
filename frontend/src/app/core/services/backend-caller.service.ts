@@ -3,8 +3,7 @@ import * as M from "../../models/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
 import {Observable} from "rxjs";
-import {Template} from "@app/models";
-import {Material} from "@app/models";
+import {Template, Material, Pathology} from "@app/models";
 
 
 @Injectable({
@@ -19,6 +18,7 @@ export class BackendCallerService {
 
   templateUrl = environment.backend + environment.database + environment.template;
   materialUrl = environment.backend + environment.database + environment.material;
+  pathologyUrl = environment.backend + environment.database + environment.pathology;
 
 
   constructor(private http: HttpClient) {}
@@ -112,11 +112,23 @@ export class BackendCallerService {
 
   getDocCount(judged: boolean, pathology: string = "") {
     const query = {judged, pathology};
-    return this.http.post<{message: string, count: number}>(
+    return this.http.post<{message: string; count: number}>(
       this.materialUrl + "queryDocCount/",
       query
     );
   }
+
+  // GET PATHOLOGY LIST FROM DATABASE
+
+  getPathologyList() {
+    return this.http.get<{message: string; pathologyList: Pathology[]}>(
+      this.pathologyUrl + "list/"
+    );
+  }
+
+  // FEEDBACK API
+
+
 
 }
 

@@ -44,17 +44,27 @@
             (click)="toggleEditor()">Editor aktivieren</button>
     <button *ngIf="isAllowed && this.enableEdit" class="btn btn-outline-success"
             style="width: 180px; margin: 2px; padding: 10px;"
-            (click)="saveNewBox()">Box Speichern</button>
+            (click)="saveNewAnnotation()">Box Speichern</button>
 
+    <!--
     <div style="text-align: justify; margin-top: 10px; padding: 10px; border: 1px solid hsl(200, 70%, 80%);
     border-radius: 5px;">
       <h6>Info:</h6>
       <ul>
         <li>Zoom mit Mausrad. Wird die Zoom-Box langsamer, Zoom aus und an-toggeln.</li>
-        <li>Pop-ups erscheinen immer im Hauptfenster.</li>
         <li>Gelber Button bedeutet, dass Bounding-Boxen vorhanden sind.</li>
-        <li>Bounding-Boxen werden erst angezeigt, wenn der Befund geprüft wurde.</li>
+        <li>Bounding-Boxen werden erst anzeigbar, sobald der Befund geprüft wurde.</li>
       </ul>
+    </div>-->
+    <div style="text-align: justify; margin-top: 10px; padding: 10px; border: 1px solid hsl(200, 70%, 80%);
+    border-radius: 5px;">
+      <ng-container *ngFor="let pathology of pathologyList">
+        <input type="radio"
+               id="{{pathology.name}}"
+               name="Pathologies"
+               [value]="pathology"
+               [(ngModel)]="currentPathology"/>
+      </ng-container>
     </div>
   </div>
 
@@ -86,17 +96,3 @@
   </div>
 
 </div>
-
-<ng-template #labelDialog>
-  <h4 style="margin-bottom: 5px" matDialogTitle>Label-Dialog</h4>
-  <mat-divider></mat-divider>
-  <mat-dialog-content style="margin: 10px 0">
-    <div style="margin: 0">Neues Label eingeben:</div>
-    <input style="margin: 0" matInput type="text" id="labelInput" [(ngModel)]="newLabel">
-  </mat-dialog-content>
-  <mat-divider></mat-divider>
-  <mat-dialog-actions style="float: right">
-    <button class="btn btn-primary" (click)="save()">Speichern</button>
-    <button style="margin-left:3px" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
-  </mat-dialog-actions>
-</ng-template>

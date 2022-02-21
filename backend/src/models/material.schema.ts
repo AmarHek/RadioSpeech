@@ -13,10 +13,28 @@ const materialSchema = new mongoose.Schema({
         lateralScan: imageSchema,
         preScan: imageSchema
     },
-    coordinates: {
-        main: [{left: Number, top: Number, height: Number, width: Number, label: String}],
-        lateral: [{left: Number, top: Number, height: Number, width: Number, label: String}],
-        pre: [{left: Number, top: Number, height: Number, width: Number, label: String}],
+    annotations: {
+        main: [{
+            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
+            label: {type: String},
+            correct: {type: Boolean},
+            labelLeft: {type: Number},
+            labelTop: {type: Number}
+        }],
+        lateral: [{
+            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
+            label: {type: String},
+            correct: {type: Boolean},
+            labelLeft: {type: Number},
+            labelTop: {type: Number}
+        }],
+        pre: [{
+            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
+            label: {type: String},
+            correct: {type: Boolean},
+            labelLeft: {type: Number},
+            labelTop: {type: Number}
+        }],
     },
     modality: { type: String, required: true },
     template: { type: mongoose.Schema.Types.Mixed, required: true},

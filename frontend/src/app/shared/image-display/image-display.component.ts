@@ -12,12 +12,11 @@ import {
 } from "@angular/core";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialogRef} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
-import {Annotation, BoundingBox, Image} from "@app/models";
-import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
-import {POPOUT_MODAL_DATA, PopoutData, MatDialogService} from "@app/core";
+import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
+import {POPOUT_MODAL_DATA, PopoutData, BackendCallerService} from "@app/core";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = "blue";
@@ -34,6 +33,9 @@ const MAX_IMAGE_HEIGHT = 900;
 export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   serverUrl = environment.backend;
+
+  // assets and material
+  pathologyList: Pathology[];
   scans: {
     id: string;
     mainScan: Image;
@@ -45,13 +47,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     lateral:  Annotation[];
     pre:      Annotation[];
   };
+
+  // state variables for current display
   currentMode: string;
   currentScanUrl: string;
-
   currentScaleFactor = 1.0;
   currentWidth: number;
   currentHeight: number;
 
+  // state variables for canvas layers
   displayBoxes: boolean;
   boxDisplayConfirmed: boolean;
   enableEdit: boolean;
@@ -63,8 +67,14 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   startY = 0;
   width = 0;
   height = 0;
-  tempAnnotations: Annotation[] = []; // currently drawn annotations
 
+  // currently drawn annotations
+  tempAnnotations: Annotation[] = [];
+
+  // current chosen Pathology for label
+  currentPathology: Pathology;
+
+  // Zoom lens
   lensSize = 300;
 
   @HostListener("mousewheel", ["$event"])
@@ -127,10 +137,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   private restricted = true;
 
   constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData,
-              private dialogService: MatDialogService,
-              private dialog: MatDialog) { }
+              private backendCaller: BackendCallerService) { }
 
   ngOnInit(): void {
+    this.getPathologyList();
     this.scans = this.data.scans;
     this.annotations = this.data.annotations;
 
@@ -176,6 +186,14 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   setCurrentImage() {
     const filename = this.scans[this.currentMode + "Scan"].filename;
     this.currentScanUrl = this.serverUrl + "images/" + this.scans.id + "/" + filename;
+  }
+
+  getPathologyList() {
+    this.backendCaller.getPathologyList().subscribe(res => {
+      this.pathologyList = res.pathologyList;
+    }, err => {
+      console.log(err);
+    });
   }
 
   setCurrentDimensions() {
@@ -288,22 +306,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   removeAlert(bbox: BoundingBox) {
-    const dialogData = new ConfirmDialogModel(
-      "warning",
-      "Box löschen bestätigen",
-      "Soll diese Box wirklich gelöscht werden?"
-    );
-    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const idx = this.annotations[this.currentMode].indexOf(bbox);
-        this.annotations[this.currentMode].splice(idx, 1);
-        this.drawBoxes();
-        this.enableDelete = false;
-      }
-    });
+    const idx = this.annotations[this.currentMode].indexOf(bbox);
+    this.annotations[this.currentMode].splice(idx, 1);
+    this.drawBoxes();
+    this.enableDelete = false;
   }
 
   drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, color: string) {
@@ -323,11 +329,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.labelContext.strokeStyle = "black";
     this.labelContext.lineWidth = 1;
     this.labelContext.fillText(
-      annotation.pathology.name,
+      annotation.label,
       this.currentScaleFactor * annotation.labelLeft,
       this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20);
     this.labelContext.strokeText(
-      annotation.pathology.name,
+      annotation.label,
       this.currentScaleFactor * annotation.labelLeft,
       this.currentScaleFactor * annotation.labelTop
       + BOX_LINE_WIDTH + 20);
@@ -360,22 +366,20 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     });
   }
 
-  saveNewBox() {
+  saveNewAnnotation() {
     if (!(this.width === 0 || this.height === 0)) {
-      const dialogConfig = this.dialogService.defaultConfig("470px");
-      this.dialogRef = this.dialog.open(this.labelDialog, dialogConfig);
       this.dialogRef.afterClosed().subscribe((val: boolean) => {
-        if (val && this.newLabel.length > 0) {
+        if (val && this.currentPathology !== undefined) {
           this.fixNegativeCoordinates();
           this.annotations[this.currentMode].push({
             left: this.startX / this.currentScaleFactor,
             top: this.startY / this.currentScaleFactor,
             height: this.height / this.currentScaleFactor,
             width: this.width / this.currentScaleFactor,
-            label: this.newLabel,
+            label: this.currentPathology.name,
           });
           this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
-          this.newLabel = "";
+          this.currentPathology = undefined;
           this.width = 0;
           this.height = 0;
           if (this.displayBoxes) {
@@ -384,15 +388,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
         }
       });
     }
-  }
-
-  close() {
-    this.newLabel = "";
-    this.dialogRef.close(false);
-  }
-
-  save() {
-    this.dialogRef.close(true);
   }
 
   private imageZoom() {
