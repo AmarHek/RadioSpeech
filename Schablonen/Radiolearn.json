@@ -2375,7 +2375,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "FAL",
+				"name": "Freie abdominelle Luft (FAL)",
 				"value": false,
 				"text": "Miterfasste FAL %O1% subdiaphragmal im OB. ",
 				"judgementText": "Miterfasste FAL; weitere Abklärung notwendig. ",

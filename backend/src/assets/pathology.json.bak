@@ -343,69 +343,22 @@
 		"name": "Oberbauch",
 		"englishName": "Upper abdomen",
 		"templateMaps": [
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Z.n. CHE"
-			},
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Ileus"
-			},
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Freie abdominelle Luft (FAL)"
-			}
+		
 		]
 	},
 	{
 		"name": "Weichteile",
 		"englishName": "Soft tissue",
-		"templateMaps": [
-			{
-				"categoryName": "Weichteile",
-				"kind": "box",
-				"name": "WT-Emphysem"
-			},
-			{
-				"categoryName": "Weichteile",
-				"kind": "box",
-				"name": "weiteres WT-Emphysem"
-			}
-		]
+		"templateMaps": []
 	},
 	{
 		"name": "Fraktur",
 		"englishName": "Fracture",
-		"templateMaps": [
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Fraktur"
-			}
-		]
+		"templateMaps": []
 	},
 	{
 		"name": "Skelett",
 		"englishName": "Skeleton",
-		"templateMaps": [
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Spondylarthrose"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "ACG-Arthrose"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Omarthrose"
-			}
-		]
+		"templateMaps": []
 	}
 ]

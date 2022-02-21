@@ -1533,7 +1533,7 @@
 	},
 	{
 		"kind": "category",
-		"name": "Mediastinum ",
+		"name": "Mediastinum",
 		"selectables": [
 			{
 				"kind": "box",
