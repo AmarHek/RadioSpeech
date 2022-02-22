@@ -6,6 +6,15 @@ const imageSchema = new mongoose.Schema({
     mimetype: String
 })
 
+const annotationSchema = new mongoose.Schema({
+    boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
+    label: {type: String},
+    comment: {type: String},
+    correct: {type: Boolean},
+    labelLeft: {type: Number},
+    labelTop: {type: Number}
+})
+
 const materialSchema = new mongoose.Schema({
     scans: {
         id:  {type: String, required: true},
@@ -14,27 +23,9 @@ const materialSchema = new mongoose.Schema({
         preScan: imageSchema
     },
     annotations: {
-        main: [{
-            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
-            label: {type: String},
-            correct: {type: Boolean},
-            labelLeft: {type: Number},
-            labelTop: {type: Number}
-        }],
-        lateral: [{
-            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
-            label: {type: String},
-            correct: {type: Boolean},
-            labelLeft: {type: Number},
-            labelTop: {type: Number}
-        }],
-        pre: [{
-            boxes: [{left: Number, top: Number, height: Number, width: Number, label: String}],
-            label: {type: String},
-            correct: {type: Boolean},
-            labelLeft: {type: Number},
-            labelTop: {type: Number}
-        }],
+        main: [annotationSchema],
+        lateral: [annotationSchema],
+        pre: [annotationSchema],
     },
     modality: { type: String, required: true },
     template: { type: mongoose.Schema.Types.Mixed, required: true},

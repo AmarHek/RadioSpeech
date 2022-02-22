@@ -10,6 +10,7 @@ export interface BoundingBox {
 export interface Annotation {
   boxes: BoundingBox[];
   label: string;
+  comment?: string;
   correct: boolean;
   labelLeft: number;
   labelTop: number;
