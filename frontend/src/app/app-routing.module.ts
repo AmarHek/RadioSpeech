@@ -7,7 +7,8 @@ import {
   UiBaseComponent,
   RadiolearnListComponent,
   RadiolearnUiComponent,
-  AccountManagementComponent
+  AccountManagementComponent,
+  FeedbackDisplayComponent
 } from "@app/feature";
 import { AuthGuard } from "@app/helpers";
 import { Role } from "@app/models";
@@ -52,6 +53,12 @@ const routes: Routes = [
     component: AccountManagementComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin, Role.Moderator, Role.User]}
+  },
+  {
+    path: "feedback",
+    component: FeedbackDisplayComponent,
+    canActivate: [AuthGuard],
+    data: { role: [Role.Admin, Role.Moderator]}
   },
   {path: "**", redirectTo: "/list"}
 ];

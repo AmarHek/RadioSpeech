@@ -21,8 +21,6 @@ export class BackendCallerService {
   pathologyUrl = environment.database + "pathology/";
   feedbackUrl = environment.database + "feedback/";
 
-
-
   constructor(private http: HttpClient) {}
 
   getTemplateById(id: string): Observable<Template> {
@@ -131,9 +129,10 @@ export class BackendCallerService {
 
   // FEEDBACK API
 
-  getFeedbackList() {
-    return this.http.get<{message: string; feedbackList: Feedback[]}>(
-      this.feedbackUrl + "list/"
+  getFeedbackList(skip: number, length: number) {
+    return this.http.post<{message: string; feedbackList: Feedback[]}>(
+      this.feedbackUrl + "list/",
+      {skip, length}
     );
   }
 
@@ -143,7 +142,15 @@ export class BackendCallerService {
     );
   }
 
+  addFeedback(feedback: Feedback) {
+    return this.http.post<{message: string, id: string}>(
+      this.feedbackUrl + "add/",
+      feedback);
+  }
 
+  deleteFeedback(id: string) {
+    return this.http.delete(this.feedbackUrl + "delete/" + id);
+  }
 
 }
 

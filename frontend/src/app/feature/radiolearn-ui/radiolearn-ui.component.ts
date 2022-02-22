@@ -14,6 +14,7 @@ import {
 import {OptionsComponent} from "@app/shared";
 import {MatDialog} from "@angular/material/dialog";
 import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
+import {FeedbackModalComponent} from "@app/shared/feedback-modal/feedback-modal.component";
 
 @Component({
   selector: "app-judge-mat",
@@ -173,7 +174,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   feedbackModal() {
-    
+    const dialogConfig = this.dialogService.defaultConfig("700px", {
+      userID: this.user.id,
+      materialID: this.material._id
+    });
+    const dialogRef = this.dialog.open(FeedbackModalComponent, dialogConfig);
   }
 
 }

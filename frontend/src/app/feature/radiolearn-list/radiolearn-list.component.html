@@ -9,7 +9,8 @@
       </button>
       <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
       <button class="btn btn-outline-primary" style="float: right" (click)="getData()" id="reloadButton">Neu Laden</button>
-      <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged" (ngModelChange)="loadData()">
+      <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged"
+                        (ngModelChange)="loadData()">
         Bearbeitete Einträge zeigen
       </mat-slide-toggle>
 
@@ -31,7 +32,8 @@
   <div *ngIf="this.materials.length > 0; else noEntry">
 
     <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
+                      [pageSize]="pageSize" (pageChange)="loadData()">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
@@ -91,15 +93,12 @@
                 <td class="metadata">Template:</td>
                 <td class="metadata">{{material.template.name}}</td>
               </tr>
-              <tr>
-                <td class="metadata">Boxen vorhanden in:</td>
-                <td class="metadata">{{checkBoxes(material.annotations)}}</td>
-              </tr>
             </table>
             <button class="btn btn-outline-primary custom-button"
                     (click)="openEditor(material._id)">Start Befundung
             </button>
-            <button class="btn btn-danger custom-button" (click)="delete(material._id, material.scans.id)">Entfernen
+            <button class="btn btn-danger custom-button"
+                    (click)="delete(material._id, material.scans.id)">Entfernen
             </button>
           </td>
         </ng-container>
@@ -108,7 +107,8 @@
     </table>
 
     <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="loadData()">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
+                      [pageSize]="pageSize" (pageChange)="loadData()">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">

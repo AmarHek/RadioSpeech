@@ -5,6 +5,7 @@ import { RadiolearnListComponent } from "@app/feature/radiolearn-list/radiolearn
 import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
 import { AccountManagementComponent } from "./account-management/account-management.component";
 import { AdminComponent } from "@app/feature/admin/admin.component";
+import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
 
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -30,7 +31,8 @@ import {MatMenuModule} from "@angular/material/menu";
     RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent
+    AdminComponent,
+    FeedbackDisplayComponent
   ],
     imports: [
         CommonModule,
@@ -55,7 +57,8 @@ import {MatMenuModule} from "@angular/material/menu";
     RadiolearnListComponent,
     UiBaseComponent,
     AccountManagementComponent,
-    AdminComponent
+    AdminComponent,
+    FeedbackDisplayComponent
   ]
 })
 export class FeatureModule { }

@@ -23,24 +23,26 @@ import { ChangePasswordComponent } from "./change-password/change-password.compo
 import { ChangeUsernameComponent } from "./change-username/change-username.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import { RadiolearnErrorsComponent } from './radiolearn-errors/radiolearn-errors.component';
+import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
+import { FeedbackModalComponent } from "./feedback-modal/feedback-modal.component";
 
 
 @NgModule({
-    declarations: [
-      ConfirmDialogComponent,
-      InputModalComponent,
-      OptionsComponent,
-      ReportComponent,
-      UploadComponent,
-      UploadMaterialComponent,
-      VariablesComponent,
-      ImageDisplayComponent,
-      SignUpComponent,
-      ChangePasswordComponent,
-      ChangeUsernameComponent,
-      RadiolearnErrorsComponent
-    ],
+  declarations: [
+    ConfirmDialogComponent,
+    InputModalComponent,
+    OptionsComponent,
+    ReportComponent,
+    UploadComponent,
+    UploadMaterialComponent,
+    VariablesComponent,
+    ImageDisplayComponent,
+    SignUpComponent,
+    ChangePasswordComponent,
+    ChangeUsernameComponent,
+    RadiolearnErrorsComponent,
+    FeedbackModalComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -56,18 +58,19 @@ import { RadiolearnErrorsComponent } from './radiolearn-errors/radiolearn-errors
     MatButtonModule,
     MatIconModule
   ],
-    exports: [
-        ConfirmDialogComponent,
-        InputModalComponent,
-        OptionsComponent,
-        ReportComponent,
-        UploadComponent,
-        UploadMaterialComponent,
-        VariablesComponent,
-        ImageDisplayComponent,
-        SignUpComponent,
-        ChangeUsernameComponent,
-        ChangePasswordComponent
-    ]
+  exports: [
+    ConfirmDialogComponent,
+    InputModalComponent,
+    OptionsComponent,
+    ReportComponent,
+    UploadComponent,
+    UploadMaterialComponent,
+    VariablesComponent,
+    ImageDisplayComponent,
+    SignUpComponent,
+    ChangeUsernameComponent,
+    ChangePasswordComponent,
+    FeedbackModalComponent
+  ]
 })
 export class SharedModule { }

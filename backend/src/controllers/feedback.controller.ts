@@ -5,7 +5,8 @@ export function addFeedback(req: Request, res: Response) {
     const newFeedback = new FeedbackDB({
         userID: req.body.userID,
         materialID: req.body.materialID,
-        comment: req.body.comment
+        comment: req.body.comment,
+        date: new Date()
     });
     newFeedback.save().then(result => {
         res.status(201).send({

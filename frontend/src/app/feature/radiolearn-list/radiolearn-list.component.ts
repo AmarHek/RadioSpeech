@@ -36,7 +36,7 @@ export class RadiolearnListComponent implements OnInit {
     ["Pleural Effusion", "Pleuraerguss"],
     ["Pleural Other", "Pleural andere"],
     ["Fracture", "Fraktur"],
-    ["Support Devices", "Stutzgerät"]
+    ["Support Devices", "Stützgerät"]
   ]);
 
   collectionSize = 0;

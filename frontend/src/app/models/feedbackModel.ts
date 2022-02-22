@@ -1,6 +1,7 @@
 export interface Feedback {
-  _id:        string;
+  _id?:       string;
   userID:     string;
   materialID: string;
   comment:    string;
+  date?:      string;
 }
