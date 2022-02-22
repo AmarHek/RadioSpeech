@@ -73,6 +73,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   // current chosen Pathology for label
   currentPathology: Pathology;
+  currentComment: string;
 
   // Zoom lens
   lensSize = 300;

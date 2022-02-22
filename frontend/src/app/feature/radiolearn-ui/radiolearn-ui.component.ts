@@ -16,6 +16,11 @@ import {MatDialog} from "@angular/material/dialog";
 import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
 import {FeedbackModalComponent} from "@app/shared/feedback-modal/feedback-modal.component";
 
+interface Layout{
+  id: number;
+  displayName: string;
+}
+
 @Component({
   selector: "app-judge-mat",
   templateUrl: "./radiolearn-ui.component.html",
@@ -32,6 +37,13 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   report = "";
   judgement = "";
   selectedCat = "undefined";
+
+  layouts: Layout[] = [
+    {id: 0, displayName: "Standard Layout"},
+    {id: 1, displayName: "Kategorien Aufklappen"}
+  ];
+
+  currentLayout = this.layouts[1];
 
   submitText: string;
   private user: User;

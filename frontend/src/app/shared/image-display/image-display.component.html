@@ -1,30 +1,35 @@
 <div style="background: hsl(202, 73%, 96%); padding: 5px; border-radius: 5px; border: 1px solid hsl(200, 70%, 80%);
-            grid-column-gap: 5px; grid-template-columns: 300px 900px 600px;
-            display: grid; align-content: center; overflow: hidden; height: 100%">
+            grid-column-gap: 5px; grid-template-columns: 350px 900px 500px;
+            display: grid; align-content: center; overflow: scroll; height: 100%">
   <div style="display: block; margin: 20px;">
-    <button class="btn"
-            style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.main.length > 0
+    <div>
+      <button class="btn"
+              style="width: 90px; margin: 2px; padding: 10px;"
+              [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.main.length > 0
             && this.currentMode !== 'main'),
             'btn-primary': this.currentMode === 'main',
             'btn-outline-primary': this.currentMode !== 'main'}"
-            (click)="this.changeMode('main')">Hauptaufnahme</button>
-    <button class="btn"
-            style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.lateral.length > 0
+              (click)="this.changeMode('main')">Haupt
+      </button>
+      <button class="btn"
+              style="width: 90px; margin: 2px; padding: 10px;"
+              [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.lateral.length > 0
             && this.currentMode !== 'lateral'),
             'btn-primary': this.currentMode === 'lateral',
             'btn-outline-primary': this.currentMode !== 'lateral'}"
-            (click)="this.changeMode('lateral')"
-            [disabled]="this.scans.lateralScan === undefined">Lateralaufnahme</button>
-    <button class="btn btn-outline-primary"
-            style="width: 180px; margin: 2px; padding: 10px;"
-            [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.pre.length > 0
+              (click)="this.changeMode('lateral')"
+              [disabled]="this.scans.lateralScan === undefined">Lateral
+      </button>
+      <button class="btn btn-outline-primary"
+              style="width: 90px; margin: 2px; padding: 10px;"
+              [ngClass]="{'btn-warning': (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.pre.length > 0
             && this.currentMode !== 'pre'),
             'btn-primary': this.currentMode === 'pre',
             'btn-outline-primary': this.currentMode !== 'pre'}"
-            (click)="this.changeMode('pre')"
-            [disabled]="this.scans.preScan === undefined">Voraufnahme</button>
+              (click)="this.changeMode('pre')"
+              [disabled]="this.scans.preScan === undefined">Vor
+      </button>
+    </div>
     <button class="btn"
             [disabled]="!boxDisplayConfirmed"
             [ngClass]="(this.displayBoxes && this.boxDisplayConfirmed) ? 'btn-success': 'btn-outline-success'"
@@ -56,15 +61,23 @@
         <li>Bounding-Boxen werden erst anzeigbar, sobald der Befund geprüft wurde.</li>
       </ul>
     </div>-->
-    <div style="text-align: justify; margin-top: 10px; padding: 10px; border: 1px solid hsl(200, 70%, 80%);
+    <div *ngIf="isAllowed"
+         style="margin-top: 10px; padding: 5px; border: 1px solid hsl(200, 70%, 80%);
     border-radius: 5px;">
-      <ng-container *ngFor="let pathology of pathologyList">
-        <input type="radio"
-               id="{{pathology.name}}"
-               name="Pathologies"
-               [value]="pathology"
-               [(ngModel)]="currentPathology"/>
-      </ng-container>
+      <h5>Pathologie wählen</h5>
+      <table>
+        <tbody>
+        <ng-container *ngFor="let pathology of pathologyList">
+          <tr>
+            <td><input type="radio"
+                       id="{{pathology.name}}"
+                       name="Pathologies"
+                       [value]="pathology"
+                       [(ngModel)]="currentPathology"/></td>
+            <td><label for="{{pathology.name}}">{{pathology.name}}</label></td></tr>
+        </ng-container>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -90,9 +103,17 @@
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 
-  <div><h3 style="margin: 20px">Zoom</h3>
+  <div>
+    <h3 style="margin: 20px">Zoom</h3>
     <div #zoomDiv style="margin: 20px; width: 600px; height: 600px; border: 1px solid #d4d4d4;"
          id="zoom"></div>
+
+    <div style="margin: 20px" *ngIf="isAllowed">
+      <h5>Kommentar hinzufügen:</h5>
+      <textarea style="padding: 10px;" rows="6" cols="75" [(ngModel)]="currentComment"></textarea>
+    </div>
   </div>
+
+
 
 </div>
