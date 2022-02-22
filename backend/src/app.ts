@@ -8,6 +8,7 @@ import cors from "cors";
 import {matRouter, templateRouter, userRouter, authRouter} from './routes';
 import {initData} from "./init";
 import {pathologyRouter} from "./routes/pathology.routes";
+import {feedbackRouter} from "./routes/feedback.routes";
 
 export const app = express();
 
@@ -54,7 +55,8 @@ app.use("/radio/database", matRouter);
 app.use("/radio/database", templateRouter);
 app.use("/radio/auth", authRouter);
 app.use("/radio/auth", userRouter);
-app.use("radio/pathology", pathologyRouter);
+app.use("/radio/pathology", pathologyRouter);
+app.use("/radio/feedback", feedbackRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));
