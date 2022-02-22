@@ -40,7 +40,6 @@ export class OptionsComponent implements OnInit, OnChanges {
         ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
       this.maxRowLength = this.minRowLength;
     }
-    console.log("Innerhalb von Options", this.categories);
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
   }
 

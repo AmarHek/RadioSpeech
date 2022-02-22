@@ -7,7 +7,7 @@ import {Role, User} from "@app/models";
 @Injectable({ providedIn: "root" })
 export class UserService {
 
-  url = environment.backend + environment.authentication;
+  url = environment.authentication;
 
   constructor(private http: HttpClient) { }
 

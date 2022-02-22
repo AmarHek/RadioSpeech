@@ -3,7 +3,7 @@ import * as M from "../../models/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
 import {Observable} from "rxjs";
-import {Template, Material, Pathology} from "@app/models";
+import {Template, Material, Pathology, Feedback} from "@app/models";
 
 
 @Injectable({
@@ -16,9 +16,11 @@ import {Template, Material, Pathology} from "@app/models";
 
 export class BackendCallerService {
 
-  templateUrl = environment.backend + environment.database + environment.template;
-  materialUrl = environment.backend + environment.database + environment.material;
-  pathologyUrl = environment.backend + environment.database + environment.pathology;
+  templateUrl = environment.database + "template/";
+  materialUrl = environment.database + "material/";
+  pathologyUrl = environment.database + "pathology/";
+  feedbackUrl = environment.database + "feedback/";
+
 
 
   constructor(private http: HttpClient) {}
@@ -31,7 +33,7 @@ export class BackendCallerService {
 
   addTemplate(template: M.Template): Observable<{ message: string; templateId: string }> {
     return this.http.post<{ message: string; templateId: string }>(
-      this.templateUrl,
+      this.templateUrl + "add/",
       template
     );
   }
@@ -52,19 +54,20 @@ export class BackendCallerService {
   }
 
   deleteTemplate(id: string) {
-    return this.http.delete(this.templateUrl + id);
+    return this.http.delete(this.templateUrl + "delete/" + id);
   }
 
   updateTemplate(template: M.Template) {
     return this.http
-      .put(this.templateUrl + template._id, {
+      .put(this.templateUrl + "update/" + template._id, {
         parts: template.parts,
         name: template.name,
       });
   }
 
   getTemplateList(): Observable<Template[]> {
-    return this.http.get<Template[]>(this.templateUrl);
+    console.log(this.templateUrl);
+    return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
   // MATERIAL API
@@ -127,6 +130,18 @@ export class BackendCallerService {
   }
 
   // FEEDBACK API
+
+  getFeedbackList() {
+    return this.http.get<{message: string; feedbackList: Feedback[]}>(
+      this.feedbackUrl + "list/"
+    );
+  }
+
+  getFeedbackCount() {
+    return this.http.get<{message: string; count: number}>(
+      this.feedbackUrl + "count/"
+    );
+  }
 
 
 

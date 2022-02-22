@@ -51,12 +51,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/radio/database", matRouter);
-app.use("/radio/database", templateRouter);
-app.use("/radio/auth", authRouter);
-app.use("/radio/auth", userRouter);
-app.use("/radio/pathology", pathologyRouter);
-app.use("/radio/feedback", feedbackRouter);
+app.use("/auth", authRouter);
+app.use("/auth", userRouter);
+
+app.use("/database/material", matRouter);
+app.use("/database/template", templateRouter);
+app.use("/database/pathology", pathologyRouter);
+app.use("/database/feedback", feedbackRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));

@@ -32,7 +32,7 @@ const MAX_IMAGE_HEIGHT = 900;
 })
 export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
-  serverUrl = environment.backend;
+  imageUrl = environment.images;
 
   // assets and material
   pathologyList: Pathology[];
@@ -185,7 +185,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   setCurrentImage() {
     const filename = this.scans[this.currentMode + "Scan"].filename;
-    this.currentScanUrl = this.serverUrl + "images/" + this.scans.id + "/" + filename;
+    this.currentScanUrl = this.imageUrl + this.scans.id + "/" + filename;
   }
 
   getPathologyList() {

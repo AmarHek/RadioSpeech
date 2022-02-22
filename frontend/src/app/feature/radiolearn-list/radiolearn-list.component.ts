@@ -14,7 +14,7 @@ import {UploadMaterialComponent, ConfirmDialogComponent, ConfirmDialogModel} fro
 })
 export class RadiolearnListComponent implements OnInit {
 
-  imageUrl = environment.backend + "images/";
+  imageUrl = environment.images;
   materials: Material[] = [];
 
   showJudged = false;

@@ -83,9 +83,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               this.material.template = this.radiolearnService.resetTemplate(this.material.template);
             }
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
-            console.log("Neue Kategorien", this.categories);
             if (this.optionChild !== undefined) {
-              console.log("Alte Kategorien:", this.categories);
               this.optionChild.categories = this.categories;
               this.optionChild.initRows();
             }
@@ -172,6 +170,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
       restricted
     };
     this.popoutService.openPopoutModal(modalData);
+  }
+
+  feedbackModal() {
+    
   }
 
 }

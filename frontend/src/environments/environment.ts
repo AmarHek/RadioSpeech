@@ -5,11 +5,9 @@
 export const environment = {
   production: false,
   backend: "http://localhost:8000/",
-  authentication: "radio/auth/",
-  database: "radio/database/",
-  template: "template/",
-  material: "material/",
-  pathology: "pathology/"
+  authentication: "http://localhost:8000/auth/",
+  database: "http://localhost:8000/database/",
+  images: "http://localhost:8000/images/"
 };
 
 /*

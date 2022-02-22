@@ -9,16 +9,18 @@
       <span [routerLink]="['/', 'radiolearn', 'list']" style="font-size: 22px; cursor: pointer">RadioLearn</span>
       <span class="spacer"></span>
 
-      <button mat-button id="submit"
-              (click)="submit()">{{submitText}}
-      </button>
-      <button mat-button id="next"
-              (click)="next()">Nächste Aufnahme</button>
-      <button mat-button id="open-images"
-              (click)="openImagePopout()">Scans anzeigen
-      </button>
       <button mat-button id="normal-btn"
               (click)="makeNormal()">Rest normal
+      </button>
+      <button mat-button id="open-images"
+              (click)="openImagePopout()">Scans Popout
+      </button>
+      <button mat-button id="feedback"
+              (click)="feedbackModal()">Feedback</button>
+      <button mat-button id="next"
+              (click)="next()">Nächste Aufnahme</button>
+      <button mat-button id="submit"
+              (click)="submit()">{{submitText}}
       </button>
     </mat-toolbar>
   </div>
