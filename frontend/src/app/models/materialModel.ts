@@ -1,5 +1,4 @@
 import {Template} from "./templateModel";
-import {Pathology} from "@app/models/pathologyModel";
 
 export interface BoundingBox {
   left: number;

@@ -19,9 +19,13 @@ import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
 import {POPOUT_MODAL_DATA, PopoutData, BackendCallerService} from "@app/core";
 
 const BOX_LINE_WIDTH = 5;
-const DISPLAY_BOX_COLOR = "blue";
+const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
+  "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
+  "rgba(70,240,240,1)", "rgba(0,130,200,1)", "rgba(145,30,180,1)", "rgba(240,50,230,1)", "rgba(128,128,128,1)",
+  "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)",
+  "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
+const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
-const TEXT_COLOR = "#98FF98";
 
 const MAX_IMAGE_HEIGHT = 900;
 
@@ -61,6 +65,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   enableEdit: boolean;
   enableDelete: boolean;
   enableZoom: boolean;
+  enableHover: boolean;
+
+  // state variable to show warning that no pathology is selected
+  warnPathology = false;
 
   // coordinates of the currently drawn box
   startX = 0;
@@ -68,8 +76,12 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   width = 0;
   height = 0;
 
-  // currently drawn annotations
-  tempAnnotations: Annotation[] = [];
+  // currently drawn boxes
+  tempBoxes: {
+    main: BoundingBox[];
+    lateral: BoundingBox[];
+    pre: BoundingBox[];
+  };
 
   // current chosen Pathology for label
   currentPathology: Pathology;
@@ -98,6 +110,20 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   @ViewChild("labelLayer", {static: false }) labelLayer: ElementRef;
   private labelLayerElement;
   private labelContext: CanvasRenderingContext2D;
+
+  @ViewChild("tempLayer", {static: false }) tempLayer: ElementRef;
+  private tempLayerElement;
+  private tempContext: CanvasRenderingContext2D;
+
+  private hoverLayerElement;
+  private hoverContext: CanvasRenderingContext2D;
+  @ViewChild("hoverLayer", {static: false }) set hoverLayer(layer: ElementRef) {
+    if (this.enableHover) {
+      this.hoverLayerElement = layer.nativeElement;
+      this.hoverContext = this.hoverLayerElement.getContext("2d");
+      this.addHoverListeners();
+    }
+  };
 
   private deleteLayerElement;
   private deleteContext: CanvasRenderingContext2D;
@@ -145,6 +171,12 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.scans = this.data.scans;
     this.annotations = this.data.annotations;
 
+    this.tempBoxes = {
+      main: [],
+      lateral: [],
+      pre: []
+    };
+
     if (this.data.restricted !== undefined) {
       this.restricted = this.data.restricted;
     }
@@ -165,6 +197,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.drawContext = this.drawLayerElement.getContext("2d");
     this.labelLayerElement = this.labelLayer.nativeElement;
     this.labelContext = this.labelLayerElement.getContext("2d");
+    this.tempLayerElement = this.tempLayer.nativeElement;
+    this.tempContext = this.tempLayerElement.getContext("2d");
   }
 
   initMain() {
@@ -228,6 +262,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   toggleBoxes() {
     if (this.boxDisplayConfirmed) {
       this.displayBoxes = !this.displayBoxes;
+      this.enableHover = !this.enableHover;
       this.clearCanvas();
       if (this.enableDelete) {
         this.enableDelete = false;
@@ -247,6 +282,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   toggleEditor() {
     this.enableEdit = !this.enableEdit;
+    this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
+    if (this.enableDelete) {
+      this.drawTempBoxes();
+    }
   }
 
   toggleZoom() {
@@ -261,11 +300,25 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
 
   drawBoxes() {
     this.clearCanvas();
-    const coordinates = this.annotations[this.currentMode];
-    for (const bbox of coordinates) {
-      this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR);
-      this.addLabel(bbox);
+    const annotations = this.annotations[this.currentMode];
+    for (const annotation of annotations) {
+      for (const bbox of annotation.boxes) {
+        this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+      }
+      this.addLabel(annotation, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
     }
+  }
+
+  drawTempBoxes() {
+    this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
+    const boxes = this.tempBoxes[this.currentMode];
+    for (const box of boxes) {
+      this.drawRect(this.tempContext, box, DISPLAY_TEMP_BOX_COLOR);
+    }
+  }
+
+  addHoverListeners() {
+
   }
 
   addDeleteListeners() {
@@ -324,17 +377,29 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     context.stroke();
   }
 
-  addLabel(annotation: Annotation) {
-    this.labelContext.font = "bold 18pt Arial";
-    this.labelContext.fillStyle = TEXT_COLOR;
+  addLabel(annotation: Annotation, color: string) {
+    if (annotation.correct) {
+      this.labelContext.font = "bold 18pt Arial";
+    } else {
+      this.labelContext.font = "bold italic 18pt Arial";
+    }
+    this.labelContext.fillStyle = color;
     this.labelContext.strokeStyle = "black";
     this.labelContext.lineWidth = 1;
+
+    let finalLabel: string = annotation.label;
+    if (annotation.comment !== undefined) {
+      if (annotation.comment.length > 0) {
+        finalLabel = annotation.label + "**";
+      }
+    }
+
     this.labelContext.fillText(
-      annotation.label,
+      finalLabel,
       this.currentScaleFactor * annotation.labelLeft,
       this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20);
     this.labelContext.strokeText(
-      annotation.label,
+      finalLabel,
       this.currentScaleFactor * annotation.labelLeft,
       this.currentScaleFactor * annotation.labelTop
       + BOX_LINE_WIDTH + 20);
@@ -367,28 +432,65 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     });
   }
 
-  saveNewAnnotation() {
+  saveTempBox() {
     if (!(this.width === 0 || this.height === 0)) {
-      this.dialogRef.afterClosed().subscribe((val: boolean) => {
-        if (val && this.currentPathology !== undefined) {
-          this.fixNegativeCoordinates();
-          this.annotations[this.currentMode].push({
-            left: this.startX / this.currentScaleFactor,
-            top: this.startY / this.currentScaleFactor,
-            height: this.height / this.currentScaleFactor,
-            width: this.width / this.currentScaleFactor,
-            label: this.currentPathology.name,
-          });
-          this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
-          this.currentPathology = undefined;
-          this.width = 0;
-          this.height = 0;
-          if (this.displayBoxes) {
-            this.drawBoxes();
-          }
-        }
+      this.fixNegativeCoordinates();
+      this.tempBoxes[this.currentMode].push({
+        left: this.startX / this.currentScaleFactor,
+        top: this.startY / this.currentScaleFactor,
+        height: this.height / this.currentScaleFactor,
+        width: this.width / this.currentScaleFactor
       });
+      this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
+      this.width = 0;
+      this.height = 0;
+      this.drawTempBoxes();
     }
+  }
+
+  deleteLastTempBox() {
+    this.tempBoxes[this.currentMode].pop();
+    this.drawTempBoxes();
+  }
+
+  saveNewAnnotation() {
+    if (this.currentPathology === undefined) {
+      this.warnPathology = true;
+    } else {
+      // gather all necessary data
+      const boxes = this.tempBoxes[this.currentMode];
+      const labelCoordinates = this.getLabelCoordinates(boxes);
+
+      // push new annotation to array of proper mode
+      this.annotations[this.currentMode].push({
+        boxes,
+        label: this.currentPathology.name,
+        comment: this.currentComment,
+        labelLeft: labelCoordinates[0],
+        labelTop: labelCoordinates[1]
+      });
+
+      // update state and empty buffer variables
+      this.warnPathology = false;
+      this.currentPathology = undefined;
+      this.currentComment = undefined;
+      this.tempBoxes[this.currentMode] = [];
+    }
+  }
+
+  getLabelCoordinates(boxes: BoundingBox[]): [number, number] {
+    // Idea: Identify most left and bottom coordinate from all boxes and hope it won't look weird
+    let labelX = 5000; // start very far right
+    let labelY = 0; // start at the top
+    for (const box of boxes) {
+      if (labelY < (box.top + box.height)) {
+        labelY = box.top + box.height;
+      }
+      if (labelX > (box.left)) {
+        labelX = box.left;
+      }
+    }
+    return [labelX, labelY];
   }
 
   private imageZoom() {
