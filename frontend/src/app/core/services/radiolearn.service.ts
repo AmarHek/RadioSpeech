@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   BoundingBox,
-  Category, Group, Option,
+  Category, CheckBox, Group,
   Selectable,
   Template,
   Variable,
@@ -87,7 +87,8 @@ export class RadiolearnService {
     return variables;
   }
 
-  compareTemplates(originalTemplate: Template, studentTemplate: Template, templateType: string = "XRay", ): CategoryError[] {
+  compareTemplates(originalTemplate: Template, studentTemplate: Template,
+                   templateType: string = "XRay", ): CategoryError[] {
     if (templateType === "XRay") {
       return this.compareTemplatesXRay(originalTemplate, studentTemplate);
     }
@@ -114,16 +115,6 @@ export class RadiolearnService {
           const peError = this.comparePE(originalCategory, studentCategory);
           if (peError !== undefined) {
             errors.push(peError);
-          }
-        } else if (originalCategory.name === "Instrumentierung") {
-          const instError = this.compareInstrumentation(originalCategory, studentCategory);
-          if (instError !== undefined) {
-            errors.push(instError);
-          }
-        } else if (originalCategory.name === "Weichteile") {
-          const wtErrors = this.compareInstrumentation(originalCategory, studentCategory);
-          if (wtErrors !== undefined) {
-            errors.push(wtErrors);
           }
         } else {
           // get category errors and only push if at least one error is found
@@ -189,8 +180,8 @@ export class RadiolearnService {
       selError = {
         kind: "box",
         name: originalSel.name,
-        should: originalSel.value,
-        actual: studentSel.value,
+        should: originalSel.value ? originalSel.name : "Nichts",
+        actual: studentSel.value ? studentSel.name : "Nichts",
         normal: studentSel.normal,
         varErrors: varErr
       };
@@ -332,32 +323,156 @@ export class RadiolearnService {
   }
 
 
-  // special cases for PE, Instrumentierung and Weichteile because of multiple choice cases
-
+  // special case for PE
   comparePE(originalCat: Category, studentCat: Category): CategoryError {
-    // Mehrere Fälle durchgehen:
+
+    const originalSels = originalCat.selectables as CheckBox[];
+    const studentSels = studentCat.selectables as CheckBox[];
+
+    const peErrors: SelectableError[] = [];
+
+    // Mehrere Fälle durchgehen, je nach Status der Lösung
     // 1. Fall: Lösung sagt kein PE, dann normal durchiterieren und alles, was nicht 'kein PE' ist, als falsch werten
     //  (der Text für Lösung ist dabei immer kein PE)
-    // 2. Fall: Durchgehen, welche Auswahlmöglichkeiten stimmen und sammeln
-    //  Gleiches für Studentenauswahl
-    //  Dann abgleichen: gleiche Auswahlen werden präferiert, ansonsten z.B. O gering - S deutlich machen
-    //  und die entsprechenden Variablen prüfen (also Variablen von O gering mit denen von S deutlich vergleichen)
-    return;
-  }
-
-  compareInstrumentation(originalCat: Category, studentCat: Category): CategoryError {
-    // Bei der Instrumentierung sind nur die Doppel- und Dreifachfälle speziell zu behandeln, i.e. ZVK, 2. ZVK
-    // 1., 2., 3. Pleuradrainage etc.
-    // Die restlichen Selectables können wie gehabt geprüft werden
-    return;
-  }
-
-  compareWT(originalCat: Category, studentCat: Category): CategoryError {
-    // Hier vereinfachte Form von Instrumentierung wegen WT-Emphysem
-
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < originalCat.selectables.length; i++) {
-      return;
+    if (originalSels[0].value) {
+      // Iterieren und alle, die Student mit "wahr" markiert hat, als Fehler werten (bei "kein PE" umgekehrt)
+      if (!studentSels[0].value) {
+        peErrors.push({
+          kind: "box",
+          should: originalSels[0].name,
+          actual: "Nichts",
+          normal: originalSels[0].normal,
+          varErrors: []
+        });
+      }
+      for (let i = 1; i < studentSels.length; i++) {
+        if (studentSels[i].value) {
+          peErrors.push({
+            kind: "box",
+            should: originalSels[0].name,
+            actual: "Nichts",
+            normal: originalSels[0].normal,
+            varErrors: []
+          });
+        }
+      }
+    } else {
+      // 2. Fall: Durchgehen, welche Auswahlmöglichkeiten stimmen und sammeln
+      //  Gleiches für Studentenauswahl
+      const originalTrueIndex: number[] = [];
+      const studentTrueIndex: number[] = [];
+      for (let i = 0; i < originalSels.length; i++) {
+        if (originalSels[i].value) {
+          originalTrueIndex.push(i);
+        }
+        if (studentSels[i].value) {
+          studentTrueIndex.push(i);
+        }
+      }
+      // Um später Fehler zu vermeiden: prüfen, ob "kein PE" von Student als wahr markiert wurde und separat bearbeiten
+      if (studentTrueIndex.includes(0)) {
+        peErrors.push({
+          kind: "box",
+          should: "Nichts",
+          actual: "kein PE",
+          normal: true,
+          varErrors: []
+        });
+        // "kein PE" (also Index 0) entfernen
+        studentTrueIndex.splice(studentTrueIndex.indexOf(0), 1);
+      }
+      //  Dann abgleichen: gleiche Auswahlen werden präferiert, ansonsten z.B. O gering - S deutlich machen
+      //  und die entsprechenden Variablen prüfen (also Variablen von O gering mit denen von S deutlich vergleichen)
+      const toRemove: number[] = []; // temp array, um nach dem ersten Durchlauf alle geklärten Einträge zu löschen
+      for (const idx of originalTrueIndex) {
+        // Gleiche Auswahlen präferieren (gering zu gering etc.)
+        if (studentTrueIndex.includes(idx)) {
+          const varErrors = this.compareVariables(originalSels[idx].variables, studentSels[idx].variables);
+          peErrors.push({
+            kind: "box",
+            should: originalSels[idx].name,
+            actual: studentSels[idx].name,
+            normal: originalSels[idx].normal,
+            varErrors
+          });
+          toRemove.push(idx); // Später entfernen
+        }
+      }
+      // Nach dem Loop: alle abgeglichenen Indexe aus den Arrays entfernen
+      if (toRemove.length > 0) {
+        for (const idx of toRemove) {
+          // einmal für originalSels
+          let index = originalTrueIndex.indexOf((idx));
+          if (index > -1) {
+            originalTrueIndex.splice(index, 1);
+          }
+          // und einmal für studentSels
+          index = originalTrueIndex.indexOf((idx));
+          if (index > -1) {
+            originalTrueIndex.splice(index, 1);
+          }
+        }
+      }
+      // Zum Schluss: Durch das längere der Arrays iterieren und die restlichen Errors erstellen
+      if (originalTrueIndex.length >= studentTrueIndex.length) {
+        for (let i = 0; i < originalTrueIndex.length; i++) {
+          // studentTrueIndex Ende erreicht?
+          if (i >= studentTrueIndex.length) {
+            const varErrors = this.compareVariables(originalSels[originalTrueIndex[i]].variables,
+              studentSels[originalTrueIndex[i]].variables);
+            peErrors.push({
+              kind: "box",
+              should: originalSels[originalTrueIndex[i]].name,
+              actual: "Nichts",
+              normal: false,
+              varErrors
+            });
+          } else { // ansonsten der Reihe nach weiter
+            const varErrors = this.compareVariables(originalSels[originalTrueIndex[i]].variables,
+              studentSels[studentTrueIndex[i]].variables);
+            peErrors.push({
+              kind: "box",
+              should: originalSels[originalTrueIndex[i]].name,
+              actual: studentSels[studentTrueIndex[i]].name,
+              normal: false,
+              varErrors
+            });
+          }
+        }
+      } else { // Gleiches Spiel nochmal, nur umgekehrt
+        for (let i = 0; i < studentTrueIndex.length; i++) {
+          // studentTrueIndex Ende erreicht?
+          if (i >= originalTrueIndex.length) {
+            const varErrors = this.compareVariables(originalSels[studentTrueIndex[i]].variables,
+              studentSels[studentTrueIndex[i]].variables);
+            peErrors.push({
+              kind: "box",
+              should: "Nichts",
+              actual: studentSels[studentTrueIndex[i]].name,
+              normal: false,
+              varErrors
+            });
+          } else { // ansonsten der Reihe nach weiter
+            const varErrors = this.compareVariables(originalSels[originalTrueIndex[i]].variables,
+              studentSels[studentTrueIndex[i]].variables);
+            peErrors.push({
+              kind: "box",
+              should: originalSels[originalTrueIndex[i]].name,
+              actual: studentSels[studentTrueIndex[i]].name,
+              normal: false,
+              varErrors
+            });
+          }
+        }
+      }
+    }
+    if (peErrors.length > 0) {
+      return {
+        name: "PE",
+        selErrors: peErrors as SelectableError[]
+      };
+    } else {
+      return undefined;
     }
   }
 

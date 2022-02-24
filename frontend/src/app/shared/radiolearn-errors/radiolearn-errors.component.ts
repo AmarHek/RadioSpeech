@@ -137,12 +137,4 @@ export class RadiolearnErrorsComponent implements OnInit {
     }
   }
 
-  parseBoxError(name: string, value: boolean) {
-    if (value) {
-      return name;
-    } else {
-      return "Nichts";
-    }
-  }
-
 }

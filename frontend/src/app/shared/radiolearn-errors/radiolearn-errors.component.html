@@ -55,11 +55,11 @@
                   [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts',
                   'table-danger': errorRow.selError.actual !== errorRow.selError.should,
                   'table-success': errorRow.selError.actual === errorRow.selError.should}">
-                {{parseBoxError(errorRow.selError.name, errorRow.selError.actual)}}
+                {{errorRow.selError.actual}}
               </td>
               <td [attr.rowspan]="errorRow.selRowSize"
-                  [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts'}">
-                {{parseBoxError(errorRow.selError.name, errorRow.selError.should)}}
+                  [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts'}">
+                {{errorRow.selError.should}}
               </td>
             </ng-container>
             <ng-container *ngIf="errorRow.selError.kind === 'group'">

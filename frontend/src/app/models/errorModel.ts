@@ -16,9 +16,8 @@ export interface GroupError {
 
 export interface CheckboxError {
   kind: "box";
-  name: string;
-  should: boolean;
-  actual: boolean;
+  should: string;
+  actual: string;
   normal: boolean;
   varErrors: VariableError[];
 }

@@ -322,48 +322,52 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   addDeleteListeners() {
-    const coordinates = this.annotations[this.currentMode];
+    const annotations = this.annotations[this.currentMode];
     const rect = this.drawLayerElement.getBoundingClientRect();
     const parent = this;
-    for (const bbox of coordinates) {
-      this.deleteLayerElement.addEventListener("mousemove", (e) => {
-        const x = bbox.left * parent.currentScaleFactor;
-        const y = bbox.top * parent.currentScaleFactor;
-        const w = bbox.width * parent.currentScaleFactor;
-        const h = bbox.height * parent.currentScaleFactor;
-        if (
-          x <= e.clientX - rect.left &&
-          e.clientX - rect.left <= x + w &&
-          y <= e.clientY - rect.top &&
-          e.clientY - rect.top <= y + h
-        ) {
-          parent.drawRect(this.deleteContext, bbox, "red");
-        } else {
-          parent.drawRect(this.deleteContext, bbox, "blue");
-        }
-      });
-      this.deleteLayerElement.addEventListener("click", (e) => {
-        const x = bbox.left * parent.currentScaleFactor;
-        const y = bbox.top * parent.currentScaleFactor;
-        const w = bbox.width * parent.currentScaleFactor;
-        const h = bbox.height * parent.currentScaleFactor;
-        if (
-          x <= e.clientX - rect.left &&
-          e.clientX - rect.left <= x + w &&
-          y <= e.clientY - rect.top &&
-          e.clientY - rect.top <= y + h
-        ) {
-          parent.removeAlert(bbox);
-        }
-      });
+    for (const annotation of annotations) {
+      const color = DISPLAY_BOX_COLOR[annotations.indexOf(annotation)];
+      for (const bbox of annotation.boxes) {
+        this.deleteLayerElement.addEventListener("mousemove", (e) => {
+          const x = bbox.left * parent.currentScaleFactor;
+          const y = bbox.top * parent.currentScaleFactor;
+          const w = bbox.width * parent.currentScaleFactor;
+          const h = bbox.height * parent.currentScaleFactor;
+          if (
+            x <= e.clientX - rect.left &&
+            e.clientX - rect.left <= x + w &&
+            y <= e.clientY - rect.top &&
+            e.clientY - rect.top <= y + h
+          ) {
+            parent.drawRect(this.deleteContext, bbox, "red");
+          } else {
+            parent.drawRect(this.deleteContext, bbox, color);
+          }
+        });
+        this.deleteLayerElement.addEventListener("click", (e) => {
+          const x = bbox.left * parent.currentScaleFactor;
+          const y = bbox.top * parent.currentScaleFactor;
+          const w = bbox.width * parent.currentScaleFactor;
+          const h = bbox.height * parent.currentScaleFactor;
+          if (
+            x <= e.clientX - rect.left &&
+            e.clientX - rect.left <= x + w &&
+            y <= e.clientY - rect.top &&
+            e.clientY - rect.top <= y + h
+          ) {
+            parent.removeBox(annotation, bbox);
+          }
+        });
+      }
     }
   }
 
-  removeAlert(bbox: BoundingBox) {
-    const idx = this.annotations[this.currentMode].indexOf(bbox);
-    this.annotations[this.currentMode].splice(idx, 1);
-    this.drawBoxes();
+  removeBox(annotation: Annotation, bbox: BoundingBox) {
+    const annotIdx = this.annotations[this.currentMode].indexOf(annotation);
+    const boxIdx = this.annotations[this.currentMode][annotIdx].boxes.indexOf(bbox);
+    this.annotations[this.currentMode][annotIdx].boxes.splice(boxIdx, 1);
     this.enableDelete = false;
+    this.drawBoxes();
   }
 
   drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, color: string) {
@@ -475,6 +479,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
       this.currentPathology = undefined;
       this.currentComment = undefined;
       this.tempBoxes[this.currentMode] = [];
+      this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
     }
   }
 
