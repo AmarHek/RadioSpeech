@@ -49,8 +49,8 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Frontalaufnahme</th>
-        <th *ngIf="showLaterals" scope="col">Lateralaufnahme</th>
-        <th *ngIf="showPres" scope="col">Voraufnahme</th>
+        <th scope="col">Lateralaufnahme</th>
+        <th scope="col">Voraufnahme</th>
         <th *ngIf="(isMod)" scope="col">Meta</th>
       </tr>
       </thead>
@@ -64,8 +64,8 @@
                (click)="openEditor(material._id)"/> <br>
           <span *ngIf="isMod">{{material.scans.mainScan.filename}}</span>
         </td>
-        <td *ngIf="showLaterals" class="img">
-          <ng-container *ngIf="material.scans.lateralScan !== undefined; else noScan">
+        <td class="img">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -73,8 +73,8 @@
             <span *ngIf="isMod">{{material.scans.lateralScan.filename}}</span>
           </ng-container>
         </td>
-        <td *ngIf="showPres" class="img">
-          <ng-container *ngIf="material.scans.preScan !== undefined; else noScan">
+        <td class="img">
+          <ng-container *ngIf="material.scans.preScan !== undefined">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -128,6 +128,5 @@
   </div>
 </ng-template>
 
-<ng-template #noScan><td class="text">Keine Aufnahme vorhanden</td></ng-template>
 
 

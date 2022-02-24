@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   BoundingBox,
-  Category, CheckBox, Group,
+  Category, CheckBox, Group, or,
   Selectable,
   Template,
   Variable,
@@ -388,13 +388,25 @@ export class RadiolearnService {
         // Gleiche Auswahlen präferieren (gering zu gering etc.)
         if (studentTrueIndex.includes(idx)) {
           const varErrors = this.compareVariables(originalSels[idx].variables, studentSels[idx].variables);
-          peErrors.push({
-            kind: "box",
-            should: originalSels[idx].name,
-            actual: studentSels[idx].name,
-            normal: originalSels[idx].normal,
-            varErrors
-          });
+          if (originalSels[idx].value !== studentSels[idx].value) {
+            if (originalSels[idx].value) {
+              peErrors.push({
+                kind: "box",
+                should: originalSels[idx].name,
+                actual: "Nichts",
+                normal: originalSels[idx].normal,
+                varErrors
+              });
+            } else {
+              peErrors.push({
+                kind: "box",
+                should: "Nichts",
+                actual: studentSels[idx].name,
+                normal: originalSels[idx].normal,
+                varErrors
+              });
+            }
+          }
           toRemove.push(idx); // Später entfernen
         }
       }
@@ -407,9 +419,9 @@ export class RadiolearnService {
             originalTrueIndex.splice(index, 1);
           }
           // und einmal für studentSels
-          index = originalTrueIndex.indexOf((idx));
+          index = studentTrueIndex.indexOf((idx));
           if (index > -1) {
-            originalTrueIndex.splice(index, 1);
+            studentTrueIndex.splice(index, 1);
           }
         }
       }
@@ -467,6 +479,7 @@ export class RadiolearnService {
       }
     }
     if (peErrors.length > 0) {
+      console.log(peErrors);
       return {
         name: "PE",
         selErrors: peErrors as SelectableError[]

@@ -6,24 +6,20 @@
 
 <mat-dialog-content>
 
-  <div>
+  <div class="alert-info" style="font-size: 10pt">
     Auf der Scan-Anzeige sind nun Boxen (sofern vorhanden) mit lokalisierten Pathologien anzeigbar.
   </div>
-
-  <ng-container *ngIf="errorRows.length === 0">
-    <span class="all-correct">Alles richtig!</span>
-  </ng-container>
 
   <div class="table-div" style="width: 50%">
     <table class="table table-bordered">
       <tbody>
       <tr>
-        <th class="table-dark fixed-width" scope="row">Anzahl Fehler (Boxen)</th>
+        <th class="table-dark fixed-width" scope="row">Grobe Fehler</th>
         <td class="fixed-width" [ngClass]="{'table-danger': majorErrorCount > 5, 'table-warning': majorErrorCount > 0,
                                             'table-success': majorErrorCount === 0}">{{majorErrorCount}}</td>
       </tr>
       <tr>
-        <th class="table-dark fixed-width" scope="row">Anzahl Fehler (Variablen)</th>
+        <th class="table-dark fixed-width" scope="row">Kleine Fehler</th>
         <td class="fixed-width" [ngClass]="{'table-danger': minorErrorCount > 5, 'table-warning': minorErrorCount > 0,
                                             'table-success': minorErrorCount === 0}">{{minorErrorCount}}</td>
       </tr>

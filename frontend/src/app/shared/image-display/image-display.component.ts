@@ -28,6 +28,7 @@ const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
 
 const MAX_IMAGE_HEIGHT = 900;
+const MAX_IMAGE_WIDTH = 900;
 
 @Component({
   selector: "app-image-display",
@@ -223,14 +224,22 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     img.src = this.currentScanUrl;
     img.onload = (event) => {
       const loadedImage = event.currentTarget as HTMLImageElement;
-      if (loadedImage.height <= MAX_IMAGE_HEIGHT) {
-        this.currentScaleFactor = 1.0;
-        this.currentHeight = loadedImage.height;
-        this.currentWidth = loadedImage.width;
-      } else {
+      this.currentHeight = loadedImage.height;
+      this.currentWidth = loadedImage.width;
+      this.currentScaleFactor = 1.0;
+
+      // First check by height
+      if (this.currentHeight >= MAX_IMAGE_HEIGHT) {
         this.currentScaleFactor = MAX_IMAGE_HEIGHT / loadedImage.height;
         this.currentHeight = MAX_IMAGE_HEIGHT;
         this.currentWidth = loadedImage.width * this.currentScaleFactor;
+      }
+
+      // Then check by width
+      if (this.currentWidth >= MAX_IMAGE_WIDTH) {
+        this.currentScaleFactor = this.currentScaleFactor * MAX_IMAGE_WIDTH / this.currentWidth;
+        this.currentWidth = MAX_IMAGE_WIDTH;
+        this.currentHeight = this.currentScaleFactor * loadedImage.height;
       }
     };
   }
@@ -242,10 +251,14 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
-      this.drawBoxes();
+      this.displayBoxes = false;
+      // TODO Bugfix this
+      // this.drawBoxes();
     }
     if (this.enableEdit) {
-      this.drawTempBoxes();
+      // TODO Bugfix this
+      this.enableEdit = false;
+      // this.drawTempBoxes();
     }
   }
 
@@ -296,6 +309,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   drawBoxes() {
     this.clearCanvas();
     const annotations = this.annotations[this.currentMode];
+    console.log(annotations);
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
@@ -361,6 +375,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     const annotIdx = this.annotations[this.currentMode].indexOf(annotation);
     const boxIdx = this.annotations[this.currentMode][annotIdx].boxes.indexOf(bbox);
     this.annotations[this.currentMode][annotIdx].boxes.splice(boxIdx, 1);
+    const newLabelCoordinates = this.getLabelCoordinates(this.annotations[this.currentMode[annotIdx]].boxes);
+    this.annotations[this.currentMode][annotIdx].labelLeft = newLabelCoordinates[0];
+    this.annotations[this.currentMode][annotIdx].labelTop = newLabelCoordinates[1];
     this.enableDelete = false;
     this.drawBoxes();
   }

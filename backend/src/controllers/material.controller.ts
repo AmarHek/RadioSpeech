@@ -39,13 +39,14 @@ export function addMaterial (req: any, res: Response): void {
                  lateralScan: lateralScan,
                  preScan: preScan
              },
-             coordinates: {
+             annotations: {
                  main: [],
                  lateral: [],
                  pre: []
              },
              modality: req.body.modality,
              template: JSON.parse(req.body.template),
+             pathologies: [],
              judged: false
          });
 
@@ -77,7 +78,7 @@ export function updateMaterial(req: Request, res: Response): void {
         _id: req.params.id
     }, {
         template: req.body.template,
-        coordinates: req.body.coordinates,
+        annotations: req.body.annotations,
         judged: req.body.judged
     }).exec((err, response) => {
         console.log(response);
