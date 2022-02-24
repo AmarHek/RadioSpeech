@@ -8,7 +8,6 @@
       </button>
       <span [routerLink]="['/', 'radiolearn', 'list']" style="font-size: 22px; cursor: pointer">RadioLearn</span>
       <span class="spacer"></span>
-
       <button mat-button id="normal-btn"
               (click)="makeNormal()">Rest normal
       </button>
@@ -17,11 +16,14 @@
       </button>
       <button mat-button id="feedback"
               (click)="feedbackModal()">Feedback</button>
+      <button mat-button id="check"
+              (click)="check()">Prüfen
+      </button>
+      <button *ngIf="isMod" mat-button id="save"
+              (click)="save()">Speichern
+      </button>
       <button mat-button id="next"
               (click)="next()">Nächste Aufnahme</button>
-      <button mat-button id="submit"
-              (click)="submit()">{{submitText}}
-      </button>
     </mat-toolbar>
 
   </div>

@@ -90,19 +90,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   // Zoom lens
   lensSize = 300;
 
-  @HostListener("mousewheel", ["$event"])
-  scroll(event: WheelEvent) {
-    if(this.enableZoom) {
-      const wheelDelta = Math.max(-1, Math.min(1, (event.deltaY || -event.detail)));
-      if (wheelDelta > 0) {
-        this.lensSize += 20;
-      } else {
-        this.lensSize -= 20;
-      }
-      this.imageZoom();
-    }
-  }
-
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
@@ -257,6 +244,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     if (this.displayBoxes) {
       this.drawBoxes();
     }
+    if (this.enableEdit) {
+      this.drawTempBoxes();
+    }
   }
 
   toggleBoxes() {
@@ -296,6 +286,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     if (this.enableEdit) {
       this.toggleEditor();
     }
+  }
+
+  zoomIn(increment: number) {
+    this.lensSize += increment;
+    this.imageZoom();
   }
 
   drawBoxes() {
@@ -463,23 +458,28 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     } else {
       // gather all necessary data
       const boxes = this.tempBoxes[this.currentMode];
-      const labelCoordinates = this.getLabelCoordinates(boxes);
+      if (boxes.length > 0) {
+        const labelCoordinates = this.getLabelCoordinates(boxes);
 
-      // push new annotation to array of proper mode
-      this.annotations[this.currentMode].push({
-        boxes,
-        label: this.currentPathology.name,
-        comment: this.currentComment,
-        labelLeft: labelCoordinates[0],
-        labelTop: labelCoordinates[1]
-      });
+        // push new annotation to array of proper mode
+        this.annotations[this.currentMode].push({
+          boxes,
+          label: this.currentPathology.name,
+          comment: this.currentComment,
+          labelLeft: labelCoordinates[0],
+          labelTop: labelCoordinates[1]
+        });
 
-      // update state and empty buffer variables
-      this.warnPathology = false;
-      this.currentPathology = undefined;
-      this.currentComment = undefined;
-      this.tempBoxes[this.currentMode] = [];
-      this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
+        // update state and empty buffer variables
+        this.warnPathology = false;
+        this.currentPathology = undefined;
+        this.currentComment = undefined;
+        this.tempBoxes[this.currentMode] = [];
+        this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
+        if (this.displayBoxes) {
+          this.drawBoxes();
+        }
+      }
     }
   }
 

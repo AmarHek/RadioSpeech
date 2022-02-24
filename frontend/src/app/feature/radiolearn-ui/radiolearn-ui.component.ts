@@ -134,14 +134,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.updateText();
   }
 
-  submit() {
-    if (this.isMod) {
-      this.save();
-    } else {
-      this.check();
-    }
-  }
-
   save() {
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
