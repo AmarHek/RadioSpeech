@@ -95,34 +95,32 @@ body {
   overflow: hidden;
 }
 
-#normal-button {
-  font-weight: bold;
-  color: black;
-}
-
-.inputText{
-  grid-area: inputText;
-  font-weight: 700;
-  font-size: 120%;
-  text-align: center;
-  align-self: center;
-}
-
 // Everything below the header
 
 // Content: Grid for Report and Options components
 
 .mat-selection-list{
-  width: 10%;
+  width: 8%;
   height: 100%;
   float: left;
   overflow-y: auto;
   border-right: 1px solid #3f51b5;
 }
 
+.mat-list-item {
+  font-size: 90%;
+}
+
 .options-expand{
   height: 100%;
-  max-width: 30%;
+  width: 30%;
+  overflow: auto;
+  border-right: 1px solid #3f51b5;
+}
+
+.inline-image-display {
+  height: 100%;
+  width: 60%;
   overflow: auto;
 }
 

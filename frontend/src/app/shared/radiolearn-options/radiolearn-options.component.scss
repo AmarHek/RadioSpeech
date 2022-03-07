@@ -7,25 +7,17 @@ td.box {
   color: black;
 }
 
-td.category{
-  font-size: 140%;
-  font-weight: bold;
-  padding-left: 5px;
-  vertical-align: top;
-  position: relative;
-  top: -1px;
-  overflow: hidden;
-}
-
 td.title {
   font-size: 95%;
   display: block;
   position: relative;
-  min-width: 210px;
-  max-width: 220px;
-  word-wrap: break-word;
+  width: 200px;
   margin-left: 5px;
   margin-right: 1px;
+}
+
+td.variables {
+  width: 260px;
 }
 
 label.selected {

@@ -1,4 +1,4 @@
-<table [ngClass]="currentLayout==0 ? 'variables-default' : 'variables-expand'">
+<table [ngClass]="currentLayout === 0 ? 'variables-default' : 'variables-expand'">
   <ng-container *ngFor="let variable of this.variables">
     <tr>
       <td *ngIf="variable.kind === 'oc'">

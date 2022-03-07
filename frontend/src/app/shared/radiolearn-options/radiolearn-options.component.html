@@ -5,8 +5,8 @@
       <ng-container *ngFor="let sel of category.selectables" class="col-3">
         <ng-container *ngIf="sel.kind === 'box'">
           <tr>
-            <td class="box" style="padding-left: 10px;">
-              <input type="checkbox" [(ngModel)]="sel.value"
+            <td class="box">
+            <input type="checkbox" [(ngModel)]="sel.value"
                      (click)="update(sel)" id="{{category.name}} {{sel.name}} box"/>
             </td>
             <td class="title">
@@ -15,12 +15,12 @@
                 {{sel.name}}
               </label>
             </td>
-            <td>
+            <td class="variables">
               <app-variables *ngIf="sel.variables.length > 0"
                              (clickEvent)="updateFromVariable(sel)"
                              [variables]="sel.variables"
                              [parentText]="sel.name"
-                             [parentActive]="sel.value" [currentLayout]="1"></app-variables>
+                             [parentActive]="sel.value" [currentLayout]="0"></app-variables>
             </td>
           </tr>
         </ng-container>
@@ -28,7 +28,7 @@
         <ng-container *ngIf="sel.kind === 'group'">
           <ng-container *ngFor="let option of sel.options">
             <tr>
-              <td class="radio box" style="padding-left: 10px">
+              <td class="radio box">
                 <input type="radio"
                        id="{{category.name}} {{sel.name + option.name}} box"
                        (click)="update(sel, option.name)"
@@ -47,7 +47,7 @@
                                (clickEvent)="updateFromVariable(option, sel)"
                                [variables]="option.variables"
                                [parentText]="option.name"
-                               [parentActive]="option.name === sel.value" [currentLayout]="1"></app-variables>
+                               [parentActive]="option.name === sel.value" [currentLayout]="0"></app-variables>
               </td>
             </tr>
           </ng-container>
