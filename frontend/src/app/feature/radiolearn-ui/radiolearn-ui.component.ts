@@ -11,15 +11,10 @@ import {
   BackendCallerService,
   AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
-import {OptionsComponent} from "@app/shared";
 import {MatDialog} from "@angular/material/dialog";
 import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
 import {FeedbackModalComponent} from "@app/shared/feedback-modal/feedback-modal.component";
-
-interface Layout{
-  id: number;
-  displayName: string;
-}
+import {RadiolearnOptionsComponent} from "@app/shared/radiolearn-options/radiolearn-options.component";
 
 @Component({
   selector: "app-judge-mat",
@@ -28,7 +23,7 @@ interface Layout{
 })
 export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
-  @ViewChild(OptionsComponent) optionChild: OptionsComponent;
+  @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -37,13 +32,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   report = "";
   judgement = "";
   selectedCat = "undefined";
-
-  layouts: Layout[] = [
-    {id: 0, displayName: "Standard Layout"},
-    {id: 1, displayName: "Kategorien Aufklappen"}
-  ];
-
-  currentLayout = this.layouts[1];
 
   submitText: string;
   private user: User;
@@ -96,9 +84,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               this.material.template = this.radiolearnService.resetTemplate(this.material.template);
             }
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
-            if (this.optionChild !== undefined) {
-              this.optionChild.categories = this.categories;
-              this.optionChild.initRows();
+            if (this.radiolearnOptionsChild !== undefined) {
+              this.radiolearnOptionsChild.categories = this.categories;
             }
             if (this.isMod) {
               this.updateText();

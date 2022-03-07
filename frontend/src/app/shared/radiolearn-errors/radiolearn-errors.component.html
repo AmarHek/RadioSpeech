@@ -14,12 +14,12 @@
     <table class="table table-bordered">
       <tbody>
       <tr>
-        <th class="table-dark fixed-width" scope="row">Grobe Fehler</th>
+        <th class="table-dark fixed-width" scope="row">Anzahl Fehler</th>
         <td class="fixed-width" [ngClass]="{'table-danger': majorErrorCount > 5, 'table-warning': majorErrorCount > 0,
                                             'table-success': majorErrorCount === 0}">{{majorErrorCount}}</td>
       </tr>
       <tr>
-        <th class="table-dark fixed-width" scope="row">Kleine Fehler</th>
+        <th class="table-dark fixed-width" scope="row">Anzahl Fehler (Variable)</th>
         <td class="fixed-width" [ngClass]="{'table-danger': minorErrorCount > 5, 'table-warning': minorErrorCount > 0,
                                             'table-success': minorErrorCount === 0}">{{minorErrorCount}}</td>
       </tr>
@@ -34,10 +34,10 @@
       <thead class="table-dark">
       <tr>
         <th scope="col">Kategorie</th>
-        <th scope="col">Box: Eingabe</th>
-        <th scope="col">Box: Lösung</th>
-        <th scope="col">Variable: Eingabe</th>
-        <th scope="col">Variable: Lösung</th>
+        <th scope="col">Eingabe</th>
+        <th scope="col">Lösung</th>
+        <th scope="col">Eingabe (Variable)</th>
+        <th scope="col">Lösung (Variable)</th>
       </tr>
       </thead>
       <tbody>

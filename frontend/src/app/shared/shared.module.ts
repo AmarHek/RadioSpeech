@@ -25,6 +25,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
 import { FeedbackModalComponent } from "./feedback-modal/feedback-modal.component";
+import { RadiolearnOptionsComponent } from './radiolearn-options/radiolearn-options.component';
+import { InlineImageDisplayComponent } from './inline-image-display/inline-image-display.component';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { FeedbackModalComponent } from "./feedback-modal/feedback-modal.componen
     ChangePasswordComponent,
     ChangeUsernameComponent,
     RadiolearnErrorsComponent,
-    FeedbackModalComponent
+    FeedbackModalComponent,
+    RadiolearnOptionsComponent,
+    InlineImageDisplayComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +74,9 @@ import { FeedbackModalComponent } from "./feedback-modal/feedback-modal.componen
     SignUpComponent,
     ChangeUsernameComponent,
     ChangePasswordComponent,
-    FeedbackModalComponent
+    FeedbackModalComponent,
+    RadiolearnOptionsComponent,
+    RadiolearnErrorsComponent
   ]
 })
 export class SharedModule { }
