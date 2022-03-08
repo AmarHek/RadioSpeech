@@ -117,7 +117,11 @@
     <canvas #labelLayer style="position: absolute; left: 0; top: 0; z-index: 1" id="labelCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <canvas *ngIf="enableHover" #hoverLayer style="position: absolute; left: 0; top: 0; z-index: 2" id="hoverCanvas"
-            width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+            width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
+    <canvas #tipLayer style="background-color: rgba(255, 255, 255, 0.7);
+                             left: -800px; top: 100px; z-index: 3;
+                             border: 1px solid gray; border-radius: 5px; position: absolute; padding: 5px;"
+            id="tip" width="300" height="200"></canvas>
     <div #lensContainer *ngIf="enableZoom">
       <div style="position: absolute; border: 1px solid #d4d4d4;"
            [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>

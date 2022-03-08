@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import {
+  Annotation,
   BoundingBox,
-  Category, CheckBox, Group, or,
+  Category, CheckBox, Group, or, Pathology,
   Selectable,
   Template,
   Variable,
@@ -87,8 +88,12 @@ export class RadiolearnService {
     return variables;
   }
 
+  compareTemplateToBoxPathologies(annotations: Annotation[], pathologies: Pathology[], studentTemplate: Template) {
+    return;
+  }
+
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
-                   templateType: string = "XRay", ): CategoryError[] {
+                   templateType: string = "XRay"): CategoryError[] {
     if (templateType === "XRay") {
       return this.compareTemplatesXRay(originalTemplate, studentTemplate);
     }

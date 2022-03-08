@@ -8,7 +8,7 @@ import {
   ElementRef,
   AfterViewInit,
   TemplateRef,
-  HostListener
+  Renderer2
 } from "@angular/core";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
@@ -91,6 +91,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   // Zoom lens
   lensSize = 300;
 
+  // tooltip size
+  maxTipHeight = 200;
+  maxTipWidth = 300;
+
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
@@ -112,6 +116,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
       this.addHoverListeners();
     }
   };
+
+  @ViewChild("tipLayer", {static: false}) tipLayer: ElementRef;
+  private tipLayerElement;
+  private tipContext: CanvasRenderingContext2D;
 
   private deleteLayerElement;
   private deleteContext: CanvasRenderingContext2D;
@@ -152,7 +160,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   private restricted = true;
 
   constructor(@Inject(POPOUT_MODAL_DATA) public data: PopoutData,
-              private backendCaller: BackendCallerService) { }
+              private backendCaller: BackendCallerService,
+              private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.getPathologyList();
@@ -187,6 +196,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
     this.labelContext = this.labelLayerElement.getContext("2d");
     this.tempLayerElement = this.tempLayer.nativeElement;
     this.tempContext = this.tempLayerElement.getContext("2d");
+    this.tipLayerElement = this.tipLayer.nativeElement;
+    this.tipContext = this.tipLayerElement.getContext("2d");
   }
 
   initMain() {
@@ -309,7 +320,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   drawBoxes() {
     this.clearCanvas();
     const annotations = this.annotations[this.currentMode];
-    console.log(annotations);
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
@@ -327,7 +337,78 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   addHoverListeners() {
+    const annotations = this.annotations[this.currentMode];
+    const rect = this.hoverLayerElement.getBoundingClientRect();
 
+    this.tipContext.font = "12pt Arial";
+    this.tipContext.strokeStyle = "black";
+    this.tipContext.lineWidth = 1;
+
+    const parent = this;
+    this.hoverLayerElement.addEventListener("mousemove", (e) => {
+      let hit = false;
+      for (const annotation of annotations) {
+        if (annotation.comment !== undefined) {
+          if (annotation.comment.length > 0) {
+            const x = this.currentScaleFactor * annotation.labelLeft;
+            const y = this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
+            const h = 21; // approx. height of 18pt font size
+            const w = this.labelContext.measureText(annotation.label).width;
+            if (
+              x <= e.clientX - rect.left &&
+              e.clientX - rect.left <= x + w &&
+              y - h <= e.clientY - rect.top &&
+              e.clientY - rect.top <= y
+            ) {
+              parent.showToolTip(e.clientX - rect.left, e.clientY - rect.top + 20, annotation.comment);
+              hit = true;
+            }
+          }
+        }
+      }
+      if (!hit) {
+        this.hideToolTip();
+      }
+    });
+  }
+
+  showToolTip(x, y, text) {
+    this.renderer.setStyle(this.tipLayerElement, "top", y + "px");
+    this.renderer.setStyle(this.tipLayerElement, "left", x + "px");
+    this.tipContext.clearRect(0, 0, this.tipLayerElement.width, this.tipLayerElement.height);
+    const lines = this.splitCanvasTextToLines(text);
+    this.fillToolTipText(lines);
+  }
+
+  hideToolTip() {
+    this.renderer.setStyle(this.tipLayerElement, "left", "-800px");
+  }
+
+  fillToolTipText(lines: string[]) {
+    let lineHeight = 15;
+    for (const line of lines) {
+      this.tipContext.fillText(line, 5, lineHeight);
+      lineHeight += 15;
+    }
+  }
+
+  splitCanvasTextToLines(text) {
+    const words = text.split(" ");
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = this.tipContext.measureText(currentLine + " " + word).width;
+      if (width < this.maxTipWidth - 5) {
+        currentLine += " " + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    lines.push(currentLine);
+    return lines;
   }
 
   addDeleteListeners() {
