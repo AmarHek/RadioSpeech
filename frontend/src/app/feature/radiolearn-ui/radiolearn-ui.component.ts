@@ -97,10 +97,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSelected(cat: string){
-    this.selectedCat = cat;
-  }
-
   makeNormal() {
     this.dataParser.makeNormal(this.material.template.parts);
   }

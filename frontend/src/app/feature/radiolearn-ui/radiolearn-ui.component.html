@@ -29,15 +29,16 @@
   </div>
 
   <div id="inner_remaining">
-    <mat-selection-list [multiple]="false">
-      <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+    <mat-selection-list *ngIf="this.categories" [multiple]="false" [(ngModel)]="selectedCat">
+      <mat-list-option *ngFor="let cat of categories" [value]="cat.name"
+                       [selected]="categories.indexOf(cat) === 0">
         {{cat.name}}
       </mat-list-option>
     </mat-selection-list>
 
     <app-radiolearn-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories"
                  class="options-expand"
-                 (clickEvent)="onClick()" [categories]="categories">
+                 [categories]="categories">
     </app-radiolearn-options>
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
