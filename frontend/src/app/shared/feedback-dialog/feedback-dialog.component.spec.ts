@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeedbackModalComponent } from './feedback-modal.component';
+import { FeedbackDialogComponent } from './feedback-dialog.component';
 
 describe('FeedbackModalComponent', () => {
-  let component: FeedbackModalComponent;
-  let fixture: ComponentFixture<FeedbackModalComponent>;
+  let component: FeedbackDialogComponent;
+  let fixture: ComponentFixture<FeedbackDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FeedbackModalComponent ]
+      declarations: [ FeedbackDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FeedbackModalComponent);
+    fixture = TestBed.createComponent(FeedbackDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -12,7 +12,6 @@ import {
 } from "@angular/core";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {MatDialogRef} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
 import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
@@ -92,7 +91,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
   lensSize = 300;
 
   // tooltip size
-  maxTipHeight = 200;
   maxTipWidth = 300;
 
   @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
@@ -140,9 +138,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit {
       this.rectangleDrawing();
     }
   };
-
-  @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
-  dialogRef: MatDialogRef<any>;
 
   @ViewChild("sourceImage") sourceImage: ElementRef;
   @ViewChild("zoomDiv") zoomDiv: ElementRef;

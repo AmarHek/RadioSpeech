@@ -5,16 +5,16 @@ import {BackendCallerService} from "@app/core";
 import {Feedback} from "@app/models";
 
 @Component({
-  selector: "app-feedback-modal",
-  templateUrl: "./feedback-modal.component.html",
-  styleUrls: ["./feedback-modal.component.css"]
+  selector: "app-feedback-dialog",
+  templateUrl: "./feedback-dialog.component.html",
+  styleUrls: ["./feedback-dialog.component.scss"]
 })
-export class FeedbackModalComponent implements OnInit {
+export class FeedbackDialogComponent implements OnInit {
 
   feedbackForm: FormGroup;
   submitted = false;
 
-  constructor(private dialogRef: MatDialogRef<FeedbackModalComponent>,
+  constructor(private dialogRef: MatDialogRef<FeedbackDialogComponent>,
               private formBuilder: FormBuilder,
               private backendCaller: BackendCallerService,
               @Inject(MAT_DIALOG_DATA) public data) { }

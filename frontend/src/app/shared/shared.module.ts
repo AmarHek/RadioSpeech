@@ -1,15 +1,3 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatDialogModule } from "@angular/material/dialog";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatInputModule } from "@angular/material/input";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-
 import { ConfirmDialogComponent } from "@app/shared/confirm-dialog/confirm-dialog.component";
 import { InputModalComponent } from "@app/shared/inputModal/inputModal.component";
 import { OptionsComponent } from "@app/shared/options/options.component";
@@ -24,9 +12,23 @@ import { ChangeUsernameComponent } from "./change-username/change-username.compo
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
-import { FeedbackModalComponent } from "./feedback-modal/feedback-modal.component";
-import { RadiolearnOptionsComponent } from './radiolearn-options/radiolearn-options.component';
-import { InlineImageDisplayComponent } from './inline-image-display/inline-image-display.component';
+import { FeedbackDialogComponent } from "./feedback-dialog/feedback-dialog.component";
+import { RadiolearnOptionsComponent } from "./radiolearn-options/radiolearn-options.component";
+import { InlineImageDisplayComponent } from "./inline-image-display/inline-image-display.component";
+
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { MatDialogModule } from "@angular/material/dialog";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatInputModule } from "@angular/material/input";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -43,7 +45,7 @@ import { InlineImageDisplayComponent } from './inline-image-display/inline-image
     ChangePasswordComponent,
     ChangeUsernameComponent,
     RadiolearnErrorsComponent,
-    FeedbackModalComponent,
+    FeedbackDialogComponent,
     RadiolearnOptionsComponent,
     InlineImageDisplayComponent
   ],
@@ -60,7 +62,9 @@ import { InlineImageDisplayComponent } from './inline-image-display/inline-image
     NgbModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonToggleModule,
+    MatSelectModule
   ],
   exports: [
     ConfirmDialogComponent,
@@ -74,9 +78,10 @@ import { InlineImageDisplayComponent } from './inline-image-display/inline-image
     SignUpComponent,
     ChangeUsernameComponent,
     ChangePasswordComponent,
-    FeedbackModalComponent,
+    FeedbackDialogComponent,
     RadiolearnOptionsComponent,
-    RadiolearnErrorsComponent
+    RadiolearnErrorsComponent,
+    InlineImageDisplayComponent
   ]
 })
 export class SharedModule { }

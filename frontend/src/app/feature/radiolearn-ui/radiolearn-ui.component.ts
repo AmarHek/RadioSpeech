@@ -13,8 +13,9 @@ import {
 } from "@app/core";
 import {MatDialog} from "@angular/material/dialog";
 import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
-import {FeedbackModalComponent} from "@app/shared/feedback-modal/feedback-modal.component";
+import {FeedbackDialogComponent} from "@app/shared/feedback-dialog/feedback-dialog.component";
 import {RadiolearnOptionsComponent} from "@app/shared/radiolearn-options/radiolearn-options.component";
+import {InlineImageDisplayComponent} from "@app/shared/inline-image-display/inline-image-display.component";
 
 @Component({
   selector: "app-judge-mat",
@@ -24,6 +25,7 @@ import {RadiolearnOptionsComponent} from "@app/shared/radiolearn-options/radiole
 export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
+  @ViewChild(InlineImageDisplayComponent) inlineImageDisplayChild: InlineImageDisplayComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -90,7 +92,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
             if (this.isMod) {
               this.updateText();
             }
-            this.openImagePopout();
           }
         }, err => {
           window.alert(err.message);
@@ -132,6 +133,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
 
     POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
+    this.inlineImageDisplayChild.boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
     const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
@@ -155,7 +157,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   openImagePopout() {
-    const restricted = !(this.user.role === Role.Admin || this.user.role === Role.Moderator);
+    const restricted = this.isRestricted();
     const modalData: PopoutData = {
       scans: this.material.scans,
       annotations: this.material.annotations,
@@ -164,12 +166,16 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.popoutService.openPopoutModal(modalData);
   }
 
+  isRestricted(): boolean {
+    return !(this.user.role === Role.Admin || this.user.role === Role.Moderator);
+}
+
   feedbackModal() {
     const dialogConfig = this.dialogService.defaultConfig("700px", {
       userID: this.user.id,
       materialID: this.material._id
     });
-    const dialogRef = this.dialog.open(FeedbackModalComponent, dialogConfig);
+    this.dialog.open(FeedbackDialogComponent, dialogConfig);
   }
 
 }

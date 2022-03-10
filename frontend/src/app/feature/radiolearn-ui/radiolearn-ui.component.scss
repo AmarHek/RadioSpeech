@@ -23,7 +23,7 @@ body {
   overflow: hidden;
 }
 
-.buttons{
+.leftHalf{
   grid-area: buttons;
   padding-top: 5px;
   padding-right: 5px;
@@ -108,19 +108,19 @@ body {
 }
 
 .mat-list-item {
-  font-size: 90%;
+  font-size: 120%;
 }
 
 .options-expand{
   height: 100%;
-  width: 30%;
+  width: 25%;
   overflow: auto;
   border-right: 1px solid #3f51b5;
 }
 
 .inline-image-display {
   height: 100%;
-  width: 60%;
+  width: 65%;
   overflow: auto;
 }
 

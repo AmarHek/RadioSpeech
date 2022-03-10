@@ -40,6 +40,11 @@
                  (clickEvent)="onClick()" [categories]="categories">
     </app-radiolearn-options>
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
+
+    <app-inline-image-display *ngIf="material"
+                              [scans]="material.scans"
+                              [annotations]="material.annotations"
+                              [restricted]="isRestricted()"></app-inline-image-display>
   </div>
 
 </div>
