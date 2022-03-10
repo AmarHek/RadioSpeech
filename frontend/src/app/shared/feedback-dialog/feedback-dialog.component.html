@@ -1,25 +1,21 @@
 <div mat-dialog-title class="header">
-  <h5>Feedback-Kommentar verfassen</h5>
+  <h4>Feedback</h4>
 </div>
 
 <mat-divider></mat-divider>
 
-<div class="top-text">
-  Falls Sie anderer Meinung sind zum Befund der aktuellen Aufnahme oder generell Verbesserungswünsche haben,
-  dann hinterlassen Sie uns doch gerne Feedback:
-</div>
-
 <form [formGroup]="feedbackForm">
   <mat-dialog-content>
-    <div class="form-group">
-      <textarea rows="5" class="form-control" id="commentField" formControlName="comment"
-                [ngClass]="{ 'is-invalid': submitted && fc.comment.errors }">
+      <mat-form-field appearance="fill">
+        <mat-label>Hinterlassen Sie uns gerne Feedback zum Tool oder zur aktuellen Aufnahme</mat-label>
+        <textarea matInput rows="5" class="form-control" id="commentField" formControlName="comment"
+                   [ngClass]="{ 'is-invalid': submitted && fc.comment.errors }">
       </textarea>
+      </mat-form-field>
       <div *ngIf="submitted && fc.comment.errors" class="invalid-feedback">
         <div *ngIf="fc.comment.errors.required">Kommentar ist erforderlich</div>
         <div *ngIf="fc.comment.errors.minlength">Kommentar muss mindestens 10 Zeichen lang sein.</div>
       </div>
-    </div>
   </mat-dialog-content>
 
   <mat-divider></mat-divider>

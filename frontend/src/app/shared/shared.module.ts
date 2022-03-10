@@ -29,6 +29,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSelectModule} from "@angular/material/select";
+import { InputDialogComponent } from './input-dialog/input-dialog.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {MatSelectModule} from "@angular/material/select";
     RadiolearnErrorsComponent,
     FeedbackDialogComponent,
     RadiolearnOptionsComponent,
-    InlineImageDisplayComponent
+    InlineImageDisplayComponent,
+    InputDialogComponent
   ],
   imports: [
     CommonModule,

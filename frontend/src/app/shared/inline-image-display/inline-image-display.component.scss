@@ -26,12 +26,22 @@
 
 .buttons {
   margin: 0;
-  padding: 3px;
+  height: 50px;
   font-size: 100%;
 }
 
+.mat-button-toggle {
+  height: 50px;
+  align-items: center;
+}
+
+.mat-button-toggle-group {
+  height: 50px;
+  align-items: center;
+}
+
 .imgButton {
-  width: 88px;
+  width: 100px;
 }
 
 .imgButtonWarn {
@@ -39,23 +49,23 @@
 }
 
 .wideButton {
-  width: 277px;
+  width: 300px;
 }
 
 .halfButton {
-  width: 136px;
+  width: 150px;
 }
 
 .zoomBtnSide {
-  width: 66px;
+  width: 81px;
 }
 
 .zoomBtn {
-  width: 137px;
+  width: 138px;
 }
 
 .zoomDiv {
-  margin: 2px;
+  margin: 2px 2px 2px 15px;
   width: 350px;
   height: 350px;
   border: 1px solid #d4d4d4;
@@ -92,7 +102,8 @@
   position: absolute;
   padding: 5px;
   left: -800px;
-  top: 100px;
+  top: -100px;
+  width: 250px;
   border: 1px solid gray;
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -102,7 +113,6 @@
   position: absolute;
   border: 1px solid #d4d4d4;
 }
-
 
 /* width */
 ::-webkit-scrollbar {

@@ -1,0 +1,19 @@
+<h5 mat-dialog-title>
+  {{title}}
+</h5>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content class="content">
+  <mat-form-field appearance="fill">
+    <mat-label>{{message}}</mat-label>
+    <textarea matInput placeholder="Text eingeben..." [(ngModel)]="input"></textarea>
+  </mat-form-field>
+</div>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions class="float-end">
+  <button mat-raised-button color="primary" (click)="onConfirm()">Bestätigen</button>
+  <button mat-raised-button (click)="onDismiss()">Abbrechen</button>
+</div>
+

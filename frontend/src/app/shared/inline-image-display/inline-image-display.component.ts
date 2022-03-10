@@ -2,7 +2,6 @@
 import {
   Component,
   OnInit,
-  Inject,
   ViewChild,
   ElementRef,
   AfterViewInit,
@@ -16,6 +15,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {environment} from "@env/environment";
 import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
 import {BackendCallerService, MatDialogService} from "@app/core";
+import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
@@ -366,7 +366,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
   }
 
   showToolTip(x, y, text) {
-    console.log(this.tipDivElement);
     this.currentTooltip = text;
     this.renderer.setStyle(this.tipDivElement, "top", y + "px");
     this.renderer.setStyle(this.tipDivElement, "left", x + "px");
@@ -476,7 +475,7 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
     }
     this.labelContext.fillStyle = color;
     this.labelContext.strokeStyle = "black";
-    this.labelContext.lineWidth = 1;
+    this.labelContext.lineWidth = 0.5;
 
     let finalLabel: string = annotation.label;
     if (annotation.comment !== undefined) {
@@ -590,9 +589,22 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
     return [labelX, labelY];
   }
 
-  openCommentPopup() {
-    const dialogConfig ? this.dialogService.defaultConfig("400px");
-    const dialogRef = this.dialog.open()
+  openCommentDialog() {
+    const data = {
+      title: "Annotationen: Kommentar",
+      message: "Kommentar eingeben",
+      input: this.currentComment
+    };
+    const dialogConfig = this.dialogService.defaultConfig("400px", data);
+    const dialogRef = this.dialog.open(InputDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        if (dialogResult.length > 0) {
+          this.currentComment = dialogResult;
+        }
+      }
+    });
   }
 
   private imageZoom() {

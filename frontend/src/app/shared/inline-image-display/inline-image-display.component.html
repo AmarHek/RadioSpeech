@@ -8,7 +8,7 @@
         <mat-button-toggle class="buttons imgButton"
                            value="Haupt"
                            [ngClass]="{'imgButtonWarn':
-                         (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.main.length > 0
+                         (this.boxDisplayConfirmed && this.annotations.main.length > 0
                           && this.currentMode !== 'main'),
                           'mat-button-toggle-checked': this.currentMode === 'main'}"
                            (click)="this.changeMode('main')">Haupt
@@ -16,7 +16,7 @@
         <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('lateral')"
                            value="Lateral"
                            [ngClass]="{'imgButtonWarn':
-                         (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.lateral.length > 0
+                         (this.boxDisplayConfirmed && this.annotations.lateral.length > 0
                           && this.currentMode !== 'lateral'),
                           'mat-button-toggle-checked': this.currentMode === 'lateral'}"
                            [disabled]="this.scans.lateralScan === undefined"
@@ -25,7 +25,7 @@
         <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('pre')"
                            value="Vor"
                            [ngClass]="{'imgButtonWarn':
-                         (this.displayBoxes && this.boxDisplayConfirmed && this.annotations.pre.length > 0
+                         (this.boxDisplayConfirmed && this.annotations.pre.length > 0
                           && this.currentMode !== 'pre'),
                           'mat-button-toggle-checked': this.currentMode === 'pre'}"
                            [disabled]="this.scans.preScan === undefined"
@@ -64,7 +64,9 @@
         </button>
       </div>
 
-      <button mat-stroked-button *ngIf="isAllowed" class="buttons wideButton">
+      <button mat-stroked-button *ngIf="isAllowed"
+              class="buttons wideButton"
+              (click)="openCommentDialog()">
         Kommentar hinzufügen
       </button>
       <div *ngIf="isAllowed" class="pathology">
