@@ -6,7 +6,7 @@ import {
   ElementRef,
   AfterViewInit,
   TemplateRef,
-  Renderer2, Input
+  Renderer2, Input, OnChanges, SimpleChanges
 } from "@angular/core";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
@@ -16,6 +16,7 @@ import {environment} from "@env/environment";
 import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
 import {BackendCallerService, MatDialogService} from "@app/core";
 import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
+import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
 const BOX_LINE_WIDTH = 5;
 const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
@@ -26,7 +27,7 @@ const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,12
 const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
 
-const MAX_IMAGE_HEIGHT = 800;
+const MAX_IMAGE_HEIGHT = 850;
 const MAX_IMAGE_WIDTH = 850;
 
 @Component({
@@ -34,7 +35,7 @@ const MAX_IMAGE_WIDTH = 850;
   templateUrl: "./inline-image-display.component.html",
   styleUrls: ["./inline-image-display.component.scss"]
 })
-export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
+export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() restricted: boolean;
   @Input() scans: {
@@ -191,6 +192,13 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
     this.tempLayerElement = this.tempLayer.nativeElement;
     this.tempContext = this.tempLayerElement.getContext("2d");
     this.tipDivElement = this.tipDiv.nativeElement;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes.scans !== undefined) {
+      this.changeMode("main");
+    }
   }
 
   initMain() {
@@ -376,34 +384,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
     this.renderer.setStyle(this.tipDivElement, "left", "-800px");
   }
 
-  /*
-  fillToolTipText(lines: string[]) {
-    let lineHeight = 15;
-    for (const line of lines) {
-      this.tipContext.fillText(line, 5, lineHeight);
-      lineHeight += 15;
-    }
-  }
-
-  splitCanvasTextToLines(text) {
-    const words = text.split(" ");
-    const lines = [];
-    let currentLine = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      const word = words[i];
-      const width = this.tipContext.measureText(currentLine + " " + word).width;
-      if (width < this.maxTipWidth - 5) {
-        currentLine += " " + word;
-      } else {
-        lines.push(currentLine);
-        currentLine = word;
-      }
-    }
-    lines.push(currentLine);
-    return lines;
-  }*/
-
   addDeleteListeners() {
     const annotations = this.annotations[this.currentMode];
     const rect = this.drawLayerElement.getBoundingClientRect();
@@ -438,20 +418,43 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit {
             y <= e.clientY - rect.top &&
             e.clientY - rect.top <= y + h
           ) {
-            parent.removeBox(annotation, bbox);
+            parent.removeBoxAlert(annotation, bbox);
           }
         });
       }
     }
   }
 
+  removeBoxAlert(annotation, bbox) {
+    const data = new ConfirmDialogModel("warning", "Box löschen?",
+      "Soll diese Box wirklich gelöscht werden?");
+    const dialogConfig = this.dialogService.defaultConfig("400px", data);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.removeBox(annotation, bbox);
+      }
+    });
+  }
+
   removeBox(annotation: Annotation, bbox: BoundingBox) {
     const annotIdx = this.annotations[this.currentMode].indexOf(annotation);
     const boxIdx = this.annotations[this.currentMode][annotIdx].boxes.indexOf(bbox);
     this.annotations[this.currentMode][annotIdx].boxes.splice(boxIdx, 1);
-    const newLabelCoordinates = this.getLabelCoordinates(this.annotations[this.currentMode[annotIdx]].boxes);
-    this.annotations[this.currentMode][annotIdx].labelLeft = newLabelCoordinates[0];
-    this.annotations[this.currentMode][annotIdx].labelTop = newLabelCoordinates[1];
+
+    // check if annotation has no boxes left and remove if there are none
+    if (this.annotations[this.currentMode][annotIdx].boxes.length === 0) {
+      this.annotations[this.currentMode].splice(annotIdx, 1);
+    } else {
+      // otherwise, compute new label coordinates
+      console.log(this.annotations[this.currentMode][annotIdx].boxes);
+      const newLabelCoordinates = this.getLabelCoordinates(this.annotations[this.currentMode][annotIdx].boxes);
+      this.annotations[this.currentMode][annotIdx].labelLeft = newLabelCoordinates[0];
+      this.annotations[this.currentMode][annotIdx].labelTop = newLabelCoordinates[1];
+    }
+
+    // disable delete layer and redraw in the end
     this.enableDelete = false;
     this.drawBoxes();
   }

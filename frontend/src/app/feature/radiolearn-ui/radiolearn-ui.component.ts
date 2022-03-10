@@ -89,9 +89,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
             }
-            if (this.isMod) {
-              this.updateText();
-            }
           }
         }, err => {
           window.alert(err.message);
@@ -104,22 +101,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.selectedCat = cat;
   }
 
-  updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.material.template.parts);
-  }
-
-  resetText(): void {
-    this.report = "";
-    this.judgement = "";
-  }
-
-  onClick() {
-    setTimeout(() => this.updateText(), 1);
-  }
-
   makeNormal() {
     this.dataParser.makeNormal(this.material.template.parts);
-    this.updateText();
   }
 
   save() {
@@ -132,7 +115,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   check() {
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
 
-    POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
+    // POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
     this.inlineImageDisplayChild.boxDisplayConfirmed = true;
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
@@ -150,7 +133,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
       if (res.material._id === this.material._id) {
         this.next();
       } else {
-        this.resetText();
         this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
       }
     });
