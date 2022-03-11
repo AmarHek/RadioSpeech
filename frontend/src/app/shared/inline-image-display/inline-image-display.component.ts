@@ -478,7 +478,7 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
     }
     this.labelContext.fillStyle = color;
     this.labelContext.strokeStyle = "black";
-    this.labelContext.lineWidth = 0.5;
+    this.labelContext.lineWidth = 0.3;
 
     let finalLabel: string = annotation.label;
     if (annotation.comment !== undefined) {
