@@ -55,6 +55,19 @@
       </ng-container>
     </ng-container>
   </ng-container>
+
+  <ng-container *ngIf="selectedCat[0] === 'report'">
+    <tr>
+      <td class="report">
+        {{report}}
+      </td>
+    </tr>
+    <tr>
+      <td class="report">
+        {{judgment}}
+      </td>
+    </tr>
+  </ng-container>
   </tbody>
 </table>
 

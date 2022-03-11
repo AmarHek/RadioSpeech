@@ -1,13 +1,10 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 
 import * as M from "@app/models/templateModel";
-import {Material, Role, User} from "@app/models";
+import {Material, Pathology, Role, User} from "@app/models";
 import {
   DataParserService,
-  PopoutService,
-  POPOUT_MODALS,
-  PopoutData,
   BackendCallerService,
   AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
@@ -22,7 +19,7 @@ import {InlineImageDisplayComponent} from "@app/shared/inline-image-display/inli
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit, OnDestroy {
+export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(InlineImageDisplayComponent) inlineImageDisplayChild: InlineImageDisplayComponent;
@@ -32,17 +29,17 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   categories: M.Category[];
   report = "";
-  judgement = "";
+  judgment = "";
   selectedCat = "undefined";
 
-  submitText: string;
+  pathologyList: Pathology[];
+
   private user: User;
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
               private router: Router,
               private dataParser: DataParserService,
-              private popoutService: PopoutService,
               private authenticationService: AuthenticationService,
               private radiolearnService: RadiolearnService,
               private dialog: MatDialog,
@@ -52,23 +49,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
-  @HostListener("window:beforeunload", ["$event"])
-  onWindowClose() {
-    this.popoutService.closePopoutModal();
-  }
-
   async ngOnInit() {
     await this.authenticationService.user.subscribe(x => this.user = x);
     await this.getData();
-    if (this.isMod) {
-      this.submitText = "Speichern";
-    } else {
-      this.submitText = "Prüfen";
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.popoutService.closePopoutModal();
+    this.getPathologyList();
   }
 
   async getData() {
@@ -78,7 +62,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         await this.backendCaller.getMaterialById(matID).subscribe(res => {
           if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
-              "Bitte zur Aufnahmenliste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
+              "Bitte zur Aufnahmen-Liste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
           } else {
             this.material = res.material;
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
@@ -97,6 +81,14 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     });
   }
 
+  getPathologyList() {
+    this.backendCaller.getPathologyList().subscribe(res => {
+      this.pathologyList = res.pathologyList;
+    }, err => {
+      console.log(err);
+    });
+  }
+
   makeNormal() {
     this.dataParser.makeNormal(this.material.template.parts);
   }
@@ -108,11 +100,25 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     });
   }
 
+  updateText() {
+    [this.report, this.judgment] = this.dataParser.makeText(this.material.template.parts);
+    console.log(this.report, this.judgment);
+  }
+
   check() {
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
 
-    // POPOUT_MODALS["componentInstance"].boxDisplayConfirmed = true;
+    const modes = ["main", "lateral", "pre"];
+    for (const mode of modes) {
+      if (this.material.annotations[mode].length > 0) {
+        const annotation =
+          this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode], this.pathologyList,
+          this.material.template);
+      }
+    }
+
     this.inlineImageDisplayChild.boxDisplayConfirmed = true;
+
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
     const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
@@ -132,16 +138,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
       }
     });
-  }
-
-  openImagePopout() {
-    const restricted = this.isRestricted();
-    const modalData: PopoutData = {
-      scans: this.material.scans,
-      annotations: this.material.annotations,
-      restricted
-    };
-    this.popoutService.openPopoutModal(modalData);
   }
 
   isRestricted(): boolean {

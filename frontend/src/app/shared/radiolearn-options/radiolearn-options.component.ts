@@ -14,6 +14,9 @@ export class RadiolearnOptionsComponent implements OnInit {
   @Output() clickEvent = new EventEmitter<any>();
   @Input() selectedCat: string;
 
+  @Input() report: string;
+  @Input() judgment: string;
+
   // TODO Make these configurable
 
   constructor() { }

@@ -4,82 +4,82 @@
 		"englishName": "Support Devices",
 		"templateMaps": [
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "ZVK"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "2. ZVK"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Shaldon-Katheter"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "2. Shaldon-Katheter"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Schleuse"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Pleuradrainage"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "2. Pleuradrainage"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "3. Pleuradrainage"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Mediastinaldrainage"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Perikarddrainage"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Magensonde"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "ETT"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Herzschrittmacher"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "OP-Status"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Klappen-OP"
 			},
 			{
-				"categoryName": "Instrumentierung",
+				"categoryName": "Instrum.",
 				"kind": "box",
 				"name": "Sternalcerclagen"
 			}

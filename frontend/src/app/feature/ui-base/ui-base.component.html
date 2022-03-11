@@ -55,7 +55,7 @@
         <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories"
                      [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                      (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
-        <app-report  class="report" [report]="report" [judgement]="judgement"></app-report>
+        <app-report  class="report" [report]="report" [judgement]="judgment"></app-report>
   </div>
 
 </div>

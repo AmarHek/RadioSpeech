@@ -57,7 +57,7 @@ export class UiBaseComponent implements OnInit {
 
   categories: Category[];
   report = "";
-  judgement = "";
+  judgment = "";
 
   downJson: SafeUrl;
 
@@ -149,12 +149,12 @@ export class UiBaseComponent implements OnInit {
   }
 
   updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+    [this.report, this.judgment] = this.dataParser.makeText(this.parts);
   }
 
   resetText(): void {
     this.report = "";
-    this.judgement = "";
+    this.judgment = "";
   }
 
   onClick() {

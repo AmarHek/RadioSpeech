@@ -1,19 +1,28 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 import {
   Annotation,
   BoundingBox,
-  Category, CheckBox, Group, or, Pathology,
+  Category,
+  CheckBox,
+  Group,
+  Pathology,
   Selectable,
   Template,
+  TemplateMap,
   Variable,
-  VariableMC, VariableNumber, VariableOC,
-  VariableRatio, VariableText
+  VariableMC,
+  VariableNumber,
+  VariableOC,
+  VariableRatio,
+  VariableText
 } from "@app/models";
 import {
   CategoryError,
   SelectableError,
   VariableError,
-  VariableMCError, VariableRatioError, VariableValueError
+  VariableMCError,
+  VariableRatioError,
+  VariableValueError
 } from "@app/models/errorModel";
 
 @Injectable({
@@ -88,8 +97,81 @@ export class RadiolearnService {
     return variables;
   }
 
-  compareTemplateToBoxPathologies(annotations: Annotation[], pathologies: Pathology[], studentTemplate: Template) {
-    return;
+  checkCorrectAnnotations(annotations: Annotation[],
+                          pathologies: Pathology[],
+                          studentTemplate: Template): Annotation[] {
+    // iterate through annotations
+    for (const annotation of annotations) {
+      console.log(annotation);
+      // extract templateMap from correct pathologiesList
+      const templateMaps = pathologies.find(pathology =>
+        pathology.name === annotation.label).templateMaps;
+
+      annotation.correct = this.isAnnotationInTemplate(annotation, studentTemplate, templateMaps);
+    }
+    return annotations;
+  }
+
+  isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
+    // now iterate template in several steps
+    for (const category of template.parts) {
+      // first check for category kind, i.e. ignore blocks etc.
+      if (category.kind === "category") {
+        // first check if category is in templateMap
+        let catPresent = false;
+        for (const map of templateMaps) {
+          console.log(category.name, map.categoryName);
+          if (map.categoryName === category.name) {
+            catPresent = true;
+            break;
+          }
+        }
+        if (catPresent) {
+          // then iterate through selectables and compare with templateMaps
+          for (const selectable of category.selectables) {
+            if (this.checkSelInTemplateMaps(selectable, templateMaps)) {
+              // sel present and checked, correct = true
+              return true;
+            }
+          }
+        }
+      }
+    }
+    // not present, correct = false
+    return false;
+  }
+
+  checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
+    console.log(selectable);
+    if (selectable.kind === "box") {
+      for (const map of templateMaps) {
+        // only check, if kind is the same
+        if (map.kind === "box") {
+          // is the name the same?
+          if (map.name === selectable.name) {
+            // is selectable checked? then all is good
+            if (selectable.value) {
+              return true;
+            }
+          }
+        }
+      }
+    } else if (selectable.kind === "group") {
+      // same spiel here: iterate through maps
+      for (const map of templateMaps) {
+        // check for kind
+        if (map.kind === "option") {
+          // is groupName the same?
+          if (map.groupName === selectable.name) {
+            // check if selectable value is the same as map name (i.e. value)
+            if (map.name === selectable.value) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
