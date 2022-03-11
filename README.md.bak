@@ -14,7 +14,7 @@ ssh <username>@radiospeechvm
 
 # build client (Angular) app and insert into server (automatically done)
 cd frontend/
-npm run build:prod
+ng build:prod
 
 # either host server 
 cd ..
