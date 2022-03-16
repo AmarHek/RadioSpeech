@@ -154,7 +154,6 @@ export class UploadMaterialComponent implements OnInit {
           }
         });
       }
-      setTimeout(() => this.close(), 2000);
     } else {
       this.uploading = false;
     }
