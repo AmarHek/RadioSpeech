@@ -30,7 +30,7 @@ export class RadiolearnUiComponent implements OnInit {
   categories: M.Category[];
   report = "";
   judgment = "";
-  selectedCat = "undefined";
+  selectedCat = ["undefined"];
 
   pathologyList: Pathology[];
 
@@ -150,6 +150,26 @@ export class RadiolearnUiComponent implements OnInit {
       materialID: this.material._id
     });
     this.dialog.open(FeedbackDialogComponent, dialogConfig);
+  }
+
+  getSelectedCatIndex() {
+    for (const category of this.categories) {
+      if (category.name === this.selectedCat[0]) {
+        return this.categories.indexOf(category);
+      }
+    }
+  }
+
+  nextCategory() {
+    const idx = this.getSelectedCatIndex();
+    const nextIdx = Math.min(idx + 1, this.categories.length - 1);
+    this.selectedCat = [this.categories[nextIdx].name];
+  }
+
+  previousCategory() {
+    const idx = this.getSelectedCatIndex();
+    const nextIdx = Math.max(idx - 1, 0);
+    this.selectedCat = [this.categories[nextIdx].name];
   }
 
 }

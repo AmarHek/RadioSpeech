@@ -1,7 +1,7 @@
 <table style="margin: 20px">
   <tbody>
   <ng-container *ngFor="let category of categories">
-    <ng-container *ngIf="category.name.includes(selectedCat)">
+    <ng-container *ngIf="category.name === selectedCat">
       <ng-container *ngFor="let sel of category.selectables" class="col-3">
         <ng-container *ngIf="sel.kind === 'box'">
           <tr>
@@ -54,19 +54,6 @@
         </ng-container>
       </ng-container>
     </ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="selectedCat[0] === 'report'">
-    <tr>
-      <td class="report">
-        {{report}}
-      </td>
-    </tr>
-    <tr>
-      <td class="report">
-        {{judgment}}
-      </td>
-    </tr>
   </ng-container>
   </tbody>
 </table>

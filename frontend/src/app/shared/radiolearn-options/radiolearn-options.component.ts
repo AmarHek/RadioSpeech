@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
 import * as M from "@app/models/templateModel";
 import {DataParserService} from "@app/core";
 
@@ -7,21 +7,20 @@ import {DataParserService} from "@app/core";
   templateUrl: "./radiolearn-options.component.html",
   styleUrls: ["./radiolearn-options.component.scss"]
 })
-export class RadiolearnOptionsComponent implements OnInit {
+export class RadiolearnOptionsComponent implements OnInit, OnChanges {
 
   @Input() categories: M.Category[];
   @Input() paramMapID: string; // for detecting changes
   @Output() clickEvent = new EventEmitter<any>();
   @Input() selectedCat: string;
 
-  @Input() report: string;
-  @Input() judgment: string;
-
-  // TODO Make these configurable
-
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   update(sel: M.Selectable, option?: string) {
@@ -30,7 +29,6 @@ export class RadiolearnOptionsComponent implements OnInit {
         sel.value = null;
       }
     }
-    this.clickEvent.emit();
   }
 
   updateFromVariable(parent: M.Clickable, group?: M.Group) {
@@ -43,7 +41,6 @@ export class RadiolearnOptionsComponent implements OnInit {
         group.value = parent.name;
       }
     }
-    this.clickEvent.emit();
   }
 
 }
