@@ -14,7 +14,7 @@ import {BackendCallerService, FilesSortingService} from "@app/core";
 export class UploadMaterialComponent implements OnInit {
 
   uploadForm: FormGroup;
-  templates: M.Template[];
+  radiolearnTemplate: M.Template;
 
   mainFlags: boolean[] = [];
   lateralRedFlags: boolean[] = [];
@@ -35,22 +35,20 @@ export class UploadMaterialComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.updateTemplateList();
     this.filesSorter.setIdentifier("");
+    this.backendCaller.getTemplateByName("Radiolearn").subscribe(res => {
+      this.radiolearnTemplate = res.template;
+      console.log(this.radiolearnTemplate);
+    }, err => {
+      console.log(err.message);
+    });
   }
 
   initForm() {
     this.uploadForm = new FormGroup({
       mainScans: new FormControl([], {validators: [Validators.required]}),
       lateralScans: new FormControl([]),
-      preScans: new FormControl([]),
-      template: new FormControl(null, {validators: [Validators.required]})
-    });
-  }
-
-  updateTemplateList(): void {
-    this.backendCaller.getTemplateList().subscribe((templates) => {
-      this.templates = templates;
+      preScans: new FormControl([])
     });
   }
 
@@ -139,18 +137,28 @@ export class UploadMaterialComponent implements OnInit {
 
       for (const fileTuple of fileTuples) {
         const formData = new FormData();
-        formData.append("template", this.uploadForm.get("template").value);
-        // TODO: Add choice for this later
+        const id = nanoid();
         formData.append("modality", "xray");
-        formData.append("id", nanoid());
+        formData.append("id", id);
+        formData.append("template", JSON.stringify(this.radiolearnTemplate));
         formData.append("mainScan", fileTuple[0]);
         formData.append("lateralScan", fileTuple[1]);
         formData.append("preScan", fileTuple[2]);
 
         this.backendCaller.addMaterial(formData).subscribe( result => {
           this.progress += 100/(fileTuples.length);
-          if (result.success === false) {
-            this.messages.push(fileTuple[0].name + ": " + result.message);
+          if (result.success === false || result.success === undefined) {
+            this.messages.push(id + ": " + result.message);
+          }
+          if (fileTuples.indexOf(fileTuple) === fileTuples.length - 1 && this.messages.length === 0) {
+            setTimeout(() => this.close(), 2000);
+          }
+        }, err => {
+          this.progress += 100/(fileTuples.length);
+          this.messages.push(id + ": " + err);
+          console.log(err);
+          if (fileTuples.indexOf(fileTuple) === fileTuples.length - 1 && this.messages.length === 0) {
+            setTimeout(() => this.close(), 10000);
           }
         });
       }

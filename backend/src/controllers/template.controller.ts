@@ -105,7 +105,16 @@ export function getTemplateById(req: Request, res: Response): void {
     )
 }
 
-
+export function getTemplateByName(req: Request, res: Response): void {
+    TemplateDB.findOne({name: req.body.name}).exec(
+        (err, template) => {
+            if(err) {
+                res.status(500).send({message: err});
+            }
+            res.status(201).send({template});
+        }
+    )
+}
 
 
   // Routes for Radiology start here -----------------------------

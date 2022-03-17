@@ -68,6 +68,13 @@ export class BackendCallerService {
     return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
+  getTemplateByName(name: string) {
+    return this.http.post<{template: Template; message: string}>(
+      this.templateUrl + "getByName/",
+      {name}
+    );
+  }
+
   // MATERIAL API
 
   addMaterial(formData: FormData): Observable<{ success: boolean; message: string }> {

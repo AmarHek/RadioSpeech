@@ -8,7 +8,7 @@
     <table class="files">
       <tr>
         <td class="label"><label class="mr-3" for="identifier">Identifier: </label></td>
-        <td class="button"><input #identifierInput [defaultValue]=""
+        <td class="button"><input matInput #identifierInput [defaultValue]=""
                                   (change)="updateIdentifier(identifierInput.value)"
                                   matTooltip="String-Pattern für Bildzuordnung eingeben.
         Variable Ziffern mit * kennzeichnen."
@@ -22,7 +22,7 @@
       <tr>
         <td class="label"><label class="mr-3" for="mainScans">Frontalaufnahme(n): </label></td>
         <td class="button">
-          <button type="button" class="btn btn-outline-primary" (click)="fileInput1.click()">Datei(en) auswählen</button>
+          <button mat-stroked-button color="primary" (click)="fileInput1.click()">Datei(en) auswählen</button>
           <input hidden class="mr-3" type="file" multiple="multiple" id="mainScans" #fileInput1
                  (change)="onFileSelect($event, 'mainScans')"/></td>
         <td class="button">
@@ -39,7 +39,7 @@
       <tr>
         <td class="label"><label class="mr-3" for="lateralScans">Lateralaufnahme(n): </label></td>
         <td class="button">
-          <button type="button" class="btn btn-outline-primary" (click)="fileInput2.click()">Datei(en) auswählen</button>
+          <button mat-stroked-button color="primary" (click)="fileInput2.click()">Datei(en) auswählen</button>
           <input hidden type="file" multiple="multiple" id="lateralScans" #fileInput2
                  (change)="onFileSelect($event,'lateralScans')"/></td>
         <td class="button">
@@ -59,7 +59,7 @@
       <tr>
         <td class="label"><label class="mr-3" for="preImageFile">Voraufnahme(n): </label></td>
         <td class="button">
-          <button type="button" class="btn btn-outline-primary" (click)="fileInput3.click()">Datei(en) auswählen</button>
+          <button mat-stroked-button color="primary" (click)="fileInput3.click()">Datei(en) auswählen</button>
           <input hidden type="file" multiple="multiple" id="preImageFile" #fileInput3
                  (change)="onFileSelect($event,'preScans')"/>
         </td>
@@ -79,33 +79,21 @@
       </tr>
     </table>
 
-    <mat-divider></mat-divider>
-
-  <div class="templateSelect">
-    <h5>Schablone auswählen:</h5>
-    <mat-radio-group class="verticalRadioGroup" formControlName="template">
-      <ng-container *ngFor="let template of templates">
-        <mat-radio-button style="font-size: 120%" value="{{stringify(template)}}">
-          {{template.name}}
-        </mat-radio-button>
-      </ng-container>
-    </mat-radio-group>
-  </div>
-
   <ng-container *ngIf="uploading">
+    <div class="alert alert-danger">
+      <p *ngFor="let message of messages">{{message}}</p></div>
     <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
-    <div class="alert" *ngFor="let message of messages">{{message}}</div>
   </ng-container>
 
 </mat-dialog-content>
 
 <mat-divider></mat-divider>
 
-<mat-dialog-actions class="buttons">
-  <button type="submit" id="submitButton" class="btn btn-primary"
+<mat-dialog-actions class="buttons float-end">
+  <button type="submit" id="submitButton" mat-raised-button color="primary"
           [disabled]="uploadForm.invalid"
           (click)="submit()">Hochladen</button>
-  <button id="cancelButton" class="btn btn-outline-secondary" (click)="close()">Abbrechen</button>
+  <button id="cancelButton" mat-raised-button (click)="close()">Schließen</button>
 </mat-dialog-actions>
 
 

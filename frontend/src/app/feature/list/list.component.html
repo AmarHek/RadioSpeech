@@ -17,13 +17,16 @@
         <td class="text"><a style="text-decoration: none;"
                             [routerLink]="['/', 'main', template._id]">{{template.name}}</a></td>
         <td class="text">{{displayDate(template.timestamp)}}</td>
-        <td *ngIf="isMod" >
-          <button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">
-            Edit
-          </button>
-          <button class="btn btn-danger ml-3" style="margin-left: 10px;" (click)="removeAlert(template._id, template.name)">
-            Entfernen
-          </button>
+        <td>
+          <ng-container *ngIf="isMod && template.name !== 'Radiolearn'">
+            <button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">
+              Edit
+            </button>
+            <button class="btn btn-danger ml-3" style="margin-left: 10px;"
+                    (click)="removeAlert(template._id, template.name)">
+              Entfernen
+            </button>
+          </ng-container>
         </td>
       </tr>
       </tbody>

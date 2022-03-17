@@ -10,7 +10,7 @@
       <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
       <button class="btn btn-outline-primary" style="float: right" (click)="getData()" id="reloadButton">Neu Laden</button>
       <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged"
-                        (ngModelChange)="loadData()">
+                        (ngModelChange)="getCountAndData()">
         Bearbeitete Einträge zeigen
       </mat-slide-toggle>
 
@@ -33,10 +33,10 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="loadData()">
+                      [pageSize]="pageSize" (pageChange)="getData()">
       </ngb-pagination>
 
-      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getCountAndData()">
         <option [ngValue]="5">5 Ergebnisse pro Seite</option>
         <option [ngValue]="10">10 Ergebnisse pro Seite</option>
         <option [ngValue]="25">25 Ergebnisse pro Seite</option>
@@ -108,10 +108,10 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="loadData()">
+                      [pageSize]="pageSize" (pageChange)="getData()">
       </ngb-pagination>
 
-      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getData()">
         <option [ngValue]="5">5 Ergebnisse pro Seite</option>
         <option [ngValue]="10">10 Ergebnisse pro Seite</option>
         <option [ngValue]="25">25 Ergebnisse pro Seite</option>

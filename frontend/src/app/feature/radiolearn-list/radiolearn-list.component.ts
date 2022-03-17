@@ -61,42 +61,53 @@ export class RadiolearnListComponent implements OnInit {
       this.user = x;
       this.showJudged = !this.isMod;
     });
-    this.loadData().then();
+    this.getCountAndData();
   }
 
-  async loadData() {
-    await this.getLength();
-    await this.getData();
+  getCountAndData() {
+    this.backendCaller.getDocCount(this.showJudged, this.pathology).subscribe(res => {
+      console.log("Count: ", res.count);
+      this.collectionSize = res.count;
+      this.getData();
+    }, err => {
+      console.log(err);
+      window.alert(err.message);
+    });
   }
 
   setPathology(newPathology: string) {
     this.pathology = newPathology;
     this.radiolearnService.currentPathology = newPathology;
-    this.loadData().then();
+    this.getCountAndData();
   }
 
-  getData() {
-    this.backendCaller.listByQuery((this.page - 1) * this.pageSize, this.pageSize,
-      this.showJudged, this.pathology)
-      .subscribe(res => {
-        this.materials = res.materials.reverse();
+  getData(reverse = true) {
+    if (reverse) {
+      // for reverse: skip number is total docCount - pageSize * current page
+      let skip = this.collectionSize - this.page * this.pageSize;
+      let length = this.pageSize;
+      if (skip < 0) {
+        length = length + skip;
+        skip = 0;
+      }
+      this.backendCaller.listByQuery(skip, length,
+        this.showJudged, this.pathology)
+        .subscribe(res => {
+          // then reverse the resulting list
+          this.materials = res.materials.reverse();
         }, err => {
           window.alert(err.message);
-      });
-  }
-
-  getLength() {
-    this.backendCaller.getDocCount(this.showJudged, this.pathology).subscribe(res => {
-        console.log("Count: ", res.count);
-        this.collectionSize = res.count;
-      }, err => {
-        console.log(err);
-        window.alert(err.message);
-    });
-  }
-
-  checkBoxes(coordinates: Record<string, BoundingBox[]>) {
-    return this.radiolearnService.checkBoxes(coordinates);
+        });
+    } else {
+      const skip = (this.page - 1) * this.pageSize;
+      this.backendCaller.listByQuery(skip, this.pageSize,
+        this.showJudged, this.pathology)
+        .subscribe(res => {
+          this.materials = res.materials;
+        }, err => {
+          window.alert(err.message);
+        });
+    }
   }
 
   delete(objectID: string, scanID: string) {
@@ -114,7 +125,7 @@ export class RadiolearnListComponent implements OnInit {
       if (dialogResult) {
         this.backendCaller.deleteMaterial(objectID, scanID).subscribe(res => {
           window.alert(res.message);
-          this.getData();
+          this.getCountAndData();
         }, err => {
           window.alert(err.message);
         });
@@ -131,7 +142,7 @@ export class RadiolearnListComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {
-      this.getData();
+      this.getCountAndData();
     });
   }
 

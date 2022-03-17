@@ -4,6 +4,10 @@ import multer from 'multer';
 import * as MaterialController from "../controllers/material.controller";
 import Path from "path";
 import fs from "fs";
+import {
+  checkDuplicateLateralScan,
+  checkDuplicateMainScan, checkDuplicatePreScan
+} from "../middleware/materialMiddleware";
 
 const storageImages = multer.diskStorage({
 // TODO: Path dependencies!
@@ -38,7 +42,10 @@ const upload = multer({
 
 export const matRouter = express.Router();
 
-matRouter.post("/add/", upload, MaterialController.addMaterial);
+matRouter.post("/add/", upload, checkDuplicateMainScan,
+    checkDuplicateLateralScan,
+    checkDuplicatePreScan,
+    MaterialController.addMaterial);
 matRouter.get("/get/:id", MaterialController.getMaterialById)
 matRouter.put("/update/:id", MaterialController.updateMaterial);
 matRouter.post("/delete/", MaterialController.deleteMaterial)

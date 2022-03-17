@@ -123,9 +123,9 @@ export function listByQuery(req: Request, res: Response): void {
     } else {
         query = { judged: req.body.judged }
     }
-    console.log(query);
+    const skip = Math.max(0, req.body.skip);
     MaterialDB.find(query)
-        .skip(req.body.skip)
+        .skip(skip)
         .limit(req.body.length)
         .exec((err, materials) => {
         if (err) {
@@ -180,7 +180,6 @@ export function queryDocCount(req: Request, res: Response): void {
             console.log(err);
             res.status(500).send({message: err});
         } else {
-            console.log(count);
             res.status(201).send({count});
         }
     });
