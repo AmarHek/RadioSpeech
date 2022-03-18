@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
 
 import * as M from "@app/models/templateModel";
 import {Material, Pathology, Role, User} from "@app/models";
@@ -8,11 +9,7 @@ import {
   BackendCallerService,
   AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
-import {MatDialog} from "@angular/material/dialog";
-import {RadiolearnErrorsComponent} from "@app/shared/radiolearn-errors/radiolearn-errors.component";
-import {FeedbackDialogComponent} from "@app/shared/feedback-dialog/feedback-dialog.component";
-import {RadiolearnOptionsComponent} from "@app/shared/radiolearn-options/radiolearn-options.component";
-import {InlineImageDisplayComponent} from "@app/shared/inline-image-display/inline-image-display.component";
+import {RadiolearnErrorsComponent, FeedbackDialogComponent, RadiolearnOptionsComponent} from "@app/shared";
 
 @Component({
   selector: "app-judge-mat",
@@ -22,7 +19,6 @@ import {InlineImageDisplayComponent} from "@app/shared/inline-image-display/inli
 export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
-  @ViewChild(InlineImageDisplayComponent) inlineImageDisplayChild: InlineImageDisplayComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -33,6 +29,9 @@ export class RadiolearnUiComponent implements OnInit {
   selectedCat = ["undefined"];
 
   pathologyList: Pathology[];
+
+  userMode: boolean;
+  showBoxes = false;
 
   private user: User;
 
@@ -50,6 +49,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.userMode = !this.isMod;
     await this.authenticationService.user.subscribe(x => this.user = x);
     await this.getData();
     this.getPathologyList();
@@ -100,9 +100,8 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  updateText() {
-    [this.report, this.judgment] = this.dataParser.makeText(this.material.template.parts);
-    console.log(this.report, this.judgment);
+  switchMode() {
+    this.userMode = !this.userMode;
   }
 
   check() {
@@ -117,7 +116,7 @@ export class RadiolearnUiComponent implements OnInit {
       }
     }
 
-    this.inlineImageDisplayChild.boxDisplayConfirmed = true;
+    this.showBoxes = true;
 
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
@@ -135,14 +134,10 @@ export class RadiolearnUiComponent implements OnInit {
       if (res.material._id === this.material._id) {
         this.next();
       } else {
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+        this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     });
   }
-
-  isRestricted(): boolean {
-    return !(this.user.role === Role.Admin || this.user.role === Role.Moderator);
-}
 
   feedbackModal() {
     const dialogConfig = this.dialogService.defaultConfig("700px", {

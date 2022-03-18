@@ -8,7 +8,6 @@ import {
   FilesSortingService,
   InputParserService,
   MatDialogService,
-  PopoutService,
   UserService,
   RadiolearnService} from "@app/core";
 
@@ -26,7 +25,6 @@ import {
     FilesSortingService,
     InputParserService,
     MatDialogService,
-    PopoutService,
     UserService,
     RadiolearnService
   ]

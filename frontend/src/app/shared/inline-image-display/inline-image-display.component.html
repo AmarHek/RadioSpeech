@@ -49,31 +49,31 @@
                 class="buttons zoomBtnSide">+
         </button>
       </div>
-      <mat-button-toggle *ngIf="isAllowed" class="buttons wideButton"
+      <mat-button-toggle class="buttons wideButton"
                          [ngClass]="{'mat-button-toggle-checked': enableDelete}"
                          (click)="toggleDelete()">
         Box Löschen An/Aus
       </mat-button-toggle>
-      <mat-button-toggle *ngIf="isAllowed" class="buttons wideButton"
+      <mat-button-toggle class="buttons wideButton"
                          [ngClass]="{'mat-button-toggle-checked': enableEdit}"
                          (click)="toggleEditor()">
         Editor An/Aus
       </mat-button-toggle>
       <div class="editButtons">
-        <button mat-stroked-button *ngIf="isAllowed && enableEdit" class="buttons halfButton"
+        <button mat-stroked-button *ngIf="enableEdit" class="buttons halfButton"
                 (click)="deleteLastTempBox()">Box rückgängig
         </button>
-        <button mat-stroked-button *ngIf="isAllowed && enableEdit" class="buttons halfButton"
+        <button mat-stroked-button *ngIf="enableEdit" class="buttons halfButton"
                 (click)="saveTempBox()">Box speichern
         </button>
       </div>
 
-      <button mat-stroked-button *ngIf="isAllowed"
+      <button mat-stroked-button
               class="buttons wideButton"
               (click)="openCommentDialog()">
         Kommentar hinzufügen
       </button>
-      <div *ngIf="isAllowed" class="pathology">
+      <div class="pathology">
         <mat-form-field class="wideButton" appearance="fill">
           <mat-label>Pathologie wählen</mat-label>
           <mat-select [(ngModel)]="currentPathology">
@@ -84,7 +84,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <button mat-flat-button color="primary" *ngIf="isAllowed" class="buttons wideButton"
+      <button mat-flat-button color="primary" class="buttons wideButton"
               (click)="saveNewAnnotation()">
         Annotation speichern
       </button>

@@ -12,11 +12,18 @@ import {
 } from "@app/feature";
 import { AuthGuard } from "@app/helpers";
 import { Role } from "@app/models";
+import {RadiolearnWelcomeComponent} from "@app/feature/radiolearn-welcome/radiolearn-welcome.component";
 
 const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: "home",
+    component: RadiolearnWelcomeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "list",
@@ -34,7 +41,7 @@ const routes: Routes = [
     path: "radiolearn/list",
     component: RadiolearnListComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
+    data: { roles: [Role.Moderator, Role.Admin] }
   },
   {
     path: "radiolearn/main/:id",
@@ -60,7 +67,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { role: [Role.Admin, Role.Moderator]}
   },
-  {path: "**", redirectTo: "/list"}
+  {path: "**", redirectTo: "/home"}
 ];
 
 @NgModule({

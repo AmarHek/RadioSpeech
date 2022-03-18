@@ -1,21 +1,3 @@
-import { ConfirmDialogComponent } from "@app/shared/confirm-dialog/confirm-dialog.component";
-import { InputModalComponent } from "@app/shared/inputModal/inputModal.component";
-import { OptionsComponent } from "@app/shared/options/options.component";
-import { ReportComponent } from "@app/shared/report/report.component";
-import { UploadComponent } from "@app/shared/upload/upload.component";
-import { UploadMaterialComponent } from "@app/shared/upload-material/upload-material.component";
-import { VariablesComponent } from "@app/shared/variables/variables.component";
-import { ImageDisplayComponent } from "@app/shared/image-display/image-display.component";
-import { SignUpComponent } from "./sign-up/sign-up.component";
-import { ChangePasswordComponent } from "./change-password/change-password.component";
-import { ChangeUsernameComponent } from "./change-username/change-username.component";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
-import { FeedbackDialogComponent } from "./feedback-dialog/feedback-dialog.component";
-import { RadiolearnOptionsComponent } from "./radiolearn-options/radiolearn-options.component";
-import { InlineImageDisplayComponent } from "./inline-image-display/inline-image-display.component";
-
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -29,27 +11,45 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSelectModule} from "@angular/material/select";
-import { InputDialogComponent } from './input-dialog/input-dialog.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+
+import { ChangePasswordComponent } from "./change-password/change-password.component";
+import { ChangeUsernameComponent } from "./change-username/change-username.component";
+import { ConfirmDialogComponent } from "@app/shared/confirm-dialog/confirm-dialog.component";
+import { FeedbackDialogComponent } from "./feedback-dialog/feedback-dialog.component";
+import { InputDialogComponent } from "./input-dialog/input-dialog.component";
+import { InlineImageDisplayComponent } from "./inline-image-display/inline-image-display.component";
+import { InlineImageDisplayStudentComponent } from "./inline-image-display-student/inline-image-display-student.component";
+import { InputModalComponent } from "@app/shared/inputModal/inputModal.component";
+import { OptionsComponent } from "@app/shared/options/options.component";
+import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
+import { RadiolearnOptionsComponent } from "./radiolearn-options/radiolearn-options.component";
+import { ReportComponent } from "@app/shared/report/report.component";
+import { SignUpComponent } from "./sign-up/sign-up.component";
+import { UploadComponent } from "@app/shared/upload/upload.component";
+import { UploadMaterialComponent } from "@app/shared/upload-material/upload-material.component";
+import { VariablesComponent } from "@app/shared/variables/variables.component";
 
 
 @NgModule({
   declarations: [
+    ChangeUsernameComponent,
+    ChangePasswordComponent,
     ConfirmDialogComponent,
+    FeedbackDialogComponent,
+    InputDialogComponent,
+    InlineImageDisplayComponent,
+    InlineImageDisplayStudentComponent,
     InputModalComponent,
     OptionsComponent,
+    RadiolearnOptionsComponent,
+    RadiolearnErrorsComponent,
     ReportComponent,
+    SignUpComponent,
     UploadComponent,
     UploadMaterialComponent,
-    VariablesComponent,
-    ImageDisplayComponent,
-    SignUpComponent,
-    ChangePasswordComponent,
-    ChangeUsernameComponent,
-    RadiolearnErrorsComponent,
-    FeedbackDialogComponent,
-    RadiolearnOptionsComponent,
-    InlineImageDisplayComponent,
-    InputDialogComponent
+    VariablesComponent
   ],
   imports: [
     CommonModule,
@@ -69,21 +69,22 @@ import { InputDialogComponent } from './input-dialog/input-dialog.component';
     MatSelectModule
   ],
   exports: [
-    ConfirmDialogComponent,
-    InputModalComponent,
-    OptionsComponent,
-    ReportComponent,
-    UploadComponent,
-    UploadMaterialComponent,
-    VariablesComponent,
-    ImageDisplayComponent,
-    SignUpComponent,
     ChangeUsernameComponent,
     ChangePasswordComponent,
+    ConfirmDialogComponent,
     FeedbackDialogComponent,
+    InputDialogComponent,
+    InlineImageDisplayComponent,
+    InlineImageDisplayStudentComponent,
+    InputModalComponent,
+    OptionsComponent,
     RadiolearnOptionsComponent,
     RadiolearnErrorsComponent,
-    InlineImageDisplayComponent
+    ReportComponent,
+    SignUpComponent,
+    UploadComponent,
+    UploadMaterialComponent,
+    VariablesComponent
   ]
 })
 export class SharedModule { }

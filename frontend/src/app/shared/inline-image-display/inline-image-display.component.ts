@@ -37,7 +37,6 @@ const MAX_IMAGE_WIDTH = 850;
 })
 export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() restricted: boolean;
   @Input() scans: {
     id: string;
     mainScan: Image;
@@ -172,16 +171,14 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
       pre: []
     };
 
-    this.boxDisplayConfirmed = !this.restricted;
     this.displayBoxes = false;
     this.enableEdit = false;
     this.enableDelete = false;
 
+    console.log("it works!");
+    console.log(this.annotations);
+    console.log(this.scans);
     this.initMain();
-  }
-
-  get isAllowed() {
-    return !this.restricted;
   }
 
   ngAfterViewInit(): void {

@@ -22,6 +22,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
+import { RadiolearnWelcomeComponent } from './radiolearn-welcome/radiolearn-welcome.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {MatMenuModule} from "@angular/material/menu";
     UiBaseComponent,
     AccountManagementComponent,
     AdminComponent,
-    FeedbackDisplayComponent
+    FeedbackDisplayComponent,
+    RadiolearnWelcomeComponent
   ],
     imports: [
         CommonModule,

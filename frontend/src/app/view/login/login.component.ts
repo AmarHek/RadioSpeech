@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 
 import {AuthenticationService} from "@app/core/services/authentication.service";
+import {Role} from "@app/models";
 
 @Component({
   selector: "app-login",
@@ -50,17 +51,25 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.fc.username.value, this.fc.password.value)
       .pipe(first())
-      .subscribe({
-        next: () => {
+      .subscribe(
+        data => {
           // get return url from query parameters or default to home page
-          const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
-          this.router.navigateByUrl(returnUrl).then();
+          this.redirectUser(data.role);
         },
-        error: error => {
+        error => {
           this.error = error;
           this.loading = false;
-        }
-      });
+        });
+  }
+
+  redirectUser(userRole) {
+    if (userRole === Role.User || userRole === Role.ExternalUser) {
+      this.router.navigate(["/home"]);
+    } else if (userRole === Role.Moderator) {
+      this.router.navigate(["/list"]);
+    } else if (userRole === Role.Admin) {
+      this.router.navigate(["/admin"]);
+    }
   }
 
 }

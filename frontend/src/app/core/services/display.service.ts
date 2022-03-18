@@ -32,7 +32,7 @@ export class DisplayService {
     if (this.router.url.includes("radiolearn")) {
       this.title = "RadioLearn";
     } else {
-      this.title = "RadioSpeech";
+      this.title = "RadioLearn";
     }
   }
 

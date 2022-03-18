@@ -7,12 +7,20 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive='active'>
+
+
+      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/radiolearn/list'>Annotation</a>
+      </li>
+
+      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
         <a class="nav-link" routerLink='/list'>Schablonen</a>
       </li>
-      <li class="nav-item" routerLinkActive='active'>
-        <a class="nav-link" routerLink='/radiolearn/list'>Radiolearn</a>
+
+      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
+        <a class="nav-link" routerLink='/home'>Welcome-Screen</a>
       </li>
+
     </ul>
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">

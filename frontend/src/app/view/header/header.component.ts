@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit, DoCheck {
 
 
   displayNavbar: boolean;
-  title = "RadioSpeech";
+  title = "RadioLearn";
   faUser: any;
 
   private user: User;

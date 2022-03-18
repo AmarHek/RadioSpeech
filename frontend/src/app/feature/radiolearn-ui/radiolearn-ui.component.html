@@ -11,9 +11,9 @@
       <button mat-button id="normal-btn"
               (click)="makeNormal()">Rest normal
       </button>
-      <!--<button mat-button id="open-images"
-              (click)="openImagePopout()">Scans Popout
-      </button>-->
+      <button mat-button id="open-images" *ngIf="isMod"
+              (click)="switchMode()">Toggle UserMode
+      </button>
       <button mat-button id="feedback"
               (click)="feedbackModal()">Feedback</button>
       <button mat-button id="check"
@@ -65,8 +65,11 @@
 
     <app-inline-image-display *ngIf="material"
                               [scans]="material.scans"
-                              [annotations]="material.annotations"
-                              [restricted]="isRestricted()"></app-inline-image-display>
+                              [annotations]="material.annotations"></app-inline-image-display>
+
+    <!--<app-inline-image-display-student *ngIf="material && userMode"
+                              [scans]="material.scans"
+                              [annotations]="material.annotations"></app-inline-image-display-student>-->
   </div>
 
 </div>

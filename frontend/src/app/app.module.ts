@@ -9,8 +9,7 @@ import { FeatureModule } from "@app/feature/feature.module";
 import { ViewModule } from "@app/view/view.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
-import {JwtInterceptor, ErrorInterceptor, APP_DATE_FORMATS, AppDateAdapter, fakeBackendProvider} from "@app/helpers";
-import { PopoutService } from "@app/core";
+import {JwtInterceptor, ErrorInterceptor, APP_DATE_FORMATS, AppDateAdapter} from "@app/helpers";
 
 @NgModule({
   declarations: [
@@ -25,7 +24,7 @@ import { PopoutService } from "@app/core";
       SharedModule,
       ViewModule,
     ],
-  providers: [PopoutService,
+  providers: [
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

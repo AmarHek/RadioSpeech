@@ -5,8 +5,6 @@ export * from "./services/display.service";
 export * from "./services/files-sorting.service";
 export * from "./services/input-parser.service";
 export * from "./services/mat-dialog.service";
-export * from "./services/popout.service";
-export * from "./services/popout.tokens";
 export * from "./services/user.service";
 export * from "./services/radiolearn.service";
 
