@@ -64,7 +64,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
 
   // state variables for canvas layers
   displayBoxes: boolean;
-  boxDisplayConfirmed: boolean;
   enableEdit: boolean;
   enableDelete: boolean;
   enableZoom: boolean;
@@ -272,16 +271,14 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
   }
 
   toggleBoxes() {
-    if (this.boxDisplayConfirmed) {
-      this.displayBoxes = !this.displayBoxes;
-      this.enableHover = !this.enableHover;
-      this.clearCanvas();
-      if (this.enableDelete) {
-        this.enableDelete = false;
-      }
-      if (this.displayBoxes) {
-        this.drawBoxes();
-      }
+    this.displayBoxes = !this.displayBoxes;
+    this.enableHover = !this.enableHover;
+    this.clearCanvas();
+    if (this.enableDelete) {
+      this.enableDelete = false;
+    }
+    if (this.displayBoxes) {
+      this.drawBoxes();
     }
   }
 

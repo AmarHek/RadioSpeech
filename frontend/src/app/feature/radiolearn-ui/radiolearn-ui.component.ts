@@ -49,8 +49,11 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.userMode = !this.isMod;
-    await this.authenticationService.user.subscribe(x => this.user = x);
+    this.authenticationService.user.subscribe(
+      (x) => {
+        this.user = x;
+        this.userMode = !this.isMod;
+      });
     await this.getData();
     this.getPathologyList();
   }

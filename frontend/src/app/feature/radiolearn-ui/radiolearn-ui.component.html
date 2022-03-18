@@ -63,13 +63,12 @@
     </div>
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
-    <app-inline-image-display *ngIf="material"
+    <app-inline-image-display *ngIf="material && !userMode && isMod"
                               [scans]="material.scans"
                               [annotations]="material.annotations"></app-inline-image-display>
 
-    <!--<app-inline-image-display-student *ngIf="material && userMode"
-                              [scans]="material.scans"
-                              [annotations]="material.annotations"></app-inline-image-display-student>-->
+    <<app-inline-image-display-student *ngIf="material && userMode"
+                              ></app-inline-image-display-student>
   </div>
 
 </div>
