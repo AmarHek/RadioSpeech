@@ -47,6 +47,17 @@
 					}
 				],
 				"value": null
+			},
+			{
+				"kind": "box",
+				"name": "Mit Voraufnahme",
+				"value": false,
+				"text": "Mit Voraufnahme. ",
+				"judgementText": null,
+				"enumeration": null,
+				"normal": false,
+				"variables": [],
+				"keys": []
 			}
 		]
 	},
@@ -57,7 +68,7 @@
 	},
 	{
 		"kind": "category",
-		"name": "Instrum.",
+		"name": "Instrumentierung",
 		"optional": true,
 		"selectables": [
 			{
@@ -1130,11 +1141,11 @@
 	},
 	{
 		"kind": "category",
-		"name": "PE",
+		"name": "Pleuraerguss",
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "kein PE",
+				"name": "kein Pleuraerguss",
 				"value": false,
 				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
 				"judgementText": "Kein Pleuraerguss. ",
@@ -1868,7 +1879,31 @@
 						"text": "Hili gefäßtypisch konfiguriert. ",
 						"judgementText": null,
 						"normal": true,
-						"variables": [],
+						"variables": [
+							{
+								"kind": "oc",
+								"id": "H1",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"links"
+									],
+									[
+										"rechts"
+									],
+									[
+										"beidseitig"
+									]
+								],
+								"value": null,
+								"values": [
+									"links",
+									"rechts",
+									"beidseitig"
+								]
+							}
+						],
 						"keys": [
 							"Hilus normal"
 						]
@@ -1879,7 +1914,31 @@
 						"text": "Hili unscharf konfiguriert. ",
 						"judgementText": null,
 						"normal": false,
-						"variables": [],
+						"variables": [
+							{
+								"kind": "oc",
+								"id": "H2",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"links"
+									],
+									[
+										"rechts"
+									],
+									[
+										"beidseitig"
+									]
+								],
+								"value": null,
+								"values": [
+									"links",
+									"rechts",
+									"beidseitig"
+								]
+							}
+						],
 						"keys": [
 							"Hilus unscharf"
 						]
@@ -1890,7 +1949,31 @@
 						"text": "Hili unscharf konfiguriert, verplumpt. ",
 						"judgementText": null,
 						"normal": false,
-						"variables": [],
+						"variables": [
+							{
+								"kind": "oc",
+								"id": "H3",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"links"
+									],
+									[
+										"rechts"
+									],
+									[
+										"beidseitig"
+									]
+								],
+								"value": null,
+								"values": [
+									"links",
+									"rechts",
+									"beidseitig"
+								]
+							}
+						],
 						"keys": [
 							"Hilus verplumpt unscharf",
 							"Hilus unscharf verplumpt"
@@ -1903,7 +1986,7 @@
 	},
 	{
 		"kind": "category",
-		"name": "pv-Stau",
+		"name": "PV-Stauung",
 		"selectables": [
 			{
 				"kind": "group",
@@ -1911,7 +1994,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "kein pv-Stau",
+						"name": "keine PV-Stauung",
 						"text": "Zentrale und periphere Lungengefäßzeichnung regulär, keine Kerley-Lines abzugrenzen. ",
 						"judgementText": "Keine pv-Stauung. ",
 						"normal": true,
@@ -2038,7 +2121,7 @@
 	},
 	{
 		"kind": "category",
-		"name": "Pulmonal",
+		"name": "Lunge",
 		"optional": true,
 		"selectables": [
 			{
@@ -2475,7 +2558,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "WT normal",
+				"name": "Weichteile normal",
 				"value": false,
 				"text": "Unauffällige Darstellung des umgebenden Weichteilmantels im Summationsbild.",
 				"judgementText": null,
@@ -2489,7 +2572,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "WT-Emphysem",
+				"name": "Weichteile-Emphysem",
 				"value": false,
 				"text": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
 				"judgementText": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
@@ -2578,7 +2661,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "weiteres WT-Emphysem",
+				"name": "weiteres Weichteile-Emphysem",
 				"value": false,
 				"text": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
 				"judgementText": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
