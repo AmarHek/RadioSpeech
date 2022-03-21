@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InlineImageDisplayStudentComponent } from './inline-image-display-student.component';
+import { ImageDisplayStudentComponent } from './image-display-student.component';
 
 describe('InlineImageDisplayStudentComponent', () => {
-  let component: InlineImageDisplayStudentComponent;
-  let fixture: ComponentFixture<InlineImageDisplayStudentComponent>;
+  let component: ImageDisplayStudentComponent;
+  let fixture: ComponentFixture<ImageDisplayStudentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InlineImageDisplayStudentComponent ]
+      declarations: [ ImageDisplayStudentComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InlineImageDisplayStudentComponent);
+    fixture = TestBed.createComponent(ImageDisplayStudentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

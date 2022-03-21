@@ -19,8 +19,8 @@ import { ChangeUsernameComponent } from "./change-username/change-username.compo
 import { ConfirmDialogComponent } from "@app/shared/confirm-dialog/confirm-dialog.component";
 import { FeedbackDialogComponent } from "./feedback-dialog/feedback-dialog.component";
 import { InputDialogComponent } from "./input-dialog/input-dialog.component";
-import { InlineImageDisplayComponent } from "./inline-image-display/inline-image-display.component";
-import { InlineImageDisplayStudentComponent } from "./inline-image-display-student/inline-image-display-student.component";
+import { ImageDisplayComponent } from "./image-display/image-display.component";
+import { ImageDisplayStudentComponent } from "./image-display-student/image-display-student.component";
 import { InputModalComponent } from "@app/shared/inputModal/inputModal.component";
 import { OptionsComponent } from "@app/shared/options/options.component";
 import { RadiolearnErrorsComponent } from "./radiolearn-errors/radiolearn-errors.component";
@@ -39,8 +39,8 @@ import { VariablesComponent } from "@app/shared/variables/variables.component";
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
-    InlineImageDisplayComponent,
-    InlineImageDisplayStudentComponent,
+    ImageDisplayComponent,
+    ImageDisplayStudentComponent,
     InputModalComponent,
     OptionsComponent,
     RadiolearnOptionsComponent,
@@ -74,8 +74,8 @@ import { VariablesComponent } from "@app/shared/variables/variables.component";
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
-    InlineImageDisplayComponent,
-    InlineImageDisplayStudentComponent,
+    ImageDisplayComponent,
+    ImageDisplayStudentComponent,
     InputModalComponent,
     OptionsComponent,
     RadiolearnOptionsComponent,

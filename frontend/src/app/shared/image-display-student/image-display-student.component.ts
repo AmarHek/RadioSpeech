@@ -23,11 +23,11 @@ const MAX_IMAGE_HEIGHT = 800;
 const MAX_IMAGE_WIDTH = 950;
 
 @Component({
-  selector: "app-inline-image-display-student",
-  templateUrl: "./inline-image-display-student.component.html",
-  styleUrls: ["./inline-image-display-student.component.scss"]
+  selector: "app-image-display-student",
+  templateUrl: "./image-display-student.component.html",
+  styleUrls: ["./image-display-student.component.scss"]
 })
-export class InlineImageDisplayStudentComponent implements OnInit, OnChanges, AfterViewInit {
+export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() scans: {
     id: string;

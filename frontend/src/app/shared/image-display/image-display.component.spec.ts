@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InlineImageDisplayComponent } from './inline-image-display.component';
+import { ImageDisplayComponent } from './image-display.component';
 
 describe('InlineImageDisplayComponent', () => {
-  let component: InlineImageDisplayComponent;
-  let fixture: ComponentFixture<InlineImageDisplayComponent>;
+  let component: ImageDisplayComponent;
+  let fixture: ComponentFixture<ImageDisplayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InlineImageDisplayComponent ]
+      declarations: [ ImageDisplayComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InlineImageDisplayComponent);
+    fixture = TestBed.createComponent(ImageDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
