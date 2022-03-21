@@ -29,6 +29,10 @@ export class ListComponent implements OnInit {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.isLoading = true;

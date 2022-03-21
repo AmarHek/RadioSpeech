@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
 import * as M from "@app/models/templateModel";
-import {DataParserService} from "@app/core";
 
 @Component({
   selector: "app-radiolearn-options",
@@ -11,8 +10,8 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
 
   @Input() categories: M.Category[];
   @Input() paramMapID: string; // for detecting changes
-  @Output() clickEvent = new EventEmitter<any>();
   @Input() selectedCat: string;
+  @Output() nextCat = new EventEmitter<string>();
 
   constructor() { }
 
@@ -41,6 +40,26 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
         group.value = parent.name;
       }
     }
+  }
+
+  getSelectedCatIndex() {
+    for (const category of this.categories) {
+      if (category.name === this.selectedCat) {
+        return this.categories.indexOf(category);
+      }
+    }
+  }
+
+  nextCategory() {
+    const idx = this.getSelectedCatIndex();
+    const nextIdx = Math.min(idx + 1, this.categories.length - 1);
+    this.nextCat.emit(this.categories[nextIdx].name);
+  }
+
+  previousCategory() {
+    const idx = this.getSelectedCatIndex();
+    const nextIdx = Math.max(idx - 1, 0);
+    this.nextCat.emit(this.categories[nextIdx].name);
   }
 
 }

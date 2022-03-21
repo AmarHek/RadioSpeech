@@ -4,14 +4,14 @@
       <div #zoomDiv class="zoomDiv" id="zoom"></div>
     </div>
     <div class="buttonsDiv">
-      <mat-button-toggle-group value="Haupt">
+      <mat-button-toggle-group value="Frontal">
         <mat-button-toggle class="buttons imgButton"
-                           value="Haupt"
+                           value="Frontal"
                            [ngClass]="{'imgButtonWarn':
                          (this.displayBoxes && this.annotations.main.length > 0
                           && this.currentMode !== 'main'),
                           'mat-button-toggle-checked': this.currentMode === 'main'}"
-                           (click)="this.changeMode('main')">Haupt
+                           (click)="this.changeMode('main')">Frontal
         </mat-button-toggle>
         <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('lateral')"
                            value="Lateral"

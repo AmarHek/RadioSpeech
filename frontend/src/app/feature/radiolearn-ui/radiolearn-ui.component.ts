@@ -133,12 +133,22 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   next() {
-    this.backendCaller.getRandom(true, this.radiolearnService.currentPathology).subscribe(res => {
-      if (res.material._id === this.material._id) {
+    let judged: boolean;
+    if (this.isMod) {
+      judged = false;
+    } else {
+      judged = true;
+    }
+    this.backendCaller.getRandom(judged, this.radiolearnService.currentPathology).subscribe(res => {
+      if (res.material === null) {
+        window.alert("Keine weiteren Befunde verfügbar");
+      } else if (res.material._id === this.material._id) {
         this.next();
       } else {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
+    }, err => {
+      console.log(err);
     });
   }
 
@@ -150,24 +160,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.dialog.open(FeedbackDialogComponent, dialogConfig);
   }
 
-  getSelectedCatIndex() {
-    for (const category of this.categories) {
-      if (category.name === this.selectedCat[0]) {
-        return this.categories.indexOf(category);
-      }
-    }
+  nextCategory(nextCat: string) {
+    this.selectedCat = [nextCat];
   }
-
-  nextCategory() {
-    const idx = this.getSelectedCatIndex();
-    const nextIdx = Math.min(idx + 1, this.categories.length - 1);
-    this.selectedCat = [this.categories[nextIdx].name];
-  }
-
-  previousCategory() {
-    const idx = this.getSelectedCatIndex();
-    const nextIdx = Math.max(idx - 1, 0);
-    this.selectedCat = [this.categories[nextIdx].name];
-  }
-
 }

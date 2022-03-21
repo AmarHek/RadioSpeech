@@ -39,36 +39,20 @@
       <!--<mat-list-option value="report" (click)="updateText()">Bericht</mat-list-option>-->
     </mat-selection-list>
 
-    <div class="options-expand" *ngIf="categories">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <button mat-flat-button color="primary"
-                    disabled="{{getSelectedCatIndex() === 0}}"
-                    (click)="previousCategory()">Zurück
-            </button>
-          </div>
-          <div class="col">
-            <button mat-flat-button color="primary" class="float-end"
-                    disabled="{{getSelectedCatIndex() === (categories.length - 1)}}"
-                    (click)="nextCategory()">Vor
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <app-radiolearn-options style="float: left" [selectedCat]="selectedCat[0]"
-                              [categories]="categories">
-      </app-radiolearn-options>
-    </div>
+    <app-radiolearn-options style="float: left" [selectedCat]="selectedCat[0]"
+                            (nextCat)="nextCategory($event)"
+                            class="options-expand"
+                            [categories]="categories">
+    </app-radiolearn-options>
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
     <app-inline-image-display *ngIf="material && !userMode && isMod"
                               [scans]="material.scans"
                               [annotations]="material.annotations"></app-inline-image-display>
 
-    <<app-inline-image-display-student *ngIf="material && userMode"
-                              ></app-inline-image-display-student>
+    <app-inline-image-display-student *ngIf="material && userMode"
+                                      [scans]="material.scans"
+                                      [annotations]="material.annotations"></app-inline-image-display-student>
   </div>
 
 </div>

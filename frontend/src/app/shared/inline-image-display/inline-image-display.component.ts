@@ -5,12 +5,11 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  TemplateRef,
   Renderer2, Input, OnChanges, SimpleChanges
 } from "@angular/core";
 import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
 import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
@@ -28,7 +27,7 @@ const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
 
 const MAX_IMAGE_HEIGHT = 850;
-const MAX_IMAGE_WIDTH = 850;
+const MAX_IMAGE_WIDTH = 830;
 
 @Component({
   selector: "app-inline-image-display",
@@ -140,9 +139,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
     }
   };
 
-  @ViewChild("labelDialog") labelDialog: TemplateRef<any>;
-  dialogRef: MatDialogRef<any>;
-
   @ViewChild("sourceImage") sourceImage: ElementRef;
   @ViewChild("zoomDiv") zoomDiv: ElementRef;
   private zoomLayerElement;
@@ -174,9 +170,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
     this.enableEdit = false;
     this.enableDelete = false;
 
-    console.log("it works!");
-    console.log(this.annotations);
-    console.log(this.scans);
     this.initMain();
   }
 
@@ -191,7 +184,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.scans !== undefined) {
       this.changeMode("main");
     }
@@ -334,10 +326,6 @@ export class InlineImageDisplayComponent implements OnInit, AfterViewInit, OnCha
   addHoverListeners() {
     const annotations = this.annotations[this.currentMode];
     const rect = this.hoverLayerElement.getBoundingClientRect();
-
-    //this.tipContext.font = "12pt Arial";
-    //this.tipContext.strokeStyle = "black";
-    //this.tipContext.lineWidth = 1;
 
     const parent = this;
     this.hoverLayerElement.addEventListener("mousemove", (e) => {

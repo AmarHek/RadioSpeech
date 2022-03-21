@@ -1,3 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <button mat-flat-button color="primary"
+              disabled="{{getSelectedCatIndex() === 0}}"
+              (click)="previousCategory()">Zurück
+      </button>
+    </div>
+    <div class="col">
+      <button mat-flat-button color="primary" class="float-end"
+              disabled="{{getSelectedCatIndex() === (categories.length - 1)}}"
+              (click)="nextCategory()">Vor
+      </button>
+    </div>
+  </div>
+</div>
+
 <table style="margin: 20px">
   <tbody>
   <ng-container *ngFor="let category of categories">

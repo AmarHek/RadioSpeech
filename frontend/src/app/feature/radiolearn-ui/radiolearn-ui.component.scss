@@ -8,11 +8,44 @@ body {
   margin: 0;
 }
 
+#outer {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+  background-color: $background-color;
+  display: inline-grid;
+  color: black;
+  overflow: hidden;
+}
+
+.leftHalf{
+  grid-area: buttons;
+  padding-top: 5px;
+  padding-right: 5px;
+  width: 100%;
+  float: right;
+}
 .btn{
   margin-left: 5px;
 }
+
 .spacer {
   flex: 1 1 auto;
+}
+
+.flex-container-default{
+  position: fixed;
+  top: 145px;
+  display: grid;
+  height: 100%;
+  overflow: auto;
+  grid-template-columns: 0 85% 0;
+  grid-template-areas: "list details";
 }
 
 #inner_fixed{
@@ -20,6 +53,12 @@ body {
   margin-bottom: 1px;
 }
 
+#inner_remaining {
+  flex-grow : 1;
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: auto;
+}
 .mat-button{
   font-weight: bold;
   font-size: small;
@@ -27,25 +66,46 @@ body {
   margin-left: 10px;
 }
 
-// Everything below the header
-
-#inner_remaining {
-  flex-grow : 1;
-  z-index: 100;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  display: grid;
-  grid-template-columns: 10% 25% 65%;
-  grid-template-areas: "list options image";
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
-.mat-selection-list{
+.flex-container-expand{
+  display: grid;
+  grid-template-columns: 9% 79% 12%;
+  grid-template-areas: "list details report";
+}
+
+.spacer-div{
+  height: 64px;
+  flex-shrink: 0;
+}
+
+::ng-deep .mat-toolbar{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+::ng-deep .mat-form-field{
   width: 100%;
-  height: 100%;
+  overflow: hidden;
+}
+
+// Everything below the header
+
+// Content: Grid for Report and Options components
+
+.mat-selection-list{
+  width: 10%;
+  min-height: 100%;
+  height: auto;
   float: left;
   overflow-y: auto;
+  overflow-x: auto;
   border-right: 1px solid #3f51b5;
-  grid-area: list;
 }
 
 .mat-list-item {
@@ -53,23 +113,17 @@ body {
 }
 
 .options-expand{
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  height: fit-content;
+  width: 23%;
   overflow: auto;
   border-right: 1px solid #3f51b5;
-  grid-area: options;
-}
-
-.container {
-  margin: 20px 0 5px 0;
-  padding: 0 20px 0 20px;
 }
 
 .inline-image-display {
   height: 100%;
-  width: 100%;
-  overflow: scroll;
-  grid-area: image;
+  width: 64%;
+  overflow: auto;
 }
 
 /* width */
@@ -93,11 +147,4 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b30000;
-}
-
-.disable-select {
-  user-select: none; /* supported by Chrome and Opera */
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
 }

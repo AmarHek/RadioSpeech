@@ -18,7 +18,7 @@
                             [routerLink]="['/', 'main', template._id]">{{template.name}}</a></td>
         <td class="text">{{displayDate(template.timestamp)}}</td>
         <td>
-          <ng-container *ngIf="isMod && template.name !== 'Radiolearn'">
+          <ng-container *ngIf="(isMod && template.name !== 'Radiolearn') || isAdmin">
             <button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">
               Edit
             </button>
