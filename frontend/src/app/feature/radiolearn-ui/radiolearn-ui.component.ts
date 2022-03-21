@@ -9,7 +9,12 @@ import {
   BackendCallerService,
   AuthenticationService, RadiolearnService, MatDialogService
 } from "@app/core";
-import {RadiolearnErrorsComponent, FeedbackDialogComponent, RadiolearnOptionsComponent} from "@app/shared";
+import {
+  RadiolearnErrorsComponent,
+  FeedbackDialogComponent,
+  RadiolearnOptionsComponent,
+  ImageDisplayStudentComponent
+} from "@app/shared";
 
 @Component({
   selector: "app-judge-mat",
@@ -19,6 +24,7 @@ import {RadiolearnErrorsComponent, FeedbackDialogComponent, RadiolearnOptionsCom
 export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
+  @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -31,7 +37,6 @@ export class RadiolearnUiComponent implements OnInit {
   pathologyList: Pathology[];
 
   userMode: boolean;
-  showBoxes = false;
 
   private user: User;
 
@@ -121,7 +126,9 @@ export class RadiolearnUiComponent implements OnInit {
       }
     }
 
-    this.showBoxes = true;
+    if (this.userMode) {
+      this.imageDisplayStudentChild.toggleBoxes();
+    }
 
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
@@ -135,12 +142,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   next() {
-    let judged: boolean;
-    if (this.isMod) {
-      judged = false;
-    } else {
-      judged = true;
-    }
+    const judged = !this.isMod;
     this.backendCaller.getRandom(judged, this.radiolearnService.currentPathology).subscribe(res => {
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");

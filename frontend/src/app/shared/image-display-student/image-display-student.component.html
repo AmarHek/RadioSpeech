@@ -1,75 +1,70 @@
-
-  <!--
-    <div>
-      <div #zoomDiv class="zoomDiv" id="zoom"></div>
-    </div>
-
-
-  </div>-->
-  <div class="main">
-    <div id="buttonsDiv" [ngStyle]="{'width.px': currentWidth + 20}">
-      <mat-button-toggle-group value="Frontal">
-        <mat-button-toggle class="buttons imgButton"
-                           value="Frontal"
-                           [ngClass]="{'imgButtonWarn':
-                         (this.displayBoxes && this.annotations.main.length > 0
-                          && this.currentMode !== 'main'),
-                          'mat-button-toggle-checked': this.currentMode === 'main'}"
-                           (click)="this.changeMode('main')">Frontalaufnahme
-        </mat-button-toggle>
-        <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('lateral')"
-                           value="Lateral"
-                           [ngClass]="{'imgButtonWarn':
-                            (this.displayBoxes && this.annotations.lateral.length > 0
-                            && this.currentMode !== 'lateral'),
-                          'mat-button-toggle-checked': this.currentMode === 'lateral'}"
-                           [disabled]="this.scans.lateralScan === undefined"
-                           [ngStyle]="{'pointer-events': (this.scans.lateralScan === undefined) ? 'none' : 'auto'}">
-          Lateralaufnahme
-        </mat-button-toggle>
-        <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('pre')"
-                           value="Vor"
-                           [ngClass]="{'imgButtonWarn':
-                         (this.displayBoxes && this.annotations.pre.length > 0
-                          && this.currentMode !== 'pre'),
-                          'mat-button-toggle-checked': this.currentMode === 'pre'}"
-                           [disabled]="this.scans.preScan === undefined"
-                           [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
-          Voraufnahme
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-      <button (click)="toggleBoxes()"></button>
-      <div class="float-end">
-        <button mat-stroked-button (click)="zoomIn(+20)"
-                class="buttons zoomBtnSide">-
-        </button>
-        <mat-button-toggle (click)="toggleZoom()"
-                           [ngClass]="{'mat-button-toggle-checked': enableZoom}"
-                           class="buttons zoomBtn">Zoom An/Aus
-        </mat-button-toggle>
-        <button mat-stroked-button (click)="zoomIn(-20)"
-                class="buttons zoomBtnSide">+
-        </button>
-      </div>
-    </div>
-    <div id="imgOuter">
-      <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
-        <img #sourceImage class="canvas level0"
-             height="{{currentHeight}}" width="{{currentWidth}}"
-             src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
-        <canvas #drawLayer class="canvas level1" id="drawCanvas"
-                width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-        <canvas #labelLayer class="canvas level1" id="labelCanvas"
-                width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-        <canvas *ngIf="enableHover" #hoverLayer class="canvas level2" id="hoverCanvas"
-                width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-        <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
-      </div>
-    </div>
-    <div #lensContainer *ngIf="enableZoom">
-      <div class="zoomLens"
-           [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
-      <div class="canvas level3" id="zoomCanvas"
-           [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
+<div class="main">
+  <div id="buttonsDiv" [ngStyle]="{'width.px': currentWidth + 20}">
+    <mat-button-toggle-group value="Frontal">
+      <mat-button-toggle class="buttons imgButton"
+                         value="Frontal"
+                         [ngClass]="{'imgButtonWarn':
+                        (this.displayBoxes && this.annotations.main.length > 0
+                         && this.currentMode !== 'main'),
+                         'mat-button-toggle-checked': this.currentMode === 'main'}"
+                         (click)="this.changeMode('main')">Frontalaufnahme
+      </mat-button-toggle>
+      <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('lateral')"
+                         value="Lateral"
+                         [ngClass]="{'imgButtonWarn':
+                           (this.displayBoxes && this.annotations.lateral.length > 0
+                           && this.currentMode !== 'lateral'),
+                         'mat-button-toggle-checked': this.currentMode === 'lateral'}"
+                         [disabled]="this.scans.lateralScan === undefined"
+                         [ngStyle]="{'pointer-events': (this.scans.lateralScan === undefined) ? 'none' : 'auto'}">
+        Lateralaufnahme
+      </mat-button-toggle>
+      <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('pre')"
+                         value="Vor"
+                         [ngClass]="{'imgButtonWarn':
+                        (this.displayBoxes && this.annotations.pre.length > 0
+                         && this.currentMode !== 'pre'),
+                         'mat-button-toggle-checked': this.currentMode === 'pre'}"
+                         [disabled]="this.scans.preScan === undefined"
+                         [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
+        Voraufnahme
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button (click)="toggleBoxes()"></button>
+    <div class="float-end">
+      <button mat-stroked-button (click)="zoomIn(+20)"
+              class="buttons zoomBtnSide">-
+      </button>
+      <mat-button-toggle (click)="toggleZoom()"
+                         [ngClass]="{'mat-button-toggle-checked': enableZoom}"
+                         class="buttons zoomBtn">Zoom An/Aus
+      </mat-button-toggle>
+      <button mat-stroked-button (click)="zoomIn(-20)"
+              class="buttons zoomBtnSide">+
+      </button>
     </div>
   </div>
+  <div id="imgOuter">
+    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
+      <img #sourceImage class="canvas level0"
+           height="{{currentHeight}}" width="{{currentWidth}}"
+           src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
+      <canvas #drawLayer class="canvas level1" id="drawCanvas"
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+      <canvas #labelLayer class="canvas level1" id="labelCanvas"
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+      <canvas *ngIf="enableHover" #hoverLayer class="canvas level2" id="hoverCanvas"
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+      <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
+      <div #lensContainer *ngIf="enableZoom">
+        <div class="zoomLens"
+             [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
+        <div class="canvas level3" id="zoomCanvas"
+             [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div #zoomDiv class="zoomDiv" id="zoom"></div>
+  </div>
+</div>

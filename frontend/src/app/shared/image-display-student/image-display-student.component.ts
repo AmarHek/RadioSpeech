@@ -172,9 +172,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
-      this.displayBoxes = false;
-      // TODO Bugfix this
-      // this.drawBoxes();
+      this.drawBoxes();
     }
   }
 
