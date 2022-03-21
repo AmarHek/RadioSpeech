@@ -53,6 +53,7 @@ export class RadiolearnUiComponent implements OnInit {
       (x) => {
         this.user = x;
         this.userMode = !this.isMod;
+        this.userMode = true;
       });
     await this.getData();
     this.getPathologyList();
@@ -75,6 +76,7 @@ export class RadiolearnUiComponent implements OnInit {
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
+
             }
           }
         }, err => {

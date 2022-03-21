@@ -19,8 +19,8 @@ const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,12
   "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)",
   "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 
-const MAX_IMAGE_HEIGHT = 850;
-const MAX_IMAGE_WIDTH = 830;
+const MAX_IMAGE_HEIGHT = 800;
+const MAX_IMAGE_WIDTH = 950;
 
 @Component({
   selector: "app-inline-image-display-student",

@@ -29,7 +29,9 @@
   </div>
 
   <div id="inner_remaining">
-    <mat-selection-list *ngIf="this.categories" [multiple]="false" [(ngModel)]="selectedCat">
+    <mat-selection-list *ngIf="this.categories"
+                        [ngStyle]="{'width.%': userMode ? 12 : 9}"
+                        [multiple]="false" [(ngModel)]="selectedCat">
       <ng-container *ngFor="let cat of categories">
         <mat-list-option [value]="cat.name"
                          [selected]="categories.indexOf(cat) === 0">
@@ -39,7 +41,8 @@
       <!--<mat-list-option value="report" (click)="updateText()">Bericht</mat-list-option>-->
     </mat-selection-list>
 
-    <app-radiolearn-options style="float: left" [selectedCat]="selectedCat[0]"
+    <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
+                            [selectedCat]="selectedCat[0]"
                             (nextCat)="nextCategory($event)"
                             class="options-expand"
                             [categories]="categories">

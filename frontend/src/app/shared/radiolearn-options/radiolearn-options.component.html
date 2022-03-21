@@ -15,63 +15,65 @@
   </div>
 </div>
 
-<table style="margin: 20px">
-  <tbody>
-  <ng-container *ngFor="let category of categories">
-    <ng-container *ngIf="category.name === selectedCat">
-      <ng-container *ngFor="let sel of category.selectables" class="col-3">
-        <ng-container *ngIf="sel.kind === 'box'">
-          <tr>
-            <td class="box">
-            <input type="checkbox" [(ngModel)]="sel.value"
-                     (click)="update(sel)" id="{{category.name}} {{sel.name}} box"/>
-            </td>
-            <td class="title">
-              <label [ngClass]="{'selected': sel.value}"
-                     for="{{category.name}} {{sel.name}} box">
-                {{sel.name}}
-              </label>
-            </td>
-            <td class="variables">
-              <app-variables *ngIf="sel.variables.length > 0"
-                             (clickEvent)="updateFromVariable(sel)"
-                             [variables]="sel.variables"
-                             [parentText]="sel.name"
-                             [parentActive]="sel.value" [currentLayout]="0"></app-variables>
-            </td>
-          </tr>
-        </ng-container>
-
-        <ng-container *ngIf="sel.kind === 'group'">
-          <ng-container *ngFor="let option of sel.options">
+<div style="margin: 20px;">
+  <table style="width: 100%">
+    <tbody>
+    <ng-container *ngFor="let category of categories">
+      <ng-container *ngIf="category.name === selectedCat">
+        <ng-container *ngFor="let sel of category.selectables" class="col-3">
+          <ng-container *ngIf="sel.kind === 'box'">
             <tr>
-              <td class="radio box">
-                <input type="radio"
-                       id="{{category.name}} {{sel.name + option.name}} box"
-                       (click)="update(sel, option.name)"
-                       [name]="sel.name"
-                       [value]="option.name"
-                       [(ngModel)]="sel.value"/>
+              <td class="box">
+                <input type="checkbox" [(ngModel)]="sel.value"
+                       (click)="update(sel)" id="{{category.name}} {{sel.name}} box"/>
               </td>
               <td class="title">
-                <label for="{{category.name}} {{sel.name + option.name}} box"
-                       [ngClass]="{'selected': (option.name === sel.value)}">
-                  {{option.name}}
+                <label [ngClass]="{'selected': sel.value}"
+                       for="{{category.name}} {{sel.name}} box">
+                  {{sel.name}}
                 </label>
               </td>
-              <td>
-                <app-variables *ngIf="option.variables.length > 0"
-                               (clickEvent)="updateFromVariable(option, sel)"
-                               [variables]="option.variables"
-                               [parentText]="option.name"
-                               [parentActive]="option.name === sel.value" [currentLayout]="0"></app-variables>
+              <td class="variables">
+                <app-variables *ngIf="sel.variables.length > 0"
+                               (clickEvent)="updateFromVariable(sel)"
+                               [variables]="sel.variables"
+                               [parentText]="sel.name"
+                               [parentActive]="sel.value" [currentLayout]="0"></app-variables>
               </td>
             </tr>
+          </ng-container>
+
+          <ng-container *ngIf="sel.kind === 'group'">
+            <ng-container *ngFor="let option of sel.options">
+              <tr>
+                <td class="radio box">
+                  <input type="radio"
+                         id="{{category.name}} {{sel.name + option.name}} box"
+                         (click)="update(sel, option.name)"
+                         [name]="sel.name"
+                         [value]="option.name"
+                         [(ngModel)]="sel.value"/>
+                </td>
+                <td class="title">
+                  <label for="{{category.name}} {{sel.name + option.name}} box"
+                         [ngClass]="{'selected': (option.name === sel.value)}">
+                    {{option.name}}
+                  </label>
+                </td>
+                <td>
+                  <app-variables *ngIf="option.variables.length > 0"
+                                 (clickEvent)="updateFromVariable(option, sel)"
+                                 [variables]="option.variables"
+                                 [parentText]="option.name"
+                                 [parentActive]="option.name === sel.value" [currentLayout]="0"></app-variables>
+                </td>
+              </tr>
+            </ng-container>
           </ng-container>
         </ng-container>
       </ng-container>
     </ng-container>
-  </ng-container>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 

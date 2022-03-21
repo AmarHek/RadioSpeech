@@ -73,12 +73,6 @@ body {
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
-.flex-container-expand{
-  display: grid;
-  grid-template-columns: 9% 79% 12%;
-  grid-template-areas: "list details report";
-}
-
 .spacer-div{
   height: 64px;
   flex-shrink: 0;
@@ -99,7 +93,7 @@ body {
 // Content: Grid for Report and Options components
 
 .mat-selection-list{
-  width: 10%;
+  width: 9%;
   min-height: 100%;
   height: auto;
   float: left;
@@ -109,21 +103,16 @@ body {
 }
 
 .mat-list-item {
-  font-size: 120%;
+  font-size: 110%;
 }
 
 .options-expand{
   min-height: 100%;
   height: fit-content;
-  width: 23%;
   overflow: auto;
+  float: left;
   border-right: 1px solid #3f51b5;
-}
-
-.inline-image-display {
-  height: 100%;
-  width: 64%;
-  overflow: auto;
+  font-size: 120%;
 }
 
 /* width */

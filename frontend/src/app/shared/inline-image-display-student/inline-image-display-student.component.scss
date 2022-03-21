@@ -1,39 +1,20 @@
 .main {
-  grid-template-columns: 370px 850px;
-  display: grid;
   overflow-y: scroll;
   overflow-x: auto;
-  grid-column-gap: 10px;
   height: auto;
-  padding: 0;
-  grid-template-areas: "leftHalf rightHalf"
+  padding: 10px 0 0 10px;
+  align-content: center;
 }
 
-.leftHalf {
-  grid-area: leftHalf;
-  display: block;
-}
+// buttons
 
-.rightHalf {
-  grid-area: rightHalf;
-  position: relative;
-  margin-top: 5px;
-}
-
-.buttonsDiv {
+#buttonsDiv {
   vertical-align: center;
-  text-align: center;
-  margin-top: 15px;
 }
 
 .buttons {
   height: 50px;
   font-size: 100%;
-}
-
-.mat-button-toggle {
-  height: 50px;
-  align-items: center;
 }
 
 .mat-button-toggle-group {
@@ -42,19 +23,11 @@
 }
 
 .imgButton {
-  width: 100px;
+  width: 150px;
 }
 
 .imgButtonWarn {
   background-color: #ffc107
-}
-
-.wideButton {
-  width: 300px;
-}
-
-.halfButton {
-  width: 150px;
 }
 
 .zoomBtnSide {
@@ -63,6 +36,18 @@
 
 .zoomBtn {
   width: 138px;
+}
+
+// Images and Canvases
+
+#imgOuter {
+  position: relative;
+  align-content: center;
+  padding: 10px 0 0 10px;
+}
+
+#imgInner {
+  position: relative;
 }
 
 .zoomDiv {
@@ -95,9 +80,6 @@
   z-index: 3;
 }
 
-.level4 {
-  z-index: 4;
-}
 
 .tipCanvas {
   position: absolute;
@@ -114,6 +96,8 @@
   position: absolute;
   border: 1px solid #d4d4d4;
 }
+
+// Scrollbar
 
 /* width */
 ::-webkit-scrollbar {
