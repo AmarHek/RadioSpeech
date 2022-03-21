@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ImageDisplayComponent } from './image-display.component';
+import { ImageDisplayComponent } from "@app/shared";
 
-describe('InlineImageDisplayComponent', () => {
+describe("InlineImageDisplayComponent", () => {
   let component: ImageDisplayComponent;
   let fixture: ComponentFixture<ImageDisplayComponent>;
 
@@ -19,7 +19,7 @@ describe('InlineImageDisplayComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

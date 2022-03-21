@@ -49,13 +49,13 @@
     </app-radiolearn-options>
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
-    <app-inline-image-display *ngIf="material && !userMode && isMod"
+    <app-image-display *ngIf="material && !userMode && isMod"
                               [scans]="material.scans"
-                              [annotations]="material.annotations"></app-inline-image-display>
+                              [annotations]="material.annotations"></app-image-display>
 
-    <app-inline-image-display-student *ngIf="material && userMode"
+    <app-image-display-student *ngIf="material && userMode"
                                       [scans]="material.scans"
-                                      [annotations]="material.annotations"></app-inline-image-display-student>
+                                      [annotations]="material.annotations"></app-image-display-student>
   </div>
 
 </div>
