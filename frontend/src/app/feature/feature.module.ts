@@ -1,28 +1,26 @@
-import { SharedModule } from "@app/shared/shared.module";
-import { RadiolearnUiComponent } from "@app/feature/radiolearn-ui/radiolearn-ui.component";
-import { ListComponent } from "@app/feature/list/list.component";
-import { RadiolearnListComponent } from "@app/feature/radiolearn-list/radiolearn-list.component";
-import { UiBaseComponent } from "@app/feature/ui-base/ui-base.component";
-import { AccountManagementComponent } from "./account-management/account-management.component";
-import { AdminComponent } from "@app/feature/admin/admin.component";
-import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
+import {CommonModule} from "@angular/common";
 
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
-import { ReactiveFormsModule } from "@angular/forms";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatSelectModule} from "@angular/material/select";
+import {NgModule} from "@angular/core";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatIconModule} from "@angular/material/icon";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
-import { RadiolearnWelcomeComponent } from './radiolearn-welcome/radiolearn-welcome.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {RouterModule} from "@angular/router";
+import {AdminComponent} from "@app/feature/admin/admin.component";
+import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
+import {ListComponent} from "@app/feature/list/list.component";
+import {RadiolearnListComponent} from "@app/feature/radiolearn-list/radiolearn-list.component";
+import {RadiolearnUiComponent} from "@app/feature/radiolearn-ui/radiolearn-ui.component";
+import {UiBaseComponent} from "@app/feature/ui-base/ui-base.component";
+import {SharedModule} from "@app/shared/shared.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {AccountManagementComponent} from "./account-management/account-management.component";
 
 
 @NgModule({
@@ -33,8 +31,7 @@ import { RadiolearnWelcomeComponent } from './radiolearn-welcome/radiolearn-welc
     UiBaseComponent,
     AccountManagementComponent,
     AdminComponent,
-    FeedbackDisplayComponent,
-    RadiolearnWelcomeComponent
+    FeedbackDisplayComponent
   ],
     imports: [
         CommonModule,

@@ -1,5 +1,5 @@
+import {CommonModule} from "@angular/common";
 import {NgModule, Optional, SkipSelf} from "@angular/core";
-import { CommonModule } from "@angular/common";
 import {
   AuthenticationService,
   BackendCallerService,
@@ -8,8 +8,9 @@ import {
   FilesSortingService,
   InputParserService,
   MatDialogService,
-  UserService,
-  RadiolearnService} from "@app/core";
+  RadiolearnService,
+  UserService
+} from "@app/core";
 
 
 @NgModule({

@@ -1,18 +1,19 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-
-import { LoginComponent, AdminComponent } from "@app/view";
+import {NgModule} from "@angular/core";
+import {RouterModule, Routes} from "@angular/router";
 import {
+  AccountManagementComponent,
+  AdminComponent,
+  FeedbackDisplayComponent,
   ListComponent,
-  UiBaseComponent,
   RadiolearnListComponent,
   RadiolearnUiComponent,
-  AccountManagementComponent,
-  FeedbackDisplayComponent
+  UiBaseComponent
 } from "@app/feature";
-import { AuthGuard } from "@app/helpers";
-import { Role } from "@app/models";
-import {RadiolearnWelcomeComponent} from "@app/feature/radiolearn-welcome/radiolearn-welcome.component";
+import {AuthGuard} from "@app/helpers";
+import {Role} from "@app/models";
+
+import {LoginComponent} from "@app/view";
+import {RadiolearnWelcomeComponent} from "@app/view/radiolearn-welcome/radiolearn-welcome.component";
 
 const routes: Routes = [
   {

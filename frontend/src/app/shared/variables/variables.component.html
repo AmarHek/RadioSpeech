@@ -29,7 +29,9 @@
         {{variable.textBefore}}
         <button class="modal-button"
                 [ngClass]="{'selected': parentActive}"
-                id="{{variable.id}} btn" (click)="submit(variable)">{{parseButtonText(variable)}}</button>
+                matTooltip="Bitte anklicken, um Text einzugeben."
+                id="{{variable.id}} btn" (click)="submit(variable)">{{parseButtonText(variable)}}
+          <i class="fa fa-pencil" style="font-size:24px"></i></button>
         {{variable.textAfter}}
       </td>
     </tr>
