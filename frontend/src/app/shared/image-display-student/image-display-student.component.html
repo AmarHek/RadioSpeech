@@ -57,6 +57,7 @@
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
       <div #lensContainer *ngIf="enableZoom">
+        <div class="zoomDiv" id="zoom"></div>
         <div class="zoomLens"
              [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
         <div class="canvas level3" id="zoomCanvas"
@@ -65,6 +66,6 @@
     </div>
   </div>
   <div>
-    <div #zoomDiv class="zoomDiv" id="zoom"></div>
+
   </div>
 </div>

@@ -58,6 +58,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   // Zoom lens
   lensSize = 200;
+  maxLensSize = 250;
 
   // tooltip size
   maxTipWidth = 300;
@@ -84,14 +85,15 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   private tipDivElement;
 
   @ViewChild("sourceImage") sourceImage: ElementRef;
-  @ViewChild("zoomDiv") zoomDiv: ElementRef;
+  private zoomDivElement;
   private zoomLayerElement;
   private lensElement;
   @ViewChild("lensContainer") set zoom(container: ElementRef) {
     if (this.enableZoom) {
       const containerElement = container.nativeElement;
-      this.zoomLayerElement = containerElement.children[1];
-      this.lensElement = containerElement.children[0];
+      this.zoomDivElement = containerElement.children[0];
+      this.lensElement = containerElement.children[1];
+      this.zoomLayerElement = containerElement.children[2];
       this.imageZoom();
     }
   }
@@ -191,6 +193,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   zoomIn(increment: number) {
     this.lensSize += increment;
+    this.lensSize = Math.min(this.lensSize, this.maxLensSize);
     this.imageZoom();
   }
 
@@ -304,13 +307,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   private imageZoom() {
     const img = this.sourceImage.nativeElement as HTMLImageElement;
-    const result = this.zoomDiv.nativeElement as HTMLDivElement;
     // calculate ratio between result div and lens
-    const cx = result.offsetWidth / this.lensElement.offsetWidth;
-    const cy = result.offsetHeight / this.lensElement.offsetHeight;
+    const cx = this.zoomDivElement.offsetWidth / this.lensElement.offsetWidth;
+    const cy = this.zoomDivElement.offsetHeight / this.lensElement.offsetHeight;
     // Set background properties for the result div
-    result.style.backgroundImage = "url('" + img.src + "')";
-    result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+    this.zoomDivElement.style.backgroundImage = "url('" + img.src + "')";
+    this.zoomDivElement.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
     // Execute a function when someone moves the cursor over the image or the lens
     this.lensElement.removeEventListener("mousemove", moveLens);
     this.zoomLayerElement.removeEventListener("mousemove", moveLens);
@@ -345,8 +347,22 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       // Set the position of the lens:
       parent.lensElement.style.left = x + "px";
       parent.lensElement.style.top = y + "px";
+      // set lens display / zoomDiv position
+      // first get center coordinates of the lens
+      const centerX = x + parent.lensSize / 2;
+      const centerY = y + parent.lensSize / 2;
+      // then use zoomDiv Size (hard coded) to compute top and left TODO: Make non hard-coded
+      let zoomDivX = centerX - 125;
+      let zoomDivY = centerY - 125;
+      // apply constraints on position: not less than 0 and not more than image height and width
+      zoomDivX = Math.max(0, zoomDivX);
+      zoomDivX = Math.min(zoomDivX, img.width - 250);
+      zoomDivY = Math.max(0, zoomDivY);
+      zoomDivY = Math.min(zoomDivY, img.height - 250);
+      parent.zoomDivElement.style.left = zoomDivX + "px";
+      parent.zoomDivElement.style.top = zoomDivY + "px";
       // Display what the lens "sees":
-      result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+      parent.zoomDivElement.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
     }
     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function getCursorPos(e) {
