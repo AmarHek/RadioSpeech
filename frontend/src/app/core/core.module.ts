@@ -26,8 +26,8 @@ import {
     FilesSortingService,
     InputParserService,
     MatDialogService,
-    UserService,
-    RadiolearnService
+    RadiolearnService,
+    UserService
   ]
 })
 export class CoreModule {

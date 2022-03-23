@@ -31,7 +31,7 @@
                 [ngClass]="{'selected': parentActive}"
                 matTooltip="Bitte anklicken, um Text einzugeben."
                 id="{{variable.id}} btn" (click)="submit(variable)">{{parseButtonText(variable)}}
-          <i class="fa fa-pencil" style="font-size:24px"></i></button>
+          <i *ngIf="radiolearn && parseButtonText(variable) === '.....'" class="fa fa-pencil" style="font-size:18px"></i></button>
         {{variable.textAfter}}
       </td>
     </tr>

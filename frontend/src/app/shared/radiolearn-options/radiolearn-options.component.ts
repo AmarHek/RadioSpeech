@@ -43,9 +43,11 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
   }
 
   getSelectedCatIndex() {
-    for (const category of this.categories) {
-      if (category.name === this.selectedCat) {
-        return this.categories.indexOf(category);
+    if (this.categories !== undefined) {
+      for (const category of this.categories) {
+        if (category.name === this.selectedCat) {
+          return this.categories.indexOf(category);
+        }
       }
     }
   }

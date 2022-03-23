@@ -1,19 +1,22 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, DoCheck, OnChanges, OnInit, SimpleChanges, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
+import {ActivatedRoute, Router} from "@angular/router";
+import {
+  AuthenticationService,
+  BackendCallerService,
+  DataParserService,
+  MatDialogService,
+  RadiolearnService
+} from "@app/core";
+import {Material, Pathology, Role, User} from "@app/models";
 
 import * as M from "@app/models/templateModel";
-import {Material, Pathology, Role, User} from "@app/models";
 import {
-  DataParserService,
-  BackendCallerService,
-  AuthenticationService, RadiolearnService, MatDialogService
-} from "@app/core";
-import {
-  RadiolearnErrorsComponent,
   FeedbackDialogComponent,
-  RadiolearnOptionsComponent,
-  ImageDisplayStudentComponent
+  ImageDisplayComponent,
+  ImageDisplayStudentComponent,
+  RadiolearnErrorsComponent,
+  RadiolearnOptionsComponent
 } from "@app/shared";
 
 @Component({
@@ -21,10 +24,11 @@ import {
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit {
+export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
+  @ViewChild(ImageDisplayComponent) imageDisplayChild: ImageDisplayComponent;
 
   material: Material;
   ogMaterial: Material;
@@ -32,7 +36,8 @@ export class RadiolearnUiComponent implements OnInit {
   categories: M.Category[];
   report = "";
   judgment = "";
-  selectedCat = ["undefined"];
+  selectedCatList = ["undefined"];
+  selectedCat: string;
 
   pathologyList: Pathology[];
 
@@ -58,10 +63,13 @@ export class RadiolearnUiComponent implements OnInit {
       (x) => {
         this.user = x;
         this.userMode = !this.isMod;
-        this.userMode = true;
       });
     await this.getData();
     this.getPathologyList();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   async getData() {
@@ -79,9 +87,13 @@ export class RadiolearnUiComponent implements OnInit {
               this.material.template = this.radiolearnService.resetTemplate(this.material.template);
             }
             this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
+            if (this.selectedCat === undefined) {
+              this.selectedCat = this.categories[0].name;
+            }
+            this.selectedCatList = [this.selectedCat];
+            // Do this so radiolearn options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
-
             }
           }
         }, err => {
@@ -89,6 +101,11 @@ export class RadiolearnUiComponent implements OnInit {
         });
       }
     });
+  }
+
+  onSelect(event) {
+    this.selectedCat = event.options[0].value;
+    console.log(this.selectedCat);
   }
 
   getPathologyList() {
@@ -143,6 +160,11 @@ export class RadiolearnUiComponent implements OnInit {
 
   next() {
     const judged = !this.isMod;
+    if (this.userMode) {
+      this.imageDisplayStudentChild.clearCanvas();
+    } else {
+      this.imageDisplayChild.clearCanvas();
+    }
     this.backendCaller.getRandom(judged, this.radiolearnService.currentPathology).subscribe(res => {
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -165,6 +187,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextCategory(nextCat: string) {
-    this.selectedCat = [nextCat];
+    this.selectedCatList = [nextCat];
+    this.selectedCat = nextCat;
   }
 }

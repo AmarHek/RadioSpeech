@@ -30,11 +30,12 @@
 
   <div id="inner_remaining">
     <mat-selection-list *ngIf="this.categories"
+                        (selectionChange)="onSelect($event)"
                         [ngStyle]="{'width.%': userMode ? 12 : 9}"
-                        [multiple]="false" [(ngModel)]="selectedCat">
+                        [multiple]="false" [(ngModel)]="selectedCatList">
       <ng-container *ngFor="let cat of categories">
         <mat-list-option [value]="cat.name"
-                         [selected]="categories.indexOf(cat) === 0">
+                         [selected]="cat.name === this.selectedCat">
           {{cat.name}}
         </mat-list-option>
       </ng-container>
@@ -42,7 +43,7 @@
     </mat-selection-list>
 
     <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
-                            [selectedCat]="selectedCat[0]"
+                            [selectedCat]="selectedCat"
                             (nextCat)="nextCategory($event)"
                             class="options-expand"
                             [categories]="categories">
@@ -50,12 +51,12 @@
     <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
     <app-image-display *ngIf="material && !userMode && isMod"
-                              [scans]="material.scans"
-                              [annotations]="material.annotations"></app-image-display>
+                       [scans]="material.scans"
+                       [annotations]="material.annotations"></app-image-display>
 
     <app-image-display-student *ngIf="material && userMode"
-                                      [scans]="material.scans"
-                                      [annotations]="material.annotations"></app-image-display-student>
+                               [scans]="material.scans"
+                               [annotations]="material.annotations"></app-image-display-student>
   </div>
 
 </div>

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="categories">
   <div class="row">
     <div class="col">
       <button mat-flat-button color="primary"
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div style="margin: 20px;">
+<div style="margin: 10px;">
   <table style="width: 100%">
     <tbody>
     <ng-container *ngFor="let category of categories">
@@ -38,6 +38,7 @@
                                (clickEvent)="updateFromVariable(sel)"
                                [variables]="sel.variables"
                                [parentText]="sel.name"
+                               [radiolearn]="true"
                                [parentActive]="sel.value" [currentLayout]="0"></app-variables>
               </td>
             </tr>
@@ -65,6 +66,7 @@
                                  (clickEvent)="updateFromVariable(option, sel)"
                                  [variables]="option.variables"
                                  [parentText]="option.name"
+                                 [radiolearn]="true"
                                  [parentActive]="option.name === sel.value" [currentLayout]="0"></app-variables>
                 </td>
               </tr>

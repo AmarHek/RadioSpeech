@@ -25,39 +25,39 @@ import {AccountManagementComponent} from "./account-management/account-managemen
 
 @NgModule({
   declarations: [
-    RadiolearnUiComponent,
-    ListComponent,
-    RadiolearnListComponent,
-    UiBaseComponent,
     AccountManagementComponent,
     AdminComponent,
-    FeedbackDisplayComponent
+    FeedbackDisplayComponent,
+    ListComponent,
+    RadiolearnListComponent,
+    RadiolearnUiComponent,
+    UiBaseComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        NgbModule,
-        FormsModule,
-        SharedModule,
-        ReactiveFormsModule,
-        MatCheckboxModule,
-        MatSlideToggleModule,
-        MatSelectModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatChipsModule,
-        MatListModule,
-        MatMenuModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatIconModule,
+    MatListModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    NgbModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SharedModule
+  ],
   exports: [
-    RadiolearnUiComponent,
-    ListComponent,
-    RadiolearnListComponent,
-    UiBaseComponent,
     AccountManagementComponent,
     AdminComponent,
-    FeedbackDisplayComponent
+    FeedbackDisplayComponent,
+    ListComponent,
+    RadiolearnListComponent,
+    RadiolearnUiComponent,
+    UiBaseComponent
   ]
 })
 export class FeatureModule { }

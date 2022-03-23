@@ -22,6 +22,8 @@ export class VariablesComponent implements OnInit {
 
   @Input() currentLayout: number;
 
+  @Input() radiolearn = false;
+
   hasButtonBeenClickedOnce: Map<string, boolean> = new Map();
 
   constructor(private dialog: MatDialog,
