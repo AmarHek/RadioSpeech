@@ -88,6 +88,7 @@ export class BackendCallerService {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
       template: material.template,
       annotations: material.annotations,
+      pathologies: material.pathologies,
       judged: true
     });
   }

@@ -79,6 +79,7 @@ export function updateMaterial(req: Request, res: Response): void {
     }, {
         template: req.body.template,
         annotations: req.body.annotations,
+        pathologies: req.body.pathologies,
         judged: req.body.judged
     }).exec((err, response) => {
         console.log(response);

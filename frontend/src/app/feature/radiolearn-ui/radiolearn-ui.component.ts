@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnChanges, OnInit, SimpleChanges, ViewChild} from "@angular/core";
+import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -34,12 +34,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   ogMaterial: Material;
 
   categories: M.Category[];
-  report = "";
-  judgment = "";
+  pathologyList: Pathology[];
+
   selectedCatList = ["undefined"];
   selectedCat: string;
-
-  pathologyList: Pathology[];
+  selectedPathologies: string[];
+  correctPathologies: boolean[];
 
   userMode: boolean;
 
@@ -56,6 +56,14 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get detailedMode() {
+    return this.radiolearnService.detailedMode;
+  }
+
+  get colorBlindMode() {
+    return this.radiolearnService.colorBlindMode;
   }
 
   async ngOnInit() {
@@ -91,6 +99,9 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               this.selectedCat = this.categories[0].name;
             }
             this.selectedCatList = [this.selectedCat];
+            if (this.correctPathologies !== undefined) {
+              this.correctPathologies.fill(true);
+            }
             // Do this so radiolearn options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
@@ -105,12 +116,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   onSelect(event) {
     this.selectedCat = event.options[0].value;
-    console.log(this.selectedCat);
   }
 
   getPathologyList() {
     this.backendCaller.getPathologyList().subscribe(res => {
       this.pathologyList = res.pathologyList;
+      this.correctPathologies = new Array(this.pathologyList.length).fill(true);
     }, err => {
       console.log(err);
     });
@@ -121,17 +132,45 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   save() {
+    this.material.pathologies = this.radiolearnService.extractPathologies(this.material.annotations);
+
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
       this.next();
     });
   }
 
-  switchMode() {
+  toggleUserMode() {
     this.userMode = !this.userMode;
   }
 
+  switchMode() {
+    this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
+  }
+
   check() {
+    if (this.radiolearnService.detailedMode) {
+      this.detailedCheck();
+    } else {
+      this.simpleCheck();
+    }
+  }
+
+  simpleCheck() {
+    if (this.userMode) {
+      this.imageDisplayStudentChild.toggleBoxes();
+    }
+
+    this.correctPathologies = this.radiolearnService.comparePathologies(
+      this.material.pathologies, this.selectedPathologies, this.pathologyList);
+
+    console.log(this.material.pathologies);
+    console.log(this.selectedPathologies);
+    console.log(this.pathologyList);
+    console.log(this.correctPathologies);
+  }
+
+  detailedCheck() {
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
 
     const modes = ["main", "lateral", "pre"];

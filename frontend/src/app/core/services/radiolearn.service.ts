@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {
   Annotation,
-  BoundingBox,
   Category,
   CheckBox,
   Group,
@@ -32,26 +31,9 @@ export class RadiolearnService {
 
   currentPathology = "";
   colorBlindMode = false;
+  detailedMode = true;
 
-  constructor() { }
-
-  checkBoxes(coordinates: Record<string, BoundingBox[]>): string {
-    const res: string[] = [];
-    if (coordinates.main.length > 0) {
-      res.push("Hauptaufnahme");
-    }
-    if (coordinates.lateral.length > 0) {
-      res.push("Lateralaufnahme");
-    }
-    if (coordinates.pre.length > 0) {
-      res.push("Voraufnahme");
-    }
-
-    if (res.length > 0) {
-      return res.join(", ");
-    } else {
-      return "Keiner Aufnahme";
-    }
+  constructor() {
   }
 
   resetTemplate(template: Template) {
@@ -102,7 +84,6 @@ export class RadiolearnService {
                           studentTemplate: Template): Annotation[] {
     // iterate through annotations
     for (const annotation of annotations) {
-      console.log(annotation);
       // extract templateMap from correct pathologiesList
       const templateMaps = pathologies.find(pathology =>
         pathology.name === annotation.label).templateMaps;
@@ -120,7 +101,6 @@ export class RadiolearnService {
         // first check if category is in templateMap
         let catPresent = false;
         for (const map of templateMaps) {
-          console.log(category.name, map.categoryName);
           if (map.categoryName === category.name) {
             catPresent = true;
             break;
@@ -142,7 +122,6 @@ export class RadiolearnService {
   }
 
   checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
-    console.log(selectable);
     if (selectable.kind === "box") {
       for (const map of templateMaps) {
         // only check, if kind is the same
@@ -172,6 +151,46 @@ export class RadiolearnService {
       }
     }
     return false;
+  }
+
+  extractPathologies(annotations: {
+    main: Annotation[];
+    lateral?: Annotation[];
+    pre?: Annotation[];
+  }): string[] {
+    const pathologies = [];
+    const modes = ["main", "lateral", "pre"];
+
+    for (const mode of modes) {
+      if (annotations[mode] !== undefined) {
+        if (annotations[mode].length > 0) {
+          for (const annotation of annotations[mode]) {
+            if (!pathologies.includes(annotation.label)) {
+              pathologies.push(annotation.label);
+            }
+          }
+        }
+      }
+    }
+
+    return pathologies;
+  }
+
+  comparePathologies(correctPathologies: string[], studentPathologies: string[], pathologyList: Pathology[]):
+    boolean[] {
+    const correct = new Array(pathologyList.length).fill(true);
+
+    for (const pathology of pathologyList) {
+      if (studentPathologies.includes(pathology.name) && !correctPathologies.includes(pathology.name)) {
+        correct[pathologyList.indexOf(pathology)] = false;
+      }
+
+      if (correctPathologies.includes(pathology.name) && !studentPathologies.includes(pathology.name)) {
+        correct[pathologyList.indexOf(pathology)] = false;
+      }
+    }
+
+    return correct;
   }
 
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
@@ -566,7 +585,6 @@ export class RadiolearnService {
       }
     }
     if (peErrors.length > 0) {
-      console.log(peErrors);
       return {
         name: "PE",
         selErrors: peErrors as SelectableError[]
