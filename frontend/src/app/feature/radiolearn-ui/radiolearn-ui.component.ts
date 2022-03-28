@@ -99,9 +99,6 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               this.selectedCat = this.categories[0].name;
             }
             this.selectedCatList = [this.selectedCat];
-            if (this.correctPathologies !== undefined) {
-              this.correctPathologies.fill(true);
-            }
             // Do this so radiolearn options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
@@ -199,10 +196,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   next() {
     const judged = !this.isMod;
+    this.correctPathologies.fill(true);
+    this.selectedPathologies = [];
     if (this.userMode) {
-      this.imageDisplayStudentChild.clearCanvas();
+      this.imageDisplayStudentChild.toggleBoxes();
     } else {
-      this.imageDisplayChild.clearCanvas();
+      this.imageDisplayChild.toggleBoxes();
     }
     this.backendCaller.getRandom(judged, this.radiolearnService.currentPathology).subscribe(res => {
       if (res.material === null) {

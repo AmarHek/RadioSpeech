@@ -1,41 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light"  *ngIf="displayNavbar">
-  <a class="navbar-brand" href="#">{{title}}  <fa-icon class="ml-1" [icon]="faUser"></fa-icon></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<mat-toolbar color="primary" class="toolbar" *ngIf="displayNavbar">
+  <a mat-button routerLink='/'>
+    <mat-icon>desktop_windows</mat-icon>
+    RadioLearn
+  </a>
+  <a mat-button routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
+  <a mat-button routerLink='/list' routerLinkActive="active">Schablonen</a>
+  <a mat-button routerLink="/feedback" routerLinkActive="active" *ngIf="isMod">Feedback</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+  <span class="spacer2"></span>
 
+  <a mat-button routerLink="/admin" routerLinkActive="active" *ngIf="(isAdmin)">
+    <mat-icon>admin_panel_settings</mat-icon>
+  </a>
+  <a mat-button routerLink="/manageAccount" routerLinkActive="active">
+    <mat-icon>manage_accounts</mat-icon>
+  </a>
+  <a mat-button style="cursor: pointer;" routerLinkActive="active" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </a>
 
-      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
-        <a class="nav-link" routerLink='/radiolearn/list'>Annotation</a>
-      </li>
-
-      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
-        <a class="nav-link" routerLink='/list'>Schablonen</a>
-      </li>
-
-      <li *ngIf="isMod" class="nav-item" routerLinkActive='active'>
-        <a class="nav-link" routerLink='/home'>Welcome-Screen</a>
-      </li>
-
-    </ul>
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/admin" *ngIf="(isAdmin)">Admin</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/feedback" *ngIf="isMod">Feedback</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/manageAccount">Account Management</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" style="cursor: pointer;" (click)="logout()">Logout</a>
-      </li>
-    </ul>
-  </div>
-
-</nav>
+</mat-toolbar>

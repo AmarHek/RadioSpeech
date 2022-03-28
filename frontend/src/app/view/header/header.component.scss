@@ -1,28 +1,31 @@
-nav a {
-  padding: 5px 10px;
-  margin-top: 5px;
-  background-color: #eee;
-  border-radius: 5px;
-  margin-left: 5px;
-  display: inline-block;
+.toolbar {
+  padding: 8px 18px;
+  box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024, 0 1px 18px #0000001f;
+  height: 60px;
 }
 
-nav a:visited, a:link {
-  color: #334953;
-}
-nav a:hover {
-  color: #039be5;
-  background-color: #cfd8dc;
-}
-nav a.active {
-  color: #039be5;
-  background-color: #cfd8dc;
+.spacer2 {
+  flex: 1 1 auto;
 }
 
-.navbar-toggler {
-  margin-right: 10px;
+.spacer1 {
+  flex: 0 1 15px;
 }
 
-.ms-auto {
-  margin-right: 5px;
+.mat-button-base {
+  font-weight: 600;
+  font-size: 14px;
+  font-family: Roboto, "Helvetica Neue", sans-serif
+}
+
+.mat-button-base:hover {
+  background-color: rgba(0,0,0,0.3);
+}
+
+.mat-focus-indicator {
+  color: white;
+}
+
+.active {
+  background-color: rgba(0,0,0,0.2);
 }

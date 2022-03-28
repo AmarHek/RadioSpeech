@@ -18,10 +18,10 @@ import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.compon
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
 const BOX_LINE_WIDTH = 5;
-const DISPLAY_BOX_COLOR = ["rgba(128,0,0,1)", "rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
+const DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
   "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
   "rgba(70,240,240,1)", "rgba(0,130,200,1)", "rgba(145,30,180,1)", "rgba(240,50,230,1)", "rgba(128,128,128,1)",
-  "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)",
+  "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
   "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";

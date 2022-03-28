@@ -1,1 +1,22 @@
-<p>radiolearn-welcome works!</p>
+<div class="col-md-4 offset-md-4 mt-5">
+  <div class="card">
+    <h3 class="card-header">Willkommen zu RadioLearn!</h3>
+    <div class="card-body">
+      Sie haben die Auswahl zwischen zwei verschiedenen Lernmodi. In beiden Modi werden Sie eine oder mehrere
+      Röntgenaufnahmen eines Patienten sehen und daneben einen Fragebogen mit stichpunkten zum Ausfüllen. Bitte klicken
+      Sie dort alles zutreffende an. Mit einem Klick auf "Prüfen" können Sie ihre Eingaben überprüfen und erhalten
+      Feedback sowie die Lösung.
+      <button mat-raised-button (click)="detailedMode()">Dokumentationsmodus</button>
+      <div>
+        In diesem Modus klicken Sie sich durch eine detaillierte Befundungsschablone, die ein Radiologe in seinem
+        Alltag ebenfalls ausfüllt. Hier werden zu verschiedenen Kategorien mehrere Aspekte abgefragt. Für manche
+        Auswahlmöglichkeiten müssen Sie eine Texteingabe vornehmen. Dieser Modus ist für längere Lernsessions konzipiert.
+      </div>
+      <button mat-raised-button (click)="simpleMode()">Diagnosemodus</button>
+      <div>
+        Dies ist ein vereinfachter Modus, in dem Sie nur die in der Aufnahme vorhandenen Pathologien finden und den
+        entsprechenden Punkt anklicken sollen.
+      </div>
+    </div>
+  </div>
+</div>

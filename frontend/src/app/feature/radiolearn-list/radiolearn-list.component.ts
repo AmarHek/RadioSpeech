@@ -1,11 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
+import {AuthenticationService, BackendCallerService, MatDialogService, RadiolearnService} from "@app/core";
+import {Material, Role, User} from "@app/models";
+import {ConfirmDialogComponent, ConfirmDialogModel, UploadMaterialComponent} from "@app/shared";
 
 import {environment} from "@env/environment";
-import {BoundingBox, Material, Role, User} from "@app/models";
-import {AuthenticationService, BackendCallerService, MatDialogService, RadiolearnService} from "@app/core";
-import {UploadMaterialComponent, ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
 @Component({
   selector: "app-display-material",
@@ -19,25 +19,6 @@ export class RadiolearnListComponent implements OnInit {
 
   showJudged = false;
   pathology = "";
-  possiblePathologies = ["Enlarged Cardiomediastinum", "Cardiomegaly", "Lung Lesion",
-  "Lung Opacity", "Edema", "Consolidation", "Pneumonia", "Atelectasis", "Pneumothorax", "Pleural Effusion",
-  "Pleural Other", "Fracture", "Support Devices"];
-
-  possiblePathologiesGerman: Map<string, string> = new Map<string, string>([
-    ["Enlarged Cardiomediastinum", "Vergrößertes Kardiomediastinum"],
-    ["Cardiomegaly", "Kardiomegalie"],
-    ["Lung Lesion", "Lungenläsion"],
-    ["Lung Opacity", "Lungentrübung"],
-    ["Edema", "Ödem"],
-    ["Consolidation", "Konsolidierung"],
-    ["Pneumonia", "Pneumonie"],
-    ["Atelectasis", "Atelektase"],
-    ["Pneumothorax", "Pneumothorax"],
-    ["Pleural Effusion", "Pleuraerguss"],
-    ["Pleural Other", "Pleural andere"],
-    ["Fracture", "Fraktur"],
-    ["Support Devices", "Stützgerät"]
-  ]);
 
   collectionSize = 0;
   pageSize = 10;
