@@ -20,12 +20,12 @@ export class RadiolearnWelcomeComponent implements OnInit {
 
   detailedMode() {
     this.radiolearnService.detailedMode = true;
-    this.loadRandom()
+    this.loadRandom();
   }
 
   simpleMode() {
     this.radiolearnService.detailedMode = false;
-    this.loadRandom()
+    this.loadRandom();
   }
 
   openEditor(matID: string) {

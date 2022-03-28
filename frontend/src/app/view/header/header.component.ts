@@ -11,10 +11,8 @@ import {Role, User} from "@app/models";
 })
 export class HeaderComponent implements OnInit, DoCheck {
 
-
   displayNavbar: boolean;
   title = "RadioLearn";
-  faUser: any;
 
   private user: User;
 
@@ -32,7 +30,6 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.displayNavbar = true;
-    this.faUser = faLaptopMedical;
   }
 
   ngDoCheck(): void {
