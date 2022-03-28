@@ -41,7 +41,7 @@ export function signIn(req: Request, res: Response) {
             }
 
             if (!user) {
-                return res.status(404).send({ message: "Benutzer nicht gefunden." });
+                return res.status(404).send({ message: "Falscher Nutzername oder falsches Passwort" });
             }
 
             const passwordIsValid = bcrypt.compareSync(
@@ -52,7 +52,7 @@ export function signIn(req: Request, res: Response) {
             if (!passwordIsValid) {
                 return res.status(401).send( {
                     accessToken: null,
-                    message: "Falsches Passwort"
+                    message: "Falscher Nutzername oder falsches Passwort"
                 });
             }
 

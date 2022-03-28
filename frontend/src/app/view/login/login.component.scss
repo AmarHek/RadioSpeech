@@ -1,3 +1,9 @@
-.form-group {
-  margin: 10px;
+mat-card {
+  max-width: 500px;
+  margin: 2em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
 }

@@ -1,34 +1,19 @@
-<div class="col-md-4 offset-md-4 mt-5">
-  <div class="card">
-    <h4 class="card-header">RadioSpeech - Login</h4>
-    <div class="card-body">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="username">Nutzername</label>
-          <input id="username" type="text" formControlName="username" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && fc.username.errors }" />
-          <div *ngIf="submitted && fc.username.errors" class="invalid-feedback">
-            <div *ngIf="fc.username.errors.required">Nutzername ist erforderlich</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="password">Passwort</label>
-          <input id="password" type="password" formControlName="password" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && fc.password.errors }" />
-          <div *ngIf="submitted && fc.password.errors" class="invalid-feedback">
-            <div *ngIf="fc.password.errors.required">Passwort ist erforderlich</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <button style="float:right" [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
-    <div *ngIf="error" class="card-footer">
-      <div class="alert alert-danger mt-3">{{error}}</div>
-    </div>
-  </div>
-</div>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h4>RadioLearn - Login</h4>
+      <mat-error *ngIf="error">
+        {{error}}
+      </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Nutzername" formControlName="username">
+        <mat-error *ngIf="submitted && fc.username.errors">{{getUsernameError()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Passwort" formControlName="password">
+        <mat-error *ngIf="submitted && fc.password.errors">{{getPasswordError()}}</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" [disabled]="loading">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>

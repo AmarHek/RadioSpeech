@@ -40,6 +40,22 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  getUsernameError() {
+    if (this.fc.username.hasError("required")) {
+      return "Nutzername ist erforderlich";
+    } else {
+      return "";
+    }
+  }
+
+  getPasswordError() {
+    if (this.fc.password.hasError("required")) {
+      return "Passwort ist erforderlich";
+    } else {
+      return "";
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -59,6 +75,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.error = error;
           this.loading = false;
+          console.log(error);
         });
   }
 
