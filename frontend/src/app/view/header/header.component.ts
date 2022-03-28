@@ -1,7 +1,6 @@
 import {Component, DoCheck, OnInit} from "@angular/core";
-import { faLaptopMedical } from "@fortawesome/free-solid-svg-icons";
 
-import { DisplayService, AuthenticationService } from "@app/core";
+import {AuthenticationService, DisplayService} from "@app/core";
 import {Role, User} from "@app/models";
 
 @Component({

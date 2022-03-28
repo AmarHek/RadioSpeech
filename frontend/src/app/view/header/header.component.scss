@@ -12,17 +12,14 @@
   flex: 0 1 15px;
 }
 
-.mat-button-base {
+.header-button {
   font-weight: 600;
   font-size: 14px;
   font-family: Roboto, "Helvetica Neue", sans-serif
 }
 
-.mat-button-base:hover {
+.header-button:hover {
   background-color: rgba(0,0,0,0.3);
-}
-
-.mat-focus-indicator {
   color: white;
 }
 

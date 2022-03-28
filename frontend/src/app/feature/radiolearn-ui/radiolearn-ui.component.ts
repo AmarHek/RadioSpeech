@@ -12,6 +12,8 @@ import {Material, Pathology, Role, User} from "@app/models";
 
 import * as M from "@app/models/templateModel";
 import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
   FeedbackDialogComponent,
   ImageDisplayComponent,
   ImageDisplayStudentComponent,
@@ -56,6 +58,10 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
   }
 
   get detailedMode() {
@@ -130,7 +136,6 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   save() {
     this.material.pathologies = this.radiolearnService.extractPathologies(this.material.annotations);
-
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
       this.next();
@@ -214,6 +219,24 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     }, err => {
       console.log(err);
     });
+  }
+
+  nextWarning() {
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Warnung",
+      "Nicht gespeicherte Daten gehen eventuell verloren. Nächste Aufnahme laden?");
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+      }
+    })
   }
 
   feedbackModal() {

@@ -11,6 +11,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterModule} from "@angular/router";
 import {AdminComponent} from "@app/feature/admin/admin.component";
 import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
@@ -33,23 +34,24 @@ import {AccountManagementComponent} from "./account-management/account-managemen
     RadiolearnUiComponent,
     UiBaseComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    NgbModule,
-    ReactiveFormsModule,
-    RouterModule,
-    SharedModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatIconModule,
+        MatListModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        NgbModule,
+        ReactiveFormsModule,
+        RouterModule,
+        SharedModule,
+        MatTooltipModule
+    ],
   exports: [
     AccountManagementComponent,
     AdminComponent,

@@ -1,21 +1,21 @@
 <mat-toolbar color="primary" class="toolbar" *ngIf="displayNavbar">
-  <a mat-button routerLink='/'>
+  <a mat-button class="header-button" routerLink='/'>
     <mat-icon>desktop_windows</mat-icon>
     RadioLearn
   </a>
-  <a mat-button routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
-  <a mat-button routerLink='/list' routerLinkActive="active">Schablonen</a>
-  <a mat-button routerLink="/feedback" routerLinkActive="active" *ngIf="isMod">Feedback</a>
+  <a mat-button class="header-button" routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
+  <a mat-button class="header-button" routerLink='/list' routerLinkActive="active">Schablonen</a>
+  <a mat-button class="header-button" routerLink="/feedback" routerLinkActive="active" *ngIf="isMod">Feedback</a>
 
   <span class="spacer2"></span>
 
-  <a mat-button routerLink="/admin" routerLinkActive="active" *ngIf="(isAdmin)">
+  <a mat-button class="header-button" routerLink="/admin" routerLinkActive="active" *ngIf="(isAdmin)">
     <mat-icon>admin_panel_settings</mat-icon>
   </a>
-  <a mat-button routerLink="/manageAccount" routerLinkActive="active">
+  <a mat-button class="header-button" routerLink="/manageAccount" routerLinkActive="active">
     <mat-icon>manage_accounts</mat-icon>
   </a>
-  <a mat-button style="cursor: pointer;" routerLinkActive="active" (click)="logout()">
+  <a mat-button class="header-button" style="cursor: pointer;" routerLinkActive="active" (click)="logout()">
     <mat-icon>logout</mat-icon>
   </a>
 

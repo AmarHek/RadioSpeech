@@ -2,33 +2,37 @@
 <body class="disable-select">
 <div id="outer">
   <div id="inner_fixed">
-    <mat-toolbar color="primary">
-      <button mat-icon-button [routerLink]="['/', 'radiolearn', 'list']">
+    <mat-toolbar class="toolbar" color="primary">
+      <a mat-button class="header-button" style="font-size: 18px;" routerLink='/'>
         <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-      <span [routerLink]="['/', 'home']" style="font-size: 22px; cursor: pointer">RadioLearn</span>
+        RadioLearn
+      </a>
       <span class="spacer"></span>
-      <button mat-button id="normal-btn"
+      <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
+              (click)="toggleUserMode()">
+        <ng-container *ngIf="userMode">Modus: User</ng-container>
+        <ng-container *ngIf="!userMode">Modus: Arzt</ng-container>
+      </button>
+      <button mat-button class="header-button" id="detailedMode"
+              (click)="switchMode()">
+        <ng-container *ngIf="detailedMode">Modus: Dokumentation</ng-container>
+        <ng-container *ngIf="!detailedMode">Modus: Diagnose</ng-container>
+      </button>
+      <button *ngIf="detailedMode" mat-button class="header-button" id="normal-btn"
+              matTooltip="Restliche Kategorien als unauffällig markieren"
               (click)="makeNormal()">Rest normal
       </button>
-      <button mat-button id="userMode" *ngIf="isMod"
-              (click)="toggleUserMode()">Toggle UserMode
+      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen"
+              (click)="check()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
       </button>
-      <button mat-button id="detailedMode"
-              (click)="switchMode()">
-        <ng-container *ngIf="detailedMode">Dokumentationsmodus</ng-container>
-        <ng-container *ngIf="!detailedMode">Diagnosemodus</ng-container>
+      <button *ngIf="isMod" mat-button class="header-button" id="save" matTooltip="Speichern"
+              (click)="save()"><mat-icon>save</mat-icon>
       </button>
-      <button mat-button id="feedback"
-              (click)="feedbackModal()">Feedback</button>
-      <button mat-button id="check"
-              (click)="check()">Prüfen
-      </button>
-      <button *ngIf="isMod" mat-button id="save"
-              (click)="save()">Speichern
-      </button>
-      <button mat-button id="next"
-              (click)="next()">Nächste Aufnahme</button>
+      <button mat-button class="header-button" id="next" matTooltip="Nächste Aufnahme"
+              (click)="next()"><mat-icon>navigate_next</mat-icon></button>
+      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben"
+              (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
+
     </mat-toolbar>
 
   </div>
