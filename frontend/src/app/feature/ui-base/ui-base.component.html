@@ -2,22 +2,22 @@
 <body class="disable-select">
 <div id="outer">
   <div id="inner_fixed">
-
-      <mat-toolbar color="primary">
-        <button mat-icon-button [routerLink]="['/', 'list']">
+      <mat-toolbar class="toolbar" color="primary">
+        <a mat-button class="header-button" style="font-size: 18px;" routerLink='/'>
           <mat-icon>arrow_back_ios</mat-icon>
-        </button>
-        <span style="font-size: 22px; cursor: pointer" [routerLink]="['/', 'list']">RadioSpeech</span>
+          RadioSpeech
+        </a>
         <span class="spacer"></span>
-        <button mat-button [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
+        <button mat-button class="header-button" [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item *ngFor="let layout of layouts"
                   (click)="layoutChanged(layout)">{{layout.displayName}}
           </button>
         </mat-menu>
-        <button *ngIf="isAdmin" mat-button (click)="generateDownloadJson(parts)">Download JSON</button>
-        <button mat-button (click)="makeNormal()">Rest normal</button>
-        <button mat-button (click)="reset()">Zurücksetzen</button>
+        <button mat-button class="header-button" (click)="makeNormal()">Rest normal</button>
+        <button mat-button class="header-button" (click)="reset()">Zurücksetzen</button>
+        <button *ngIf="isAdmin" mat-button class="header-button" (click)="generateDownloadJson(parts)">
+          <mat-icon>file_download</mat-icon></button>
       </mat-toolbar>
 
       <mat-form-field class="example-chip-list" appearance="fill">
