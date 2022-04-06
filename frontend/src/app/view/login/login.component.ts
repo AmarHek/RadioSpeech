@@ -5,6 +5,7 @@ import { first } from "rxjs/operators";
 
 import {AuthenticationService} from "@app/core/services/authentication.service";
 import {Role} from "@app/models";
+import {environment} from "@env/environment";
 
 @Component({
   selector: "app-login",
@@ -17,6 +18,8 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   error = "";
+
+  assetsUrl = environment.assets;
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -54,6 +57,10 @@ export class LoginComponent implements OnInit {
     } else {
       return "";
     }
+  }
+
+  getBackgroundUrl() {
+    return "url('" + this.assetsUrl + 'loginScreen.PNG' + "')";
   }
 
   onSubmit() {
