@@ -1,21 +1,45 @@
-<div class="col-md-4 offset-md-4 mt-5">
-  <div class="card">
-    <h3 class="card-header">Willkommen zu RadioLearn!</h3>
-    <div class="card-body">
+<div class="header">
+  <div class="row">
+    <h1>Willkommen zu RadioLearn</h1>
+    <div class="text-container">
       Sie haben die Auswahl zwischen zwei verschiedenen Lernmodi. In beiden Modi werden Sie eine oder mehrere
-      Röntgenaufnahmen eines Patienten sehen und daneben einen Fragebogen mit stichpunkten zum Ausfüllen. Bitte klicken
-      Sie dort alles zutreffende an. Mit einem Klick auf "Prüfen" können Sie ihre Eingaben überprüfen und erhalten
-      Feedback sowie die Lösung.
-      <button mat-raised-button (click)="detailedMode()">Dokumentationsmodus</button>
-      <div>
-        In diesem Modus klicken Sie sich durch eine detaillierte Befundungsschablone, die ein Radiologe in seinem
-        Alltag ebenfalls ausfüllt. Hier werden zu verschiedenen Kategorien mehrere Aspekte abgefragt. Für manche
-        Auswahlmöglichkeiten müssen Sie eine Texteingabe vornehmen. Dieser Modus ist für längere Lernsessions konzipiert.
+      Röntgenaufnahmen eines Patienten sehen und sollen den zugehörigen Fragebogen ausfüllen.
+      Sie dort alles zutreffende an.
+
+      Mit einem Klick auf "Prüfen" können Sie ihre Eingaben überprüfen und erhalten Feedback sowie die Lösung.
+    </div>
+  </div>
+</div>
+<div class="container body">
+  <div class="row">
+    <div class="col-sm">
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" (click)="detailedMode()">Dokumentationsmodus</button>
       </div>
-      <button mat-raised-button (click)="simpleMode()">Diagnosemodus</button>
-      <div>
-        Dies ist ein vereinfachter Modus, in dem Sie nur die in der Aufnahme vorhandenen Pathologien finden und den
-        entsprechenden Punkt anklicken sollen.
+      <div class="text-container">
+        In diesem Modus klicken Sie sich durch eine detaillierte Befundungs-Schablone aus dem Alltag.
+
+        Abgefragt werden detaillierte Punkte zu verschiedenen Kategorien.
+
+        Dieser Modus ist für längere Lern-Sessions geeignet.
+      </div>
+      <div class="img-container">
+        <img src="{{assetsUrl}}Dokumentation.png" width="100%" alt="Dokumentationsmodus" (click)="detailedMode()">
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" (click)="simpleMode()">Diagnosemodus</button>
+      </div>
+      <div class="text-container">
+        Dies ist ein vereinfachter Modus, in dem Sie nur die vorhandenen Pathologien identifizieren sollen.
+
+        Es geht nur um oberflächliche Erkennungen, es werden keine Details abgefragt.
+
+        Dieser Modus ist für kürzere Sessions zwischendurch geeignet.
+      </div>
+      <div class="img-container">
+        <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="simpleMode()">
       </div>
     </div>
   </div>

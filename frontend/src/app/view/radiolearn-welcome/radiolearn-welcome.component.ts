@@ -1,13 +1,16 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {BackendCallerService, RadiolearnService} from "@app/core";
+import {environment} from "@env/environment";
 
 @Component({
   selector: "app-radiolearn-welcome",
   templateUrl: "./radiolearn-welcome.component.html",
-  styleUrls: ["./radiolearn-welcome.component.css"]
+  styleUrls: ["./radiolearn-welcome.component.scss"]
 })
 export class RadiolearnWelcomeComponent implements OnInit {
+
+  assetsUrl = environment.assets;
 
   constructor(
     private radiolearnService: RadiolearnService,
