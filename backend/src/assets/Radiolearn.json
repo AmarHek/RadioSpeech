@@ -10,7 +10,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "Thorax p.a.",
+						"name": "Thorax PA",
 						"text": "Projektionsradiographie: Thorax in 1 Ebene ",
 						"judgementText": null,
 						"normal": false,
@@ -50,9 +50,33 @@
 			},
 			{
 				"kind": "box",
-				"name": "Mit Voraufnahme",
+				"name": "Beurteilbarkeit",
 				"value": false,
-				"text": "Mit Voraufnahme. ",
+				"text": "Beurterilbarkeit %A1% ",
+				"judgementText": null,
+				"enumeration": null,
+				"normal": false,
+				"variables": [
+					{
+						"kind": "oc",
+						"id": "A1",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [],
+						"value": null,
+						"values": [
+							"gut",
+							"erschwert"
+						]
+					}
+				],
+				"keys": []
+			},
+			{
+				"kind": "box",
+				"name": "Voraufnahme vorhanden",
+				"value": false,
+				"text": "Voraufnahme vorhanden. ",
 				"judgementText": null,
 				"enumeration": null,
 				"normal": false,
@@ -96,7 +120,7 @@
 					{
 						"kind": "oc",
 						"id": "I1",
-						"textBefore": "von ",
+						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
@@ -104,12 +128,16 @@
 							],
 							[
 								"links"
+							],
+							[
+								"beidseitig"
 							]
 						],
 						"value": null,
 						"values": [
 							"re.",
-							"li."
+							"li.",
+							"bds."
 						]
 					},
 					{

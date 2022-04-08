@@ -10,7 +10,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "Thorax p.a.",
+						"name": "Thorax PA",
 						"text": "Projektionsradiographie: Thorax in 1 Ebene ",
 						"judgementText": null,
 						"normal": false,
@@ -50,9 +50,33 @@
 			},
 			{
 				"kind": "box",
-				"name": "Mit Voraufnahme",
+				"name": "Beurteilbarkeit",
 				"value": false,
-				"text": "Mit Voraufnahme. ",
+				"text": "Beurterilbarkeit %A1% ",
+				"judgementText": null,
+				"enumeration": null,
+				"normal": false,
+				"variables": [
+					{
+						"kind": "oc",
+						"id": "A1",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [],
+						"value": null,
+						"values": [
+							"gut",
+							"erschwert"
+						]
+					}
+				],
+				"keys": []
+			},
+			{
+				"kind": "box",
+				"name": "Voraufnahme vorhanden",
+				"value": false,
+				"text": "Voraufnahme vorhanden. ",
 				"judgementText": null,
 				"enumeration": null,
 				"normal": false,
@@ -2558,7 +2582,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "WT normal",
+				"name": "Weichteile normal",
 				"value": false,
 				"text": "Unauffällige Darstellung des umgebenden Weichteilmantels im Summationsbild.",
 				"judgementText": null,
@@ -2572,7 +2596,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "WT-Emphysem",
+				"name": "Weichteile-Emphysem",
 				"value": false,
 				"text": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
 				"judgementText": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
@@ -2661,7 +2685,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "weiteres WT-Emphysem",
+				"name": "weiteres Weichteile-Emphysem",
 				"value": false,
 				"text": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
 				"judgementText": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
