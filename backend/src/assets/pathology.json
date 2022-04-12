@@ -86,51 +86,6 @@
 		]
 	},
 	{
-		"name": "Pleuraler Erguss",
-		"englishName": "Pleural Effusion",
-		"templateMaps": [
-			{
-				"categoryName": "PE",
-				"kind": "box",
-				"name": "gering"
-			},
-			{
-				"categoryName": "PE",
-				"kind": "box",
-				"name": "mäßig"
-			},
-			{
-				"categoryName": "PE",
-				"kind": "box",
-				"name": "deutlich"
-			}
-		]
-	},
-	{
-		"name": "Pneumothorax",
-		"englishName": "Pneumothorax",
-		"templateMaps": [
-			{
-				"categoryName": "Pleura",
-				"kind": "option",
-				"groupName": "CG8",
-				"name": "Pneumothorax"
-			},
-			{
-				"categoryName": "Pleura",
-				"kind": "option",
-				"groupName": "CG8",
-				"name": "Seropneumothorax"
-			},
-			{
-				"categoryName": "Pleura",
-				"kind": "option",
-				"groupName": "CG8",
-				"name": "Spannungspneumothorax"
-			}
-		]
-	},
-	{
 		"name": "Vergrößertes Kardiomediastinum",
 		"englishName": "Enlarged Cardiomediastinum",
 		"templateMaps": [
@@ -144,27 +99,6 @@
 				"kind": "box",
 				"name": "verbreitert"
 			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "elongiert"
-			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "arteriosklerotisch"
-			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "dilatiert"
-			}
-		]
-	},
-	{
-		"name": "Aorta",
-		"englishName": "Aorta",
-		"templateMaps": [
 			{
 				"categoryName": "Aorta",
 				"kind": "box",
@@ -207,6 +141,27 @@
 		]
 	},
 	{
+		"name": "Aorta",
+		"englishName": "Aorta",
+		"templateMaps": [
+			{
+				"categoryName": "Aorta",
+				"kind": "box",
+				"name": "elongiert"
+			},
+			{
+				"categoryName": "Aorta",
+				"kind": "box",
+				"name": "arteriosklerotisch"
+			},
+			{
+				"categoryName": "Aorta",
+				"kind": "box",
+				"name": "dilatiert"
+			}
+		]
+	},
+	{
 		"name": "Hilus",
 		"englishName": "Hilus",
 		"templateMaps": [
@@ -221,6 +176,75 @@
 				"kind": "option",
 				"groupName": "CG%",
 				"name": "verplumpt, unscharf"
+			}
+		]
+	},
+	{
+		"name": "Pleuralerguss",
+		"englishName": "Pleural Effusion",
+		"templateMaps": [
+			{
+				"categoryName": "Pleuraerguss",
+				"kind": "box",
+				"name": "gering"
+			},
+			{
+				"categoryName": "Pleuraerguss",
+				"kind": "box",
+				"name": "mäßig"
+			},
+			{
+				"categoryName": "Pleuraerguss",
+				"kind": "box",
+				"name": "deutlich"
+			}
+		]
+	},
+	{
+		"name": "Konsolidierung",
+		"englishName": "Consolidation",
+		"templateMaps": [
+			{
+				"categoryName": "Pulmonal",
+				"kind": "option",
+				"groupName": "CG7",
+				"name": "Pneumonie"
+			}
+		]
+	},
+	{
+		"name": "Pneumonie",
+		"englishName": "Pneumonia",
+		"templateMaps": [
+			{
+				"categoryName": "Pulmonal",
+				"kind": "option",
+				"groupName": "CG7",
+				"name": "Pneumonie"
+			}
+		]
+	},
+	{
+		"name": "Pneumothorax",
+		"englishName": "Pneumothorax",
+		"templateMaps": [
+			{
+				"categoryName": "Pleura",
+				"kind": "option",
+				"groupName": "CG8",
+				"name": "Pneumothorax"
+			},
+			{
+				"categoryName": "Pleura",
+				"kind": "option",
+				"groupName": "CG8",
+				"name": "Seropneumothorax"
+			},
+			{
+				"categoryName": "Pleura",
+				"kind": "option",
+				"groupName": "CG8",
+				"name": "Spannungspneumothorax"
 			}
 		]
 	},
@@ -286,30 +310,7 @@
 			}
 		]
 	},
-	{
-		"name": "Pneumonie",
-		"englishName": "Pneumonia",
-		"templateMaps": [
-			{
-				"categoryName": "Pulmonal",
-				"kind": "option",
-				"groupName": "CG7",
-				"name": "Pneumonie"
-			}
-		]
-	},
-	{
-		"name": "Konsolidierung",
-		"englishName": "Consolidation",
-		"templateMaps": [
-			{
-				"categoryName": "Pulmonal",
-				"kind": "option",
-				"groupName": "CG7",
-				"name": "Pneumonie"
-			}
-		]
-	},
+	
 	{
 		"name": "Lungenläsion",
 		"englishName": "Lung Lesion",
@@ -351,7 +352,22 @@
 			{
 				"categoryName": "Oberbauch",
 				"kind": "box",
+				"name": "Zwerchfellhochstand"
+			},
+			{
+				"categoryName": "Oberbauch",
+				"kind": "box",
 				"name": "Ileus"
+			},
+			{
+				"categoryName": "Oberbauch",
+				"kind": "box",
+				"name": "Cholezystolithiasis"
+			},
+			{
+				"categoryName": "Oberbauch",
+				"kind": "box",
+				"name": "Hiatushernie"
 			},
 			{
 				"categoryName": "Oberbauch",
@@ -367,12 +383,12 @@
 			{
 				"categoryName": "Weichteile",
 				"kind": "box",
-				"name": "WT-Emphysem"
+				"name": "Weichteile-Emphysem"
 			},
 			{
 				"categoryName": "Weichteile",
 				"kind": "box",
-				"name": "weiteres WT-Emphysem"
+				"name": "weiteres Weichteile-Emphysem"
 			}
 		]
 	},
@@ -395,6 +411,41 @@
 				"categoryName": "Skelett",
 				"kind": "box",
 				"name": "Spondylarthrose"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Gefügestörung"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Osteochondrose"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Spondylosis deformans"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Metastasen"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Skoliose"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Halsrippe"
+			},
+			{
+				"categoryName": "Skelett",
+				"kind": "box",
+				"name": "Trichterbrust"
 			},
 			{
 				"categoryName": "Skelett",
