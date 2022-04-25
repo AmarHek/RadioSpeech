@@ -4,5 +4,5 @@ export const environment = {
   authentication: "https://radiospeech.informatik.uni-wuerzburg.de/auth/",
   database: "https://radiospeech.informatik.uni-wuerzburg.de/database/",
   images: "https://radiospeech.informatik.uni-wuerzburg.de/images/",
-  images: "https://radiospeech.informatik.uni-wuerzburg.de/assets/"
+  assets: "https://radiospeech.informatik.uni-wuerzburg.de/assets/"
 };
