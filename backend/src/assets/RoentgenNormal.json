@@ -2417,23 +2417,12 @@
 								]
 							},
 							{
-								"kind": "oc",
+								"kind": "text",
 								"id": "Pn3",
-								"textBefore": "",
+								"textBefore": "suspekt für/passend zu ",
 								"textAfter": "",
-								"keys": [
-									[
-										"suspekt"
-									],
-									[
-										"passend"
-									]
-								],
-								"value": null,
-								"values": [
-									"suspekt für",
-									"passend zu"
-								]
+								"keys": null,
+								"value": ""
 							}
 						],
 						"keys": [

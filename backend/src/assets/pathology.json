@@ -1,93 +1,12 @@
 [
 	{
-		"name": "Instrumentierung",
-		"englishName": "Support Devices",
-		"templateMaps": [
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "ZVK"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "2. ZVK"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Shaldon-Katheter"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "2. Shaldon-Katheter"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Schleuse"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Pleuradrainage"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "2. Pleuradrainage"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "3. Pleuradrainage"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Mediastinaldrainage"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Perikarddrainage"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Magensonde"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "ETT"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Herzschrittmacher"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "OP-Status"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Klappen-OP"
-			},
-			{
-				"categoryName": "Instrum.",
-				"kind": "box",
-				"name": "Sternalcerclagen"
-			}
-		]
+		"name": "Unauffälliger Röntgen-Thorax",
+		"englishName": "No Finding",
+		"templateMaps": []
 	},
 	{
-		"name": "Vergrößertes Kardiomediastinum",
-		"englishName": "Enlarged Cardiomediastinum",
+		"name": "Verbreitertes Mediastinum",
+		"englishName": "Enlarged Mediastinum",
 		"templateMaps": [
 			{
 				"categoryName": "Mediastinum",
@@ -98,21 +17,6 @@
 				"categoryName": "Mediastinum",
 				"kind": "box",
 				"name": "verbreitert"
-			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "elongiert"
-			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "arteriosklerotisch"
-			},
-			{
-				"categoryName": "Aorta",
-				"kind": "box",
-				"name": "dilatiert"
 			}
 		]
 	},
@@ -141,74 +45,44 @@
 		]
 	},
 	{
-		"name": "Aorta",
-		"englishName": "Aorta",
+		"name": "Verbreiterte Aorta",
+		"englishName": "Enlarged Aorta",
 		"templateMaps": [
 			{
 				"categoryName": "Aorta",
 				"kind": "box",
-				"name": "elongiert"
+				"name": "Elongiert"
 			},
 			{
 				"categoryName": "Aorta",
 				"kind": "box",
-				"name": "arteriosklerotisch"
+				"name": "Aortensklerose"
 			},
 			{
 				"categoryName": "Aorta",
 				"kind": "box",
-				"name": "dilatiert"
+				"name": "Dilatiert"
 			}
 		]
 	},
 	{
-		"name": "Hilus",
-		"englishName": "Hilus",
-		"templateMaps": [
-			{
-				"categoryName": "Hilus",
-				"kind": "option",
-				"groupName": "CG%",
-				"name": "unscharf"
-			},
-			{
-				"categoryName": "Hilus",
-				"kind": "option",
-				"groupName": "CG%",
-				"name": "verplumpt, unscharf"
-			}
-		]
-	},
-	{
-		"name": "Pleuralerguss",
+		"name": "Pleuraerguss",
 		"englishName": "Pleural Effusion",
 		"templateMaps": [
 			{
 				"categoryName": "Pleuraerguss",
 				"kind": "box",
-				"name": "gering"
+				"name": "Gering"
 			},
 			{
 				"categoryName": "Pleuraerguss",
 				"kind": "box",
-				"name": "mäßig"
+				"name": "Mäßig"
 			},
 			{
 				"categoryName": "Pleuraerguss",
 				"kind": "box",
-				"name": "deutlich"
-			}
-		]
-	},
-	{
-		"name": "Konsolidierung",
-		"englishName": "Consolidation",
-		"templateMaps": [
-			{
-				"categoryName": "Pulmonal",
-				"kind": "option",
-				"groupName": "CG7",
-				"name": "Pneumonie"
+				"name": "Deutlich"
 			}
 		]
 	},
@@ -225,77 +99,134 @@
 		]
 	},
 	{
+		"name": "PV-Stauung",
+		"englishName": "PV-Congestion",
+		"templateMaps": [
+			{
+				"categoryName": "Hilus",
+				"kind": "option",
+				"groupName": "CG5",
+				"name": "Unscharf"
+			},
+			{
+				"categoryName": "Hilus",
+				"kind": "option",
+				"groupName": "CG5",
+				"name": "Verplumpt"
+			},
+			{
+				"categoryName": "Hilus",
+				"kind": "option",
+				"groupName": "CG5",
+				"name": "Verlagert"
+			},
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 1, basoapikale Umverteilung"
+			},
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 2, interstitelles Ödem"
+			},
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 3, alveolares Ödem"
+			}
+		]
+	},
+	{
+		"name": "Lungenödem",
+		"englishName": "Edema",
+		"templateMaps": [
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 1, basoapikale Umverteilung"
+			},
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 2, interstitelles Ödem"
+			},
+			{
+				"categoryName": "PV-Stauung",
+				"kind": "option",
+				"groupName": "CG6",
+				"name": "Stadium 3, alveolares Ödem"
+			}
+		]
+	},
+	{
 		"name": "Pneumothorax",
 		"englishName": "Pneumothorax",
 		"templateMaps": [
 			{
 				"categoryName": "Pleura",
 				"kind": "option",
-				"groupName": "CG8",
+				"groupName": "CG1",
 				"name": "Pneumothorax"
 			},
 			{
 				"categoryName": "Pleura",
 				"kind": "option",
-				"groupName": "CG8",
+				"groupName": "CG1",
 				"name": "Seropneumothorax"
 			},
 			{
 				"categoryName": "Pleura",
 				"kind": "option",
-				"groupName": "CG8",
+				"groupName": "CG1",
 				"name": "Spannungspneumothorax"
 			}
 		]
 	},
 	{
-		"name": "Edema",
-		"englishName": "Edema",
+		"name": "Pulmonale Raumforderung",
+		"englishName": "Pulmonary mass",
 		"templateMaps": [
 			{
-				"categoryName": "pv-Stau",
+				"categoryName": "Lunge",
 				"kind": "option",
-				"groupName": "CG6",
-				"name": "Grad 1"
+				"groupName": "CG8",
+				"name": "Pulmonale Raumforderung"
 			},
 			{
-				"categoryName": "pv-Stau",
+				"categoryName": "Hilus",
 				"kind": "option",
-				"groupName": "CG6",
-				"name": "Grad 2"
+				"groupName": "CG5",
+				"name": "Unscharf"
 			},
 			{
-				"categoryName": "pv-Stau",
+				"categoryName": "Hilus",
 				"kind": "option",
-				"groupName": "CG6",
-				"name": "Grad 3"
+				"groupName": "CG5",
+				"name": "Verplumpt"
 			},
 			{
-				"categoryName": "pv-Stau",
+				"categoryName": "Hilus",
 				"kind": "option",
-				"groupName": "CG6",
-				"name": "Grad 4"
+				"groupName": "CG5",
+				"name": "Verlagert"
 			}
 		]
 	},
 	{
-		"name": "Emphysem",
-		"englishName": "Emphysem",
+		"name": "Pulmonaler Rundherd",
+		"englishName": "Pulmonary nodule",
 		"templateMaps": [
 			{
-				"categoryName": "Emphysem",
-				"kind": "box",
-				"name": "Lungentransparenz erhöht"
-			},
-			{
-				"categoryName": "Emphysem",
-				"kind": "box",
-				"name": "Zwerchfellkuppeln abgeflacht"
-			},
-			{
-				"categoryName": "Emphysem",
-				"kind": "box",
-				"name": "Retrosternalraum vergrößert"
+				"categoryName": "Lunge",
+				"kind": "option",
+				"groupName": "CG9",
+				"name": "Rundherd"
 			}
 		]
 	},
@@ -304,91 +235,51 @@
 		"englishName": "Atelectasis",
 		"templateMaps": [
 			{
-				"categoryName": "Pulmonal",
+				"categoryName": "Lunge",
 				"kind": "box",
 				"name": "Atelektase"
 			}
 		]
 	},
-	
 	{
-		"name": "Lungenläsion",
-		"englishName": "Lung Lesion",
+		"name": "Lungenemphysem",
+		"englishName": "Pulmonary Emphysema",
 		"templateMaps": [
 			{
-				"categoryName": "Pulmonal",
-				"kind": "option",
-				"groupName": "CG8",
-				"name": "Raumforderung"
+				"categoryName": "Lunge",
+				"kind": "box",
+				"name": "Lungenemphysem"
 			}
 		]
 	},
 	{
-		"name": "Lungentrübung",
-		"englishName": "Lung Opacity",
+		"name": "Pleurale Läsion",
+		"englishName": "Pleural Lesion",
 		"templateMaps": [
 			{
-				"categoryName": "Pulmonal",
-				"kind": "option",
-				"groupName": "CG7",
-				"name": "Pneumonie"
+				"categoryName": "Pleura",
+				"kind": "box",
+				"name": "Schwiele"
 			},
 			{
-				"categoryName": "Pulmonal",
+				"categoryName": "Pleura",
 				"kind": "box",
-				"name": "Dystelektase"
-			}
-		]
-	},
-	{
-		"name": "Oberbauch",
-		"englishName": "Upper abdomen",
-		"templateMaps": [
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Z.n. CHE"
+				"name": "Pleurosis calcaria"
 			},
 			{
-				"categoryName": "Oberbauch",
+				"categoryName": "Pleura",
 				"kind": "box",
-				"name": "Zwerchfellhochstand"
+				"name": "Fibrothorax"
 			},
 			{
-				"categoryName": "Oberbauch",
+				"categoryName": "Pleura",
 				"kind": "box",
-				"name": "Ileus"
+				"name": "Pleurale Raumforderung"
 			},
 			{
-				"categoryName": "Oberbauch",
+				"categoryName": "Pleura",
 				"kind": "box",
-				"name": "Cholezystolithiasis"
-			},
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Hiatushernie"
-			},
-			{
-				"categoryName": "Oberbauch",
-				"kind": "box",
-				"name": "Freie abdominelle Luft (FAL)"
-			}
-		]
-	},
-	{
-		"name": "Weichteile",
-		"englishName": "Soft tissue",
-		"templateMaps": [
-			{
-				"categoryName": "Weichteile",
-				"kind": "box",
-				"name": "Weichteile-Emphysem"
-			},
-			{
-				"categoryName": "Weichteile",
-				"kind": "box",
-				"name": "weiteres Weichteile-Emphysem"
+				"name": "Z.n. Pleurodese"
 			}
 		]
 	},
@@ -404,58 +295,145 @@
 		]
 	},
 	{
-		"name": "Skelett",
-		"englishName": "Skeleton",
+		"name": "Knochenmetastase",
+		"englishName": "Bone metastasis",
 		"templateMaps": [
 			{
 				"categoryName": "Skelett",
 				"kind": "box",
-				"name": "Spondylarthrose"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Gefügestörung"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Osteochondrose"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
-				"name": "Spondylosis deformans"
-			},
-			{
-				"categoryName": "Skelett",
-				"kind": "box",
 				"name": "Metastasen"
+			}
+		]
+	},
+	{
+		"name":  "Freie abdominelle Luft",
+		"englishName": "Free abdominal air",
+		"templateMaps": [
+			{
+				"categoryName": "Oberbauch",
+				"kind": "box",
+				"name": "Freie abdominelle Luft (FAL)"
+			}
+		]
+	},
+	{
+		"name": "Instrumentierung",
+		"englishName": "Support Devices",
+		"templateMaps": [
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "ZVK"
 			},
 			{
-				"categoryName": "Skelett",
+				"categoryName": "Instrumentierung",
 				"kind": "box",
-				"name": "Skoliose"
+				"name": "2. ZVK"
 			},
 			{
-				"categoryName": "Skelett",
+				"categoryName": "Instrumentierung",
 				"kind": "box",
-				"name": "Halsrippe"
+				"name": "Shaldon-Katheter"
 			},
 			{
-				"categoryName": "Skelett",
+				"categoryName": "Instrumentierung",
 				"kind": "box",
-				"name": "Trichterbrust"
+				"name": "2. Shaldon-Katheter"
 			},
 			{
-				"categoryName": "Skelett",
+				"categoryName": "Instrumentierung",
 				"kind": "box",
-				"name": "ACG-Arthrose"
+				"name": "Schleuse"
 			},
 			{
-				"categoryName": "Skelett",
+				"categoryName": "Instrumentierung",
 				"kind": "box",
-				"name": "Omarthrose"
+				"name": "Pleuradrainage"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "2. Pleuradrainage"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "3. Pleuradrainage"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Mediastinaldrainage"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Perikarddrainage"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Magensonde"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Endotrachealtubus"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Tracheostoma"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Port"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Herzschrittmacher"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Event-Recorder"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Bypass-OP"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Herzklappen-OP"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Koronarstent"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Sternalcerclagen"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "DHC-Stent"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Harnleiterschiene"
+			},
+			{
+				"categoryName": "Instrumentierung",
+				"kind": "box",
+				"name": "Andere Fremdkörper"
 			}
 		]
 	}

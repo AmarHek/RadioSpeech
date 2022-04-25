@@ -10,7 +10,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "Thorax PA",
+						"name": "Thorax p.a.",
 						"text": "Projektionsradiographie: Thorax in 1 Ebene ",
 						"judgementText": null,
 						"normal": false,
@@ -1114,14 +1114,14 @@
 								"Fehllage"
 							],
 							[
-								"Sondenbruch"
+								"entfernt"
 							]
 						],
 						"value": null,
 						"values": [
 							"korrekte Lage",
 							"Fehllage",
-							"Sondenbruch"
+							"entfernt"
 						]
 					}
 				],
@@ -1308,14 +1308,14 @@
 								"Fehllage"
 							],
 							[
-								"Sondenbruch"
+								"entfernt"
 							]
 						],
 						"value": null,
 						"values": [
 							"korrekte Lage",
 							"Fehllage",
-							"Sondenbruch"
+							"entfernt"
 						]
 					}
 				],
@@ -1370,14 +1370,14 @@
 								"Fehllage"
 							],
 							[
-								"Sondenbruch"
+								"entfernt"
 							]
 						],
 						"value": null,
 						"values": [
 							"korrekte Lage",
 							"Fehllage",
-							"Sondenbruch"
+							"entfernt"
 						]
 					}
 				],
@@ -1450,7 +1450,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "kein Pleuraerguss",
+				"name": "Kein Pleuraerguss",
 				"value": false,
 				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
 				"judgementText": "Kein Pleuraerguss. ",
@@ -1463,7 +1463,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "gering",
+				"name": "Gering",
 				"value": false,
 				"text": "Zwerchfell %E1% orthotop, glatt begrenzt, dabei der Randwinkel verplumpt[, %E2%].",
 				"judgementText": "[%E2% zur VU ]geringer Pleuraerguss %E1%",
@@ -1528,7 +1528,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "mäßig",
+				"name": "Mäßig",
 				"value": false,
 				"text": "Zwerchfell %E3% orthotop, unscharf bei flächiger Transparenzminderung des Unterfelds[, %E2%].",
 				"judgementText": "[%E4% zur VU ]mäßiger Pleuraerguss %E3%",
@@ -1593,7 +1593,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "deutlich",
+				"name": "Deutlich",
 				"value": false,
 				"text": "Zwerchfell %E5% orthotop, unscharf, bei flächiger Transparenzminderung des Unter- und Mittelfelds[, %E5%].",
 				"judgementText": "[%E6% zur VU ]deutlicher Pleuraerguss %E4%",
@@ -1670,11 +1670,11 @@
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG8",
+				"name": "CG1",
 				"options": [
 					{
 						"kind": "option",
-						"name": "kein Pneumothorax",
+						"name": "Kein Pneumothorax",
 						"text": "Keine pleurale Dehiszenz.",
 						"judgementText": "Kein Pneumothorax. ",
 						"normal": true,
@@ -1970,83 +1970,88 @@
 							"Spannungspneumothorax",
 							"Spannungs Pneumothorax"
 						]
-					},
+					}
+				],
+				"value": null
+			},
+			{
+				"kind": "box",
+				"name": "Schwiele",
+				"value": false,
+				"text": "Schwiele %P13% [%P14%]. ]",
+				"judgementText": "Schwiele %P13% [%P14%]. ",
+				"normal": false,
+				"variables": [
 					{
-						"kind": "option",
-						"name": "Schwiele",
-						"text": "Schwiele %P13% [%P14%]. ]",
-						"judgementText": "Schwiele %P13% [%P14%]. ",
-						"normal": false,
-						"variables": [
-							{
-								"kind": "oc",
-								"id": "P13",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							},
-							{
-								"kind": "mc",
-								"id": "P14",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"OF"
-									],
-									[
-										"MF"
-									],
-									[
-										"UF"
-									]
-								],
-								"value": null,
-								"values": [
-									[
-										"OF",
-										false
-									],
-									[
-										"MF",
-										false
-									],
-									[
-										"UF",
-										false
-									]
-								]
-							}
-						],
+						"kind": "oc",
+						"id": "P13",
+						"textBefore": "",
+						"textAfter": "",
 						"keys": [
-							"Schwiele"
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig"
+							]
+						],
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
 						]
 					},
 					{
-						"kind": "option",
-						"name": "Pleurosis calcaria",
-						"text": "Pleurosis calcaria %P15% [%P16%]. ]",
-						"judgementText": "Pleurosis calcaria %P15% [%P16%]. ",
-						"normal": false,
-						"variables": [
-							{
-								"kind": "oc",
+						"kind": "mc",
+						"id": "P14",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"OF"
+							],
+							[
+								"MF"
+							],
+							[
+								"UF"
+							]
+						],
+						"value": null,
+						"values": [
+							[
+								"OF",
+								false
+							],
+							[
+								"MF",
+								false
+							],
+							[
+								"UF",
+								false
+							]
+						]
+					}
+				],
+				"keys": [
+					"Schwiele"
+				]
+			},
+			{
+				"kind": "box",
+				"name": "Pleurosis calcaria",
+				"value": false,
+				"text": "Pleurosis calcaria %P15% [%P16%]. ]",
+				"judgementText": "Pleurosis calcaria %P15% [%P16%]. ",
+				"normal": false,
+				"variables": [
+					{
+						"kind": "oc",
 								"id": "P15",
 								"textBefore": "",
 								"textAfter": "",
@@ -2101,17 +2106,18 @@
 								]
 							}
 						],
-						"keys": [
-							"Pleurosis calcaria"
-						]
-					},
-					{
-						"kind": "option",
-						"name": "Fibrothorax",
-						"text": "Fibrothorax %P17% %P18%. ",
-						"judgementText": "Fibrothorax %P17% %P18%. ",
-						"normal": false,
-						"variables": [
+				"keys": [
+					"Pleurosis calcaria"
+				]
+			},
+			{
+				"kind": "box",
+				"name": "Fibrothorax",
+				"value": false,
+				"text": "Fibrothorax %P17% %P18%. ",
+				"judgementText": "Fibrothorax %P17% %P18%. ",
+				"normal": false,
+				"variables": [
 							{
 								"kind": "oc",
 								"id": "P17",
@@ -2163,17 +2169,18 @@
 								]
 							}
 						],
-						"keys": [
+				"keys": [
 							"Fibrothorax"
 						]
-					},
-					{
-						"kind": "option",
-						"name": "Pleurale Raumforderung",
-						"text": "Pleurale Raumforderung %P19% %P20%. ",
-						"judgementText": "Pleurale Raumforderung %P19% %P20%. ",
-						"normal": false,
-						"variables": [
+			},
+			{
+				"kind": "box",
+				"name": "Pleurale Raumforderung",
+				"value": false,
+				"text": "Pleurale Raumforderung %P19% %P20%. ",
+				"judgementText": "Pleurale Raumforderung %P19% %P20%. ",
+				"normal": false,
+				"variables": [
 							{
 								"kind": "oc",
 								"id": "P19",
@@ -2223,19 +2230,52 @@
 									"li.",
 									"bds."
 								]
+							},
+							{
+								"kind": "mc",
+								"id": "P22",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"OF"
+									],
+									[
+										"MF"
+									],
+									[
+										"UF"
+									]
+								],
+								"value": null,
+								"values": [
+									[
+										"OF",
+										false
+									],
+									[
+										"MF",
+										false
+									],
+									[
+										"UF",
+										false
+									]
+								]
 							}
 						],
-						"keys": [
-							"Pleurale Raumforderung"
-						]
-					},
-					{
-						"kind": "option",
-						"name": "Z.n. Pleurodese",
-						"text": "Z.n. Pleurodese %P21%. ",
-						"judgementText": "Z.n. Pleurodese %P21%. ",
-						"normal": false,
-						"variables": [
+				"keys": [
+					"Pleurale Raumforderung"
+				]
+			},
+			{
+				"kind": "box",
+				"name": "Z.n. Pleurodese",
+				"value": false,
+				"text": "Z.n. Pleurodese %P21%. ",
+				"judgementText": "Z.n. Pleurodese %P21%. ",
+				"normal": false,
+				"variables": [
 							{
 								"kind": "oc",
 								"id": "P21",
@@ -2260,12 +2300,9 @@
 								]
 							}
 						],
-						"keys": [
-							"Z.n. Pleurodese"
-						]
-					}
-				],
-				"value": null
+				"keys": [
+					"Z.n. Pleurodese"
+				]
 			}
 		]
 	},
@@ -2280,7 +2317,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "normal",
+				"name": "Normal",
 				"value": false,
 				"text": "Mediastinum mittelständig, schlank. ",
 				"judgementText": null,
@@ -2293,7 +2330,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "verlagert",
+				"name": "Verlagert",
 				"value": false,
 				"text": "Mediastinum [nach %M1%] verlagert. ",
 				"judgementText": null,
@@ -2326,7 +2363,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "verbreitert",
+				"name": "Verbreitert",
 				"value": false,
 				"text": "Mediastinum [im %M2% Anteil ]verbreitert. ",
 				"judgementText": "Mediastinum [%M2% Drittel] verbreitert. ",
@@ -2375,7 +2412,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "unauffällig",
+				"name": "Unauffällig",
 				"value": false,
 				"text": "Thorakale Aorta unauffällig konfiguriert.",
 				"judgementText": null,
@@ -2388,7 +2425,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "elongiert",
+				"name": "Elongiert",
 				"value": false,
 				"text": "elongiert",
 				"judgementText": null,
@@ -2415,7 +2452,7 @@
 			},
 			{
 				"kind": "box",
-				"name": "dilatiert",
+				"name": "Dilatiert",
 				"value": false,
 				"text": "dilatiert bis %A3% mm im Bereich der %A2%.",
 				"judgementText": "%A2% bis %A3% mm Diameter ektatisch / aneurysmatisch dilatiert. ",
@@ -2466,7 +2503,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "normal",
+						"name": "Normal",
 						"text": "Herzsilhouette unauffällig. ",
 						"judgementText": null,
 						"normal": true,
@@ -2477,7 +2514,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "verbreitert",
+						"name": "Verbreitert",
 						"text": "Herzsilhouette im Querdurchmesser verbreitert.  ",
 						"judgementText": "Herzsilhouette verbreitert. ",
 						"normal": false,
@@ -2488,7 +2525,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "aortal verbreitert",
+						"name": "Aortal verbreitert",
 						"text": "Herzsilhouette im Querdurchmesser verbreitert und aortal konfiguriert. ",
 						"judgementText": null,
 						"normal": false,
@@ -2500,7 +2537,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "mitral verbreitert",
+						"name": "Mitral verbreitert",
 						"text": "Herzsilhouette im Querdurchmesser verbreitert und mitral konfiguriert. Trachealbifurkation aufgeweitet. ",
 						"judgementText": null,
 						"normal": false,
@@ -2557,7 +2594,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "normal",
+						"name": "Normal",
 						"text": "Hili gefäßtypisch konfiguriert. ",
 						"judgementText": null,
 						"normal": true,
@@ -2592,7 +2629,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "unscharf",
+						"name": "Unscharf",
 						"text": "Hili unscharf konfiguriert. ",
 						"judgementText": null,
 						"normal": false,
@@ -2627,7 +2664,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "verplumpt",
+						"name": "Verplumpt",
 						"text": "Hili unscharf konfiguriert, verplumpt. ",
 						"judgementText": null,
 						"normal": false,
@@ -2635,6 +2672,42 @@
 							{
 								"kind": "oc",
 								"id": "H3",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"rechts"
+									],
+									[
+										"links"
+									],
+									[
+										"beidseitig"
+									]
+								],
+								"value": null,
+								"values": [
+									"re.",
+									"li.",
+									"bds."
+								]
+							}
+						],
+						"keys": [
+							"Hilus verplumpt",
+							"Hilus verplumpt"
+						]
+					},
+					{
+						"kind": "option",
+						"name": "Verlagert",
+						"text": "Hili verlagert. ",
+						"judgementText": null,
+						"normal": false,
+						"variables": [
+							{
+								"kind": "oc",
+								"id": "H4",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -2676,7 +2749,7 @@
 				"options": [
 					{
 						"kind": "option",
-						"name": "keine PV-Stauung",
+						"name": "Keine PV-Stauung",
 						"text": "Zentrale und periphere Lungengefäßzeichnung regulär, keine Kerley-Lines abzugrenzen. ",
 						"judgementText": "Keine pv-Stauung. ",
 						"normal": true,
@@ -2909,23 +2982,12 @@
 								]
 							},
 							{
-								"kind": "oc",
+								"kind": "text",
 								"id": "Pn3",
-								"textBefore": "",
+								"textBefore": "suspekt für/passend zu ",
 								"textAfter": "",
-								"keys": [
-									[
-										"suspekt"
-									],
-									[
-										"passend"
-									]
-								],
-								"value": null,
-								"values": [
-									"suspekt für",
-									"passend zu"
-								]
+								"keys": null,
+								"value": ""
 							}
 						],
 						"keys": [
@@ -2952,7 +3014,7 @@
 					},
 					{
 						"kind": "option",
-						"name": "Raumforderung",
+						"name": "Pulmonale Raumforderung",
 						"text": "Tumorverdächtige Raumforderung mit folgenden Charakteristika: [Lage im %L1%,] [Ausdehnung über %L2% cm,] [Form %L3%,]  [Begrenzung %L4%.]",
 						"judgementText": "Malignitätssuspekter Rundherd im %L1%. ",
 						"normal": false,
@@ -2982,6 +3044,29 @@
 									"idem",
 									"progred.",
 									"regred."
+								]
+							},
+							{
+								"kind": "oc",
+								"id": "L11",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"rechts"
+									],
+									[
+										"links"
+									],
+									[
+										"beidseitig"
+									]
+								],
+								"value": null,
+								"values": [
+									"re.",
+									"li.",
+									"bds."
 								]
 							},
 							{
@@ -3253,8 +3338,8 @@
 						],
 						"value": null,
 						"values": [
-							"Streifenförmige",
-							"Flächige"
+							"streifenförmige",
+							"flächige"
 						]
 					},
 					{
@@ -3443,6 +3528,128 @@
 			},
 			{
 				"kind": "box",
+				"name": "Kaverne",
+				"value": false,
+				"text": "Kaverne %Ka1%, %Ka2% im %Ka3%. ",
+				"judgementText": null,
+				"enumeration": null,
+				"normal": false,
+				"variables": [
+					{
+						"kind": "oc",
+						"id": "Ka1",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"neu"
+							],
+							[
+								"idem"
+							],
+							[
+								"progred"
+							],
+							[
+								"regred"
+							]
+						],
+						"value": null,
+						"values": [
+							"neu",
+							"idem",
+							"progred.",
+							"regred."
+						]
+					},
+					{
+						"kind": "oc",
+						"id": "Ka2",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig"
+							]
+						],
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					},
+					{
+						"kind": "mc",
+						"id": "Ka3",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"OL",
+								"Oberlappen"
+							],
+							[
+								"UL",
+								"Unterlappen"
+							],
+							[
+								"ML",
+								"Mittellappen"
+							],
+							[
+								"Oberfeld",
+								"OF"
+							],
+							[
+								"MF",
+								"Mittelfeld"
+							],
+							[
+								"UF",
+								"Unterfeld"
+							]
+						],
+						"values": [
+							[
+								"OL",
+								false
+							],
+							[
+								"UL",
+								false
+							],
+							[
+								"ML",
+								false
+							],
+							[
+								"OF",
+								false
+							],
+							[
+								"MF",
+								false
+							],
+							[
+								"UF",
+								false
+							]
+						]
+					}
+				],
+				"keys": [
+					"Bulla"
+				]
+			},
+			{
+				"kind": "box",
 				"name": "Bulla",
 				"value": false,
 				"text": "Bulla %Bu1%, %Bu2% im %Bu3%. ",
@@ -3589,7 +3796,7 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "normal",
+				"name": "Normal",
 				"value": false,
 				"text": "Unauffällige Darstellung des miterfassten Oberbauchs, soweit unspezifische Darmgasverteilung. ",
 				"judgementText": null,
@@ -3693,6 +3900,19 @@
 			},
 			{
 				"kind": "box",
+				"name": "Meteorismus",
+				"value": false,
+				"text": "Meteorismus. ",
+				"judgementText": "Meteorismus. ",
+				"enumeration": null,
+				"normal": false,
+				"variables": [],
+				"keys": [
+					"Meteorismus"
+				]
+			},
+			{
+				"kind": "box",
 				"name": "Freie abdominelle Luft (FAL)",
 				"value": false,
 				"text": "Miterfasste FAL %O1% subdiaphragmal im OB. ",
@@ -3728,6 +3948,56 @@
 				"keys": [
 					"WT normal",
 					"Weichteile normal"
+				]
+			},
+			{
+				"kind": "box",
+				"name": "Masektomie",
+				"value": false,
+				"text": "Masektomie %Mas1%. ",
+				"judgementText": "Masektomie %Mas1%. ",
+				"enumeration": null,
+				"normal": false,
+				"variables": [
+				{
+						"kind": "oc",
+						"id": "Mas1",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig"
+							]
+						],
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					}
+				],
+				"keys": [
+					"Masektomie"
+				]
+			},
+			{
+				"kind": "box",
+				"name": "Verkalkung",
+				"value": false,
+				"text": "Verkalkung. ",
+				"judgementText": "Verkalkung. ",
+				"enumeration": null,
+				"normal": false,
+				"variables": [],
+				"keys": [
+					"Verkalkung"
 				]
 			},
 			{
