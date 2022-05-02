@@ -64,6 +64,7 @@ export interface CheckBox {
   conditionalId?: string;
   judgementText?: string;
   normal:         boolean;
+  exclusions?:    string[];   // list of boxes that are deselected, when selecting this
   variables:      Variable[];
   enumeration?:   string;
   keys:           string[];

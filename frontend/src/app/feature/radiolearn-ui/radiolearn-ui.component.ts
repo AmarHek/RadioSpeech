@@ -236,7 +236,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       if (dialogResult) {
 
       }
-    })
+    });
   }
 
   feedbackModal() {

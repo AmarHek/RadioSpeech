@@ -25,7 +25,7 @@
             <tr>
               <td class="box">
                 <input type="checkbox" [(ngModel)]="sel.value"
-                       (click)="update(sel)" id="{{category.name}} {{sel.name}} box"/>
+                       (click)="update(sel, null, category)" id="{{category.name}} {{sel.name}} box"/>
               </td>
               <td class="title">
                 <label [ngClass]="{'selected': sel.value}"

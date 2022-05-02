@@ -22,10 +22,25 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
     console.log(changes);
   }
 
-  update(sel: M.Selectable, option?: string) {
+  update(sel: M.Selectable, option?: string, category?: M.Category) {
     if (sel.kind === "group") {
       if (sel.value === option) {
         sel.value = null;
+      }
+    } else if (sel.kind === "box" && sel.exclusions !== null) {
+      if (sel.exclusions.length > 0) {
+        for (const exclusion of sel.exclusions) {
+          this.deselectByName(category, exclusion);
+        }
+      }
+    }
+  }
+
+  deselectByName(category: M.Category, name: string) {
+    for (const sel of category.selectables) {
+      if (sel.name === name) {
+        sel.value = false;
+        return;
       }
     }
   }

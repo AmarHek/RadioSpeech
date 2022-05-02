@@ -1454,6 +1454,7 @@
 				"value": false,
 				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
 				"judgementText": "Kein Pleuraerguss. ",
+				"exclusions": ["Gering", "Mäßig", "Deutlich"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -1467,6 +1468,7 @@
 				"value": false,
 				"text": "Zwerchfell %E1% orthotop, glatt begrenzt, dabei der Randwinkel verplumpt[, %E2%].",
 				"judgementText": "[%E2% zur VU ]geringer Pleuraerguss %E1%",
+				"exclusions": ["Kein Pleuraerguss"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1532,6 +1534,7 @@
 				"value": false,
 				"text": "Zwerchfell %E3% orthotop, unscharf bei flächiger Transparenzminderung des Unterfelds[, %E2%].",
 				"judgementText": "[%E4% zur VU ]mäßiger Pleuraerguss %E3%",
+				"exclusions": ["Kein Pleuraerguss"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1597,6 +1600,7 @@
 				"value": false,
 				"text": "Zwerchfell %E5% orthotop, unscharf, bei flächiger Transparenzminderung des Unter- und Mittelfelds[, %E5%].",
 				"judgementText": "[%E6% zur VU ]deutlicher Pleuraerguss %E4%",
+				"exclusions": ["Kein Pleuraerguss"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -2321,6 +2325,7 @@
 				"value": false,
 				"text": "Mediastinum mittelständig, schlank. ",
 				"judgementText": null,
+				"exclusions": ["Verlagert", "Verbreitert"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -2334,6 +2339,7 @@
 				"value": false,
 				"text": "Mediastinum [nach %M1%] verlagert. ",
 				"judgementText": null,
+				"exclusions": ["Normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -2367,6 +2373,7 @@
 				"value": false,
 				"text": "Mediastinum [im %M2% Anteil ]verbreitert. ",
 				"judgementText": "Mediastinum [%M2% Drittel] verbreitert. ",
+				"exclusions": ["Normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -2416,6 +2423,7 @@
 				"value": false,
 				"text": "Thorakale Aorta unauffällig konfiguriert.",
 				"judgementText": null,
+				"exclusions": ["Elongiert", "Aortensklerose", "Dilatiert"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -2429,6 +2437,7 @@
 				"value": false,
 				"text": "elongiert",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [],
@@ -2442,6 +2451,7 @@
 				"value": false,
 				"text": "arteriosklerotisch verkalkt",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [],
@@ -2456,6 +2466,7 @@
 				"value": false,
 				"text": "dilatiert bis %A3% mm im Bereich der %A2%.",
 				"judgementText": "%A2% bis %A3% mm Diameter ektatisch / aneurysmatisch dilatiert. ",
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [
@@ -3952,10 +3963,10 @@
 			},
 			{
 				"kind": "box",
-				"name": "Masektomie",
+				"name": "Mastektomie",
 				"value": false,
-				"text": "Masektomie %Mas1%. ",
-				"judgementText": "Masektomie %Mas1%. ",
+				"text": "Mastektomie %Mas1%. ",
+				"judgementText": "Mastektomie %Mas1%. ",
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -3984,7 +3995,7 @@
 					}
 				],
 				"keys": [
-					"Masektomie"
+					"Mastektomie"
 				]
 			},
 			{
@@ -3995,7 +4006,16 @@
 				"judgementText": "Verkalkung. ",
 				"enumeration": null,
 				"normal": false,
-				"variables": [],
+				"variables": [
+				{
+					"kind": "text",
+					"id":	"Verk1",
+					"textBefore": "Lokalisation: ",
+					"textAfter": "",
+					"keys": null,
+					"value": ""
+				}
+				],
 				"keys": [
 					"Verkalkung"
 				]
@@ -4201,6 +4221,7 @@
 				"value": false,
 				"text": "Keine relevanten degenerativen Veränderungen.",
 				"judgementText": null,
+				"exclusions": ["Gefügestörung", "Osteochondrose", "Spondylosis deformans", "Metastasen", "Skoliose", "Halsrippe", "Trichterbrust", "Spondylarthrose", "ACG-Arthrose", "Omarthrose", "Fraktur"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -4214,6 +4235,7 @@
 				"value": false,
 				"text": "Gefügestörung %S8% [auf Höhe %S9%]",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4259,6 +4281,7 @@
 				"value": false,
 				"text": "Osteochondrose %S10% [auf Höhe %S11%]",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4304,6 +4327,7 @@
 				"value": false,
 				"text": "Spondylosis deformans",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [],
@@ -4317,6 +4341,7 @@
 				"value": false,
 				"text": "Metastasen %S12% [auf Höhe %S13%]. ",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -4362,6 +4387,7 @@
 				"value": false,
 				"text": "Skoliose %S14%",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4399,6 +4425,7 @@
 				"value": false,
 				"text": "Halsrippe %S15%",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4436,6 +4463,7 @@
 				"value": false,
 				"text": "Trichterbrust",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [],
@@ -4449,6 +4477,7 @@
 				"value": false,
 				"text": "der Wirbelsäule [(%S1%)]",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4487,6 +4516,7 @@
 				"value": false,
 				"text": "des AC-Gelenks (%S2%, %S6%)",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4549,6 +4579,7 @@
 				"value": false,
 				"text": "des Schultergelenks [%S3%,] [%S7%].",
 				"judgementText": null,
+				"exclusions": ["Unauffällig"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -4610,6 +4641,7 @@
 				"value": false,
 				"text": "Fraktur[ %S16% ][ im %S4% ][, %S5%]",
 				"judgementText": "Fraktur [von %S4%] [%S5% Dislokation.]",
+				"exclusions": ["Unauffällig"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
