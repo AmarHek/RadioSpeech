@@ -68,6 +68,7 @@ async function initPathologies() {
         await PathologyDB.deleteMany({});
         const rawData = fs.readFileSync(Path.join(__dirname, "./assets/pathology.json"), "utf-8");
         const pathologies = JSON.parse(rawData);
+        console.log(pathologies);
         console.log("Reading default pathologies from pathology.json asset.");
         for (const pathology of pathologies) {
             const newPathology = new PathologyDB({
