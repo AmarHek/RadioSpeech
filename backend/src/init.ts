@@ -8,8 +8,7 @@ export function initData() {
     console.log("...finished");
 
     console.log("Loading default Templates into database...")
-    loadDefaultTemplates();
-    console.log("...finished");
+    loadDefaultTemplates().then(() => console.log("...finished"));
 
     console.log("Initializing default pathologies...")
     initPathologies().then(() => console.log("...finished"));
@@ -27,10 +26,12 @@ function initDirectories() {
 }
 
 // load default json files on startup (can be deleted from the database later)
-function loadDefaultTemplates() {
+async function loadDefaultTemplates() {
     if (!fs.existsSync(Path.join(__dirname, "./assets/Radiolearn.json"))) {
         console.warn("Radiolearn.json missing!")
     } else {
+        console.log("Removing old Radiolearn.json");
+        await TemplateDB.deleteOne({name: "Radiolearn"});
         saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn");
     }
 
@@ -44,7 +45,7 @@ function loadDefaultTemplates() {
 function saveTemplate(path: string, name: string) {
     TemplateDB.countDocuments({name: name}, (err, count) => {
         if (count === 0) {
-            console.log(name + " missing from database. Adding entry from assets.");
+            console.log("Adding " + name + " from assets..");
             const rawData = fs.readFileSync(path, "utf-8");
             const parts = JSON.parse(rawData);
             const template = new TemplateDB({
@@ -55,7 +56,6 @@ function saveTemplate(path: string, name: string) {
             template.save().then(res => {
                 console.log("Successfully saved " + res.name);
             });
-
         }
     })
 }
