@@ -17,7 +17,7 @@
 
 <div style="margin: 10px;">
   <table style="width: 100%">
-    <tbody>
+    <tbody style="width: 100%">
     <ng-container *ngFor="let category of categories">
       <ng-container *ngIf="category.name === selectedCat">
         <ng-container *ngFor="let sel of category.selectables" class="col-3">
@@ -47,7 +47,7 @@
           <ng-container *ngIf="sel.kind === 'group'">
             <ng-container *ngFor="let option of sel.options">
               <tr>
-                <td class="radio box">
+                <td class="box">
                   <input type="radio"
                          id="{{category.name}} {{sel.name + option.name}} box"
                          (click)="update(sel, option.name)"

@@ -3,8 +3,8 @@
     <mat-icon>desktop_windows</mat-icon>
     RadioLearn
   </a>
-  <a mat-button class="header-button" routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
-  <a mat-button class="header-button" routerLink='/list' routerLinkActive="active">Schablonen</a>
+  <a *ngIf="isMod" mat-button class="header-button" routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
+  <a *ngIf="isMod" mat-button class="header-button" routerLink='/list' routerLinkActive="active">Schablonen</a>
   <a mat-button class="header-button" routerLink="/feedback" routerLinkActive="active" *ngIf="isMod">Feedback</a>
 
   <span class="spacer2"></span>
