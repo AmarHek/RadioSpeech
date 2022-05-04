@@ -93,6 +93,9 @@ export function updateMaterial(req: Request, res: Response): void {
     });
 }
 
+export function updateOneScan(req: Request, res: Response): void {
+}
+
 export function getMaterialById(req: Request, res: Response): void {
     MaterialDB.findOne({_id: req.params.id}).exec((err, material) => {
         if (err) {
