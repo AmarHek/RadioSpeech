@@ -93,8 +93,36 @@ export function updateMaterial(req: Request, res: Response): void {
     });
 }
 
-export function updateOneScan(req: Request, res: Response): void {
+export function addScan(req: any, res: Response) {
+    const newScan = {
+        filename: filename(req.files.newScan.originalname, req.body.scanType),
+        mimetype: req.files.newScan.mimetype
+    }
+
+    MaterialDB.findOne({_id: req.params.id}).exec(
+        (err, material) => {
+        if (err || material === null)  {
+            console.log(err);
+            res.status(500).send({message: err});
+        } else {
+            const scans = material.scans;
+            if (req.body.scanType === "lateralScan") {
+                scans.lateralScan = newScan;
+            } else if (req.body.scanType === "preScan") {
+                scans.preScan = newScan;
+            }
+
+            MaterialDB.findOneAndUpdate({_id: req.params.id}, {
+                scans: scans
+            }).exec((err, response) => {
+                console.log(response);
+                res.status(200).send({message: "Update successful"});
+            });
+        }
+    });
 }
+
+
 
 export function getMaterialById(req: Request, res: Response): void {
     MaterialDB.findOne({_id: req.params.id}).exec((err, material) => {

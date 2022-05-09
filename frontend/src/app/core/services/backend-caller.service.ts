@@ -93,6 +93,13 @@ export class BackendCallerService {
     });
   }
 
+  addScan(id: string, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      this.materialUrl + "addScan/" + id,
+      formData
+    );
+  }
+
   deleteMaterial(objectID: string, scanID: string): Observable<{ message: string }> {
     return this.http.post<{message: string}>(this.materialUrl + "delete/",
       {objectID, scanID});

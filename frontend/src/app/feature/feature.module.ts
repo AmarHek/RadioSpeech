@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatDialogModule} from "@angular/material/dialog";
 import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
@@ -50,7 +51,8 @@ import {AccountManagementComponent} from "./account-management/account-managemen
         ReactiveFormsModule,
         RouterModule,
         SharedModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDialogModule
     ],
   exports: [
     AccountManagementComponent,

@@ -1,0 +1,58 @@
+$border-color: hsl(200, 70%, 80%);
+$background-color: hsl(202, 73%, 96%);
+
+.header {
+  margin-bottom: 10px;
+}
+
+.uploadForm {
+  padding: 5px;
+  margin: 5px;
+}
+
+.files {
+  display:grid;
+  grid-template-columns: max-content;
+  grid-gap: 5px;
+  padding-bottom: 10px;
+}
+
+td.box {
+  vertical-align: text-top;
+  position: relative;
+  top: 1px;
+  bottom: -2px;
+  color: black;
+  padding-right: 5px;
+}
+
+td.label {
+  min-width: 150px;
+}
+
+td.button {
+  min-width: 180px;
+}
+
+.leftHalf {
+  float: right;
+  padding: 5px;
+}
+#cancelButton {
+  margin-left: 5px;
+}
+
+.templateSelect {
+  margin: 5px 0;
+}
+
+.verticalRadioGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  column-gap: 5px;
+}
+
+.dropdown {
+  width: 180px;
+}

@@ -10,7 +10,6 @@ import {
 } from "../middleware/materialMiddleware";
 
 const storageImages = multer.diskStorage({
-// TODO: Path dependencies!
   destination: (req, file, cb) => {
     const path = Path.join("data/images/", req.body.id);
     fs.mkdirSync(path, {recursive: true});
@@ -20,6 +19,16 @@ const storageImages = multer.diskStorage({
     cb(null, MaterialController.filename(file.originalname, file.fieldname));
   }
 });
+
+const updateStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const path = Path.join("data/images/", req.body.id);
+    cb(null, path);
+  },
+  filename: (req, file, cb) => {
+    cb(null, MaterialController.filename(file.originalname, req.body.scanType));
+  }
+})
 
 const fileFilter = (req: any, file: Express.Multer.File, cb: any) => {
   if(file.mimetype === "image/jpg" || file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -38,7 +47,12 @@ const upload = multer({
   name: 'lateralScan', maxCount: 1
 }, {
   name: 'preScan', maxCount: 1
-}])
+}]);
+
+const update = multer({
+  storage: updateStorage,
+  fileFilter: fileFilter
+}).single('newScan');
 
 export const matRouter = express.Router();
 
@@ -46,6 +60,7 @@ matRouter.post("/add/", upload, checkDuplicateMainScan,
     checkDuplicateLateralScan,
     checkDuplicatePreScan,
     MaterialController.addMaterial);
+matRouter.post("/addScan/:id", update, MaterialController.addScan);
 matRouter.get("/get/:id", MaterialController.getMaterialById)
 matRouter.put("/update/:id", MaterialController.updateMaterial);
 matRouter.post("/delete/", MaterialController.deleteMaterial)
@@ -53,5 +68,6 @@ matRouter.get("/listAll/", MaterialController.listAll);
 matRouter.post("/listByQuery/", MaterialController.listByQuery);
 matRouter.post("/random/", MaterialController.getRandom);
 matRouter.post("/queryDocCount/", MaterialController.queryDocCount);
+
 
 

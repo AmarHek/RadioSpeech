@@ -31,6 +31,7 @@ import {InputDialogComponent} from "./input-dialog/input-dialog.component";
 import {RadiolearnErrorsComponent} from "./radiolearn-errors/radiolearn-errors.component";
 import {RadiolearnOptionsComponent} from "./radiolearn-options/radiolearn-options.component";
 import {SignUpComponent} from "./sign-up/sign-up.component";
+import { AddScanDialogComponent } from './add-scan-dialog/add-scan-dialog.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
     SignUpComponent,
     UploadComponent,
     UploadMaterialComponent,
-    VariablesComponent
+    VariablesComponent,
+    AddScanDialogComponent
   ],
   imports: [
     CommonModule,

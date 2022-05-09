@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {AuthenticationService, BackendCallerService, MatDialogService, RadiolearnService} from "@app/core";
 import {Material, Role, User} from "@app/models";
 import {ConfirmDialogComponent, ConfirmDialogModel, UploadMaterialComponent} from "@app/shared";
+import {AddScanDialogComponent} from "@app/shared/add-scan-dialog/add-scan-dialog.component";
 
 import {environment} from "@env/environment";
 
@@ -121,6 +122,15 @@ export class RadiolearnListComponent implements OnInit {
   openUploadDialog() {
     const dialogConfig = this.dialogService.defaultConfig("600px");
     const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.getCountAndData();
+    });
+  }
+
+  openAddScanDialog(id: string, scanType: string) {
+    const dialogConfig = this.dialogService.defaultConfig("600px", {id, scanType});
+    const dialogRef = this.dialog.open(AddScanDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {
       this.getCountAndData();

@@ -61,6 +61,7 @@
           <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
                width="300px"
                alt="Fehler beim Laden der Aufnahme"
+               loading="lazy"
                (click)="openEditor(material._id)"/> <br>
           <span *ngIf="isMod">{{material.scans.mainScan.filename}}</span>
         </td>
@@ -69,8 +70,14 @@
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
+                 loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
             <span *ngIf="isMod">{{material.scans.lateralScan.filename}}</span>
+          </ng-container>
+          <ng-container *ngIf="material.scans.lateralScan === undefined">
+            <button mat-stroked-button color="primary" (click)="openAddScanDialog(material._id, 'lateralScan')">
+              +
+            </button>
           </ng-container>
         </td>
         <td class="img">
@@ -78,8 +85,14 @@
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
+                 loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
             <span *ngIf="isMod">{{material.scans.preScan.filename}}</span>
+          </ng-container>
+          <ng-container *ngIf="material.scans.preScan === undefined">
+            <button mat-stroked-button color="primary" (click)="openAddScanDialog(material._id, 'preScan')">
+              +
+            </button>
           </ng-container>
         </td>
         <ng-container *ngIf="(isMod)">
