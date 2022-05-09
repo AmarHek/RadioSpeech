@@ -27,3 +27,18 @@ export interface ColoredText {
   text: string;
   color: string;
 }
+
+export class InputChip{
+  content: string;
+  color: ChipColors;
+  constructor(content: string, color: ChipColors) {
+    this.content = content;
+    this.color = color;
+  }
+}
+
+export enum ChipColors {
+  RED = "mat-chip-red",
+  GREEN = "mat-chip-green",
+  YELLOW = "mat-chip-yellow"
+}

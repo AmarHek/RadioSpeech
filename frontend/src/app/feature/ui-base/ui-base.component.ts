@@ -6,20 +6,24 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {DataParserService, BackendCallerService, InputParserService, AuthenticationService} from "@app/core";
 import {OptionsComponent} from "@app/shared";
-import {Template, Category, TopLevel, User, Role, Variable, ColoredText} from "@app/models";
+import {
+  Template,
+  Category,
+  TopLevel,
+  User,
+  Role,
+  Variable,
+  ColoredText,
+  InputChip
+} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
 
 interface Layout{
   id: number;
   displayName: string;
-}
-
-enum ChipColors {
-  RED = "mat-chip-red",
-  GREEN = "mat-chip-green",
-  YELLOW = "mat-chip-yellow"
 }
 
 @Component({
@@ -30,14 +34,15 @@ enum ChipColors {
 
 export class UiBaseComponent implements OnInit {
 
-  @ViewChild("fruitInput") fruitInput: ElementRef<HTMLInputElement> | undefined;
+  @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
+  useChips = true;
   selectable = true;
   removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER];
   selectedCat = "undefined";
 
   chips: InputChip[] = [];
@@ -53,6 +58,7 @@ export class UiBaseComponent implements OnInit {
   defaultParts: TopLevel[];
 
   input = "";
+  mergedInput = ""
   foundKeywords: ColoredText[] = [];
 
   categories: Category[];
@@ -68,6 +74,7 @@ export class UiBaseComponent implements OnInit {
               private dataParser: DataParserService,
               private _location: Location,
               private inputParser: InputParserService,
+              private chipHelper: ChipHelperService,
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
               private authenticationService: AuthenticationService) {
@@ -86,24 +93,10 @@ export class UiBaseComponent implements OnInit {
     this.getData();
   }
 
-  randomIntFromInterval(min, max) { // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
-  //HANDLE CHIPS
+//HANDLE CHIPS
   add(event: MatChipInputEvent): void {
-    const value = (event.value || "").trim();
-
-    //todo determine proper color here
-    let random = this.randomIntFromInterval(0, Object.keys(ChipColors).length-1)
-    let chip = new InputChip(value, Object.values(ChipColors)[random])
-
-    // Add new chip
-    if (value) {
-      this.chips.push(chip);
-    }
-
     // Clear the input value
-    event.chipInput?.clear();
+    // event.chipInput?.clear();
   }
 
   remove(chip: InputChip): void {
@@ -111,6 +104,8 @@ export class UiBaseComponent implements OnInit {
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
+    this.reset()
+    this.onInput(new Event(""))
   }
 
   onSelected(cat: string){
@@ -161,17 +156,44 @@ export class UiBaseComponent implements OnInit {
     setTimeout(() => this.updateText(), 1);
   }
 
+  //If useChips is set to false, inputs are handled exactly like before the implementations of chips
   onInput(ev) {
-    // if(ev.inputType === "deleteContentBackward") {
-    //   this.reset();
-    // }
+    if(ev.inputType === "deleteContentBackward") {
+      this.reset();
+    }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
-    this.inputParser.parseInput(this.input);
+
+    if(this.useChips){
+      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips)
+      this.inputParser.parseInput(this.mergedInput);
+    }else{
+      this.inputParser.parseInput(this.input);
+    }
+
     this.assignValues();
+    if(this.useChips) this.generateChips()
     this.foundKeywords = this.inputParser.getColoredText(this.input);
     setTimeout(() => this.updateText(), 5);
+  }
+
+  generateChips(){
+    //Remove clickables and variables that don't make sense together, e.g. 2 clickables from the same group, or
+    //2 variables from the same OC option
+    let filteredClickables = this.chipHelper.getFilteredClickables(this.inputParser.foundClickables);
+    let filteredVariables = this.chipHelper.getFilteredVariables(this.inputParser.foundVariables);
+    //Remove them from the text, as they will be displayed using chips
+    let unModifiedMerged = this.mergedInput
+    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
+    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
+    //Add chips displaying the remaining clickables and variables
+    this.chips = this.chipHelper.getChips(filteredClickables, filteredVariables, unModifiedMerged)
+    //Show the remaining text that was not detected as part of a clickable or a variable
+    this.input = this.mergedInput.trimStart()
+    //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
+    //field, since otherwise the input text won't update via ngModel
+    this.chipInput.nativeElement.value = this.input
   }
 
   // Assigns all found keywords in inputParser to this.parts
@@ -253,11 +275,3 @@ export class UiBaseComponent implements OnInit {
   }
 }
 
-class InputChip{
-  content: string;
-  color: ChipColors;
-  constructor(content: string, color: ChipColors) {
-    this.content = content;
-    this.color = color;
-  }
-}
