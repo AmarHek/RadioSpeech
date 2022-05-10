@@ -94,9 +94,11 @@ export function updateMaterial(req: Request, res: Response): void {
 }
 
 export function addScan(req: any, res: Response) {
+    console.log(req);
+
     const newScan = {
-        filename: filename(req.files.newScan.originalname, req.body.scanType),
-        mimetype: req.files.newScan.mimetype
+        filename: req.file.filename,
+        mimetype: req.file.mimetype
     }
 
     MaterialDB.findOne({_id: req.params.id}).exec(

@@ -62,3 +62,14 @@ img {
   padding: 10px;
   border-bottom: 1px solid $border-color;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.add-button {
+  padding: 5px 20px;
+}

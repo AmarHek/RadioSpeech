@@ -151,7 +151,7 @@ export class UploadMaterialComponent implements OnInit {
             this.messages.push(id + ": " + result.message);
           }
           if (fileTuples.indexOf(fileTuple) === fileTuples.length - 1 && this.messages.length === 0) {
-            setTimeout(() => this.close(), 2000);
+            setTimeout(() => this.close(), 1000);
           }
         }, err => {
           this.progress += 100/(fileTuples.length);

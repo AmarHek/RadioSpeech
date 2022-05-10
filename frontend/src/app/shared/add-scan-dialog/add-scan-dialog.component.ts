@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BackendCallerService} from "@app/core";
 
 @Component({
@@ -14,14 +14,27 @@ export class AddScanDialogComponent implements OnInit {
   uploading = false;
   supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
 
+  message: string;
+  progress = 0;
+
 
   constructor(private backendCaller: BackendCallerService,
+              private dialogRef: MatDialogRef<AddScanDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
     this.fileForm = new FormGroup({
       newScan: new FormControl(null, {validators: [Validators.required]})
     });
+  }
+
+  onFileSelect(event) {
+    if (event.target.files.length > 0) {
+      const files = event.target.files;
+      if (this.fileFilter(files[0])) {
+        this.fileForm.get("newScan").setValue(files[0]);
+      }
+    }
   }
 
   fileFilter(file: File): boolean {
@@ -37,9 +50,22 @@ export class AddScanDialogComponent implements OnInit {
     this.uploading = true;
     const formData = new FormData();
     formData.append("scanType", this.data.scanType);
+    formData.append("id", this.data.dirID);
     formData.append("newScan", this.fileForm.get("newScan").value);
 
-    this.backendCaller.addScan(this.data.id, formData);
+    console.log(this.fileForm.get("newScan").value);
+
+    this.backendCaller.addScan(this.data.id, formData).subscribe(() => {
+      this.progress = 100;
+      setTimeout(() => this.close(), 1000);
+    }, err => {
+      this.message = err;
+      console.log(err);
+    });
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }

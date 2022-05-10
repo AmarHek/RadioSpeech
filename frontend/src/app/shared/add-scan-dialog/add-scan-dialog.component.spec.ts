@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AddScanDialogComponent } from './add-scan-dialog.component';
+import { AddScanDialogComponent } from "./add-scan-dialog.component";
 
-describe('ReplaceScanDialogComponent', () => {
+describe("ReplaceScanDialogComponent", () => {
   let component: AddScanDialogComponent;
   let fixture: ComponentFixture<AddScanDialogComponent>;
 
@@ -19,7 +19,7 @@ describe('ReplaceScanDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -128,8 +128,13 @@ export class RadiolearnListComponent implements OnInit {
     });
   }
 
-  openAddScanDialog(id: string, scanType: string) {
-    const dialogConfig = this.dialogService.defaultConfig("600px", {id, scanType});
+  openAddScanDialog(id: string, dirID: string, scanType: string) {
+    const dialogConfig = this.dialogService.defaultConfig("600px",
+      {
+        id,
+        scanType,
+        dirID
+      });
     const dialogRef = this.dialog.open(AddScanDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {

@@ -75,9 +75,12 @@
             <span *ngIf="isMod">{{material.scans.lateralScan.filename}}</span>
           </ng-container>
           <ng-container *ngIf="material.scans.lateralScan === undefined">
-            <button mat-stroked-button color="primary" (click)="openAddScanDialog(material._id, 'lateralScan')">
-              +
-            </button>
+            <div class="wrapper">
+              <button mat-flat-button color="primary" class="add-button"
+                      (click)="openAddScanDialog(material._id, material.scans.id, 'lateralScan')">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
           </ng-container>
         </td>
         <td class="img">
@@ -90,9 +93,12 @@
             <span *ngIf="isMod">{{material.scans.preScan.filename}}</span>
           </ng-container>
           <ng-container *ngIf="material.scans.preScan === undefined">
-            <button mat-stroked-button color="primary" (click)="openAddScanDialog(material._id, 'preScan')">
-              +
-            </button>
+            <div class="wrapper">
+              <button mat-flat-button color="primary" class="add-button"
+                      (click)="openAddScanDialog(material._id, material.scans.id, 'preScan')">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
           </ng-container>
         </td>
         <ng-container *ngIf="(isMod)">
