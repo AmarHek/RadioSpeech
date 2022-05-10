@@ -8,7 +8,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const jsonString = parseXLSToJson(rawData.toString("binary"));
     const parts = JSON.parse(jsonString);
-    const timestamp = new Date();
+    const timestamp = new Date(req.body.timestamp);
     const template = new TemplateDB({
         parts: parts,
         name: req.body.name,
@@ -27,7 +27,8 @@ export function createJSONTemplate(req: any, res: Response) {
   // TODO: Check JSON for errors and add sufficient messages
   const rawData = fs.readFileSync(req.file.path);
   const parts = JSON.parse(rawData.toString());
-  const timestamp = new Date();
+  const timestamp = new Date(req.body.timestamp);
+  console.log(timestamp);
   const template = new TemplateDB({
     parts: parts,
     name: req.body.name,

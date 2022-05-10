@@ -74,7 +74,7 @@ export class ListComponent implements OnInit {
     if (typeof(date) === "string") {
       date = new Date(date);
     }
-    return date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
+    return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
   }
 
   openUploadDialog() {
