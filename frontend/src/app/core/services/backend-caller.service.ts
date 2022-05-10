@@ -158,7 +158,7 @@ export class BackendCallerService {
   }
 
   addFeedback(feedback: Feedback) {
-    return this.http.post<{message: string, id: string}>(
+    return this.http.post<{message: string; id: string}>(
       this.feedbackUrl + "add/",
       feedback);
   }

@@ -4,13 +4,13 @@ import * as M from './template.model';
 export interface TemplateDoc extends Document {
     parts:      M.TopLevel[];
     name:       string;
-    timestamp:  Date;
+    timestamp:  number;
 }
 
 const templateSchema = new Schema({
     parts: { type: mongoose.Schema.Types.Mixed, required: true},
     name: { type: String },
-    timestamp: { type: Date }
+    timestamp: { type: Number }
 });
 
 export const TemplateDB = mongoose.model<TemplateDoc>('Template', templateSchema, "templates");

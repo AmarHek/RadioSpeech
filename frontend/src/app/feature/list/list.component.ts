@@ -70,8 +70,8 @@ export class ListComponent implements OnInit {
     });
   }
 
-  displayDate(date: string | Date): string {
-    if (typeof(date) === "string") {
+  displayDate(date: number | Date): string {
+    if (typeof(date) === "number") {
       date = new Date(date);
     }
     return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();

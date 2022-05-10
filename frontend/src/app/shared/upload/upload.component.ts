@@ -51,11 +51,11 @@ export class UploadComponent implements OnInit {
       return;
     } else {
       const extension = getFileExtension(this.uploadForm.value.file.name);
-      const timestamp = new Date(this.uploadForm.value.file.lastModified);
+      const timestamp = this.uploadForm.value.file.lastModified as string;
       const postData = new FormData();
       postData.append("name", this.uploadForm.value.name);
       postData.append("file", this.uploadForm.value.file);
-      postData.append("timestamp", timestamp.toUTCString());
+      postData.append("timestamp", timestamp);
       if (extension === "xlsx") {
         this.backendCaller.addTemplateFromExcel(postData)
           .subscribe((res) => {

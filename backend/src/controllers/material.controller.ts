@@ -1,4 +1,4 @@
-import { MaterialDB } from '../models';
+import {MaterialDB, TemplateDB} from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
 import fs from "fs";
@@ -59,6 +59,33 @@ export function addMaterial (req: any, res: Response): void {
      }
 }
 
+/*
+export function updateTemplate(req: Request, res: Response): void {
+    // replaces old with new template in all unjudged material
+    // first get current Template
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+        if (err) {
+            res.status(500).send({message: err});
+        }
+        MaterialDB.updateMany({judged: req.body.judged}).exec(
+            (err, materials) => {
+            if (err) {
+                res.status(500).send({message: err});
+            }
+            for (const material of materials) {
+                MaterialDB.updateOne()
+            }
+        })
+    })
+
+}
+
+export function updateTemplateBackwardsCompatible(req: Request, res: Response): void {
+    // updates old templates on judged with backwards compatibility
+
+    // first get current Template
+}
+*/
 export function deleteMaterial(req: Request, res: Response): void {
     MaterialDB.deleteOne({
         _id: req.body.objectID
@@ -114,7 +141,7 @@ export function addScan(req: any, res: Response) {
                 scans.preScan = newScan;
             }
 
-            MaterialDB.findOneAndUpdate({_id: req.params.id}, {
+            MaterialDB.updateOne({_id: req.params.id}, {
                 scans: scans
             }).exec((err, response) => {
                 console.log(response);
