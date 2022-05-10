@@ -136,9 +136,8 @@ export class ChipHelperService {
         chipText += " "
         vars.forEach(v => {
           if(v.position < fc.position) return
-          if(v.kind === "date" && v.value === undefined){
-            return
-          }
+          if(v.kind === "date" && v.value === undefined) return
+          if(v.kind === "number" && v.value === undefined) return
           if(v.kind === "date"){
             const dateVar = unModifiedMerged.substring(v.position, v.positionEnd);
             let trimAmount = 0;
@@ -155,6 +154,9 @@ export class ChipHelperService {
           if(v.textBefore !== undefined && v.textBefore !== ""){
             chipText += v.textBefore
           }
+          if(v.kind === "number"){
+            chipText += v.value
+          }
           if(v.synonym !== undefined){
             chipText += v.synonym
           }
@@ -167,8 +169,22 @@ export class ChipHelperService {
         })
       }
       chipText = chipText.trim()
-      chips.push(new InputChip(chipText, ChipColors.GREEN))
+      let chipColor = this.getChipColor(fc, vars)
+      chips.push(new InputChip(chipText, chipColor))
     })
     return chips
+  }
+
+  getChipColor(fc: KeyClickable, vars: KeyVariable[]): ChipColors{
+    let chipColor = ChipColors.GREEN
+    if(fc.name == "Aufnahme vom [Datum]" || fc.name == "mit VA vom [Datum]"){
+      chipColor = ChipColors.YELLOW
+      vars?.forEach(v =>{
+        if(v.kind === "date" && v.value !== undefined){
+          chipColor = ChipColors.GREEN
+        }
+      })
+    }
+    return chipColor
   }
 }

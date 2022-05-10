@@ -39,7 +39,7 @@ export class UiBaseComponent implements OnInit {
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
-  useChips = true;
+  useChips = false;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER];
@@ -171,6 +171,16 @@ export class UiBaseComponent implements OnInit {
     }else{
       this.inputParser.parseInput(this.input);
     }
+    // console.log("------------------MERGED INPUT>" + this.mergedInput + "<")
+    console.log("------------------ INPUT>" + this.input + "<")
+    console.log(this.categories)
+    console.log("--FOUND VARIABLES")
+    console.log(this.inputParser.foundVariables)
+    this.inputParser.foundVariables.forEach(list => {
+      list.forEach(v => {
+        console.log("synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.input.substring(v.position, v.positionEnd) + "<")
+      })
+    })
 
     this.assignValues();
     if(this.useChips) this.generateChips()
@@ -183,10 +193,16 @@ export class UiBaseComponent implements OnInit {
     //2 variables from the same OC option
     let filteredClickables = this.chipHelper.getFilteredClickables(this.inputParser.foundClickables);
     let filteredVariables = this.chipHelper.getFilteredVariables(this.inputParser.foundVariables);
+    console.log("FILTERED CLICKABLES")
+    console.log(filteredClickables)
+    console.log("FILTERED VARIABLES")
+    console.log(filteredVariables)
     //Remove them from the text, as they will be displayed using chips
     let unModifiedMerged = this.mergedInput
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
+    console.log("TEXT NO VARS>" + this.mergedInput + "<")
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
+    console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<")
     //Add chips displaying the remaining clickables and variables
     this.chips = this.chipHelper.getChips(filteredClickables, filteredVariables, unModifiedMerged)
     //Show the remaining text that was not detected as part of a clickable or a variable
@@ -194,6 +210,9 @@ export class UiBaseComponent implements OnInit {
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
     this.chipInput.nativeElement.value = this.input
+    if(filteredClickables.length > 0){
+      this.selectedCat = filteredClickables[filteredClickables.length-1].category
+    }
   }
 
   // Assigns all found keywords in inputParser to this.parts
