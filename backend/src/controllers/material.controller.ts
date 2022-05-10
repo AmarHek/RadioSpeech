@@ -1,8 +1,9 @@
-import {MaterialDB, TemplateDB} from '../models';
+import {MaterialDB, TemplateDB, TemplateDoc} from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
 import fs from "fs";
 import Path from "path";
+import {Template} from "../models/template.model";
 
 // TODO: Define request types properly
 
@@ -59,23 +60,34 @@ export function addMaterial (req: any, res: Response): void {
      }
 }
 
-/*
 export function updateTemplate(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material
     // first get current Template
     TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
-        if (err) {
+        if (err || template === null) {
             res.status(500).send({message: err});
+        } else {
+            // turn currentTemplate into template object
+            const newTemplate: Template = {
+                _id: template._id,
+                parts: template.parts,
+                name: template.name,
+                timestamp: template.timestamp
+            }
+
+            MaterialDB.updateMany({
+                'judged': req.body.judged,
+                'template.timestamp': {$lt: newTemplate.timestamp}
+            }, {template: newTemplate}).exec(
+                (err, update) => {
+                    if (err) {
+                        res.status(500).send({message: err});
+                    } else {
+                        console.log(update);
+                        res.status(200).send({message: "All updates successful"})
+                    }
+                })
         }
-        MaterialDB.updateMany({judged: req.body.judged}).exec(
-            (err, materials) => {
-            if (err) {
-                res.status(500).send({message: err});
-            }
-            for (const material of materials) {
-                MaterialDB.updateOne()
-            }
-        })
     })
 
 }
@@ -85,7 +97,7 @@ export function updateTemplateBackwardsCompatible(req: Request, res: Response): 
 
     // first get current Template
 }
-*/
+
 export function deleteMaterial(req: Request, res: Response): void {
     MaterialDB.deleteOne({
         _id: req.body.objectID
