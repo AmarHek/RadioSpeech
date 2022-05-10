@@ -76,34 +76,37 @@ export class ChipHelperService {
     return trimmedVariables
   }
 
-  getTextWithoutVariables(mergedInput: String, foundVariables: Map<String, KeyVariable[]>){
-    let textNoVars = ""
-    for(let i = 0; i < mergedInput.length; i++){
-      let add = true
-      foundVariables.forEach(list =>{
-        list.forEach(v =>{
-          if(v.kind == "date" && v.value === undefined){
-            add = true
-          } else if(v.kind == "date"){
-            const dateVar = mergedInput.substring(v.position, v.positionEnd);
-            let trimAmount = 0;
-            for(let i = dateVar.length-1; i > -1; i--){
-              if(!this.isNumeric(dateVar[i])){
-                trimAmount += 1
-              }else{
-                break
-              }
-            }
-            if(i >= v.position && i <= v.positionEnd - trimAmount){
-              add = false
-            }
-
-          }else if(i >= v.position && i <= v.positionEnd){
-            add = false
+  keepChar(index: number, mergedInput: string, variables: KeyVariable[]){
+    for(let varCounter = 0; varCounter < variables.length; varCounter++){
+      let v = variables[varCounter]
+      if(v.kind == "date" && v.value === undefined){
+        return true
+      } else if(v.kind == "date"){
+        const dateVar = mergedInput.substring(v.position, v.positionEnd);
+        let trimAmount = 0;
+        for(let i = dateVar.length-1; i > -1; i--){
+          if(!this.isNumeric(dateVar[i])){
+            trimAmount += 1
+          }else{
+            break
           }
-        })
-      })
-      if(add){
+        }
+        if(index >= v.position && index <= v.positionEnd - trimAmount){
+          return false
+        }
+      }else if(index >= v.position && index <= v.positionEnd){
+        return false
+      }
+    }
+    return true
+  }
+
+  getTextWithoutVariables(mergedInput: string, foundVariables: Map<String, KeyVariable[]>){
+    let textNoVars = ""
+    let allVars: KeyVariable[] = []
+    foundVariables.forEach(list =>{list.forEach(v => allVars.push(v))})
+    for(let i = 0; i < mergedInput.length; i++){
+      if(this.keepChar(i, mergedInput, allVars)){
         textNoVars += mergedInput[i]
       }
     }
@@ -111,9 +114,9 @@ export class ChipHelperService {
   }
 
   getTextWithoutClickables(mergedInput: string, foundClickables: KeyClickable[]): string{
-    foundClickables.forEach(fc =>{
+    foundClickables.sort(fc => fc.synonym.length).forEach(fc =>{
       const searchMask = fc.synonym;
-      const regEx = new RegExp(searchMask, "ig");
+      const regEx = new RegExp(searchMask, "i");
       mergedInput = mergedInput.replace(regEx, "")
     })
     return mergedInput
@@ -123,16 +126,16 @@ export class ChipHelperService {
     return !isNaN(s - parseFloat(s));
   }
 
-  getChips(trimmedClickables: KeyClickable[], trimmedVariables: Map<String, KeyVariable[]>, unModifiedMerged: string): InputChip[]{
+  getChips(filteredClickables: KeyClickable[], filteredVariables: Map<String, KeyVariable[]>, unModifiedMerged: string): InputChip[]{
     let chips = []
-    trimmedClickables.forEach(fc =>{
+    filteredClickables.forEach(fc =>{
       let chipText = fc.synonym
       let id = fc.category + " " + fc.name
-      let vars = trimmedVariables.get(id)
-      // let vars = this.inputParser.foundVariables.get(id)
+      let vars = filteredVariables.get(id)
       if(vars!== undefined){
         chipText += " "
         vars.forEach(v => {
+          if(v.position < fc.position) return
           if(v.kind === "date" && v.value === undefined){
             return
           }
