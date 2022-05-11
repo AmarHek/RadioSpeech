@@ -1,3 +1,4 @@
+import {updatePartsBackwardsCompatible} from "../middleware/materialMiddleware";
 import {MaterialDB, TemplateDB, TemplateDoc} from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
@@ -60,7 +61,7 @@ export function addMaterial (req: any, res: Response): void {
      }
 }
 
-export function updateTemplate(req: Request, res: Response): void {
+export function updateMaterialTemplate(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material
     // first get current Template
     TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
@@ -75,10 +76,16 @@ export function updateTemplate(req: Request, res: Response): void {
                 timestamp: template.timestamp
             }
 
+            // judged/unjudged given by request body
+            // more important for judged: only replace template if Material Template is older than new one
+            // because previous entries are lost in the process. Also set judged to false
             MaterialDB.updateMany({
                 'judged': req.body.judged,
                 'template.timestamp': {$lt: newTemplate.timestamp}
-            }, {template: newTemplate}).exec(
+            }, {
+                    template: newTemplate,
+                    judged: false
+                }).exec(
                 (err, update) => {
                     if (err) {
                         res.status(500).send({message: err});
@@ -88,14 +95,54 @@ export function updateTemplate(req: Request, res: Response): void {
                     }
                 })
         }
-    })
-
+    });
 }
 
-export function updateTemplateBackwardsCompatible(req: Request, res: Response): void {
+export function updateMaterialTemplateBackwardsCompatible(req: Request, res: Response): void {
     // updates old templates on judged with backwards compatibility
 
     // first get current Template
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+        if (err || template === null) {
+            res.status(500).send({message: err});
+        } else {
+            // first get list of all Material with old template
+            MaterialDB.find({
+                'judged': true,
+                'template.timestamp': {$lt: template.timestamp}
+            }).exec((err, materials) => {
+                if (err) {
+                    res.status(500).send({message: err})
+                } else if (materials.length === 0) {
+                    res.status(200).send({message: "Keine Materialien zum Aktualisieren."})
+                } else {
+                    // found some materials, time to update them
+                    for (const material of materials) {
+                        // first copy new template
+                        const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
+                        // now fill out new parts by using old parts
+                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.template.parts);
+                        // generate new template and update material entry
+                        const newTemplate = {
+                            _id: material.template._id,
+                            name: newPartsEmpty.name,
+                            timestamp: newPartsEmpty.timestamp,
+                            parts: newParts
+                        }
+                        MaterialDB.updateOne({_id: material._id},
+                            {template: newTemplate}).exec((err, response) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500).send({message: err});
+                                }
+                                console.log(response);
+                        });
+                    }
+                    res.status(200).send({message: "Update successful"});
+                }
+            })
+        }
+    });
 }
 
 export function deleteMaterial(req: Request, res: Response): void {

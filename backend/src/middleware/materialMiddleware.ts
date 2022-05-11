@@ -1,6 +1,7 @@
 import { MaterialDB } from "../models";
 import {NextFunction, Response} from "express";
 import * as fs from "fs";
+import {Category, TopLevel} from "../models/template.model";
 
 export function checkDuplicateMainScan(req: any, res: Response, next: NextFunction) {
     if (req.files.mainScan) {
@@ -57,4 +58,30 @@ export function checkDuplicatePreScan(req: any, res: Response, next: NextFunctio
     } else {
         next();
     }
+}
+
+export function updatePartsBackwardsCompatible(newParts: TopLevel[] , oldParts: TopLevel[]): TopLevel[] {
+    // Principle: New Parts (empty) are basis, i.e. all fields in new parts are absolute
+    // We loop through new parts. Everything that is not a category can be skipped
+    for (const newPart of newParts) {
+        if (newPart.kind === "category") {
+            // find corresponding category in old parts
+            const oldPart = oldParts.find( (part) => {
+                if (part.kind === "category") {
+                    if (part.name === newPart.name) {
+                        return part;
+                    }
+                }
+            });
+
+            // if oldPart is not undefined, fill out boxes of newPart
+            if (oldPart !== undefined) {
+                for (const sel of newPart.selectables) {
+                    // do something
+                }
+            }
+        }
+    }
+
+    return newParts;
 }
