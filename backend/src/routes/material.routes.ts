@@ -60,14 +60,20 @@ matRouter.post("/add/", upload, checkDuplicateMainScan,
     checkDuplicateLateralScan,
     checkDuplicatePreScan,
     MaterialController.addMaterial);
-matRouter.post("/addScan/:id", update, MaterialController.addScan);
 matRouter.get("/get/:id", MaterialController.getMaterialById)
-matRouter.put("/update/:id", MaterialController.updateMaterial);
 matRouter.post("/delete/", MaterialController.deleteMaterial)
+
+matRouter.post("/addScan/:id", update, MaterialController.addScan);
+matRouter.post("/deleteScan/:id", MaterialController.deleteScan);
+
+matRouter.put("/update/:id", MaterialController.updateMaterial)
+matRouter.post("/updateMaterialTemplates/", MaterialController.updateMaterialTemplates);
+matRouter.post("/updateMaterialTemplatesBC/", MaterialController.updateMaterialTemplatesBackwardsCompatible);
+
 matRouter.get("/listAll/", MaterialController.listAll);
 matRouter.post("/listByQuery/", MaterialController.listByQuery);
-matRouter.post("/random/", MaterialController.getRandom);
 matRouter.post("/queryDocCount/", MaterialController.queryDocCount);
+matRouter.post("/random/", MaterialController.getRandom);
 
 
 
