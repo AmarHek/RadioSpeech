@@ -126,7 +126,34 @@ export function addScan(req: any, res: Response) {
     });
 }
 
-
+export function deleteScanById(req: Request, res: Response): void {
+    let update;
+    if (req.body.scanType === "lateralScan") {
+        update = {
+            "scans.lateralScan": undefined,
+            "annotations.lateral": []
+        }
+    } else if (req.body.scanType === "preScan") {
+        update = {
+            "scans.preScan": undefined,
+            "annotations.pre": []
+        }
+    } else  {
+        res.status(400).send({message: "Unknown scanType specified"});
+    }
+    // simply update corresponding material entry by id, removing requested scan and annotations
+    MaterialDB.updateOne({_id: req.params.id}, update
+    ).exec((err, response) => {
+        if (err) {
+            res.status(500).send({message: err});
+        } else {
+            console.log(response);
+            // delete image from server folder
+            fs.rmSync(Path.join("data/images", req.body.id, req.body.filename));
+            res.status(200).send({message: "Deletion successful"});
+        }
+    });
+}
 
 export function updateMaterialTemplates(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material

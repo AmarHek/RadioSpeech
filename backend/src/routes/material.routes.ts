@@ -64,7 +64,7 @@ matRouter.get("/get/:id", MaterialController.getMaterialById)
 matRouter.post("/delete/", MaterialController.deleteMaterial)
 
 matRouter.post("/addScan/:id", update, MaterialController.addScan);
-matRouter.post("/deleteScan/:id", MaterialController.deleteScan);
+matRouter.post("/deleteScanByID/:id", MaterialController.deleteScanById);
 
 matRouter.put("/update/:id", MaterialController.updateMaterial)
 matRouter.post("/updateMaterialTemplates/", MaterialController.updateMaterialTemplates);
