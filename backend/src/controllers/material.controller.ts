@@ -103,7 +103,7 @@ export function addScan(req: any, res: Response) {
         mimetype: req.file.mimetype
     }
 
-    MaterialDB.findOne({_id: req.params.id}).exec(
+    MaterialDB.findById(req.params.id).exec(
         (err, material) => {
         if (err || material === null)  {
             console.log(err);
@@ -126,9 +126,7 @@ export function addScan(req: any, res: Response) {
     });
 }
 
-export function deleteScan(req: Request, res: Response): void {
 
-}
 
 export function updateMaterialTemplates(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material
@@ -214,8 +212,44 @@ export function updateMatTempBC(req: Request, res: Response): void {
     });
 }
 
+export function updateMaterialTemplateBCByID(req: Request, res: Response) {
+    // get current Template
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+        if (err || template === null) {
+            res.status(500).send({message: err});
+        } else {
+            MaterialDB.findById(req.params.id).exec((err, material) => {
+                if (err || material === null) {
+                    res.status(500).send({message: err});
+                } else {
+                    // first copy new template
+                    const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
+                    // now fill out new parts by using old parts
+                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.template.parts);
+                    // generate new template and update material entry
+                    const newTemplate = {
+                        _id: material.template._id,
+                        name: newPartsEmpty.name,
+                        timestamp: newPartsEmpty.timestamp,
+                        parts: newParts
+                    }
+                    MaterialDB.updateOne({_id: material._id},
+                        {template: newTemplate}).exec((err, response) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send({message: err});
+                        }
+                        console.log(response);
+                        res.status(200).send({message: "Update successful"});
+                    });
+                }
+            });
+        }
+    });
+}
+
 export function getMaterialById(req: Request, res: Response): void {
-    MaterialDB.findOne({_id: req.params.id}).exec((err, material) => {
+    MaterialDB.findById(req.params.id).exec((err, material) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
