@@ -84,12 +84,6 @@ export interface VariableCommon {
     keys?:      string[][];
 }
 
-export interface CustomDate{
-    year: number;
-    month: number;
-    day: number
-}
-
 export interface VariableOC extends VariableCommon {
     kind:   "oc";
     value?: string;
@@ -113,7 +107,7 @@ export interface VariableNumber extends VariableCommon {
 
 export interface VariableDate extends VariableCommon {
     kind:  "date";
-    value: NgbDateStruct; // TODO: Parsing from this to NgbDatestruct
+    value: NgbDateStruct;
 }
 
 export interface VariableRatio extends VariableCommon {

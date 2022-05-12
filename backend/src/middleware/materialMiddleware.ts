@@ -1,7 +1,7 @@
-import { MaterialDB } from "../models";
+import {MaterialDB} from "../models";
 import {NextFunction, Response} from "express";
 import * as fs from "fs";
-import {Category, TopLevel} from "../models/template.model";
+import {Category, CheckBox, Group, Selectable, TopLevel, Variable} from "../models/template.model";
 
 export function checkDuplicateMainScan(req: any, res: Response, next: NextFunction) {
     if (req.files.mainScan) {
@@ -69,19 +69,76 @@ export function updatePartsBackwardsCompatible(newParts: TopLevel[] , oldParts: 
             const oldPart = oldParts.find( (part) => {
                 if (part.kind === "category") {
                     if (part.name === newPart.name) {
-                        return part;
+                        return part as Category;
                     }
                 }
             });
 
             // if oldPart is not undefined, fill out boxes of newPart
             if (oldPart !== undefined) {
-                for (const sel of newPart.selectables) {
-                    // do something
+                for (const newSel of newPart.selectables) {
+                    // same thing as before: find selectable with same name in oldPart
+                    const oldSel = (oldPart as Category).selectables.find( (sel: Selectable) =>
+                        sel.name === newSel.name);
+
+                    // if old selectable was found, fill out and search deeper
+                    if (oldSel !== undefined) {
+                        if (newSel.kind === "box" && oldSel.kind === "box") {
+                            updateCheckboxBC(newSel, oldSel);
+                        } else if (newSel.kind === "group" && oldSel.kind === "group") {
+                            updateGroupBC(newSel, oldSel);
+                        }
+                    }
                 }
             }
         }
     }
 
     return newParts;
+}
+
+function updateCheckboxBC(newBox: CheckBox, oldBox: CheckBox) {
+    newBox.value = oldBox.value;
+    if (newBox.variables.length > 0) {
+        updateVariablesBC(newBox.variables, oldBox.variables);
+    }
+}
+
+function updateGroupBC(newGroup: Group, oldGroup: Group) {
+    for (const newOption of newGroup.options) {
+        const oldOption = oldGroup.options.find(opt => opt.name === newOption.name);
+        if (oldOption !== undefined) {
+            if (oldOption.name === oldGroup.value) {
+                newGroup.value = newOption.name;
+            }
+            updateVariablesBC(newOption.variables, oldOption.variables);
+        }
+    }
+}
+
+function updateVariablesBC(newVars: Variable[], oldVars: Variable[]) {
+    for (const newVar of newVars) {
+        const oldVar = oldVars.find(vari => vari.id === newVar.id);
+        if (oldVar !== undefined) {
+            if (newVar.kind === "mc" && oldVar.kind === "mc") {
+                for (const newValue of newVar.values) {
+                    const oldValue = oldVar.values.find(val => val[0] === newValue[0]);
+                    if (oldValue !== undefined) {
+                        newValue[1] = oldValue[1];
+                    }
+                }
+            } else if (newVar.kind === "oc" && oldVar.kind === "oc") {
+                if (newVar.values.includes(oldVar.value as string)) {
+                    newVar.value = oldVar.value;
+                }
+            } else if (newVar.kind === "ratio" && oldVar.kind === "ratio") {
+                newVar.numerator = oldVar.numerator;
+                newVar.denominator = oldVar.denominator;
+            } else if ((newVar.kind === "number" && oldVar.kind === "number") ||
+                (newVar.kind === "text" && oldVar.kind === "text") ||
+                (newVar.kind === "date" && oldVar.kind === "date")) {
+                    newVar.value = oldVar.value;
+            }
+        }
+    }
 }

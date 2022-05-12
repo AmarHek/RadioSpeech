@@ -167,7 +167,7 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
     });
 }
 
-export function updateMaterialTemplatesBackwardsCompatible(req: Request, res: Response): void {
+export function updateMatTempBC(req: Request, res: Response): void {
     // updates old templates on judged with backwards compatibility
 
     // first get current Template
