@@ -1148,6 +1148,7 @@
 				],
 				"keys": [
 					"OP Status",
+					"OP-Status",
 					"Status der OP"
 				]
 			},
@@ -2706,7 +2707,8 @@
 				],
 				"keys": [
 					"Weichteil Emphysem",
-					"WT Emphysem"
+					"WT Emphysem",
+					"WT-Emphysem"
 				]
 			},
 			{
@@ -2790,7 +2792,8 @@
 				],
 				"keys": [
 					"weiteres Weichteil Emphysem",
-					"weiteres WT Emphysem"
+					"weiteres WT Emphysem",
+					"weiteres WT-Emphysem"
 				]
 			}
 		]
