@@ -1618,7 +1618,7 @@
 							{
 								"kind": "oc",
 								"id": "P9",
-								"textBefore": "Mediastinalshift",
+								"textBefore": "Mediastinalshift ",
 								"textAfter": "",
 								"keys": [
 									[
@@ -1680,7 +1680,7 @@
 							{
 								"kind": "oc",
 								"id": "P6",
-								"textBefore": "Mediastinalshift",
+								"textBefore": "Mediastinalshift ",
 								"textAfter": "",
 								"keys": [
 									[
@@ -1966,7 +1966,7 @@
 					{
 						"kind": "ratio",
 						"id": "H1",
-						"textBefore": "beträgt",
+						"textBefore": "beträgt ",
 						"textAfter": "",
 						"keys": null,
 						"numerator": 0,
