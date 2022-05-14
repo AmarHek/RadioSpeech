@@ -103,69 +103,75 @@ export class InputParserService {
   }
 
   // find all Variable Keywords in input string (typically just a fraction of the entire string)
+  //This gets called with just part of the input string, the varText for each clickable and the corresponding clickable
   findVariableKeywords(input: string, clickKey: KeyClickable) {
     const relativePosition = clickKey.position + clickKey.synonym.length + 1;
     const id: string = clickKey.category + " " + clickKey.name;
     const foundVariablesTemp: KeyVariable[] = [];
     const possibleVariables = this.varKeyDictionary.get(id);
 
-    if (input.length > 0 && possibleVariables !== undefined) {
-      const splitters: number[] = getSplitters(possibleVariables, input);
-      for (const varKey of possibleVariables) {
-        if (varKey.kind === "oc" || varKey.kind === "mc") {
-          // gets all positions of this keyword within the input. One keyword is generated per input
-          // finding all keywords (and not just the last) is required for proper coloring later
-          const positions: number[] = getAllIndexOf(varKey.synonym, input, false);
-          if (positions.length >= 1) {
-            for (const pos of positions) {
-              const newVarKey: KeyVariable = JSON.parse(JSON.stringify(varKey));
-              // check if textBefore is present, if textBefore exists, and adjust position
-              if (varKey.textBefore.length > 0 &&
-                input.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
-                newVarKey.position = pos + relativePosition - varKey.textBefore.length;
-              } else {
-                newVarKey.position = pos + relativePosition;
-              }
-              // check if textAfter is present, if textBefore exists, and adjust end-position
-              if (varKey.textAfter.length > 0 &&
-                input.substring(pos + varKey.synonym.length + 1,
-                  pos + varKey.synonym.length + 1 + varKey.textAfter.length) === varKey.textAfter) {
-                newVarKey.positionEnd = pos + varKey.synonym.length + 1 + varKey.textAfter.length + relativePosition;
-              } else {
-                newVarKey.positionEnd = pos + varKey.synonym.length + relativePosition;
-              }
-              foundVariablesTemp.push(newVarKey);
-            }
-          }
-        } else {
-          const positions: number[] = getAllIndexOf(varKey.textBefore, input, false);
+    if (input.length <= 0 || possibleVariables === undefined) return
+
+    const splitters: number[] = getSplitters(possibleVariables, input);
+    for (const varKey of possibleVariables) {
+      if (varKey.kind === "oc" || varKey.kind === "mc") {
+        // gets all positions of this keyword within the input. One keyword is generated per input
+        // finding all keywords (and not just the last) is required for proper coloring later
+        const positions: number[] = getAllIndexOf(varKey.synonym, input, false);
+        if (positions.length >= 1) {
           for (const pos of positions) {
-            const posValueStart = pos + varKey.textBefore.length;
-            let posValueEnd: number;
-            if (varKey.textAfter.length === 0) {
-              posValueEnd = getNextHighestValue(splitters, posValueStart);
-              if (posValueEnd === -1) {
-                posValueEnd = input.length;
-              } else {
-                posValueEnd--;
-              }
+            const newVarKey: KeyVariable = JSON.parse(JSON.stringify(varKey));
+            // check if textBefore is present, if textBefore exists, and adjust position
+            //todo check if below if statement needs to be adjusted for case insensitivity
+            if (varKey.textBefore.length > 0 &&
+              input.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
+              newVarKey.position = pos + relativePosition - varKey.textBefore.length;
             } else {
-              posValueEnd = input.indexOf(varKey.textAfter, pos);
+              newVarKey.position = pos + relativePosition;
             }
-            const valueString = input.substring(posValueStart, posValueEnd).trim();
-            const newVarKey = JSON.parse(JSON.stringify(varKey));
-            newVarKey.position = pos + relativePosition;
-            // no need to check for existence of textAfter and textBefore since they always need to be present here
-            // (if textAfter exists in this case. textBefore must always exist)
-            newVarKey.positionEnd = posValueEnd + relativePosition;
-            newVarKey.value = parseValue(valueString, newVarKey.kind);
+            // check if textAfter is present, if textBefore exists, and adjust end-position
+            if (varKey.textAfter.length > 0 &&
+              input.substring(pos + varKey.synonym.length + 1,
+                pos + varKey.synonym.length + 1 + varKey.textAfter.length) === varKey.textAfter) {
+              newVarKey.positionEnd = pos + varKey.synonym.length + 1 + varKey.textAfter.length + relativePosition;
+            } else {
+              newVarKey.positionEnd = pos + varKey.synonym.length + relativePosition;
+            }
             foundVariablesTemp.push(newVarKey);
           }
         }
+      } else {
+        const positions: number[] = getAllIndexOf(varKey.textBefore, input, false);
+        for (const pos of positions) {
+          const posValueStart = pos + varKey.textBefore.length;
+          let posValueEnd: number;
+          let textAfterDetected: boolean = false
+          if (varKey.textAfter.length === 0) {
+            posValueEnd = getNextHighestValue(splitters, posValueStart);
+            if (posValueEnd === -1) {
+              posValueEnd = input.length;
+            } else {
+              posValueEnd--;
+            }
+          } else {
+            posValueEnd = input.toLowerCase().indexOf(varKey.textAfter.toLowerCase(), pos);
+            textAfterDetected = posValueEnd != -1
+          }
+          //todo, if no textAfter is detected, posValueEnd is -1, so substring from posValueStart to -1?
+          const valueString = input.substring(posValueStart, posValueEnd).trim();
+          const newVarKey = JSON.parse(JSON.stringify(varKey));
+          newVarKey.position = pos + relativePosition;
+          // no need to check for existence of textAfter and textBefore since they always need to be present here
+          // (if textAfter exists in this case. textBefore must always exist)
+          let afterTextAddition = textAfterDetected ? varKey.textAfter.length : 0
+          newVarKey.positionEnd = posValueEnd + relativePosition + afterTextAddition;
+          newVarKey.value = parseValue(valueString, newVarKey.kind);
+          foundVariablesTemp.push(newVarKey);
+        }
       }
-      foundVariablesTemp.sort(this.compareKeywords);
-      this.foundVariables.set(id, foundVariablesTemp);
     }
+    foundVariablesTemp.sort(this.compareKeywords);
+    this.foundVariables.set(id, foundVariablesTemp);
   }
 
   // Removes all synonyms/keywords that are substrings of another synonym/keyword
