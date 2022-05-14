@@ -161,7 +161,7 @@ export class ChipHelperService {
             chipText += v.synonym
           }
           if(v.textAfter !== undefined && v.textAfter !== ""){
-            chipText += v.textAfter
+            chipText += v.textAfter + " "
           }
           else{
             chipText += " "
