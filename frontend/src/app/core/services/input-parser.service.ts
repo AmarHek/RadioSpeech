@@ -97,9 +97,22 @@ export class InputParserService {
     // this removes keywords that are substrings of other keywords (e.g. "Aufnahme" and "Aufnahme von heute")
     console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
-    console.log(foundKeywordsTemp);
+    // this removes keywords that are substrings of other words, i.e. that don't have a leading white space
+    foundKeywordsTemp = this.filterIncompleteOverlap(input, foundKeywordsTemp)
     foundKeywordsTemp.sort(this.compareKeywords);
     this.foundClickables = foundKeywordsTemp;
+  }
+
+  //Removes clickables that touch another word at the beginning
+  //If "Herzschrittmache" is entered, this method removes the clickable "CHE" that is detected in the input, which was
+  //obviously not intended by the input, but is not removed as overlap, since "Herzschrittmacher" is not detected yet
+  filterIncompleteOverlap(input: string, foundClickables: KeyClickable[]){
+    let result = []
+    foundClickables.forEach(fc => {
+      if(fc.position == 0) result.push(fc)
+      else if(input[fc.position-1] == " ") result.push(fc)
+    })
+    return result
   }
 
   // find all Variable Keywords in input string (typically just a fraction of the entire string)
@@ -131,9 +144,9 @@ export class InputParserService {
             }
             // check if textAfter is present, if textBefore exists, and adjust end-position
             if (varKey.textAfter.length > 0 &&
-              input.substring(pos + varKey.synonym.length + 1,
-                pos + varKey.synonym.length + 1 + varKey.textAfter.length) === varKey.textAfter) {
-              newVarKey.positionEnd = pos + varKey.synonym.length + 1 + varKey.textAfter.length + relativePosition;
+              input.substring(pos + varKey.synonym.length,
+                pos + varKey.synonym.length + varKey.textAfter.length) === varKey.textAfter) {
+              newVarKey.positionEnd = pos + varKey.synonym.length + varKey.textAfter.length + relativePosition;
             } else {
               newVarKey.positionEnd = pos + varKey.synonym.length + relativePosition;
             }
@@ -191,6 +204,10 @@ export class InputParserService {
     console.log("found:", foundKeywords);
     console.log("remove:", toRemove);
     for (const removable of toRemove) {
+      //this check is necessary, since toRemove can contain duplicates of the same clickable
+      //E.g. the input "2. Shaldon-Katheter" produces the toRemove list "Shaldon", "Shaldon-Katheter", "Shaldon"
+      //After the first shaldon gets removed, splice is called with -1 as start index, removing the wrong elements
+      if(fKCopy.indexOf(removable) == -1) continue
       fKCopy.splice(fKCopy.indexOf(removable), 1);
     }
     return fKCopy;
