@@ -182,16 +182,19 @@ export class RadiolearnListComponent implements OnInit {
 
   updateTemplates() {
     let message: string;
+    let type: string;
 
     if (this.showJudged) {
+      type = "warning";
       message = "Möchten Sie alle veralteten Aufnahmen der bearbeiteten Scans aktualisieren? " +
         "Dabei gehen alle Einträge, die älter als die aktuelle Standardschablone sind, verloren.";
     } else {
+      type = "confirm";
       message = "Möchten Sie alle veralteten Aufnahmen der nicht bearbeiteten Scans aktualisieren?";
     }
 
     const dialogData = new ConfirmDialogModel(
-      "confirm",
+      type,
       "Schablonen aktualisieren",
       message);
 
@@ -205,6 +208,7 @@ export class RadiolearnListComponent implements OnInit {
         this.backendCaller.updateMatTemplate(this.showJudged).subscribe(res => {
           window.alert(res.message);
           console.log(res);
+          this.getCountAndData();
         }, err => {
           console.log(err);
           window.alert(err.message);
