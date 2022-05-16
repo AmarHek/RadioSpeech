@@ -92,12 +92,16 @@
           <td class="meta">
             <table class="metatable">
               <tr>
+                <td class="metadata">Hochgeladen:</td>
+                <td class="metadata">{{displayDate(material.timestamp)}}</td>
+              </tr>
+              <tr>
                 <td class="metadata">Modalität:</td>
                 <td class="metadata">{{material.modality}}</td>
               </tr>
               <tr>
                 <td class="metadata">Template:</td>
-                <td class="metadata">{{material.template.name}}</td>
+                <td class="metadata">{{material.template.name}} vom {{displayDate(material.template.timestamp)}}</td>
               </tr>
             </table>
             <button class="btn btn-outline-primary custom-button"

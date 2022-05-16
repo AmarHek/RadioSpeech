@@ -34,6 +34,8 @@ export function addMaterial (req: any, res: Response): void {
              }
          }
 
+         const time: number = new Date().getTime();
+
          const material = new MaterialDB({
              scans: {
                  id: req.body.id,
@@ -49,6 +51,7 @@ export function addMaterial (req: any, res: Response): void {
              modality: req.body.modality,
              template: JSON.parse(req.body.template),
              pathologies: [],
+             timestamp: time,
              judged: false
          });
 
