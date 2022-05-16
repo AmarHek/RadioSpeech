@@ -53,7 +53,6 @@
                alt="Fehler beim Laden der Aufnahme"
                loading="lazy"
                (click)="openEditor(material._id)"/> <br>
-          <div *ngIf="isMod">{{material.scans.mainScan.filename}}</div>
         </td>
         <td class="img">
           <ng-container *ngIf="material.scans.lateralScan !== undefined && material.scans.lateralScan !== null">
@@ -62,14 +61,14 @@
                  alt="Fehler beim Laden der Aufnahme"
                  loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
-            <div *ngIf="isMod">{{material.scans.lateralScan.filename}}</div>
+
             <button mat-flat-button color="primary" class="add-button"
                     (click)="deleteScan(material._id, material.scans.id,
                     'lateralScan', material.scans.lateralScan.filename)">
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.lateralScan === undefined">
+          <ng-container *ngIf="material.scans.lateralScan === undefined || material.scans.lateralScan === null">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'lateralScan')">
@@ -85,14 +84,13 @@
                  alt="Fehler beim Laden der Aufnahme"
                  loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
-            <div *ngIf="isMod">{{material.scans.preScan.filename}}</div>
             <button mat-flat-button color="primary" class="add-button"
                     (click)="deleteScan(material._id, material.scans.id,
                     'preScan', material.scans.preScan.filename)">
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.preScan === undefined">
+          <ng-container *ngIf="material.scans.preScan === undefined || material.scans.preScan === null">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'preScan')">
@@ -134,7 +132,8 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="getData()">
+                      [pageSize]="pageSize" (pageChange)="getData()"
+                      [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getData()">
