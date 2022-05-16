@@ -259,8 +259,8 @@ export function updateMaterialTemplateBCByID(req: Request, res: Response) {
                     // generate new template and update material entry
                     const newTemplate = {
                         _id: material.template._id,
-                        name: newPartsEmpty.name,
-                        timestamp: newPartsEmpty.timestamp,
+                        name: template.name,
+                        timestamp: template.timestamp,
                         parts: newParts
                     }
                     MaterialDB.updateOne({_id: material._id},
