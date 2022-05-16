@@ -22,7 +22,8 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="getData()">
+                      [pageSize]="pageSize" (pageChange)="getData()"
+                      [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getCountAndData()">
