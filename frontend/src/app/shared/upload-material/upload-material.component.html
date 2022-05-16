@@ -79,9 +79,10 @@
       </tr>
     </table>
 
-  <ng-container *ngIf="uploading && messages.length > 0">
-    <div class="alert alert-danger">
-      <p *ngFor="let message of messages">{{message}}</p></div>
+  <ng-container *ngIf="uploading">
+    <div *ngIf="messages.length > 0" class="alert alert-danger">
+      <p *ngFor="let message of messages">{{message}}</p>
+    </div>
     <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
   </ng-container>
 
