@@ -180,6 +180,39 @@ export class RadiolearnListComponent implements OnInit {
     return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
   }
 
+  updateTemplates() {
+    let message: string;
+
+    if (this.showJudged) {
+      message = "Möchten Sie alle veralteten Aufnahmen der bearbeiteten Scans aktualisieren? " +
+        "Dabei gehen alle Einträge, die älter als die aktuelle Standardschablone sind, verloren.";
+    } else {
+      message = "Möchten Sie alle veralteten Aufnahmen der nicht bearbeiteten Scans aktualisieren?";
+    }
+
+    const dialogData = new ConfirmDialogModel(
+      "confirm",
+      "Schablonen aktualisieren",
+      message);
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.backendCaller.updateMatTemplate(this.showJudged).subscribe(res => {
+          window.alert(res.message);
+          console.log(res);
+        }, err => {
+          console.log(err);
+          window.alert(err.message);
+        });
+      }
+    });
+  }
+
   updateMatTempBCById(id: string) {
 
     const dialogData = new ConfirmDialogModel(
