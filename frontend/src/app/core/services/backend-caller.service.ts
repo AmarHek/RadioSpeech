@@ -109,6 +109,11 @@ export class BackendCallerService {
     return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
+  deleteScanById(objectID: string, scanID: string, scanType: string) {
+    return this.http.post<{message: string}>(this.materialUrl + "deleteScanByID/" + objectID,
+      {id: scanID, scanType});
+  }
+
   listByQuery(skip: number, length: number, judged: boolean, pathology="") {
     const query = {skip, length, judged, pathology};
     // skip: mongoose skip parameter, how many documents to skip

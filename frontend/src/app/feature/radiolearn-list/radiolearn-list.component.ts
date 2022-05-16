@@ -106,10 +106,33 @@ export class RadiolearnListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.backendCaller.deleteMaterial(objectID, scanID).subscribe(res => {
-          window.alert(res.message);
+          console.log(res.message);
           this.getCountAndData();
         }, err => {
-          window.alert(err.message);
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  deleteScan(objectID: string, scanID: string, scanType: string) {
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Entfernen bestätigen",
+      "Möchten Sie diese Aufnahme wirklich entfernen?");
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.backendCaller.deleteScanById(objectID, scanID, scanType).subscribe(res => {
+          console.log(res.message);
+          this.getCountAndData();
+        }, err => {
+          console.log(err);
         });
       }
     });
