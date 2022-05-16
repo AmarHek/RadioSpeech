@@ -517,6 +517,7 @@
 				],
 				"keys": [
 					"2. Shaldon-Katheter",
+					"2. Shaldon",
 					"weiterer Shaldon",
 					"weiterer Shaldon Katheter",
 					"zweiter Shaldon Katheter",
@@ -1148,6 +1149,7 @@
 				],
 				"keys": [
 					"OP Status",
+					"OP-Status",
 					"Status der OP"
 				]
 			},
@@ -1617,7 +1619,7 @@
 							{
 								"kind": "oc",
 								"id": "P9",
-								"textBefore": "Mediastinalshift",
+								"textBefore": "Mediastinalshift ",
 								"textAfter": "",
 								"keys": [
 									[
@@ -1679,7 +1681,7 @@
 							{
 								"kind": "oc",
 								"id": "P6",
-								"textBefore": "Mediastinalshift",
+								"textBefore": "Mediastinalshift ",
 								"textAfter": "",
 								"keys": [
 									[
@@ -1965,7 +1967,7 @@
 					{
 						"kind": "ratio",
 						"id": "H1",
-						"textBefore": "beträgt",
+						"textBefore": "beträgt ",
 						"textAfter": "",
 						"keys": null,
 						"numerator": 0,
@@ -2706,7 +2708,8 @@
 				],
 				"keys": [
 					"Weichteil Emphysem",
-					"WT Emphysem"
+					"WT Emphysem",
+					"WT-Emphysem"
 				]
 			},
 			{
@@ -2790,7 +2793,8 @@
 				],
 				"keys": [
 					"weiteres Weichteil Emphysem",
-					"weiteres WT Emphysem"
+					"weiteres WT Emphysem",
+					"weiteres WT-Emphysem"
 				]
 			}
 		]
