@@ -67,9 +67,9 @@ matRouter.post("/addScan/:id", update, MaterialController.addScan);
 matRouter.post("/deleteScanByID/:id", MaterialController.deleteScanById);
 
 matRouter.put("/update/:id", MaterialController.updateMaterial)
-matRouter.post("/updateMaterialTemplates/", MaterialController.updateMaterialTemplates);
-matRouter.post("/updateMaterialTemplatesBC/", MaterialController.updateMatTempBC);
-matRouter.post("/updateMaterialTemplatesBCByID/:id", MaterialController.updateMaterialTemplateBCByID);
+matRouter.put("/updateMaterialTemplates/", MaterialController.updateMaterialTemplates);
+matRouter.put("/updateMaterialTemplatesBC/", MaterialController.updateMatTempBC);
+matRouter.put("/updateMaterialTemplatesBCByID/:id", MaterialController.updateMaterialTemplateBCByID);
 
 matRouter.get("/listAll/", MaterialController.listAll);
 matRouter.post("/listByQuery/", MaterialController.listByQuery);

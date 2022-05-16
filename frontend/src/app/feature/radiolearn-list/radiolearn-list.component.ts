@@ -115,7 +115,7 @@ export class RadiolearnListComponent implements OnInit {
     });
   }
 
-  deleteScan(objectID: string, scanID: string, scanType: string) {
+  deleteScan(objectID: string, scanID: string, scanType: string, filename: string) {
     const dialogData = new ConfirmDialogModel(
       "warning",
       "Entfernen bestätigen",
@@ -128,7 +128,7 @@ export class RadiolearnListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.backendCaller.deleteScanById(objectID, scanID, scanType).subscribe(res => {
+        this.backendCaller.deleteScanById(objectID, scanID, scanType, filename).subscribe(res => {
           console.log(res.message);
           this.getCountAndData();
         }, err => {
@@ -178,6 +178,30 @@ export class RadiolearnListComponent implements OnInit {
       date = new Date(date);
     }
     return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+  }
+
+  updateMatTempBCById(id: string) {
+
+    const dialogData = new ConfirmDialogModel(
+      "confirm",
+      "Schablone aktualisieren",
+      "Möchten Sie die Schablone dieser Aufnahme aktualisieren? Es können dabei Einträge verloren gehen.");
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.backendCaller.updateMatTemplateBCByID(id).subscribe(res => {
+          console.log(res);
+          window.alert(res);
+        }, err => {
+          console.log(err);
+        });
+      }
+    });
   }
 
 }

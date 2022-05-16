@@ -53,7 +53,7 @@
           <div *ngIf="isMod">{{material.scans.mainScan.filename}}</div>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.lateralScan !== undefined">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined && material.scans.lateralScan !== null">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -61,7 +61,8 @@
                  (click)="openEditor(material._id)"/> <br>
             <div *ngIf="isMod">{{material.scans.lateralScan.filename}}</div>
             <button mat-flat-button color="primary" class="add-button"
-                    (click)="deleteScan(material._id, material.scans.id, 'lateralScan')">
+                    (click)="deleteScan(material._id, material.scans.id,
+                    'lateralScan', material.scans.lateralScan.filename)">
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
@@ -75,7 +76,7 @@
           </ng-container>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.preScan !== undefined">
+          <ng-container *ngIf="material.scans.preScan !== undefined && material.scans.preScan !== null">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -83,7 +84,8 @@
                  (click)="openEditor(material._id)"/> <br>
             <div *ngIf="isMod">{{material.scans.preScan.filename}}</div>
             <button mat-flat-button color="primary" class="add-button"
-                    (click)="deleteScan(material._id, material.scans.id, 'preScan')">
+                    (click)="deleteScan(material._id, material.scans.id,
+                    'preScan', material.scans.preScan.filename)">
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
@@ -112,11 +114,14 @@
                 <td class="metadata">{{material.template.name}} vom {{displayDate(material.template.timestamp)}}</td>
               </tr>
             </table>
-            <button class="btn btn-outline-primary custom-button"
+            <button mat-flat-button color="primary" class="custom-button"
                     (click)="openEditor(material._id)">Start Befundung
             </button>
-            <button class="btn btn-danger custom-button"
+            <button mat-flat-button color="warn" class="custom-button"
                     (click)="delete(material._id, material.scans.id)">Entfernen
+            </button>
+            <button *ngIf="showJudged" mat-flat-button color="primary" class="custom-button"
+                    (click)="updateMatTempBCById(material._id)">Schablone aktualisieren
             </button>
           </td>
         </ng-container>

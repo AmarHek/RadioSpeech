@@ -109,9 +109,9 @@ export class BackendCallerService {
     return this.http.get<{message: string; material: Material}>(this.materialUrl + "get/" + id);
   }
 
-  deleteScanById(objectID: string, scanID: string, scanType: string) {
+  deleteScanById(objectID: string, scanID: string, scanType: string, filename: string) {
     return this.http.post<{message: string}>(this.materialUrl + "deleteScanByID/" + objectID,
-      {id: scanID, scanType});
+      {id: scanID, scanType, filename});
   }
 
   listByQuery(skip: number, length: number, judged: boolean, pathology="") {
@@ -137,6 +137,18 @@ export class BackendCallerService {
       this.materialUrl + "queryDocCount/",
       query
     );
+  }
+
+  updateMatTemplate(judged: boolean) {
+    return this.http.put<{message: string}>(this.materialUrl + "updateMaterialTemplates/", {judged});
+  }
+
+  updateMatTemplateBC() {
+    return this.http.put<{message: string}>(this.materialUrl + "updateMaterialTemplatesBC/", {});
+  }
+
+  updateMatTemplateBCByID(id: string) {
+    return this.http.put<{message: string}>(this.materialUrl + "updateMaterialTemplatesBCByID/" + id, {});
   }
 
   // GET PATHOLOGY LIST FROM DATABASE
