@@ -8,15 +8,15 @@ export class ChipHelperService {
 
   constructor() { }
 
-  getMergedInput(input: string, chips: InputChip[]){
+  getMergedInput(input: string, chips: InputChip[], trim: boolean){
     let mergedInput = ""
     chips.forEach(chip => mergedInput += chip.content + " ")
-    if(mergedInput.length>1 && input.length > 0){
-      if(this.isNumeric(mergedInput[mergedInput.length-2]) && this.isNumeric(input[0])){
-        //dont separate numbers by spaces
-        mergedInput = mergedInput.trim()
-      }
+    if(mergedInput.length>1 && input.length > 0 && this.isNumeric(mergedInput[mergedInput.length-2]) && this.isNumeric(input[0])){
+      //dont separate numbers with spaces
+      mergedInput = mergedInput.trim()
     }
+    if(trim) mergedInput = mergedInput.trim()
+
 
     mergedInput += input
     return mergedInput
@@ -155,6 +155,9 @@ export class ChipHelperService {
             chipText += v.textBefore
           }
           if(v.kind === "number"){
+            chipText += v.value
+          }
+          if(v.kind === "text"){
             chipText += v.value
           }
           if(v.synonym !== undefined){

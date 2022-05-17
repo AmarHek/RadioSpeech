@@ -156,37 +156,70 @@ export class UiBaseComponent implements OnInit {
     setTimeout(() => this.updateText(), 1);
   }
 
+  onBackSpaceKeyDown(event){
+    //Override onBackSpaceKeyDown to prevent default behavior of deleting chips
+    if(this.useChips){
+      let chipCount = this.chips.length
+      if(chipCount>0){
+        let oldInput = this.input
+        let newInput = ""
+        this.chips.forEach(c => newInput += c.content + " ")
+        newInput = newInput.trim()
+        this.input = newInput + " " + oldInput
+        this.chips = []
+      }
+    }
+    this.reset()
+    return true
+  }
+
   //If useChips is set to false, inputs are handled exactly like before the implementations of chips
   onInput(ev) {
     if(ev.inputType === "deleteContentBackward") {
-      this.reset();
+      //reset is now handled in onBackSpacePress
+      // this.reset();
+      return
     }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
 
     if(this.useChips){
-      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips)
+      console.log("___________________________________________________________________________________")
+      //Check if previous run ended with text variable, if yes, don't automatically separate chip and input with spaces
+      let trim = false
+      let allVars = []
+      this.inputParser.foundVariables.forEach(list => allVars = allVars.concat(list))
+      if(allVars.length>0 && allVars[allVars.length-1].kind == "text"){
+        if(this.inputParser.foundClickables[this.inputParser.foundClickables.length-1].name == allVars[allVars.length-1].selectable){
+          trim = true
+        }
+      }
+      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, trim)
+      console.log("------------------MERGED INPUT>" + this.mergedInput + "<")
       this.inputParser.parseInput(this.mergedInput);
+      this.debugPrintVars()
     }else{
       this.inputParser.parseInput(this.input);
     }
-    // console.log("------------------MERGED INPUT>" + this.mergedInput + "<")
-    console.log("------------------ INPUT>" + this.input + "<")
-    console.log(this.categories)
-    console.log("--FOUND VARIABLES")
-    console.log(this.inputParser.foundVariables)
-    this.inputParser.foundVariables.forEach(list => {
-      list.forEach(v => {
-        console.log("synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.input.substring(v.position, v.positionEnd) + "<")
-      })
-    })
 
     this.assignValues();
     if(this.useChips) this.generateChips()
     this.foundKeywords = this.inputParser.getColoredText(this.input);
     setTimeout(() => this.updateText(), 5);
   }
+
+
+  debugPrintVars(){
+    console.log("--FOUND VARIABLES")
+    console.log(this.inputParser.foundVariables)
+    this.inputParser.foundVariables.forEach(list => {
+      list.forEach((v, i) => {
+        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.mergedInput.substring(v.position, v.positionEnd) + "<")
+      })
+    })
+  }
+
 
   generateChips(){
     //Remove clickables and variables that don't make sense together, e.g. 2 clickables from the same group, or
@@ -206,7 +239,7 @@ export class UiBaseComponent implements OnInit {
     //Add chips displaying the remaining clickables and variables
     this.chips = this.chipHelper.getChips(filteredClickables, filteredVariables, unModifiedMerged)
     //Show the remaining text that was not detected as part of a clickable or a variable
-    this.input = this.mergedInput.trimStart()
+    if(this.input != " ") this.input = this.mergedInput.trimStart()
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
     this.chipInput.nativeElement.value = this.input
