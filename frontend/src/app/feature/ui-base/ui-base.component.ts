@@ -4,18 +4,9 @@ import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
-import {DataParserService, BackendCallerService, InputParserService, AuthenticationService} from "@app/core";
+import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
 import {OptionsComponent} from "@app/shared";
-import {
-  Template,
-  Category,
-  TopLevel,
-  User,
-  Role,
-  Variable,
-  ColoredText,
-  InputChip
-} from "@app/models";
+import {Category, ColoredText, InputChip, Role, Template, TopLevel, User, Variable} from "@app/models";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
@@ -152,6 +143,10 @@ export class UiBaseComponent implements OnInit {
     this.judgment = "";
   }
 
+  onChipClick(chip: InputChip){
+    this.selectedCat = chip.clickable.category
+  }
+
   onClick() {
     setTimeout(() => this.updateText(), 1);
   }
@@ -215,7 +210,7 @@ export class UiBaseComponent implements OnInit {
     console.log(this.inputParser.foundVariables)
     this.inputParser.foundVariables.forEach(list => {
       list.forEach((v, i) => {
-        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.mergedInput.substring(v.position, v.positionEnd) + "<")
+        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.mergedInput.substring(v.position, v.positionEnd) + "< value >" + v.value + "<")
       })
     })
   }

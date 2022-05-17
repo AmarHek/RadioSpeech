@@ -79,9 +79,9 @@ export class ChipHelperService {
   keepChar(index: number, mergedInput: string, variables: KeyVariable[]){
     for(let varCounter = 0; varCounter < variables.length; varCounter++){
       let v = variables[varCounter]
-      if(v.kind == "date" && v.value === undefined){
-        return true
-      } else if(v.kind == "date"){
+      if(v.kind == "ratio" && v.value === undefined) return true
+      if(v.kind == "date" && v.value === undefined) return true
+      if(v.kind == "date"){
         const dateVar = mergedInput.substring(v.position, v.positionEnd);
         let trimAmount = 0;
         for(let i = dateVar.length-1; i > -1; i--){
@@ -138,6 +138,7 @@ export class ChipHelperService {
           if(v.position < fc.position) return
           if(v.kind === "date" && v.value === undefined) return
           if(v.kind === "number" && v.value === undefined) return
+          if(v.kind === "ratio" && v.value === undefined) return
           if(v.kind === "date"){
             const dateVar = unModifiedMerged.substring(v.position, v.positionEnd);
             let trimAmount = 0;
@@ -160,6 +161,9 @@ export class ChipHelperService {
           if(v.kind === "text"){
             chipText += v.value
           }
+          if(v.kind === "ratio"){
+            chipText += v.value
+          }
           if(v.synonym !== undefined){
             chipText += v.synonym
           }
@@ -173,7 +177,7 @@ export class ChipHelperService {
       }
       chipText = chipText.trim()
       let chipColor = this.getChipColor(fc, vars)
-      chips.push(new InputChip(chipText, chipColor))
+      chips.push(new InputChip(chipText, chipColor, fc))
     })
     return chips
   }

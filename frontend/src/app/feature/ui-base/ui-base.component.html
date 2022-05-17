@@ -28,6 +28,7 @@
             [selectable]="selectable"
             [removable]="removable"
             [ngClass]="chip.color"
+            (click)="onChipClick(chip)"
             (removed)="remove(chip)">
             {{chip.content}}
             <button matChipRemove *ngIf="removable">
