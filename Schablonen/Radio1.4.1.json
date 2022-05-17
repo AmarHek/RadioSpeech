@@ -1871,10 +1871,14 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"asc"
+								"asc",
+								"Aorta asc",
+								"Aorta asc."
 							],
 							[
-								"desc"
+								"desc",
+								"Aorta desc",
+								"Aorta desc."
 							]
 						],
 						"value": null,
