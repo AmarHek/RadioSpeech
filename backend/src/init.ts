@@ -47,11 +47,13 @@ function saveTemplate(path: string, name: string) {
         if (count === 0) {
             console.log("Adding " + name + " from assets..");
             const rawData = fs.readFileSync(path, "utf-8");
+            const metaData = fs.statSync(path);
+            const timestamp = (new Date(metaData.mtime)).getTime();
             const parts = JSON.parse(rawData);
             const template = new TemplateDB({
                 parts: parts,
                 name: name,
-                timestamp: new Date()
+                timestamp
             });
             template.save().then(res => {
                 console.log("Successfully saved " + res.name);

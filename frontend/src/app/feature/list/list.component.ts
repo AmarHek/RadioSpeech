@@ -71,6 +71,10 @@ export class ListComponent implements OnInit {
   }
 
   displayDate(date: number | Date): string {
+    if (date === undefined || date === null) {
+      return "";
+    }
+
     if (typeof(date) === "number") {
       date = new Date(date);
     }

@@ -106,10 +106,33 @@ export class RadiolearnListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.backendCaller.deleteMaterial(objectID, scanID).subscribe(res => {
-          window.alert(res.message);
+          console.log(res.message);
           this.getCountAndData();
         }, err => {
-          window.alert(err.message);
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  deleteScan(objectID: string, scanID: string, scanType: string, filename: string) {
+    const dialogData = new ConfirmDialogModel(
+      "warning",
+      "Entfernen bestätigen",
+      "Möchten Sie diese Aufnahme wirklich entfernen?");
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.backendCaller.deleteScanById(objectID, scanID, scanType, filename).subscribe(res => {
+          console.log(res.message);
+          this.getCountAndData();
+        }, err => {
+          console.log(err);
         });
       }
     });
@@ -148,6 +171,78 @@ export class RadiolearnListComponent implements OnInit {
       }, err => {
         window.alert(err);
       });
+  }
+
+  displayDate(date: number | Date): string {
+    if (date === undefined || date === null) {
+      return "";
+    }
+
+    if (typeof(date) === "number") {
+      date = new Date(date);
+    }
+    return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+  }
+
+  updateTemplates() {
+    let message: string;
+    let type: string;
+
+    if (this.showJudged) {
+      type = "warning";
+      message = "Möchten Sie alle veralteten Aufnahmen der bearbeiteten Scans aktualisieren? " +
+        "Dabei gehen alle Einträge, die älter als die aktuelle Standardschablone sind, verloren.";
+    } else {
+      type = "confirm";
+      message = "Möchten Sie alle veralteten Aufnahmen der nicht bearbeiteten Scans aktualisieren?";
+    }
+
+    const dialogData = new ConfirmDialogModel(
+      type,
+      "Schablonen aktualisieren",
+      message);
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.backendCaller.updateMatTemplate(this.showJudged).subscribe(res => {
+          window.alert(res.message);
+          console.log(res);
+          this.getCountAndData();
+        }, err => {
+          console.log(err);
+          window.alert(err.message);
+        });
+      }
+    });
+  }
+
+  updateMatTempBCById(id: string) {
+
+    const dialogData = new ConfirmDialogModel(
+      "confirm",
+      "Schablone aktualisieren",
+      "Möchten Sie die Schablone dieser Aufnahme aktualisieren? Es können dabei Einträge verloren gehen.");
+
+    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
+    dialogConfig.position = { top: "50px" };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.backendCaller.updateMatTemplateBCByID(id).subscribe(res => {
+          console.log(res);
+          window.alert(res);
+        }, err => {
+          console.log(err);
+        });
+      }
+    });
   }
 
 }

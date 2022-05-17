@@ -34,6 +34,8 @@ export function addMaterial (req: any, res: Response): void {
              }
          }
 
+         const time: number = new Date().getTime();
+
          const material = new MaterialDB({
              scans: {
                  id: req.body.id,
@@ -49,6 +51,7 @@ export function addMaterial (req: any, res: Response): void {
              modality: req.body.modality,
              template: JSON.parse(req.body.template),
              pathologies: [],
+             timestamp: time,
              judged: false
          });
 
@@ -219,8 +222,8 @@ export function updateMatTempBC(req: Request, res: Response): void {
                         // generate new template and update material entry
                         const newTemplate = {
                             _id: material.template._id,
-                            name: newPartsEmpty.name,
-                            timestamp: newPartsEmpty.timestamp,
+                            name: template.name,
+                            timestamp: template.timestamp,
                             parts: newParts
                         }
                         MaterialDB.updateOne({_id: material._id},
@@ -256,8 +259,8 @@ export function updateMaterialTemplateBCByID(req: Request, res: Response) {
                     // generate new template and update material entry
                     const newTemplate = {
                         _id: material.template._id,
-                        name: newPartsEmpty.name,
-                        timestamp: newPartsEmpty.timestamp,
+                        name: template.name,
+                        timestamp: template.timestamp,
                         parts: newParts
                     }
                     MaterialDB.updateOne({_id: material._id},

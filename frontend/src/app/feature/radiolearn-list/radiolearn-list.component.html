@@ -4,14 +4,16 @@
 
   <div class="row">
     <div class="d-inline-block">
-      <button *ngIf="isMod" class="btn btn-outline-primary" style="float: right;"
+      <button *ngIf="isMod" mat-flat-button color="primary" style="float: right;"
               id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
       </button>
-      <button class="btn btn-primary" style="margin-right: 10px;" (click)="loadRandom()" id="randomButton">Zufall</button>
-      <button class="btn btn-outline-primary" style="float: right" (click)="getData()" id="reloadButton">Neu Laden</button>
-      <mat-slide-toggle *ngIf="isMod" style="margin: 0 20px" id="showJudgedToggle" [(ngModel)]="showJudged"
+      <button mat-stroked-button style="float: right; margin-right: 10px;"
+              (click)="updateTemplates()">
+        Schablonen aktualisieren
+      </button>
+      <mat-slide-toggle *ngIf="isMod" id="showJudgedToggle" [(ngModel)]="showJudged"
                         (ngModelChange)="getCountAndData()">
-        Bearbeitete Einträge zeigen
+        Bearbeitet
       </mat-slide-toggle>
     </div>
   </div>
@@ -20,7 +22,8 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="getData()">
+                      [pageSize]="pageSize" (pageChange)="getData()"
+                      [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getCountAndData()">
@@ -50,18 +53,22 @@
                alt="Fehler beim Laden der Aufnahme"
                loading="lazy"
                (click)="openEditor(material._id)"/> <br>
-          <span *ngIf="isMod">{{material.scans.mainScan.filename}}</span>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.lateralScan !== undefined">
+          <ng-container *ngIf="material.scans.lateralScan !== undefined && material.scans.lateralScan !== null">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
                  loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
-            <span *ngIf="isMod">{{material.scans.lateralScan.filename}}</span>
+
+            <button mat-flat-button color="primary" class="add-button"
+                    (click)="deleteScan(material._id, material.scans.id,
+                    'lateralScan', material.scans.lateralScan.filename)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.lateralScan === undefined">
+          <ng-container *ngIf="material.scans.lateralScan === undefined || material.scans.lateralScan === null">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'lateralScan')">
@@ -71,15 +78,19 @@
           </ng-container>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.preScan !== undefined">
+          <ng-container *ngIf="material.scans.preScan !== undefined && material.scans.preScan !== null">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
                  loading="lazy"
                  (click)="openEditor(material._id)"/> <br>
-            <span *ngIf="isMod">{{material.scans.preScan.filename}}</span>
+            <button mat-flat-button color="primary" class="add-button"
+                    (click)="deleteScan(material._id, material.scans.id,
+                    'preScan', material.scans.preScan.filename)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.preScan === undefined">
+          <ng-container *ngIf="material.scans.preScan === undefined || material.scans.preScan === null">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'preScan')">
@@ -92,19 +103,26 @@
           <td class="meta">
             <table class="metatable">
               <tr>
+                <td class="metadata">Hochgeladen:</td>
+                <td class="metadata">{{displayDate(material.timestamp)}}</td>
+              </tr>
+              <tr>
                 <td class="metadata">Modalität:</td>
                 <td class="metadata">{{material.modality}}</td>
               </tr>
               <tr>
                 <td class="metadata">Template:</td>
-                <td class="metadata">{{material.template.name}}</td>
+                <td class="metadata">{{material.template.name}} vom {{displayDate(material.template.timestamp)}}</td>
               </tr>
             </table>
-            <button class="btn btn-outline-primary custom-button"
+            <button mat-flat-button color="primary" class="custom-button"
                     (click)="openEditor(material._id)">Start Befundung
             </button>
-            <button class="btn btn-danger custom-button"
+            <button mat-flat-button color="warn" class="custom-button"
                     (click)="delete(material._id, material.scans.id)">Entfernen
+            </button>
+            <button *ngIf="showJudged" mat-flat-button color="primary" class="custom-button"
+                    (click)="updateMatTempBCById(material._id)">Schablone aktualisieren
             </button>
           </td>
         </ng-container>
@@ -114,7 +132,8 @@
 
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="getData()">
+                      [pageSize]="pageSize" (pageChange)="getData()"
+                      [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
       </ngb-pagination>
 
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getData()">
