@@ -251,4 +251,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     this.selectedCatList = [nextCat];
     this.selectedCat = nextCat;
   }
+
+  back() {
+    if (this.isMod) {
+      this.router.navigate(["radiolearn/list"]).then();
+    } else {
+      this.router.navigate(["/"]).then();
+    }
+  }
 }

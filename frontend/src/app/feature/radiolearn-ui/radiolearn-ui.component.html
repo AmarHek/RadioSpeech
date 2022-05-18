@@ -3,10 +3,10 @@
 <div id="outer">
   <div id="inner_fixed">
     <mat-toolbar class="toolbar" color="primary">
-      <a mat-button class="header-button" style="font-size: 18px;" routerLink='/'>
+      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
         <mat-icon>arrow_back_ios</mat-icon>
         RadioLearn
-      </a>
+      </button>
       <span class="spacer"></span>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
