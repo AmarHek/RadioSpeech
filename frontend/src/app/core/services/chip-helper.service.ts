@@ -26,10 +26,14 @@ export class ChipHelperService {
   getFilteredClickables(foundClickables: KeyClickable[]): KeyClickable[]{
     let trimmedClickables = [];
     foundClickables.reverse().forEach(c =>{
+      const c_id = c.category + " " + c.name
       if (c.group === undefined) {
+        //Handle boxes
         let add = true
         trimmedClickables.forEach(tc =>{
-          if(tc.name == c.name){
+          const t_id = tc.category + " " + tc.name
+          //Dont add this clickable, if a clickable with the same id is newer in the input
+          if(c_id == t_id){
             add = false
           }
         })

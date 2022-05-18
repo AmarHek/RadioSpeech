@@ -48,7 +48,7 @@ export const getSplitters = (varKeys: KeyVariable[], input: string): number[] =>
     }
   }
   for (const splitWord of splitWords) {
-    splitters = splitters.concat(getAllIndexOf(splitWord, input, true));
+    splitters = splitters.concat(getAllIndexOf(splitWord, input, false));
   }
   splitters = [...new Set(splitters)].sort();
   return splitters;

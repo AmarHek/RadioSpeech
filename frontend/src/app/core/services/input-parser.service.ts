@@ -74,7 +74,7 @@ export class InputParserService {
       const overText = varText.shift();
     }
     for (let i = 0; i < varText.length; i++) {
-      this.findVariableKeywords(varText[i], this.foundClickables[i]);
+      this.findVariableKeywords(varText[i], this.foundClickables[i], input);
     }
   }
 
@@ -95,7 +95,7 @@ export class InputParserService {
       }
     }
     // this removes keywords that are substrings of other keywords (e.g. "Aufnahme" and "Aufnahme von heute")
-    console.log(foundKeywordsTemp);
+    // console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
     // this removes keywords that are substrings of other words, i.e. that don't have a leading white space
     foundKeywordsTemp = this.filterIncompleteOverlap(input, foundKeywordsTemp)
@@ -117,34 +117,34 @@ export class InputParserService {
 
   // find all Variable Keywords in input string (typically just a fraction of the entire string)
   //This gets called with just part of the input string, the varText for each clickable and the corresponding clickable
-  findVariableKeywords(input: string, clickKey: KeyClickable) {
+  findVariableKeywords(varText: string, clickKey: KeyClickable, input: string) {
     const relativePosition = clickKey.position + clickKey.synonym.length + 1;
     const id: string = clickKey.category + " " + clickKey.name;
-    const foundVariablesTemp: KeyVariable[] = [];
+    let foundVariablesTemp: KeyVariable[] = [];
     const possibleVariables = this.varKeyDictionary.get(id);
 
-    if (input.length <= 0 || possibleVariables === undefined) return
+    if (varText.length <= 0 || possibleVariables === undefined) return
 
-    const splitters: number[] = getSplitters(possibleVariables, input);
+    const splitters: number[] = getSplitters(possibleVariables, varText);
     for (const varKey of possibleVariables) {
       if (varKey.kind === "oc" || varKey.kind === "mc") {
         // gets all positions of this keyword within the input. One keyword is generated per input
         // finding all keywords (and not just the last) is required for proper coloring later
-        const positions: number[] = getAllIndexOf(varKey.synonym, input, false);
+        const positions: number[] = getAllIndexOf(varKey.synonym, varText, false);
         if (positions.length >= 1) {
           for (const pos of positions) {
             const newVarKey: KeyVariable = JSON.parse(JSON.stringify(varKey));
             // check if textBefore is present, if textBefore exists, and adjust position
             //todo check if below if statement needs to be adjusted for case insensitivity
             if (varKey.textBefore.length > 0 &&
-              input.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
+              varText.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
               newVarKey.position = pos + relativePosition - varKey.textBefore.length;
             } else {
               newVarKey.position = pos + relativePosition;
             }
             // check if textAfter is present, if textBefore exists, and adjust end-position
             if (varKey.textAfter.length > 0 &&
-              input.substring(pos + varKey.synonym.length,
+              varText.substring(pos + varKey.synonym.length,
                 pos + varKey.synonym.length + varKey.textAfter.length) === varKey.textAfter) {
               newVarKey.positionEnd = pos + varKey.synonym.length + varKey.textAfter.length + relativePosition;
             } else {
@@ -154,7 +154,7 @@ export class InputParserService {
           }
         }
       } else {
-        const positions: number[] = getAllIndexOf(varKey.textBefore, input, false);
+        const positions: number[] = getAllIndexOf(varKey.textBefore, varText, false);
         for (const pos of positions) {
           const posValueStart = pos + varKey.textBefore.length;
           let posValueEnd: number;
@@ -162,16 +162,16 @@ export class InputParserService {
           if (varKey.textAfter.length === 0) {
             posValueEnd = getNextHighestValue(splitters, posValueStart);
             if (posValueEnd === -1) {
-              posValueEnd = input.length;
+              posValueEnd = varText.length;
             } else {
               posValueEnd--;
             }
           } else {
-            posValueEnd = input.toLowerCase().indexOf(varKey.textAfter.toLowerCase(), pos);
+            posValueEnd = varText.toLowerCase().indexOf(varKey.textAfter.toLowerCase(), pos);
             textAfterDetected = posValueEnd != -1
           }
           //todo, if no textAfter is detected, posValueEnd is -1, so substring from posValueStart to -1?
-          const valueString = input.substring(posValueStart, posValueEnd).trim();
+          const valueString = varText.substring(posValueStart, posValueEnd).trim();
           const newVarKey = JSON.parse(JSON.stringify(varKey));
           newVarKey.position = pos + relativePosition;
           // no need to check for existence of textAfter and textBefore since they always need to be present here
@@ -183,8 +183,18 @@ export class InputParserService {
         }
       }
     }
+    foundVariablesTemp = this.filterVariableOverlap(input, foundVariablesTemp)
     foundVariablesTemp.sort(this.compareKeywords);
     this.foundVariables.set(id, foundVariablesTemp);
+  }
+
+  //Remove variables that start in the middle of another word
+  filterVariableOverlap(input: string, foundVariables: KeyVariable[]){
+    let result = []
+    foundVariables.forEach(fv => {
+      if(input[fv.position-1] == " ") result.push(fv)
+    })
+    return result
   }
 
   // Removes all synonyms/keywords that are substrings of another synonym/keyword
@@ -201,8 +211,8 @@ export class InputParserService {
       );
       toRemove = toRemove.concat(overlap);
     }
-    console.log("found:", foundKeywords);
-    console.log("remove:", toRemove);
+    // console.log("found:", foundKeywords);
+    // console.log("remove:", toRemove);
     for (const removable of toRemove) {
       //this check is necessary, since toRemove can contain duplicates of the same clickable
       //E.g. the input "2. Shaldon-Katheter" produces the toRemove list "Shaldon", "Shaldon-Katheter", "Shaldon"
