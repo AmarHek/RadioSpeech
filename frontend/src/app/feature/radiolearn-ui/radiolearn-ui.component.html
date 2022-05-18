@@ -7,6 +7,7 @@
         <mat-icon>arrow_back_ios</mat-icon>
         RadioLearn
       </button>
+      <span *ngIf="isMod">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
       <span class="spacer"></span>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
