@@ -508,7 +508,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   saveTempBox() {
-    if (!(this.width === 0 || this.height === 0)) {
+    if (!(this.width === 0 && this.height === 0)) {
       this.fixNegativeCoordinates();
       this.tempBoxes[this.currentMode].push({
         left: this.startX / this.currentScaleFactor,
