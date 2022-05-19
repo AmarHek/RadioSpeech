@@ -70,16 +70,13 @@ export class ListComponent implements OnInit {
     });
   }
 
-  displayDate(date: number | Date): string {
-    if (date === undefined || date === null) {
-      return "";
+  displayDate(timestamp: number): string {
+    if (typeof(timestamp) === "number") {
+      const date = new Date(timestamp);
+      return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    } else {
+      return "N/A";
     }
-
-    if (typeof(date) === "number") {
-      date = new Date(date);
-    }
-
-    return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
   }
 
   openUploadDialog() {
