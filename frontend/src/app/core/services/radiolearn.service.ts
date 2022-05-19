@@ -36,6 +36,7 @@ export class RadiolearnService {
   constructor() {
   }
 
+  // takes filled out template from material and returns empty template to be filled out
   resetTemplate(template: Template) {
     for (const el of template.parts) {
       if (el.kind === "category") {
@@ -59,6 +60,7 @@ export class RadiolearnService {
     return template;
   }
 
+  // auxiliary method to reset variables
   resetVariable(variables: Variable[]): Variable[] {
     for (const variable of variables) {
       if (variable.kind === "oc") {
@@ -79,6 +81,9 @@ export class RadiolearnService {
     return variables;
   }
 
+  // takes box annotations (given in material) and compares filled out template to check which
+  // box can be labeled as "correct" for the student (just rough check)
+  // wrapper function for ALL annotations
   checkCorrectAnnotations(annotations: Annotation[],
                           pathologies: Pathology[],
                           studentTemplate: Template): Annotation[] {
@@ -93,6 +98,8 @@ export class RadiolearnService {
     return annotations;
   }
 
+  // single function for checkCorrectAnnotations, i.e. takes one annotation and compares to template
+  // using specific templateMap
   isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
     // now iterate template in several steps
     for (const category of template.parts) {
@@ -121,6 +128,7 @@ export class RadiolearnService {
     return false;
   }
 
+  // deeper method for isAnnotationInTemplate for Selectables
   checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
     if (selectable.kind === "box") {
       for (const map of templateMaps) {
@@ -153,6 +161,7 @@ export class RadiolearnService {
     return false;
   }
 
+  // method to extract all pathologies defined by box annotations to generate list of pathologies as strings
   extractPathologies(annotations: {
     main: Annotation[];
     lateral?: Annotation[];
@@ -176,6 +185,9 @@ export class RadiolearnService {
     return pathologies;
   }
 
+  // STUDENT ERROR COMPARISON FUNCTIONS BELOW
+
+  // checks student and ground truth pathologies and returns list of booleans (true/false for each pathology)
   comparePathologies(correctPathologies: string[], studentPathologies: string[], pathologyList: Pathology[]):
     boolean[] {
     const correct = new Array(pathologyList.length).fill(true);
@@ -193,6 +205,7 @@ export class RadiolearnService {
     return correct;
   }
 
+  // Wrapper function for student and ground truth template comparison
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
                    templateType: string = "XRay"): CategoryError[] {
     if (templateType === "XRay") {
@@ -200,6 +213,8 @@ export class RadiolearnService {
     }
   }
 
+  // Top-Level Function to compare X-Ray templates of student and ground truth
+  // Pleuraerguss is a special case and therefore hard coded
   compareTemplatesXRay(originalTemplate: Template, studentTemplate: Template): CategoryError[] {
     const errors = [];
 
@@ -217,7 +232,7 @@ export class RadiolearnService {
         const studentCategory: Category = studentTemplate.parts[i] as Category;
 
         // first check the three special cases and push accordingly (the sub-methods do all required checks themselves)
-        if (originalCategory.name === "PE") {
+        if (originalCategory.name === "Pleuraerguss") {
           const peError = this.comparePE(originalCategory, studentCategory);
           if (peError !== undefined) {
             errors.push(peError);
@@ -238,6 +253,7 @@ export class RadiolearnService {
     return errors;
   }
 
+  // Lower level template comparison function, for categories
   compareCategories(originalCategory: Category, studentCategory: Category): CategoryError {
     // If categories are not the same, something went wrong before and an exception dummy is returned for error handling
     if (originalCategory.selectables.length !== studentCategory.selectables.length ||
@@ -277,6 +293,7 @@ export class RadiolearnService {
     return catError;
   }
 
+  // lower level template comparison method, for selectables
   compareSelectable(originalSel: Selectable, studentSel: Selectable): SelectableError {
     let selError;
     if (originalSel.kind === "box" && studentSel.kind === "box") {
@@ -324,6 +341,7 @@ export class RadiolearnService {
     }
   }
 
+  // lower level template comparison function, for variables
   compareVariables(originalVars: Variable[], studentVars: Variable[]): VariableError[] {
     const varErr: VariableError[] = [];
 
@@ -357,6 +375,7 @@ export class RadiolearnService {
     return varErr;
   }
 
+  // comparison function for mc variables
   compareVariableMC(originalVar: VariableMC, studentVar: VariableMC): VariableMCError {
     const shouldValues = originalVar.values;
     const actualValues = studentVar.values;
@@ -386,6 +405,7 @@ export class RadiolearnService {
     }
   }
 
+  // comparison function for ratio variables
   compareVariableRatio(originalVar: VariableRatio, studentVar: VariableRatio): VariableRatioError {
     if (originalVar.numerator !== studentVar.numerator || originalVar.denominator !== studentVar.denominator) {
       return {
@@ -401,6 +421,7 @@ export class RadiolearnService {
     }
   }
 
+  // comparison function for OC variables
   compareVariableOC(originalVar: VariableOC, studentVar: VariableOC): VariableValueError {
     if (originalVar.value !== studentVar.value) {
       return {
@@ -414,6 +435,7 @@ export class RadiolearnService {
     }
   }
 
+  // comparison function for value variables
   compareVariableValue(originalVar: VariableText | VariableNumber,
                        studentVar: VariableText | VariableNumber): VariableValueError {
     if (originalVar.value !== studentVar.value) {
@@ -429,7 +451,7 @@ export class RadiolearnService {
   }
 
 
-  // special case for PE
+  // hard coded comparison case for Pleuraerguss
   comparePE(originalCat: Category, studentCat: Category): CategoryError {
 
     const originalSels = originalCat.selectables as CheckBox[];
@@ -594,8 +616,8 @@ export class RadiolearnService {
     }
   }
 
+  // checks the options of a group and returns that option's normal value
   getGroupNormal(group: Group) {
-    // checks the options of a group and returns that option's normal value
     for (const option of group.options) {
       if (group.value === option.name) {
         return option.normal;

@@ -174,8 +174,9 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   displayDate(date: number | Date): string {
-    if (date === undefined || date === null) {
-      return "";
+    console.log(date);
+    if (date === undefined || date === null || typeof(date) === "string") {
+      return "N/A";
     }
 
     if (typeof(date) === "number") {
