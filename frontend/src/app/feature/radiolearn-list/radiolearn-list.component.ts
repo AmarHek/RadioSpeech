@@ -174,15 +174,12 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   displayDate(date: number | Date): string {
-    console.log(date);
-    if (date === undefined || date === null || typeof(date) === "string") {
-      return "N/A";
-    }
-
     if (typeof(date) === "number") {
       date = new Date(date);
+      return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    } else {
+      return "N/A";
     }
-    return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
   }
 
   updateTemplates() {
