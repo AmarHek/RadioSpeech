@@ -1974,14 +1974,12 @@
 				"normal": false,
 				"variables": [
 					{
-						"kind": "ratio",
+						"kind": "number",
 						"id": "H1",
 						"textBefore": "beträgt",
 						"textAfter": "",
-						"keys": null,
-						"numerator": 0,
-						"denominator": 0,
-						"fractionDigits": 2
+						"value": 0,
+						"keys": null
 					}
 				],
 				"keys": [
