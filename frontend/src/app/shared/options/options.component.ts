@@ -61,13 +61,28 @@ export class OptionsComponent implements OnInit, OnChanges {
     this.minRowLength = minRowLength;
   }
 
-  update(sel: M.Selectable, option?: string) {
+  update(sel: M.Selectable, option?: string, category?: M.Category) {
     if (sel.kind === "group") {
       if (sel.value === option) {
         sel.value = null;
       }
+    } else if (sel.kind === "box" && sel.exclusions !== undefined) {
+      if (sel.exclusions.length > 0) {
+        for (const exclusion of sel.exclusions) {
+          this.deselectByName(category, exclusion);
+        }
+      }
     }
     this.clickEvent.emit();
+  }
+
+  deselectByName(category: M.Category, name: string) {
+    for (const sel of category.selectables) {
+      if (sel.name === name) {
+        sel.value = false;
+        return;
+      }
+    }
   }
 
   updateFromVariable(parent: M.Clickable, group?: M.Group) {

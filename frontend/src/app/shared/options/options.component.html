@@ -9,7 +9,7 @@
           <ng-container *ngIf="sel.kind === 'box'">
             <td class="box" style="padding-left: 10px;">
               <input type="checkbox" [(ngModel)]="sel.value"
-                     (click)="update(sel)" id="{{row.name}} {{sel.name}} box"/>
+                     (click)="update(sel, null, row)" id="{{row.name}} {{sel.name}} box"/>
             </td>
             <td class="title" [style.width.%]="width">
               <label [ngClass]="{'selected': sel.value}"

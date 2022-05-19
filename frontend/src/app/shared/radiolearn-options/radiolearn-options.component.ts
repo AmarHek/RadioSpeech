@@ -28,7 +28,6 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
         sel.value = null;
       }
     } else if (sel.kind === "box" && sel.exclusions !== undefined) {
-      console.log("It works!");
       if (sel.exclusions.length > 0) {
         for (const exclusion of sel.exclusions) {
           this.deselectByName(category, exclusion);

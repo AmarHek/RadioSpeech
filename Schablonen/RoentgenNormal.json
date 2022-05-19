@@ -1295,19 +1295,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},
@@ -1360,19 +1360,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},
@@ -1425,19 +1425,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},

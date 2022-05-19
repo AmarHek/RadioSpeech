@@ -1271,6 +1271,7 @@
 				"value": false,
 				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
 				"judgementText": "Kein Pleuraerguss. ",
+				"exclusions": ["gering", "mäßig", "deutlich"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -1284,6 +1285,7 @@
 				"value": false,
 				"text": "Zwerchfell %E1% orthotop, glatt begrenzt, dabei der Randwinkel verplumpt[, %E2%].",
 				"judgementText": "[%E2% zur VU ]geringer Pleuraerguss %E1%",
+				"exclusions": ["kein PE"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1294,19 +1296,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},
@@ -1349,6 +1351,7 @@
 				"value": false,
 				"text": "Zwerchfell %E3% orthotop, unscharf bei flächiger Transparenzminderung des Unterfelds[, %E2%].",
 				"judgementText": "[%E4% zur VU ]mäßiger Pleuraerguss %E3%",
+				"exclusions": ["kein PE"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1359,19 +1362,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},
@@ -1414,6 +1417,7 @@
 				"value": false,
 				"text": "Zwerchfell %E5% orthotop, unscharf, bei flächiger Transparenzminderung des Unter- und Mittelfelds[, %E5%].",
 				"judgementText": "[%E6% zur VU ]deutlicher Pleuraerguss %E4%",
+				"exclusions": ["kein PE"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1424,19 +1428,19 @@
 						"textAfter": "",
 						"keys": [
 							[
-								"links"
+								"re."
 							],
 							[
-								"rechts"
+								"li."
 							],
 							[
-								"beidseitig"
+								"bds."
 							]
 						],
 						"value": null,
 						"values": [
-							"links",
 							"rechts",
+							"links",
 							"beidseitig"
 						]
 					},
@@ -1725,6 +1729,7 @@
 				"value": false,
 				"text": "Mediastinum mittelständig, schlank. ",
 				"judgementText": null,
+				"exclusions": ["verlagert", "verbreitert"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -1738,6 +1743,7 @@
 				"value": false,
 				"text": "Mediastinum [nach %M1%] verlagert. ",
 				"judgementText": null,
+				"exclusions": ["normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1771,6 +1777,7 @@
 				"value": false,
 				"text": "Mediastinum [im %M2% Anteil ]verbreitert. ",
 				"judgementText": "Mediastinum [im %M2% Anteil] verbreitert. ",
+				"exclusions": ["normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -1820,6 +1827,7 @@
 				"value": false,
 				"text": "Thorakale Aorta unauffällig konfiguriert.",
 				"judgementText": null,
+				"exclusions": ["elongiert", "arteriosklerotisch", "dilatiert"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -1833,6 +1841,7 @@
 				"value": false,
 				"text": "elongiert",
 				"judgementText": null,
+				"exclusions": ["unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [],
@@ -1846,6 +1855,7 @@
 				"value": false,
 				"text": "arteriosklerotisch verkalkt",
 				"judgementText": null,
+				"exclusions": ["unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [],
@@ -1859,6 +1869,7 @@
 				"value": false,
 				"text": "dilatiert bis %A3% mm im Bereich der %A2%.",
 				"judgementText": "%A2% bis %A3% mm Diameter ektatisch / aneurysmatisch dilatiert. ",
+				"exclusions": ["unauffällig"],
 				"enumeration": "AZ1",
 				"normal": false,
 				"variables": [
@@ -2511,6 +2522,7 @@
 				"value": false,
 				"text": "Unauffällige Darstellung des miterfassten Oberbauchs, soweit unspezifische Darmgasverteilung. ",
 				"judgementText": null,
+				"exclusions": ["Z.n. CHE", "Ileus", "FAL"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -2524,6 +2536,7 @@
 				"value": false,
 				"text": "Z.n. CHE bei entsprechend projizierten OP-Clips im li. OB. ",
 				"judgementText": null,
+				"exclusions": ["normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [],
@@ -2540,6 +2553,7 @@
 				"text": "Luftdistendierte Darmschlingen im OB miterfasst. ",
 				"judgementText": "Luftdistendierte Darmschlingen im OB miterfasst, Ileus mgl.. Ggf. weitere Abklärung. ",
 				"enumeration": null,
+				"exclusions": ["normal"],
 				"normal": false,
 				"variables": [],
 				"keys": [
@@ -2553,6 +2567,7 @@
 				"text": "Miterfasste FAL %O1% subdiaphragmal im OB. ",
 				"judgementText": "Miterfasste FAL; weitere Abklärung notwendig. ",
 				"enumeration": null,
+				"exclusions": ["normal"],
 				"normal": false,
 				"variables": [
 					{
@@ -2601,6 +2616,7 @@
 				"value": false,
 				"text": "Unauffällige Darstellung des umgebenden Weichteilmantels im Summationsbild.",
 				"judgementText": null,
+				"exclusions": ["WT-Emphysem", "weiteres WT-Emphysem"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -2615,6 +2631,7 @@
 				"value": false,
 				"text": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
 				"judgementText": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
+				"exclusions": ["WT normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -2704,6 +2721,7 @@
 				"value": false,
 				"text": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
 				"judgementText": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
+				"exclusions": ["WT normal"],
 				"enumeration": null,
 				"normal": false,
 				"variables": [
@@ -2806,6 +2824,7 @@
 				"value": false,
 				"text": "Keine relevanten degenerativen Veränderungen.",
 				"judgementText": null,
+				"exclusions": ["Spondilarthrose", "ACG-Arthrose", "Omarthrose", "Fraktur"],
 				"enumeration": null,
 				"normal": true,
 				"variables": [],
@@ -2820,6 +2839,7 @@
 				"value": false,
 				"text": "der Wirbelsäule [(%S1%)]",
 				"judgementText": null,
+				"exclusions": ["keine Degenerationen"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -2858,6 +2878,7 @@
 				"value": false,
 				"text": "des AC-Gelenks (%S2%, %S6%)",
 				"judgementText": null,
+				"exclusions": ["keine Degenerationen"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -2920,6 +2941,7 @@
 				"value": false,
 				"text": "des Schultergelenks [%S3%,] [%S7%].",
 				"judgementText": null,
+				"exclusions": ["keine Degenerationen"],
 				"enumeration": "AZ2",
 				"normal": false,
 				"variables": [
@@ -2982,6 +3004,7 @@
 				"text": "Fraktur [von %S4% ][%S5% Dislokation.]",
 				"judgementText": "Fraktur [von %S4%] [%S5% Dislokation.]",
 				"enumeration": null,
+				"exclusions": ["keine Degenerationen"],
 				"normal": false,
 				"variables": [
 					{
