@@ -137,15 +137,15 @@ export class InputParserService {
             // check if textBefore is present, if textBefore exists, and adjust position
             //todo check if below if statement needs to be adjusted for case insensitivity
             if (varKey.textBefore.length > 0 &&
-              varText.substring(pos - varKey.textBefore.length, pos) === varKey.textBefore) {
+              varText.toLowerCase().substring(pos - varKey.textBefore.length, pos) === varKey.textBefore.toLowerCase()) {
               newVarKey.position = pos + relativePosition - varKey.textBefore.length;
             } else {
               newVarKey.position = pos + relativePosition;
             }
             // check if textAfter is present, if textBefore exists, and adjust end-position
             if (varKey.textAfter.length > 0 &&
-              varText.substring(pos + varKey.synonym.length,
-                pos + varKey.synonym.length + varKey.textAfter.length) === varKey.textAfter) {
+              varText.toLowerCase().substring(pos + varKey.synonym.length,
+                pos + varKey.synonym.length + varKey.textAfter.length) === varKey.textAfter.toLowerCase()) {
               newVarKey.positionEnd = pos + varKey.synonym.length + varKey.textAfter.length + relativePosition;
             } else {
               newVarKey.positionEnd = pos + varKey.synonym.length + relativePosition;
