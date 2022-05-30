@@ -14,6 +14,7 @@ import {HeaderComponent} from "@app/view/header/header.component";
 import {LoginComponent} from "@app/view/login/login.component";
 import {RadiolearnWelcomeComponent} from "@app/view/radiolearn-welcome/radiolearn-welcome.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -22,19 +23,20 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     LoginComponent,
     RadiolearnWelcomeComponent
   ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatListModule,
-    MatIconModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        RouterModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatListModule,
+        MatIconModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule
+    ],
   exports: [
     HeaderComponent,
     LoginComponent,
