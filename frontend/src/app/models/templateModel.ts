@@ -61,7 +61,6 @@ export interface CheckBox {
   name:           string;
   value:          boolean;
   text:           string;
-  conditionalId?: string;
   judgementText?: string;
   normal:         boolean;
   exclusions?:    string[];   // list of boxes that are deselected, when selecting this
@@ -81,7 +80,6 @@ export interface Option {
   kind:           "option";
   name:           string;
   text:           string;
-  conditionalId?: string;
   judgementText?: string;
   normal:         boolean;
   variables:      Variable[];

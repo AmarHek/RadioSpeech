@@ -1,43 +1,55 @@
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
 import * as M from "./templateModel";
 
 export function normalExtractor(): M.TextExtractor {
   return new class {
-    ofCheckbox(c: M.CheckBox): string | undefined { return c.text; }
-    ofOption(o: M.Option): string | undefined { return o.text; }
-    ofEnumeration(e: M.Enumeration): string | undefined { return e.text; }
-    ofBlock(b: M.Block): string | undefined { return b.text; }
-    ofConditional(c: M.Conditional): string | undefined { return c.normalText; }
-  };
+    ofCheckbox(c: M.CheckBox): string | undefined {
+      return c.text;
+    }
+    ofOption(o: M.Option): string | undefined {
+      return o.text;
+    }
+    ofEnumeration(e: M.Enumeration): string | undefined {
+      return e.text;
+    }
+    ofBlock(b: M.Block): string | undefined {
+      return b.text;
+    }
+    ofConditional(c: M.Conditional): string | undefined {
+      return c.normalText;
+    }
+  }();
 }
 
 export function judgementExtractor(): M.TextExtractor {
   return new class {
-    ofCheckbox(c: M.CheckBox): string | undefined { return c.judgementText; }
-    ofOption(o: M.Option): string | undefined { return o.judgementText; }
-    ofEnumeration(e: M.Enumeration): string | undefined { return e.judgementText; }
-    ofBlock(b: M.Block): string | undefined { return b.judgementText; }
-    ofConditional(c: M.Conditional): string | undefined { return c.judgementText; }
-  };
+    ofCheckbox(c: M.CheckBox): string | undefined {
+      return c.judgementText;
+    }
+    ofOption(o: M.Option): string | undefined {
+      return o.judgementText;
+    }
+    ofEnumeration(e: M.Enumeration): string | undefined {
+      return e.judgementText;
+    }
+    ofBlock(b: M.Block): string | undefined {
+      return b.judgementText;
+    }
+    ofConditional(c: M.Conditional): string | undefined {
+      return c.judgementText;
+    }
+  }();
 }
 
-export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppressed: string[]): string {
+export const makeText = (parts: M.TopLevel[], extractor: M.TextExtractor): string => {
  let result = parts.map(c => {
     if (c.kind === "category") {
-      return getTexts(c.selectables, suppressed, extractor)
+      return getTexts(c.selectables, extractor)
         .map(t => expandVariablesInString(t, parts, true)).join("");
     } else if (c.kind === "block") {
       return extractor.ofBlock(c) || "";
     } else if (c.kind === "enumeration") {
       return makeEnumeration(c, parts, extractor);
-    } else if (c.kind === "conditional") {
-      if (checkConditional(c, parts)) {
-        const data = extractor.ofConditional(c);
-        if (data) {
-          return expandVariablesInString(data, parts, true);
-        } else {
-          return "";
-        }
-      }
     } else {
       throw new Error("unknown top level kind");
     }
@@ -48,80 +60,21 @@ export function makeText(parts: M.TopLevel[], extractor: M.TextExtractor, suppre
     result = result.replace(regEx, "\n");
   }
   return result;
-}
-
-export function getSuppressedConditionalIds(data: M.TopLevel[]): string[][] {
-  const suppressedNormal: string[] = [];
-  const suppressedJudgement: string[] = [];
-
-  for (const topLevel of data) {
-    if (topLevel.kind === "conditional") {
-      if (checkConditional(topLevel, data)) {
-        for (const anded of topLevel.precondition) {
-          for (const literal of anded) {
-            if (!literal.negated) {
-              if (topLevel.normalText) {
-                suppressedNormal.push(literal.id);
-              }
-              if (topLevel.judgementText) {
-                suppressedJudgement.push(literal.id);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return [suppressedNormal, suppressedJudgement];
-}
-
-export function checkConditional(c: M.Conditional, data: M.TopLevel[]): boolean {
-  outer:
-  for (const anded of c.precondition) {
-    for (const literal of anded) {
-      if (isClicked(literal.id, data) === literal.negated) {
-        continue outer;
-      }
-    }
-    return true;
-  }
-  return false;
-}
-
-export function isClicked(clickableId: string, data: M.TopLevel[]): boolean {
-  for (const category of data.filter(p => p.kind === "category").map(c => c as M.Category)) {
-    for (const selectable of category.selectables) {
-      if (selectable.kind === "box") {
-        if (selectable.value && selectable.conditionalId === clickableId) {
-          return true;
-        }
-      } else {
-        for (const option of selectable.options) {
-          if (option.conditionalId === clickableId && selectable.value === option.name) {
-            return true;
-          }
-        }
-      }
-    }
-  }
-
-  return false;
-}
+};
 
 
-export function getTexts(ss: M.Selectable[], suppressed: string[], textExtractor: M.TextExtractor): string[] {
+export function getTexts(ss: M.Selectable[], textExtractor: M.TextExtractor): string[] {
   const ret: string[] = [];
 
   for (const s of ss) {
-    if (s.kind === "box" && s.value && !s.enumeration && (!s.conditionalId || suppressed.indexOf(s.conditionalId) === -1)) {
+    if (s.kind === "box" && s.value && !s.enumeration) {
       const result = textExtractor.ofCheckbox(s);
       if (result) {
         ret.push(result);
       }
     } else if (s.kind === "group") {
       for (const o of s.options) {
-        if (s.value === o.name && (!o.conditionalId || suppressed.indexOf(o.conditionalId) === -1)) {
+        if (s.value === o.name) {
           const result = textExtractor.ofOption(o);
           if (result) {
             ret.push(result);
@@ -228,7 +181,9 @@ export function textOfVariable(v: M.Variable): string | undefined {
 }
 
 export function makeNormalCategory(c: M.Category): void {
-  if (hasSelection(c)) { return; }
+  if (hasSelection(c)) {
+    return;
+  }
 
   for (const entry of c.selectables) {
     if (entry.kind === "box") {

@@ -133,12 +133,11 @@ export class DataParserService {
   }
 
   makeText(parts: M.TopLevel[]) {
-    const [suppressedNormal, suppressedJudgement] = G.getSuppressedConditionalIds(parts);
     const normalExtractor: M.TextExtractor = G.normalExtractor();
     const judgementExtractor: M.TextExtractor = G.judgementExtractor();
 
-    const report = G.makeText(parts, normalExtractor, suppressedNormal);
-    const judgement = G.makeText(parts, judgementExtractor, suppressedJudgement);
+    const report = G.makeText(parts, normalExtractor);
+    const judgement = G.makeText(parts, judgementExtractor);
 
     return [report, judgement];
   }
