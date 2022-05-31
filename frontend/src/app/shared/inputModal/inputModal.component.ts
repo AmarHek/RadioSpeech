@@ -47,7 +47,7 @@ export class InputModalComponent implements OnInit {
 
   displayQuotient(numerator, denominator) {
     return displayableQuotient(numerator as number,
-      denominator as number, this.data["fractionDigits"]);
+      denominator as number, 2);
   }
 
 }

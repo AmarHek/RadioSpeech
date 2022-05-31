@@ -127,6 +127,5 @@ export interface VariableRatio extends VariableCommon {
   kind:           "ratio";
   numerator:      number;
   denominator:    number;
-  fractionDigits: number;
 }
 

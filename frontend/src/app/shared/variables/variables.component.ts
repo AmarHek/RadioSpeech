@@ -57,7 +57,7 @@ export class VariablesComponent implements OnInit {
       variable.value.day + "." + variable.value.month + "." + variable.value.year : base;
     } else if (variable.kind === "ratio") {
       return (variable.numerator !== 0 && variable.denominator !== 0) ? displayableQuotient(variable.numerator,
-        variable.denominator, variable.fractionDigits) : base;
+        variable.denominator) : base;
     }
   }
 
@@ -90,7 +90,6 @@ export class VariablesComponent implements OnInit {
     if (variable.kind === "ratio") {
       dialogConfig.data["denominator"] = variable.denominator;
       dialogConfig.data["numerator"] = variable.numerator;
-      dialogConfig.data["fractionDigits"] = variable.fractionDigits;
     } else if (variable.kind === "text" || variable.kind === "number") {
       dialogConfig.data["value"] = variable.value;
     } else if (variable.kind === "date") {
