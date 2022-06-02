@@ -1,7 +1,8 @@
 import * as jwt from "jsonwebtoken";
-import { authConfig } from "../config/auth.config";
+import { authConfig } from "../config";
 import { UserDB, Role } from "../models";
 import { Response, NextFunction} from "express";
+import {JwtPayload} from "jsonwebtoken";
 
 export const verifyToken = (req: any, res: Response, next: NextFunction) => {
     const token = req.headers["authorization"] as string;
@@ -15,7 +16,7 @@ export const verifyToken = (req: any, res: Response, next: NextFunction) => {
             return res.status(401).send({ message: "Nicht autorisiert!" });
         }
         if(decoded !== undefined) {
-            req.userId = decoded.id;
+            req.userId = (decoded as JwtPayload).id;
         }
         next();
     });
