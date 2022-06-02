@@ -43,7 +43,7 @@ async function loadDefaultTemplates() {
 }
 
 function saveTemplate(path: string, name: string) {
-    TemplateDB.countDocuments({name: name}, (err, count) => {
+    TemplateDB.countDocuments({name: name}, {}, (err, count) => {
         if (count === 0) {
             console.log("Adding " + name + " from assets..");
             const rawData = fs.readFileSync(path, "utf-8");

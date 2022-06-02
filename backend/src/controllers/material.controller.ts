@@ -90,7 +90,7 @@ export function updateMaterial(req: Request, res: Response): void {
         console.log(response);
         if (err) {
             res.status(500).send({message: err});
-        } else if (response.nModified === 1) {
+        } else if (response.modifiedCount === 1) {
             res.status(200).json({message: "Update successful"});
         } else {
             res.status(200).json({message: "No changes detected."});

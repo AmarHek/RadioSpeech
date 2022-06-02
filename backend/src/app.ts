@@ -15,10 +15,7 @@ export const app = express();
 // TODO: Auf env auslagern
 
 const url = "mongodb://" + dbConfig.HOST + ":" + dbConfig.PORT + "/" + dbConfig.DB;
-mongoose.connect(url,
-    {useNewUrlParser: true,
-            useUnifiedTopology: true
-    })
+mongoose.connect(url)
   .then(() => {
     console.log("Connected to Database");
     initData();
