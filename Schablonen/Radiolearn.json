@@ -52,7 +52,7 @@
 				"kind": "box",
 				"name": "Beurteilbarkeit",
 				"value": false,
-				"text": "Beurterilbarkeit %A1% ",
+				"text": "Beurteilbarkeit %A1% ",
 				"judgementText": null,
 				"enumeration": null,
 				"normal": false,
