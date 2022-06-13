@@ -19,34 +19,31 @@ import {
 } from "../models/template.model";
 
 interface Row {
-    Typ: string;
     Gliederung: string;
     Optional: string;
-    "Baustein Befund": string;
-    "data-bau": string;
+    Befund: string;
+    Synonyme: string;
     Normal: string;
-    Default: string;
-    "Choice-Gruppe": string;
-    "Aufzählung": string;
+    "Choice-Gruppe-ID": string;
+    "Aufzählung-ID": string;
+    "Ausschluss Befund": string;
     "Variable-ID": string;
     "Variable-Typ": string;
-    "data-syn": string;
-    "NK-Stellen": string;
+    "Variable-Synonyme": string;
     "Variable-Info": string;
     "Text Befund": string;
-    "Aufzählungstexte": string;
     "Text Beurteilung": string;
 }
 
 export function parseXLSToJson(binary_string: string): string {
-    //get workbook from binary string
+    // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
-    //select first sheet
+    // select first sheet
     const worksheet_name: string = wb.SheetNames[0];
     const ws: XLSX.IWorkSheet = wb.Sheets[worksheet_name];
 
-    //get rows as json objects
+    // get rows as json objects
     const rows = XLSX.utils.sheet_to_json(ws) as Row[];
 
     const parts = new Array<TopLevel>();
@@ -54,20 +51,20 @@ export function parseXLSToJson(binary_string: string): string {
     let i = 0;
     while (i < rows.length) {
         const row = rows[i];
-        if (row["Typ"] == "Block") {
+        if (row["Gliederung"] == "Block") {
             parts.push(extractBlock(row));
             i++;
-        } else if (row["Typ"] == "Aufzählung") {
+        } else if (row["Gliederung"] == "Aufzählung") {
             parts.push(extractEnumeration(row));
             i++;
         } else if (row["Gliederung"] != undefined) {
-            const relevantRows = new Array<Row>();
+            const relevantRows: Row[] = [];
             relevantRows.push(row);
-            let j = i + 1;
+            let j = i +1;
             for (; j < rows.length; j++) {
                 const subRow = rows[j];
                 //Add rows below start of "Gliederung" until new Gliederung or Block / Enumeration starts
-                if (subRow["Gliederung"] != undefined || subRow["Typ"] != undefined) {
+                if (subRow["Gliederung"] != undefined) {
                     break;
                 }
                 relevantRows.push(subRow)
@@ -77,13 +74,13 @@ export function parseXLSToJson(binary_string: string): string {
         }
     }
     let final: string = JSON.stringify(parts)
-    //remove double escaping of newline characters
+    // remove double escaping of newline characters
     final = final.split("\\\\").join("\\")
     return final
 }
 
 export function extractBlock(row: Row): Block {
-    const judgementText = row["Text Beurteilung"] == undefined ? null as any : row["Text Beurteilung"]
+    const judgementText = row["Text Beurteilung"] == undefined ? undefined : row["Text Beurteilung"]
     const text = row["Text Befund"]
     return {
         kind: "block",
@@ -93,31 +90,34 @@ export function extractBlock(row: Row): Block {
 }
 
 export function extractEnumeration(row: Row): Enumeration {
-    const judgementText = row["Text Beurteilung"] == undefined ? null as any : row["Text Beurteilung"];
+    const judgementText = row["Text Beurteilung"] == undefined ? undefined : row["Text Beurteilung"];
     return {
         kind: "enumeration",
         text: row["Text Befund"],
         judgementText: judgementText,
-        id: row["Aufzählung"]
+        id: row["Aufzählung-ID"]
     }
 }
 
 export function extractCategory(rows: Row[]): Category {
-    const selectables = new Array<Selectable>()
+    const selectables: Selectable[] = [];
     let i = 0;
     while (i < rows.length) {
         const row = rows[i];
-        if (row["Choice-Gruppe"] != undefined) {
-            //Find relevant rows for group that starts here, and extract group
+        if (row["Choice-Gruppe-ID"] != undefined) {
+            // Find relevant rows for group that starts here, and extract group
             const relevantRows = new Array<Row>();
             let j = i + 1;
-            const currentChoiceGroup = row["Choice-Gruppe"];
+            const currentChoiceGroup = row["Choice-Gruppe-ID"];
             relevantRows.push(row)
             for (; j < rows.length; j++) {
                 const subRow = rows[j]
-                if (subRow["Choice-Gruppe"] != undefined && subRow["Choice-Gruppe"] != currentChoiceGroup) break;//new choice group
-                if (subRow["Typ"] != undefined || subRow["Gliederung"] != undefined) break; // new TopLevel
-                if (subRow["Choice-Gruppe"] == undefined && subRow["Baustein Befund"] != undefined) break; //checkbox
+                // new choice group
+                if (subRow["Choice-Gruppe-ID"] != undefined && subRow["Choice-Gruppe-ID"] != currentChoiceGroup) break;
+                // new TopLevel
+                if (subRow["Gliederung"] != undefined) break;
+                // checkbox
+                if (subRow["Choice-Gruppe-ID"] == undefined && subRow["Befund"] != undefined) break;
                 relevantRows.push(subRow);
             }
             i = j;
@@ -130,7 +130,7 @@ export function extractCategory(rows: Row[]): Category {
             relevantRows.push(row)
             for (; j < rows.length; j++) {
                 const subRow = rows[j];
-                if (subRow["Baustein Befund"] != undefined || subRow["Typ"] != undefined || subRow["Gliederung"] != undefined) break;
+                if (subRow["Befund"] != undefined || subRow["Gliederung"] != undefined) break;
                 relevantRows.push(subRow)
             }
             i = j;
@@ -148,17 +148,17 @@ export function extractCategory(rows: Row[]): Category {
 }
 
 export function extractGroup(rows: Row[]): Group {
-    const options = new Array<Option>();
+    const options: Option[] = [];
     let i = 0;
     while (i < rows.length) {
         const row = rows[i]
-        const relevantRows = new Array<Row>();
+        const relevantRows: Row[] = [];
         relevantRows.push(row)
 
         let j = i + 1
         for (; j < rows.length; j++) {
             const subRow = rows[j]
-            if (subRow["Choice-Gruppe"] != undefined) break;
+            if (subRow["Choice-Gruppe-ID"] != undefined) break;
             relevantRows.push(subRow)
         }
         i = j;
@@ -167,9 +167,9 @@ export function extractGroup(rows: Row[]): Group {
     }
     return {
         kind: "group",
-        name: rows[0]["Choice-Gruppe"],
+        name: rows[0]["Choice-Gruppe-ID"],
         options: options,
-        value: null as any
+        value: undefined
     };
 }
 
@@ -177,11 +177,11 @@ export function extractOption(rows: Row[]): Option {
     const variables = extractSelectableVariables(rows)
     const keys = extractSelectableKeys(rows)
     const text = rows[0]["Text Befund"]
-    const judgementText = rows[0]["Text Beurteilung"] == undefined ? null as any : rows[0]["Text Beurteilung"]
+    const judgementText = rows[0]["Text Beurteilung"] == undefined ? undefined : rows[0]["Text Beurteilung"]
     return {
         keys: keys,
         kind: "option",
-        name: rows[0]["Baustein Befund"],
+        name: rows[0]["Befund"],
         normal: rows[0]["Normal"] != undefined,
         text: text,
         variables: variables,
@@ -190,7 +190,7 @@ export function extractOption(rows: Row[]): Option {
 }
 
 function extractSelectableVariables(rows: Row[]): Variable[] {
-    const variables = new Array<Variable>();
+    const variables: Variable[] = [];
     for (let i = 0; i < rows.length; i++) {
         const row = rows[i]
         if (row["Variable-Typ"] != undefined) {
@@ -201,31 +201,25 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 }
 
 function extractSelectableKeys(rows: Row[]): string[] {
-    return trimArray(rows[0]["data-bau"].split(";"))
+    return trimArray(rows[0]["Synonyme"].split(";"))
 }
 
 function extractBox(rows: Row[]): CheckBox {
     const variables = extractSelectableVariables(rows)
     const keys = extractSelectableKeys(rows)
 
-    const judgementText = rows[0]["Text Beurteilung"] == undefined ? null as any : rows[0]["Text Beurteilung"]
-    const enumeration = rows[0]["Aufzählung"] == undefined ? null as any : rows[0]["Aufzählung"]
-
-    let text = null as any
-    if (rows[0]["Text Befund"] != undefined) {
-        text = rows[0]["Text Befund"]
-    } else if (rows[0]["Aufzählungstexte"] != undefined) {
-        text = rows[0]["Aufzählungstexte"]
-    }
+    const judgementText = rows[0]["Text Beurteilung"] == undefined ? undefined : rows[0]["Text Beurteilung"]
+    const enumeration = rows[0]["Aufzählung-ID"] == undefined ? undefined : rows[0]["Aufzählung-ID"]
 
     return {
         kind: "box",
-        name: rows[0]["Baustein Befund"],
-        value: rows[0]["Default"] != undefined,
-        text: text,
+        name: rows[0]["Befund"],
+        value: false,
         normal: rows[0]["Normal"] != undefined,
+        exclusions: trimArray(rows[0]["Ausschluss Befund"].split(",")),
         variables: variables,
         keys: keys,
+        text: rows[0]["Text Befund"],
         judgementText: judgementText,
         enumeration: enumeration
     };
@@ -280,19 +274,18 @@ function extractVariableText(row: Row, variable: VariableCommon): VariableText {
 }
 
 function extractVariableNumber(row: Row, variable: VariableCommon): VariableNumber {
-    const parsed = variable as VariableNumber
-    parsed.kind = "number"
-    parsed.value = 0
-    return parsed
+    const parsed = variable as VariableNumber;
+    parsed.kind = "number";
+    parsed.value = 0;
+    return parsed;
 }
 
 function extractVariableRatio(row: Row, variable: VariableCommon): VariableRatio {
-    const parsed = variable as VariableRatio
-    parsed.kind = "ratio"
-    parsed.fractionDigits = Number(row["NK-Stellen"])
-    parsed.numerator = 0
-    parsed.denominator = 0
-    return parsed
+    const parsed = variable as VariableRatio;
+    parsed.kind = "ratio";
+    parsed.numerator = 0;
+    parsed.denominator = 0;
+    return parsed;
 }
 
 function extractVariableDate(row: Row, variable: VariableCommon): VariableDate {
@@ -302,13 +295,13 @@ function extractVariableDate(row: Row, variable: VariableCommon): VariableDate {
         month: 1,
         day: 1
     }
-    parsed.kind = "date"
-    return parsed
+    parsed.kind = "date";
+    return parsed;
 }
 
 function extractVariableKeys(row: Row): string[][] {
     const keys = new Array<string[]>();
-    const keysString = row["data-syn"]
+    const keysString = row["Variable-Synonyme"]
     if (keysString == undefined) return null as any
     if (keysString.includes("/")) {
         const values = keysString.split("/")
@@ -323,19 +316,19 @@ function extractVariableKeys(row: Row): string[][] {
     } else {
         const values = keysString.split(";")
         for (let i = 0; i < values.length; i++) {
-            keys.push(new Array<string>())
-            const synonyms = values[i].split(",")
+            keys.push(new Array<string>());
+            const synonyms = values[i].split(",");
             for (let j = 0; j < synonyms.length; j++) {
-                keys[i].push(synonyms[j])
+                keys[i].push(synonyms[j]);
             }
         }
-        return trim2DArray(keys)
+        return trim2DArray(keys);
     }
 }
 
 function extractTextBefore(varInfo: string): string {
-    if (varInfo == undefined) return ""
-    return varInfo.split("...")[0]
+    if (varInfo == undefined) return "";
+    return varInfo.split("...")[0];
 }
 
 function extractTextAfter(varInfo: string): string {
@@ -357,5 +350,5 @@ function trim2DArray(array: string[][]): string[][] {
             sublist[j] = sublist[j].trim()
         }
     }
-    return array
+    return array;
 }
