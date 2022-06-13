@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from "fs";
 
 import * as TemplateController from "../controllers/template.controller";
+import {generateUniqueFilename} from "../util/util";
 
 const storageExcel = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -11,9 +12,9 @@ const storageExcel = multer.diskStorage({
         cb(null, path);
     },
     filename: (req, file, cb) => {
-        const name = file.originalname.toLowerCase().split(" ").join("-");
-        //const ext = file.mimetype;
-        cb(null, name + ".xlsx");
+        const path = "data/excels/";
+        const name = generateUniqueFilename(path, req.body.name, ".xlsx");
+        cb(null, name);
     }
 });
 
@@ -24,7 +25,8 @@ const storageJSON = multer.diskStorage({
         cb(null, path);
     },
     filename: (req, file, cb) => {
-        const name = file.originalname;
+        const path = "data/json/";
+        const name = generateUniqueFilename(path, req.body.name, ".json");
         cb(null, name);
     }
 });

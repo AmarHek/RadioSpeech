@@ -23,6 +23,12 @@ function initDirectories() {
     if (!fs.existsSync(Path.join(process.cwd(), "data/images"))) {
         fs.mkdirSync(Path.join(process.cwd(), "data/images"));
     }
+    if (!fs.existsSync(Path.join(process.cwd(), "data/excels"))) {
+        fs.mkdirSync(Path.join(process.cwd(), "data/excels"));
+    }
+    if (!fs.existsSync(Path.join(process.cwd(), "data/json"))) {
+        fs.mkdirSync(Path.join(process.cwd(), "data/json"));
+    }
 }
 
 // load default json files on startup (can be deleted from the database later)

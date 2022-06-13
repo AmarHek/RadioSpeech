@@ -2,11 +2,27 @@ import {TemplateDB} from '../models';
 import * as fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
+import * as Path from "path";
+import {generateUniqueFilename} from "../util/util";
 
 
 export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const jsonString = parseXLSToJson(rawData.toString("binary"));
+    if (jsonString === undefined) {
+        res.status(500).send({
+            message: "Parsing error in Excel Template"
+        });
+    }
+    // save parsed data to json
+    const jsonName = generateUniqueFilename("data/json", req.body.name, ".json");
+    fs.writeFile(Path.join("data/json", jsonName), jsonString, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Successfully saved " + jsonName);
+        }
+    })
     const parts = JSON.parse(jsonString);
     const template = new TemplateDB({
         parts: parts,
