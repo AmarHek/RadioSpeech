@@ -135,7 +135,6 @@ export class InputParserService {
           for (const pos of positions) {
             const newVarKey: KeyVariable = JSON.parse(JSON.stringify(varKey));
             // check if textBefore is present, if textBefore exists, and adjust position
-            //todo check if below if statement needs to be adjusted for case insensitivity
             if (varKey.textBefore.length > 0 &&
               varText.toLowerCase().substring(pos - varKey.textBefore.length, pos) === varKey.textBefore.toLowerCase()) {
               newVarKey.position = pos + relativePosition - varKey.textBefore.length;
