@@ -17,6 +17,7 @@ import {
     VariableRatio,
     VariableText
 } from "../models/template.model";
+import {trim2DArray, trimArray} from "../util/util";
 
 interface Row {
     Gliederung: string;
@@ -340,19 +341,3 @@ function extractTextAfter(varInfo: string): string {
     return varInfo.split("...")[1]
 }
 
-function trimArray(array: string[]): string[] {
-    for (let i = 0; i < array.length; i++) {
-        array[i] = array[i].trim()
-    }
-    return array
-}
-
-function trim2DArray(array: string[][]): string[][] {
-    for (let i = 0; i < array.length; i++) {
-        const sublist = array[i]
-        for (let j = 0; j < sublist.length; j++) {
-            sublist[j] = sublist[j].trim()
-        }
-    }
-    return array;
-}

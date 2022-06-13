@@ -41,10 +41,10 @@ async function loadDefaultTemplates() {
         saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn");
     }
 
-    if (!fs.existsSync(Path.join(__dirname, "./assets/RoentgenNormal.json"))) {
-        console.warn("RoentgenNormal.json missing!")
+    if (!fs.existsSync(Path.join(__dirname, "./assets/XrayNormal.json"))) {
+        console.warn("XrayNormal.json missing!")
     } else {
-        saveTemplate(Path.join(__dirname, "./assets/RoentgenNormal.json"), "RöntgenNormal");
+        saveTemplate(Path.join(__dirname, "./assets/XrayNormal.json"), "XrayNormal");
     }
 }
 

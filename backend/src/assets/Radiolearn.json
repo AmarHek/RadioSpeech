@@ -6,63 +6,63 @@
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG0",
+				"name": "ATG0",
 				"options": [
 					{
-						"kind": "option",
-						"name": "Thorax p.a.",
-						"text": "Projektionsradiographie: Thorax in 1 Ebene ",
-						"judgementText": null,
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Thorax p.a.",
 							"Thorax pa"
-						]
+						],
+						"kind": "option",
+						"name": "Thorax p.a.",
+						"normal": false,
+						"text": "Projektionsradiographie: Thorax in 1 Ebene ",
+						"variables": []
 					},
 					{
-						"kind": "option",
-						"name": "Thorax 2 Ebenen",
-						"text": "Projektionsradiographie: Thorax in 2 Ebenen ",
-						"judgementText": null,
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Thorax 2 Ebenen",
 							"Thorax in zwei Ebenen",
 							"Thorax zwei Ebenen",
 							"Thorax in 2 Ebenen"
-						]
+						],
+						"kind": "option",
+						"name": "Thorax 2 Ebenen",
+						"normal": false,
+						"text": "Projektionsradiographie: Thorax in 2 Ebenen ",
+						"variables": []
 					},
 					{
-						"kind": "option",
-						"name": "Thorax im Liegen",
-						"text": "Projektionsradiographie: Thorax im Liegen",
-						"judgementText": null,
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Thorax im Liegen"
-						]
+						],
+						"kind": "option",
+						"name": "Thorax im Liegen",
+						"normal": false,
+						"text": "Projektionsradiographie: Thorax im Liegen",
+						"variables": []
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "box",
 				"name": "Beurteilbarkeit",
 				"value": false,
-				"text": "Beurterilbarkeit %A1% ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "A1",
+						"id": "AT0",
 						"textBefore": "",
 						"textAfter": "",
-						"keys": [],
+						"keys": [
+							[
+								"gut"
+							],
+							[
+								"erschwert"
+							]
+						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"gut",
@@ -70,57 +70,62 @@
 						]
 					}
 				],
-				"keys": []
+				"keys": [
+					"Beurteilbarkeit"
+				],
+				"text": "Beurteilbarkeit %AT0%."
 			},
 			{
 				"kind": "box",
 				"name": "Voraufnahme vorhanden",
 				"value": false,
-				"text": "Voraufnahme vorhanden. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [],
-				"keys": []
+				"keys": [
+					"Voraufnahme vorhanden",
+					"VA vorhanden",
+					"V.A.vorhanden"
+				],
+				"text": "Voraufnahme vorhanden."
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "Instrumentierung:\n",
-		"judgementText": null
+		"text": "\n\nInstrumentierung:\n"
 	},
 	{
 		"kind": "category",
-		"name": "Instrumentierung",
+		"name": "Instrum.",
 		"optional": true,
 		"selectables": [
 			{
 				"kind": "box",
 				"name": "Keine",
 				"value": false,
-				"text": "Keine.",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
-					"Keine Instrumentierung"
-				]
+					"Keine Instrumentierung",
+					"Instrumentierung keine"
+				],
+				"text": "Keine."
 			},
 			{
 				"kind": "box",
 				"name": "ZVK",
 				"value": false,
-				"text": "ZVK [%I1% ]%I2%[: %I3%]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I1",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -130,9 +135,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -141,7 +148,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I2",
 						"textBefore": "",
 						"textAfter": "",
@@ -154,6 +160,7 @@
 								"subklavikulär"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"jugulär",
@@ -161,7 +168,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I3",
 						"textBefore": "",
 						"textAfter": "",
@@ -177,6 +183,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -188,21 +195,21 @@
 				"keys": [
 					"ZVK",
 					"Zentraler Venenkatheter"
-				]
+				],
+				"text": "ZVK [von %I1% ]%I2%[: %I3%]"
 			},
 			{
 				"kind": "box",
 				"name": "2. ZVK",
 				"value": false,
-				"text": "ZVK [%I4% ]%I5%[: %I6%]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I4",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -212,9 +219,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -223,7 +232,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I5",
 						"textBefore": "",
 						"textAfter": "",
@@ -236,6 +244,7 @@
 								"subklavikulär"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"jugulär",
@@ -243,7 +252,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I6",
 						"textBefore": "",
 						"textAfter": "",
@@ -259,6 +267,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -271,21 +280,21 @@
 					"2. ZVK",
 					"weiterer ZVK",
 					"zweiter ZVK"
-				]
+				],
+				"text": "ZVK [von %I4% ]%I5%[: %I6%]"
 			},
 			{
 				"kind": "box",
 				"name": "Shaldon-Katheter",
 				"value": false,
-				"text": "Shaldon-Katheter [%I7%] %I8%[: %I9%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I7",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -295,9 +304,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -306,7 +317,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I8",
 						"textBefore": "",
 						"textAfter": "",
@@ -319,6 +329,7 @@
 								"subklavikulär"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"jugulär",
@@ -326,7 +337,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I9",
 						"textBefore": "",
 						"textAfter": "",
@@ -342,6 +352,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -354,21 +365,21 @@
 					"Shaldon-Katheter",
 					"Shaldon",
 					"Shaldon Katheter"
-				]
+				],
+				"text": "Shaldon-Katheter [von %I7%] %I8%[: %I9%.]"
 			},
 			{
 				"kind": "box",
 				"name": "2. Shaldon-Katheter",
 				"value": false,
-				"text": "Shaldon-Katheter [%I10%] %I11%[: %I12%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I10",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -378,9 +389,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -389,7 +402,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I11",
 						"textBefore": "",
 						"textAfter": "",
@@ -402,6 +414,7 @@
 								"subklavikulär"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"jugulär",
@@ -409,7 +422,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I12",
 						"textBefore": "",
 						"textAfter": "",
@@ -425,6 +437,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -439,21 +452,21 @@
 					"weiterer Shaldon Katheter",
 					"zweiter Shaldon Katheter",
 					"zweiter Shaldon"
-				]
+				],
+				"text": "Shaldon-Katheter [von %I10%] %I11%[: %I12%.]"
 			},
 			{
 				"kind": "box",
 				"name": "Schleuse",
 				"value": false,
-				"text": "Schleuse [%I13%] jugulär[: %I14%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I13",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -463,9 +476,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -474,7 +489,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I14",
 						"textBefore": "",
 						"textAfter": "",
@@ -490,6 +504,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -500,21 +515,21 @@
 				],
 				"keys": [
 					"Schleuse"
-				]
+				],
+				"text": "Schleuse [von %I13%] jugulär[: %I14%.]"
 			},
 			{
 				"kind": "box",
 				"name": "Pleuradrainage",
 				"value": false,
-				"text": "Pleuradrainage [%I15%][: %I16%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "I15",
-						"textBefore": "",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -524,9 +539,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -535,7 +552,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "I16",
 						"textBefore": "",
 						"textAfter": "",
@@ -551,6 +567,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -562,21 +579,21 @@
 				"keys": [
 					"Pleuradrainage",
 					"Pleura drainage"
-				]
+				],
+				"text": "Pleuradrainage [von %I15%][: %I16%.]"
 			},
 			{
 				"kind": "box",
 				"name": "2. Pleuradrainage",
 				"value": false,
-				"text": "Pleuradrainage [%I18%][: %I19%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I18",
-						"textBefore": "",
+						"id": "I17",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -586,9 +603,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -597,8 +616,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I19",
+						"id": "I18",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -613,6 +631,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -626,21 +645,21 @@
 					"weitere Pleuradrainage",
 					"zweite Pleuradrainage",
 					"zweite Pleura drainage"
-				]
+				],
+				"text": "Pleuradrainage [von %I17%][: %I18%.]"
 			},
 			{
 				"kind": "box",
 				"name": "3. Pleuradrainage",
 				"value": false,
-				"text": "Pleuradrainage [%I21%][: %I22%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I21",
-						"textBefore": "",
+						"id": "I19",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -650,9 +669,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -661,7 +682,87 @@
 						]
 					},
 					{
+						"id": "I20",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"korrekte Lage",
+								"korrekter Lage"
+							],
+							[
+								"Fehllage"
+							],
+							[
+								"entfernt"
+							]
+						],
 						"kind": "oc",
+						"value": null,
+						"values": [
+							"korrekte Lage",
+							"Fehllage",
+							"entfernt"
+						]
+					}
+				],
+				"keys": [
+					"3. Pleuradrainage",
+					"dritte Pleura drainage",
+					"dritte Pleuradrainage"
+				],
+				"text": "Pleuradrainage [von %I19%][: %I20%.]"
+			},
+			{
+				"kind": "box",
+				"name": "Mediastinaldrainage",
+				"value": false,
+				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
+				"variables": [
+					{
+						"id": "I21",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"korrekte Lage",
+								"korrekter Lage"
+							],
+							[
+								"Fehllage"
+							],
+							[
+								"entfernt"
+							]
+						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"korrekte Lage",
+							"Fehllage",
+							"entfernt"
+						]
+					}
+				],
+				"keys": [
+					"Mediastinaldrainage",
+					"Mediastinal drainage"
+				],
+				"text": "Mediastinaldrainage %I21%"
+			},
+			{
+				"kind": "box",
+				"name": "Perikarddrainage",
+				"value": false,
+				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
+				"variables": [
+					{
 						"id": "I22",
 						"textBefore": "",
 						"textAfter": "",
@@ -677,6 +778,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -686,22 +788,60 @@
 					}
 				],
 				"keys": [
-					"3. Pleuradrainage",
-					"dritte Pleura drainage",
-					"dritte Pleuradrainage"
-				]
+					"Perikarddrainage"
+				],
+				"text": "Perikarddrainage %I22%"
 			},
 			{
 				"kind": "box",
-				"name": "Mediastinaldrainage",
+				"name": "Magensonde",
 				"value": false,
-				"text": "Mediastinaldrainage %I24%",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
+						"id": "I23",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"korrekte Lage",
+								"korrekter Lage"
+							],
+							[
+								"Fehllage"
+							],
+							[
+								"entfernt"
+							]
+						],
 						"kind": "oc",
+						"value": null,
+						"values": [
+							"korrekte Lage",
+							"Fehllage",
+							"entfernt"
+						]
+					}
+				],
+				"keys": [
+					"Magensonde",
+					"Magen sonde"
+				],
+				"text": "Magensonde[: %I23%.]"
+			},
+			{
+				"kind": "box",
+				"name": "Endotrachealtubus",
+				"value": false,
+				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
+				"variables": [
+					{
 						"id": "I24",
 						"textBefore": "",
 						"textAfter": "",
@@ -717,122 +857,7 @@
 								"entfernt"
 							]
 						],
-						"value": null,
-						"values": [
-							"korrekte Lage",
-							"Fehllage",
-							"entfernt"
-						]
-					}
-				],
-				"keys": [
-					"Mediastinaldrainage",
-					"Mediastinal drainage"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Perikarddrainage",
-				"value": false,
-				"text": "Perikarddrainage %I26%",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": false,
-				"variables": [
-					{
 						"kind": "oc",
-						"id": "I26",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"korrekte Lage",
-								"korrekter Lage"
-							],
-							[
-								"Fehllage"
-							],
-							[
-								"entfernt"
-							]
-						],
-						"value": null,
-						"values": [
-							"korrekte Lage",
-							"Fehllage",
-							"entfernt"
-						]
-					}
-				],
-				"keys": [
-					"Perikarddrainage"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Magensonde",
-				"value": false,
-				"text": "Magensonde[: %I35%.]",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": false,
-				"variables": [
-					{
-						"kind": "oc",
-						"id": "I35",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"korrekte Lage",
-								"korrekter Lage"
-							],
-							[
-								"Fehllage"
-							],
-							[
-								"entfernt"
-							]
-						],
-						"value": null,
-						"values": [
-							"korrekte Lage",
-							"Fehllage",
-							"entfernt"
-						]
-					}
-				],
-				"keys": [
-					"Magensonde",
-					"Magen sonde"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Endotrachealtubus",
-				"value": false,
-				"text": "Endotrachealtubus[: %I41%,] [%I42% cm suprakarinal endend.]",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": false,
-				"variables": [
-					{
-						"kind": "oc",
-						"id": "I41",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"korrekte Lage",
-								"korrekter Lage"
-							],
-							[
-								"Fehllage"
-							],
-							[
-								"entfernt"
-							]
-						],
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -841,11 +866,11 @@
 						]
 					},
 					{
-						"kind": "number",
-						"id": "I42",
+						"id": "I25",
 						"textBefore": "Abstand zur Carina ",
 						"textAfter": " cm",
 						"keys": null,
+						"kind": "number",
 						"value": 0
 					}
 				],
@@ -853,67 +878,21 @@
 					"ETT",
 					"Tubus",
 					"Endotrachealtubus"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Tracheostoma",
-				"value": false,
-				"text": "Tracheostoma[: %I41%,] [%I42% cm .]",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": false,
-				"variables": [
-					{
-						"kind": "oc",
-						"id": "I41",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"korrekte Lage",
-								"korrekter Lage"
-							],
-							[
-								"Fehllage"
-							],
-							[
-								"entfernt"
-							]
-						],
-						"value": null,
-						"values": [
-							"korrekte Lage",
-							"Fehllage",
-							"entfernt"
-						]
-					},
-					{
-						"kind": "number",
-						"id": "I42",
-						"textBefore": "Abstand zur Carina ",
-						"textAfter": " cm",
-						"keys": null,
-						"value": 0
-					}
 				],
-				"keys": [
-					"Tracheostoma"
-				]
+				"text": "ETT[: %I24%,] [%I25% cm suprakarinal endend.]"
 			},
 			{
 				"kind": "box",
 				"name": "Port",
 				"value": false,
-				"text": "Port-System [%I28% ][%I29%][: %I30% der Katheterspitze.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I28",
-						"textBefore": "",
+						"id": "I26",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -923,9 +902,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -934,28 +915,27 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I29",
+						"id": "I27",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
-								"pectoral",
-								"pektoral"
+								"brachial"
 							],
 							[
-								"brachial"
+								"pectoral",
+								"pektoral"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"pektoral",
-							"brachial"
+							"brachial",
+							"pectoral"
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I30",
+						"id": "I28",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -965,35 +945,32 @@
 							],
 							[
 								"Fehllage"
-							],
-							[
-								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
-							"Fehllage",
-							"entfernt"
+							"Fehllage"
 						]
 					}
 				],
 				"keys": [
 					"Port"
-				]
+				],
+				"text": "Port-System [von %I26% ][%I27%][: %I28% der Katheterspitze.]"
 			},
 			{
 				"kind": "box",
 				"name": "Herzschrittmacher",
 				"value": false,
-				"text": "[%I31%-]Aggregat [%I32% pektoral,] [%I34% konnektierte(s) Sondenkabel,] [%I33% im Summationsbild. ]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I31",
+						"id": "I29",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1004,6 +981,7 @@
 								"ICD"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"SM",
@@ -1011,9 +989,8 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I32",
-						"textBefore": "",
+						"id": "I30",
+						"textBefore": "von ",
 						"textAfter": "",
 						"keys": [
 							[
@@ -1023,6 +1000,7 @@
 								"links"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -1030,32 +1008,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I33",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"korrekte Lage",
-								"korrekter Lage"
-							],
-							[
-								"Fehllage"
-							],
-							[
-								"Sondenbruch"
-							]
-						],
-						"value": null,
-						"values": [
-							"korrekte Lage",
-							"Fehllage",
-							"Sondenbruch"
-						]
-					},
-					{
-						"kind": "oc",
-						"id": "I34",
+						"id": "I31",
 						"textBefore": "",
 						"textAfter": " konnektierte Sondenkabel",
 						"keys": [
@@ -1078,6 +1031,7 @@
 								"vier"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"1",
@@ -1085,24 +1039,9 @@
 							"3",
 							"4"
 						]
-					}
-				],
-				"keys": [
-					"Herzschrittmacher"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Event-Recorder",
-				"value": false,
-				"text": "Event-Recorder [%I43% im Summationsbild. ]",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": false,
-				"variables": [
+					},
 					{
-						"kind": "oc",
-						"id": "I43",
+						"id": "I32",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1114,44 +1053,85 @@
 								"Fehllage"
 							],
 							[
-								"entfernt"
+								"Sondenbruch"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
 							"Fehllage",
-							"entfernt"
+							"Sondenbruch"
+						]
+					}
+				],
+				"keys": [
+					"Herzschrittmacher"
+				],
+				"text": "[%I29%-]Aggregat [%I30% pektoral,] [%I31% konnektierte(s) Sondenkabel,] [%I32% im Summationsbild. ]"
+			},
+			{
+				"kind": "box",
+				"name": "Event-Recorder",
+				"value": false,
+				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
+				"variables": [
+					{
+						"id": "I29a",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"korrekte Lage",
+								"korrekter Lage"
+							],
+							[
+								"Fehllage"
+							],
+							[
+								"Sondenbruch"
+							]
+						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"korrekte Lage",
+							"Fehllage",
+							"Sondenbruch"
 						]
 					}
 				],
 				"keys": [
 					"Event-Recorder",
-					"Event Recorder"
-				]
+					"Event-Rekorder",
+					"Eventrekorder",
+					"Eventrecorder"
+				],
+				"text": "Event-Recorder [in %I29a%]"
 			},
 			{
 				"kind": "box",
 				"name": "Bypass-OP",
 				"value": false,
-				"text": "Postoperativer Status [nach %I36%. ]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "mc",
-						"id": "I36",
-						"textBefore": "",
+						"id": "I33",
+						"textBefore": "mit ",
 						"textAfter": "",
 						"keys": [
 							[
-								"ACB"
-							],
-							[
+								"ACB",
 								"ACVB"
 							]
 						],
+						"kind": "mc",
 						"values": [
 							[
 								"ACB",
@@ -1166,21 +1146,23 @@
 				],
 				"keys": [
 					"Bypass-OP",
-					"Bypass OP"
-				]
+					"Bypass OP",
+					"Beipass OP",
+					"Beipass-OP"
+				],
+				"text": "Postoperativer Status [nach %I33%. ]"
 			},
 			{
 				"kind": "box",
 				"name": "Herzklappen-OP",
 				"value": false,
-				"text": "%I37% erfolgt. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "mc",
-						"id": "I37",
+						"id": "I34",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1201,6 +1183,7 @@
 								"MKR"
 							]
 						],
+						"kind": "mc",
 						"values": [
 							[
 								"TAVI",
@@ -1226,43 +1209,46 @@
 					}
 				],
 				"keys": [
-					"Herzklappen Op",
-					"Herzklappen-OP"
-				]
+					"Klappen OP",
+					"Klappen-OP",
+					"Herzklappen-OP",
+					"Herzklappen OP"
+				],
+				"text": "%I34% erfolgt. "
 			},
 			{
 				"kind": "box",
 				"name": "Koronarstent",
 				"value": false,
-				"text": "Koronarstent. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [],
 				"keys": [
 					"Koronarstent"
-				]
+				],
+				"text": "Koronarstent vorhanden."
 			},
 			{
 				"kind": "box",
 				"name": "Sternalcerclagen",
 				"value": false,
-				"text": "[%I39% ]Sternalcerclagen[, %I40%.]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "number",
-						"id": "I39",
+						"id": "I35",
 						"textBefore": "insgesamt ",
 						"textAfter": " Cerclagen",
 						"keys": null,
+						"kind": "number",
 						"value": 0
 					},
 					{
-						"kind": "oc",
-						"id": "I40",
+						"id": "I36",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1274,6 +1260,7 @@
 								"geborsten"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"intakt",
@@ -1283,20 +1270,20 @@
 				],
 				"keys": [
 					"Sternalcerclagen"
-				]
+				],
+				"text": "[%I35% ]Sternalcerclagen[, %I36%.]"
 			},
 			{
 				"kind": "box",
 				"name": "DHC-Stent",
 				"value": false,
-				"text": "DHC-Stent [%I44%. ]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I44",
+						"id": "I37",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1311,6 +1298,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -1322,20 +1310,20 @@
 				"keys": [
 					"DHC-Stent",
 					"DHC Stent"
-				]
+				],
+				"text": "DHC-Stent [in %I37%]"
 			},
 			{
 				"kind": "box",
 				"name": "Harnleiterschiene",
 				"value": false,
-				"text": "Harnleiterschiene [%I45 ][%I46%. ]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I45",
+						"id": "I38",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1346,9 +1334,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds."
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -1357,8 +1347,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I46",
+						"id": "I39",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1373,6 +1362,7 @@
 								"entfernt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"korrekte Lage",
@@ -1383,49 +1373,45 @@
 				],
 				"keys": [
 					"Harnleiterschiene"
-				]
+				],
+				"text": "Harnleiterschiene [von %I38%] [in %I39%]"
 			},
 			{
 				"kind": "box",
 				"name": "Andere Fremdkörper",
 				"value": false,
-				"text": "Andere Fremdkörper [%I47% ][%I48%. ]",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Keine"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "I47",
+						"id": "I40",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
-								"medizinisch"
+								"medizinisch",
+								"Kabel"
 							],
 							[
-								"nicht medizinisch"
+								"nicht medizinisch",
+								"Metallsplitter"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"medizinisch (Kabel etc.)",
+							"medizinisch(Kabel etc.)",
 							"nicht medizinisch (Metallsplitter etc.)"
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "I48",
+						"id": "I41",
 						"textBefore": "",
 						"textAfter": "",
-						"keys": [
-							[
-								"extrakorporal"
-							],
-							[
-								"intrakorporal"
-							]
-						],
+						"keys": null,
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"extrakorporal",
@@ -1434,47 +1420,49 @@
 					}
 				],
 				"keys": [
-					"Andere Fremdkörper"
-				]
+					"Andere Fremdkörper",
+					"Anderer Fremdkörper"
+				],
+				"text": "Weitere Fremdkörper [%I40%][, %I41%]"
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nZwerchfell / Pleuraerguss:\n",
-		"judgementText": null
+		"text": "\n\nZwerchfell / Pleuraerguss:\n"
 	},
 	{
 		"kind": "category",
 		"name": "Pleuraerguss",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "box",
 				"name": "Kein Pleuraerguss",
 				"value": false,
-				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
-				"judgementText": "Kein Pleuraerguss. ",
-				"exclusions": ["Gering", "Mäßig", "Deutlich"],
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
+					"Kein Pleuraerguss",
 					"kein PE"
-				]
+				],
+				"text": "Zwerchfell bds. orthotop, glatt begrenzt, Randwinkel entfaltet. ",
+				"judgementText": "Kein Pleuraerguss. "
 			},
 			{
 				"kind": "box",
 				"name": "Gering",
 				"value": false,
-				"text": "Zwerchfell %E1% orthotop, glatt begrenzt, dabei der Randwinkel verplumpt[, %E2%].",
-				"judgementText": "[%E2% zur VU ]geringer Pleuraerguss %E1%",
-				"exclusions": ["Kein Pleuraerguss"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Kein Pleuraerguss"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "E1",
+						"id": "PE1",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1488,6 +1476,7 @@
 								"beidseitig"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -1496,8 +1485,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "E2",
+						"id": "PE2",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1514,6 +1502,7 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"Neu",
@@ -1525,22 +1514,24 @@
 				],
 				"keys": [
 					"PE gering",
-					"geringer PE"
-				]
+					"geringer PE",
+					"Pleuraerguss gering",
+					"geringer Pleuraerguss"
+				],
+				"text": "Zwerchfell %PE1% orthotop, glatt begrenzt, dabei der Randwinkel verplumpt[, %PE2%].",
+				"judgementText": "[%PE2% zur VU ]geringer Pleuraerguss %PE1%"
 			},
 			{
 				"kind": "box",
 				"name": "Mäßig",
 				"value": false,
-				"text": "Zwerchfell %E3% orthotop, unscharf bei flächiger Transparenzminderung des Unterfelds[, %E2%].",
-				"judgementText": "[%E4% zur VU ]mäßiger Pleuraerguss %E3%",
-				"exclusions": ["Kein Pleuraerguss"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Kein Pleuraerguss"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "E3",
+						"id": "PE3",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1554,6 +1545,7 @@
 								"beidseitig"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -1562,8 +1554,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "E4",
+						"id": "PE4",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1580,6 +1571,7 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"Neu",
@@ -1591,22 +1583,24 @@
 				],
 				"keys": [
 					"PE mäßig",
-					"mäßiger PE"
-				]
+					"mäßiger PE",
+					"Pleuraerguss mäßig",
+					"mäßiger Pleuraerguss"
+				],
+				"text": "Zwerchfell %PE3% orthotop, unscharf bei flächiger Transparenzminderung des Unterfelds[, %PE4%].",
+				"judgementText": "[%PE4% zur VU ]mäßiger Pleuraerguss %PE3%"
 			},
 			{
 				"kind": "box",
 				"name": "Deutlich",
 				"value": false,
-				"text": "Zwerchfell %E5% orthotop, unscharf, bei flächiger Transparenzminderung des Unter- und Mittelfelds[, %E5%].",
-				"judgementText": "[%E6% zur VU ]deutlicher Pleuraerguss %E4%",
-				"exclusions": ["Kein Pleuraerguss"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Kein Pleuraerguss"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "E5",
+						"id": "PE5",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1620,6 +1614,7 @@
 								"beidseitig"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -1628,8 +1623,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "E6",
+						"id": "PE6",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -1646,6 +1640,7 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"Neu",
@@ -1657,15 +1652,18 @@
 				],
 				"keys": [
 					"PE deutlich",
-					"deutlicher PE"
-				]
+					"deutlicher PE",
+					"Pleuraerguss deutlich",
+					"deutlicher Pleuraerguss"
+				],
+				"text": "Zwerchfell %PE5% orthotop, unscharf, bei flächiger Transparenzminderung des Unter- und Mittelfelds[, %PE6%].",
+				"judgementText": "[%PE6% zur VU ]deutlicher Pleuraerguss %PE5%"
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nPleura:\n",
-		"judgementText": null
+		"text": "\n\nPleura:\n"
 	},
 	{
 		"kind": "category",
@@ -1674,29 +1672,30 @@
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG1",
+				"name": "PG0",
 				"options": [
 					{
-						"kind": "option",
-						"name": "Kein Pneumothorax",
-						"text": "Keine pleurale Dehiszenz.",
-						"judgementText": "Kein Pneumothorax. ",
-						"normal": true,
-						"variables": [],
 						"keys": [
 							"kein Pneumothorax"
-						]
+						],
+						"kind": "option",
+						"name": "Kein Pneumothorax",
+						"normal": true,
+						"text": "Keine pleurale Dehiszenz.",
+						"variables": [],
+						"judgementText": "Kein Pneumothorax. "
 					},
 					{
+						"keys": [
+							"Pneumothorax"
+						],
 						"kind": "option",
 						"name": "Pneumothorax",
-						"text": "Pneumothorax %P10% %P1% %P2%[ mit %P3% mm pleuraler Dehiszenz.]",
-						"judgementText": "Pneumothorax %P1% %P2% [mit %P3% mm pleuraler Dehiszenz.]",
 						"normal": false,
+						"text": "Pneumothorax %P1% %P2% %P3% [ mit %P4% mm pleuraler Dehiszenz.]",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "P10",
+								"id": "P1",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1713,17 +1712,17 @@
 										"regred"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "P1",
+								"id": "P2",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1734,9 +1733,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -1745,8 +1746,7 @@
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "P2",
+								"id": "P3",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1766,9 +1766,10 @@
 										"dorsal"
 									],
 									[
-										"Mantelpneumothorax"
+										"mantelpneumothorax"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"apikal",
@@ -1780,28 +1781,27 @@
 								]
 							},
 							{
-								"kind": "number",
-								"id": "P3",
+								"id": "P4",
 								"textBefore": "mit ",
 								"textAfter": " mm pleuraler Dehiszenz",
 								"keys": null,
+								"kind": "number",
 								"value": 0
 							}
 						],
-						"keys": [
-							"Pneumothorax"
-						]
+						"judgementText": "Pneumothorax %P1% %P2% %P3% [mit %P4% mm pleuraler Dehiszenz.]"
 					},
 					{
+						"keys": [
+							"Seropneumothorax"
+						],
 						"kind": "option",
 						"name": "Seropneumothorax",
-						"text": "Seropneumothorax %P11% %P7% [mit %P8% mm pleuraler Dehiszenz. ] [Mediastinalshift: %P9%. ]",
-						"judgementText": "Seropneumothorax %P7% [mit %P8% mm pleuraler Dehiszenz.]",
 						"normal": false,
+						"text": "Seropneumothorax %P6% %P5% [mit %P7% mm pleuraler Dehiszenz. ] [Mediastinalshift: %P8%. ]",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "P11",
+								"id": "P5",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1818,17 +1818,17 @@
 										"regred"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "P7",
+								"id": "P6",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1839,9 +1839,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -1850,16 +1852,15 @@
 								]
 							},
 							{
-								"kind": "number",
-								"id": "P8",
+								"id": "P7",
 								"textBefore": "mit ",
 								"textAfter": " mm pleuraler Dehiszenz",
 								"keys": null,
+								"kind": "number",
 								"value": 0
 							},
 							{
-								"kind": "oc",
-								"id": "P9",
+								"id": "P8",
 								"textBefore": "Mediastinalshift",
 								"textAfter": "",
 								"keys": [
@@ -1873,6 +1874,7 @@
 										"deutlich"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"gering",
@@ -1881,20 +1883,20 @@
 								]
 							}
 						],
-						"keys": [
-							"Seropneumothorax"
-						]
+						"judgementText": "Seropneumothorax %P6% %P5% [mit %P7% mm pleuraler Dehiszenz.] [Mediastinalshift: %P9%]"
 					},
 					{
+						"keys": [
+							"Spannungspneumothorax",
+							"Spannungs Pneumothorax"
+						],
 						"kind": "option",
 						"name": "Spannungspneumothorax",
-						"text": "Spannungspneumothorax %P12% %P4% [mit %P5% mm pleuraler Dehiszenz.] [Mediastinalshift: %P6%. ]",
-						"judgementText": "Spannungspneumothorax %P4% [mit %P5% mm pleuraler Dehiszenz.] [Mediastinalshift: %P6%]",
 						"normal": false,
+						"text": "Spannungspneumothorax %P8% %P9% [mit %P11% mm pleuraler Dehiszenz.] [Mediastinalshift: %P12%. ]",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "P12",
+								"id": "P9",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1911,17 +1913,17 @@
 										"regred"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "P4",
+								"id": "P10",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -1932,6 +1934,7 @@
 										"links"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -1939,16 +1942,15 @@
 								]
 							},
 							{
-								"kind": "number",
-								"id": "P5",
+								"id": "P11",
 								"textBefore": "mit ",
 								"textAfter": " mm pleuraler Dehiszenz",
 								"keys": null,
+								"kind": "number",
 								"value": 0
 							},
 							{
-								"kind": "oc",
-								"id": "P6",
+								"id": "P12",
 								"textBefore": "Mediastinalshift",
 								"textAfter": "",
 								"keys": [
@@ -1962,6 +1964,7 @@
 										"deutlich"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"gering",
@@ -1970,24 +1973,17 @@
 								]
 							}
 						],
-						"keys": [
-							"Spannungspneumothorax",
-							"Spannungs Pneumothorax"
-						]
+						"judgementText": "Spannungspneumothorax %P8% %P9% [mit %P11% mm pleuraler Dehiszenz.] [Mediastinalshift: %P12%. ]"
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "box",
 				"name": "Schwiele",
 				"value": false,
-				"text": "Schwiele %P13% [%P14%]. ]",
-				"judgementText": "Schwiele %P13% [%P14%]. ",
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "P13",
 						"textBefore": "",
 						"textAfter": "",
@@ -1999,9 +1995,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -2010,22 +2008,24 @@
 						]
 					},
 					{
-						"kind": "mc",
 						"id": "P14",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
-								"OF"
+								"OF",
+								"Oberfeld"
 							],
 							[
-								"MF"
+								"MF",
+								"Mittelfeld"
 							],
 							[
-								"UF"
+								"UF",
+								"Unterfeld"
 							]
 						],
-						"value": null,
+						"kind": "mc",
 						"values": [
 							[
 								"OF",
@@ -2044,307 +2044,315 @@
 				],
 				"keys": [
 					"Schwiele"
-				]
+				],
+				"text": "Schwiele %P13% [im %P14%]",
+				"judgementText": "Schwiele %P13% [im %P14%]"
 			},
 			{
 				"kind": "box",
 				"name": "Pleurosis calcaria",
 				"value": false,
-				"text": "Pleurosis calcaria %P15% [%P16%]. ]",
-				"judgementText": "Pleurosis calcaria %P15% [%P16%]. ",
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-								"id": "P15",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							},
-							{
-								"kind": "mc",
-								"id": "P16",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"OF"
-									],
-									[
-										"MF"
-									],
-									[
-										"UF"
-									]
-								],
-								"value": null,
-								"values": [
-									[
-										"OF",
-										false
-									],
-									[
-										"MF",
-										false
-									],
-									[
-										"UF",
-										false
-									]
-								]
-							}
+						"id": "P15",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig",
+								"bds"
+							]
 						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					},
+					{
+						"id": "P16",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"OF",
+								"Oberfeld"
+							],
+							[
+								"MF",
+								"Mittelfeld"
+							],
+							[
+								"UF",
+								"Unterfeld"
+							]
+						],
+						"kind": "mc",
+						"values": [
+							[
+								"OF",
+								false
+							],
+							[
+								"MF",
+								false
+							],
+							[
+								"UF",
+								false
+							]
+						]
+					}
+				],
 				"keys": [
-					"Pleurosis calcaria"
-				]
+					"Pleurosis calcaria",
+					"pleurosis kalcaria"
+				],
+				"text": "Pleurosis Calcaria %P15% [im %P16%]",
+				"judgementText": "Pleurosis Calcaria %P15% [im %P16%]"
 			},
 			{
 				"kind": "box",
 				"name": "Fibrothorax",
 				"value": false,
-				"text": "Fibrothorax %P17% %P18%. ",
-				"judgementText": "Fibrothorax %P17% %P18%. ",
 				"normal": false,
 				"variables": [
-							{
-								"kind": "oc",
-								"id": "P17",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"neu"
-									],
-									[
-										"idem"
-									],
-									[
-										"progred"
-									],
-									[
-										"regred"
-									]
-								],
-								"value": null,
-								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
-								]
-							},
-							{
-								"kind": "oc",
-								"id": "P18",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							}
+					{
+						"id": "P17",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"neu"
+							],
+							[
+								"idem"
+							],
+							[
+								"progred"
+							],
+							[
+								"regred"
+							]
 						],
-				"keys": [
-							"Fibrothorax"
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
+					},
+					{
+						"id": "P18",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig",
+								"bds"
+							]
+						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					}
+				],
+				"keys": [
+					"Fibrothorax"
+				],
+				"text": "Fibrothorax %P18% %P17%",
+				"judgementText": "Fibrothorax %P18% %P17%"
 			},
 			{
 				"kind": "box",
 				"name": "Pleurale Raumforderung",
 				"value": false,
-				"text": "Pleurale Raumforderung %P19% %P20%. ",
-				"judgementText": "Pleurale Raumforderung %P19% %P20%. ",
 				"normal": false,
 				"variables": [
-							{
-								"kind": "oc",
-								"id": "P19",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"neu"
-									],
-									[
-										"idem"
-									],
-									[
-										"progred"
-									],
-									[
-										"regred"
-									]
-								],
-								"value": null,
-								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
-								]
-							},
-							{
-								"kind": "oc",
-								"id": "P20",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							},
-							{
-								"kind": "mc",
-								"id": "P22",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"OF"
-									],
-									[
-										"MF"
-									],
-									[
-										"UF"
-									]
-								],
-								"value": null,
-								"values": [
-									[
-										"OF",
-										false
-									],
-									[
-										"MF",
-										false
-									],
-									[
-										"UF",
-										false
-									]
-								]
-							}
+					{
+						"id": "P19",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"neu"
+							],
+							[
+								"idem"
+							],
+							[
+								"progred"
+							],
+							[
+								"regred"
+							]
 						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
+						]
+					},
+					{
+						"id": "P20",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig",
+								"bds"
+							]
+						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					},
+					{
+						"id": "P21",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"OF",
+								"Oberfeld"
+							],
+							[
+								"MF",
+								"Mittelfeld"
+							],
+							[
+								"UF",
+								"Unterfeld"
+							]
+						],
+						"kind": "mc",
+						"values": [
+							[
+								"OF",
+								false
+							],
+							[
+								"MF",
+								false
+							],
+							[
+								"UF",
+								false
+							]
+						]
+					}
+				],
 				"keys": [
 					"Pleurale Raumforderung"
-				]
+				],
+				"text": "Pleurale Raumforderung %P20% %P19% [im %P21%]"
 			},
 			{
 				"kind": "box",
 				"name": "Z.n. Pleurodese",
 				"value": false,
-				"text": "Z.n. Pleurodese %P21%. ",
-				"judgementText": "Z.n. Pleurodese %P21%. ",
 				"normal": false,
 				"variables": [
-							{
-								"kind": "oc",
-								"id": "P21",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							}
+					{
+						"id": "P22",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig",
+								"bds"
+							]
 						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					}
+				],
 				"keys": [
+					"Pleurodese",
 					"Z.n. Pleurodese"
-				]
+				],
+				"text": "Pleurodese %P22%"
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nMediastinum:\n",
-		"judgementText": null
+		"text": "\n\nMediastinum:\n"
 	},
 	{
 		"kind": "category",
-		"name": "Mediastinum",
+		"name": "Mediastinum ",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "box",
 				"name": "Normal",
 				"value": false,
-				"text": "Mediastinum mittelständig, schlank. ",
-				"judgementText": null,
-				"exclusions": ["Verlagert", "Verbreitert"],
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
 					"Mediastinum normal"
-				]
+				],
+				"text": "Mediastinum mittelständig, schlank. "
 			},
 			{
 				"kind": "box",
 				"name": "Verlagert",
 				"value": false,
-				"text": "Mediastinum [nach %M1%] verlagert. ",
-				"judgementText": null,
-				"exclusions": ["Normal"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "M1",
 						"textBefore": "nach ",
 						"textAfter": "",
@@ -2356,6 +2364,7 @@
 								"links"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -2365,114 +2374,116 @@
 				],
 				"keys": [
 					"Mediastinum verlagert"
-				]
+				],
+				"text": "Mediastinum [nach %M1%] verlagert. "
 			},
 			{
 				"kind": "box",
 				"name": "Verbreitert",
 				"value": false,
-				"text": "Mediastinum [im %M2% Anteil ]verbreitert. ",
-				"judgementText": "Mediastinum [%M2% Drittel] verbreitert. ",
-				"exclusions": ["Normal"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "M2",
-						"textBefore": "",
-						"textAfter": " Drittel",
+						"textBefore": "Im ",
+						"textAfter": " Anteil",
 						"keys": [
 							[
-								"oberes"
+								"oberen"
 							],
 							[
-								"mittleres"
+								"mittleren"
 							],
 							[
-								"unteres"
+								"unteren"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"oberes",
-							"mittleres",
-							"unteres"
+							"oberen",
+							"mittleren",
+							"unteren"
 						]
 					}
 				],
 				"keys": [
 					"Mediastinum verbreitert"
-				]
+				],
+				"text": "Mediastinum [im %M2% Anteil ]verbreitert. ",
+				"judgementText": "Mediastinum [im %M2% Anteil] verbreitert. "
 			}
 		]
 	},
 	{
 		"kind": "enumeration",
 		"text": "Thorakale Aorta ",
-		"judgementText": null,
-		"id": "AZ1"
+		"id": "AZ0"
 	},
 	{
 		"kind": "category",
 		"name": "Aorta",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "box",
 				"name": "Unauffällig",
 				"value": false,
-				"text": "Thorakale Aorta unauffällig konfiguriert.",
-				"judgementText": null,
-				"exclusions": ["Elongiert", "Aortensklerose", "Dilatiert"],
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
 					"Aorta unauffällig"
-				]
+				],
+				"text": "Thorakale Aorta unauffällig konfiguriert."
 			},
 			{
 				"kind": "box",
 				"name": "Elongiert",
 				"value": false,
-				"text": "elongiert",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ1",
 				"normal": false,
+				"exclusions": [
+					"Unauffällig"
+				],
 				"variables": [],
 				"keys": [
 					"Aorta elongiert"
-				]
+				],
+				"text": "elongiert",
+				"enumeration": "AZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Aortensklerose",
 				"value": false,
-				"text": "arteriosklerotisch verkalkt",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ1",
 				"normal": false,
+				"exclusions": [
+					"Unauffällig"
+				],
 				"variables": [],
 				"keys": [
 					"Aorta arteriosklerotisch",
 					"Aortensklerose"
-				]
+				],
+				"text": "arteriosklerotisch verkalkt",
+				"enumeration": "AZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Dilatiert",
 				"value": false,
-				"text": "dilatiert bis %A3% mm im Bereich der %A2%.",
-				"judgementText": "%A2% bis %A3% mm Diameter ektatisch / aneurysmatisch dilatiert. ",
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ1",
 				"normal": false,
+				"exclusions": [
+					"Unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "A2",
+						"id": "A0",
 						"textBefore": "im Bereich der ",
 						"textAfter": "",
 						"keys": [
@@ -2483,6 +2494,7 @@
 								"desc"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"Aorta asc.",
@@ -2490,95 +2502,91 @@
 						]
 					},
 					{
-						"kind": "number",
-						"id": "A3",
+						"id": "A1",
 						"textBefore": "bis ",
 						"textAfter": " mm Diameter",
 						"keys": null,
+						"kind": "number",
 						"value": 0
 					}
 				],
 				"keys": [
 					"Aorta dilatiert"
-				]
+				],
+				"text": "dilatiert bis %A1% mm im Bereich der %A0%.",
+				"judgementText": "%A0% bis %A1% mm Diameter ektatisch / aneurysmatisch dilatiert. ",
+				"enumeration": "AZ0"
 			}
 		]
 	},
 	{
 		"kind": "category",
 		"name": "Herz",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG4",
+				"name": "HG0",
 				"options": [
 					{
-						"kind": "option",
-						"name": "Normal",
-						"text": "Herzsilhouette unauffällig. ",
-						"judgementText": null,
-						"normal": true,
-						"variables": [],
 						"keys": [
 							"Herz normal"
-						]
+						],
+						"kind": "option",
+						"name": "Normal",
+						"normal": true,
+						"text": "Herzsilhouette unauffällig. ",
+						"variables": []
 					},
 					{
-						"kind": "option",
-						"name": "Verbreitert",
-						"text": "Herzsilhouette im Querdurchmesser verbreitert.  ",
-						"judgementText": "Herzsilhouette verbreitert. ",
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Herz verbreitert"
-						]
+						],
+						"kind": "option",
+						"name": "Verbreitert",
+						"normal": false,
+						"text": "Herzsilhouette im Querdurchmesser verbreitert.  ",
+						"variables": [],
+						"judgementText": "Herzsilhouette verbreitert. "
 					},
 					{
-						"kind": "option",
-						"name": "Aortal verbreitert",
-						"text": "Herzsilhouette im Querdurchmesser verbreitert und aortal konfiguriert. ",
-						"judgementText": null,
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Herz aortal verbreitert",
 							"Herz verbreitert aortal"
-						]
+						],
+						"kind": "option",
+						"name": "Aortal verbreitert",
+						"normal": false,
+						"text": "Herzsilhouette im Querdurchmesser verbreitert und aortal konfiguriert. ",
+						"variables": []
 					},
 					{
-						"kind": "option",
-						"name": "Mitral verbreitert",
-						"text": "Herzsilhouette im Querdurchmesser verbreitert und mitral konfiguriert. Trachealbifurkation aufgeweitet. ",
-						"judgementText": null,
-						"normal": false,
-						"variables": [],
 						"keys": [
 							"Herz mitral verbreitert",
 							"Herz verbreitert mitral"
-						]
+						],
+						"kind": "option",
+						"name": "Mitral verbreitert",
+						"normal": false,
+						"text": "Herzsilhouette im Querdurchmesser verbreitert und mitral konfiguriert. Trachealbifurkation aufgeweitet. ",
+						"variables": []
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "box",
 				"name": "Herz-Thorax-Quotient",
 				"value": false,
-				"text": "Die Herz-Thorax-Relation beträgt %H1%. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "ratio",
 						"id": "H1",
 						"textBefore": "beträgt",
 						"textAfter": "",
 						"keys": null,
+						"kind": "ratio",
 						"numerator": 0,
-						"denominator": 0,
-						"fractionDigits": 2
+						"denominator": 0
 					}
 				],
 				"keys": [
@@ -2586,68 +2594,35 @@
 					"HTQ",
 					"HT Quotient",
 					"Herz-Thorax-Quotient"
-				]
+				],
+				"text": "Die Herz-Thorax-Relation beträgt %H1%. "
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nHilusstrukturen / Lunge:\n",
-		"judgementText": null
+		"text": "\n\nHilusstrukturen / Lunge:\n"
 	},
 	{
 		"kind": "category",
 		"name": "Hilus",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG5",
+				"name": "HiG0",
 				"options": [
 					{
-						"kind": "option",
-						"name": "Normal",
-						"text": "Hili gefäßtypisch konfiguriert. ",
-						"judgementText": null,
-						"normal": true,
-						"variables": [
-							{
-								"kind": "oc",
-								"id": "H1",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							}
-						],
 						"keys": [
 							"Hilus normal"
-						]
-					},
-					{
+						],
 						"kind": "option",
-						"name": "Unscharf",
-						"text": "Hili unscharf konfiguriert. ",
-						"judgementText": null,
-						"normal": false,
+						"name": "Normal",
+						"normal": true,
+						"text": "Hili %Hi1% gefäßtypisch konfiguriert. ",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "H2",
+								"id": "Hi1",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -2658,9 +2633,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -2668,21 +2645,55 @@
 									"bds."
 								]
 							}
-						],
+						]
+					},
+					{
 						"keys": [
 							"Hilus unscharf"
+						],
+						"kind": "option",
+						"name": "Unscharf",
+						"normal": false,
+						"text": "Hili %Hi2% unscharf konfiguriert. ",
+						"variables": [
+							{
+								"id": "Hi2",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"rechts"
+									],
+									[
+										"links"
+									],
+									[
+										"beidseitig",
+										"bds"
+									]
+								],
+								"kind": "oc",
+								"value": null,
+								"values": [
+									"re.",
+									"li.",
+									"bds."
+								]
+							}
 						]
 					},
 					{
+						"keys": [
+							"Hilus verplumpt unscharf",
+							"Hilus unscharf verplumpt"
+						],
 						"kind": "option",
 						"name": "Verplumpt",
-						"text": "Hili unscharf konfiguriert, verplumpt. ",
-						"judgementText": null,
 						"normal": false,
+						"text": "Hili %Hi3% unscharf konfiguriert, verplumpt. ",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "H3",
+								"id": "Hi3",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -2693,9 +2704,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -2703,22 +2716,19 @@
 									"bds."
 								]
 							}
-						],
-						"keys": [
-							"Hilus verplumpt",
-							"Hilus verplumpt"
 						]
 					},
 					{
+						"keys": [
+							"Hilus verlagert"
+						],
 						"kind": "option",
 						"name": "Verlagert",
-						"text": "Hili verlagert. ",
-						"judgementText": null,
 						"normal": false,
+						"text": "Hilus %Hi4% verlagert",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "H4",
+								"id": "Hi4",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -2729,9 +2739,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -2739,92 +2751,78 @@
 									"bds."
 								]
 							}
-						],
-						"keys": [
-							"Hilus verplumpt",
-							"Hilus verplumpt"
 						]
 					}
-				],
-				"value": null
+				]
 			}
 		]
 	},
 	{
 		"kind": "category",
 		"name": "PV-Stauung",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG6",
+				"name": "PVG0",
 				"options": [
 					{
+						"keys": [
+							"Keine PV-Stauung",
+							"Keine PV Stauung"
+						],
 						"kind": "option",
 						"name": "Keine PV-Stauung",
-						"text": "Zentrale und periphere Lungengefäßzeichnung regulär, keine Kerley-Lines abzugrenzen. ",
-						"judgementText": "Keine pv-Stauung. ",
 						"normal": true,
+						"text": "Zentrale und periphere Lungengefäßzeichnung regulär, keine Kerley-Lines abzugrenzen. ",
 						"variables": [],
-						"keys": [
-							"kein pv Stau"
-						]
+						"judgementText": "Keine pv-Stauung. "
 					},
 					{
+						"keys": [
+							"PV-Stauung Stadium 1",
+							"basoapikale Umverteilung"
+						],
 						"kind": "option",
 						"name": "Stadium 1, basoapikale Umverteilung",
-						"text": "Pulmonalvenöse Umverteilung mit dilatierten, scharf begrenzten Oberlappengefäßen (vaskuläre Kranialisation) und normalem Lungeninterstitium. ",
-						"judgementText": "PV-Stauung °I. ",
 						"normal": false,
+						"text": "Pulmonalvenöse Umverteilung mit dilatierten, scharf begrenzten Oberlappengefäßen (vaskuläre Kranialisation) und normalem Lungeninterstitium. ",
 						"variables": [],
-						"keys": [
-							"Grad 1",
-							"pv Stau Grad 1",
-							"pv Stau 1",
-							"Grad I"
-						]
+						"judgementText": "PV-Stauung °I. %PV1%"
 					},
 					{
+						"keys": [
+							"PV-Stauung Stadium 2",
+							"interstitelles Ödem"
+						],
 						"kind": "option",
 						"name": "Stadium 2, interstitelles Ödem",
-						"text": "Mäßige Hypervolämie mit dilatierten, unscharf begrenzten Oberlappengefäßen und Bronchialmanschettenzeichen. ",
-						"judgementText": "PV-Stauung °II. ",
 						"normal": false,
+						"text": "Mäßige Hypervolämie mit dilatierten, unscharf begrenzten Oberlappengefäßen und Bronchialmanschettenzeichen. ",
 						"variables": [],
-						"keys": [
-							"Grad 2",
-							"pv Stau Grad 2",
-							"pv Stau 2",
-							"Grad II"
-						]
+						"judgementText": "PV-Stauung °II. %PV1%"
 					},
 					{
+						"keys": [
+							"PV-Stauung Stadium 3",
+							"alveolares Ödem"
+						],
 						"kind": "option",
 						"name": "Stadium 3, alveolares Ödem",
-						"text": "Deutliche Hypervolämie mit zentral unscharf begrenzten Lungengefäßen, Bronchialmanschettenzeichen und vermehrter interstitieller Zeichnung einschließlich Kerley-Linien (interstitielles Lungenödem). ",
-						"judgementText": "PV-Stauung °III. ",
 						"normal": false,
+						"text": "Deutliche Hypervolämie mit zentral unscharf begrenzten Lungengefäßen, Bronchialmanschettenzeichen und vermehrter interstitieller Zeichnung einschließlich Kerley-Linien (interstitielles Lungenödem). ",
 						"variables": [],
-						"keys": [
-							"Grad 3",
-							"pv Stau Grad 3",
-							"pv Stau 3",
-							"Grad III"
-						]
+						"judgementText": "PV-Stauung °III. %PV1%"
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "box",
 				"name": "Status",
 				"value": false,
-				"text": "%PV1%. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "PV1",
 						"textBefore": "",
 						"textAfter": "",
@@ -2842,20 +2840,25 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					}
 				],
 				"keys": [
-					"Status"
+					"PV-Stauung Status"
 				]
 			}
 		]
+	},
+	{
+		"kind": "block",
+		"text": "\n\nLunge:\n"
 	},
 	{
 		"kind": "category",
@@ -2864,28 +2867,158 @@
 		"selectables": [
 			{
 				"kind": "group",
-				"name": "CG7",
+				"name": "PuG0",
 				"options": [
 					{
-						"kind": "option",
-						"name": "Keine Pneumonie",
-						"text": "Keine konfluierenden Infiltrate.",
-						"judgementText": "Kein Anhalt für entzündliche Konsolidierungen. ",
-						"normal": true,
-						"variables": [],
 						"keys": [
 							"Keine Pneumonie"
-						]
+						],
+						"kind": "option",
+						"name": "Keine Pneumonie",
+						"normal": true,
+						"text": "Keine konfluierenden Infiltrate.",
+						"variables": [],
+						"judgementText": "Kein Anhalt für entzündliche Konsolidierungen. "
 					},
 					{
+						"keys": [
+							"Pneumonie"
+						],
 						"kind": "option",
 						"name": "Pneumonie",
-						"text": "Flächig-inhomogene Verdichtungen [im %Pn2%] %Pn1%.",
-						"judgementText": "Verdichtungen  [im %Pn2%] %Pn1%, %Pn4%[, %Pn3% pulmonale Infiltrate(n)]. ",
 						"normal": false,
+						"text": "%Pn0% Flächig-inhomogene Verdichtungen [im %Pn2%] %Pn1%.",
 						"variables": [
 							{
+								"id": "Pn0",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"neu"
+									],
+									[
+										"idem"
+									],
+									[
+										"progred"
+									],
+									[
+										"regred"
+									]
+								],
 								"kind": "oc",
+								"value": null,
+								"values": [
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
+								]
+							},
+							{
+								"id": "Pn1",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"rechts"
+									],
+									[
+										"links"
+									],
+									[
+										"beidseitig",
+										"bds"
+									]
+								],
+								"kind": "oc",
+								"value": null,
+								"values": [
+									"re.",
+									"li.",
+									"bds."
+								]
+							},
+							{
+								"id": "Pn2",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"OL",
+										"Oberfeld",
+										"Oberlappen"
+									],
+									[
+										"UL",
+										"Unterfeld",
+										"Unterlappen"
+									],
+									[
+										"ML",
+										"Mittelfeld",
+										"Mittellappen"
+									]
+								],
+								"kind": "oc",
+								"value": null,
+								"values": [
+									"OL",
+									"UL",
+									"ML"
+								]
+							},
+							{
+								"id": "Pn3",
+								"textBefore": "",
+								"textAfter": "",
+								"keys": [
+									[
+										"suspekt"
+									],
+									[
+										"passend"
+									]
+								],
+								"kind": "oc",
+								"value": null,
+								"values": [
+									"suspekt für",
+									"passend zu"
+								]
+							}
+						],
+						"judgementText": "Verdichtungen  [im %Pn2%] %Pn1%, [%Pn3% pulmonale Infiltrate(n).]"
+					}
+				]
+			},
+			{
+				"kind": "group",
+				"name": "PuG1",
+				"options": [
+					{
+						"keys": [
+							"keine Raumforderung"
+						],
+						"kind": "option",
+						"name": "Keine Raumforderung",
+						"normal": false,
+						"text": "Kein Nachweis einer malignitätssuspekten Raumforderung im Summationsbild.",
+						"variables": [],
+						"judgementText": "Kein suspekter Rundherd pulmonal."
+					},
+					{
+						"keys": [
+							"Pulmonale Raumforderung",
+							"Raumforderung"
+						],
+						"kind": "option",
+						"name": "Pulmonale Raumforderung",
+						"normal": false,
+						"text": "Tumorverdächtige Raumforderung %Pn5% %Pn4% mit folgenden Charakteristika: [Lage im %Pn6%,] [Ausdehnung über %Pn7% cm,] [Form %Pn8%,]  [Begrenzung %Pn9%.]",
+						"variables": [
+							{
 								"id": "Pn4",
 								"textBefore": "",
 								"textAfter": "",
@@ -2903,17 +3036,17 @@
 										"regred"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "Pn1",
+								"id": "Pn5",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -2924,9 +3057,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -2935,216 +3070,67 @@
 								]
 							},
 							{
-								"kind": "mc",
-								"id": "Pn2",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"OL",
-										"Oberlappen"
-									],
-									[
-										"UL",
-										"Unterlappen"
-									],
-									[
-										"ML",
-										"Mittellappen"
-									],
-									[
-										"Oberfeld",
-										"OF"
-									],
-									[
-										"MF",
-										"Mittelfeld"
-									],
-									[
-										"UF",
-										"Unterfeld"
-									]
-								],
-								"values": [
-									[
-										"OL",
-										false
-									],
-									[
-										"UL",
-										false
-									],
-									[
-										"ML",
-										false
-									],
-									[
-										"OF",
-										false
-									],
-									[
-										"MF",
-										false
-									],
-									[
-										"UF",
-										false
-									]
-								]
-							},
-							{
-								"kind": "text",
-								"id": "Pn3",
-								"textBefore": "suspekt für/passend zu ",
-								"textAfter": "",
-								"keys": null,
-								"value": ""
-							}
-						],
-						"keys": [
-							"Pneumonie"
-						]
-					}
-				],
-				"value": null
-			},
-			{
-				"kind": "group",
-				"name": "CG8",
-				"options": [
-					{
-						"kind": "option",
-						"name": "Keine Raumforderung",
-						"text": "Kein Nachweis einer malignitätssuspekten Raumforderung im Summationsbild.",
-						"judgementText": "Kein suspekter Rundherd pulmonal.",
-						"normal": true,
-						"variables": [],
-						"keys": [
-							"keine Raumforderung"
-						]
-					},
-					{
-						"kind": "option",
-						"name": "Pulmonale Raumforderung",
-						"text": "Tumorverdächtige Raumforderung mit folgenden Charakteristika: [Lage im %L1%,] [Ausdehnung über %L2% cm,] [Form %L3%,]  [Begrenzung %L4%.]",
-						"judgementText": "Malignitätssuspekter Rundherd im %L1%. ",
-						"normal": false,
-						"variables": [
-							{
-								"kind": "oc",
-								"id": "L5",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"neu"
-									],
-									[
-										"idem"
-									],
-									[
-										"progred"
-									],
-									[
-										"regred"
-									]
-								],
-								"value": null,
-								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
-								]
-							},
-							{
-								"kind": "oc",
-								"id": "L11",
-								"textBefore": "",
-								"textAfter": "",
-								"keys": [
-									[
-										"rechts"
-									],
-									[
-										"links"
-									],
-									[
-										"beidseitig"
-									]
-								],
-								"value": null,
-								"values": [
-									"re.",
-									"li.",
-									"bds."
-								]
-							},
-							{
-								"kind": "text",
-								"id": "L1",
+								"id": "Pn6",
 								"textBefore": "Lage im ",
 								"textAfter": "",
 								"keys": null,
+								"kind": "text",
 								"value": ""
 							},
 							{
-								"kind": "number",
-								"id": "L2",
+								"id": "Pn7",
 								"textBefore": "Ausdehnung über ",
 								"textAfter": " cm",
 								"keys": null,
+								"kind": "number",
 								"value": 0
 							},
 							{
-								"kind": "text",
-								"id": "L3",
+								"id": "Pn8",
 								"textBefore": "Form ",
 								"textAfter": "",
 								"keys": null,
+								"kind": "text",
 								"value": ""
 							},
 							{
-								"kind": "text",
-								"id": "L4",
+								"id": "Pn9",
 								"textBefore": "Begrenzung ",
 								"textAfter": "",
 								"keys": null,
+								"kind": "text",
 								"value": ""
 							}
 						],
-						"keys": [
-							"Raumforderung"
-						]
+						"judgementText": "Malignitätssuspekter Rundherd im %Pn4%. "
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "group",
-				"name": "CG9",
+				"name": "PuG2",
 				"options": [
 					{
+						"keys": [
+							"Kein Rundherd"
+						],
 						"kind": "option",
 						"name": "Kein Rundherd",
-						"text": "Kein Rundherd.",
-						"judgementText": "Kein Rundherd.",
-						"normal": true,
-						"variables": [],
-						"keys": [
-							"kein Rundherd"
-						]
+						"normal": false,
+						"text": "Kein Nacahweis eines Rundherdes",
+						"variables": []
 					},
 					{
+						"keys": [
+							"Rundherd"
+						],
 						"kind": "option",
 						"name": "Rundherd",
-						"text": "Rundherd %L6%, %L7% im %L8%, Ausdehnung über %L9%, %L10%. ",
-						"judgementText": "Rundherd %L6%, %L7% im %L8%, Ausdehnung über %L9%, %L10%. ",
 						"normal": false,
+						"text": "Tumorverdächtiger Rundherd %Pn11% %Pn10% [im %Pn12%], [Ausdehnung über %Pn13% cm, ]%Pn14%",
 						"variables": [
 							{
-								"kind": "oc",
-								"id": "L6",
+								"id": "Pn10",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -3161,17 +3147,17 @@
 										"regred"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
-									"neu",
-									"idem",
-									"progred.",
-									"regred."
+									"Neu",
+									"Idem",
+									"Progred.",
+									"Regred."
 								]
 							},
 							{
-								"kind": "oc",
-								"id": "L7",
+								"id": "Pn11",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -3182,9 +3168,11 @@
 										"links"
 									],
 									[
-										"beidseitig"
+										"beidseitig",
+										"bds"
 									]
 								],
+								"kind": "oc",
 								"value": null,
 								"values": [
 									"re.",
@@ -3193,8 +3181,7 @@
 								]
 							},
 							{
-								"kind": "mc",
-								"id": "L8",
+								"id": "Pn12",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -3211,11 +3198,13 @@
 										"Mittellappen"
 									],
 									[
-										"Oberfeld",
-										"OF"
+										"OF",
+										"Oberfeld"
 									],
 									[
-										"MF",
+										"MF"
+									],
+									[
 										"Mittelfeld"
 									],
 									[
@@ -3223,6 +3212,7 @@
 										"Unterfeld"
 									]
 								],
+								"kind": "mc",
 								"values": [
 									[
 										"OL",
@@ -3251,16 +3241,15 @@
 								]
 							},
 							{
-								"kind": "number",
-								"id": "L9",
+								"id": "Pn13",
 								"textBefore": "Ausdehnung über ",
 								"textAfter": " cm",
 								"keys": null,
+								"kind": "number",
 								"value": 0
 							},
 							{
-								"kind": "mc",
-								"id": "L10",
+								"id": "Pn14",
 								"textBefore": "",
 								"textAfter": "",
 								"keys": [
@@ -3268,46 +3257,36 @@
 										"am ehesten Mamillenschatten"
 									]
 								],
-								"values": [
-									[
-										"am ehesten Mamillenschatten",
-										false
-									]
-								]
+								"value": {
+									"year": 2019,
+									"month": 1,
+									"day": 1
+								},
+								"kind": "date"
 							}
-						],
-						"keys": [
-							"Rundherd"
 						]
 					}
-				],
-				"value": null
+				]
 			},
 			{
 				"kind": "box",
 				"name": "Lungenemphysem",
 				"value": false,
-				"text": "Lungenemphysem vorhanden. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [],
 				"keys": [
 					"Lungenemphysem"
-				]
+				],
+				"text": "Lungenemphysem vorhanden."
 			},
 			{
 				"kind": "box",
 				"name": "Dystelektase",
 				"value": false,
-				"text": "%D1% Minderbelüftungen %D2% [betont im %D3%.]",
-				"judgementText": "Minderbelüftungen [im %D3%.,] %D2%",
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "D6",
+						"id": "Pu0",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3324,17 +3303,17 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "D1",
+						"id": "Pu1",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3347,15 +3326,15 @@
 								"flächig"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"streifenförmige",
-							"flächige"
+							"Streifenförmige",
+							"Flächige"
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "D2",
+						"id": "Pu2",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3366,9 +3345,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3377,23 +3358,51 @@
 						]
 					},
 					{
-						"kind": "mc",
-						"id": "D3",
+						"id": "Pu3",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
+								"OL",
+								"Oberlappen"
+							],
+							[
+								"UL",
+								"Unterlappen"
+							],
+							[
+								"ML",
+								"Mittellappen"
+							],
+							[
+								"OF",
 								"Oberfeld"
+							],
+							[
+								"MF"
 							],
 							[
 								"Mittelfeld"
 							],
 							[
-								"Unterfeld",
-								"retrokardial"
+								"UF",
+								"Unterfeld"
 							]
 						],
+						"kind": "mc",
 						"values": [
+							[
+								"OL",
+								false
+							],
+							[
+								"UL",
+								false
+							],
+							[
+								"ML",
+								false
+							],
 							[
 								"OF",
 								false
@@ -3412,20 +3421,18 @@
 				"keys": [
 					"Dystelektase",
 					"Minderbelüftung"
-				]
+				],
+				"text": "%Pu1% Minderbelüftungen %Pu2% %Pu0% [betont im %Pu3%.]",
+				"judgementText": "Minderbelüftungen [im %Pu3%.,] %Pu2% %Pu0%"
 			},
 			{
 				"kind": "box",
 				"name": "Atelektase",
 				"value": false,
-				"text": "Atelektase [des %D5% ]%D4%.",
-				"judgementText": "Atelektase [des %D5%] %D4%. ",
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "D7",
+						"id": "Pu4",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3442,17 +3449,17 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "D4",
+						"id": "Pu5",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3467,6 +3474,7 @@
 								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3475,36 +3483,27 @@
 						]
 					},
 					{
-						"kind": "mc",
-						"id": "D5",
+						"id": "Pu6",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
 								"OL",
+								"Oberfeld",
 								"Oberlappen"
 							],
 							[
 								"UL",
+								"Unterfeld",
 								"Unterlappen"
 							],
 							[
 								"ML",
+								"Mittelfeld",
 								"Mittellappen"
-							],
-							[
-								"Oberfeld",
-								"OF"
-							],
-							[
-								"MF",
-								"Mittelfeld"
-							],
-							[
-								"UF",
-								"Unterfeld"
 							]
 						],
+						"kind": "mc",
 						"values": [
 							[
 								"OL",
@@ -3516,18 +3515,6 @@
 							],
 							[
 								"ML",
-								false
-							],
-							[
-								"OF",
-								false
-							],
-							[
-								"MF",
-								false
-							],
-							[
-								"UF",
 								false
 							]
 						]
@@ -3535,20 +3522,18 @@
 				],
 				"keys": [
 					"Atelektase"
-				]
+				],
+				"text": "Atelektase [des %Pu6% ]%Pu5% %Pu4%.",
+				"judgementText": "Atelektase [des %Pu6%] %Pu5%. "
 			},
 			{
 				"kind": "box",
 				"name": "Kaverne",
 				"value": false,
-				"text": "Kaverne %Ka1%, %Ka2% im %Ka3%. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "Ka1",
+						"id": "Pu7",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3565,17 +3550,17 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "Ka2",
+						"id": "Pu8",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3586,9 +3571,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3597,36 +3584,27 @@
 						]
 					},
 					{
-						"kind": "mc",
-						"id": "Ka3",
+						"id": "Pu9",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
 								"OL",
+								"Oberfeld",
 								"Oberlappen"
 							],
 							[
 								"UL",
+								"Unterfeld",
 								"Unterlappen"
 							],
 							[
 								"ML",
+								"Mittelfeld",
 								"Mittellappen"
-							],
-							[
-								"Oberfeld",
-								"OF"
-							],
-							[
-								"MF",
-								"Mittelfeld"
-							],
-							[
-								"UF",
-								"Unterfeld"
 							]
 						],
+						"kind": "mc",
 						"values": [
 							[
 								"OL",
@@ -3639,38 +3617,24 @@
 							[
 								"ML",
 								false
-							],
-							[
-								"OF",
-								false
-							],
-							[
-								"MF",
-								false
-							],
-							[
-								"UF",
-								false
 							]
 						]
 					}
 				],
 				"keys": [
-					"Bulla"
-				]
+					"Kaverna"
+				],
+				"text": "Kaverne [des %Pu9% ]%Pu8% %Pu7%.",
+				"judgementText": "Kaverne [des %Pu9%] %Pu8%. "
 			},
 			{
 				"kind": "box",
 				"name": "Bulla",
 				"value": false,
-				"text": "Bulla %Bu1%, %Bu2% im %Bu3%. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "Bu1",
+						"id": "Pu10",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3687,17 +3651,17 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "Bu2",
+						"id": "Pu11",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3708,9 +3672,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3719,36 +3685,27 @@
 						]
 					},
 					{
-						"kind": "mc",
-						"id": "Bu3",
+						"id": "Pu12",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
 							[
 								"OL",
+								"Oberfeld",
 								"Oberlappen"
 							],
 							[
 								"UL",
+								"Unterfeld",
 								"Unterlappen"
 							],
 							[
 								"ML",
+								"Mittelfeld",
 								"Mittellappen"
-							],
-							[
-								"Oberfeld",
-								"OF"
-							],
-							[
-								"MF",
-								"Mittelfeld"
-							],
-							[
-								"UF",
-								"Unterfeld"
 							]
 						],
+						"kind": "mc",
 						"values": [
 							[
 								"OL",
@@ -3761,75 +3718,63 @@
 							[
 								"ML",
 								false
-							],
-							[
-								"OF",
-								false
-							],
-							[
-								"MF",
-								false
-							],
-							[
-								"UF",
-								false
 							]
 						]
 					}
 				],
 				"keys": [
 					"Bulla"
-				]
+				],
+				"text": "Bulla [des %Pu12% ]%Pu11% %Pu10%.",
+				"judgementText": "Bulla [des %Pu12%] %Pu11%. "
 			},
 			{
 				"kind": "box",
 				"name": "Lobus venae azygos",
 				"value": false,
-				"text": "Lobus venae azygos vorhanden. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
 				"variables": [],
 				"keys": [
 					"Lobus venae azygos"
-				]
+				],
+				"text": "Lobus venae azygos."
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nOberbauch:\n",
-		"judgementText": null
+		"text": "\n\nOberbauch:\n"
 	},
 	{
 		"kind": "category",
 		"name": "Oberbauch",
+		"optional": false,
 		"selectables": [
 			{
 				"kind": "box",
 				"name": "Normal",
 				"value": false,
-				"text": "Unauffällige Darstellung des miterfassten Oberbauchs, soweit unspezifische Darmgasverteilung. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
 					"Oberbauch normal"
-				]
+				],
+				"text": "Unauffällige Darstellung des miterfassten Oberbauchs, soweit unspezifische Darmgasverteilung. "
 			},
 			{
 				"kind": "box",
 				"name": "Zwerchfellhochstand",
 				"value": false,
-				"text": "Zwerchfellhochstand %Zw1%. ",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": true,
+				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "Zw1",
+						"id": "O0",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3840,9 +3785,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3853,126 +3800,93 @@
 				],
 				"keys": [
 					"Zwerchfellhochstand"
-				]
+				],
+				"text": "Zwerchfellhochstand %O0%"
 			},
 			{
 				"kind": "box",
 				"name": "Z.n. CHE",
 				"value": false,
-				"text": "Z.n. CHE bei entsprechend projizierten OP-Clips im li. OB. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [],
 				"keys": [
 					"CHE",
 					"Cholezystektomie",
 					"Cholecystektomie"
-				]
+				],
+				"text": "Z.n. CHE bei entsprechend projizierten OP-Clips im li. OB. "
 			},
 			{
 				"kind": "box",
 				"name": "Cholezystolithiasis",
 				"value": false,
-				"text": "Cholezystolithiasis. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [],
 				"keys": [
 					"Cholezystolithiasis"
-				]
+				],
+				"text": "Cholezystolithiasis vorhanden."
 			},
 			{
 				"kind": "box",
 				"name": "Hiatushernie",
 				"value": false,
-				"text": "Hiatushernie. ",
-				"judgementText": null,
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [],
 				"keys": [
 					"Hiatushernie"
-				]
+				],
+				"text": "Hiatushernie vorhanden."
 			},
 			{
 				"kind": "box",
 				"name": "Ileus",
 				"value": false,
-				"text": "Luftdistendierte Darmschlingen im OB miterfasst. ",
-				"judgementText": "Luftdistendierte Darmschlingen im OB miterfasst, Ileus mgl.. Ggf. weitere Abklärung. ",
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [],
 				"keys": [
 					"Ileus"
-				]
+				],
+				"text": "Luftdistendierte Darmschlingen im OB miterfasst. ",
+				"judgementText": "Luftdistendierte Darmschlingen im OB miterfasst, Ileus mgl.. Ggf. weitere Abklärung. "
 			},
 			{
 				"kind": "box",
 				"name": "Meteorismus",
 				"value": false,
-				"text": "Meteorismus. ",
-				"judgementText": "Meteorismus. ",
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [],
 				"keys": [
 					"Meteorismus"
-				]
+				],
+				"text": "Meteorismus vorhanden."
 			},
 			{
 				"kind": "box",
 				"name": "Freie abdominelle Luft (FAL)",
 				"value": false,
-				"text": "Miterfasste FAL %O1% subdiaphragmal im OB. ",
-				"judgementText": "Miterfasste FAL; weitere Abklärung notwendig. ",
-				"enumeration": null,
 				"normal": false,
-				"variables": [],
-				"keys": [
-					"Freie abdominelle Luft",
-					"FAL"
-				]
-			}
-		]
-	},
-	{
-		"kind": "block",
-		"text": "\n\nWT-Mantel:\n",
-		"judgementText": null
-	},
-	{
-		"kind": "category",
-		"name": "Weichteile",
-		"selectables": [
-			{
-				"kind": "box",
-				"name": "Weichteile normal",
-				"value": false,
-				"text": "Unauffällige Darstellung des umgebenden Weichteilmantels im Summationsbild.",
-				"judgementText": null,
-				"enumeration": null,
-				"normal": true,
-				"variables": [],
-				"keys": [
-					"WT normal",
-					"Weichteile normal"
-				]
-			},
-			{
-				"kind": "box",
-				"name": "Mastektomie",
-				"value": false,
-				"text": "Mastektomie %Mas1%. ",
-				"judgementText": "Mastektomie %Mas1%. ",
-				"enumeration": null,
-				"normal": false,
+				"exclusions": [
+					"Normal"
+				],
 				"variables": [
-				{
-						"kind": "oc",
-						"id": "Mas1",
+					{
+						"id": "O1",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -3983,9 +3897,78 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
+						"value": null,
+						"values": [
+							"re.",
+							"li.",
+							"bds."
+						]
+					}
+				],
+				"keys": [
+					"FAL",
+					"Freie abdominelle Luft"
+				],
+				"text": "Miterfasste FAL %O1% subdiaphragmal im OB. ",
+				"judgementText": "Miterfasste FAL; weitere Abklärung notwendig. "
+			}
+		]
+	},
+	{
+		"kind": "block",
+		"text": "\n\nWT-Mantel:\n"
+	},
+	{
+		"kind": "category",
+		"name": "Weichteile",
+		"optional": false,
+		"selectables": [
+			{
+				"kind": "box",
+				"name": "Weichteile normal",
+				"value": false,
+				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
+				"variables": [],
+				"keys": [
+					"WT normal",
+					"Weichteile normal"
+				],
+				"text": "Unauffällige Darstellung des umgebenden Weichteilmantels im Summationsbild."
+			},
+			{
+				"kind": "box",
+				"name": "Mastektomie",
+				"value": false,
+				"normal": false,
+				"exclusions": [
+					"Weichteile normal"
+				],
+				"variables": [
+					{
+						"id": "W7",
+						"textBefore": "",
+						"textAfter": "",
+						"keys": [
+							[
+								"rechts"
+							],
+							[
+								"links"
+							],
+							[
+								"beidseitig",
+								"bds"
+							]
+						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -3996,41 +3979,42 @@
 				],
 				"keys": [
 					"Mastektomie"
-				]
+				],
+				"text": "Mastektomie %W7%"
 			},
 			{
 				"kind": "box",
 				"name": "Verkalkung",
 				"value": false,
-				"text": "Verkalkung. ",
-				"judgementText": "Verkalkung. ",
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Weichteile normal"
+				],
 				"variables": [
-				{
-					"kind": "text",
-					"id":	"Verk1",
-					"textBefore": "Lokalisation: ",
-					"textAfter": "",
-					"keys": null,
-					"value": ""
-				}
+					{
+						"id": "W8",
+						"textBefore": "Lokalisation: ",
+						"textAfter": "",
+						"keys": null,
+						"kind": "text",
+						"value": ""
+					}
 				],
 				"keys": [
 					"Verkalkung"
-				]
+				],
+				"text": "Verkalkung [lokalisiert in %W8%]"
 			},
 			{
 				"kind": "box",
 				"name": "Weichteile-Emphysem",
 				"value": false,
-				"text": "[%W2%es] Weichteile-Emphysem %W1% [(%W3% zur VU).]",
-				"judgementText": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Weichteile normal"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "W1",
 						"textBefore": "",
 						"textAfter": "",
@@ -4046,6 +4030,7 @@
 								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -4054,7 +4039,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "W2",
 						"textBefore": "",
 						"textAfter": "",
@@ -4069,15 +4053,15 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "W3",
 						"textBefore": "",
 						"textAfter": "",
@@ -4095,31 +4079,34 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					}
 				],
 				"keys": [
 					"Weichteil Emphysem",
-					"WT Emphysem"
-				]
+					"WT Emphysem",
+					"Weichteile Emphysem"
+				],
+				"text": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]",
+				"judgementText": "[%W2%es] Weichteilemphysem %W1% [(%W3% zur VU).]"
 			},
 			{
 				"kind": "box",
 				"name": "weiteres Weichteile-Emphysem",
 				"value": false,
-				"text": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
-				"judgementText": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Weichteile normal"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "W4",
 						"textBefore": "",
 						"textAfter": "",
@@ -4131,9 +4118,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -4142,7 +4131,6 @@
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "W5",
 						"textBefore": "",
 						"textAfter": "",
@@ -4157,15 +4145,15 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					},
 					{
-						"kind": "oc",
 						"id": "W6",
 						"textBefore": "",
 						"textAfter": "",
@@ -4183,32 +4171,34 @@
 								"regred"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"neu",
-							"idem",
-							"progred.",
-							"regred."
+							"Neu",
+							"Idem",
+							"Progred.",
+							"Regred."
 						]
 					}
 				],
 				"keys": [
 					"weiteres Weichteil Emphysem",
-					"weiteres WT Emphysem"
-				]
+					"weiteres WT Emphysem",
+					"weiteres Weichteile Emphysem"
+				],
+				"text": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]",
+				"judgementText": "[%W5%es] Weichteilemphysem %W4% [(%W6% zur VU).]"
 			}
 		]
 	},
 	{
 		"kind": "block",
-		"text": "\n\nSkelett:\n",
-		"judgementText": null
+		"text": "\n\nSkelett:\n"
 	},
 	{
 		"kind": "enumeration",
 		"text": "Degenerative Veränderungen ",
-		"judgementText": null,
-		"id": "AZ2"
+		"id": "SZ0"
 	},
 	{
 		"kind": "category",
@@ -4217,30 +4207,30 @@
 		"selectables": [
 			{
 				"kind": "box",
-				"name": "Unauffällig",
+				"name": "Skelett unauffällig",
 				"value": false,
-				"text": "Keine relevanten degenerativen Veränderungen.",
-				"judgementText": null,
-				"exclusions": ["Gefügestörung", "Osteochondrose", "Spondylosis deformans", "Metastasen", "Skoliose", "Halsrippe", "Trichterbrust", "Spondylarthrose", "ACG-Arthrose", "Omarthrose", "Fraktur"],
-				"enumeration": null,
 				"normal": true,
+				"exclusions": [
+					"Rest"
+				],
 				"variables": [],
 				"keys": [
-					"kUnauffällig"
-				]
+					"keine Degenerationen",
+					"keine Degeneration",
+					"Skelett unauffällig"
+				],
+				"text": "Keine relevanten degenerativen Veränderungen."
 			},
 			{
 				"kind": "box",
 				"name": "Gefügestörung",
 				"value": false,
-				"text": "Gefügestörung %S8% [auf Höhe %S9%]",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S8",
 						"textBefore": "",
 						"textAfter": "",
@@ -4255,38 +4245,39 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					},
 					{
-						"kind": "text",
 						"id": "S9",
-						"textBefore": "auf Höhe ",
+						"textBefore": "auf Höhe …",
 						"textAfter": "",
 						"keys": null,
+						"kind": "text",
 						"value": ""
 					}
 				],
 				"keys": [
 					"Gefügestörung"
-				]
+				],
+				"text": "des Gefüges %S8% [auf Höhe %S9%]",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Osteochondrose",
 				"value": false,
-				"text": "Osteochondrose %S10% [auf Höhe %S11%]",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S10",
 						"textBefore": "",
 						"textAfter": "",
@@ -4301,52 +4292,54 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					},
 					{
-						"kind": "text",
 						"id": "S11",
-						"textBefore": "auf Höhe ",
+						"textBefore": "auf Höhe …",
 						"textAfter": "",
 						"keys": null,
+						"kind": "text",
 						"value": ""
 					}
 				],
 				"keys": [
 					"Osteochondrose"
-				]
+				],
+				"text": "Osteochondrose %S10% [auf Höhe %S11%]",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Spondylosis deformans",
 				"value": false,
-				"text": "Spondylosis deformans",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [],
 				"keys": [
 					"Spondylosis deformans"
-				]
+				],
+				"text": "Spondylosis deformans",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Metastasen",
 				"value": false,
-				"text": "Metastasen %S12% [auf Höhe %S13%]. ",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S12",
 						"textBefore": "",
 						"textAfter": "",
@@ -4361,6 +4354,7 @@
 								"gemischt"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"osteoblastisch",
@@ -4369,30 +4363,29 @@
 						]
 					},
 					{
-						"kind": "text",
 						"id": "S13",
-						"textBefore": "auf Höhe ",
+						"textBefore": "auf Höhe …",
 						"textAfter": "",
 						"keys": null,
+						"kind": "text",
 						"value": ""
 					}
 				],
 				"keys": [
 					"Metastasen"
-				]
+				],
+				"text": "Metastasen vorhanden %S12% [auf Höhe %S13%]"
 			},
 			{
 				"kind": "box",
 				"name": "Skoliose",
 				"value": false,
-				"text": "Skoliose %S14%",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S14",
 						"textBefore": "",
 						"textAfter": "",
@@ -4407,6 +4400,7 @@
 								"s-förmig"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"rechtskonvex",
@@ -4417,20 +4411,20 @@
 				],
 				"keys": [
 					"Skoliose"
-				]
+				],
+				"text": "Skoliose %S14%",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Halsrippe",
 				"value": false,
-				"text": "Halsrippe %S15%",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S15",
 						"textBefore": "",
 						"textAfter": "",
@@ -4442,9 +4436,11 @@
 								"links"
 							],
 							[
-								"beidseitig"
+								"beidseitig",
+								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -4455,34 +4451,34 @@
 				],
 				"keys": [
 					"Halsrippe"
-				]
+				],
+				"text": "der Halsrippe [(%S15%)]",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Trichterbrust",
 				"value": false,
-				"text": "Trichterbrust",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [],
 				"keys": [
 					"Trichterbrust"
-				]
+				],
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Spondylarthrose",
 				"value": false,
-				"text": "der Wirbelsäule [(%S1%)]",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S1",
 						"textBefore": "",
 						"textAfter": "",
@@ -4497,31 +4493,32 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					}
 				],
 				"keys": [
 					"Spondylarthrose",
 					"Spondilarthrose"
-				]
+				],
+				"text": "der Wirbelsäule [(%S1%)]",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "ACG-Arthrose",
 				"value": false,
-				"text": "des AC-Gelenks (%S2%, %S6%)",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
 						"id": "S2",
 						"textBefore": "",
 						"textAfter": "",
@@ -4537,6 +4534,7 @@
 								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -4545,8 +4543,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "S6",
+						"id": "S3",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -4560,32 +4557,33 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					}
 				],
 				"keys": [
 					"ACG Arthrose",
 					"ACG-Arthrose"
-				]
+				],
+				"text": "des AC-Gelenks (%S2%, %S3%)",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Omarthrose",
 				"value": false,
-				"text": "des Schultergelenks [%S3%,] [%S7%].",
-				"judgementText": null,
-				"exclusions": ["Unauffällig"],
-				"enumeration": "AZ2",
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "S3",
+						"id": "S4",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -4600,6 +4598,7 @@
 								"bds"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
 							"re.",
@@ -4608,8 +4607,7 @@
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "S7",
+						"id": "S5",
 						"textBefore": "",
 						"textAfter": "",
 						"keys": [
@@ -4623,78 +4621,63 @@
 								"deutlich"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"gering",
-							"mäßig",
-							"deutlich"
+							"Gering",
+							"Mäßig",
+							"Deutlich"
 						]
 					}
 				],
 				"keys": [
 					"Omarthrose"
-				]
+				],
+				"text": "des Schultergelenks [%S4%,] [%S5%].",
+				"enumeration": "SZ0"
 			},
 			{
 				"kind": "box",
 				"name": "Fraktur",
 				"value": false,
-				"text": "Fraktur[ %S16% ][ im %S4% ][, %S5%]",
-				"judgementText": "Fraktur [von %S4%] [%S5% Dislokation.]",
-				"exclusions": ["Unauffällig"],
-				"enumeration": null,
 				"normal": false,
+				"exclusions": [
+					"Skelett unauffällig"
+				],
 				"variables": [
 					{
-						"kind": "oc",
-						"id": "S5",
+						"id": "S6",
 						"textBefore": "",
-						"textAfter": "",
+						"textAfter": " Dislokation",
 						"keys": [
 							[
-								"disloziert"
+								"mit"
 							],
 							[
-								"nicht disloziert"
+								"ohne"
 							]
 						],
+						"kind": "oc",
 						"value": null,
 						"values": [
-							"disloziert",
-							"nicht disloziert"
+							"mit",
+							"ohne"
 						]
 					},
 					{
-						"kind": "oc",
-						"id": "S16",
-						"textBefore": "",
-						"textAfter": "",
-						"keys": [
-							[
-								"frisch"
-							],
-							[
-								"alt"
-							]
-						],
-						"value": null,
-						"values": [
-							"frisch",
-							"alt"
-						]
-					},
-					{
-						"kind": "text",
-						"id": "S4",
+						"id": "S7",
 						"textBefore": "im ",
 						"textAfter": "",
 						"keys": null,
+						"kind": "text",
 						"value": ""
 					}
 				],
 				"keys": [
 					"Fraktur"
-				]
+				],
+				"text": "Fraktur [von %S6% ][%S7% Dislokation.]",
+				"judgementText": "Fraktur [von %S6%] [%S7% Dislokation.]"
 			}
 		]
 	}
