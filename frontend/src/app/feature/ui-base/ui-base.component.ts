@@ -135,6 +135,7 @@ export class UiBaseComponent implements OnInit {
   }
 
   updateText(): void {
+    console.log(this.parts);
     [this.report, this.judgment] = this.dataParser.makeText(this.parts);
   }
 

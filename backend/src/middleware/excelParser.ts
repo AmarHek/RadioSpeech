@@ -25,6 +25,7 @@ interface Row {
     Befund: string;
     Synonyme: string;
     Normal: string;
+    Default: string;
     "Choice-Gruppe-ID": string;
     "Aufzählung-ID": string;
     "Ausschluss Befund": string;
