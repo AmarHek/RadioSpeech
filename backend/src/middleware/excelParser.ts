@@ -212,12 +212,15 @@ function extractBox(rows: Row[]): CheckBox {
     const judgementText = rows[0]["Text Beurteilung"] == undefined ? undefined : rows[0]["Text Beurteilung"]
     const enumeration = rows[0]["Aufzählung-ID"] == undefined ? undefined : rows[0]["Aufzählung-ID"]
 
+    const exclusions = rows[0]["Ausschluss Befund"] == undefined ?
+        undefined : trimArray(rows[0]["Ausschluss Befund"].split(","));
+
     return {
         kind: "box",
         name: rows[0]["Befund"],
         value: false,
         normal: rows[0]["Normal"] != undefined,
-        exclusions: trimArray(rows[0]["Ausschluss Befund"].split(",")),
+        exclusions: exclusions,
         variables: variables,
         keys: keys,
         text: rows[0]["Text Befund"],

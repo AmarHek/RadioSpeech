@@ -61,13 +61,17 @@ export class OptionsComponent implements OnInit, OnChanges {
     this.minRowLength = minRowLength;
   }
 
-  update(sel: M.Selectable, option?: string, category?: M.Category) {
+  update(sel: M.Selectable, option?: string, categoryName?: string) {
     if (sel.kind === "group") {
       if (sel.value === option) {
         sel.value = null;
       }
     } else if (sel.kind === "box" && sel.exclusions !== undefined) {
       if (sel.exclusions.length > 0) {
+        // Rows only contain selectables of their respective row
+        // We need to extract the corresponding category with all selectables first
+        // row-name contains an additional 0 or 1 at the beginning, so we take the substring
+        const category = this.getCategoryByName(categoryName.substring(1));
         for (const exclusion of sel.exclusions) {
           if (exclusion === "Rest") {
             this.deselectRest(category, sel.name);
@@ -96,6 +100,15 @@ export class OptionsComponent implements OnInit, OnChanges {
       }
     }
   }
+
+  getCategoryByName(catName: string): M.Category {
+    for (const cat of this.categories) {
+      if (cat.name === catName) {
+        return cat;
+      }
+    }
+  }
+
 
   updateFromVariable(parent: M.Clickable, group?: M.Group) {
     if (parent.kind === "box") {
