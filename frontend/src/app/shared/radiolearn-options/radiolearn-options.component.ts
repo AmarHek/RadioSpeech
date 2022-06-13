@@ -22,25 +22,20 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
     console.log(changes);
   }
 
-  update(sel: M.Selectable, option?: string, category?: M.Category) {
-    if (sel.kind === "group") {
-      if (sel.value === option) {
-        sel.value = null;
+  update(selectable: M.Selectable, option?: string, category?: M.Category) {
+    if (selectable.kind === "group") {
+      if (selectable.value === option) {
+        selectable.value = null;
       }
-    } else if (sel.kind === "box" && sel.exclusions !== undefined) {
-      if (sel.exclusions.length > 0) {
-        for (const exclusion of sel.exclusions) {
-          this.deselectByName(category, exclusion);
+    } else if (selectable.kind === "box" && selectable.exclusions !== undefined) {
+      if (selectable.exclusions.length > 0) {
+        for (const exclusion of selectable.exclusions) {
+          if (exclusion === "Rest") {
+            this.deselectRest(category, selectable.name);
+          } else {
+            this.deselectByName(category, exclusion);
+          }
         }
-      }
-    }
-  }
-
-  deselectByName(category: M.Category, name: string) {
-    for (const sel of category.selectables) {
-      if (sel.name === name) {
-        sel.value = false;
-        return;
       }
     }
   }
@@ -77,6 +72,23 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
     const idx = this.getSelectedCatIndex();
     const nextIdx = Math.max(idx - 1, 0);
     this.nextCat.emit(this.categories[nextIdx].name);
+  }
+
+  deselectByName(category: M.Category, name: string) {
+    for (const sel of category.selectables) {
+      if (sel.name === name) {
+        sel.value = false;
+        return;
+      }
+    }
+  }
+
+  deselectRest(category: M.Category, name) {
+    for (const sel of category.selectables) {
+      if (sel.name !== name) {
+        sel.value = false;
+      }
+    }
   }
 
 }

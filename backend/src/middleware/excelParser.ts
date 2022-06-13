@@ -73,6 +73,7 @@ export function parseXLSToJson(binary_string: string): string {
             parts.push(extractCategory(relevantRows));
         }
     }
+
     let final: string = JSON.stringify(parts)
     // remove double escaping of newline characters
     final = final.split("\\\\").join("\\")

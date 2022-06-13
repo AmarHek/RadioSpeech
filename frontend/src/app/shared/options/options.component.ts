@@ -69,7 +69,11 @@ export class OptionsComponent implements OnInit, OnChanges {
     } else if (sel.kind === "box" && sel.exclusions !== undefined) {
       if (sel.exclusions.length > 0) {
         for (const exclusion of sel.exclusions) {
-          this.deselectByName(category, exclusion);
+          if (exclusion === "Rest") {
+            this.deselectRest(category, sel.name);
+          } else {
+            this.deselectByName(category, exclusion);
+          }
         }
       }
     }
@@ -81,6 +85,14 @@ export class OptionsComponent implements OnInit, OnChanges {
       if (sel.name === name) {
         sel.value = false;
         return;
+      }
+    }
+  }
+
+  deselectRest(category: M.Category, name) {
+    for (const sel of category.selectables) {
+      if (sel.name !== name) {
+        sel.value = false;
       }
     }
   }
