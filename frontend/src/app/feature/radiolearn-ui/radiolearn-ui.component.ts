@@ -98,9 +98,9 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
             this.material = res.material;
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
             if (!this.isMod) {
-              this.material.template = this.radiolearnService.resetTemplate(this.material.template);
+              this.material.documentTemplate = this.radiolearnService.resetTemplate(this.material.documentTemplate);
             }
-            this.categories = this.dataParser.extractCategories(this.material.template.parts, false);
+            this.categories = this.dataParser.extractCategories(this.material.documentTemplate.parts, false);
             if (this.selectedCat === undefined) {
               this.selectedCat = this.categories[0].name;
             }
@@ -131,7 +131,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   makeNormal() {
-    this.dataParser.makeNormal(this.material.template.parts);
+    this.dataParser.makeNormal(this.material.documentTemplate.parts);
   }
 
   save() {
@@ -173,14 +173,14 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   detailedCheck() {
-    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.template, this.material.template);
+    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.documentTemplate, this.material.documentTemplate);
 
     const modes = ["main", "lateral", "pre"];
     for (const mode of modes) {
       if (this.material.annotations[mode].length > 0) {
         const annotation =
           this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode], this.pathologyList,
-          this.material.template);
+          this.material.documentTemplate);
       }
     }
 
