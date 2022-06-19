@@ -57,8 +57,10 @@ export const makeText = (parts: M.TopLevel[], extractor: M.TextExtractor): strin
   const blocks = parts.filter(x => x.kind === "block");
   for (const b of blocks) {
     const regEx = new RegExp((b as M.Block).text + "(\\n|$)");
+    console.log(regEx);
     result = result.replace(regEx, "\n");
   }
+  console.log(result)
   return result;
 };
 

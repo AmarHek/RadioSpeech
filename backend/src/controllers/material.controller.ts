@@ -218,10 +218,10 @@ export function updateMatTempBC(req: Request, res: Response): void {
                         // first copy new template
                         const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                         // now fill out new parts by using old parts
-                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.template.parts);
+                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
                         // generate new template and update material entry
                         const newTemplate = {
-                            _id: material.template._id,
+                            _id: material.documentTemplate._id,
                             name: template.name,
                             timestamp: template.timestamp,
                             parts: newParts
@@ -255,10 +255,10 @@ export function updateMaterialTemplateBCByID(req: Request, res: Response) {
                     // first copy new template
                     const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                     // now fill out new parts by using old parts
-                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.template.parts);
+                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
                     // generate new template and update material entry
                     const newTemplate = {
-                        _id: material.template._id,
+                        _id: material.documentTemplate._id,
                         name: template.name,
                         timestamp: template.timestamp,
                         parts: newParts

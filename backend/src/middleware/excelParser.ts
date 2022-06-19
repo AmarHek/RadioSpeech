@@ -25,6 +25,7 @@ interface Row {
     Befund: string;
     Synonyme: string;
     Normal: string;
+    Default: string;
     "Choice-Gruppe-ID": string;
     "Aufzählung-ID": string;
     "Ausschluss Befund": string;
@@ -219,7 +220,7 @@ function extractBox(rows: Row[]): CheckBox {
     return {
         kind: "box",
         name: rows[0]["Befund"],
-        value: false,
+        value: rows[0]["Default"] != undefined,
         normal: rows[0]["Normal"] != undefined,
         exclusions: exclusions,
         variables: variables,

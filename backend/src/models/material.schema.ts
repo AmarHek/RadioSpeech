@@ -28,7 +28,8 @@ const materialSchema = new mongoose.Schema({
         pre: [annotationSchema],
     },
     modality: { type: String, required: true },
-    template: { type: mongoose.Schema.Types.Mixed, required: true},
+    documentTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
+    diagnosisTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
     pathologies: {type: [String]},
     timestamp:  {type: Number},
     judged: { type: Boolean }

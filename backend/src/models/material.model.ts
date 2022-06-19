@@ -22,23 +22,24 @@ export interface Image {
 }
 
 export interface Material {
-  _id:            string;
+  _id:                    string;
   scans: {
-    id: string;
-    mainScan: Image;
+    id:           string;
+    mainScan:     Image;
     lateralScan?: Image;
-    preScan?: Image;
+    preScan?:     Image;
   }
   annotations: {
     main:         Annotation[];
     lateral:      Annotation[];
     pre:          Annotation[]
   }
-  modality:       string;
-  template:       Template;
-  pathologies:    string[];
-  timestamp:      number;
-  judged:         boolean;
+  modality:             string;
+  documentTemplate:     Template;
+  diagnosisTemplate:    Template;
+  pathologies:          string[];
+  timestamp:            number;
+  judged:               boolean;
 }
 
 
