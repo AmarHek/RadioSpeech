@@ -1,5 +1,14 @@
 import {Injectable} from '@angular/core';
-import {ChipColors, InputChip, KeyClickable, KeyVariable} from "@app/models";
+import {
+  Category,
+  CheckBox,
+  ChipColors,
+  Group,
+  InputChip,
+  KeyClickable,
+  KeyVariable, TopLevel,
+  Variable
+} from "@app/models";
 
 @Injectable({
   providedIn: 'root'
@@ -16,68 +25,87 @@ export class ChipHelperService {
       mergedInput = mergedInput.trim()
     }
     if(trim) mergedInput = mergedInput.trim()
-
-
     mergedInput += input
     return mergedInput
   }
 
-  //Only keep newest clickable of a specific group, e.g. if input was "Thorax pa Thorax 2 Ebenen" this removes "Thorax pa"
-  getFilteredClickables(foundClickables: KeyClickable[]): KeyClickable[]{
-    let trimmedClickables = [];
-    foundClickables.reverse().forEach(c =>{
-      const c_id = c.category + " " + c.name
-      if (c.group === undefined) {
-        //Handle boxes
-        let add = true
-        trimmedClickables.forEach(tc =>{
-          const t_id = tc.category + " " + tc.name
-          //Dont add this clickable, if a clickable with the same id is newer in the input
-          if(c_id == t_id){
-            add = false
-          }
-        })
-        if(add) trimmedClickables.push(c)
-        return
-      }
-      let add = true;
-      trimmedClickables.forEach(t => {
-        if(t.group === c.group){
-          add = false
-          return
-        }
-      })
-      if(add) trimmedClickables.push(c)
-    })
-    //Restore regular order of found clickables
-    //This list now only contains the newest clickables of unique groups
-    trimmedClickables = trimmedClickables.reverse()
-    return trimmedClickables
+
+  generateChipForGroup(group: Group, catName: string): InputChip{
+    let option = group.options.find(o => o.name == group.value)
+    let chipText = option.keys[0]
+    let varInfo = this.getVarTextAndCount(option.variables)
+    let varText = varInfo[0]
+    let activeVarCount = varInfo[1]
+    chipText += varText
+    let variablesComplete = activeVarCount == option.variables.length
+    let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
+    return new InputChip(chipText, chipColor, null, catName + " " + option.name)
   }
 
-  getFilteredVariables(foundVariables: Map<String, KeyVariable[]>): Map<String, KeyVariable[]> {
-    let trimmedVariables = new Map<String, KeyVariable[]>();
-    foundVariables.forEach((subUntrimmed, key) => {
-      let subTrimmed = []
-      subUntrimmed.reverse().forEach(v =>{
-        if(v.kind === "oc"){
-          let add = true
-          subTrimmed.forEach(cv => {
-            if(cv.id === v.id){
-              add = false
-            }
-          })
-          if(add){
-            subTrimmed.push(v)
+  generateChipForBox(box: CheckBox, catName: string): InputChip{
+    let chipText = box.keys[0]
+    let varInfo = this.getVarTextAndCount(box.variables)
+    let varText = varInfo[0]
+    let activeVarCount = varInfo[1]
+    chipText += varText
+    let variablesComplete = activeVarCount == box.variables.length
+    let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
+    return new InputChip(chipText, chipColor, null, catName + " " + box.name)
+  }
+
+  getVarTextAndCount(variables: Variable[]) {
+    let varText = ""
+    let activeVars = 0
+    variables.forEach(variable => {
+      if(variable.kind == "oc" && variable.value != null){
+        let key = variable.keys[variable.values.indexOf(variable.value)][0]
+        varText += " " + variable.textBefore + key + variable.textAfter
+        activeVars++
+      }else if (variable.kind == "number" && variable.value != undefined) {
+        varText += " " + variable.textBefore + variable.value + variable.textAfter
+        activeVars++
+      }else if(variable.kind == "mc"){
+        let anyMcActive = false
+        variable.values.forEach(value => {
+          if(value[1]){
+            varText += " " + value[0]
+            anyMcActive = true
           }
-        }else{
-          subTrimmed.push(v)
+        })
+        if (anyMcActive) activeVars ++
+      }else if (variable.kind == "text" && variable.value != ""){
+        varText += " " + variable.textBefore + variable.value + variable.textAfter
+        activeVars ++
+      }else if(variable.kind == "date" && variable.value != undefined){
+        varText += " " + variable.textBefore + variable.value.day + "." + variable.value.month + "." + variable.value.year + variable.textAfter
+        activeVars ++
+      }
+    })
+    return [varText, activeVars]
+  }
+
+  generateChipsForParts(defaultList: TopLevel[], partList: TopLevel[]):InputChip[]{
+    let result = []
+    defaultList.forEach((defaultPart, defaultPartIndex) =>{
+      if(defaultPart.kind != "category") return
+      defaultPart.selectables.forEach((defaultSel, defaultSelIndex) =>{
+        if(defaultSel.kind == "group"){
+          let parsedDefaultSel = defaultSel as Group
+          let parsedSel = (partList[defaultPartIndex] as Category).selectables[defaultSelIndex] as Group
+          if(parsedDefaultSel.value != parsedSel.value){
+            result.push(this.generateChipForGroup(parsedSel, defaultPart.name))
+          }
+        }
+        else if(defaultSel.kind == "box"){
+          let parsedDefaultSel = defaultSel as CheckBox
+          let parsedSel = (partList[defaultPartIndex] as Category).selectables[defaultSelIndex] as CheckBox
+          if(parsedDefaultSel.value != parsedSel.value){
+            result.push(this.generateChipForBox(parsedSel, defaultPart.name))
+          }
         }
       })
-      subTrimmed = subTrimmed.reverse()
-      trimmedVariables.set(key, subTrimmed)
     })
-    return trimmedVariables
+    return result
   }
 
   keepChar(index: number, mergedInput: string, variables: KeyVariable[]){
@@ -128,74 +156,5 @@ export class ChipHelperService {
 
   isNumeric(s) {
     return !isNaN(s - parseFloat(s));
-  }
-
-  getChips(filteredClickables: KeyClickable[], filteredVariables: Map<String, KeyVariable[]>, unModifiedMerged: string): InputChip[]{
-    let chips = []
-    filteredClickables.forEach(fc =>{
-      let chipText = fc.synonym
-      let id = fc.category + " " + fc.name
-      let vars = filteredVariables.get(id)
-      if(vars!== undefined){
-        chipText += " "
-        vars.forEach(v => {
-          if(v.position < fc.position) return
-          if(v.kind === "date" && v.value === undefined) return
-          if(v.kind === "number" && v.value === undefined) return
-          if(v.kind === "ratio" && v.value === undefined) return
-          if(v.kind === "date"){
-            const dateVar = unModifiedMerged.substring(v.position, v.positionEnd);
-            let trimAmount = 0;
-            for(let i = dateVar.length-1; i > -1; i--){
-              if(!this.isNumeric(dateVar[i])){
-                trimAmount += 1
-              }else{
-                break
-              }
-            }
-            chipText += unModifiedMerged.substring(v.position, v.positionEnd-trimAmount)
-            return
-          }
-          if(v.textBefore !== undefined && v.textBefore !== ""){
-            chipText += v.textBefore
-          }
-          if(v.kind === "number"){
-            chipText += v.value
-          }
-          if(v.kind === "text"){
-            chipText += v.value
-          }
-          if(v.kind === "ratio"){
-            chipText += v.value
-          }
-          if(v.synonym !== undefined){
-            chipText += v.synonym
-          }
-          if(v.textAfter !== undefined && v.textAfter !== ""){
-            chipText += v.textAfter + " "
-          }
-          else{
-            chipText += " "
-          }
-        })
-      }
-      chipText = chipText.trim()
-      let chipColor = this.getChipColor(fc, vars)
-      chips.push(new InputChip(chipText, chipColor, fc))
-    })
-    return chips
-  }
-
-  getChipColor(fc: KeyClickable, vars: KeyVariable[]): ChipColors{
-    let chipColor = ChipColors.GREEN
-    if(fc.name == "Aufnahme vom [Datum]" || fc.name == "mit VA vom [Datum]"){
-      chipColor = ChipColors.YELLOW
-      vars?.forEach(v =>{
-        if(v.kind === "date" && v.value !== undefined){
-          chipColor = ChipColors.GREEN
-        }
-      })
-    }
-    return chipColor
   }
 }

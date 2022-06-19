@@ -30,12 +30,14 @@ export interface ColoredText {
 
 export class InputChip{
   content: string;
+  id: string;
   color: ChipColors;
   clickable: KeyClickable;
-  constructor(content: string, color: ChipColors, clickable: KeyClickable) {
+  constructor(content: string, color: ChipColors, clickable: KeyClickable, id: string) {
     this.content = content;
     this.color = color;
     this.clickable = clickable;
+    this.id = id;
   }
 }
 

@@ -16,6 +16,7 @@ export class OptionsComponent implements OnInit, OnChanges {
   @Output() clickEvent = new EventEmitter<any>();
   @Input() layoutId: number;
   @Input() selectedCat: string;
+  @Input() selectedSelectableID: string;
 
   // TODO Make these configurable
 

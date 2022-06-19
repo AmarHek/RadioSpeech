@@ -55,7 +55,7 @@
           </mat-list-option>
         </mat-selection-list>
 
-        <app-options style="float: left" [selectedCat]="selectedCat" *ngIf="categories"
+        <app-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories"
                      [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                      (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-options>
         <app-report  class="report" [report]="report" [judgement]="judgment"></app-report>

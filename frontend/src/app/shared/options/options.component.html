@@ -7,17 +7,17 @@
       <ng-container *ngIf="row.name.includes(selectedCat)||layoutId===0">
         <ng-container *ngFor="let sel of row.selectables" class="col-3">
           <ng-container *ngIf="sel.kind === 'box'">
-            <td class="box" style="padding-left: 10px;">
+            <td class="box" style="padding-left: 10px">
               <input type="checkbox" [(ngModel)]="sel.value"
                      (click)="update(sel, null, row.name)" id="{{row.name}} {{sel.name}} box"/>
             </td>
-            <td class="title" [style.width.%]="width">
-              <label [ngClass]="{'selected': sel.value}"
+            <td class="title" [style.width.%]="width" >
+              <label [ngClass]="{'selected': sel.value}" [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                      for="{{row.name}} {{sel.name}} box">
                 {{sel.name}}
               </label>
             </td>
-            <app-variables *ngIf="sel.variables.length > 0"
+            <app-variables *ngIf="sel.variables.length> 0"
                            (clickEvent)="updateFromVariable(sel)"
                            [variables]="sel.variables"
                            [parentText]="sel.name"
@@ -36,6 +36,7 @@
               </td>
               <td class="title" [style.width.%]="width">
                 <label for="{{row.name}} {{sel.name + option.name}} box"
+                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + option.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                        [ngClass]="{'selected': (option.name === sel.value)}">
                   {{option.name}}
                 </label>

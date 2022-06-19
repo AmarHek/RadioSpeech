@@ -225,31 +225,17 @@ export class UiBaseComponent implements OnInit {
 
 
   generateChips(){
-    //Remove clickables and variables that don't make sense together, e.g. 2 clickables from the same group, or
-    //2 variables from the same OC option
-    let filteredClickables = this.chipHelper.getFilteredClickables(this.inputParser.foundClickables);
-    let filteredVariables = this.chipHelper.getFilteredVariables(this.inputParser.foundVariables);
-    console.log("FILTERED CLICKABLES")
-    console.log(filteredClickables)
-    console.log("FILTERED VARIABLES")
-    console.log(filteredVariables)
-    //Remove them from the text, as they will be displayed using chips
-    let unModifiedMerged = this.mergedInput
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
     console.log("TEXT NO VARS>" + this.mergedInput + "<")
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
     console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<")
-    //Add chips displaying the remaining clickables and variables
-    // this.chips = this.chipHelper.getChipsForInput(filteredClickables, filteredVariables, unModifiedMerged)
+    //Add chips displaying the active clickables and variables, deduced from this.parts
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts)
     //Show the remaining text that was not detected as part of a clickable or a variable
     if(this.input != " ") this.input = this.mergedInput.trimStart()
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
     this.chipInput.nativeElement.value = this.input
-    if(filteredClickables.length > 0){
-      this.selectedCat = filteredClickables[filteredClickables.length-1].category
-    }
   }
 
   // Assigns all found keywords in inputParser to this.parts
@@ -305,6 +291,7 @@ export class UiBaseComponent implements OnInit {
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
+    this.onInput(new Event(""))
   }
 
   modelChange(){
