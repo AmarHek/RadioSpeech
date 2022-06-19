@@ -30,11 +30,12 @@ export class UiBaseComponent implements OnInit {
   @ViewChild(OptionsComponent)
   private optionsComponent: OptionsComponent;
 
-  useChips = false;
+  useChips = true;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER];
   selectedCat = "undefined";
+  selectedSelectableID = "";
 
   chips: InputChip[] = [];
 
@@ -95,12 +96,13 @@ export class UiBaseComponent implements OnInit {
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
-    this.reset()
+    this.reset(false, false)
     this.onInput(new Event(""))
   }
 
   onSelected(cat: string){
     this.selectedCat = cat;
+    this.selectedSelectableID = ""
   }
 
   layoutChanged(newLayout: Layout){
@@ -144,11 +146,16 @@ export class UiBaseComponent implements OnInit {
   }
 
   onChipClick(chip: InputChip){
-    this.selectedCat = chip.clickable.category
+    // this.selectedCat = chip.clickable.category
+    this.selectedCat = chip.id.split(" ")[0]
+    this.selectedSelectableID = chip.id
+    console.log("id" + this.selectedSelectableID)
   }
 
   onClick() {
+    this.selectedSelectableID = ""
     setTimeout(() => this.updateText(), 1);
+    setTimeout(() => this.modelChange(), 5)
   }
 
   onBackSpaceKeyDown(event){
@@ -232,7 +239,8 @@ export class UiBaseComponent implements OnInit {
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
     console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<")
     //Add chips displaying the remaining clickables and variables
-    this.chips = this.chipHelper.getChips(filteredClickables, filteredVariables, unModifiedMerged)
+    // this.chips = this.chipHelper.getChipsForInput(filteredClickables, filteredVariables, unModifiedMerged)
+    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts)
     //Show the remaining text that was not detected as part of a clickable or a variable
     if(this.input != " ") this.input = this.mergedInput.trimStart()
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
@@ -298,6 +306,10 @@ export class UiBaseComponent implements OnInit {
     this.updateText();
   }
 
+  modelChange(){
+    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts)
+  }
+
   // for when the radiologist finishes: empty parts and input
   // Will not be necessary once the input is streamed
   next() {
@@ -314,9 +326,13 @@ export class UiBaseComponent implements OnInit {
     }
   }
 
-  reset() {
+  reset(resetSelectedCat: boolean = true, resetChips = true) {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts, false);
+    if (resetChips) this.chips = []
+    this.input = ""
+    this.selectedCat = this.categories[0].name
+    if (resetSelectedCat) this.selectedSelectableID = ""
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }
