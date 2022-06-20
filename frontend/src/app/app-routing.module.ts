@@ -4,10 +4,10 @@ import {
   AccountManagementComponent,
   AdminComponent,
   FeedbackDisplayComponent,
-  ListComponent,
+  TemplateListComponent,
   RadiolearnListComponent,
   RadiolearnUiComponent,
-  UiBaseComponent
+  ReportUiComponent
 } from "@app/feature";
 import {AuthGuard} from "@app/helpers";
 import {Role} from "@app/models";
@@ -28,18 +28,18 @@ const routes: Routes = [
   },
   {
     path: "list",
-    component: ListComponent,
+    component: TemplateListComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "main/:id",
-    component: UiBaseComponent,
+    component: ReportUiComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
-    path: "radiolearn/list",
+    path: "radiolearn/template-list",
     component: RadiolearnListComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Moderator, Role.Admin] }

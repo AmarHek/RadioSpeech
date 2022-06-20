@@ -11,7 +11,7 @@ import {Template, Material, Pathology, Feedback} from "@app/models";
 })
 
 // -----------------------------------
-// This class administrates the list of templates and executes all api calls
+// This class administrates the template-list of templates and executes all api calls
 // -----------------------------------
 
 export class BackendCallerService {

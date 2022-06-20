@@ -2,7 +2,7 @@
 <!-- This template is split into two parts:
 The first one is responsible for all the input forms that appear when the user wants to add new information to the dict
 The second one is responsible for showing all the information contained by the dict -->
-<!-- TO MAKE CHANGING FORMS EASIER, BOTH PARTS EXIST 2 TIMES; ONCE FOR GASTROENTEROLOGY AND ONCE FOR RADIOLOGIE (ui-base has no diseases available) -->
+<!-- TO MAKE CHANGING FORMS EASIER, BOTH PARTS EXIST 2 TIMES; ONCE FOR GASTROENTEROLOGY AND ONCE FOR RADIOLOGIE (report-output-ui has no diseases available) -->
 <!-- FIRST COMES GASTROENTEROLOGY (~until line 1000), SECOND COMES RADIOLOGY -->
 <!-- <button (click)="toggle()">Toggle</button> -->
 <!-- THIS IS THE LOADING ANIMATION DURING API CALLS -->
@@ -214,7 +214,7 @@ The second one is responsible for showing all the information contained by the d
     <!-- PART ONE ENDS HERE, NOW COMES THE LIST -->
     <!-- LIST OF ALL ELEMENTS -->
     <!-- note: part.condition is marked as errorRow, but is no problem because it exists on the element, compiles fine -->
-    <!-- The structure of the list are multiple nested for loops, every loop going one level deeper into the dict structure -->
+    <!-- The structure of the template-list are multiple nested for loops, every loop going one level deeper into the dict structure -->
     <!-- This loop is for TopLevel elements (e.g. Diseases and Categories) -->
     <!-- Because TopLevel elements can be both, Diseases and Categories, any level differentiates if it originates from a TopLevel disease or TopLevel Category -->
     <ng-container *ngFor="let part of myEdit.dict, let x = index" #myParts>
@@ -842,7 +842,7 @@ The second one is responsible for showing all the information contained by the d
     <!-- PART ONE ENDS HERE, NOW COMES THE LIST -->
     <!-- LIST OF ALL ELEMENTS -->
     <!-- note: part.condition is marked as errorRow, but is no problem because it exists on the element, compiles fine -->
-    <!-- The structure of the list are multiple nested for loops, every loop going one level deeper into the dict structure -->
+    <!-- The structure of the template-list are multiple nested for loops, every loop going one level deeper into the dict structure -->
     <!-- This loop is for TopLevel elements (e.g. Diseases and Categories) -->
     <!-- Because TopLevel elements can be both, Diseases and Categories, any level differentiates if it originates from a TopLevel disease or TopLevel Category -->
     <ng-container *ngFor="let part of myEdit.dict, let x = index" #myParts>

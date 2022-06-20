@@ -15,7 +15,7 @@ export class FilesSortingService {
     if (id.length === 0) {
       this.identifier = new RegExp(".*");
     } else {
-      // TODO: Currently only string + n integers possible, make more options available
+      // TODO: Currently only string + n integers possible, make more report-output-options available
       const nIntegers = (id.split("*").length - 1);
       const preString = id.split("*").join("");
       this.identifier = new RegExp("^" + preString + "\\d{" + nIntegers + "}" + "\\D");

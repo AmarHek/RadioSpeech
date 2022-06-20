@@ -14,24 +14,27 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ConfirmDialogComponent} from "@app/shared/confirm-dialog/confirm-dialog.component";
 import {InputModalComponent} from "@app/shared/inputModal/inputModal.component";
-import {OptionsComponent} from "@app/shared/options/options.component";
-import {ReportComponent} from "@app/shared/report/report.component";
+import {ReportOutputComponent} from "@app/shared/report-output/report-output.component";
 import {UploadMaterialComponent} from "@app/shared/upload-material/upload-material.component";
-import {UploadComponent} from "@app/shared/upload/upload.component";
+import {UploadTemplateComponent} from "@app/shared/upload-template/upload-template.component";
 import {VariablesComponent} from "@app/shared/variables/variables.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
+import {ImageDisplayStudentComponent} from "./image-display-student/image-display-student.component";
+import {ImageDisplayComponent} from "./image-display/image-display.component";
+import {RadiolearnOptionsComponent} from "./radiolearn-options/radiolearn-options.component";
+
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {ChangeUsernameComponent} from "./change-username/change-username.component";
 import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.component";
-import {ImageDisplayStudentComponent} from "./image-display-student/image-display-student.component";
-import {ImageDisplayComponent} from "./image-display/image-display.component";
+import {ReportOptionsComponent} from "@app/shared/report-options/report-options.component";
+
 import {InputDialogComponent} from "./input-dialog/input-dialog.component";
-import {RadiolearnErrorsComponent} from "./radiolearn-errors/radiolearn-errors.component";
-import {RadiolearnOptionsComponent} from "./radiolearn-options/radiolearn-options.component";
+import {StudentErrorsComponent} from "./student-errors/student-errors.component";
+
 import {SignUpComponent} from "./sign-up/sign-up.component";
-import { AddScanDialogComponent } from './add-scan-dialog/add-scan-dialog.component';
+import {AddScanDialogComponent} from './add-scan-dialog/add-scan-dialog.component';
 
 
 @NgModule({
@@ -44,12 +47,12 @@ import { AddScanDialogComponent } from './add-scan-dialog/add-scan-dialog.compon
     ImageDisplayStudentComponent,
     InputDialogComponent,
     InputModalComponent,
-    OptionsComponent,
-    RadiolearnErrorsComponent,
+    StudentErrorsComponent,
     RadiolearnOptionsComponent,
-    ReportComponent,
+    ReportOutputComponent,
+    ReportOptionsComponent,
     SignUpComponent,
-    UploadComponent,
+    UploadTemplateComponent,
     UploadMaterialComponent,
     VariablesComponent,
     AddScanDialogComponent
@@ -81,12 +84,12 @@ import { AddScanDialogComponent } from './add-scan-dialog/add-scan-dialog.compon
     ImageDisplayStudentComponent,
     InputDialogComponent,
     InputModalComponent,
-    OptionsComponent,
-    RadiolearnErrorsComponent,
+    StudentErrorsComponent,
     RadiolearnOptionsComponent,
-    ReportComponent,
+    ReportOptionsComponent,
+    ReportOutputComponent,
     SignUpComponent,
-    UploadComponent,
+    UploadTemplateComponent,
     UploadMaterialComponent,
     VariablesComponent
   ]

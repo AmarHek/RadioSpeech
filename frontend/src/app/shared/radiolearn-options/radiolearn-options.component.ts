@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import * as M from "@app/models/templateModel";
 
 @Component({
-  selector: "app-radiolearn-options",
+  selector: "app-radiolearn-report-output-options",
   templateUrl: "./radiolearn-options.component.html",
   styleUrls: ["./radiolearn-options.component.scss"]
 })

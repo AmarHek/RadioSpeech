@@ -75,7 +75,7 @@ export class RadiolearnListComponent implements OnInit {
       this.backendCaller.listByQuery(skip, length,
         this.showJudged, this.pathology)
         .subscribe(res => {
-          // then reverse the resulting list
+          // then reverse the resulting template-list
           this.materials = res.materials.reverse();
         }, err => {
           window.alert(err.message);

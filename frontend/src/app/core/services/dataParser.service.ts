@@ -43,7 +43,7 @@ export class DataParserService {
     }
   }
 
-  // Takes list of categories to transform them into list of rows without groups, only singular buttons
+  // Takes template-list of categories to transform them into template-list of rows without groups, only singular buttons
   extractRows(categories: M.Category[], maxRowLength: number): M.Category[] {
     let rows: M.Category[] = [];
 
@@ -86,7 +86,7 @@ export class DataParserService {
   }
 
   getSplits(category: M.Category, maxRowLength: number): number[] {
-    // Variation of getRowLengths: returns the number of selectables per row instead of number of options
+    // Variation of getRowLengths: returns the number of selectables per row instead of number of report-output-options
     const rowSplits = [];
     let currentSplit = 0;
     let rowCounter = 0;

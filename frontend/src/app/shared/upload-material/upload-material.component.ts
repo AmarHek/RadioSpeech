@@ -7,7 +7,7 @@ import * as M from "@app/models/templateModel";
 import {BackendCallerService, FilesSortingService} from "@app/core";
 
 @Component({
-  selector: "app-upload-material",
+  selector: "app-upload-template-material",
   templateUrl: "./upload-material.component.html",
   styleUrls: ["./upload-material.component.scss"]
 })

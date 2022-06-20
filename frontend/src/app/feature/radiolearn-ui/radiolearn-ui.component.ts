@@ -17,7 +17,7 @@ import {
   FeedbackDialogComponent,
   ImageDisplayComponent,
   ImageDisplayStudentComponent,
-  RadiolearnErrorsComponent,
+  StudentErrorsComponent,
   RadiolearnOptionsComponent
 } from "@app/shared";
 
@@ -105,7 +105,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               this.selectedCat = this.categories[0].name;
             }
             this.selectedCatList = [this.selectedCat];
-            // Do this so radiolearn options don't break on route change
+            // Do this so radiolearn report-output-options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
             }
@@ -190,7 +190,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
-    const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(StudentErrorsComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
@@ -254,7 +254,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   back() {
     if (this.isMod) {
-      this.router.navigate(["radiolearn/list"]).then();
+      this.router.navigate(["radiolearn/template-list"]).then();
     } else {
       this.router.navigate(["/"]).then();
     }

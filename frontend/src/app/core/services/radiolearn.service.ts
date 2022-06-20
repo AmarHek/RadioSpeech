@@ -161,7 +161,7 @@ export class RadiolearnService {
     return false;
   }
 
-  // method to extract all pathologies defined by box annotations to generate list of pathologies as strings
+  // method to extract all pathologies defined by box annotations to generate template-list of pathologies as strings
   extractPathologies(annotations: {
     main: Annotation[];
     lateral?: Annotation[];
@@ -187,7 +187,7 @@ export class RadiolearnService {
 
   // STUDENT ERROR COMPARISON FUNCTIONS BELOW
 
-  // checks student and ground truth pathologies and returns list of booleans (true/false for each pathology)
+  // checks student and ground truth pathologies and returns template-list of booleans (true/false for each pathology)
   comparePathologies(correctPathologies: string[], studentPathologies: string[], pathologyList: Pathology[]):
     boolean[] {
     const correct = new Array(pathologyList.length).fill(true);
@@ -309,11 +309,11 @@ export class RadiolearnService {
         varErrors: varErr
       };
     } else if (originalSel.kind === "group" && studentSel.kind === "group") {
-      // Variable error is only necessary for correct option (because comparison of variables between options makes no sense)
+      // Variable error is only necessary for correct option (because comparison of variables between report-output-options makes no sense)
       // If original option is null, variable error is empty (for obvious reasons)
       let varErr: VariableError[] = [];
       if (originalSel.value !== null) {
-        // find variables of corresponding option in option list
+        // find variables of corresponding option in option template-list
         const originalVars: Variable[] = originalSel.options.find(option => option.name === originalSel.value).variables;
         const studentVars: Variable[] = studentSel.options.find(option => option.name === originalSel.value).variables;
         // get variable errors
@@ -616,7 +616,7 @@ export class RadiolearnService {
     }
   }
 
-  // checks the options of a group and returns that option's normal value
+  // checks the report-output-options of a group and returns that option's normal value
   getGroupNormal(group: Group) {
     for (const option of group.options) {
       if (group.value === option.name) {

@@ -50,7 +50,7 @@
           {{cat.name}}
         </mat-list-option>
       </ng-container>
-      <!--<mat-list-option value="report" (click)="updateText()">Bericht</mat-list-option>-->
+      <!--<mat-template-list-option value="report-output" (click)="updateText()">Bericht</mat-template-list-option>-->
     </mat-selection-list>
 
     <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
@@ -59,7 +59,7 @@
                             class="options-expand"
                             [categories]="categories">
     </app-radiolearn-options>
-    <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
+    <!--<app-report-output  class="report-output" [report-output]="report-output" [judgement]="judgement"></app-report-output>-->
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"
