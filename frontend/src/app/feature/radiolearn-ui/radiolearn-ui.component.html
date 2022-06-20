@@ -11,8 +11,8 @@
       <span class="spacer"></span>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
-        <ng-container *ngIf="userMode">Modus: User</ng-container>
-        <ng-container *ngIf="!userMode">Modus: Arzt</ng-container>
+        <ng-container *ngIf="userMode">Nutzer: Student</ng-container>
+        <ng-container *ngIf="!userMode">Nutzer: Arzt</ng-container>
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="detailedMode"
               (click)="switchMode()">
