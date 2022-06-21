@@ -3,8 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {nanoid} from "nanoid";
 import {MatDialogRef} from "@angular/material/dialog";
 
-import * as M from "@app/models/templateModel";
 import {BackendCallerService, FilesSortingService} from "@app/core";
+import {Template} from "@app/models/templateModel";
 
 @Component({
   selector: "app-upload-template-material",
@@ -14,7 +14,9 @@ import {BackendCallerService, FilesSortingService} from "@app/core";
 export class UploadMaterialComponent implements OnInit {
 
   uploadForm: FormGroup;
-  radiolearnTemplate: M.Template;
+
+  deepDocTemplates: Template[];
+  shallowDocTemplates: Template[];
 
   mainFlags: boolean[] = [];
   lateralRedFlags: boolean[] = [];
@@ -23,6 +25,8 @@ export class UploadMaterialComponent implements OnInit {
   preYellowFlags: boolean[] = [];
 
   ignoreFlags = false;
+  currentPresetID: number;
+  currentCustomID: string = "";
 
   supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
   progress = 0;
@@ -35,10 +39,14 @@ export class UploadMaterialComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.filesSorter.setIdentifier("");
-    this.backendCaller.getTemplateByName("Radiolearn").subscribe(res => {
-      this.radiolearnTemplate = res.template;
-      console.log(this.radiolearnTemplate);
+    this.filesSorter.setCustomIdentifier("");
+    this.backendCaller.getTemplatesByKind("deepDoc").subscribe(res => {
+      this.deepDocTemplates = res.templates;
+    }, err => {
+      console.log(err.message);
+    });
+    this.backendCaller.getTemplatesByKind("shallowDoc").subscribe(res => {
+      this.shallowDocTemplates = res.templates;
     }, err => {
       console.log(err.message);
     });
@@ -48,7 +56,9 @@ export class UploadMaterialComponent implements OnInit {
     this.uploadForm = new FormGroup({
       mainScans: new FormControl([], {validators: [Validators.required]}),
       lateralScans: new FormControl([]),
-      preScans: new FormControl([])
+      preScans: new FormControl([]),
+      deepDocTemplate: new FormControl(null, {validators: [Validators.required]}),
+      shallowDocTemplate: new FormControl(null, {validators: Validators.required})
     });
   }
 
@@ -56,9 +66,16 @@ export class UploadMaterialComponent implements OnInit {
     return JSON.stringify(dict);
   }
 
-  updateIdentifier(id: string) {
+  updateIdentifier(custom: boolean, id: string | number) {
     this.ignoreFlags = false;
-    this.filesSorter.setIdentifier(id);
+
+    if (custom) {
+      this.currentPresetID = undefined;
+      this.filesSorter.setCustomIdentifier(id as string);
+    } else {
+      this.currentCustomID = "";
+      this.filesSorter.setPresetIdentifier(id as number);
+    }
     this.flagFiles();
   }
 
@@ -66,7 +83,7 @@ export class UploadMaterialComponent implements OnInit {
     if (this.ignoreFlags) {
       this.setAllFlagsToTrue();
     } else {
-      this.filesSorter.setIdentifier(id);
+      this.filesSorter.setCustomIdentifier(id);
       this.flagFiles();
     }
   }
@@ -140,7 +157,12 @@ export class UploadMaterialComponent implements OnInit {
         const id = nanoid();
         formData.append("modality", "xray");
         formData.append("id", id);
-        formData.append("template", JSON.stringify(this.radiolearnTemplate));
+        console.log(this.uploadForm.value.deepDocTemplate);
+        console.log(this.uploadForm.value.shallowDocTemplate);
+        //console.log(JSON.parse(this.uploadForm.value.deepDocTemplate));
+        //console.log(JSON.parse(this.uploadForm.value.shallowDocTemplate));
+        formData.append("deepDocTemplate", JSON.stringify(this.uploadForm.value.deepDocTemplate));
+        formData.append("shallowDocTemplate", JSON.stringify(this.uploadForm.value.shallowDocTemplate));
         formData.append("mainScan", fileTuple[0]);
         formData.append("lateralScan", fileTuple[1]);
         formData.append("preScan", fileTuple[2]);

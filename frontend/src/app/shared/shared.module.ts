@@ -35,6 +35,7 @@ import {StudentErrorsComponent} from "./student-errors/student-errors.component"
 
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from './add-scan-dialog/add-scan-dialog.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 
 @NgModule({
@@ -57,24 +58,25 @@ import {AddScanDialogComponent} from './add-scan-dialog/add-scan-dialog.componen
     VariablesComponent,
     AddScanDialogComponent
   ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    FormsModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatIconModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatTooltipModule,
-    NgbModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        FormsModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatIconModule,
+        MatInputModule,
+        MatProgressBarModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatTooltipModule,
+        NgbModule,
+        ReactiveFormsModule,
+        MatSlideToggleModule
+    ],
   exports: [
     ChangePasswordComponent,
     ChangeUsernameComponent,

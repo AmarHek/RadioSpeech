@@ -10,9 +10,6 @@ export function initData() {
     console.log("Loading default Templates into database...")
     loadDefaultTemplates().then(() => console.log("...finished"));
 
-    console.log("Initializing default pathologies...")
-    initPathologies().then(() => console.log("...finished"));
-
 }
 
 // on app start, initialize all relative directories for file saving etc.
@@ -59,6 +56,7 @@ function saveTemplate(path: string, name: string) {
             const template = new TemplateDB({
                 parts: parts,
                 name: name,
+                kind: "deepDoc",
                 timestamp
             });
             template.save().then(res => {

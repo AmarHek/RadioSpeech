@@ -93,7 +93,7 @@ export class BackendCallerService {
 
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
-      template: material.deepDocTemplate,
+      deepDocTemplate: material.deepDocTemplate,
       annotations: material.annotations,
       pathologies: material.pathologies,
       judged: true
