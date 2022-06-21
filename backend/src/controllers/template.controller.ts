@@ -133,3 +133,14 @@ export function getTemplateByName(req: Request, res: Response): void {
         }
     )
 }
+
+export function getTemplatesByKind(req: Request, res: Response): void {
+    TemplateDB.find({kind: req.body.kind}).exec(
+        (err, templates) => {
+            if(err) {
+                res.status(500).send({message: err});
+            }
+            res.status(201).send({templates});
+        }
+    )
+}
