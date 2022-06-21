@@ -35,3 +35,12 @@ export function trim2DArray(array: string[][]): string[][] {
     }
     return array;
 }
+
+export function isJsonString(str: string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}

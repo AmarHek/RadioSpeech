@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 import * as Path from "path";
-import {generateUniqueFilename} from "../util/util";
+import {generateUniqueFilename, isJsonString} from "../util/util";
 
 
 export function createExcelTemplate(req: any, res: Response) {
@@ -40,8 +40,10 @@ export function createExcelTemplate(req: any, res: Response) {
 
 
 export function createJSONTemplate(req: any, res: Response) {
-  // TODO: Check JSON for errors and add sufficient messages
   const rawData = fs.readFileSync(req.file.path);
+  if (!isJsonString(rawData.toString())) {
+      res.status(500).send({message: "Given file is not a JSON file, aborting."});
+  }
   const parts = JSON.parse(rawData.toString());
   const template = new TemplateDB({
       parts: parts,

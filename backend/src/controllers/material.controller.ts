@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import fs from "fs";
 import Path from "path";
 import {Template} from "../models/template.model";
+import {isJsonString} from "../util/util";
 
 // TODO: Define request types properly
 
@@ -15,6 +16,10 @@ export function filename(originalname: string, suffix: string): string {
 
 export function addMaterial (req: any, res: Response): void {
      if (req.files) {
+         if(!isJsonString(req.body.deepDocTemplate) || !isJsonString(req.body.shallowDocTemplate)) {
+             res.status(500).send({message: "One or more templates are invalid and cannot be parsed"});
+         }
+
          const mainScan = {
              filename: filename(req.files.mainScan[0].originalname, req.files.mainScan[0].fieldname),
              mimetype: req.files.mainScan[0].mimetype
@@ -62,6 +67,8 @@ export function addMaterial (req: any, res: Response): void {
                  success: true,
                  message: message});
          });
+     } else {
+         res.status(500).send({message: "No files in request found."})
      }
 }
 
