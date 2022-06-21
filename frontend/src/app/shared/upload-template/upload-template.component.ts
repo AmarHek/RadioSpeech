@@ -34,7 +34,7 @@ export class UploadTemplateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       file: new FormControl(null, {validators: [Validators.required]}),
-      type: new FormControl("Dokumentation", {validators: [Validators.required]})
+      kind: new FormControl(null, {validators: [Validators.required]})
     }, {
       validator: fileValidator("file")
     });
@@ -56,6 +56,7 @@ export class UploadTemplateComponent implements OnInit {
       const postData = new FormData();
       postData.append("name", this.uploadForm.value.name);
       postData.append("file", this.uploadForm.value.file);
+      postData.append("kind", this.uploadForm.value.kind);
       postData.append("timestamp", timestamp);
       if (extension === "xlsx") {
         this.backendCaller.addTemplateFromExcel(postData)

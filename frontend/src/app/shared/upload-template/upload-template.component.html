@@ -4,40 +4,43 @@
 
 <mat-divider></mat-divider>
 
-<form [formGroup]="uploadForm">
+<form [formGroup]="uploadForm" >
   <mat-dialog-content>
     <div class="form-group">
-      <label for="NameOfFile">Name: </label>
-      <input class="form-control" type="text" id="NameOfFile" formControlName="name"
-             [ngClass]="{ 'is-invalid': submitted && fc.name.errors }">
+      <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" id="NameOfFile" formControlName="name"
+               [ngClass]="{ 'is-invalid': submitted && fc.name.errors }">
+      </mat-form-field>
       <div *ngIf="submitted && fc.name.errors" class="invalid-feedback">
         <div *ngIf="fc.name.errors.required">Name ist erforderlich</div>
         <div *ngIf="fc.name.errors.minlength">Name muss mindestens 3 Zeichen lang sein.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="full-width">
+        <mat-label>Schablonen-Art</mat-label>
+        <mat-select formControlName="kind">
+          <mat-option [value]="'deepDoc'">Dokumentation</mat-option>
+          <mat-option [value]="'shallowDoc'">Diagnose</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="submitted && fc.kind.errors" class="invalid-feedback">
+        <div *ngIf="fc.kind.errors.required">Art muss ausgewählt werden.</div>
       </div>
     </div>
     <input hidden #inputField class="mr-3"
            type="file" id="uploadFile"
            (change)="onFileSelect($event)">
     <div class="form-group">
-      <mat-label>Schablonen-Typ</mat-label>
-      <mat-select>
-        <mat-option [value]="'deepDoc'">Dokumentation</mat-option>
-        <mat-option [value]="'shallowDoc'">Diagnose</mat-option>
-      </mat-select>
-    </div>
-    <div class="form-group">
-      <label for="filename">Datei: </label>
-      <div class="row">
-        <div class="col-sm">
-          <input readonly
-                 [value]="file.value === null ? '' : file.value.name"
-                 class="form-control" type="text" id="filename"></div>
-        <div class="col-sm-4">
-          <button class="btn btn-outline-primary fa-pull-right" (click)="inputField.click()" id="UploadButton">
+          <mat-form-field class="some-width">
+            <mat-label>Datei</mat-label>
+            <input matInput readonly
+                   [value]="file.value === null ? 'Keine Datei ausgewählt' : file.value.name"
+                   class="form-control" type="text" id="filename"></mat-form-field>
+          <button class="float-end button-adjust" mat-flat-button color="primary" (click)="inputField.click()" id="UploadButton">
             Durchsuchen...
           </button>
-        </div>
-      </div>
       <div *ngIf="submitted && fc.file.errors" class="text-danger">
         <div *ngIf="fc.file.errors.required"><small>Datei ist erforderlich</small></div>
         <div *ngIf="fc.file.errors.filetype"><small>Nur .json und .xlsx werden unterstützt.</small></div>
