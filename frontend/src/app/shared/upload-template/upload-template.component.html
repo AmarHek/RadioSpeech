@@ -19,6 +19,13 @@
            type="file" id="uploadFile"
            (change)="onFileSelect($event)">
     <div class="form-group">
+      <mat-label>Schablonen-Typ</mat-label>
+      <mat-select>
+        <mat-option [value]="'deepDoc'">Dokumentation</mat-option>
+        <mat-option [value]="'shallowDoc'">Diagnose</mat-option>
+      </mat-select>
+    </div>
+    <div class="form-group">
       <label for="filename">Datei: </label>
       <div class="row">
         <div class="col-sm">

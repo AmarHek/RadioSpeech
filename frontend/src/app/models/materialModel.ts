@@ -35,8 +35,8 @@ export interface Material {
     pre:          Annotation[];
   };
   modality:           string;
-  documentTemplate:  Template;
-  diagnosisTemplate: Template;
+  deepDocTemplate:    Template;
+  shallowDocTemplate: Template;
   pathologies:        string[];
   timestamp:          number;
   judged:             boolean;

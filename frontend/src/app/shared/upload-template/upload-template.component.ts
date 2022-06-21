@@ -33,7 +33,8 @@ export class UploadTemplateComponent implements OnInit {
       name: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      file: new FormControl(null, {validators: [Validators.required]})
+      file: new FormControl(null, {validators: [Validators.required]}),
+      type: new FormControl("Dokumentation", {validators: [Validators.required]})
     }, {
       validator: fileValidator("file")
     });

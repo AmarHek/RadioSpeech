@@ -27,6 +27,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const template = new TemplateDB({
         parts: parts,
         name: req.body.name,
+        kind: req.body.kind,
         timestamp: req.body.timestamp as number
     });
     template.save().then(result => {
@@ -43,9 +44,10 @@ export function createJSONTemplate(req: any, res: Response) {
   const rawData = fs.readFileSync(req.file.path);
   const parts = JSON.parse(rawData.toString());
   const template = new TemplateDB({
-    parts: parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp as number
+      parts: parts,
+      name: req.body.name,
+      kind: req.body.kind,
+      timestamp: req.body.timestamp as number
   });
   template.save().then(result => {
     res.status(201).json({
@@ -57,8 +59,9 @@ export function createJSONTemplate(req: any, res: Response) {
 
 export function createTemplate(req: any, res: Response) {
   const template  = new TemplateDB({
-    parts: req.body.parts,
-    name: req.body.name,
+      parts: req.body.parts,
+      name: req.body.name,
+      kind: req.body.kind,
       timestamp: req.body.timestamp as number
   });
   template.save().then(result => {
@@ -71,10 +74,11 @@ export function createTemplate(req: any, res: Response) {
 
 export function updateTemplate(req: Request, res: Response) {
   const newTemplate = new TemplateDB({
-    _id: req.params.id,
-    parts: req.body.parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp
+      _id: req.params.id,
+      parts: req.body.parts,
+      name: req.body.name,
+      kind: req.body.kind,
+      timestamp: req.body.timestamp
   });
   TemplateDB.updateOne({
       _id: req.params.id

@@ -1,6 +1,7 @@
 export interface Template {
     _id: string;
     name: string;
+    kind: "deepDoc" | "shallowDoc";
     timestamp: number;
     parts: TopLevel[];
 }

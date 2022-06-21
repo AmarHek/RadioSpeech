@@ -39,7 +39,7 @@ const routes: Routes = [
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
-    path: "radiolearn/template-list",
+    path: "radiolearn/list",
     component: RadiolearnListComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Moderator, Role.Admin] }

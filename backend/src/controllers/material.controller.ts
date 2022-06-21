@@ -49,7 +49,8 @@ export function addMaterial (req: any, res: Response): void {
                  pre: []
              },
              modality: req.body.modality,
-             template: JSON.parse(req.body.template),
+             deepDocTemplate: JSON.parse(req.body.deepDocTemplate),
+             shallowDocTemplate: JSON.parse(req.body.shallowDocTemplate),
              pathologies: [],
              timestamp: time,
              judged: false
@@ -82,7 +83,8 @@ export function updateMaterial(req: Request, res: Response): void {
     MaterialDB.updateOne({
         _id: req.params.id
     }, {
-        template: req.body.template,
+        deepDocTemplate: req.body.deepDocTemplate,
+        shallowDocTemplate: req.body.shallowDocTemplate,
         annotations: req.body.annotations,
         pathologies: req.body.pathologies,
         judged: req.body.judged
@@ -169,6 +171,7 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
             const newTemplate: Template = {
                 _id: template._id,
                 parts: template.parts,
+                kind: template.kind,
                 name: template.name,
                 timestamp: template.timestamp
             }
@@ -218,10 +221,10 @@ export function updateMatTempBC(req: Request, res: Response): void {
                         // first copy new template
                         const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                         // now fill out new parts by using old parts
-                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
+                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.deepDocTemplate.parts);
                         // generate new template and update material entry
                         const newTemplate = {
-                            _id: material.documentTemplate._id,
+                            _id: material.deepDocTemplate._id,
                             name: template.name,
                             timestamp: template.timestamp,
                             parts: newParts
@@ -255,10 +258,10 @@ export function updateMaterialTemplateBCByID(req: Request, res: Response) {
                     // first copy new template
                     const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                     // now fill out new parts by using old parts
-                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
+                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.deepDocTemplate.parts);
                     // generate new template and update material entry
                     const newTemplate = {
-                        _id: material.documentTemplate._id,
+                        _id: material.deepDocTemplate._id,
                         name: template.name,
                         timestamp: template.timestamp,
                         parts: newParts
