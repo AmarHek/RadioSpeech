@@ -79,6 +79,18 @@ export class TemplateListComponent implements OnInit {
     }
   }
 
+  displayKind(kind: string): string {
+    if (kind === undefined || kind === null) {
+      return "N/A";
+    }
+    if (kind === "deepDoc") {
+      return "Dokumentation";
+    }
+    if (kind === "shallowDoc") {
+      return "Diagnose";
+    }
+  }
+
   openUploadDialog() {
     const dialogConfig = this.dialogService.defaultConfig("470px");
     const dialogRef = this.dialog.open(UploadTemplateComponent, dialogConfig);

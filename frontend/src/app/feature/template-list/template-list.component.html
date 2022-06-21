@@ -8,6 +8,7 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Erstelldatum</th>
+        <th scope="col">Art</th>
         <th *ngIf="isMod" scope="col"></th>
       </tr>
       </thead>
@@ -17,6 +18,7 @@
         <td class="text"><a style="text-decoration: none;"
                             [routerLink]="['/', 'main', template._id]">{{template.name}}</a></td>
         <td class="text">{{displayDate(template.timestamp)}}</td>
+        <td class="text">{{displayKind(template.kind)}}</td>
         <td>
           <ng-container *ngIf="(isMod && template.name !== 'Radiolearn') || isAdmin">
             <button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">
