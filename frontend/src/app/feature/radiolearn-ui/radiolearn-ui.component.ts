@@ -22,7 +22,7 @@ import {
 } from "@app/shared";
 
 @Component({
-  selector: "app-judge-mat",
+  selector: "app-radiolearn-ui",
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
