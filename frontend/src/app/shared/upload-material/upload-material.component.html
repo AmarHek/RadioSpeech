@@ -92,7 +92,7 @@
     <mat-form-field class="uniform-width">
       <mat-label>Dokumentations-Schablone</mat-label>
       <mat-select formControlName="deepDocTemplate">
-        <mat-option *ngFor="let template of deepDocTemplates" [value]="template.parts">{{template.name}}</mat-option>
+        <mat-option *ngFor="let template of deepDocTemplates" [value]="template">{{template.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -100,7 +100,7 @@
     <mat-form-field class="uniform-width">
       <mat-label>Diagnose-Schablone</mat-label>
       <mat-select formControlName="shallowDocTemplate">
-        <mat-option *ngFor="let template of shallowDocTemplates" [value]="template.parts">{{template.name}}</mat-option>
+        <mat-option *ngFor="let template of shallowDocTemplates" [value]="template">{{template.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
