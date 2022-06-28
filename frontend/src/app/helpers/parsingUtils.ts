@@ -33,7 +33,7 @@ export const getClickableKeywords = (selectables: M.Selectable[], category: stri
   return clickKey;
 };
 
-// Gets current list of possible variables and input-string.
+// Gets current template-list of possible variables and input-string.
 // Since not all variables have "textAfter", we must search for all possible split or end keywords to extract the
 // value strings
 export const getSplitters = (varKeys: KeyVariable[], input: string): number[] => {
@@ -80,7 +80,7 @@ export const parseValue = (valueString: string, varKind: string) => {
   return undefined;
 };
 
-// takes list of variable keywords and counts number of uniquely appearing variable IDs
+// takes template-list of variable keywords and counts number of uniquely appearing variable IDs
 export const countUniqueVariableKeywords = (variableKeywords: KeyVariable[]): number => {
   const foundIDs: string[] = [];
   let result = 0;
@@ -110,7 +110,7 @@ export const filterUniqueOptions = (variableKeywords: KeyVariable[]): KeyVariabl
   return result.reverse();
 };
 
-// Takes list of variables and generates Keyword Variables list
+// Takes template-list of variables and generates Keyword Variables template-list
 export const getVariableKeywords = (variables: M.Variable[], category: string, clickable: string): KeyVariable[] => {
   const varKeys: KeyVariable[] = [];
   for (const variable of variables) {

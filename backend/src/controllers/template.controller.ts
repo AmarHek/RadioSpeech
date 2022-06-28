@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 import * as Path from "path";
-import {generateUniqueFilename} from "../util/util";
+import {generateUniqueFilename, isJsonString} from "../util/util";
 
 
 export function createExcelTemplate(req: any, res: Response) {
@@ -27,6 +27,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const template = new TemplateDB({
         parts: parts,
         name: req.body.name,
+        kind: req.body.kind,
         timestamp: req.body.timestamp as number
     });
     template.save().then(result => {
@@ -39,13 +40,16 @@ export function createExcelTemplate(req: any, res: Response) {
 
 
 export function createJSONTemplate(req: any, res: Response) {
-  // TODO: Check JSON for errors and add sufficient messages
   const rawData = fs.readFileSync(req.file.path);
+  if (!isJsonString(rawData.toString())) {
+      res.status(500).send({message: "Given file is not a JSON file, aborting."});
+  }
   const parts = JSON.parse(rawData.toString());
   const template = new TemplateDB({
-    parts: parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp as number
+      parts: parts,
+      name: req.body.name,
+      kind: req.body.kind,
+      timestamp: req.body.timestamp as number
   });
   template.save().then(result => {
     res.status(201).json({
@@ -57,8 +61,9 @@ export function createJSONTemplate(req: any, res: Response) {
 
 export function createTemplate(req: any, res: Response) {
   const template  = new TemplateDB({
-    parts: req.body.parts,
-    name: req.body.name,
+      parts: req.body.parts,
+      name: req.body.name,
+      kind: req.body.kind,
       timestamp: req.body.timestamp as number
   });
   template.save().then(result => {
@@ -71,10 +76,11 @@ export function createTemplate(req: any, res: Response) {
 
 export function updateTemplate(req: Request, res: Response) {
   const newTemplate = new TemplateDB({
-    _id: req.params.id,
-    parts: req.body.parts,
-    name: req.body.name,
-    timestamp: req.body.timestamp
+      _id: req.params.id,
+      parts: req.body.parts,
+      name: req.body.name,
+      kind: req.body.kind,
+      timestamp: req.body.timestamp
   });
   TemplateDB.updateOne({
       _id: req.params.id
@@ -126,6 +132,17 @@ export function getTemplateByName(req: Request, res: Response): void {
                 res.status(500).send({message: err});
             }
             res.status(201).send({template});
+        }
+    )
+}
+
+export function getTemplatesByKind(req: Request, res: Response): void {
+    TemplateDB.find({kind: req.body.kind}).exec(
+        (err, templates) => {
+            if(err) {
+                res.status(500).send({message: err});
+            }
+            res.status(201).send({templates});
         }
     )
 }

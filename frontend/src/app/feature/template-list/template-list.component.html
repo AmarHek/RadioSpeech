@@ -1,0 +1,46 @@
+<div class="main">
+
+  <div class="table-div">
+    <h4>Schablone wählen</h4>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Erstelldatum</th>
+        <th scope="col">Art</th>
+        <th *ngIf="isMod" scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let template of templates; let i = index" class="list-row">
+        <th class="text" scope="row">{{i+1}}</th>
+        <td class="text"><a style="text-decoration: none;"
+                            [routerLink]="['/', 'main', template._id]">{{template.name}}</a></td>
+        <td class="text">{{displayDate(template.timestamp)}}</td>
+        <td class="text">{{displayKind(template.kind)}}</td>
+        <td>
+          <ng-container *ngIf="(isMod && template.name !== 'Radiolearn') || isAdmin">
+            <button class="btn btn-secondary ml-3 disabled" [routerLink]="['/', 'edit', template.name]">
+              Edit
+            </button>
+            <button class="btn btn-danger ml-3" style="margin-left: 10px;"
+                    (click)="removeAlert(template._id, template.name)">
+              Entfernen
+            </button>
+          </ng-container>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-container *ngIf="templates.length === 0">
+      Es wurde noch nichts hochgeladen
+    </ng-container>
+  </div>
+
+  <div *ngIf="isMod" class="buttons">
+    <button mat-flat-button color="primary" (click)="openUploadDialog()">Schablone hochladen</button>
+    <button style="margin-left: 10px;" mat-flat-button disabled>Neue Schablone erstellen</button>
+  </div>
+
+</div>

@@ -6,20 +6,25 @@ import { Injectable } from "@angular/core";
 export class FilesSortingService {
 
   identifier: RegExp;
+  preSetIdentifiers: RegExp[] = [new RegExp("^patient\\d{5}\\D"), new RegExp("^\\d{8}\\D")]
 
   constructor() {
     this.identifier = new RegExp("thisShouldNotMatchAnything");
   }
 
-  setIdentifier(id: string) {
+  setCustomIdentifier(id: string) {
     if (id.length === 0) {
       this.identifier = new RegExp(".*");
     } else {
-      // TODO: Currently only string + n integers possible, make more options available
+      // TODO: Currently only string + n integers possible, make more report-output-options available
       const nIntegers = (id.split("*").length - 1);
       const preString = id.split("*").join("");
       this.identifier = new RegExp("^" + preString + "\\d{" + nIntegers + "}" + "\\D");
     }
+  }
+
+  setPresetIdentifier(index: number) {
+    this.identifier = this.preSetIdentifiers[index];
   }
 
   // searches for the identifier in filenames and returns boolean value based on if a match is found or not

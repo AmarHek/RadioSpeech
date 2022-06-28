@@ -16,10 +16,10 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterModule} from "@angular/router";
 import {AdminComponent} from "@app/feature/admin/admin.component";
 import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
-import {ListComponent} from "@app/feature/list/list.component";
+import {TemplateListComponent} from "@app/feature/template-list/template-list.component";
 import {RadiolearnListComponent} from "@app/feature/radiolearn-list/radiolearn-list.component";
 import {RadiolearnUiComponent} from "@app/feature/radiolearn-ui/radiolearn-ui.component";
-import {UiBaseComponent} from "@app/feature/ui-base/ui-base.component";
+import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
 import {SharedModule} from "@app/shared/shared.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AccountManagementComponent} from "./account-management/account-management.component";
@@ -30,10 +30,10 @@ import {AccountManagementComponent} from "./account-management/account-managemen
     AccountManagementComponent,
     AdminComponent,
     FeedbackDisplayComponent,
-    ListComponent,
+    TemplateListComponent,
     RadiolearnListComponent,
     RadiolearnUiComponent,
-    UiBaseComponent
+    ReportUiComponent
   ],
     imports: [
         CommonModule,
@@ -58,10 +58,10 @@ import {AccountManagementComponent} from "./account-management/account-managemen
     AccountManagementComponent,
     AdminComponent,
     FeedbackDisplayComponent,
-    ListComponent,
+    TemplateListComponent,
     RadiolearnListComponent,
     RadiolearnUiComponent,
-    UiBaseComponent
+    ReportUiComponent
   ]
 })
 export class FeatureModule { }

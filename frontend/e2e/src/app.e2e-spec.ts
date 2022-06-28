@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('ui-base-project App', () => {
+describe('report-output-ui-project App', () => {
   let page: AppPage;
 
   beforeEach(() => {

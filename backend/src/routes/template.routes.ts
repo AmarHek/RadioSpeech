@@ -47,3 +47,4 @@ templateRouter.get('/list/', TemplateController.getTemplateList);
 templateRouter.get("/:id", TemplateController.getTemplateById)
 templateRouter.delete("/delete/:id", TemplateController.deleteTemplate);
 templateRouter.post("/getByName/", TemplateController.getTemplateByName);
+templateRouter.post("/getByKind/", TemplateController.getTemplatesByKind)

@@ -8,12 +8,10 @@ export interface TextExtractor {
   ofConditional(c: Conditional): string | undefined;
 }
 
-export type Usage = ["Common", "Documentation", "Diagnosis"];
-
 export interface Template {
   _id: string;
   name: string;
-  usage?: Usage;
+  kind: "deepDoc" | "shallowDoc";
   timestamp: number;
   parts: TopLevel[];
 }
@@ -66,7 +64,7 @@ export interface CheckBox {
   text:           string;
   judgementText?: string;
   normal:         boolean;
-  exclusions?:    string[];   // list of boxes that are deselected, when selecting this
+  exclusions?:    string[];   // template-list of boxes that are deselected, when selecting this
   variables:      Variable[];
   enumeration?:   string;
   keys:           string[];

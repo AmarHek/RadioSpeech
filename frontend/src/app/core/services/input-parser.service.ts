@@ -214,7 +214,7 @@ export class InputParserService {
     // console.log("remove:", toRemove);
     for (const removable of toRemove) {
       //this check is necessary, since toRemove can contain duplicates of the same clickable
-      //E.g. the input "2. Shaldon-Katheter" produces the toRemove list "Shaldon", "Shaldon-Katheter", "Shaldon"
+      //E.g. the input "2. Shaldon-Katheter" produces the toRemove template-list "Shaldon", "Shaldon-Katheter", "Shaldon"
       //After the first shaldon gets removed, splice is called with -1 as start index, removing the wrong elements
       if(fKCopy.indexOf(removable) == -1) continue
       fKCopy.splice(fKCopy.indexOf(removable), 1);
@@ -402,7 +402,7 @@ export class InputParserService {
     }
   }
 
-  // Takes list of Selectables from a category and converts their variables into Keywords and adds them to the varKeyDict
+  // Takes template-list of Selectables from a category and converts their variables into Keywords and adds them to the varKeyDict
   private extractVariableKeywords(selectables: M.Selectable[], category: string): void {
     let varKeys: KeyVariable[];
     let id: string;

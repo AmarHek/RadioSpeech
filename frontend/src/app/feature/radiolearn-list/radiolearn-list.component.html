@@ -48,14 +48,14 @@
       <tr *ngFor="let material of this.materials; let i = index">
         <th scope="row">{{i+1}}</th>
         <td class="img">
-          <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
+          <img *ngIf="material.scans" src="{{imageUrl}}{{material.scans.id}}/{{material.scans.mainScan.filename}}"
                width="300px"
                alt="Fehler beim Laden der Aufnahme"
                loading="lazy"
                (click)="openEditor(material._id)"/> <br>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.lateralScan !== undefined && material.scans.lateralScan !== null">
+          <ng-container *ngIf="material.scans.lateralScan">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.lateralScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -68,7 +68,7 @@
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.lateralScan === undefined || material.scans.lateralScan === null">
+          <ng-container *ngIf="!material.scans.lateralScan">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'lateralScan')">
@@ -78,7 +78,7 @@
           </ng-container>
         </td>
         <td class="img">
-          <ng-container *ngIf="material.scans.preScan !== undefined && material.scans.preScan !== null">
+          <ng-container *ngIf="material.scans.preScan">
             <img src="{{imageUrl}}{{material.scans.id}}/{{material.scans.preScan.filename}}"
                  width="300px"
                  alt="Fehler beim Laden der Aufnahme"
@@ -90,7 +90,7 @@
               <mat-icon>delete</mat-icon>
             </button>
           </ng-container>
-          <ng-container *ngIf="material.scans.preScan === undefined || material.scans.preScan === null">
+          <ng-container *ngIf="!material.scans.preScan">
             <div class="wrapper">
               <button mat-flat-button color="primary" class="add-button"
                       (click)="openAddScanDialog(material._id, material.scans.id, 'preScan')">
@@ -108,11 +108,17 @@
               </tr>
               <tr>
                 <td class="metadata">Modalität:</td>
-                <td class="metadata">{{material.modality}}</td>
+                <td class="metadata" *ngIf="material.modality">{{material.modality}}</td>
               </tr>
               <tr>
-                <td class="metadata">Template:</td>
-                <td class="metadata">{{material.documentTemplate.name}} vom {{displayDate(material.documentTemplate.timestamp)}}</td>
+                <td class="metadata">Dokumentations-Template:</td>
+                <td class="metadata" *ngIf="material.deepDocTemplate">{{material.deepDocTemplate.name}}
+                  vom {{displayDate(material.deepDocTemplate.timestamp)}}</td>
+              </tr>
+              <tr>
+                <td class="metadata">Diagnose-Template:</td>
+                <td class="metadata" *ngIf="material.shallowDocTemplate">{{material.shallowDocTemplate.name}}
+                  vom {{displayDate(material.shallowDocTemplate.timestamp)}}</td>
               </tr>
             </table>
             <button mat-flat-button color="primary" class="custom-button"

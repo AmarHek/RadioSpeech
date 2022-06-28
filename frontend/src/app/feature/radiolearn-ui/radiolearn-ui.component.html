@@ -7,7 +7,7 @@
         <mat-icon>arrow_back_ios</mat-icon>
         RadioLearn
       </button>
-      <span *ngIf="isMod">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
+      <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
               (click)="switchInputMode()">
@@ -16,8 +16,8 @@
       </button>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
-        <ng-container *ngIf="userMode">Modus: User</ng-container>
-        <ng-container *ngIf="!userMode">Modus: Arzt</ng-container>
+        <ng-container *ngIf="userMode">Nutzer: Student</ng-container>
+        <ng-container *ngIf="!userMode">Nutzer: Arzt</ng-container>
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="detailedMode"
               (click)="switchMode()">
@@ -77,7 +77,6 @@
           {{cat.name}}
         </mat-list-option>
       </ng-container>
-      <!--<mat-list-option value="report" (click)="updateText()">Bericht</mat-list-option>-->
     </mat-selection-list>
 
     <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
@@ -86,7 +85,6 @@
                             class="options-expand"
                             [categories]="categories">
     </app-radiolearn-options>
-    <!--<app-report  class="report" [report]="report" [judgement]="judgement"></app-report>-->
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"

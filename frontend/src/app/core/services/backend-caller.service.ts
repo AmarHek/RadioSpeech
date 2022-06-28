@@ -11,7 +11,7 @@ import {Template, Material, Pathology, Feedback} from "@app/models";
 })
 
 // -----------------------------------
-// This class administrates the list of templates and executes all api calls
+// This class administrates the template-list of templates and executes all api calls
 // -----------------------------------
 
 export class BackendCallerService {
@@ -68,6 +68,13 @@ export class BackendCallerService {
     return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
+  getTemplatesByKind(kind: string) {
+    return this.http.post<{templates: Template[]; message: string}>(
+        this.templateUrl + "getByKind/",
+        {kind}
+    );
+  }
+
   getTemplateByName(name: string) {
     return this.http.post<{template: Template; message: string}>(
       this.templateUrl + "getByName/",
@@ -86,7 +93,7 @@ export class BackendCallerService {
 
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
-      template: material.documentTemplate,
+      deepDocTemplate: material.deepDocTemplate,
       annotations: material.annotations,
       pathologies: material.pathologies,
       judged: true

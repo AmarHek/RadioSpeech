@@ -9,7 +9,7 @@ const NAVBAR_HEADER_TOGGLE_2 = "login";
 })
 export class DisplayService {
 
-  // TODO: Do something with layouts so all possible layouts are contained in a list, perhaps dropdown menu
+  // TODO: Do something with layouts so all possible layouts are contained in a template-list, perhaps dropdown menu
 
   displayHeader: boolean;
   title: string;

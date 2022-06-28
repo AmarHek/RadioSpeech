@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import fs from "fs";
 import Path from "path";
 import {Template} from "../models/template.model";
+import {isJsonString} from "../util/util";
 
 // TODO: Define request types properly
 
@@ -15,6 +16,10 @@ export function filename(originalname: string, suffix: string): string {
 
 export function addMaterial (req: any, res: Response): void {
      if (req.files) {
+         if(!isJsonString(req.body.deepDocTemplate) || !isJsonString(req.body.shallowDocTemplate)) {
+             res.status(500).send({message: "One or more templates are invalid and cannot be parsed"});
+         }
+
          const mainScan = {
              filename: filename(req.files.mainScan[0].originalname, req.files.mainScan[0].fieldname),
              mimetype: req.files.mainScan[0].mimetype
@@ -49,7 +54,8 @@ export function addMaterial (req: any, res: Response): void {
                  pre: []
              },
              modality: req.body.modality,
-             template: JSON.parse(req.body.template),
+             deepDocTemplate: JSON.parse(req.body.deepDocTemplate),
+             shallowDocTemplate: JSON.parse(req.body.shallowDocTemplate),
              pathologies: [],
              timestamp: time,
              judged: false
@@ -61,6 +67,8 @@ export function addMaterial (req: any, res: Response): void {
                  success: true,
                  message: message});
          });
+     } else {
+         res.status(500).send({message: "No files in request found."})
      }
 }
 
@@ -82,7 +90,8 @@ export function updateMaterial(req: Request, res: Response): void {
     MaterialDB.updateOne({
         _id: req.params.id
     }, {
-        template: req.body.template,
+        deepDocTemplate: req.body.deepDocTemplate,
+        shallowDocTemplate: req.body.shallowDocTemplate,
         annotations: req.body.annotations,
         pathologies: req.body.pathologies,
         judged: req.body.judged
@@ -169,6 +178,7 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
             const newTemplate: Template = {
                 _id: template._id,
                 parts: template.parts,
+                kind: template.kind,
                 name: template.name,
                 timestamp: template.timestamp
             }
@@ -218,10 +228,10 @@ export function updateMatTempBC(req: Request, res: Response): void {
                         // first copy new template
                         const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                         // now fill out new parts by using old parts
-                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
+                        const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.deepDocTemplate.parts);
                         // generate new template and update material entry
                         const newTemplate = {
-                            _id: material.documentTemplate._id,
+                            _id: material.deepDocTemplate._id,
                             name: template.name,
                             timestamp: template.timestamp,
                             parts: newParts
@@ -255,10 +265,10 @@ export function updateMaterialTemplateBCByID(req: Request, res: Response) {
                     // first copy new template
                     const newPartsEmpty = JSON.parse(JSON.stringify(template.parts))
                     // now fill out new parts by using old parts
-                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.documentTemplate.parts);
+                    const newParts = updatePartsBackwardsCompatible(newPartsEmpty, material.deepDocTemplate.parts);
                     // generate new template and update material entry
                     const newTemplate = {
-                        _id: material.documentTemplate._id,
+                        _id: material.deepDocTemplate._id,
                         name: template.name,
                         timestamp: template.timestamp,
                         parts: newParts

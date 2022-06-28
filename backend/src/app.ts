@@ -7,7 +7,6 @@ import cors from "cors";
 
 import {matRouter, templateRouter, userRouter, authRouter} from './routes';
 import {initData} from "./init";
-import {pathologyRouter} from "./routes/pathology.routes";
 import {feedbackRouter} from "./routes/feedback.routes";
 
 export const app = express();
@@ -54,7 +53,6 @@ app.use("/auth", userRouter);
 
 app.use("/database/material", matRouter);
 app.use("/database/template", templateRouter);
-app.use("/database/pathology", pathologyRouter);
 app.use("/database/feedback", feedbackRouter);
 
 app.get('*', (req, res) => {

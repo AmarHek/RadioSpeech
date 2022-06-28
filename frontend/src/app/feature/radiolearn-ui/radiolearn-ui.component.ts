@@ -17,12 +17,12 @@ import {
   FeedbackDialogComponent,
   ImageDisplayComponent,
   ImageDisplayStudentComponent,
-  RadiolearnErrorsComponent,
+  StudentErrorsComponent,
   RadiolearnOptionsComponent
 } from "@app/shared";
 
 @Component({
-  selector: "app-judge-mat",
+  selector: "app-radiolearn-ui",
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
@@ -101,14 +101,14 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
             this.material = res.material;
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
             if (!this.isMod) {
-              this.material.documentTemplate = this.radiolearnService.resetTemplate(this.material.documentTemplate);
+              this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
             }
-            this.categories = this.dataParser.extractCategories(this.material.documentTemplate.parts, false);
+            this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
             if (this.selectedCat === undefined) {
               this.selectedCat = this.categories[0].name;
             }
             this.selectedCatList = [this.selectedCat];
-            // Do this so radiolearn options don't break on route change
+            // Do this so radiolearn report-output-options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
             }
@@ -134,7 +134,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   makeNormal() {
-    this.dataParser.makeNormal(this.material.documentTemplate.parts);
+    this.dataParser.makeNormal(this.material.deepDocTemplate.parts);
   }
 
   save() {
@@ -193,16 +193,15 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   detailedCheck() {
-    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.documentTemplate, this.material.documentTemplate);
+    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate, this.material.deepDocTemplate);
 
-    const modes = ["main", "lateral", "pre"];
+    // TODO: Reimplement correctness check
+    /* const modes = ["main", "lateral", "pre"];
     for (const mode of modes) {
       if (this.material.annotations[mode].length > 0) {
-        const annotation =
-          this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode], this.pathologyList,
-          this.material.documentTemplate);
-      }
-    }
+        this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode],
+          this.pathologyList, this.material.deepDocTemplate);
+    } */
 
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
@@ -210,7 +209,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
-    const dialogRef = this.dialog.open(RadiolearnErrorsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(StudentErrorsComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
@@ -274,7 +273,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   back() {
     if (this.isMod) {
-      this.router.navigate(["radiolearn/list"]).then();
+      this.router.navigate(["radiolearn/template-list"]).then();
     } else {
       this.router.navigate(["/"]).then();
     }

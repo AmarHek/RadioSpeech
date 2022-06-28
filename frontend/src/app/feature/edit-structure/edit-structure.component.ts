@@ -148,7 +148,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
               this.errorMsg =
                 "Dieses Dictionary existiert nicht! Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.";
             }
-            /* this.dictionaryService.setDict(list.find(d => d.name === this.routeName));
+            /* this.dictionaryService.setDict(template-list.find(d => d.name === this.routeName));
             this.new_parts = this.dictionaryService.myDict.dict; */
             /* this.myList[1].name = "Leo2";
             this.dictManager.updateDict(this.myList[1]); */
@@ -690,7 +690,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   }
 
   // START -------------------------
-  // These Methods are used to calculate how many options should pop on the screen after selecting a number
+  // These Methods are used to calculate how many report-output-options should pop on the screen after selecting a number
   computeCats() {
     for (let i = 0; i < this.myDisease.anzahlCat; i++) {
       this.myDisease.myAtts.push({ anzahlAtt: undefined, myVars: [] });
@@ -965,7 +965,7 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   // update dict after making changes and saving them
   updateDict() {
     this.dictManager.updateTemplate(this.myEdit);
-    this.router.navigate(["/list"]);
+    this.router.navigate(["/template-list"]);
   }
 
   /* logg4(arr: Array<number>, kind: string) {
