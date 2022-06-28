@@ -26,7 +26,7 @@ export class UploadMaterialComponent implements OnInit {
 
   ignoreFlags = false;
   currentPresetID: number;
-  currentCustomID: string = "";
+  currentCustomID: "";
 
   supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
   progress = 0;
