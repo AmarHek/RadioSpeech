@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AccountManagementComponent } from './account-management.component';
+import { AccountManagementComponent } from "@app/feature";
 
-describe('AccountManagementComponent', () => {
+describe("AccountManagementComponent", () => {
   let component: AccountManagementComponent;
   let fixture: ComponentFixture<AccountManagementComponent>;
 
@@ -19,7 +19,7 @@ describe('AccountManagementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

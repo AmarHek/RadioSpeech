@@ -59,7 +59,6 @@ export class EditStructureComponent implements OnInit, OnDestroy {
   @ViewChild("f") signupForm: NgForm;
   // parts: M.TopLevel[] = [];
   myEdit: M.Template = { name: "", parts: [], id: "" };
-  new_parts: N.TopLevel[] = [];
   disTyp = "";
 
   emptyVar: N.Vars = { anzahlVar: undefined, varTypes: [] };
