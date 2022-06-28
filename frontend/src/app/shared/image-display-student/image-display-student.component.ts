@@ -263,11 +263,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   addLabel(annotation: Annotation, color: string) {
-    if (annotation.correct) {
-      this.labelContext.font = "bold 15pt Arial";
-    } else {
-      this.labelContext.font = "bold italic 15pt Arial";
-    }
+    // TODO Correctness display
+    this.labelContext.font = "bold 15pt Arial";
     this.labelContext.fillStyle = color;
     this.labelContext.strokeStyle = "black";
     this.labelContext.lineWidth = 0.3;

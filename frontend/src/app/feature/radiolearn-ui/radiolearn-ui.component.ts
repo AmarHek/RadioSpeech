@@ -175,14 +175,13 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   detailedCheck() {
     const errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate, this.material.deepDocTemplate);
 
-    const modes = ["main", "lateral", "pre"];
+    // TODO: Reimplement correctness check
+    /* const modes = ["main", "lateral", "pre"];
     for (const mode of modes) {
       if (this.material.annotations[mode].length > 0) {
-        const annotation =
-          this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode], this.pathologyList,
-          this.material.deepDocTemplate);
-      }
-    }
+        this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode],
+          this.pathologyList, this.material.deepDocTemplate);
+    } */
 
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
