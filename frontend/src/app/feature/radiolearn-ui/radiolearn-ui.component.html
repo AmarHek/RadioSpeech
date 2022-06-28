@@ -61,6 +61,7 @@
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"
+                       [boxLabels]="boxLabels"
                        [annotations]="material.annotations"></app-image-display>
 
     <app-image-display-student *ngIf="material && userMode"
@@ -69,7 +70,7 @@
   </div>
 
   <div *ngIf="!detailedMode" class="inner_remaining">
-    <mat-selection-list *ngIf="this.pathologyList"
+    <!--<mat-selection-list *ngIf="this.pathologyList"
                         class="pathSelectionList"
                         [(ngModel)]="selectedPathologies"
                         [multiple]="true">
@@ -81,10 +82,11 @@
           {{pathology.name}}
         </mat-list-option>
       </ng-container>
-    </mat-selection-list>
+    </mat-selection-list>-->
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"
+                       [boxLabels]="boxLabels"
                        [annotations]="material.annotations"></app-image-display>
 
     <app-image-display-student *ngIf="material && userMode"

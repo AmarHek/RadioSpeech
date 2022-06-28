@@ -4,10 +4,8 @@ import {
   Category,
   CheckBox,
   Group,
-  Pathology,
   Selectable,
   Template,
-  TemplateMap,
   Variable,
   VariableMC,
   VariableNumber,
@@ -23,6 +21,7 @@ import {
   VariableRatioError,
   VariableValueError
 } from "@app/models/errorModel";
+import * as M from "@app/models/templateModel";
 
 @Injectable({
   providedIn: "root"
@@ -81,11 +80,46 @@ export class RadiolearnService {
     return variables;
   }
 
+  getBoxLabels(category: M.Category): string[] {
+    let boxLabels: string[] = [];
+    for (const sel of category.selectables) {
+      if (sel.kind === "box") {
+        boxLabels.push(sel.name);
+        if (sel.variables.length > 0) {
+          boxLabels = boxLabels.concat(this.getVariableBoxLabels(sel));
+        }
+      } else if (sel.kind === "group") {
+        for (const option of sel.options) {
+          boxLabels.push(option.name);
+          if (option.variables.length > 0) {
+            boxLabels = boxLabels.concat(this.getVariableBoxLabels(option));
+          }
+        }
+      }
+    }
+    return boxLabels;
+  }
+
+  getVariableBoxLabels(clickable: M.Clickable): string[] {
+    const boxLabels: string[] = [];
+    for (const variable of clickable.variables) {
+      if (variable.kind === "oc") {
+        for (const value of variable.values) {
+          boxLabels.push(value);
+        }
+      } else if (variable.kind === "mc") {
+        for (const value of variable.values) {
+          boxLabels.push(value[0]);
+        }
+      }
+    }
+    return boxLabels;
+  }
+
   // takes box annotations (given in material) and compares filled out template to check which
   // box can be labeled as "correct" for the student (just rough check)
   // wrapper function for ALL annotations
-  checkCorrectAnnotations(annotations: Annotation[],
-                          pathologies: Pathology[],
+  /* checkCorrectAnnotations(annotations: Annotation[],
                           studentTemplate: Template): Annotation[] {
     // iterate through annotations
     for (const annotation of annotations) {
@@ -96,11 +130,11 @@ export class RadiolearnService {
       annotation.correct = this.isAnnotationInTemplate(annotation, studentTemplate, templateMaps);
     }
     return annotations;
-  }
+  } */
 
   // single function for checkCorrectAnnotations, i.e. takes one annotation and compares to template
   // using specific templateMap
-  isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
+  /* isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
     // now iterate template in several steps
     for (const category of template.parts) {
       // first check for category kind, i.e. ignore blocks etc.
@@ -126,10 +160,10 @@ export class RadiolearnService {
     }
     // not present, correct = false
     return false;
-  }
+  } */
 
   // deeper method for isAnnotationInTemplate for Selectables
-  checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
+  /* checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
     if (selectable.kind === "box") {
       for (const map of templateMaps) {
         // only check, if kind is the same
@@ -159,7 +193,7 @@ export class RadiolearnService {
       }
     }
     return false;
-  }
+  } */
 
   // method to extract all pathologies defined by box annotations to generate template-list of pathologies as strings
   extractPathologies(annotations: {
@@ -186,24 +220,6 @@ export class RadiolearnService {
   }
 
   // STUDENT ERROR COMPARISON FUNCTIONS BELOW
-
-  // checks student and ground truth pathologies and returns template-list of booleans (true/false for each pathology)
-  comparePathologies(correctPathologies: string[], studentPathologies: string[], pathologyList: Pathology[]):
-    boolean[] {
-    const correct = new Array(pathologyList.length).fill(true);
-
-    for (const pathology of pathologyList) {
-      if (studentPathologies.includes(pathology.name) && !correctPathologies.includes(pathology.name)) {
-        correct[pathologyList.indexOf(pathology)] = false;
-      }
-
-      if (correctPathologies.includes(pathology.name) && !studentPathologies.includes(pathology.name)) {
-        correct[pathologyList.indexOf(pathology)] = false;
-      }
-    }
-
-    return correct;
-  }
 
   // Wrapper function for student and ground truth template comparison
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
