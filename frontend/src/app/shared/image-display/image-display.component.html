@@ -73,13 +73,13 @@
               (click)="openCommentDialog()">
         Kommentar hinzufügen
       </button>
-      <div class="pathology">
+      <div>
         <mat-form-field class="wideButton" appearance="fill">
           <mat-label>Pathologie wählen</mat-label>
-          <mat-select [(ngModel)]="currentPathology">
+          <mat-select [(ngModel)]="currentLabel">
             <mat-option [value]="undefined">Keine</mat-option>
-            <mat-option *ngFor="let pathology of pathologyList" [value]="pathology">
-              {{pathology.name}}
+            <mat-option *ngFor="let label of boxLabels" [value]="label">
+              {{label}}
             </mat-option>
           </mat-select>
         </mat-form-field>

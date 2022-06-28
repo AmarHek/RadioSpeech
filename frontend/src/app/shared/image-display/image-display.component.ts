@@ -12,7 +12,7 @@ import {switchMap, takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
-import {Annotation, BoundingBox, Image, Pathology} from "@app/models";
+import {Annotation, BoundingBox, Image} from "@app/models";
 import {BackendCallerService, MatDialogService} from "@app/core";
 import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
@@ -47,11 +47,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     lateral:  Annotation[];
     pre:      Annotation[];
   };
+  @Input() boxLabels: string[];
 
   imageUrl = environment.images;
-
-  // assets and material
-  pathologyList: Pathology[];
 
   // state variables for current display
   currentMode: string;
@@ -69,7 +67,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   enableHover: boolean;
 
   // state variable to show warning that no pathology is selected
-  warnPathology = false;
+  warnLabel = false;
 
   // coordinates of the currently drawn box
   startX = 0;
@@ -85,7 +83,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   };
 
   // current chosen Pathology for label
-  currentPathology: Pathology;
+  currentLabel: string;
   currentComment: string;
 
   // Zoom lens
@@ -158,8 +156,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getPathologyList();
-
     this.tempBoxes = {
       main: [],
       lateral: [],
@@ -211,14 +207,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.currentScanUrl = this.imageUrl + this.scans.id + "/" + filename;
   }
 
-  getPathologyList() {
-    this.backendCaller.getPathologyList().subscribe(res => {
-      this.pathologyList = res.pathologyList;
-    }, err => {
-      console.log(err);
-    });
-  }
-
   setCurrentDimensions() {
     const img = new Image();
     img.src = this.currentScanUrl;
@@ -263,6 +251,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   toggleBoxes() {
+    console.log(this.boxLabels);
+    console.log(this.scans);
+    console.log(this.annotations);
     this.displayBoxes = !this.displayBoxes;
     this.enableHover = !this.enableHover;
     this.clearCanvas();
@@ -525,8 +516,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   saveNewAnnotation() {
-    if (this.currentPathology === undefined) {
-      this.warnPathology = true;
+    if (this.currentLabel === undefined) {
+      this.warnLabel = true;
     } else {
       // gather all necessary data
       const boxes = this.tempBoxes[this.currentMode];
@@ -536,15 +527,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
         // push new annotation to array of proper mode
         this.annotations[this.currentMode].push({
           boxes,
-          label: this.currentPathology.name,
+          label: this.currentLabel,
           comment: this.currentComment,
           labelLeft: labelCoordinates[0],
           labelTop: labelCoordinates[1]
         });
 
         // update state and empty buffer variables
-        this.warnPathology = false;
-        this.currentPathology = undefined;
+        this.warnLabel = false;
+        this.currentLabel = undefined;
         this.currentComment = undefined;
         this.tempBoxes[this.currentMode] = [];
         this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);

@@ -9,11 +9,6 @@
       </button>
       <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
       <span class="spacer"></span>
-      <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
-              (click)="switchInputMode()">
-        <ng-container *ngIf="inputEnabled">Eingabezeile aktiviert</ng-container>
-        <ng-container *ngIf="!inputEnabled">Eingabezeile deaktiviert</ng-container>
-      </button>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
         <ng-container *ngIf="userMode">Nutzer: Student</ng-container>
@@ -41,78 +36,40 @@
 
     </mat-toolbar>
 
-    <mat-form-field class="example-chip-list" appearance="fill" *ngIf="inputEnabled">
-      <mat-label>Eingabe</mat-label>
-      <mat-chip-list #chipList>
-        <mat-chip
-          *ngFor="let chip of chips"
-          (removed)="remove(chip)"
-          [ngClass]="chip.color">
-          {{chip.content}}
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip>
-        <input
-          #chipInput
-          placeholder="Befund eingeben ..."
-          [matChipInputFor]="chipList"
-          [(ngModel)]="this.input"
-          (input)="onInput($event)"
-        >
-      </mat-chip-list>
-    </mat-form-field>
-
   </div>
 
-  <div *ngIf="detailedMode" class="inner_remaining">
-    <mat-selection-list *ngIf="this.categories"
-                        class="catSelectionList"
-                        (selectionChange)="onSelect($event)"
-                        [ngStyle]="{'width.%': userMode ? 12 : 9}"
-                        [multiple]="false" [(ngModel)]="selectedCatList">
-      <ng-container *ngFor="let cat of categories">
-        <mat-list-option [value]="cat.name"
-                         [selected]="cat.name === this.selectedCat">
-          {{cat.name}}
-        </mat-list-option>
-      </ng-container>
-    </mat-selection-list>
+  <div class="inner_remaining">
+    <ng-container *ngIf="detailedMode">
+      <mat-selection-list *ngIf="this.categories"
+                          class="catSelectionList"
+                          (selectionChange)="onSelect($event)"
+                          [ngStyle]="{'width.%': userMode ? 12 : 9}"
+                          [multiple]="false" [(ngModel)]="selectedCatList">
+        <ng-container *ngFor="let cat of categories">
+          <mat-list-option [value]="cat.name"
+                           [selected]="cat.name === this.selectedCat">
+            {{cat.name}}
+          </mat-list-option>
+        </ng-container>
+      </mat-selection-list>
 
-    <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
-                            [selectedCat]="selectedCat"
-                            (nextCat)="nextCategory($event)"
-                            class="options-expand"
-                            [categories]="categories">
-    </app-radiolearn-options>
+      <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
+                              [selectedCat]="selectedCat"
+                              (nextCat)="nextCategory($event)"
+                              class="options-expand"
+                              [categories]="categories">
+      </app-radiolearn-options>
+    </ng-container>
+
+    <ng-container *ngIf="!detailedMode">
+
+    </ng-container>
+
+
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"
-                       [annotations]="material.annotations"></app-image-display>
-
-    <app-image-display-student *ngIf="material && userMode"
-                               [scans]="material.scans"
-                               [annotations]="material.annotations"></app-image-display-student>
-  </div>
-
-  <div *ngIf="!detailedMode" class="inner_remaining">
-    <mat-selection-list *ngIf="this.pathologyList" #patList
-                        class="pathSelectionList"
-                        [(ngModel)]="selectedPathologies"
-                        [multiple]="true">
-      <ng-container *ngFor="let pathology of pathologyList; let i = index">
-        <mat-list-option *ngIf="pathology.name !== 'Instrumentierung'"
-                         class="mat-primary"
-                         (click)="onClick(patList.selectedOptions)"
-                         [ngClass]="{'mat-warn mat-background-warn': !correctPathologies[i]}"
-                         [value]="pathology.name">
-          {{pathology.name}}
-        </mat-list-option>
-      </ng-container>
-    </mat-selection-list>
-
-    <app-image-display *ngIf="material && !userMode && isMod"
-                       [scans]="material.scans"
+                       [boxLabels]="boxLabels"
                        [annotations]="material.annotations"></app-image-display>
 
     <app-image-display-student *ngIf="material && userMode"

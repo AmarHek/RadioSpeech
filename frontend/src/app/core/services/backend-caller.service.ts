@@ -3,7 +3,7 @@ import * as M from "../../models/templateModel";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
 import {Observable} from "rxjs";
-import {Template, Material, Pathology, Feedback} from "@app/models";
+import {Template, Material, Feedback} from "@app/models";
 
 
 @Injectable({
@@ -156,14 +156,6 @@ export class BackendCallerService {
 
   updateMatTemplateBCByID(id: string) {
     return this.http.put<{message: string}>(this.materialUrl + "updateMaterialTemplatesBCByID/" + id, {});
-  }
-
-  // GET PATHOLOGY LIST FROM DATABASE
-
-  getPathologyList() {
-    return this.http.get<{message: string; pathologyList: Pathology[]}>(
-      this.pathologyUrl + "list/"
-    );
   }
 
   // FEEDBACK API

@@ -8,7 +8,8 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {ChipColors, InputChip, Material, Pathology, Role, User} from "@app/models";
+import {Material, Role, User} from "@app/models";
+import {CategoryError} from "@app/models/errorModel";
 
 import * as M from "@app/models/templateModel";
 import {
@@ -36,7 +37,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   ogMaterial: Material;
 
   categories: M.Category[];
-  pathologyList: Pathology[];
+  boxLabels: string[];
 
   selectedCatList = ["undefined"];
   selectedCat: string;
@@ -44,9 +45,6 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   correctPathologies: boolean[];
 
   userMode: boolean;
-  inputEnabled: boolean;
-  chips: InputChip[] = []
-  input: string = ""
 
   private user: User;
 
@@ -75,14 +73,13 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     return this.radiolearnService.colorBlindMode;
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.authenticationService.user.subscribe(
       (x) => {
         this.user = x;
         this.userMode = !this.isMod;
       });
-    await this.getData();
-    this.getPathologyList();
+    this.getData().then();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -112,6 +109,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
             if (this.radiolearnOptionsChild !== undefined) {
               this.radiolearnOptionsChild.categories = this.categories;
             }
+            this.getBoxLabels();
           }
         }, err => {
           window.alert(err.message);
@@ -124,13 +122,8 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     this.selectedCat = event.options[0].value;
   }
 
-  getPathologyList() {
-    this.backendCaller.getPathologyList().subscribe(res => {
-      this.pathologyList = res.pathologyList;
-      this.correctPathologies = new Array(this.pathologyList.length).fill(true);
-    }, err => {
-      console.log(err);
-    });
+  getBoxLabels() {
+    this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
   }
 
   makeNormal() {
@@ -153,47 +146,15 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
   }
 
-  switchInputMode(){
-    this.inputEnabled = !this.inputEnabled;
-  }
-
-  onInput(event){
-    console.log("input! " + this.input)
-    console.log(this.pathologyList)
-    this.pathologyList.forEach(pat => {
-      if (this.input.toLowerCase().includes(pat.name.toLowerCase())){
-        this.chips.push(new InputChip(pat.name, ChipColors.GREEN, null, null))
-        this.input = ""
-        this.updateSelections()
-        return
-      }
-    })
-  }
-
   check() {
-    if (this.radiolearnService.detailedMode) {
-      this.detailedCheck();
+    let errors: CategoryError[];
+    if (this.detailedMode) {
+      errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
+        this.material.deepDocTemplate);
     } else {
-      this.simpleCheck();
+      errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
+        this.material.shallowDocTemplate);
     }
-  }
-
-  simpleCheck() {
-    if (this.userMode) {
-      this.imageDisplayStudentChild.toggleBoxes();
-    }
-
-    this.correctPathologies = this.radiolearnService.comparePathologies(
-      this.material.pathologies, this.selectedPathologies, this.pathologyList);
-
-    console.log(this.material.pathologies);
-    console.log(this.selectedPathologies);
-    console.log(this.pathologyList);
-    console.log(this.correctPathologies);
-  }
-
-  detailedCheck() {
-    const errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate, this.material.deepDocTemplate);
 
     // TODO: Reimplement correctness check
     /* const modes = ["main", "lateral", "pre"];
@@ -277,33 +238,5 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     } else {
       this.router.navigate(["/"]).then();
     }
-  }
-
-  onClick(selectedOptions){
-     console.log("click!")
-     console.log(this.pathologyList)
-    // test.forEach(val => {
-    //   // @ts-ignore
-    //   this.chips.push(new InputChip(val._value, ChipColors.GREEN, null, null))
-    // })
-    this.chips = []
-    this.selectedPathologies.forEach(pat => this.chips.push(new InputChip(pat, ChipColors.GREEN, null, null)))
-  }
-
-  updateSelections(){
-    this.selectedPathologies = []
-    this.chips.forEach(chip => {
-      this.selectedPathologies.push(chip.content)
-    })
-
-  }
-
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    console.log(this.selectedPathologies)
-    setTimeout(() => this.updateSelections(), 5)
   }
 }
