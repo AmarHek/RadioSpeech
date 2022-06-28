@@ -8,7 +8,7 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {Material, Pathology, Role, User} from "@app/models";
+import {ChipColors, InputChip, Material, Pathology, Role, User} from "@app/models";
 
 import * as M from "@app/models/templateModel";
 import {
@@ -44,6 +44,9 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   correctPathologies: boolean[];
 
   userMode: boolean;
+  inputEnabled: boolean;
+  chips: InputChip[] = []
+  input: string = ""
 
   private user: User;
 
@@ -148,6 +151,23 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   switchMode() {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
+  }
+
+  switchInputMode(){
+    this.inputEnabled = !this.inputEnabled;
+  }
+
+  onInput(event){
+    console.log("input! " + this.input)
+    console.log(this.pathologyList)
+    this.pathologyList.forEach(pat => {
+      if (this.input.toLowerCase().includes(pat.name.toLowerCase())){
+        this.chips.push(new InputChip(pat.name, ChipColors.GREEN, null, null))
+        this.input = ""
+        this.updateSelections()
+        return
+      }
+    })
   }
 
   check() {
@@ -258,5 +278,33 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     } else {
       this.router.navigate(["/"]).then();
     }
+  }
+
+  onClick(selectedOptions){
+     console.log("click!")
+     console.log(this.pathologyList)
+    // test.forEach(val => {
+    //   // @ts-ignore
+    //   this.chips.push(new InputChip(val._value, ChipColors.GREEN, null, null))
+    // })
+    this.chips = []
+    this.selectedPathologies.forEach(pat => this.chips.push(new InputChip(pat, ChipColors.GREEN, null, null)))
+  }
+
+  updateSelections(){
+    this.selectedPathologies = []
+    this.chips.forEach(chip => {
+      this.selectedPathologies.push(chip.content)
+    })
+
+  }
+
+  remove(chip: InputChip): void {
+    const index = this.chips.indexOf(chip);
+    if (index >= 0) {
+      this.chips.splice(index, 1);
+    }
+    console.log(this.selectedPathologies)
+    setTimeout(() => this.updateSelections(), 5)
   }
 }
