@@ -91,10 +91,23 @@
       <mat-selection-list #shallowList
                           class="shallowSelectionList"
                           [ngStyle]="{'width.%': userMode ? 18 : 18}">
-        <mat-list-option *ngFor="let option of categories[0].selectables">
-          {{option.name}}
 
-        </mat-list-option>
+        <ng-container *ngFor="let selectable of this.categories[0].selectables">
+          <mat-list-option *ngIf="selectable.kind == 'box'">
+            {{selectable.name}}
+          </mat-list-option>
+          <ng-container *ngFor="let variable of selectable.variables">
+            <ng-container *ngFor="let value of variable.values">
+              <mat-list-option *ngIf="variable.kind=='oc'" style="padding-left: 20px">
+                {{value}}
+              </mat-list-option>
+              <mat-list-option *ngIf="variable.kind=='mc'" style="padding-left: 20px">
+                {{value[0]}}
+              </mat-list-option>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
 
       </mat-selection-list>
 
