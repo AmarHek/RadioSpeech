@@ -58,7 +58,12 @@ export class ChipHelperService {
     let activeVars = 0
     variables.forEach(variable => {
       if(variable.kind == "oc" && variable.value != null){
-        let key = variable.keys[variable.values.indexOf(variable.value)][0]
+        let key = ""
+        if (variable.keys == null){
+          key = variable.value
+        }else {
+          key = variable.keys[variable.values.indexOf(variable.value)][0]
+        }
         varText += " " + variable.textBefore + key + variable.textAfter
         activeVars++
       }else if (variable.kind == "number" && variable.value != undefined) {
