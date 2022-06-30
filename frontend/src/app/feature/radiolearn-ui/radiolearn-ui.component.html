@@ -9,6 +9,11 @@
       </button>
       <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
       <span class="spacer"></span>
+      <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
+              (click)="switchInputMode()">
+        <ng-container *ngIf="inputEnabled">Eingabezeile aktiviert</ng-container>
+        <ng-container *ngIf="!inputEnabled">Eingabezeile deaktiviert</ng-container>
+      </button>
       <button mat-button class="header-button" id="userMode" *ngIf="isAdmin"
               (click)="toggleUserMode()">
         <ng-container *ngIf="userMode">Nutzer: Student</ng-container>
@@ -35,6 +40,27 @@
               (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
 
     </mat-toolbar>
+
+    <mat-form-field class="example-chip-list" appearance="fill" *ngIf="inputEnabled">
+      <mat-label>Eingabe</mat-label>
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let chip of chips"
+          (removed)="remove(chip)"
+          [ngClass]="chip.color">
+          {{chip.content}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          #chipInput
+          placeholder="Befund eingeben ..."
+          [matChipInputFor]="chipList"
+          [(ngModel)]="this.input"
+        >
+      </mat-chip-list>
+    </mat-form-field>
 
   </div>
 

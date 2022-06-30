@@ -8,7 +8,7 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {Material, Role, User} from "@app/models";
+import {InputChip, Material, Role, User} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 
 import * as M from "@app/models/templateModel";
@@ -21,6 +21,7 @@ import {
   StudentErrorsComponent,
   RadiolearnOptionsComponent
 } from "@app/shared";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -44,6 +45,10 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   selectedPathologies: string[];
   correctPathologies: boolean[];
 
+  inputEnabled: boolean;
+  chips: InputChip[] = []
+  input: string = ""
+
   userMode: boolean;
 
   private user: User;
@@ -54,6 +59,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               private dataParser: DataParserService,
               private authenticationService: AuthenticationService,
               private radiolearnService: RadiolearnService,
+              private chipHelper: ChipHelperService,
               private dialog: MatDialog,
               private dialogService: MatDialogService) { }
 
@@ -67,6 +73,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   get detailedMode() {
     return this.radiolearnService.detailedMode;
+  }
+
+  switchInputMode(){
+    this.inputEnabled = !this.inputEnabled;
+    this.chips = []
+    this.input = ""
   }
 
   get colorBlindMode() {
@@ -144,6 +156,11 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   switchMode() {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
+    if (this.radiolearnService.detailedMode){
+      this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
+    }else {
+      this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
+    }
   }
 
   check() {
@@ -237,6 +254,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       this.router.navigate(["radiolearn/template-list"]).then();
     } else {
       this.router.navigate(["/"]).then();
+    }
+  }
+  remove(chip: InputChip): void {
+    const index = this.chips.indexOf(chip);
+    if (index >= 0) {
+      this.chips.splice(index, 1);
     }
   }
 }
