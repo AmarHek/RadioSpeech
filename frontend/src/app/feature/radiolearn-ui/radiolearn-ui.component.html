@@ -88,6 +88,15 @@
     </ng-container>
 
     <ng-container *ngIf="!detailedMode">
+      <mat-selection-list #shallowList
+                          class="shallowSelectionList"
+                          [ngStyle]="{'width.%': userMode ? 18 : 18}">
+        <mat-list-option *ngFor="let option of categories[0].selectables">
+          {{option.name}}
+
+        </mat-list-option>
+
+      </mat-selection-list>
 
     </ng-container>
 

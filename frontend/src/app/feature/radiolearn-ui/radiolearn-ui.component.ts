@@ -157,9 +157,13 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   switchMode() {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
     if (this.radiolearnService.detailedMode){
+      //deep
       this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
     }else {
+      //shallow
       this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
+      console.log("shallow categories:")
+      console.log(this.categories)
     }
   }
 
