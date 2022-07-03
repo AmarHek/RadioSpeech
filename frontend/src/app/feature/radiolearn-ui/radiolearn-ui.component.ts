@@ -87,6 +87,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     setTimeout(() => this.updateFromVariableDelayed(selectable), 5)
   }
 
+  //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
   updateFromVariableDelayed(selectable) {
     let anyVarsActive = false
     selectable.variables.forEach(variable =>{
@@ -109,6 +110,11 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     setTimeout(() => this.updateFromParentDelayed(selectable), 5)
   }
 
+  updateFromOptions(){
+    setTimeout(() => this.generateChips(), 5)
+  }
+
+  //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
   updateFromParentDelayed(selectable) {
     if (!selectable.value){
       selectable.variables.forEach(variable => {
@@ -125,7 +131,11 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   generateChips(){
-    this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts, this.categories)
+    if(this.radiolearnService.detailedMode){
+      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts, this.material.deepDocTemplate.parts)
+    }else {
+      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts, this.categories)
+    }
   }
 
   get colorBlindMode() {

@@ -12,6 +12,7 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
   @Input() paramMapID: string; // for detecting changes
   @Input() selectedCat: string;
   @Output() nextCat = new EventEmitter<string>();
+  @Output() updateEmitter = new EventEmitter<string>();
 
   constructor() { }
 
@@ -38,6 +39,7 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
         }
       }
     }
+    this.updateEmitter.emit()
   }
 
   updateFromVariable(parent: M.Clickable, group?: M.Group) {
@@ -50,6 +52,7 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
         group.value = parent.name;
       }
     }
+    this.updateEmitter.emit()
   }
 
   getSelectedCatIndex() {

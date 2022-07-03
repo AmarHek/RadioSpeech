@@ -82,6 +82,7 @@
       <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
                               [selectedCat]="selectedCat"
                               (nextCat)="nextCategory($event)"
+                              (updateEmitter)="updateFromOptions()"
                               class="options-expand"
                               [categories]="categories">
       </app-radiolearn-options>
@@ -92,8 +93,8 @@
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
 
       <ng-container *ngFor="let selectable of this.categories[0].selectables">
-        <div style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px">
-          <mat-checkbox (click)="updateFromParent(selectable)" [(ngModel)]="selectable.value">{{selectable.name}}</mat-checkbox>
+        <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px">
+          <mat-checkbox style="font-size: 17px" (click)="updateFromParent(selectable)" [(ngModel)]="selectable.value">{{selectable.name}}</mat-checkbox>
         </div>
 
         <ng-container *ngIf="selectable.value">
