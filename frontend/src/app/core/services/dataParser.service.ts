@@ -91,9 +91,8 @@ export class DataParserService {
    * @param parts that were passed.
    */
   addVariableKeysToParts(parts: M.TopLevel[]){
-    console.log("adding keys")
     for(let part of parts){
-      if (part.kind != "category") return
+      if (part.kind != "category") continue
       part.selectables.forEach(selectable =>{
         if (selectable.kind=='group'){
           selectable.options.forEach(option => this.addVariableKeysToClickable(option))
