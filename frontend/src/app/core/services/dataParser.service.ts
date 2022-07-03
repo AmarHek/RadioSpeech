@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as G from "../../models/generator";
 import * as M from "../../models/templateModel";
+import {Clickable} from "@app/models";
 
 @Injectable({
   providedIn: "root"
@@ -83,6 +84,42 @@ export class DataParserService {
     }
 
     return res;
+  }
+
+  /**
+   * Adds the default names as keys to mc and oc variables in the categories contained in the
+   * @param parts that were passed.
+   */
+  addVariableKeysToParts(parts: M.TopLevel[]){
+    console.log("adding keys")
+    for(let part of parts){
+      if (part.kind != "category") return
+      part.selectables.forEach(selectable =>{
+        if (selectable.kind=='group'){
+          selectable.options.forEach(option => this.addVariableKeysToClickable(option))
+        }else {
+          this.addVariableKeysToClickable(selectable)
+        }
+      })
+    }
+  }
+
+  addVariableKeysToClickable(clickable: Clickable){
+    clickable.variables.forEach(variable =>{
+      if(variable.keys == null){
+        let newKeys = []
+        if(variable.kind=='oc'){
+          variable.values.forEach(value => {
+            newKeys.push([value])
+          })
+        }else if(variable.kind=='mc'){
+          variable.values.forEach(value => {
+            newKeys.push([value[0]])
+          })
+        }
+        variable.keys = newKeys
+      }
+    })
   }
 
   getSplits(category: M.Category, maxRowLength: number): number[] {

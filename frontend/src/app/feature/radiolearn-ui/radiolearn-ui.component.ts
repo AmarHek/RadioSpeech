@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {
   AuthenticationService,
   BackendCallerService,
-  DataParserService,
+  DataParserService, InputParserService,
   MatDialogService,
   RadiolearnService
 } from "@app/core";
@@ -60,8 +60,10 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               private authenticationService: AuthenticationService,
               private radiolearnService: RadiolearnService,
               private chipHelper: ChipHelperService,
+              private inputParser: InputParserService,
               private dialog: MatDialog,
-              private dialogService: MatDialogService) { }
+              private dialogService: MatDialogService) {
+  }
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
@@ -75,10 +77,55 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     return this.radiolearnService.detailedMode;
   }
 
-  switchInputMode(){
+  switchInputMode() {
     this.inputEnabled = !this.inputEnabled;
-    this.chips = []
     this.input = ""
+    this.generateChips()
+  }
+
+  updateFromVariable(selectable) {
+    setTimeout(() => this.updateFromVariableDelayed(selectable), 5)
+  }
+
+  updateFromVariableDelayed(selectable) {
+    let anyVarsActive = false
+    selectable.variables.forEach(variable =>{
+      if(variable.kind=='oc' && variable.value != undefined){anyVarsActive = true}
+      if(variable.kind=='mc'){
+        variable.values.forEach(value =>{
+          if(value[1]){
+            anyVarsActive = true
+          }
+        })
+      }
+    })
+    if(anyVarsActive){
+      selectable.value = true
+    }
+    this.generateChips()
+  }
+
+  updateFromParent(selectable) {
+    setTimeout(() => this.updateFromParentDelayed(selectable), 5)
+  }
+
+  updateFromParentDelayed(selectable) {
+    if (!selectable.value){
+      selectable.variables.forEach(variable => {
+        if (variable.kind == 'oc') {
+          variable.value = null
+        } else if (variable.kind == 'mc') {
+          variable.values.forEach(value => {
+            value[1] = false
+          })
+        }
+      })
+    }
+    this.generateChips()
+  }
+
+  generateChips(){
+    this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts, this.categories)
   }
 
   get colorBlindMode() {
@@ -95,7 +142,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+    // console.log(changes);
   }
 
   async getData() {
@@ -156,14 +203,15 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   switchMode() {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
-    if (this.radiolearnService.detailedMode){
+    if (this.radiolearnService.detailedMode) {
       //deep
       this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
-    }else {
+    } else {
       //shallow
       this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
-      console.log("shallow categories:")
-      console.log(this.categories)
+      // this.dataParser.addVariableKeysToParts(this.categories)
+      // this.inputParser.init(this.categories)
+      console.log(this.inputParser.clickableKeywords)
     }
   }
 
@@ -229,7 +277,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       "Nicht gespeicherte Daten gehen eventuell verloren. Nächste Aufnahme laden?");
 
     const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
-    dialogConfig.position = { top: "50px" };
+    dialogConfig.position = {top: "50px"};
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
 
@@ -260,6 +308,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       this.router.navigate(["/"]).then();
     }
   }
+
   remove(chip: InputChip): void {
     const index = this.chips.indexOf(chip);
     if (index >= 0) {

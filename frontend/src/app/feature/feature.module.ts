@@ -24,7 +24,7 @@ import {SharedModule} from "@app/shared/shared.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AccountManagementComponent} from "./account-management/account-management.component";
 
-import {} from "jasmine";
+import {MatRadioModule} from "@angular/material/radio";
 
 
 @NgModule({
@@ -37,25 +37,26 @@ import {} from "jasmine";
     RadiolearnUiComponent,
     ReportUiComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    NgbModule,
-    ReactiveFormsModule,
-    RouterModule,
-    SharedModule,
-    MatTooltipModule,
-    MatDialogModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatIconModule,
+        MatListModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        NgbModule,
+        ReactiveFormsModule,
+        RouterModule,
+        SharedModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatRadioModule,
+    ],
   exports: [
     AccountManagementComponent,
     AdminComponent,
