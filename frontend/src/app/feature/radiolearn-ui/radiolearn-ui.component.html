@@ -1,7 +1,7 @@
 <html>
 <body class="disable-select">
 <div id="outer">
-  <div id="inner_fixed">
+  <div id="inner_fixed" [ngStyle]="{'margin-bottom' : inputEnabled ? '-27px' : '1px'}">
     <mat-toolbar class="toolbar" color="primary">
       <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
         <mat-icon>arrow_back_ios</mat-icon>
