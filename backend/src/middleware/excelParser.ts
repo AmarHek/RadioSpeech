@@ -177,8 +177,8 @@ export function extractGroup(rows: Row[]): Group {
 }
 
 export function extractOption(rows: Row[]): Option {
-    const variables = extractSelectableVariables(rows)
-    const keys = extractSelectableKeys(rows)
+    const variables = extractSelectableVariables(rows);
+    const keys = extractSelectableKeys(rows);
     const text = rows[0]["Text Befund"]
     const judgementText = rows[0]["Text Beurteilung"] == undefined ? undefined : rows[0]["Text Beurteilung"]
     return {
@@ -204,8 +204,14 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 }
 
 function extractSelectableKeys(rows: Row[]): string[] {
-    return trimArray(rows[0]["Synonyme"].split(";"))
+    const name = rows[0]["Befund"];
+    const keys = trimArray(rows[0]["Synonyme"].split(";"))
+    if (!keys.includes(name)) {
+        keys.push(name);
+    }
+    return keys;
 }
+
 
 function extractBox(rows: Row[]): CheckBox {
     const variables = extractSelectableVariables(rows)
