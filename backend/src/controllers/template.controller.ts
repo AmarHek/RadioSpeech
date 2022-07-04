@@ -1,3 +1,4 @@
+import {validateKeys, validateTemplate} from "../middleware/templateMiddleware";
 import {TemplateDB} from '../models';
 import * as fs from 'fs';
 import {Request, Response} from "express";
@@ -44,7 +45,14 @@ export function createJSONTemplate(req: any, res: Response) {
   if (!isJsonString(rawData.toString())) {
       res.status(500).send({message: "Given file is not a JSON file, aborting."});
   }
-  const parts = JSON.parse(rawData.toString());
+  let parts = JSON.parse(rawData.toString());
+
+  if (!validateTemplate(parts)) {
+      res.status(500).send({message: "Not a valid template"})
+  }
+
+  parts = validateKeys(parts);
+
   const template = new TemplateDB({
       parts: parts,
       name: req.body.name,
