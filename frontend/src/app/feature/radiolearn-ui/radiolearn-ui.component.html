@@ -58,6 +58,7 @@
           placeholder="Befund eingeben ..."
           [matChipInputFor]="chipList"
           [(ngModel)]="this.input"
+          (input)="onInput()"
         >
       </mat-chip-list>
     </mat-form-field>

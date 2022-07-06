@@ -105,7 +105,7 @@ export class DataParserService {
 
   addVariableKeysToClickable(clickable: Clickable){
     clickable.variables.forEach(variable =>{
-      if(variable.keys == null){
+      if(variable.keys == null || variable.keys.length == 0){
         let newKeys = []
         if(variable.kind=='oc'){
           variable.values.forEach(value => {
