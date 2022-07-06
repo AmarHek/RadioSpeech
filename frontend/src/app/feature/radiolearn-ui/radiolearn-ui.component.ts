@@ -93,17 +93,19 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
   updateFromVariableDelayed(selectable) {
     let anyVarsActive = false
-    selectable.variables.forEach(variable =>{
-      if(variable.kind=='oc' && variable.value != undefined){anyVarsActive = true}
-      if(variable.kind=='mc'){
-        variable.values.forEach(value =>{
-          if(value[1]){
+    selectable.variables.forEach(variable => {
+      if (variable.kind == 'oc' && variable.value != undefined) {
+        anyVarsActive = true
+      }
+      if (variable.kind == 'mc') {
+        variable.values.forEach(value => {
+          if (value[1]) {
             anyVarsActive = true
           }
         })
       }
     })
-    if(anyVarsActive){
+    if (anyVarsActive) {
       selectable.value = true
     }
     this.generateChips()
@@ -113,13 +115,13 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     setTimeout(() => this.updateFromParentDelayed(selectable), 5)
   }
 
-  updateFromOptions(){
+  updateFromOptions() {
     setTimeout(() => this.generateChips(), 5)
   }
 
   //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
   updateFromParentDelayed(selectable) {
-    if (!selectable.value){
+    if (!selectable.value) {
       selectable.variables.forEach(variable => {
         if (variable.kind == 'oc') {
           variable.value = null
@@ -133,10 +135,10 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     this.generateChips()
   }
 
-  generateChips(){
-    if(this.radiolearnService.detailedMode){
+  generateChips() {
+    if (this.radiolearnService.detailedMode) {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts, this.material.deepDocTemplate.parts)
-    }else {
+    } else {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts, this.material.shallowDocTemplate.parts)
     }
   }
@@ -317,7 +319,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     }
   }
 
-  reset(resetChips: boolean = true){
+  reset(resetChips: boolean = true) {
     if (resetChips) this.chips = []
     this.input = ""
     if (this.radiolearnService.detailedMode) {
@@ -326,14 +328,12 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
       //Todo, remove line below, once keys are automatically added during parsing of templates
       this.dataParser.addVariableKeysToParts(this.categories)
-      // this.inputParser.init(this.categories)
     } else {
       //shallow
       this.material = JSON.parse(JSON.stringify(this.ogMaterial))
       this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
       //Todo, remove line below, once keys are automatically added during parsing of templates
       this.dataParser.addVariableKeysToParts(this.categories)
-      // this.inputParser.init(this.categories)
     }
   }
 
@@ -356,7 +356,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     //Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
-    if(this.input != " ") this.input = this.mergedInput.trimStart()
+    if (this.input != " ") this.input = this.mergedInput.trimStart()
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
     this.chipInput.nativeElement.value = this.input
