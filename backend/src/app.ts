@@ -8,6 +8,7 @@ import cors from "cors";
 import {matRouter, templateRouter, userRouter, authRouter} from './routes';
 import {initData} from "./init";
 import {feedbackRouter} from "./routes/feedback.routes";
+import {usageRouter} from "./routes/usage.routes";
 
 export const app = express();
 
@@ -51,6 +52,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/auth", userRouter);
 
+app.use("/database/usage", usageRouter);
 app.use("/database/material", matRouter);
 app.use("/database/template", templateRouter);
 app.use("/database/feedback", feedbackRouter);

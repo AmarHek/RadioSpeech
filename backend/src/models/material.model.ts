@@ -42,6 +42,14 @@ export interface Material {
   judged:               boolean;
 }
 
+export interface UsageData {
+  deepDocTemplate: Template;
+  shallowDocTemplate: Template;
+  mode: string;
+  timestamp: number;
+  duration: number;
+}
+
 
 
 

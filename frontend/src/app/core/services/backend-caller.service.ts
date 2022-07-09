@@ -18,6 +18,7 @@ export class BackendCallerService {
 
   templateUrl = environment.database + "template/";
   materialUrl = environment.database + "material/";
+  usageUrl = environment.database + "usage/";
   pathologyUrl = environment.database + "pathology/";
   feedbackUrl = environment.database + "feedback/";
 
@@ -88,6 +89,12 @@ export class BackendCallerService {
     return this.http.post<{ success: boolean; message: string }>(
       this.materialUrl + "add/",
       formData
+    );
+  }
+
+  addUsageData(deepDocTemplate: Template, shallowDocTemplate: Template, mode: string, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      this.usageUrl + "add/",{deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
     );
   }
 

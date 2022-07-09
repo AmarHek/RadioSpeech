@@ -56,6 +56,8 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   private user: User;
 
+  timestampStart: number;
+
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
               private router: Router,
@@ -154,6 +156,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
         this.userMode = !this.isMod;
       });
     this.getData().then();
+    this.timestampStart = Date.now()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -213,6 +216,18 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       window.alert(res.message);
       this.next();
     });
+  }
+
+  submit(){
+    let duration = Date.now() - this.timestampStart
+    let modeString = this.radiolearnService.detailedMode ? "deep" : "shallow"
+    this.backendCaller.addUsageData(
+      this.material.deepDocTemplate,
+      this.material.shallowDocTemplate,
+      modeString,
+      this.timestampStart,
+      duration
+    ).subscribe(res => {console.log(res.message)})
   }
 
   toggleUserMode() {
