@@ -144,7 +144,7 @@ export function extractCategory(rows: Row[]): Category {
     const optional = rows[0]["Optional"] != undefined
     return {
         kind: "category",
-        name: rows[0]["Gliederung"],
+        name: rows[0]["Gliederung"].trim(),
         optional: optional,
         selectables: selectables
     };
@@ -170,7 +170,7 @@ export function extractGroup(rows: Row[]): Group {
     }
     return {
         kind: "group",
-        name: rows[0]["Choice-Gruppe-ID"],
+        name: rows[0]["Choice-Gruppe-ID"].trim(),
         options: options,
         value: undefined
     };
@@ -184,7 +184,7 @@ export function extractOption(rows: Row[]): Option {
     return {
         keys: keys,
         kind: "option",
-        name: rows[0]["Befund"],
+        name: rows[0]["Befund"].trim(),
         normal: rows[0]["Normal"] != undefined,
         text: text,
         variables: variables,
@@ -204,7 +204,7 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 }
 
 function extractSelectableKeys(rows: Row[]): string[] {
-    const name = rows[0]["Befund"];
+    const name = rows[0]["Befund"].trim();
     const keys = trimArray(rows[0]["Synonyme"].split(";"))
     if (!keys.includes(name)) {
         keys.push(name);
@@ -225,7 +225,7 @@ function extractBox(rows: Row[]): CheckBox {
 
     return {
         kind: "box",
-        name: rows[0]["Befund"],
+        name: rows[0]["Befund"].trim(),
         value: rows[0]["Default"] != undefined,
         normal: rows[0]["Normal"] != undefined,
         exclusions: exclusions,
