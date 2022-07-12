@@ -39,7 +39,7 @@ export class ChipHelperService {
     chipText += varText
     let variablesComplete = activeVarCount == option.variables.length
     let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
-    return new InputChip(chipText, chipColor, null, catName + " " + option.name)
+    return new InputChip(chipText, chipColor, catName + " " + option.name)
   }
 
   generateChipForBox(box: CheckBox, catName: string): InputChip{
@@ -50,7 +50,7 @@ export class ChipHelperService {
     chipText += varText
     let variablesComplete = activeVarCount == box.variables.length
     let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
-    return new InputChip(chipText, chipColor, null, catName + " " + box.name)
+    return new InputChip(chipText, chipColor, catName + " " + box.name)
   }
 
   getVarTextAndCount(variables: Variable[]) {

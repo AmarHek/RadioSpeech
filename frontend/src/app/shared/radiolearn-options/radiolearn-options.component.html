@@ -19,7 +19,7 @@
   <table style="width: 100%">
     <tbody style="width: 100%">
     <ng-container *ngFor="let category of categories">
-      <ng-container *ngIf="category.name === selectedCat">
+      <ng-container *ngIf="category.name.trim() === selectedCat">
         <ng-container *ngFor="let sel of category.selectables" class="col-3">
           <ng-container *ngIf="sel.kind === 'box'">
             <tr>
@@ -29,6 +29,7 @@
               </td>
               <td class="title">
                 <label [ngClass]="{'selected': sel.value}"
+                       [ngStyle]="{'border' : category.name + ' ' + sel.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                        for="{{category.name}} {{sel.name}} box">
                   {{sel.name}}
                 </label>
@@ -57,6 +58,7 @@
                 </td>
                 <td class="title">
                   <label for="{{category.name}} {{sel.name + option.name}} box"
+                         [ngStyle]="{'border' : category.name + ' ' + option.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                          [ngClass]="{'selected': (option.name === sel.value)}">
                     {{option.name}}
                   </label>

@@ -11,6 +11,7 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
   @Input() categories: M.Category[];
   @Input() paramMapID: string; // for detecting changes
   @Input() selectedCat: string;
+  @Input() selectedSelectableID: string;
   @Output() nextCat = new EventEmitter<string>();
   @Output() updateEmitter = new EventEmitter<string>();
 

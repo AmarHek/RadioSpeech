@@ -4,11 +4,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {
   AuthenticationService,
   BackendCallerService,
-  DataParserService, InputParserService,
+  DataParserService,
+  InputParserService,
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {InputChip, Material, Role, User, Variable} from "@app/models";
+import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 
 import * as M from "@app/models/templateModel";
@@ -18,8 +19,8 @@ import {
   FeedbackDialogComponent,
   ImageDisplayComponent,
   ImageDisplayStudentComponent,
-  StudentErrorsComponent,
-  RadiolearnOptionsComponent
+  RadiolearnOptionsComponent,
+  StudentErrorsComponent
 } from "@app/shared";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
@@ -51,6 +52,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   chips: InputChip[] = []
   input: string = ""
   mergedInput: string = ""
+  selectedSelectableID: string = ""
 
   userMode: boolean;
 
@@ -138,6 +140,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   generateChips() {
+    this.selectedSelectableID = ""
     if (this.radiolearnService.detailedMode) {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts, this.material.deepDocTemplate.parts)
     } else {
@@ -361,7 +364,25 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     this.onInput()
   }
 
+  onChipClick(chip: InputChip){
+    // this.selectedCat = chip.clickable.category
+    this.selectedCat = chip.id.split(" ")[0]
+    this.selectedSelectableID = chip.id
+    console.log("selected selectable")
+    console.log(">" + this.selectedSelectableID + "<")
+    console.log("selected cat")
+    console.log(">" + this.selectedCat + "<")
+  }
+
   onInput() {
+    for (let chip of this.chips){
+      if(chip.color == ChipColors.RED){
+        const index = this.chips.indexOf(chip);
+        if (index >= 0) {
+          this.chips.splice(index, 1);
+        }
+      }
+    }
     //Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false)
     //Pare this line, assign the values and generate the new chips accordingly
@@ -374,6 +395,8 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     if (this.input != " ") this.input = this.mergedInput.trimStart()
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
+    if(this.input.trim() != "") this.chips.push(new InputChip(this.input, ChipColors.RED, null))
+    this.input = ""
     this.chipInput.nativeElement.value = this.input
   }
 

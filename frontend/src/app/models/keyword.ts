@@ -32,11 +32,9 @@ export class InputChip{
   content: string;
   id: string;
   color: ChipColors;
-  clickable: KeyClickable;
-  constructor(content: string, color: ChipColors, clickable: KeyClickable, id: string) {
+  constructor(content: string, color: ChipColors, id: string) {
     this.content = content;
     this.color = color;
-    this.clickable = clickable;
     this.id = id;
   }
 }

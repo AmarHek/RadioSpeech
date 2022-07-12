@@ -47,6 +47,7 @@
         <mat-chip
           *ngFor="let chip of chips"
           (removed)="remove(chip)"
+          (click)="onChipClick(chip)"
           [ngClass]="chip.color">
           {{chip.content}}
           <button matChipRemove>
@@ -82,6 +83,7 @@
 
       <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
                               [selectedCat]="selectedCat"
+                              [selectedSelectableID]="selectedSelectableID"
                               (nextCat)="nextCategory($event)"
                               (updateEmitter)="updateFromOptions()"
                               class="options-expand"
@@ -95,7 +97,11 @@
 
       <ng-container *ngFor="let selectable of this.categories[0].selectables">
         <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px">
-          <mat-checkbox style="font-size: 17px" (click)="updateFromParent(selectable)" [(ngModel)]="selectable.value">{{selectable.name}}</mat-checkbox>
+          <mat-checkbox style="font-size: 17px"
+                        (click)="updateFromParent(selectable)"
+                        [(ngModel)]="selectable.value"
+                        [ngStyle]="{'border' : this.categories[0].name + ' ' + selectable.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+          >{{selectable.name}}</mat-checkbox>
         </div>
 
         <ng-container *ngIf="selectable.value">

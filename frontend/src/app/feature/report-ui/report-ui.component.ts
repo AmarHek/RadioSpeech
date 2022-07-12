@@ -153,7 +153,6 @@ export class ReportUiComponent implements OnInit {
     // this.selectedCat = chip.clickable.category
     this.selectedCat = chip.id.split(" ")[0]
     this.selectedSelectableID = chip.id
-    console.log("id" + this.selectedSelectableID)
   }
 
   onClick() {
