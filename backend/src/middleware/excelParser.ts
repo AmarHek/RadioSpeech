@@ -314,28 +314,26 @@ function extractVariableDate(row: Row, variable: VariableCommon): VariableDate {
 function extractVariableKeys(row: Row): string[][] {
     const keys = new Array<string[]>();
     const keysString = row["Variable-Synonyme"]
-    if (keysString == undefined) return null as any
-    if (keysString.includes("/")) {
-        const values = keysString.split("/")
-        for (let i = 0; i < values.length; i++) {
+    const isOC = row["Variable-Typ"].includes("/")
+    let valueSeparator = isOC ? "/" : ";"
+    let synonymSeparator = isOC ? ";" : ","
+    if (keysString == undefined) {
+        const textValues = trimArray(row["Variable-Typ"].split(valueSeparator))
+        for (let i = 0; i < textValues.length; i++) {
             keys.push(new Array<string>())
-            const synonyms = values[i].split(";")
-            for (let j = 0; j < synonyms.length; j++) {
-                keys[i].push(synonyms[j])
-            }
+            keys[i].push(textValues[i])
         }
         return trim2DArray(keys)
-    } else {
-        const values = keysString.split(";")
-        for (let i = 0; i < values.length; i++) {
-            keys.push(new Array<string>());
-            const synonyms = values[i].split(",");
-            for (let j = 0; j < synonyms.length; j++) {
-                keys[i].push(synonyms[j]);
-            }
-        }
-        return trim2DArray(keys);
     }
+    const variableKeyStrings = keysString.split(valueSeparator)
+    for (let i = 0; i < variableKeyStrings.length; i++) {
+        keys.push(new Array<string>())
+        const synonyms = variableKeyStrings[i].split(synonymSeparator)
+        for (let j = 0; j < synonyms.length; j++) {
+            keys[i].push(synonyms[j])
+        }
+    }
+    return trim2DArray(keys)
 }
 
 function extractTextBefore(varInfo: string): string {
