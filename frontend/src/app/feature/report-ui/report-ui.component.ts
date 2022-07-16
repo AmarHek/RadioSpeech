@@ -235,6 +235,7 @@ export class ReportUiComponent implements OnInit {
     //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     //field, since otherwise the input text won't update via ngModel
     this.chipInput.nativeElement.value = this.input
+    this.selectedSelectableID = ""
   }
 
   // Assigns all found keywords in inputParser to this.parts
