@@ -181,8 +181,6 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
               this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
             }
             this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
-            //Todo, remove line below, once keys are automatically added during parsing of templates
-            this.dataParser.addVariableKeysToParts(this.categories)
             this.inputParser.init(this.categories)
             if (this.selectedCat === undefined) {
               this.selectedCat = this.categories[0].name;
@@ -344,14 +342,10 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       //deep
       this.material = JSON.parse(JSON.stringify(this.ogMaterial))
       this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
-      //Todo, remove line below, once keys are automatically added during parsing of templates
-      this.dataParser.addVariableKeysToParts(this.categories)
     } else {
       //shallow
       this.material = JSON.parse(JSON.stringify(this.ogMaterial))
       this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
-      //Todo, remove line below, once keys are automatically added during parsing of templates
-      this.dataParser.addVariableKeysToParts(this.categories)
     }
   }
 

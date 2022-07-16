@@ -123,9 +123,6 @@ export class ReportUiComponent implements OnInit {
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts, false);
-            //Todo, remove line below, once keys are automatically added during parsing of templates
-            this.dataParser.addVariableKeysToParts(this.categories);
-            console.log("h")
             this.inputParser.init(this.defaultParts);
           }
         });
