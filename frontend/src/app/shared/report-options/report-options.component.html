@@ -12,7 +12,8 @@
                      (click)="update(sel, null, row.name)" id="{{row.name}} {{sel.name}} box"/>
             </td>
             <td class="title" [style.width.%]="width" >
-              <label [ngClass]="{'selected': sel.value}" [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+              <label [ngClass]="{'selected': sel.value}"
+                     [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                      for="{{row.name}} {{sel.name}} box">
                 {{sel.name}}
               </label>

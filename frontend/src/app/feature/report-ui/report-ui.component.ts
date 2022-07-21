@@ -122,7 +122,7 @@ export class ReportUiComponent implements OnInit {
           } else {
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-            this.categories = this.dataParser.extractCategories(this.parts, false);
+            this.categories = this.dataParser.extractCategories(this.parts);
             this.inputParser.init(this.defaultParts);
           }
         });
@@ -316,7 +316,7 @@ export class ReportUiComponent implements OnInit {
 
   reset(resetSelectedCat: boolean = true, resetChips = true) {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts, false);
+    this.categories = this.dataParser.extractCategories(this.parts);
     if (resetChips) this.chips = []
     this.input = ""
     this.selectedCat = this.categories[0].name

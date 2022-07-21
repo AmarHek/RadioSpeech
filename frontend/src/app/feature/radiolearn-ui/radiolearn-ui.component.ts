@@ -180,7 +180,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
             if (!this.isMod) {
               this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
             }
-            this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
+            this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
             this.inputParser.init(this.categories)
             if (this.selectedCat === undefined) {
               this.selectedCat = this.categories[0].name;
@@ -341,11 +341,11 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     if (this.radiolearnService.detailedMode) {
       //deep
       this.material = JSON.parse(JSON.stringify(this.ogMaterial))
-      this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts, false);
+      this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
     } else {
       //shallow
       this.material = JSON.parse(JSON.stringify(this.ogMaterial))
-      this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts, false);
+      this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
     }
   }
 

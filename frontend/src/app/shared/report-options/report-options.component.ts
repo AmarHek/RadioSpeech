@@ -12,7 +12,6 @@ import * as M from "@app/models/templateModel";
 export class ReportOptionsComponent implements OnInit, OnChanges {
 
   @Input() categories: M.Category[];
-  @Input() paramMapID: string; // for detecting changes
   @Output() clickEvent = new EventEmitter<any>();
   @Input() layoutId: number;
   @Input() selectedCat: string;
@@ -29,16 +28,13 @@ export class ReportOptionsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setMinRowLength(this.categories);
-    this.maxRowLength = 6;
+    this.maxRowLength = 5;
     this.determineWidth();
     this.initRows();
   }
 
   initRows() {
     if (this.minRowLength > this.maxRowLength) {
-      window.alert("Die gewählte Reihenlänge von " + this.maxRowLength +
-        " ist kleiner als die kleinstmögliche Länge von " + this.minRowLength +
-        ". Die Reihenlänge wird auf " + this.minRowLength + " gesetzt.");
       this.maxRowLength = this.minRowLength;
     }
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);

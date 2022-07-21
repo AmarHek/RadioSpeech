@@ -3,9 +3,9 @@
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <a mat-menu-item class="header-button" routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
+    <a mat-menu-item class="header-button" *ngIf="isMod" routerLink='/radiolearn/list' routerLinkActive="active">Annotation</a>
     <a mat-menu-item class="header-button" routerLink='/list' routerLinkActive="active">Schablonen</a>
-    <a mat-menu-item class="header-button" routerLink="/feedback" routerLinkActive="active">Feedback</a>
+    <a mat-menu-item class="header-button" *ngIf="isMod" routerLink="/feedback" routerLinkActive="active">Feedback</a>
   </mat-menu>
   <a id="homeButton" mat-button class="header-button" routerLink='/'>
     RadioLearn

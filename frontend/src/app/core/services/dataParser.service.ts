@@ -10,37 +10,14 @@ export class DataParserService {
 
   constructor() {}
 
-  extractCategories(parts: M.TopLevel[], parseOptional: boolean): M.Category[] {
+  extractCategories(parts: M.TopLevel[]): M.Category[] {
     const res: M.Category[] = [];
     for (const el of parts) {
       if (el.kind === "category") {
-        if (parseOptional) {
-          const parsedCat = this.parseOptionalCategory(el);
-          res.push(parsedCat);
-        } else {
-          res.push(el);
-        }
+        res.push(el);
       }
     }
     return res;
-  }
-
-  parseOptionalCategory(cat: M.Category): M.Category {
-    const parsedName = this.parseCategoryTitle(cat.name);
-    return {
-      kind: cat.kind,
-      name: parsedName[0],
-      optional: parsedName[1],
-      selectables: cat.selectables
-    };
-  }
-
-  parseCategoryTitle(catName: string): [string, boolean] {
-    if (catName.includes("<", 0)) {
-      return [catName.substring(1, catName.length), true];
-    } else {
-      return [catName, false];
-    }
   }
 
   // Takes template-list of categories to transform them into template-list of rows without groups, only singular buttons

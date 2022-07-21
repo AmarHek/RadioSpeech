@@ -48,7 +48,6 @@
   </div>
 
   <div id="inner_remaining">
-    <!--      <div [ngClass]="currentLayout.id==0 ? 'flex-container-default' : 'flex-container-expand'">-->
         <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1">
           <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
             {{cat.name}}
@@ -56,7 +55,7 @@
         </mat-selection-list>
 
         <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories"
-                     [ngClass]="currentLayout.id === 0 ? 'report-output-options-default' : 'report-output-options-expand'"
+                     [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                      (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-report-options>
         <app-report-output  class="report" [report]="report" [judgement]="judgment"></app-report-output>
   </div>

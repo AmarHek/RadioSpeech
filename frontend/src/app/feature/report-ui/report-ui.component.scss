@@ -64,7 +64,6 @@ body {
   flex-grow : 1;
   z-index: 100;
   overflow-y: auto;
-  overflow-x: hidden
 }
 .header-button {
   font-weight: 600;
@@ -132,24 +131,25 @@ body {
 
 .options-default{
   height: 100%;
-  width: 90%;
-  overflow: auto;
+  width: 85%;
+  overflow-y: auto;
+  overflow-x: scroll;
 }
 
 .options-expand{
   height: 100%;
-  max-width: 80%;
-  overflow: auto;
+  width: 75%;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 .report{
   float: right;
   right: 0;
   height: 100%;
-  width: 10%;
+  width: 15%;
   overflow-y: auto;
 }
-
 
 /* width */
 ::-webkit-scrollbar {

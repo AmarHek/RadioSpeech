@@ -6,5 +6,6 @@ export enum Role {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Moderator = "moderator",
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  Admin = "admin"
+  Admin = "admin",
+  demoUser = "demoUser"
 }

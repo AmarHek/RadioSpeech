@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   submitted = false;
   error = "";
 
-  roles = [Role.User, Role.Moderator, Role.Admin];
+  roles = [Role.User, Role.Moderator, Role.demoUser];
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService) { }
