@@ -39,7 +39,7 @@ async function loadDefaultTemplates() {
     }
 
     if (!fs.existsSync(Path.join(__dirname, "./assets/RöntgenNormal.json"))) {
-        console.warn("XrayNormal.json missing!")
+        console.warn("RöntgenNormal.json missing!")
     } else {
         saveTemplate(Path.join(__dirname, "./assets/RöntgenNormal.json"), "RöntgenNormal");
     }
