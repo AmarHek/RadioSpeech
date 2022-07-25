@@ -143,7 +143,7 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   openUploadDialog() {
-    const dialogConfig = this.dialogService.defaultConfig("550px");
+    const dialogConfig = this.dialogService.defaultConfig("600px");
     const dialogRef = this.dialog.open(UploadMaterialComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(() => {

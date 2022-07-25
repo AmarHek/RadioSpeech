@@ -112,6 +112,7 @@ export const filterUniqueOptions = (variableKeywords: KeyVariable[]): KeyVariabl
 
 // Takes template-list of variables and generates Keyword Variables template-list
 export const getVariableKeywords = (variables: M.Variable[], category: string, clickable: string): KeyVariable[] => {
+  console.log(variables, category, clickable);
   const varKeys: KeyVariable[] = [];
   for (const variable of variables) {
     if (variable.kind === "oc" || variable.kind === "mc") {
@@ -122,6 +123,7 @@ export const getVariableKeywords = (variables: M.Variable[], category: string, c
         } else {
           name = variable.values[i];
         }
+        console.log(variable.keys[i]);
         for (const key of variable.keys[i]) {
           varKeys.push({
             category,
