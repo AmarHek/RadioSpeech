@@ -281,18 +281,16 @@ export class RadiolearnUiComponent implements OnInit {
 
   nextMaterial() {
     const judged = !this.isMod;
-    console.log(this.userMode);
-    if (this.userMode) {
-      this.imageDisplayStudentChild.toggleBoxes();
-    } else {
-      this.imageDisplayChild.toggleBoxes();
-    }
-    console.log(judged);
     this.backendCaller.getRandom(judged).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
       } else {
+        if (this.userMode) {
+          this.imageDisplayStudentChild.toggleBoxes();
+        } else {
+          this.imageDisplayChild.toggleBoxes();
+        }
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
