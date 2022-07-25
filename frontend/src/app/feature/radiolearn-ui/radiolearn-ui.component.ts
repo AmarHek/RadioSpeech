@@ -253,6 +253,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   check() {
     let errors: CategoryError[];
+    console.log(this.ogMaterial.deepDocTemplate, this.material.deepDocTemplate);
     if (this.detailedMode) {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
         this.material.deepDocTemplate);
@@ -347,8 +348,8 @@ export class RadiolearnUiComponent implements OnInit {
 
   reset(resetChips: boolean = true) {
     if (resetChips) {
-this.chips = [];
-}
+      this.chips = [];
+    }
     this.input = "";
     if (this.radiolearnService.detailedMode) {
       //deep

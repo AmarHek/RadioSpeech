@@ -3,7 +3,7 @@ import {
   Annotation,
   Category,
   CheckBox,
-  Group,
+  Group, or,
   Selectable,
   Template,
   Variable,
@@ -271,6 +271,7 @@ export class RadiolearnService {
 
   // Lower level template comparison function, for categories
   compareCategories(originalCategory: Category, studentCategory: Category): CategoryError {
+    console.log(originalCategory, studentCategory);
     // If categories are not the same, something went wrong before and an exception dummy is returned for error handling
     if (originalCategory.selectables.length !== studentCategory.selectables.length ||
       originalCategory.name !== studentCategory.name) {
@@ -328,19 +329,22 @@ export class RadiolearnService {
       // Variable error is only necessary for correct option (because comparison of variables between report-output-options makes no sense)
       // If original option is null, variable error is empty (for obvious reasons)
       let varErr: VariableError[] = [];
-      if (originalSel.value !== null) {
+      console.log(originalSel.value !== null);
+      console.log(originalSel.value);
+      if (originalSel.value !== null && originalSel.value !== undefined) {
         // find variables of corresponding option in option template-list
         const originalVars: Variable[] = originalSel.options.find(option => option.name === originalSel.value).variables;
         const studentVars: Variable[] = studentSel.options.find(option => option.name === originalSel.value).variables;
         // get variable errors
+        console.log(originalVars, studentVars);
         varErr = this.compareVariables(originalVars, studentVars);
       }
       // generate selectable error
       selError = {
         kind: "group",
         name: originalSel.name,
-        should: (originalSel.value !== null ? originalSel.value : "Nichts"),
-        actual: (studentSel.value !== null ? studentSel.value : "Nichts"),
+        should: ((originalSel.value !== null && originalSel.value !== undefined) ? originalSel.value : "Nichts"),
+        actual: ((studentSel.value !== null && studentSel.value !== undefined) ? studentSel.value : "Nichts"),
         normal: this.getGroupNormal(studentSel),
         varErrors: varErr
       };
@@ -443,8 +447,8 @@ export class RadiolearnService {
       return {
         id: originalVar.id,
         kind: "value",
-        should: (originalVar.value !== null ? originalVar.value : "Nichts"),
-        actual: (studentVar.value !== null ? studentVar.value : "Nichts")
+        should: ((originalVar.value !== null && originalVar.value !== undefined) ? originalVar.value : "Nichts"),
+        actual: ((studentVar.value !== null && studentVar.value !== undefined) ? studentVar.value : "Nichts")
       };
     } else {
       return undefined;
