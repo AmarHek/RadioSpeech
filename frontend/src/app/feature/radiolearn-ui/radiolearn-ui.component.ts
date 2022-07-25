@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -30,35 +30,40 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit, OnChanges {
+export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
   @ViewChild(ImageDisplayComponent) imageDisplayChild: ImageDisplayComponent;
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
+  // data variables
   material: Material;
   ogMaterial: Material;
-
-  categories: M.Category[];
+  deepCategories: M.Category[];
+  shallowCategories: M.Category[];
   boxLabels: string[];
 
+  // variables for options/category UI
   selectedCatList = ["undefined"];
   selectedCat: string;
   selectedPathologies: string[];
   correctPathologies: boolean[];
 
+  // inputParser variables
   inputEnabled: boolean;
-  chips: InputChip[] = []
-  input: string = ""
-  mergedInput: string = ""
-  selectedSelectableID: string = ""
+  chips: InputChip[] = [];
+  input = "";
+  mergedInput = "";
+  selectedSelectableID = "";
 
+  // state variables
   userMode: boolean;
 
-  private user: User;
-
+  // usageData variables
   timestampStart: number;
+
+  private user: User;
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
@@ -84,70 +89,6 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     return this.radiolearnService.detailedMode;
   }
 
-  switchInputMode() {
-    this.inputEnabled = !this.inputEnabled;
-    this.input = ""
-    this.generateChips()
-  }
-
-  updateFromVariable(selectable) {
-    setTimeout(() => this.updateFromVariableDelayed(selectable), 5)
-  }
-
-  //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
-  updateFromVariableDelayed(selectable) {
-    let anyVarsActive = false
-    selectable.variables.forEach(variable => {
-      if (variable.kind == 'oc' && variable.value != undefined) {
-        anyVarsActive = true
-      }
-      if (variable.kind == 'mc') {
-        variable.values.forEach(value => {
-          if (value[1]) {
-            anyVarsActive = true
-          }
-        })
-      }
-    })
-    if (anyVarsActive) {
-      selectable.value = true
-    }
-    this.generateChips()
-  }
-
-  updateFromParent(selectable) {
-    setTimeout(() => this.updateFromParentDelayed(selectable), 5)
-  }
-
-  updateFromOptions() {
-    setTimeout(() => this.generateChips(), 5)
-  }
-
-  //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
-  updateFromParentDelayed(selectable) {
-    if (!selectable.value) {
-      selectable.variables.forEach(variable => {
-        if (variable.kind == 'oc') {
-          variable.value = null
-        } else if (variable.kind == 'mc') {
-          variable.values.forEach(value => {
-            value[1] = false
-          })
-        }
-      })
-    }
-    this.generateChips()
-  }
-
-  generateChips() {
-    this.selectedSelectableID = ""
-    if (this.radiolearnService.detailedMode) {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts, this.material.deepDocTemplate.parts)
-    } else {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts, this.material.shallowDocTemplate.parts)
-    }
-  }
-
   get colorBlindMode() {
     return this.radiolearnService.colorBlindMode;
   }
@@ -159,11 +100,7 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
         this.userMode = !this.isMod;
       });
     this.getData().then();
-    this.timestampStart = Date.now()
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes);
+    this.timestampStart = Date.now();
   }
 
   async getData() {
@@ -173,22 +110,27 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
         await this.backendCaller.getMaterialById(matID).subscribe(res => {
           if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
-              "Bitte zur Aufnahmen-Liste zurückkehren und eines der dort aufgeführten Aufnahmen auswählen.");
+              "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
           } else {
             this.material = res.material;
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
             if (!this.isMod) {
               this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
             }
-            this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-            this.inputParser.init(this.categories)
+            this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
+            this.shallowCategories = this.material.shallowDocTemplate.parts as M.Category[];
+            if (this.detailedMode) {
+              this.inputParser.init(this.deepCategories);
+            } else {
+              this.inputParser.init(this.shallowCategories);
+            }
             if (this.selectedCat === undefined) {
-              this.selectedCat = this.categories[0].name;
+              this.selectedCat = this.deepCategories[0].name;
             }
             this.selectedCatList = [this.selectedCat];
             // Do this so radiolearn report-output-options don't break on route change
             if (this.radiolearnOptionsChild !== undefined) {
-              this.radiolearnOptionsChild.categories = this.categories;
+              this.radiolearnOptionsChild.categories = this.deepCategories;
             }
             this.getBoxLabels();
           }
@@ -197,6 +139,72 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
         });
       }
     });
+  }
+
+  switchInputMode() {
+    this.inputEnabled = !this.inputEnabled;
+    this.input = "";
+    this.generateChips();
+  }
+
+  updateFromVariable(selectable) {
+    setTimeout(() => this.updateFromVariableDelayed(selectable), 5);
+  }
+
+  //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
+  updateFromVariableDelayed(selectable) {
+    let anyVarsActive = false;
+    selectable.variables.forEach(variable => {
+      if (variable.kind === "oc" && variable.value !== undefined) {
+        anyVarsActive = true;
+      }
+      if (variable.kind === "mc") {
+        variable.values.forEach(value => {
+          if (value[1]) {
+            anyVarsActive = true;
+          }
+        });
+      }
+    });
+    if (anyVarsActive) {
+      selectable.value = true;
+    }
+    this.generateChips();
+  }
+
+  updateFromParent(selectable) {
+    setTimeout(() => this.updateFromParentDelayed(selectable), 5);
+  }
+
+  updateFromOptions() {
+    setTimeout(() => this.generateChips(), 5);
+  }
+
+  //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
+  updateFromParentDelayed(selectable) {
+    if (!selectable.value) {
+      selectable.variables.forEach(variable => {
+        if (variable.kind === "oc") {
+          variable.value = null;
+        } else if (variable.kind === "mc") {
+          variable.values.forEach(value => {
+            value[1] = false;
+          });
+        }
+      });
+    }
+    this.generateChips();
+  }
+
+  generateChips() {
+    this.selectedSelectableID = "";
+    if (this.radiolearnService.detailedMode) {
+      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts,
+        this.material.deepDocTemplate.parts);
+    } else {
+      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts,
+        this.material.shallowDocTemplate.parts);
+    }
   }
 
   onSelect(event) {
@@ -220,15 +228,17 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   submit(){
-    let duration = Date.now() - this.timestampStart
-    let modeString = this.radiolearnService.detailedMode ? "deep" : "shallow"
+    const duration = Date.now() - this.timestampStart;
+    const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
       modeString,
       this.timestampStart,
       duration
-    ).subscribe(res => {console.log(res.message)})
+    ).subscribe(res => {
+      console.log(res.message);
+      });
   }
 
   toggleUserMode() {
@@ -237,8 +247,8 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
 
   switchMode() {
     this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
-    this.reset()
-    this.inputParser.init(this.categories)
+    this.reset();
+    this.inputParser.init(this.deepCategories);
   }
 
   check() {
@@ -336,16 +346,18 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
   }
 
   reset(resetChips: boolean = true) {
-    if (resetChips) this.chips = []
-    this.input = ""
+    if (resetChips) {
+this.chips = [];
+}
+    this.input = "";
     if (this.radiolearnService.detailedMode) {
       //deep
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial))
-      this.categories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
+      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
+      this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
     } else {
       //shallow
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial))
-      this.categories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
+      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
+      this.deepCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
     }
   }
 
@@ -354,23 +366,23 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
-    this.reset(false)
-    this.onInput()
+    this.reset(false);
+    this.onInput();
   }
 
   onChipClick(chip: InputChip){
     // this.selectedCat = chip.clickable.category
-    this.selectedCat = chip.id.split(" ")[0]
-    this.selectedSelectableID = chip.id
-    console.log("selected selectable")
-    console.log(">" + this.selectedSelectableID + "<")
-    console.log("selected cat")
-    console.log(">" + this.selectedCat + "<")
+    this.selectedCat = chip.id.split(" ")[0];
+    this.selectedSelectableID = chip.id;
+    console.log("selected selectable");
+    console.log(">" + this.selectedSelectableID + "<");
+    console.log("selected cat");
+    console.log(">" + this.selectedCat + "<");
   }
 
   onInput() {
-    for (let chip of this.chips){
-      if(chip.color == ChipColors.RED){
+    for (const chip of this.chips){
+      if(chip.color === ChipColors.RED){
         const index = this.chips.indexOf(chip);
         if (index >= 0) {
           this.chips.splice(index, 1);
@@ -378,31 +390,35 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
       }
     }
     //Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false)
+    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
     //Pare this line, assign the values and generate the new chips accordingly
-    this.inputParser.parseInput(this.mergedInput)
-    this.assignValues()
-    this.generateChips()
+    this.inputParser.parseInput(this.mergedInput);
+    this.assignValues();
+    this.generateChips();
     //Remove everything that was detected as a clickable or variable from the input
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
-    if (this.input != " ") this.input = this.mergedInput.trimStart()
-    //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
-    //field, since otherwise the input text won't update via ngModel
-    if(this.input.trim() != "") this.chips.push(new InputChip(this.input, ChipColors.RED, null))
-    this.input = ""
-    this.chipInput.nativeElement.value = this.input
+    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
+    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
+    if (this.input !== " ") {
+      this.input = this.mergedInput.trimStart();
+    }
+    // Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
+    // field, since otherwise the input text won't update via ngModel
+    if (this.input.trim() !== "") {
+      this.chips.push(new InputChip(this.input, ChipColors.RED, null));
+    }
+    this.input = "";
+    this.chipInput.nativeElement.value = this.input;
   }
 
   assignValues() {
     for (const key of this.inputParser.foundClickables) {
       if (key.name === "Rest normal") {
         this.makeNormal();
-        continue
+        continue;
       }
 
       const foundVariables = this.inputParser.foundVariables.get(key.category + " " + key.name);
-      const cat = this.categories.find(c =>
+      const cat = this.deepCategories.find(c =>
         c.name === key.category
       );
       const sel = cat.selectables.find(s =>
@@ -418,7 +434,9 @@ export class RadiolearnUiComponent implements OnInit, OnChanges {
         variables = option.variables;
       }
       // assign variable values
-      if (variables.length <= 0 || foundVariables === undefined) continue
+      if (variables.length <= 0 || foundVariables === undefined) {
+        continue;
+    }
 
       for (const varKey of foundVariables) {
         const vari = variables.find(v => v.id === varKey.id);

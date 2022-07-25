@@ -139,6 +139,7 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   openEditor(matID: string) {
+    this.radiolearnService.detailedMode = true;
     this.router.navigate(["/", "radiolearn", "main", matID]).then();
   }
 
@@ -163,14 +164,6 @@ export class RadiolearnListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.getCountAndData();
     });
-  }
-
-  loadRandom() {
-      this.backendCaller.getRandom(this.showJudged, this.pathology).subscribe(res => {
-        this.openEditor(res.material._id);
-      }, err => {
-        window.alert(err);
-      });
   }
 
   displayDate(timestamp: number): string {
