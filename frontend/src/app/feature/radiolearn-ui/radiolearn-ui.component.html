@@ -29,13 +29,13 @@
               (click)="makeNormal()">Rest normal
       </button>
       <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen"
-              (click)="check()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
+              (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="save" matTooltip="Speichern"
               (click)="save()"><mat-icon>save</mat-icon>
       </button>
       <button mat-button class="header-button" id="next" matTooltip="Nächste Aufnahme"
-              (click)="next()"><mat-icon>navigate_next</mat-icon></button>
+              (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
       <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben"
               (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
 

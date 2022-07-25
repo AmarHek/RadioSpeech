@@ -310,9 +310,8 @@ export function listAll(req: Request, res: Response): void {
 }
 
 export function listByQuery(req: Request, res: Response): void {
-    const query = req.body.query
     const skip = Math.max(0, req.body.skip);
-    MaterialDB.find(query)
+    MaterialDB.find({judged: req.body.judged})
         .skip(skip)
         .limit(req.body.length)
         .exec((err, materials) => {
@@ -324,15 +323,14 @@ export function listByQuery(req: Request, res: Response): void {
 }
 
 export function getRandom(req: Request, res: Response): void {
-    const query = req.body.query
-    MaterialDB.countDocuments(query).exec((err, count) => {
+    MaterialDB.countDocuments({judged: req.body.judged}).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
         } else {
             // get random entry
             const random = Math.floor(Math.random() * count);
             // query one judged material, but skip random count
-            MaterialDB.findOne(query).skip(random).exec(
+            MaterialDB.findOne({judged: req.body.judged}).skip(random).exec(
                 (err, material) => {
                     if (err) {
                         res.status(500).send({message: err});
@@ -344,8 +342,7 @@ export function getRandom(req: Request, res: Response): void {
 }
 
 export function queryDocCount(req: Request, res: Response): void {
-    const query = req.body.query
-    MaterialDB.countDocuments(query).exec((err, count) => {
+    MaterialDB.countDocuments({judged: req.body.judged}).exec((err, count) => {
         if (err) {
             console.log(err);
             res.status(500).send({message: err});

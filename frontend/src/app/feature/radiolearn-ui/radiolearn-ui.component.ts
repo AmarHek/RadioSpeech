@@ -223,7 +223,7 @@ export class RadiolearnUiComponent implements OnInit {
       this.material.annotations);
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
-      this.next();
+      this.nextMaterial();
     });
   }
 
@@ -251,9 +251,8 @@ export class RadiolearnUiComponent implements OnInit {
     this.inputParser.init(this.deepCategories);
   }
 
-  check() {
+  checkForErrors() {
     let errors: CategoryError[];
-    console.log(this.ogMaterial.deepDocTemplate, this.material.deepDocTemplate);
     if (this.detailedMode) {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
         this.material.deepDocTemplate);
@@ -265,6 +264,7 @@ export class RadiolearnUiComponent implements OnInit {
     // TODO: Reimplement correctness check
 
     if (this.userMode) {
+      console.log("here!");
       this.imageDisplayStudentChild.toggleBoxes();
     }
 
@@ -274,23 +274,24 @@ export class RadiolearnUiComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.next();
+        this.nextMaterial();
       }
     });
   }
 
-  next() {
+  nextMaterial() {
     const judged = !this.isMod;
+    console.log(this.userMode);
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
     } else {
       this.imageDisplayChild.toggleBoxes();
     }
+    console.log(judged);
     this.backendCaller.getRandom(judged).subscribe(res => {
+      console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
-      } else if (res.material._id === this.material._id) {
-        this.next();
       } else {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }

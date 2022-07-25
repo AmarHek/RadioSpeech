@@ -138,18 +138,16 @@ export class BackendCallerService {
   }
 
   getRandom(judged: boolean) {
-    const query = {judged};
     return this.http.post<{message: string; material: Material}>(
       this.materialUrl + "random/",
-      query
+      {judged}
     );
   }
 
   getDocCount(judged: boolean) {
-    const query = {judged};
     return this.http.post<{message: string; count: number}>(
       this.materialUrl + "queryDocCount/",
-      query
+      {judged}
     );
   }
 

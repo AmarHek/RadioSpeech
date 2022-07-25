@@ -37,7 +37,11 @@ export class RadiolearnWelcomeComponent implements OnInit {
 
   loadRandom() {
     this.backendCaller.getRandom(true).subscribe(res => {
-      this.openEditor(res.material._id);
+      if (res.material === null || res.material === undefined) {
+        window.alert("Aktuell keine Aufnahmen vorhanden.")
+      } else {
+        this.openEditor(res.material._id);
+      }
     }, err => {
       window.alert(err);
     });
