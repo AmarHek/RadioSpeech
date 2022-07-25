@@ -19,7 +19,6 @@ export class BackendCallerService {
   templateUrl = environment.database + "template/";
   materialUrl = environment.database + "material/";
   usageUrl = environment.database + "usage/";
-  pathologyUrl = environment.database + "pathology/";
   feedbackUrl = environment.database + "feedback/";
 
   constructor(private http: HttpClient) {}
@@ -92,7 +91,8 @@ export class BackendCallerService {
     );
   }
 
-  addUsageData(deepDocTemplate: Template, shallowDocTemplate: Template, mode: string, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
+  addUsageData(deepDocTemplate: Template, shallowDocTemplate: Template,
+               mode: string, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
       this.usageUrl + "add/",{deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
     );
@@ -101,8 +101,8 @@ export class BackendCallerService {
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
       deepDocTemplate: material.deepDocTemplate,
+      shallowDocTemplate: material.shallowDocTemplate,
       annotations: material.annotations,
-      pathologies: material.pathologies,
       judged: true
     });
   }
@@ -128,8 +128,8 @@ export class BackendCallerService {
       {id: scanID, scanType, filename});
   }
 
-  listByQuery(skip: number, length: number, judged: boolean, pathology="") {
-    const query = {skip, length, judged, pathology};
+  listByQuery(skip: number, length: number, judged: boolean) {
+    const query = {skip, length, judged};
     // skip: mongoose skip parameter, how many documents to skip
     // length: how many documents to return
     return this.http.post<{message: string; materials: Material[]}>(
@@ -137,16 +137,16 @@ export class BackendCallerService {
       query);
   }
 
-  getRandom(judged: boolean, pathology = "") {
-    const query = {judged, pathology};
+  getRandom(judged: boolean) {
+    const query = {judged};
     return this.http.post<{message: string; material: Material}>(
       this.materialUrl + "random/",
       query
     );
   }
 
-  getDocCount(judged: boolean, pathology: string = "") {
-    const query = {judged, pathology};
+  getDocCount(judged: boolean) {
+    const query = {judged};
     return this.http.post<{message: string; count: number}>(
       this.materialUrl + "queryDocCount/",
       query

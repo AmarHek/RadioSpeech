@@ -310,15 +310,7 @@ export function listAll(req: Request, res: Response): void {
 }
 
 export function listByQuery(req: Request, res: Response): void {
-    let query: Record<string, boolean | string>;
-    if (req.body.pathology.length > 0) {
-        query = {
-            judged: req.body.judged,
-            pathology: req.body.pathology
-        }
-    } else {
-        query = { judged: req.body.judged }
-    }
+    const query = req.body.query
     const skip = Math.max(0, req.body.skip);
     MaterialDB.find(query)
         .skip(skip)
@@ -332,15 +324,7 @@ export function listByQuery(req: Request, res: Response): void {
 }
 
 export function getRandom(req: Request, res: Response): void {
-    let query: Record<string, boolean | string>;
-    if (req.body.pathology.length > 0) {
-        query = {
-            judged: req.body.judged,
-            pathology: req.body.pathology
-        }
-    } else {
-        query = { judged: req.body.judged }
-    }
+    const query = req.body.query
     MaterialDB.countDocuments(query).exec((err, count) => {
         if (err) {
             res.status(500).send({message: err});
@@ -360,17 +344,7 @@ export function getRandom(req: Request, res: Response): void {
 }
 
 export function queryDocCount(req: Request, res: Response): void {
-    let query;
-    if (req.body.pathology.length > 0) {
-        query = {
-            judged: req.body.judged,
-            pathologies: req.body.pathology
-        }
-    } else {
-        query = {
-            judged: req.body.judged
-        }
-    }
+    const query = req.body.query
     MaterialDB.countDocuments(query).exec((err, count) => {
         if (err) {
             console.log(err);
