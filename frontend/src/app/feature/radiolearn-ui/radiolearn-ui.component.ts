@@ -114,6 +114,7 @@ export class RadiolearnUiComponent implements OnInit {
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
             if (!this.isMod) {
               this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
+              this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
             }
             this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
             this.shallowCategories = this.material.shallowDocTemplate.parts as M.Category[];
