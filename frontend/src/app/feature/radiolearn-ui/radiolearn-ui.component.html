@@ -19,7 +19,7 @@
         <ng-container *ngIf="userMode">Nutzer: Student</ng-container>
         <ng-container *ngIf="!userMode">Nutzer: Arzt</ng-container>
       </button>
-      <button *ngIf="isMod" mat-button class="header-button" id="detailedMode"
+      <button *ngIf="isAdmin" mat-button class="header-button" id="detailedMode"
               (click)="switchMode()">
         <ng-container *ngIf="detailedMode">Modus: Dokumentation</ng-container>
         <ng-container *ngIf="!detailedMode">Modus: Diagnose</ng-container>
