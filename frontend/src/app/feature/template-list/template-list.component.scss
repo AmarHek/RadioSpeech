@@ -8,13 +8,19 @@
   border-radius: 5px;
 }
 
-.text {
+th.number {
+  vertical-align: middle;
+  width: 40px;
+}
+
+td.text {
   vertical-align: middle;
   word-break: break-word;
+  min-width: 160px;
 }
 
 td.button {
-  min-width: 50px;
+  min-width: 200px;
   padding-right: 10px;
 }
 

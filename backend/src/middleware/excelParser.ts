@@ -315,8 +315,8 @@ function extractVariableKeys(row: Row): string[][] {
     const keys = new Array<string[]>();
     const keysString = row["Variable-Synonyme"]
     const isOC = row["Variable-Typ"].includes("/")
-    let valueSeparator = isOC ? "/" : ";"
-    let synonymSeparator = isOC ? ";" : ","
+    const valueSeparator = isOC ? "/" : ";"
+    const synonymSeparator = isOC ? ";" : ","
     if (keysString == undefined) {
         const textValues = trimArray(row["Variable-Typ"].split(valueSeparator))
         for (let i = 0; i < textValues.length; i++) {

@@ -6,11 +6,15 @@ export function validateTemplate(JSONdata: JSON): boolean {
     return true;
 }
 
-export function validateKeys(parts: TopLevel[]): TopLevel[] {
+function validateCategory(): boolean {
+    return true;
+}
+
+export function extractKeys(parts: TopLevel[]): TopLevel[] {
     for (const el of parts) {
         if (el.kind === "category") {
             for (const sel of el.selectables) {
-                
+
             }
         }
     }

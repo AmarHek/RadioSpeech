@@ -1,4 +1,4 @@
-import {validateKeys, validateTemplate} from "../middleware/templateMiddleware";
+import {extractKeys, validateTemplate} from "../middleware/templateMiddleware";
 import {TemplateDB} from '../models';
 import * as fs from 'fs';
 import {Request, Response} from "express";
@@ -51,7 +51,7 @@ export function createJSONTemplate(req: any, res: Response) {
       res.status(500).send({message: "Not a valid template"})
   }
 
-  parts = validateKeys(parts);
+  parts = extractKeys(parts);
 
   const template = new TemplateDB({
       parts: parts,
