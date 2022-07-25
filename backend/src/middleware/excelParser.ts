@@ -247,17 +247,19 @@ function extractVariable(row: Row): Variable {
 
     if (row["Variable-Typ"] == "Zahl") {
         return extractVariableNumber(row, variable)
-    } else if (row["Variable-Typ"] == "Text") {
+    } else if (row["Variable-Typ"] === "Text") {
         return extractVariableText(row, variable)
-    } else if (row["Variable-Typ"] == "ZahlBruch") {
+    } else if (row["Variable-Typ"] === "ZahlBruch") {
         return extractVariableRatio(row, variable)
     } else if (row["Variable-Typ"].includes("/")) {
         return extractVariableOC(row, variable)
-    } else if (row["Variable-Typ"].includes(";")) {
-        return extractVariableMC(row, variable)
-    } else {
+    } else if (row["Variable-Typ"] === "Datum") {
         return extractVariableDate(row, variable)
+    } else {
+        return extractVariableMC(row, variable)
     }
+    // TODO: Add error statement here for parsing errors
+    // TODO: Then add semicolon requirement for MC back in
 }
 
 function extractVariableOC(row: Row, variable: VariableCommon): VariableOC {
@@ -337,12 +339,19 @@ function extractVariableKeys(row: Row): string[][] {
 }
 
 function extractTextBefore(varInfo: string): string {
-    if (varInfo == undefined) return "";
+    if (varInfo == undefined) {
+        return "";
+    }
+    varInfo = varInfo.replace("\u2026", "...");
     return varInfo.split("...")[0];
 }
 
 function extractTextAfter(varInfo: string): string {
-    if (varInfo == undefined || varInfo.split("...").length < 2) return ""
+    if (varInfo == undefined || varInfo.split("...").length < 2)
+    {
+        return "";
+    }
+    varInfo = varInfo.replace("\u2026", "...");
     return varInfo.split("...")[1]
 }
 
