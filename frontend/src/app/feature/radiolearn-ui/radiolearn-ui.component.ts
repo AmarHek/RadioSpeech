@@ -220,7 +220,8 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   save() {
-    this.material.pathologies = this.radiolearnService.extractPathologies(this.material.annotations);
+    this.radiolearnService.fillShallowTemplateByBoxAnnotations(this.material.shallowDocTemplate,
+      this.material.annotations);
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
       this.next();

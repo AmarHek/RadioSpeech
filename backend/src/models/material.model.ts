@@ -37,7 +37,6 @@ export interface Material {
   modality:             string;
   deepDocTemplate:      Template;
   shallowDocTemplate:   Template;
-  pathologies:          string[];
   timestamp:            number;
   judged:               boolean;
 }

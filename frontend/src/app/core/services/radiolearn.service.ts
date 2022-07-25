@@ -116,110 +116,74 @@ export class RadiolearnService {
     return boxLabels;
   }
 
-  // takes box annotations (given in material) and compares filled out template to check which
-  // box can be labeled as "correct" for the student (just rough check)
-  // wrapper function for ALL annotations
-  /* checkCorrectAnnotations(annotations: Annotation[],
-                          studentTemplate: Template): Annotation[] {
-    // iterate through annotations
-    for (const annotation of annotations) {
-      // extract templateMap from correct pathologiesList
-      const templateMaps = pathologies.find(pathology =>
-        pathology.name === annotation.label).templateMaps;
-
-      annotation.correct = this.isAnnotationInTemplate(annotation, studentTemplate, templateMaps);
-    }
-    return annotations;
-  } */
-
-  // single function for checkCorrectAnnotations, i.e. takes one annotation and compares to template
-  // using specific templateMap
-  /* isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
-    // now iterate template in several steps
-    for (const category of template.parts) {
-      // first check for category kind, i.e. ignore blocks etc.
-      if (category.kind === "category") {
-        // first check if category is in templateMap
-        let catPresent = false;
-        for (const map of templateMaps) {
-          if (map.categoryName === category.name) {
-            catPresent = true;
-            break;
-          }
-        }
-        if (catPresent) {
-          // then iterate through selectables and compare with templateMaps
-          for (const selectable of category.selectables) {
-            if (this.checkSelInTemplateMaps(selectable, templateMaps)) {
-              // sel present and checked, correct = true
-              return true;
-            }
-          }
-        }
-      }
-    }
-    // not present, correct = false
-    return false;
-  } */
-
-  // deeper method for isAnnotationInTemplate for Selectables
-  /* checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
-    if (selectable.kind === "box") {
-      for (const map of templateMaps) {
-        // only check, if kind is the same
-        if (map.kind === "box") {
-          // is the name the same?
-          if (map.name === selectable.name) {
-            // is selectable checked? then all is good
-            if (selectable.value) {
-              return true;
-            }
-          }
-        }
-      }
-    } else if (selectable.kind === "group") {
-      // same spiel here: iterate through maps
-      for (const map of templateMaps) {
-        // check for kind
-        if (map.kind === "option") {
-          // is groupName the same?
-          if (map.groupName === selectable.name) {
-            // check if selectable value is the same as map name (i.e. value)
-            if (map.name === selectable.value) {
-              return true;
-            }
-          }
-        }
-      }
-    }
-    return false;
-  } */
-
-  // method to extract all pathologies defined by box annotations to generate template-list of pathologies as strings
-  extractPathologies(annotations: {
+  // takes shallow (or any kind of) template and annotations and fills out the template by these values
+  fillShallowTemplateByBoxAnnotations(shallowTemplate: M.Template, annotations: {
     main: Annotation[];
     lateral?: Annotation[];
     pre?: Annotation[];
-  }): string[] {
-    const pathologies = [];
+  }) {
     const modes = ["main", "lateral", "pre"];
 
+    const labels: string[] = [];
+
+    // first get all annotations as strings
     for (const mode of modes) {
-      if (annotations[mode] !== undefined) {
+      if (annotations[mode] !== undefined && annotations[mode] !== null) {
         if (annotations[mode].length > 0) {
           for (const annotation of annotations[mode]) {
-            if (!pathologies.includes(annotation.label)) {
-              pathologies.push(annotation.label);
+            if (!labels.includes(annotation.label)) {
+              labels.push(annotation.label);
             }
           }
         }
       }
     }
 
-    return pathologies;
+    // now check template for annotation occurrences
+    for (const sel of (shallowTemplate.parts[0] as M.Category).selectables) {
+      // type check for typescripts as only boxes are allowed here anyway
+      if (sel.kind === "box") {
+        // set value to true if sel name is present in labels
+        if (labels.includes(sel.name)) {
+          sel.value = true;
+        }
+
+        // same check for variables
+        if (sel.variables.length > 0) {
+          for (const variable of sel.variables) {
+            if (variable.kind === "oc") {
+              for (const value of variable.values) {
+                if (labels.includes(value)) {
+                  variable.value = value;
+                }
+              }
+            } else if (variable.kind === "mc") {
+              for (const value of variable.values) {
+                if (labels.includes(value[0])) {
+                  value[1] = true;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
-  // STUDENT ERROR COMPARISON FUNCTIONS BELOW
+  // checks the report-output-options of a group and returns that option's normal value
+  getGroupNormal(group: Group) {
+    for (const option of group.options) {
+      if (group.value === option.name) {
+        return option.normal;
+      }
+    }
+    // if no normal value is given, return false by default
+    return false;
+  }
+
+// -----------------------------------------
+// STUDENT ERROR COMPARISON FUNCTIONS BELOW
+// -----------------------------------------
 
   // Wrapper function for student and ground truth template comparison
   compareTemplates(originalTemplate: Template, studentTemplate: Template,
@@ -636,15 +600,83 @@ export class RadiolearnService {
     }
   }
 
-  // checks the report-output-options of a group and returns that option's normal value
-  getGroupNormal(group: Group) {
-    for (const option of group.options) {
-      if (group.value === option.name) {
-        return option.normal;
+  // takes box annotations (given in material) and compares filled out template to check which
+  // box can be labeled as "correct" for the student (just rough check)
+  // wrapper function for ALL annotations
+  /* checkCorrectAnnotations(annotations: Annotation[],
+                          studentTemplate: Template): Annotation[] {
+    // iterate through annotations
+    for (const annotation of annotations) {
+      // extract templateMap from correct pathologiesList
+      const templateMaps = pathologies.find(pathology =>
+        pathology.name === annotation.label).templateMaps;
+
+      annotation.correct = this.isAnnotationInTemplate(annotation, studentTemplate, templateMaps);
+    }
+    return annotations;
+  } */
+
+  // single function for checkCorrectAnnotations, i.e. takes one annotation and compares to template
+  // using specific templateMap
+  /* isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
+    // now iterate template in several steps
+    for (const category of template.parts) {
+      // first check for category kind, i.e. ignore blocks etc.
+      if (category.kind === "category") {
+        // first check if category is in templateMap
+        let catPresent = false;
+        for (const map of templateMaps) {
+          if (map.categoryName === category.name) {
+            catPresent = true;
+            break;
+          }
+        }
+        if (catPresent) {
+          // then iterate through selectables and compare with templateMaps
+          for (const selectable of category.selectables) {
+            if (this.checkSelInTemplateMaps(selectable, templateMaps)) {
+              // sel present and checked, correct = true
+              return true;
+            }
+          }
+        }
       }
     }
-    // if no normal value is given, return false by default
+    // not present, correct = false
     return false;
-  }
+  } */
+
+  // deeper method for isAnnotationInTemplate for Selectables
+  /* checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
+    if (selectable.kind === "box") {
+      for (const map of templateMaps) {
+        // only check, if kind is the same
+        if (map.kind === "box") {
+          // is the name the same?
+          if (map.name === selectable.name) {
+            // is selectable checked? then all is good
+            if (selectable.value) {
+              return true;
+            }
+          }
+        }
+      }
+    } else if (selectable.kind === "group") {
+      // same spiel here: iterate through maps
+      for (const map of templateMaps) {
+        // check for kind
+        if (map.kind === "option") {
+          // is groupName the same?
+          if (map.groupName === selectable.name) {
+            // check if selectable value is the same as map name (i.e. value)
+            if (map.name === selectable.value) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  } */
 
 }
