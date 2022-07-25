@@ -36,7 +36,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   loadRandom() {
-    this.backendCaller.getRandom(true, "").subscribe(res => {
+    this.backendCaller.getRandom(true).subscribe(res => {
       this.openEditor(res.material._id);
     }, err => {
       window.alert(err);

@@ -19,7 +19,6 @@ export class RadiolearnListComponent implements OnInit {
   materials: Material[] = [];
 
   showJudged = false;
-  pathology = "";
 
   collectionSize = 0;
   pageSize = 10;
@@ -47,7 +46,7 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   getCountAndData() {
-    this.backendCaller.getDocCount(this.showJudged, this.pathology).subscribe(res => {
+    this.backendCaller.getDocCount(this.showJudged).subscribe(res => {
       console.log("Count: ", res.count);
       this.collectionSize = res.count;
       this.getData();
@@ -55,12 +54,6 @@ export class RadiolearnListComponent implements OnInit {
       console.log(err);
       window.alert(err.message);
     });
-  }
-
-  setPathology(newPathology: string) {
-    this.pathology = newPathology;
-    this.radiolearnService.currentPathology = newPathology;
-    this.getCountAndData();
   }
 
   getData(reverse = true) {
@@ -73,7 +66,7 @@ export class RadiolearnListComponent implements OnInit {
         skip = 0;
       }
       this.backendCaller.listByQuery(skip, length,
-        this.showJudged, this.pathology)
+        this.showJudged)
         .subscribe(res => {
           // then reverse the resulting template-list
           this.materials = res.materials.reverse();
@@ -83,7 +76,7 @@ export class RadiolearnListComponent implements OnInit {
     } else {
       const skip = (this.page - 1) * this.pageSize;
       this.backendCaller.listByQuery(skip, this.pageSize,
-        this.showJudged, this.pathology)
+        this.showJudged)
         .subscribe(res => {
           this.materials = res.materials;
         }, err => {

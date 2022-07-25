@@ -47,8 +47,6 @@ export class RadiolearnUiComponent implements OnInit {
   // variables for options/category UI
   selectedCatList = ["undefined"];
   selectedCat: string;
-  selectedPathologies: string[];
-  correctPathologies: boolean[];
 
   // inputParser variables
   inputEnabled: boolean;
@@ -264,12 +262,6 @@ export class RadiolearnUiComponent implements OnInit {
     }
 
     // TODO: Reimplement correctness check
-    /* const modes = ["main", "lateral", "pre"];
-    for (const mode of modes) {
-      if (this.material.annotations[mode].length > 0) {
-        this.radiolearnService.checkCorrectAnnotations(this.material.annotations[mode],
-          this.pathologyList, this.material.deepDocTemplate);
-    } */
 
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
@@ -288,14 +280,12 @@ export class RadiolearnUiComponent implements OnInit {
 
   next() {
     const judged = !this.isMod;
-    this.correctPathologies.fill(true);
-    this.selectedPathologies = [];
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
     } else {
       this.imageDisplayChild.toggleBoxes();
     }
-    this.backendCaller.getRandom(judged, this.radiolearnService.currentPathology).subscribe(res => {
+    this.backendCaller.getRandom(judged).subscribe(res => {
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
       } else if (res.material._id === this.material._id) {
