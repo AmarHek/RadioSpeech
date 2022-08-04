@@ -149,7 +149,6 @@ export class RadiolearnUiComponent implements OnInit {
     this.inputEnabled = !this.inputEnabled;
     this.input = "";
     this.generateChips();
-    this.generateUUID()
   }
 
   updateFromVariable(selectable) {
