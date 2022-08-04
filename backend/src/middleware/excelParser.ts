@@ -314,6 +314,11 @@ function extractVariableDate(row: Row, variable: VariableCommon): VariableDate {
 }
 
 function extractVariableKeys(row: Row): string[][] {
+    const valueString = row["Variable-Typ"].trim()
+    const excludeVariableTypes = ["Zahl", "Zahlbruch", "Text"]
+    if (excludeVariableTypes.includes(valueString)){
+        return new Array<string[]>()
+    }
     const keys = new Array<string[]>();
     const keysString = row["Variable-Synonyme"]
     const isOC = row["Variable-Typ"].includes("/")
