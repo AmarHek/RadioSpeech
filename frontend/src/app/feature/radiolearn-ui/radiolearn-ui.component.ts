@@ -24,6 +24,7 @@ import {
 } from "@app/shared";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -204,6 +205,10 @@ export class RadiolearnUiComponent implements OnInit {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts,
         this.material.shallowDocTemplate.parts);
     }
+  }
+
+  openFeedbackDialog(): void {
+    this.dialog.open(DialogTemplateComponent)
   }
 
   onSelect(event) {

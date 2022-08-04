@@ -24,6 +24,7 @@ import {RadiolearnUiComponent} from "@app/feature/radiolearn-ui/radiolearn-ui.co
 import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
 import {AccountManagementComponent} from "./account-management/account-management.component";
 import {SharedModule} from "@app/shared/shared.module";
+import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {SharedModule} from "@app/shared/shared.module";
     TemplateListComponent,
     RadiolearnListComponent,
     RadiolearnUiComponent,
-    ReportUiComponent
+    ReportUiComponent,
+    DialogTemplateComponent
   ],
     imports: [
         CommonModule,
