@@ -64,6 +64,9 @@ export class RadiolearnUiComponent implements OnInit {
 
   private user: User;
 
+  private readonly UUIDStorageKey = "UUID"
+  private UUID: string = "undefined"
+
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
               private router: Router,
@@ -100,6 +103,7 @@ export class RadiolearnUiComponent implements OnInit {
       });
     this.getData().then();
     this.timestampStart = Date.now();
+    this.setUUID()
   }
 
   async getData() {
@@ -145,6 +149,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.inputEnabled = !this.inputEnabled;
     this.input = "";
     this.generateChips();
+    this.generateUUID()
   }
 
   updateFromVariable(selectable) {
@@ -456,5 +461,32 @@ export class RadiolearnUiComponent implements OnInit {
         }
       }
     }
+  }
+
+  setUUID(){
+    const currentUUID = localStorage.getItem(this.UUIDStorageKey)
+    if(currentUUID == null){
+      const newUUID = this.generateUUID()
+      localStorage.setItem(this.UUIDStorageKey, newUUID)
+      console.log("Generated new UUID: " + newUUID)
+      this.UUID = newUUID
+    }else {
+      console.log("Found existing UUID: " + currentUUID)
+      this.UUID = currentUUID
+    }
+  }
+
+  generateUUID(): string{
+    const validChars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    const UUIDTemplate = 'xxxx-xxxx-xxxx-xxxx'
+    let UUID = ''
+    for (let i = 0; i < UUIDTemplate.length; i++){
+      if(UUIDTemplate[i] == 'x'){
+        UUID += validChars.charAt(Math.floor(Math.random() * validChars.length))
+      }else {
+        UUID += '-'
+      }
+    }
+    return UUID
   }
 }
