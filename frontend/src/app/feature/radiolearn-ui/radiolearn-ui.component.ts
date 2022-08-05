@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -25,13 +25,16 @@ import {
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: "app-radiolearn-ui",
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit {
+export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
@@ -61,11 +64,21 @@ export class RadiolearnUiComponent implements OnInit {
 
   // usageData variables
   timestampStart: number;
+  destroyed = new Subject<void>()
+  currentScreenSize: string
+  isMobile = false
 
   private user: User;
 
   private readonly UUIDStorageKey = "UUID"
   private UUID: string = "undefined"
+  displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
@@ -76,8 +89,29 @@ export class RadiolearnUiComponent implements OnInit {
               private chipHelper: ChipHelperService,
               private inputParser: InputParserService,
               private dialog: MatDialog,
+              private breakPointObserver: BreakpointObserver,
               private dialogService: MatDialogService) {
+    breakPointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge
+    ]).pipe(takeUntil(this.destroyed)).subscribe(result =>{
+      for (const query of Object.keys(result.breakpoints)){
+        if(result.breakpoints[query]){
+          this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown'
+          this.isMobile = this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall'
+        }
+
+      }
+    })
   }
+
+  ngOnDestroy(): void {
+      this.destroyed.next();
+      this.destroyed.complete()
+    }
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
@@ -104,6 +138,8 @@ export class RadiolearnUiComponent implements OnInit {
     this.getData().then();
     this.timestampStart = Date.now();
     this.setUUID()
+    this.toggleUserMode()
+    this.switchMode()
   }
 
   async getData() {

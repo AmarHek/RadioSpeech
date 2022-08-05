@@ -1,6 +1,6 @@
 <html>
 <body class="disable-select">
-<div id="outer">
+<div id="outer" *ngIf="!isMobile">
   <div id="inner_fixed" [ngStyle]="{'margin-bottom' : inputEnabled ? '-27px' : '1px'}">
     <mat-toolbar class="toolbar" color="primary">
       <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
@@ -147,6 +147,89 @@
                                [scans]="material.scans"
                                [annotations]="material.annotations"></app-image-display-student>
   </div>
+
+</div>
+
+
+
+<div id="mobile" *ngIf="isMobile" style="height: 100%;">
+  <mat-toolbar class="toolbar" color="primary">
+    <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <span class="spacer"></span>
+    <button mat-button class="header-button" id="checkMobile" matTooltip="Eingaben überprüfen"
+            (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
+    </button>
+    <button *ngIf="isMod" mat-button class="header-button" id="saveMobile" matTooltip="Speichern"
+            (click)="save()"><mat-icon>save</mat-icon>
+    </button>
+    <button mat-button class="header-button" id="nextMobile" matTooltip="Nächste Aufnahme"
+            (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
+
+  </mat-toolbar>
+
+  <mat-drawer-container class="example-container" [hasBackdrop]="true" style="height: calc(100% - 60px);">
+    <mat-drawer #drawer [mode]="'over'">
+
+
+
+      <ng-container *ngIf="this.material">
+        <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
+          <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px; padding-right: 7px">
+            <mat-checkbox style="font-size: 17px"
+                          (click)="updateFromParent(selectable)"
+                          [(ngModel)]="selectable.value"
+                          [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
+                          selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+            >{{selectable.name}}</mat-checkbox>
+          </div>
+
+          <ng-container *ngIf="selectable.value">
+
+            <ng-container *ngFor="let variable of selectable.variables">
+
+              <mat-radio-group *ngIf=" variable.kind === 'oc'" [(ngModel)]="variable.value">
+                <ng-container *ngFor="let value of variable.values">
+                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
+                    <mat-radio-button [value]="value" (click)="updateFromVariable(selectable)">
+                      {{value}}
+                    </mat-radio-button>
+                  </div>
+                </ng-container>
+              </mat-radio-group>
+
+              <ng-container *ngIf="variable.kind === 'mc'">
+                <ng-container *ngFor="let value of variable.values">
+                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
+                    <mat-checkbox [(ngModel)]="value[1]" (click)="updateFromVariable(selectable)">
+                      {{value[0]}}
+                    </mat-checkbox>
+                  </div>
+                </ng-container>
+              </ng-container>
+
+            </ng-container>
+          </ng-container>
+
+        </ng-container>
+      </ng-container>
+
+
+
+    </mat-drawer>
+    <mat-drawer-content style="height: 100%">
+      <app-image-display-student *ngIf="material && userMode"
+                                 [scans]="material.scans"
+                                 [isMobile]="isMobile"
+                                 [annotations]="material.annotations"></app-image-display-student>
+      <button mat-fab color="primary" style="position:fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()">
+        <mat-icon>
+          toc
+        </mat-icon>
+      </button>
+    </mat-drawer-content>
+  </mat-drawer-container>
 
 </div>
 </body>

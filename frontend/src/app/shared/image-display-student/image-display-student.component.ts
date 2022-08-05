@@ -20,7 +20,7 @@ const DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,12
   "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 
 const MAX_IMAGE_HEIGHT = 800;
-const MAX_IMAGE_WIDTH = 950;
+let MAX_IMAGE_WIDTH = 950;
 
 @Component({
   selector: "app-image-display-student",
@@ -40,6 +40,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     lateral:  Annotation[];
     pre:      Annotation[];
   };
+
+  @Input() isMobile: boolean
 
   imageUrl = environment.images;
 
@@ -146,6 +148,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   setCurrentDimensions() {
     const img = new Image();
     img.src = this.currentScanUrl;
+    MAX_IMAGE_WIDTH = Math.min(950, window.innerWidth)
     img.onload = (event) => {
       const loadedImage = event.currentTarget as HTMLImageElement;
       this.currentHeight = loadedImage.height;

@@ -1,5 +1,5 @@
-<div class="main">
-  <div id="buttonsDiv" [ngStyle]="{'width.px': currentWidth + 20}">
+<div class="main" [ngStyle]="{'padding' : isMobile ? 'unset': '10px 0 0 10px'}">
+  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20}">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
@@ -43,7 +43,7 @@
       </button>
     </div>
   </div>
-  <div id="imgOuter">
+  <div id="imgOuter" [ngStyle]="{'padding' : isMobile ? 'unset' : '10px 0 0 10px'}">
     <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
