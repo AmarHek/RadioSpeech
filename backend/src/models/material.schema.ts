@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {Material, UsageData} from "./material.model";
+import {Material, Participant} from "./material.model";
 
 const imageSchema = new mongoose.Schema({
     filename: String,
@@ -15,15 +15,12 @@ const annotationSchema = new mongoose.Schema({
     labelTop: {type: Number}
 })
 
-const usageDataScheme = new mongoose.Schema({
-    deepDocTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
-    shallowDocTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
-    mode: {type: String},
-    timestamp:  {type: Number},
-    duration:  {type: Number}
+const participantDataScheme = new mongoose.Schema({
+    UUID: {type: String, required: true},
+    usageList: {type: [mongoose.Schema.Types.Mixed]}
 });
 
-export const UsageDataDB = mongoose.model<UsageData>("UsageData", usageDataScheme, "usageData");
+export const ParticipantDB = mongoose.model<Participant>("Participant", participantDataScheme, "participants");
 
 const materialSchema = new mongoose.Schema({
     scans: {

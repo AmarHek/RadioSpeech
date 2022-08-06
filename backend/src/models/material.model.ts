@@ -49,6 +49,11 @@ export interface UsageData {
   duration: number;
 }
 
+export interface Participant {
+  UUID: string;
+  usageList: UsageData[]
+}
+
 
 
 

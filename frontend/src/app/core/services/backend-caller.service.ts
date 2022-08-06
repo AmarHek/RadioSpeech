@@ -91,10 +91,10 @@ export class BackendCallerService {
     );
   }
 
-  addUsageData(deepDocTemplate: Template, shallowDocTemplate: Template,
+  addUsageData(UUID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
                mode: string, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.usageUrl + "add/",{deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
+      this.usageUrl + "add/",{UUID, deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
     );
   }
 

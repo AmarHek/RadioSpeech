@@ -276,6 +276,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const duration = Date.now() - this.timestampStart;
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
+      this.UUID,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
       modeString,
