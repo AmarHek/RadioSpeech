@@ -7,7 +7,9 @@ function handleError(err: NativeError){
 }
 export function saveUsageData(req: any, res: Response) {
 
+    console.log("----------------------received material id: " + req.body.materialID)
     const usageData: UsageData = {
+        materialID: req.body.materialID,
         deepDocTemplate: req.body.deepDocTemplate,
         shallowDocTemplate: req.body.shallowDocTemplate,
         mode: req.body.mode,

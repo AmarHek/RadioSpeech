@@ -91,10 +91,10 @@ export class BackendCallerService {
     );
   }
 
-  addUsageData(UUID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
+  addUsageData(UUID: string, materialID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
                mode: string, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.usageUrl + "add/",{UUID, deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
+      this.usageUrl + "add/",{UUID, materialID, deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration}
     );
   }
 
@@ -141,6 +141,13 @@ export class BackendCallerService {
     return this.http.post<{message: string; material: Material}>(
       this.materialUrl + "random/",
       {judged}
+    );
+  }
+
+  getUnusedMaterial(UUID: string){
+    return this.http.post<{message: string; material: Material}>(
+      this.materialUrl + "unused/",
+      {UUID}
     );
   }
 

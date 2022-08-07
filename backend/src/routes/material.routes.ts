@@ -75,6 +75,7 @@ matRouter.get("/listAll/", MaterialController.listAll);
 matRouter.post("/listByQuery/", MaterialController.listByQuery);
 matRouter.post("/queryDocCount/", MaterialController.queryDocCount);
 matRouter.post("/random/", MaterialController.getRandom);
+matRouter.post("/unused/", MaterialController.getUnusedMaterial);
 
 
 

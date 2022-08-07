@@ -28,6 +28,7 @@ import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-templ
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -251,6 +252,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogTemplateComponent)
   }
 
+  openNoMaterialsLeftDialog(): void {
+    this.dialog.open(DialogNoMaterialsComponent)
+  }
+
   onSelect(event) {
     this.selectedCat = event.options[0].value;
   }
@@ -277,6 +282,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
       this.UUID,
+      this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
       modeString,
@@ -327,7 +333,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   nextMaterial() {
     const judged = !this.isMod;
-    this.backendCaller.getRandom(judged).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -340,7 +346,12 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      console.log(err);
+      if(err == "no-unused-materials"){
+        console.log("No unused materials left")
+        this.openNoMaterialsLeftDialog()
+      }else {
+        console.log(err);
+      }
     });
   }
 

@@ -42,6 +42,7 @@ export interface Material {
 }
 
 export interface UsageData {
+  materialID: string;
   deepDocTemplate: Template;
   shallowDocTemplate: Template;
   mode: string;

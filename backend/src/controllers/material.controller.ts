@@ -1,5 +1,5 @@
 import {updatePartsBackwardsCompatible} from "../middleware/materialMiddleware";
-import {MaterialDB, TemplateDB, TemplateDoc} from '../models';
+import {MaterialDB, ParticipantDB, TemplateDB, TemplateDoc} from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
 import fs from "fs";
@@ -339,6 +339,77 @@ export function getRandom(req: Request, res: Response): void {
                 });
         }
     });
+}
+/*
+* Returns a material that the participant with the UUID specified in the request body has not completed yet,
+* or the error "no-unused-materials" if no unused materials are left for this participant.
+* */
+export function getUnusedMaterial(req: Request, res: Response): void {
+    console.log("received request to give unused material")
+    let query = ParticipantDB.findOne({'UUID' : req.body.UUID});
+    query.exec(function (error, participant){
+        if(error){
+            console.log("Error getting participant for material query: " + error.message)
+            res.status(500).send({message: "Error getting participant for material query: " + error.message});
+        }else {
+            //Get all material IDs of the materials that this user has already completed
+           let usedMaterialIDs: string[] = []
+            if(participant != null){
+                participant.usageList.forEach(usageData =>{
+                    usedMaterialIDs.push(usageData.materialID)
+                })
+            }
+            console.log("got all used materials of user " + req.body.UUID + " here: " + usedMaterialIDs.toString())
+            let materialQuery = MaterialDB.find({})
+            materialQuery.exec(function (error, result){
+                if (error){
+                    console.log("Error fetching materials: " + error.message)
+                    res.status(500).send({message: "Error fetching materials: " + error.message});
+                }else {
+                    //Get all available material IDs
+                    //Todo, filter for judged here?
+                    let allMaterialIDs: string[] = []
+                    result.forEach(material =>{
+                        allMaterialIDs.push(material._id)
+                    })
+                    // console.log("Got all existing material ids: " + allMaterialIDs.toString())
+                    //Get a list of all uncompleted material IDs
+                    let unusedMaterialIDs: string[] = []
+                    allMaterialIDs.forEach(matID => {
+                        let used = false
+                        usedMaterialIDs.forEach(usedID =>{
+                            let equal = matID == usedID
+                            if(usedID == matID) used = true
+                        })
+                        if (!used) unusedMaterialIDs.push(matID)
+                    })
+                    // console.log("Removed used ids: " + unusedMaterialIDs.toString())
+
+                    if(unusedMaterialIDs.length <= 0){
+                        //No unused materials left
+                        console.log("No unused materials left")
+                        res.status(500).send({message: "no-unused-materials"});
+                    }else{
+                        //Pick a random uncompleted material ID
+                        let randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)]
+                        console.log("selected random id: " + randomUnusedMaterialID)
+                        let finalMaterialQuery = MaterialDB.findOne({'_id': randomUnusedMaterialID})
+                        finalMaterialQuery.exec(function (error, material){
+                            if(error){
+                                console.log("Error fetching random unused material: " + error.message)
+                                res.status(500).send({message: "Error fetching random unused material: " + error.message});
+                            }else {
+                                res.status(200).send({material});
+                            }
+                        });
+                    }
+
+                }
+            })
+
+        }
+    });
+
 }
 
 export function queryDocCount(req: Request, res: Response): void {
