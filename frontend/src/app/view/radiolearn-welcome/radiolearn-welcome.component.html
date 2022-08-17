@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" *ngIf="!isMobile">
   <div class="row">
     <h1>Willkommen zu RadioLearn</h1>
     <div class="text-container">
@@ -10,7 +10,7 @@
     </div>
   </div>
 </div>
-<div class="container body">
+<div class="container body" *ngIf="!isMobile">
   <div class="row">
     <div class="col-sm">
       <div class="button-container">
@@ -40,6 +40,49 @@
       </div>
       <div class="img-container">
         <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="simpleMode()">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="header" *ngIf="isMobile" style="padding: 20px">
+  <div class="row">
+    <h2>Willkommen zu RadioLearn</h2>
+    <div class="text-container" style="margin: 0px">
+      Sie haben die Auswahl zwischen zwei verschiedenen Lernmodi. In beiden Modi werden Sie eine
+      Röntgenaufnahmen eines Patienten sehen und sollen den zugehörigen Fragebogen ausfüllen.
+
+      Mit einem Klick auf "Prüfen" können Sie ihre Eingaben überprüfen und erhalten Feedback sowie die Lösung.
+    </div>
+  </div>
+</div>
+<div class="container body" *ngIf="isMobile">
+  <div class="row" >
+    <div class="col-sm" style="">
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" (click)="simpleMode()">Diagnosemodus</button>
+      </div>
+      <div class="text-container" style="margin: unset; padding-top: 5px">
+        Dies ist ein <b>vereinfachter Modus</b>, in dem Sie nur die vorhandenen Pathologien identifizieren sollen.
+
+        Es geht nur um oberflächliche Erkennungen, es werden keine Details abgefragt.
+
+        Dieser Modus ist für kürzere Sessions zwischendurch geeignet.
+      </div>
+    </div>
+    <div class="col-sm" style="margin-top: 15px">
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" (click)="detailedMode()">Dokumentationsmodus</button>
+      </div>
+      <div class="text-container" style="margin: unset; padding-top: 5px">
+        In diesem Modus klicken Sie sich durch eine <b>detaillierte Befundungs-Schablone</b> aus dem Alltag.
+
+        Abgefragt werden detaillierte Punkte zu verschiedenen Kategorien.
+
+        Dieser Modus ist für längere Lern-Sessions geeignet.
       </div>
     </div>
   </div>

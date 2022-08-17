@@ -104,7 +104,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
           this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown'
           this.isMobile = this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall'
         }
-
       }
     })
   }
