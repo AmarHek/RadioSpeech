@@ -157,19 +157,11 @@
     <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
       <mat-icon>arrow_back_ios</mat-icon>
     </button>
-    <span class="spacer"></span>
-    <button mat-button class="header-button" id="checkMobile" matTooltip="Eingaben überprüfen"
-            (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
-    </button>
-    <button *ngIf="isMod" mat-button class="header-button" id="saveMobile" matTooltip="Speichern"
-            (click)="save()"><mat-icon>save</mat-icon>
-    </button>
-    <button mat-button class="header-button" id="nextMobile" matTooltip="Nächste Aufnahme"
-            (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
+    <b>Radiolearn</b>
 
   </mat-toolbar>
 
-  <mat-drawer-container class="example-container" [hasBackdrop]="true" style="height: calc(100% - 60px);">
+  <mat-drawer-container class="example-container" [hasBackdrop]="true" style="height: calc(100% - 60px); background-color: #e0eafa">
     <mat-drawer #drawer [mode]="'over'">
 
 
@@ -223,11 +215,26 @@
                                  [scans]="material.scans"
                                  [isMobile]="isMobile"
                                  [annotations]="material.annotations"></app-image-display-student>
-      <button mat-fab color="primary" style="position:fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()">
+
+
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()">
         <mat-icon>
-          toc
+          edit
         </mat-icon>
       </button>
+
+      <div style="z-index: -10; position: fixed; bottom: 25px; display: flex; align-items: center; justify-content: center; width: 100%">
+        <button mat-raised-button color="primary" style="" (click)="checkForErrors()">
+          <mat-icon>checklist_rtl</mat-icon> Überprüfen
+        </button>
+      </div>
+
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()">
+        <mat-icon>
+          navigate_next
+        </mat-icon>
+      </button>
+
     </mat-drawer-content>
   </mat-drawer-container>
 
