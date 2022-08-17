@@ -144,10 +144,10 @@ export class BackendCallerService {
     );
   }
 
-  getUnusedMaterial(UUID: string){
+  getUnusedMaterial(UUID: string, mode: string){
     return this.http.post<{message: string; material: Material}>(
       this.materialUrl + "unused/",
-      {UUID}
+      {UUID, mode}
     );
   }
 

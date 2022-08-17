@@ -352,11 +352,13 @@ export function getUnusedMaterial(req: Request, res: Response): void {
             console.log("Error getting participant for material query: " + error.message)
             res.status(500).send({message: "Error getting participant for material query: " + error.message});
         }else {
-            //Get all material IDs of the materials that this user has already completed
+            //Get all material IDs of the materials that this user has already completed in this mode
            let usedMaterialIDs: string[] = []
             if(participant != null){
                 participant.usageList.forEach(usageData =>{
-                    usedMaterialIDs.push(usageData.materialID)
+                    if(usageData.mode == req.body.mode){
+                        usedMaterialIDs.push(usageData.materialID)
+                    }
                 })
             }
             console.log("got all used materials of user " + req.body.UUID + " here: " + usedMaterialIDs.toString())

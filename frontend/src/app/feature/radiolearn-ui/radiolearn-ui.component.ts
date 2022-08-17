@@ -332,7 +332,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   nextMaterial() {
     const judged = !this.isMod;
-    this.backendCaller.getUnusedMaterial(this.UUID).subscribe(res => {
+    let mode = this.radiolearnService.detailedMode ? "deep" : "shallow"
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
