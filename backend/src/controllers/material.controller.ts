@@ -372,7 +372,9 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     //Todo, filter for judged here?
                     let allMaterialIDs: string[] = []
                     result.forEach(material =>{
-                        allMaterialIDs.push(material._id)
+                        if(material.judged){
+                            allMaterialIDs.push(material._id)
+                        }
                     })
                     // console.log("Got all existing material ids: " + allMaterialIDs.toString())
                     //Get a list of all uncompleted material IDs
@@ -380,7 +382,6 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     allMaterialIDs.forEach(matID => {
                         let used = false
                         usedMaterialIDs.forEach(usedID =>{
-                            let equal = matID == usedID
                             if(usedID == matID) used = true
                         })
                         if (!used) unusedMaterialIDs.push(matID)
