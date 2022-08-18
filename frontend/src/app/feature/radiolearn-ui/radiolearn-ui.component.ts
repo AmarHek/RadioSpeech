@@ -286,7 +286,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
       this.material.shallowDocTemplate,
       modeString,
       this.timestampStart,
-      duration
+      duration,
+      this.ogMaterial
     ).subscribe(res => {
       console.log(res.message);
       });
@@ -331,6 +332,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   nextMaterial() {
+    this.submit()
     const judged = !this.isMod;
     let mode = this.radiolearnService.detailedMode ? "deep" : "shallow"
     this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {

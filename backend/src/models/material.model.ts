@@ -48,6 +48,7 @@ export interface UsageData {
   mode: string;
   timestamp: number;
   duration: number;
+  ogMaterial: Material;
 }
 
 export interface Participant {

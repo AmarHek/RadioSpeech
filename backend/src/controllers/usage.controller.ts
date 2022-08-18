@@ -14,7 +14,8 @@ export function saveUsageData(req: any, res: Response) {
         shallowDocTemplate: req.body.shallowDocTemplate,
         mode: req.body.mode,
         timestamp: req.body.timestamp,
-        duration: req.body.duration
+        duration: req.body.duration,
+        ogMaterial: req.body.ogMaterial
     }
 
     const query = ParticipantDB.findOne({'UUID': req.body.UUID});
