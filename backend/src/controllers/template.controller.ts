@@ -27,7 +27,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const parts = JSON.parse(jsonString);
     const template = new TemplateDB({
         parts: parts,
-        name: req.body.name,
+        name: jsonName,
         kind: req.body.kind,
         timestamp: req.body.timestamp as number
     });

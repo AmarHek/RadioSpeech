@@ -12,8 +12,7 @@ const storageExcel = multer.diskStorage({
         cb(null, path);
     },
     filename: (req, file, cb) => {
-        const path = "data/excels/";
-        const name = generateUniqueFilename(path, req.body.name, ".xlsx");
+        const name = req.body.name + ".xlsx";
         cb(null, name);
     }
 });
