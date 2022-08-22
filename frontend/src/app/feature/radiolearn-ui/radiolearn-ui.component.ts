@@ -65,21 +65,21 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   // usageData variables
   timestampStart: number;
-  destroyed = new Subject<void>()
-  currentScreenSize: string
-  isMobile = false
+  destroyed = new Subject<void>();
+  currentScreenSize: string;
+  isMobile = false;
+
+  displayNameMap = new Map([
+    [Breakpoints.XSmall, "XSmall"],
+    [Breakpoints.Small, "Small"],
+    [Breakpoints.Medium, "Medium"],
+    [Breakpoints.Large, "Large"],
+    [Breakpoints.XLarge, "XLarge"],
+  ]);
+  private readonly uuidStorageKey = "UUID";
+  private uuid = "undefined";
 
   private user: User;
-
-  private readonly UUIDStorageKey = "UUID"
-  private UUID: string = "undefined"
-  displayNameMap = new Map([
-    [Breakpoints.XSmall, 'XSmall'],
-    [Breakpoints.Small, 'Small'],
-    [Breakpoints.Medium, 'Medium'],
-    [Breakpoints.Large, 'Large'],
-    [Breakpoints.XLarge, 'XLarge'],
-  ]);
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
@@ -101,17 +101,12 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     ]).pipe(takeUntil(this.destroyed)).subscribe(result =>{
       for (const query of Object.keys(result.breakpoints)){
         if(result.breakpoints[query]){
-          this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown'
-          this.isMobile = this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall'
+          this.currentScreenSize = this.displayNameMap.get(query) ?? "Unknown";
+          this.isMobile = this.currentScreenSize === "Small" || this.currentScreenSize === "XSmall";
         }
       }
-    })
+    });
   }
-
-  ngOnDestroy(): void {
-      this.destroyed.next();
-      this.destroyed.complete()
-    }
 
   get isMod() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
@@ -125,10 +120,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     return this.radiolearnService.detailedMode;
   }
 
-  get colorBlindMode() {
-    return this.radiolearnService.colorBlindMode;
-  }
-
   ngOnInit() {
     this.authenticationService.user.subscribe(
       (x) => {
@@ -137,9 +128,14 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
       });
     this.getData().then();
     this.timestampStart = Date.now();
-    this.setUUID()
-    this.toggleUserMode()
-    this.switchMode()
+    this.setUUID();
+    this.toggleUserMode();
+    this.switchMode();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 
   async getData() {
@@ -248,11 +244,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   openFeedbackDialog(): void {
-    this.dialog.open(DialogTemplateComponent)
+    this.dialog.open(DialogTemplateComponent);
   }
 
   openNoMaterialsLeftDialog(): void {
-    this.dialog.open(DialogNoMaterialsComponent)
+    this.dialog.open(DialogNoMaterialsComponent);
   }
 
   onSelect(event) {
@@ -280,7 +276,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const duration = Date.now() - this.timestampStart;
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
-      this.UUID,
+      this.uuid,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
@@ -332,10 +328,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   nextMaterial() {
-    this.submit()
-    const judged = !this.isMod;
-    let mode = this.radiolearnService.detailedMode ? "deep" : "shallow"
-    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
+    this.submit();
+    const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
+    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -348,9 +343,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if(err == "no-unused-materials"){
-        console.log("No unused materials left")
-        this.openNoMaterialsLeftDialog()
+      if(err === "no-unused-materials"){
+        console.log("No unused materials left");
+        this.openNoMaterialsLeftDialog();
       }else {
         console.log(err);
       }
@@ -513,29 +508,29 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   setUUID(){
-    const currentUUID = localStorage.getItem(this.UUIDStorageKey)
+    const currentUUID = localStorage.getItem(this.uuidStorageKey);
     if(currentUUID == null){
-      const newUUID = this.generateUUID()
-      localStorage.setItem(this.UUIDStorageKey, newUUID)
-      console.log("Generated new UUID: " + newUUID)
-      this.UUID = newUUID
+      const newUUID = this.generateUUID();
+      localStorage.setItem(this.uuidStorageKey, newUUID);
+      console.log("Generated new UUID: " + newUUID);
+      this.uuid = newUUID;
     }else {
-      console.log("Found existing UUID: " + currentUUID)
-      this.UUID = currentUUID
+      console.log("Found existing UUID: " + currentUUID);
+      this.uuid = currentUUID;
     }
   }
 
   generateUUID(): string{
-    const validChars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-    const UUIDTemplate = 'xxxx-xxxx-xxxx-xxxx'
-    let UUID = ''
-    for (let i = 0; i < UUIDTemplate.length; i++){
-      if(UUIDTemplate[i] == 'x'){
-        UUID += validChars.charAt(Math.floor(Math.random() * validChars.length))
-      }else {
-        UUID += '-'
+    const validChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    const uuidTemplate = "xxxx-xxxx-xxxx-xxxx";
+    let UUID = "";
+    for (const uuidChar of uuidTemplate){
+      if (uuidChar === "x"){
+        UUID += validChars.charAt(Math.floor(Math.random() * validChars.length));
+      } else {
+        UUID += "-";
       }
     }
-    return UUID
+    return UUID;
   }
 }
