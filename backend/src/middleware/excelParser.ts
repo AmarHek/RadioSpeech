@@ -344,7 +344,7 @@ function extractVariableKeys(row: Row): string[][] {
 }
 
 function extractTextBefore(varInfo: string): string {
-    if (varInfo == undefined) {
+    if (varInfo === undefined) {
         return "";
     }
     varInfo = varInfo.replace("\u2026", "...");
@@ -352,11 +352,14 @@ function extractTextBefore(varInfo: string): string {
 }
 
 function extractTextAfter(varInfo: string): string {
-    if (varInfo == undefined || varInfo.split("...").length < 2)
+    if (varInfo === undefined)
     {
         return "";
     }
     varInfo = varInfo.replace("\u2026", "...");
-    return varInfo.split("...")[1]
+    if (varInfo.split("...").length < 2) {
+        return "";
+    }
+    return varInfo.split("...")[1];
 }
 

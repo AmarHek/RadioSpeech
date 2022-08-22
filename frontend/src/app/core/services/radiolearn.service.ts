@@ -3,7 +3,7 @@ import {
   Annotation,
   Category,
   CheckBox,
-  Group, or,
+  Group,
   Selectable,
   Template,
   Variable,
@@ -28,8 +28,6 @@ import * as M from "@app/models/templateModel";
 })
 export class RadiolearnService {
 
-  currentPathology = "";
-  colorBlindMode = false;
   detailedMode = true;
 
   constructor() {
