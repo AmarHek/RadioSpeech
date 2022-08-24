@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {BackendCallerService, RadiolearnService} from "@app/core";
+import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
 import {environment} from "@env/environment";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {takeUntil} from "rxjs/operators";
+import {Breakpoints} from "@angular/cdk/layout";
 import {Subject} from "rxjs";
 import {getUUID} from "@app/helpers/uuidHelper";
 
@@ -33,27 +32,16 @@ export class RadiolearnWelcomeComponent implements OnInit, OnDestroy {
     private radiolearnService: RadiolearnService,
     private router: Router,
     private backendCaller: BackendCallerService,
-    private breakPointObserver: BreakpointObserver
-) {
-    breakPointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge
-    ]).pipe(takeUntil(this.destroyed)).subscribe(result =>{
-      for (const query of Object.keys(result.breakpoints)){
-        if(result.breakpoints[query]){
-          this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown'
-          this.isMobile = this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall'
-        }
-      }
-    })
-  }
+    private displayService: DisplayService,
+) {  }
 
 ngOnInit(): void {
     this.UUID = getUUID()
-  }
+    this.displayService.isMobile.subscribe(res => {
+       this.isMobile = res;
+       console.log(this.isMobile);
+  });
+}
 
   detailedMode() {
     this.radiolearnService.detailedMode = true;

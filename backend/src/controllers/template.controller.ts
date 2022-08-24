@@ -17,6 +17,7 @@ export function createExcelTemplate(req: any, res: Response) {
     }
     // save parsed data to json
     const jsonName = generateUniqueFilename("data/json", req.body.name, ".json");
+    const templateName = jsonName.replace(".json", "");
     fs.writeFile(Path.join("data/json", jsonName), jsonString, (err) => {
         if (err) {
             console.log(err);
@@ -27,7 +28,7 @@ export function createExcelTemplate(req: any, res: Response) {
     const parts = JSON.parse(jsonString);
     const template = new TemplateDB({
         parts: parts,
-        name: req.body.name,
+        name: templateName,
         kind: req.body.kind,
         timestamp: req.body.timestamp as number
     });
@@ -100,15 +101,23 @@ export function updateTemplate(req: Request, res: Response) {
 }
 
 export function deleteTemplate(req: any, res: Response){
-  TemplateDB.deleteOne({
-    _id: req.params.id
-  }).then(
-    result => {
-      console.log(result);
-      res.status(200).json({
-        message: "TemplateModel deleted"
-      });
-    });
+    // find document by ID and delete
+    TemplateDB.findByIdAndDelete({
+        _id: req.params.id
+    }).then(
+        template => {
+            if (template) {
+                const jsonPath = "data/json/" + template.name + ".json";
+                if (fs.existsSync(jsonPath)) {
+                    fs.rmSync(jsonPath);
+                    console.log(template.name + ": Json-file deleted");
+                }
+                console.log(template.name + ": Template entry deleted")
+                res.status(200).send({message: template.name + " successfully deleted"});
+            } else {
+                res.status(500).send({message: "Template not found"});
+            }
+        });
 }
 
 export function getTemplateList(req: any, res: Response){
