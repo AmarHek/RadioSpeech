@@ -5,6 +5,7 @@ import {environment} from "@env/environment";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {getUUID} from "@app/helpers/uuidHelper";
 
 @Component({
   selector: "app-radiolearn-welcome",
@@ -18,6 +19,7 @@ export class RadiolearnWelcomeComponent implements OnInit, OnDestroy {
   destroyed = new Subject<void>()
   currentScreenSize: string
   isMobile = false
+  private UUID: string = "undefined"
 
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
@@ -50,16 +52,17 @@ export class RadiolearnWelcomeComponent implements OnInit, OnDestroy {
   }
 
 ngOnInit(): void {
+    this.UUID = getUUID()
   }
 
   detailedMode() {
     this.radiolearnService.detailedMode = true;
-    this.loadRandom();
+    this.loadUnused("deep")
   }
 
   simpleMode() {
     this.radiolearnService.detailedMode = false;
-    this.loadRandom();
+    this.loadUnused("shallow");
   }
 
   openEditor(matID: string) {
@@ -75,6 +78,24 @@ ngOnInit(): void {
       }
     }, err => {
       window.alert(err);
+    });
+  }
+
+  loadUnused(mode: string){
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
+      console.log(res);
+      if (res.material === null) {
+        window.alert("Keine weiteren Befunde verfügbar");
+      } else {
+        this.router.navigate(["/", "radiolearn", "main", res.material._id]);
+      }
+    }, err => {
+      if(err == "no-unused-materials"){
+        console.log("No unused materials left")
+        window.alert("No unused materials left")
+      }else {
+        console.log(err);
+      }
     });
   }
 

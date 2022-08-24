@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
+import {getUUID} from "@app/helpers/uuidHelper";
 import {
   AuthenticationService,
   BackendCallerService,
@@ -62,6 +63,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   // state variables
   userMode: boolean;
+  submitted: boolean = false;
 
   // usageData variables
   timestampStart: number;
@@ -71,7 +73,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   private user: User;
 
-  private readonly UUIDStorageKey = "UUID"
   private UUID: string = "undefined"
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
@@ -135,11 +136,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         this.user = x;
         this.userMode = !this.isMod;
       });
+    this.UUID = getUUID();
     this.getData().then();
     this.timestampStart = Date.now();
-    this.setUUID()
     this.toggleUserMode()
-    this.switchMode()
   }
 
   async getData() {
@@ -277,6 +277,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   submit(){
+    this.submitted = true
     const duration = Date.now() - this.timestampStart;
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
@@ -332,7 +333,6 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   nextMaterial() {
-    this.submit()
     const judged = !this.isMod;
     let mode = this.radiolearnService.detailedMode ? "deep" : "shallow"
     this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
@@ -512,30 +512,4 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     }
   }
 
-  setUUID(){
-    const currentUUID = localStorage.getItem(this.UUIDStorageKey)
-    if(currentUUID == null){
-      const newUUID = this.generateUUID()
-      localStorage.setItem(this.UUIDStorageKey, newUUID)
-      console.log("Generated new UUID: " + newUUID)
-      this.UUID = newUUID
-    }else {
-      console.log("Found existing UUID: " + currentUUID)
-      this.UUID = currentUUID
-    }
-  }
-
-  generateUUID(): string{
-    const validChars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-    const UUIDTemplate = 'xxxx-xxxx-xxxx-xxxx'
-    let UUID = ''
-    for (let i = 0; i < UUIDTemplate.length; i++){
-      if(UUIDTemplate[i] == 'x'){
-        UUID += validChars.charAt(Math.floor(Math.random() * validChars.length))
-      }else {
-        UUID += '-'
-      }
-    }
-    return UUID
-  }
 }
