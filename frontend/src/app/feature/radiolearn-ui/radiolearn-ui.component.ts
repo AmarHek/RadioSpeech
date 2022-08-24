@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {
   AuthenticationService,
   BackendCallerService,
-  DataParserService,
+  DataParserService, DisplayService,
   InputParserService,
   MatDialogService,
   RadiolearnService
@@ -66,16 +66,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   // usageData variables
   timestampStart: number;
   destroyed = new Subject<void>();
-  currentScreenSize: string;
   isMobile = false;
 
-  displayNameMap = new Map([
-    [Breakpoints.XSmall, "XSmall"],
-    [Breakpoints.Small, "Small"],
-    [Breakpoints.Medium, "Medium"],
-    [Breakpoints.Large, "Large"],
-    [Breakpoints.XLarge, "XLarge"],
-  ]);
   private readonly uuidStorageKey = "UUID";
   private uuid = "undefined";
 
@@ -86,26 +78,12 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               private router: Router,
               private dataParser: DataParserService,
               private authenticationService: AuthenticationService,
+              private displayService: DisplayService,
               private radiolearnService: RadiolearnService,
               private chipHelper: ChipHelperService,
               private inputParser: InputParserService,
               private dialog: MatDialog,
-              private breakPointObserver: BreakpointObserver,
               private dialogService: MatDialogService) {
-    breakPointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge
-    ]).pipe(takeUntil(this.destroyed)).subscribe(result =>{
-      for (const query of Object.keys(result.breakpoints)){
-        if(result.breakpoints[query]){
-          this.currentScreenSize = this.displayNameMap.get(query) ?? "Unknown";
-          this.isMobile = this.currentScreenSize === "Small" || this.currentScreenSize === "XSmall";
-        }
-      }
-    });
   }
 
   get isMod() {
@@ -126,6 +104,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         this.user = x;
         this.userMode = !this.isMod;
       });
+    this.displayService.isMobile.subscribe(res => {
+      this.isMobile = res;
+      console.log(this.isMobile);
+    });
     this.getData().then();
     this.timestampStart = Date.now();
     this.setUUID();
