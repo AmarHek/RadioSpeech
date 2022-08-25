@@ -15,7 +15,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
 
   currentScreenSize: string;
   isMobile = false;
-  private uuid = "undefined";
+  private UUID = "undefined";
 
   constructor(
     private radiolearnService: RadiolearnService,
@@ -25,7 +25,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
 ) {  }
 
   ngOnInit(): void {
-    this.uuid = getUUID();
+    this.UUID = getUUID();
     this.displayService.isMobile.subscribe(res => {
        this.isMobile = res;
        console.log(this.isMobile);
@@ -47,7 +47,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   loadUnused(mode: string){
-    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");

@@ -34,7 +34,7 @@ import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialo
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit, OnDestroy {
+export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
@@ -64,10 +64,9 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   // usageData variables
   timestampStart: number;
-  destroyed = new Subject<void>();
   isMobile = false;
 
-  private uuid = "undefined";
+  private UUID = "undefined";
 
   private user: User;
 
@@ -108,13 +107,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     });
     this.getData().then();
     this.timestampStart = Date.now();
-    this.uuid = getUUID()
+    this.UUID = getUUID()
     this.toggleUserMode();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed.next();
-    this.destroyed.complete();
   }
 
   async getData() {
@@ -255,7 +249,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const duration = Date.now() - this.timestampStart;
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
-      this.uuid,
+      this.UUID,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
@@ -309,7 +303,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   nextMaterial() {
     this.submit();
     const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
-    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
