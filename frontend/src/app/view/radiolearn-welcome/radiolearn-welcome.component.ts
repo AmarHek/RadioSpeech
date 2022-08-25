@@ -1,9 +1,7 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
 import {environment} from "@env/environment";
-import {Breakpoints} from "@angular/cdk/layout";
-import {Subject} from "rxjs";
 import {getUUID} from "@app/helpers/uuidHelper";
 
 @Component({
@@ -11,22 +9,13 @@ import {getUUID} from "@app/helpers/uuidHelper";
   templateUrl: "./radiolearn-welcome.component.html",
   styleUrls: ["./radiolearn-welcome.component.scss"]
 })
-export class RadiolearnWelcomeComponent implements OnInit, OnDestroy {
+export class RadiolearnWelcomeComponent implements OnInit {
 
   assetsUrl = environment.assets;
 
-  destroyed = new Subject<void>()
-  currentScreenSize: string
-  isMobile = false
-  private UUID: string = "undefined"
-
-  displayNameMap = new Map([
-    [Breakpoints.XSmall, 'XSmall'],
-    [Breakpoints.Small, 'Small'],
-    [Breakpoints.Medium, 'Medium'],
-    [Breakpoints.Large, 'Large'],
-    [Breakpoints.XLarge, 'XLarge'],
-  ]);
+  currentScreenSize: string;
+  isMobile = false;
+  private uuid = "undefined";
 
   constructor(
     private radiolearnService: RadiolearnService,
@@ -35,17 +24,17 @@ export class RadiolearnWelcomeComponent implements OnInit, OnDestroy {
     private displayService: DisplayService,
 ) {  }
 
-ngOnInit(): void {
-    this.UUID = getUUID()
+  ngOnInit(): void {
+    this.uuid = getUUID();
     this.displayService.isMobile.subscribe(res => {
        this.isMobile = res;
        console.log(this.isMobile);
-  });
-}
+    });
+  }
 
   detailedMode() {
     this.radiolearnService.detailedMode = true;
-    this.loadUnused("deep")
+    this.loadUnused("deep");
   }
 
   simpleMode() {
@@ -60,7 +49,7 @@ ngOnInit(): void {
   loadRandom() {
     this.backendCaller.getRandom(true).subscribe(res => {
       if (res.material === null || res.material === undefined) {
-        window.alert("Aktuell keine Aufnahmen vorhanden.")
+        window.alert("Aktuell keine Aufnahmen vorhanden.");
       } else {
         this.openEditor(res.material._id);
       }
@@ -70,7 +59,7 @@ ngOnInit(): void {
   }
 
   loadUnused(mode: string){
-    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -78,16 +67,13 @@ ngOnInit(): void {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if(err == "no-unused-materials"){
-        console.log("No unused materials left")
-        window.alert("No unused materials left")
+      if(err === "no-unused-materials"){
+        console.log("No unused materials left");
+        window.alert("No unused materials left");
       }else {
         console.log(err);
       }
     });
-  }
-
-  ngOnDestroy(): void {
   }
 
 }
