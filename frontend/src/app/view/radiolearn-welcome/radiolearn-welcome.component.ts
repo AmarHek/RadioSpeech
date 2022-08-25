@@ -46,18 +46,6 @@ export class RadiolearnWelcomeComponent implements OnInit {
     this.router.navigate(["/", "radiolearn", "main", matID]).then();
   }
 
-  loadRandom() {
-    this.backendCaller.getRandom(true).subscribe(res => {
-      if (res.material === null || res.material === undefined) {
-        window.alert("Aktuell keine Aufnahmen vorhanden.");
-      } else {
-        this.openEditor(res.material._id);
-      }
-    }, err => {
-      window.alert(err);
-    });
-  }
-
   loadUnused(mode: string){
     this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
       console.log(res);
