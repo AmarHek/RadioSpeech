@@ -1,4 +1,6 @@
 const UUIDStorageKey = "UUID"
+const surveyStorageKey = "survey"
+
 export function getUUID(): string{
   const currentUUID = localStorage.getItem(UUIDStorageKey)
   if(currentUUID == null){
@@ -25,3 +27,24 @@ export function generateUUID(): string{
   }
   return UUID
 }
+//returns -1 if the survey link has been clicked once, or a positive integer for the amount of materials that have been completed
+export function getSurveyStatus(): number {
+  let surveyStatus = localStorage.getItem(surveyStorageKey)
+  if(surveyStatus==null){
+    const newSurveyStatus = String(0)
+    localStorage.setItem(surveyStatus, newSurveyStatus)
+    return Number(newSurveyStatus)
+  }
+  return Number(surveyStatus)
+}
+
+export function increaseSurveyCounter(){
+  let surveyStatus = getSurveyStatus()
+  if(surveyStatus == -1) return
+  localStorage.setItem(surveyStorageKey, String(surveyStatus + 1))
+}
+
+export function surveyLinkClicked(){
+  localStorage.setItem(surveyStorageKey, String(-1))
+}
+

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
+import {surveyLinkClicked} from "@app/helpers/uuidHelper";
 
 @Component({
   selector: 'app-dialog-template',
@@ -11,6 +12,10 @@ export class DialogTemplateComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogTemplateComponent>) {}
 
   ngOnInit(): void {
+  }
+
+  linkClicked(){
+    surveyLinkClicked()
   }
 
 }

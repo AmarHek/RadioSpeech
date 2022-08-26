@@ -11,7 +11,7 @@ import {
 } from "@app/core";
 import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
-import {getUUID} from "@app/helpers/uuidHelper";
+import {getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/uuidHelper";
 
 import * as M from "@app/models/templateModel";
 import {
@@ -67,6 +67,7 @@ export class RadiolearnUiComponent implements OnInit {
   isMobile = false;
 
   private UUID = "undefined";
+  showSurveyEveryNMaterials = 3
 
   private user: User;
 
@@ -143,6 +144,10 @@ export class RadiolearnUiComponent implements OnInit {
             }
             this.getBoxLabels();
             this.sawFeedback = false
+            let surveyStatus = getSurveyStatus()
+            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials == 0){
+              this.openSurveyDialog()
+            }
           }
         }, err => {
           window.alert(err.message);
@@ -217,7 +222,7 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
-  openFeedbackDialog(): void {
+  openSurveyDialog(): void {
     this.dialog.open(DialogTemplateComponent);
   }
 
@@ -318,6 +323,7 @@ export class RadiolearnUiComponent implements OnInit {
           this.imageDisplayChild.toggleBoxes();
         }
         this.sawFeedback = false
+        increaseSurveyCounter()
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
