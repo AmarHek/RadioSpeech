@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
 import {environment} from "@env/environment";
 import {getUUID} from "@app/helpers/uuidHelper";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
   selector: "app-radiolearn-welcome",
@@ -22,6 +24,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
     private router: Router,
     private backendCaller: BackendCallerService,
     private displayService: DisplayService,
+    private dialog: MatDialog
 ) {  }
 
   ngOnInit(): void {
@@ -56,8 +59,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
       }
     }, err => {
       if(err === "no-unused-materials"){
-        console.log("No unused materials left");
-        window.alert("No unused materials left");
+        this.dialog.open(DialogNoMaterialsComponent)
       }else {
         console.log(err);
       }
