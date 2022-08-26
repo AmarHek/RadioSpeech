@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -26,7 +26,6 @@ import {
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
-import {Subject} from "rxjs";
 import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
@@ -64,6 +63,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   // usageData variables
   timestampStart: number;
+  sawFeedback = false;
   isMobile = false;
 
   private UUID = "undefined";
@@ -142,6 +142,7 @@ export class RadiolearnUiComponent implements OnInit {
               this.radiolearnOptionsChild.categories = this.deepCategories;
             }
             this.getBoxLabels();
+            this.sawFeedback = false
           }
         }, err => {
           window.alert(err.message);
@@ -273,6 +274,10 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
+    if(!this.sawFeedback){
+      this.submit()
+    }
+    this.sawFeedback = true
     let errors: CategoryError[];
     if (this.detailedMode) {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
@@ -301,7 +306,6 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterial() {
-    this.submit();
     const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
@@ -313,6 +317,7 @@ export class RadiolearnUiComponent implements OnInit {
         } else {
           this.imageDisplayChild.toggleBoxes();
         }
+        this.sawFeedback = false
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {

@@ -217,7 +217,7 @@
                                  [annotations]="material.annotations"></app-image-display-student>
 
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()" *ngIf="!sawFeedback">
         <mat-icon>
           edit
         </mat-icon>
@@ -229,7 +229,7 @@
         </button>
       </div>
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()" *ngIf="sawFeedback">
         <mat-icon>
           navigate_next
         </mat-icon>
