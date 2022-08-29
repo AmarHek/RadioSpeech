@@ -13,7 +13,6 @@ export class RadiolearnWelcomeComponent implements OnInit {
 
   assetsUrl = environment.assets;
 
-  currentScreenSize: string;
   isMobile = false;
   private uuid = "undefined";
 
