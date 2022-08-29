@@ -205,7 +205,10 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 
 function extractSelectableKeys(rows: Row[]): string[] {
     const name = rows[0]["Befund"].trim();
-    const keys = trimArray(rows[0]["Synonyme"].split(";"))
+    let keys: string[] = [];
+    if (rows[0]["Synonyme"] !== undefined){
+        keys = trimArray(rows[0]["Synonyme"].split(";"))
+    }
     if (!keys.includes(name)) {
         keys.push(name);
     }
