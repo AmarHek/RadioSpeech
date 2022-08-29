@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
 import {environment} from "@env/environment";
 import {getUUID} from "@app/helpers/uuidHelper";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
   selector: "app-radiolearn-welcome",
@@ -14,17 +16,18 @@ export class RadiolearnWelcomeComponent implements OnInit {
   assetsUrl = environment.assets;
 
   isMobile = false;
-  private uuid = "undefined";
+  private UUID = "undefined";
 
   constructor(
     private radiolearnService: RadiolearnService,
     private router: Router,
     private backendCaller: BackendCallerService,
     private displayService: DisplayService,
+    private dialog: MatDialog
 ) {  }
 
   ngOnInit(): void {
-    this.uuid = getUUID();
+    this.UUID = getUUID();
     this.displayService.isMobile.subscribe(res => {
        this.isMobile = res;
        console.log(this.isMobile);
@@ -46,7 +49,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   loadUnused(mode: string){
-    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -55,8 +58,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
       }
     }, err => {
       if(err === "no-unused-materials"){
-        console.log("No unused materials left");
-        window.alert("No unused materials left");
+        this.dialog.open(DialogNoMaterialsComponent)
       }else {
         console.log(err);
       }

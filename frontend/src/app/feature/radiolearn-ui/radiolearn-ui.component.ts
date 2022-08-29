@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@app/core";
 import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
-import {getUUID} from "@app/helpers/uuidHelper";
+import {getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/uuidHelper";
 
 import * as M from "@app/models/templateModel";
 import {
@@ -26,7 +26,6 @@ import {
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
-import {Subject} from "rxjs";
 import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
@@ -34,7 +33,7 @@ import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialo
   templateUrl: "./radiolearn-ui.component.html",
   styleUrls: ["./radiolearn-ui.component.scss"]
 })
-export class RadiolearnUiComponent implements OnInit, OnDestroy {
+export class RadiolearnUiComponent implements OnInit {
 
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
@@ -64,10 +63,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
 
   // usageData variables
   timestampStart: number;
-  destroyed = new Subject<void>();
+  sawFeedback = false;
   isMobile = false;
 
-  private uuid = "undefined";
+  private UUID = "undefined";
+  showSurveyEveryNMaterials = 3
 
   private user: User;
 
@@ -108,13 +108,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     });
     this.getData().then();
     this.timestampStart = Date.now();
-    this.uuid = getUUID()
+    this.UUID = getUUID()
     this.toggleUserMode();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed.next();
-    this.destroyed.complete();
   }
 
   async getData() {
@@ -148,6 +143,11 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
               this.radiolearnOptionsChild.categories = this.deepCategories;
             }
             this.getBoxLabels();
+            this.sawFeedback = false
+            let surveyStatus = getSurveyStatus()
+            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials == 0){
+              this.openSurveyDialog()
+            }
           }
         }, err => {
           window.alert(err.message);
@@ -222,7 +222,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     }
   }
 
-  openFeedbackDialog(): void {
+  openSurveyDialog(): void {
     this.dialog.open(DialogTemplateComponent);
   }
 
@@ -255,7 +255,7 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
     const duration = Date.now() - this.timestampStart;
     const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
-      this.uuid,
+      this.UUID,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
@@ -279,6 +279,10 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   checkForErrors() {
+    if(!this.sawFeedback){
+      this.submit()
+    }
+    this.sawFeedback = true
     let errors: CategoryError[];
     if (this.detailedMode) {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
@@ -307,9 +311,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
   }
 
   nextMaterial() {
-    this.submit();
     const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
-    this.backendCaller.getUnusedMaterial(this.uuid, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
@@ -319,6 +322,8 @@ export class RadiolearnUiComponent implements OnInit, OnDestroy {
         } else {
           this.imageDisplayChild.toggleBoxes();
         }
+        this.sawFeedback = false
+        increaseSurveyCounter()
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
