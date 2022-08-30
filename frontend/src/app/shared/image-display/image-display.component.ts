@@ -239,9 +239,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
-      this.displayBoxes = false;
-      // TODO Bugfix this
-      // this.drawBoxes();
+      this.drawBoxes();
     }
     if (this.enableEdit) {
       // TODO Bugfix this

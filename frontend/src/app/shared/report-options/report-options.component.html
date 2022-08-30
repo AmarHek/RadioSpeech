@@ -13,7 +13,7 @@
             </td>
             <td class="title" [style.width.%]="width" >
               <label [ngClass]="{'selected': sel.value}"
-                     [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+                     [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                      for="{{row.name}} {{sel.name}} box">
                 {{sel.name}}
               </label>
@@ -37,7 +37,7 @@
               </td>
               <td class="title" [style.width.%]="width">
                 <label for="{{row.name}} {{sel.name + option.name}} box"
-                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + option.name == selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + option.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                        [ngClass]="{'selected': (option.name === sel.value)}">
                   {{option.name}}
                 </label>
