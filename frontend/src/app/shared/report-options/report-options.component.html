@@ -1,53 +1,54 @@
   <table style="margin: 20px">
     <tbody>
     <tr *ngFor="let row of rows">
-          <td *ngIf="layoutId===0" class="category"
-              [style.width.%]="10"
-              [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">{{row.name.charAt(0) === '1' ? row.name.substring(1) : ""}}</td>
-      <ng-container *ngIf="row.name.includes(selectedCat)||layoutId===0">
-        <ng-container *ngFor="let sel of row.selectables" class="col-3">
-          <ng-container *ngIf="sel.kind === 'box'">
+      <td *ngIf="layoutId===0" class="category"
+          [style.width.%]="10"
+          [ngStyle]="{'color': row.optional ? 'grey' : 'black'}">
+        {{row.hidden ? "" : row.name}}</td>
+      <ng-container *ngIf="row.name === selectedCat || layoutId === 0">
+        <ng-container *ngFor="let clickable of row.clickables" class="col-3">
+          <ng-container *ngIf="clickable.kind === 'box'">
             <td class="box" style="padding-left: 10px">
-              <input type="checkbox" [(ngModel)]="sel.value"
-                     (click)="update(sel, null, row.name)" id="{{row.name}} {{sel.name}} box"/>
+              <input type="checkbox" [(ngModel)]="clickable.value"
+                     (click)="updateFromBox(clickable, row.name)" id="{{row.name}} {{clickable.name}} box"/>
             </td>
             <td class="title" [style.width.%]="width" >
-              <label [ngClass]="{'selected': sel.value}"
-                     [ngStyle]="{'border' : row.name.substring(1) + ' ' + sel.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-                     for="{{row.name}} {{sel.name}} box">
-                {{sel.name}}
+              <label [ngClass]="{'selected': clickable.value}"
+                     [ngStyle]="{'border' : row.name.substring(1) + ' '
+                     + clickable.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
+                     for="{{row.name}} {{clickable.name}} box">
+                {{clickable.name}}
               </label>
             </td>
-            <app-variables *ngIf="sel.variables.length> 0"
-                           (clickEvent)="updateFromVariable(sel)"
-                           [variables]="sel.variables"
-                           [parentText]="sel.name"
-                           [parentActive]="sel.value" [currentLayout]="layoutId"></app-variables>
+            <app-variables *ngIf="clickable.variables.length> 0"
+                           (clickEvent)="updateFromVariable(clickable)"
+                           [variables]="clickable.variables"
+                           [parentText]="clickable.name"
+                           [parentActive]="clickable.value" [currentLayout]="layoutId"></app-variables>
           </ng-container>
 
-          <ng-container *ngIf="sel.kind === 'group'">
-            <ng-container *ngFor="let option of sel.options">
+          <ng-container *ngIf="clickable.kind === 'option'">
               <td class="radio box" style="padding-left: 10px">
                 <input type="radio"
-                       id="{{row.name}} {{sel.name + option.name}} box"
-                       (click)="update(sel, option.name)"
-                       [name]="sel.name"
-                       [value]="option.name"
-                       [(ngModel)]="sel.value"/>
+                       id="{{row.name}} {{clickable.groupID + clickable.name}} box"
+                       [name]="clickable.groupID"
+                       [value]="clickable.name"
+                       [(ngModel)]="getGroupByID(row.name, clickable.groupID).value"/>
               </td>
               <td class="title" [style.width.%]="width">
-                <label for="{{row.name}} {{sel.name + option.name}} box"
-                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + option.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-                       [ngClass]="{'selected': (option.name === sel.value)}">
-                  {{option.name}}
+                <label for="{{row.name}} {{clickable.groupID + clickable.name}} box"
+                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + clickable.name === selectedSelectableID ?
+                       '3px solid red' : '3px solid transparent'}"
+                       [ngClass]="{'selected': (clickable.name === getGroupByID(row.name, clickable.groupID))}">
+                  {{clickable.name}}
                 </label>
               </td>
-              <app-variables *ngIf="option.variables.length > 0"
-                             (clickEvent)="updateFromVariable(option, sel)"
-                             [variables]="option.variables"
-                             [parentText]="option.name"
-                             [parentActive]="option.name === sel.value" [currentLayout]="layoutId"></app-variables>
-            </ng-container>
+              <app-variables *ngIf="clickable.variables.length > 0"
+                             (clickEvent)="updateFromVariable(clickable)"
+                             [variables]="clickable.variables"
+                             [parentText]="clickable.name"
+                             [parentActive]="clickable.name === getGroupByID(row.name, clickable.groupID)"
+                             [currentLayout]="layoutId"></app-variables>
           </ng-container>
         </ng-container>
       </ng-container>

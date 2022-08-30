@@ -1,6 +1,7 @@
-import {Component, Input, OnInit, Output, EventEmitter, OnChanges} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 
 import {DataParserService} from "@app/core";
+import {Group, Row} from "@app/models";
 
 import * as M from "@app/models/templateModel";
 
@@ -9,7 +10,8 @@ import * as M from "@app/models/templateModel";
   templateUrl: "./report-options.component.html",
   styleUrls: ["./report-options.component.scss"]
 })
-export class ReportOptionsComponent implements OnInit, OnChanges {
+
+export class ReportOptionsComponent implements OnInit {
 
   @Input() categories: M.Category[];
   @Output() clickEvent = new EventEmitter<any>();
@@ -17,45 +19,22 @@ export class ReportOptionsComponent implements OnInit, OnChanges {
   @Input() selectedCat: string;
   @Input() selectedSelectableID: string;
 
-  // TODO Make these configurable
+  // TODO Make maxRowLength configurable
 
-  minRowLength = 1;
   maxRowLength: number;
   width: number;
-  rows: M.Category[];
+  rows: Row[];
 
   constructor(private dataParser: DataParserService) { }
 
   ngOnInit(): void {
-    this.setMinRowLength(this.categories);
     this.maxRowLength = 5;
     this.determineWidth();
     this.initRows();
   }
 
   initRows() {
-    if (this.minRowLength > this.maxRowLength) {
-      this.maxRowLength = this.minRowLength;
-    }
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
-  }
-
-  ngOnChanges() {
-    // this.initRows();
-  }
-
-  setMinRowLength(cats: M.Category[]) {
-    let minRowLength = 1;
-    for (const cat of cats) {
-      for (const sel of cat.selectables) {
-        if (sel.kind === "group") {
-          if (sel.options.length > minRowLength) {
-            minRowLength = sel.options.length;
-          }
-        }
-      }
-    }
-    this.minRowLength = minRowLength;
   }
 
   update(sel: M.Selectable, option?: string, categoryName?: string) {
@@ -68,7 +47,7 @@ export class ReportOptionsComponent implements OnInit, OnChanges {
         // Rows only contain selectables of their respective row
         // We need to extract the corresponding category with all selectables first
         // row-name contains an additional 0 or 1 at the beginning, so we take the substring
-        const category = this.getCategoryByName(categoryName.substring(1));
+        const category = this.getCategoryByName(categoryName);
         for (const exclusion of sel.exclusions) {
           if (exclusion === "Rest") {
             this.deselectRest(category, sel.name);
@@ -79,6 +58,47 @@ export class ReportOptionsComponent implements OnInit, OnChanges {
       }
     }
     this.clickEvent.emit();
+  }
+
+  updateFromBox(sel: M.CheckBox, categoryName: string) {
+    if (sel.exclusions.length > 0) {
+      // Rows only contain selectables of their respective row
+      // We need to extract the corresponding category with all selectables first
+      // row-name contains an additional 0 or 1 at the beginning, so we take the substring
+      const category = this.getCategoryByName(categoryName);
+      for (const exclusion of sel.exclusions) {
+        if (exclusion === "Rest") {
+          this.deselectRest(category, sel.name);
+        } else {
+          this.deselectByName(category, exclusion);
+        }
+      }
+    }
+    this.clickEvent.emit();
+  }
+
+  getGroupByID(categoryName: string, groupID: string): Group {
+    for (const category of this.categories) {
+      if (category.name === categoryName) {
+        for (const sel of category.selectables) {
+          if (sel.name === groupID) {
+            return (sel as Group);
+          }
+        }
+      }
+    }
+  }
+
+  debug(categoryName: string, groupID: string) {
+    for (const category of this.categories) {
+      if (category.name === categoryName) {
+        for (const sel of category.selectables) {
+          if (sel.name === groupID) {
+            console.log(sel);
+          }
+        }
+      }
+    }
   }
 
   deselectByName(category: M.Category, name: string) {

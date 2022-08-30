@@ -79,6 +79,7 @@ export interface Group {
 
 export interface Option {
   kind:           "option";
+  groupID?:       string;
   name:           string;
   text:           string;
   judgementText?: string;

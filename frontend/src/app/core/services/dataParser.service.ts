@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import * as G from "../../models/generator";
-import * as M from "../../models/templateModel";
+import * as G from "@app/models/generator";
+import * as M from "@app/models/templateModel";
+import {Row} from "@app/models";
 
 @Injectable({
   providedIn: "root"
@@ -21,79 +22,66 @@ export class DataParserService {
   }
 
   // Takes template-list of categories to transform them into template-list of rows without groups, only singular buttons
-  extractRows(categories: M.Category[], maxRowLength: number): M.Category[] {
-    let rows: M.Category[] = [];
+  extractRows(categories: M.Category[], maxRowLength): Row[] {
+    let rows: Row[] = [];
 
     for (const category of categories) {
-      const splits = this.getSplits(category, maxRowLength);
-      const splitCats = this.splitCategory(category, splits);
+      // const splits = this.getSplits(category, maxRowLength);
+      const splitCats = this.splitCategoryIntoRows(category, maxRowLength);
       rows = rows.concat(splitCats);
     }
 
     return rows;
   }
 
-  splitCategory(category: M.Category, splits: number[]) {
-    // let n_categories = Math.ceil(category.selectables.length / splitLength);
-    const res: M.Category[] = [];
+  splitCategoryIntoRows(category: M.Category, maxRowLength: number): Row[] {
+    const rows: Row[] = [];
+    let row: Row = this.createNewRow(category, false);
 
-    let pos = 0;
-    for (const split of splits) {
-      let name: string;
-      //information of category name necessary for all rows, for expand layout, so 1 / 0 indicate shown or not shown
-      if (pos === 0) {
-        //1 => show this category name
-        name = "1"+category.name;
-      } else {
-        //0 => don't show this category name as its the n-th row for a category
-        name = "0"+category.name;
-      }
-      let tempSels: M.Selectable[] = [];
-      tempSels = category.selectables.slice(pos, pos + split);
-      res.push({
-        kind: "category",
-        name,
-        optional: category.optional,
-        selectables: tempSels
-      });
-      pos += split;
-    }
-
-    return res;
-  }
-
-
-  getSplits(category: M.Category, maxRowLength: number): number[] {
-    // Variation of getRowLengths: returns the number of selectables per row instead of number of report-output-options
-    const rowSplits = [];
-    let currentSplit = 0;
-    let rowCounter = 0;
     for (const sel of category.selectables) {
-      if (rowCounter >= maxRowLength) {
-        rowSplits.push(currentSplit);
-        currentSplit = 0;
-        rowCounter = 0;
-      }
-
+      // separate between boxes and groups, boxes are easier to handle
       if (sel.kind === "box") {
-        rowCounter += 1;
-        currentSplit += 1;
+        row.clickables.push(sel);
+        if (row.clickables.length === maxRowLength) {
+          rows.push(row);
+          row = this.createNewRow(category, true);
+        }
       } else if (sel.kind === "group") {
-        if (rowCounter + sel.options.length > maxRowLength) {
-          rowSplits.push(currentSplit);
-          rowCounter = sel.options.length;
-          currentSplit = 1;
-        } else {
-          rowCounter += sel.options.length;
-          currentSplit += 1;
+        for (const option of sel.options) {
+          option.groupID = sel.name;
+          row.clickables.push(option);
+          if (row.clickables.length === maxRowLength) {
+            rows.push(row);
+            row = this.createNewRow(category, true);
+          }
         }
       }
-
-      if (category.selectables.indexOf(sel) === (category.selectables.length - 1) && currentSplit !== 0) {
-        rowSplits.push(currentSplit);
-      }
     }
-    return rowSplits;
+    // push the last row if it is shorter than maxRowLength
+    if (row.clickables.length > 0) {
+      rows.push(row);
+    }
+
+    return rows;
+  }
+
+  createNewRow(category: M.Category, hidden: boolean): Row {
+    return {
+      kind: "category",
+      name: category.name,
+      hidden,
+      optional: category.optional,
+      clickables: []
+    };
+  }
+
+  createNewRowOption(option: M.Option, groupID: string) {
+    return {
+      kind: "option",
+      name: option.name,
+      groupID,
+      variables: option.variables
+    };
   }
 
   // extracts group identifiers and corresponding values for ngModel application

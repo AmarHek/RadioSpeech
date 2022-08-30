@@ -50,7 +50,7 @@ export class ReportUiComponent implements OnInit {
   defaultParts: TopLevel[];
 
   input = "";
-  mergedInput = ""
+  mergedInput = "";
   foundKeywords: ColoredText[] = [];
 
   categories: Category[];
@@ -85,7 +85,7 @@ export class ReportUiComponent implements OnInit {
     this.getData();
   }
 
-//HANDLE CHIPS
+  // HANDLE CHIPS
   add(event: MatChipInputEvent): void {
     // Clear the input value
     // event.chipInput?.clear();
@@ -96,13 +96,13 @@ export class ReportUiComponent implements OnInit {
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
-    this.reset(false, false)
-    this.onInput(new Event(""))
+    this.reset(false, false);
+    this.onInput(new Event(""));
   }
 
   onSelected(cat: string){
     this.selectedCat = cat;
-    this.selectedSelectableID = ""
+    this.selectedSelectableID = "";
   }
 
   layoutChanged(newLayout: Layout){
@@ -148,31 +148,31 @@ export class ReportUiComponent implements OnInit {
 
   onChipClick(chip: InputChip){
     // this.selectedCat = chip.clickable.category
-    this.selectedCat = chip.id.split(" ")[0]
-    this.selectedSelectableID = chip.id
+    this.selectedCat = chip.id.split(" ")[0];
+    this.selectedSelectableID = chip.id;
   }
 
   onClick() {
-    this.selectedSelectableID = ""
+    this.selectedSelectableID = "";
     setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.modelChange(), 5)
+    setTimeout(() => this.modelChange(), 5);
   }
 
   onBackSpaceKeyDown(event){
     //Override onBackSpaceKeyDown to prevent default behavior of deleting chips
     if(this.useChips){
-      let chipCount = this.chips.length
+      const chipCount = this.chips.length;
       if(chipCount>0){
-        let oldInput = this.input
-        let newInput = ""
-        this.chips.forEach(c => newInput += c.content + " ")
-        newInput = newInput.trim()
-        this.input = newInput + " " + oldInput
-        this.chips = []
+        const oldInput = this.input;
+        let newInput = "";
+        this.chips.forEach(c => newInput += c.content + " ");
+        newInput = newInput.trim();
+        this.input = newInput + " " + oldInput;
+        this.chips = [];
       }
     }
-    this.reset()
-    return true
+    this.reset();
+    return true;
   }
 
   //If useChips is set to false, inputs are handled exactly like before the implementations of chips
@@ -180,62 +180,67 @@ export class ReportUiComponent implements OnInit {
     if(ev.inputType === "deleteContentBackward") {
       //reset is now handled in onBackSpacePress
       // this.reset();
-      return
+      return;
     }
     if (this.input[this.input.length - 1] === " ") {
       this.input = this.inputParser.autocorrect(this.input);
     }
 
     if(this.useChips){
-      console.log("___________________________________________________________________________________")
+      console.log("___________________________________________________________________________________");
       //Check if previous run ended with text variable, if yes, don't automatically separate chip and input with spaces
-      let trim = false
-      let allVars = []
-      this.inputParser.foundVariables.forEach(list => allVars = allVars.concat(list))
-      if(allVars.length>0 && allVars[allVars.length-1].kind == "text"){
-        if(this.inputParser.foundClickables[this.inputParser.foundClickables.length-1].name == allVars[allVars.length-1].selectable){
-          trim = true
+      let trim = false;
+      let allVars = [];
+      this.inputParser.foundVariables.forEach(list => allVars = allVars.concat(list));
+      if(allVars.length>0 && allVars[allVars.length-1].kind === "text"){
+        if(this.inputParser.foundClickables[this.inputParser.foundClickables.length-1].name === allVars[allVars.length-1].selectable){
+          trim = true;
         }
       }
-      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, trim)
-      console.log("------------------MERGED INPUT>" + this.mergedInput + "<")
+      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, trim);
+      console.log("------------------MERGED INPUT>" + this.mergedInput + "<");
       this.inputParser.parseInput(this.mergedInput);
-      this.debugPrintVars()
-    }else{
+      this.debugPrintVars();
+    } else {
       this.inputParser.parseInput(this.input);
     }
 
     this.assignValues();
-    if(this.useChips) this.generateChips()
+    if(this.useChips) {
+      this.generateChips();
+    }
     this.foundKeywords = this.inputParser.getColoredText(this.input);
     setTimeout(() => this.updateText(), 5);
   }
 
 
   debugPrintVars(){
-    console.log("--FOUND VARIABLES")
-    console.log(this.inputParser.foundVariables)
+    console.log("--FOUND VARIABLES");
+    console.log(this.inputParser.foundVariables);
     this.inputParser.foundVariables.forEach(list => {
       list.forEach((v, i) => {
-        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym + "< pos[" + v.position + "," + v.positionEnd + "] substring >" + this.mergedInput.substring(v.position, v.positionEnd) + "< value >" + v.value + "<")
-      })
-    })
+        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym +
+          "< pos[" + v.position + "," + v.positionEnd + "] substring >"
+          + this.mergedInput.substring(v.position, v.positionEnd) + "< value >" + v.value + "<");
+      });
+    });
   }
 
-
   generateChips(){
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables)
-    console.log("TEXT NO VARS>" + this.mergedInput + "<")
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables)
-    console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<")
+    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
+    console.log("TEXT NO VARS>" + this.mergedInput + "<");
+    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
+    console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<");
     //Add chips displaying the active clickables and variables, deduced from this.parts
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts)
+    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
     //Show the remaining text that was not detected as part of a clickable or a variable
-    if(this.input != " ") this.input = this.mergedInput.trimStart()
-    //Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
-    //field, since otherwise the input text won't update via ngModel
-    this.chipInput.nativeElement.value = this.input
-    this.selectedSelectableID = ""
+    if(this.input !== " ") {
+      this.input = this.mergedInput.trimStart();
+    }
+    // Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
+    // field, since otherwise the input text won't update via ngModel
+    this.chipInput.nativeElement.value = this.input;
+    this.selectedSelectableID = "";
   }
 
   // Assigns all found keywords in inputParser to this.parts
@@ -243,7 +248,7 @@ export class ReportUiComponent implements OnInit {
     for (const key of this.inputParser.foundClickables) {
       if (key.name === "Rest normal") {
         this.makeNormal();
-        continue
+        continue;
       }
 
       const foundVariables = this.inputParser.foundVariables.get(key.category + " " + key.name);
@@ -263,7 +268,9 @@ export class ReportUiComponent implements OnInit {
         variables = option.variables;
       }
       // assign variable values
-      if (variables.length <= 0 || foundVariables === undefined) continue
+      if (variables.length <= 0 || foundVariables === undefined) {
+        continue;
+      }
 
       for (const varKey of foundVariables) {
         const vari = variables.find(v => v.id === varKey.id);
@@ -291,11 +298,11 @@ export class ReportUiComponent implements OnInit {
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
-    this.onInput(new Event(""))
+    this.onInput(new Event(""));
   }
 
   modelChange(){
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts)
+    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
   // for when the radiologist finishes: empty parts and input
@@ -317,10 +324,14 @@ export class ReportUiComponent implements OnInit {
   reset(resetSelectedCat: boolean = true, resetChips = true) {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts);
-    if (resetChips) this.chips = []
-    this.input = ""
-    this.selectedCat = this.categories[0].name
-    if (resetSelectedCat) this.selectedSelectableID = ""
+    if (resetChips) {
+      this.chips = [];
+    }
+    this.input = "";
+    this.selectedCat = this.categories[0].name;
+    if (resetSelectedCat) {
+      this.selectedSelectableID = "";
+    }
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }
