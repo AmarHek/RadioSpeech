@@ -26,7 +26,6 @@ export class DataParserService {
     let rows: Row[] = [];
 
     for (const category of categories) {
-      // const splits = this.getSplits(category, maxRowLength);
       const splitCats = this.splitCategoryIntoRows(category, maxRowLength);
       rows = rows.concat(splitCats);
     }

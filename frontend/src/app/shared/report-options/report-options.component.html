@@ -10,7 +10,7 @@
           <ng-container *ngIf="clickable.kind === 'box'">
             <td class="box" style="padding-left: 10px">
               <input type="checkbox" [(ngModel)]="clickable.value"
-                     (click)="updateFromBox(clickable, row.name)" id="{{row.name}} {{clickable.name}} box"/>
+                     (click)="updateFromBox(row.name, clickable)" id="{{row.name}} {{clickable.name}} box"/>
             </td>
             <td class="title" [style.width.%]="width" >
               <label [ngClass]="{'selected': clickable.value}"
@@ -24,7 +24,8 @@
                            (clickEvent)="updateFromVariable(clickable)"
                            [variables]="clickable.variables"
                            [parentText]="clickable.name"
-                           [parentActive]="clickable.value" [currentLayout]="layoutId"></app-variables>
+                           [parentActive]="clickable.value"
+                           [currentLayout]="layoutId"></app-variables>
           </ng-container>
 
           <ng-container *ngIf="clickable.kind === 'option'">
@@ -33,6 +34,7 @@
                        id="{{row.name}} {{clickable.groupID + clickable.name}} box"
                        [name]="clickable.groupID"
                        [value]="clickable.name"
+                       (click)="updateFromGroup(row.name, clickable.groupID, clickable.name)"
                        [(ngModel)]="getGroupByID(row.name, clickable.groupID).value"/>
               </td>
               <td class="title" [style.width.%]="width">
@@ -47,7 +49,7 @@
                              (clickEvent)="updateFromVariable(clickable)"
                              [variables]="clickable.variables"
                              [parentText]="clickable.name"
-                             [parentActive]="clickable.name === getGroupByID(row.name, clickable.groupID)"
+                             [parentActive]="clickable.name === getGroupByID(row.name, clickable.groupID).value"
                              [currentLayout]="layoutId"></app-variables>
           </ng-container>
         </ng-container>
