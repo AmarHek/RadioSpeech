@@ -14,7 +14,7 @@
             </td>
             <td class="title" [style.width.%]="width" >
               <label [ngClass]="{'selected': clickable.value}"
-                     [ngStyle]="{'border' : row.name.substring(1) + ' '
+                     [ngStyle]="{'border' : row.name + ' '
                      + clickable.name === selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
                      for="{{row.name}} {{clickable.name}} box">
                 {{clickable.name}}
@@ -39,9 +39,9 @@
               </td>
               <td class="title" [style.width.%]="width">
                 <label for="{{row.name}} {{clickable.groupID + clickable.name}} box"
-                       [ngStyle]="{'border' : row.name.substring(1) + ' ' + clickable.name === selectedSelectableID ?
+                       [ngStyle]="{'border' : row.name + ' ' + clickable.name === selectedSelectableID ?
                        '3px solid red' : '3px solid transparent'}"
-                       [ngClass]="{'selected': (clickable.name === getGroupByID(row.name, clickable.groupID))}">
+                       [ngClass]="{'selected': (clickable.name === getGroupByID(row.name, clickable.groupID).value)}">
                   {{clickable.name}}
                 </label>
               </td>
