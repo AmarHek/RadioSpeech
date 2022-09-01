@@ -7,3 +7,4 @@ export * from "./services/input-parser.service";
 export * from "./services/mat-dialog.service";
 export * from "./services/radiolearn.service";
 export * from "./services/user.service";
+export * from "./services/image-display.service";

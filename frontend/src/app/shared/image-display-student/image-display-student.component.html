@@ -48,7 +48,7 @@
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
            src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
-      <canvas #drawLayer class="canvas level1" id="drawCanvas"
+      <canvas #boxLayer class="canvas level1" id="drawCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <canvas #labelLayer class="canvas level1" id="labelCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
@@ -59,7 +59,7 @@
         <div class="zoomDiv" id="zoom"></div>
         <div class="zoomLens"
              [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
-        <div class="canvas level3" id="zoomCanvas"
+        <div class="canvas level3" id="zoomLayer"
              [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
       </div>
     </div>
