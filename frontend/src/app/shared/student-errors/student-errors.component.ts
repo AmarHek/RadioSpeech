@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategoryError, ErrorTableRow, SelectableError} from "@app/models/errorModel";
 import {displayableQuotient} from "@app/helpers";
+import {DisplayService} from "@app/core";
 
 @Component({
   selector: "app-radiolearn-differences",
@@ -14,7 +15,10 @@ export class StudentErrorsComponent implements OnInit {
   majorErrorCount = 0;
   minorErrorCount = 0;
 
+  isMobile = false
+
   constructor(
+    private displayService: DisplayService,
     private dialogRef: MatDialogRef<StudentErrorsComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
@@ -23,6 +27,9 @@ export class StudentErrorsComponent implements OnInit {
     this.countMajorAndMinorErrors();
     this.errorRows = this.data.errors;
     this.rollOutErrors();
+    this.displayService.isMobile.subscribe(res =>{
+      this.isMobile = res
+    })
   }
 
   close() {
