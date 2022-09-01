@@ -57,8 +57,8 @@ export class ImageDisplayService {
     context.strokeStyle = strokeStyle;
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: number) {
-    this.setCanvasProperties(context, this.BOX_LINE_WIDTH, "square", this.DISPLAY_BOX_COLOR[color]);
+  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, colorIdx: number) {
+    this.setCanvasProperties(context, this.BOX_LINE_WIDTH, "square", this.DISPLAY_BOX_COLOR.at(colorIdx));
     context.beginPath();
     context.rect(
       bbox.left * scaleFactor,
@@ -90,6 +90,28 @@ export class ImageDisplayService {
       scaleFactor * annotation.labelLeft,
       scaleFactor * annotation.labelTop
       + this.BOX_LINE_WIDTH + 20);
+  }
+
+  // adds event listeners to given elements
+  setImageZoomEventListeners(img: HTMLImageElement, lensElement, lensSize, zoomLayerElement, zoomDivElement) {
+    // calculate ratio between result div and lens
+    const cx = zoomDivElement.offsetWidth / lensElement.offsetWidth;
+    const cy = zoomDivElement.offsetHeight / lensElement.offsetHeight;
+    // Set background properties for the result div
+    zoomDivElement.style.backgroundImage = "url('" + img.src + "')";
+    zoomDivElement.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+    // Remove previous EventListeners, important for mode change
+    zoomLayerElement.removeEventListener("mousemove", (e) => {
+      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
+        zoomLayerElement,
+        zoomDivElement)
+    });
+    // Execute a function when someone moves the cursor over the image or the lens
+    zoomLayerElement.addEventListener("mousemove", (e) => {
+      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
+        zoomLayerElement,
+        zoomDivElement)
+    });
   }
 
   // event listener function for image zoom using divs

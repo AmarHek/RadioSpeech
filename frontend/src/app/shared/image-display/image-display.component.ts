@@ -13,7 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
 import {Annotation, BoundingBox, Image} from "@app/models";
-import {BackendCallerService, MatDialogService} from "@app/core";
+import {BackendCallerService, ImageDisplayService, MatDialogService} from "@app/core";
 import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
@@ -25,9 +25,6 @@ const DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,12
   "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 const DISPLAY_TEMP_BOX_COLOR = "blue";
 const EDIT_BOX_COLOR = "green";
-
-const MAX_IMAGE_HEIGHT = 850;
-const MAX_IMAGE_WIDTH = 830;
 
 @Component({
   selector: "app-image-display",
@@ -110,7 +107,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.enableHover) {
       this.hoverLayerElement = layer.nativeElement;
       this.hoverContext = this.hoverLayerElement.getContext("2d");
-      this.addHoverListeners();
+      this.setHoverListeners();
     }
   };
 
@@ -153,7 +150,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   constructor(private backendCaller: BackendCallerService,
               private renderer: Renderer2,
               private dialogService: MatDialogService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private imageDisplayService: ImageDisplayService) { }
 
   ngOnInit(): void {
     this.tempBoxes = {
@@ -163,7 +161,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     };
 
     this.displayBoxes = false;
-    this.enableEdit = false;
+    this.enableEdit = true;
     this.enableDelete = false;
 
     this.initMain();
@@ -208,28 +206,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   setCurrentDimensions() {
-    const img = new Image();
-    img.src = this.currentScanUrl;
-    img.onload = (event) => {
-      const loadedImage = event.currentTarget as HTMLImageElement;
-      this.currentHeight = loadedImage.height;
-      this.currentWidth = loadedImage.width;
-      this.currentScaleFactor = 1.0;
-
-      // First check by height
-      if (this.currentHeight >= MAX_IMAGE_HEIGHT) {
-        this.currentScaleFactor = MAX_IMAGE_HEIGHT / loadedImage.height;
-        this.currentHeight = MAX_IMAGE_HEIGHT;
-        this.currentWidth = loadedImage.width * this.currentScaleFactor;
-      }
-
-      // Then check by width
-      if (this.currentWidth >= MAX_IMAGE_WIDTH) {
-        this.currentScaleFactor = this.currentScaleFactor * MAX_IMAGE_WIDTH / this.currentWidth;
-        this.currentWidth = MAX_IMAGE_WIDTH;
-        this.currentHeight = this.currentScaleFactor * loadedImage.height;
-      }
-    };
+    this.imageDisplayService.computeCanvasDimensions(this.currentScanUrl, (h, w, s) => {
+      this.currentHeight = h;
+      this.currentWidth = w;
+      this.currentScaleFactor = s;
+    });
   }
 
   changeMode(mode: string) {
@@ -242,16 +223,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       this.drawBoxes();
     }
     if (this.enableEdit) {
-      // TODO Bugfix this
       this.enableEdit = false;
-      // this.drawTempBoxes();
     }
   }
 
   toggleBoxes() {
-    console.log(this.boxLabels);
-    console.log(this.scans);
-    console.log(this.annotations);
     this.displayBoxes = !this.displayBoxes;
     this.enableHover = !this.enableHover;
     this.clearCanvas();
@@ -298,9 +274,11 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
-        this.drawRect(this.drawContext, bbox, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+        this.imageDisplayService.drawRect(this.drawContext, bbox,
+          this.currentScaleFactor, annotations.indexOf(annotation));
       }
-      this.addLabel(annotation, DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+      this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
+        annotations.indexOf(annotation));
     }
   }
 
@@ -312,26 +290,29 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  addHoverListeners() {
+  setHoverListeners() {
     const annotations = this.annotations[this.currentMode];
     const rect = this.hoverLayerElement.getBoundingClientRect();
 
     const parent = this;
-    this.hoverLayerElement.addEventListener("mousemove", (e) => {
+    this.hoverLayerElement.removeEventListener("mousemove", toolTip);
+    this.hoverLayerElement.addEventListener("mousemove", toolTip);
+    function toolTip(e) {
       let hit = false;
       for (const annotation of annotations) {
         if (annotation.comment !== undefined) {
           if (annotation.comment.length > 0) {
-            const x = this.currentScaleFactor * annotation.labelLeft;
-            const y = this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
+            const x = parent.currentScaleFactor * annotation.labelLeft;
+            const y = parent.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
             const h = 30; // approx. height of 18pt font size
-            const w = this.labelContext.measureText(annotation.label).width;
+            const w = parent.labelContext.measureText(annotation.label).width;
             if (
               x <= e.clientX - rect.left &&
               e.clientX - rect.left <= x + w &&
               y - h <= e.clientY - rect.top &&
               e.clientY - rect.top <= y
             ) {
+              // TODO Compute corner coordinates of tooltip based on position in image
               parent.showToolTip(e.clientX - rect.left, e.clientY - rect.top + 20, annotation.comment);
               hit = true;
             }
@@ -339,16 +320,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
         }
       }
       if (!hit) {
-        this.hideToolTip();
+        parent.hideToolTip();
       }
-    });
+    }
   }
 
   showToolTip(x, y, text) {
     this.currentTooltip = text;
     this.renderer.setStyle(this.tipDivElement, "top", y + "px");
     this.renderer.setStyle(this.tipDivElement, "left", x + "px");
-
   }
 
   hideToolTip() {
@@ -439,30 +419,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       bbox.width * this.currentScaleFactor,
       bbox.height * this.currentScaleFactor);
     context.stroke();
-  }
-
-  addLabel(annotation: Annotation, color: string) {
-    this.labelContext.font = "bold 15pt Arial";
-    this.labelContext.fillStyle = color;
-    this.labelContext.strokeStyle = "black";
-    this.labelContext.lineWidth = 0.3;
-
-    let finalLabel: string = annotation.label;
-    if (annotation.comment !== undefined) {
-      if (annotation.comment.length > 0) {
-        finalLabel = annotation.label + "**";
-      }
-    }
-
-    this.labelContext.fillText(
-      finalLabel,
-      this.currentScaleFactor * annotation.labelLeft,
-      this.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20);
-    this.labelContext.strokeText(
-      finalLabel,
-      this.currentScaleFactor * annotation.labelLeft,
-      this.currentScaleFactor * annotation.labelTop
-      + BOX_LINE_WIDTH + 20);
   }
 
   rectangleDrawing() {
@@ -577,66 +533,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  private imageZoom() {
-    const img = this.sourceImage.nativeElement as HTMLImageElement;
-    const result = this.zoomDiv.nativeElement as HTMLDivElement;
-    // calculate ratio between result div and lens
-    const cx = result.offsetWidth / this.lensElement.offsetWidth;
-    const cy = result.offsetHeight / this.lensElement.offsetHeight;
-    // Set background properties for the result div
-    result.style.backgroundImage = "url('" + img.src + "')";
-    result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-    // Execute a function when someone moves the cursor over the image or the lens
-    this.lensElement.removeEventListener("mousemove", moveLens);
-    this.zoomLayerElement.removeEventListener("mousemove", moveLens);
-    this.lensElement.addEventListener("mousemove", moveLens);
-    this.zoomLayerElement.addEventListener("mousemove", moveLens);
-
-    const parent = this;
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    function moveLens(e) {
-      let x;
-      let y;
-      // Prevent any other actions that may occur when moving over the image
-      e.preventDefault();
-      // Get the cursor's x and y positions:
-      const pos = getCursorPos(e);
-      // Calculate the position of the lens:
-      x = pos.x - (parent.lensElement.offsetWidth / 2);
-      y = pos.y - (parent.lensElement.offsetHeight / 2);
-      // Prevent the lens from being positioned outside the image:
-      if (x > img.width - parent.lensElement.offsetWidth) {
-        x = img.width - parent.lensElement.offsetWidth;
-      }
-      if (x < 0) {
-        x = 0;
-      }
-      if (y > img.height - parent.lensElement.offsetHeight) {
-        y = img.height - parent.lensElement.offsetHeight;
-      }
-      if (y < 0) {
-        y = 0;
-      }
-      // Set the position of the lens:
-      parent.lensElement.style.left = x + "px";
-      parent.lensElement.style.top = y + "px";
-      // Display what the lens "sees":
-      result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-    }
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    function getCursorPos(e) {
-      let x: number;
-      let y: number;
-      // Get the x and y positions of the image
-      const a = img.getBoundingClientRect();
-      // Calculate the cursor's x and y coordinates, relative to the image:
-      x = e.pageX - a.left;
-      y = e.pageY - a.top;
-      // Consider any page scrolling
-      x = x - window.pageXOffset;
-      y = y - window.pageYOffset;
-      return {x, y};
-    }
+  imageZoom() {
+    this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
+      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDiv.nativeElement)
   }
 
   private fixNegativeCoordinates() {

@@ -35,7 +35,8 @@
       </mat-button-toggle-group>
       <mat-button-toggle [ngClass]="{'mat-button-toggle-checked': displayBoxes}"
                          class="buttons wideButton"
-                         (click)="toggleBoxes()">Box An/Aus
+                         (click)="toggleBoxes()">Annotationen anzeigen
+
       </mat-button-toggle>
       <div>
         <button mat-stroked-button (click)="zoomIn(+20)"
@@ -59,21 +60,16 @@
                          (click)="toggleEditor()">
         Editor An/Aus
       </mat-button-toggle>
-      <div class="editButtons">
-        <button mat-stroked-button *ngIf="enableEdit" class="buttons halfButton"
-                (click)="deleteLastTempBox()">Box rückgängig
-        </button>
-        <button mat-stroked-button *ngIf="enableEdit" class="buttons halfButton"
-                (click)="saveTempBox()">Box speichern
-        </button>
-      </div>
-
-      <button mat-stroked-button
-              class="buttons wideButton"
-              (click)="openCommentDialog()">
-        Kommentar hinzufügen
+      <button class="buttons halfButton" mat-stroked-button [hidden]="!enableEdit"
+              (click)="deleteLastTempBox()"><mat-icon>undo</mat-icon>
       </button>
-      <div>
+
+      <button mat-stroked-button [hidden]="!enableEdit"
+              class="buttons halfButton"
+              (click)="openCommentDialog()">
+        Kommentar
+      </button>
+      <div [hidden]="!enableEdit">
         <mat-form-field class="wideButton" appearance="fill">
           <mat-label>Pathologie wählen</mat-label>
           <mat-select [(ngModel)]="currentLabel">
@@ -84,7 +80,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <button mat-flat-button color="primary" class="buttons wideButton"
+      <button [hidden]="!enableEdit" mat-flat-button color="primary" class="buttons wideButton"
               (click)="saveNewAnnotation()">
         Annotation speichern
       </button>
@@ -114,6 +110,7 @@
     <canvas *ngIf="enableDelete" #deleteLayer class="canvas level4" id="deleteCanvas"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
     <canvas *ngIf="enableEdit" #editLayer class="canvas level4" id="editCanvas"
+            (mouseup)="saveTempBox()"
             width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
   </div>
 </div>

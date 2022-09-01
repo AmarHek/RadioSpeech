@@ -215,6 +215,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
               y - h <= e.clientY - rect.top &&
               e.clientY - rect.top <= y
             ) {
+              // TODO Compute corner coordinates of tooltip based on position in image
               parent.showToolTip(e.clientX - rect.left, e.clientY - rect.top + 20, annotation.comment);
               hit = true;
             }
@@ -239,25 +240,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   imageZoom() {
-    const img = this.sourceImage.nativeElement as HTMLImageElement;
-    // calculate ratio between result div and lens
-    const cx = this.zoomDivElement.offsetWidth / this.lensElement.offsetWidth;
-    const cy = this.zoomDivElement.offsetHeight / this.lensElement.offsetHeight;
-    // Set background properties for the result div
-    this.zoomDivElement.style.backgroundImage = "url('" + img.src + "')";
-    this.zoomDivElement.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-    // Remove previous EventListeners, important for mode change
-    this.zoomLayerElement.removeEventListener("mousemove", (e) => {
-      this.imageDisplayService.imageZoomOnMousemove(e, cx, cy, img, this.lensElement, this.lensSize,
-        this.zoomLayerElement,
-        this.zoomDivElement)
-    });
-    // Execute a function when someone moves the cursor over the image or the lens
-    this.zoomLayerElement.addEventListener("mousemove", (e) => {
-      this.imageDisplayService.imageZoomOnMousemove(e, cx, cy, img, this.lensElement, this.lensSize,
-        this.zoomLayerElement,
-        this.zoomDivElement)
-    });
+    this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
+      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement)
   }
 
 }
