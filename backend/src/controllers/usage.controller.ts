@@ -15,7 +15,8 @@ export function saveUsageData(req: any, res: Response) {
         mode: req.body.mode,
         timestamp: req.body.timestamp,
         duration: req.body.duration,
-        ogMaterial: req.body.ogMaterial
+        ogMaterial: req.body.ogMaterial,
+        resetCounter: req.body.resetCounter
     }
 
     const query = ParticipantDB.findOne({'UUID': req.body.UUID});
@@ -34,6 +35,7 @@ export function saveUsageData(req: any, res: Response) {
                     console.log("Saving participant failed: " + err.message)
                 }else {
                     console.log("Successfully saved new participant.")
+                    res.sendStatus(200)
                 }
             })
 
@@ -44,6 +46,7 @@ export function saveUsageData(req: any, res: Response) {
                     console.log("Updating participant failed: " + err.message)
                 }else {
                     console.log("Successfully updated participants usage data")
+                    res.sendStatus(200)
                 }
             })
         }

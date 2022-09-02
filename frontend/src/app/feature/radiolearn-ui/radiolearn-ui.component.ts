@@ -11,7 +11,7 @@ import {
 } from "@app/core";
 import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
-import {getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/uuidHelper";
+import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/uuidHelper";
 
 import * as M from "@app/models/templateModel";
 import {
@@ -67,7 +67,7 @@ export class RadiolearnUiComponent implements OnInit {
   isMobile = false;
 
   private UUID = "undefined";
-  showSurveyEveryNMaterials = 3
+  showSurveyEveryNMaterials = 3;
 
   private user: User;
 
@@ -104,7 +104,6 @@ export class RadiolearnUiComponent implements OnInit {
       });
     this.displayService.isMobile.subscribe(res => {
       this.isMobile = res;
-      console.log(this.isMobile);
     });
     this.getData().then();
     this.timestampStart = Date.now();
@@ -262,7 +261,8 @@ export class RadiolearnUiComponent implements OnInit {
       modeString,
       this.timestampStart,
       duration,
-      this.ogMaterial
+      this.ogMaterial,
+      getResetCounter()
     ).subscribe(res => {
       console.log(res.message);
       });
@@ -295,7 +295,6 @@ export class RadiolearnUiComponent implements OnInit {
     // TODO: Reimplement correctness check
 
     if (this.userMode) {
-      console.log("here!");
       this.imageDisplayStudentChild.toggleBoxes();
     }
 
@@ -312,7 +311,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   nextMaterial() {
     const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
-    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");

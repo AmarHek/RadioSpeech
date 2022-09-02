@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
 import {environment} from "@env/environment";
-import {getUUID} from "@app/helpers/uuidHelper";
+import {getResetCounter, getUUID} from "@app/helpers/uuidHelper";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
@@ -49,7 +49,7 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   loadUnused(mode: string){
-    this.backendCaller.getUnusedMaterial(this.UUID, mode).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");

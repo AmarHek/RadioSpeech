@@ -1,5 +1,6 @@
 const UUIDStorageKey = "UUID"
 const surveyStorageKey = "survey"
+const resetKey = "reset"
 
 export function getUUID(): string{
   const currentUUID = localStorage.getItem(UUIDStorageKey)
@@ -46,5 +47,20 @@ export function increaseSurveyCounter(){
 
 export function surveyLinkClicked(){
   localStorage.setItem(surveyStorageKey, String(-1))
+}
+
+export function getResetCounter(){
+  let resetCounter = localStorage.getItem(resetKey)
+  if(resetCounter == null){
+    let newResetCounter = String(0)
+    localStorage.setItem(resetCounter, newResetCounter)
+    return Number(newResetCounter)
+  }
+  return Number(resetCounter)
+}
+
+export function increaseResetCounter(){
+  let resetCounter = getResetCounter()
+  localStorage.setItem(resetKey, String(resetCounter + 1))
 }
 

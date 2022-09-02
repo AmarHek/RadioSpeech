@@ -49,6 +49,7 @@ export interface UsageData {
   timestamp: number;
   duration: number;
   ogMaterial: Material;
+  resetCounter: number;
 }
 
 export interface Participant {

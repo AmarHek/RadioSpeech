@@ -1,5 +1,5 @@
 import {updatePartsBackwardsCompatible} from "../middleware/materialMiddleware";
-import {MaterialDB, ParticipantDB, TemplateDB, TemplateDoc} from '../models';
+import {MaterialDB, ParticipantDB, TemplateDB} from '../models';
 import { Document } from 'mongoose';
 import { Request, Response } from 'express';
 import fs from "fs";
@@ -352,16 +352,16 @@ export function getUnusedMaterial(req: Request, res: Response): void {
             console.log("Error getting participant for material query: " + error.message)
             res.status(500).send({message: "Error getting participant for material query: " + error.message});
         }else {
-            //Get all material IDs of the materials that this user has already completed in this mode
+            //Get all material IDs of the materials that this user has already completed in this mode and this reset round
            let usedMaterialIDs: string[] = []
             if(participant != null){
                 participant.usageList.forEach(usageData =>{
-                    if(usageData.mode == req.body.mode){
+                    if(usageData.mode == req.body.mode && usageData.resetCounter == req.body.resetCounter){
                         usedMaterialIDs.push(usageData.materialID)
                     }
                 })
             }
-            console.log("got all used materials of user " + req.body.UUID + " here: " + usedMaterialIDs.toString())
+            console.log("got all used materials of user " + req.body.UUID + " for run " + req.body.resetCounter + " here: " + usedMaterialIDs.toString())
             let materialQuery = MaterialDB.find({})
             materialQuery.exec(function (error, result){
                 if (error){

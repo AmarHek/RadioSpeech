@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {increaseResetCounter, surveyLinkClicked} from "@app/helpers/uuidHelper";
 
 @Component({
   selector: 'app-dialog-no-materials',
@@ -10,6 +11,14 @@ export class DialogNoMaterialsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  linkClicked(){
+    surveyLinkClicked()
+  }
+
+  resetProgress(){
+    increaseResetCounter()
   }
 
 }
