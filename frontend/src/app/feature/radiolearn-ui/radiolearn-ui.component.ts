@@ -11,7 +11,7 @@ import {
 } from "@app/core";
 import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
-import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/uuidHelper";
+import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
 
 import * as M from "@app/models/templateModel";
 import {

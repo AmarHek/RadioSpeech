@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {increaseResetCounter, surveyLinkClicked} from "@app/helpers/uuidHelper";
+import {increaseResetCounter, surveyLinkClicked} from "@app/helpers/localStorageHelper";
 
 @Component({
   selector: 'app-dialog-no-materials',
