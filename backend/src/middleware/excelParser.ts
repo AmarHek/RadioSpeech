@@ -37,7 +37,9 @@ interface Row {
     "Text Beurteilung": string;
 }
 
-export function parseXLSToJson(binary_string: string): string {
+const unwantedCharacters: string[] = []
+
+export function parseXLSToJson(binary_string: string): string | undefined {
     // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
@@ -46,7 +48,24 @@ export function parseXLSToJson(binary_string: string): string {
     const ws: XLSX.IWorkSheet = wb.Sheets[worksheet_name];
 
     // get rows as json objects
-    const rows = XLSX.utils.sheet_to_json(ws) as Row[];
+    const jsonSheet = XLSX.utils.sheet_to_json(ws)
+
+    //iterate over all fields of the excel sheet and check for unwanted characters, return undefined if any are found
+    //this triggers parsing error in template controller
+    for(let i = 0; i < jsonSheet.length; i++){
+        let row = jsonSheet[i]
+        // @ts-ignore
+        let keys = Object.keys(row)
+        // @ts-ignore
+        for(let j = 0; j < keys.length; j++){
+            //check key
+            if(containsUnwantedCharacters(keys[j])) return undefined
+            //check value
+            // @ts-ignore
+            if(containsUnwantedCharacters(row[keys[j]])) return undefined
+        }
+    }
+    const rows = jsonSheet as Row[];
 
     const parts = new Array<TopLevel>();
 
@@ -80,6 +99,17 @@ export function parseXLSToJson(binary_string: string): string {
     // remove double escaping of newline characters
     final = final.split("\\\\").join("\\")
     return final
+}
+
+function containsUnwantedCharacters(content: string) : boolean {
+    let containsAny = false
+    unwantedCharacters.forEach(char =>{
+        if(content.includes(char)){
+            console.log("checking if " + content + " includes " + char)
+            containsAny = true
+        }
+    })
+    return containsAny
 }
 
 export function extractBlock(row: Row): Block {

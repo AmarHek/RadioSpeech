@@ -11,9 +11,12 @@ export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const jsonString = parseXLSToJson(rawData.toString("binary"));
     if (jsonString === undefined) {
+        console.log("Parsing error, json string undefined")
+        //todo add client sided feedback for parsing error
         res.status(500).send({
             message: "Parsing error in Excel Template"
         });
+        return
     }
     // save parsed data to json
     const jsonName = generateUniqueFilename("data/json", req.body.name, ".json");
