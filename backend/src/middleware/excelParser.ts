@@ -105,7 +105,6 @@ function containsUnwantedCharacters(content: string) : boolean {
     let containsAny = false
     unwantedCharacters.forEach(char =>{
         if(content.includes(char)){
-            console.log("checking if " + content + " includes " + char)
             containsAny = true
         }
     })
