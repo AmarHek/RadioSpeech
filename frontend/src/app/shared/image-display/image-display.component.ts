@@ -17,15 +17,6 @@ import {BackendCallerService, ImageDisplayService, MatDialogService} from "@app/
 import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
 
-const BOX_LINE_WIDTH = 5;
-const DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
-  "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
-  "rgba(70,240,240,1)", "rgba(0,130,200,1)", "rgba(145,30,180,1)", "rgba(240,50,230,1)", "rgba(128,128,128,1)",
-  "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
-  "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
-const DISPLAY_TEMP_BOX_COLOR = "blue";
-const EDIT_BOX_COLOR = "green";
-
 @Component({
   selector: "app-image-display",
   templateUrl: "./image-display.component.html",
@@ -158,10 +149,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       pre: []
     };
 
-    this.displayBoxes = true;
-    this.enableEdit = true;
+    this.displayBoxes = false;
     this.enableDelete = false;
-
+    this.enableEdit = false;
     this.initMain();
   }
 
@@ -223,9 +213,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.displayBoxes = !this.displayBoxes;
     this.enableHover = !this.enableHover;
     this.clearCanvas();
-    if (this.enableDelete) {
-      this.enableDelete = false;
-    }
     if (this.displayBoxes) {
       this.drawBoxes();
     }
@@ -268,10 +255,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, annotations.indexOf(annotation));
+          this.currentScaleFactor, this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
       }
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-        annotations.indexOf(annotation));
+        this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
     }
   }
 
@@ -279,7 +266,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
     const boxes = this.tempBoxes[this.currentMode];
     for (const box of boxes) {
-      this.drawRect(this.tempContext, box, DISPLAY_TEMP_BOX_COLOR);
+      this.imageDisplayService.drawRect(this.tempContext, box, this.currentScaleFactor, "blue");
     }
   }
 
@@ -296,7 +283,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
         if (annotation.comment !== undefined) {
           if (annotation.comment.length > 0) {
             const x = parent.currentScaleFactor * annotation.labelLeft;
-            const y = parent.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
+            const y = parent.currentScaleFactor * annotation.labelTop + 5 + 20;
             const h = 30; // approx. height of 18pt font size
             const w = parent.labelContext.measureText(annotation.label).width;
             if (
@@ -333,7 +320,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     const rect = this.drawLayerElement.getBoundingClientRect();
     const parent = this;
     for (const annotation of annotations) {
-      const color = DISPLAY_BOX_COLOR[annotations.indexOf(annotation)];
+      const color = this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)];
       for (const bbox of annotation.boxes) {
         this.deleteLayerElement.addEventListener("mousemove", (e) => {
           const x = bbox.left * parent.currentScaleFactor;
@@ -346,9 +333,9 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
             y <= e.clientY - rect.top &&
             e.clientY - rect.top <= y + h
           ) {
-            parent.drawRect(this.deleteContext, bbox, "red");
+            parent.imageDisplayService.drawRect(this.deleteContext, bbox, this.currentScaleFactor, "red");
           } else {
-            parent.drawRect(this.deleteContext, bbox, color);
+            parent.imageDisplayService.drawRect(this.deleteContext, bbox, this.currentScaleFactor, color);
           }
         });
         this.deleteLayerElement.addEventListener("click", (e) => {
@@ -403,17 +390,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.drawBoxes();
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, color: string) {
-    this.imageDisplayService.setCanvasProperties(context, BOX_LINE_WIDTH, "square", color);
-    context.beginPath();
-    context.rect(
-      bbox.left * this.currentScaleFactor,
-      bbox.top * this.currentScaleFactor,
-      bbox.width * this.currentScaleFactor,
-      bbox.height * this.currentScaleFactor);
-    context.stroke();
-  }
-
   rectangleDrawing() {
     let rect = this.editLayerElement.getBoundingClientRect();
     fromEvent(this.editLayerElement, "mousedown")
@@ -433,7 +409,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       this.width = x - this.startX;
       this.height = y - this.startY;
 
-      this.imageDisplayService.setCanvasProperties(this.editContext, BOX_LINE_WIDTH, "square", EDIT_BOX_COLOR);
+      this.imageDisplayService.setCanvasProperties(this.editContext, 5, "square", "green");
       this.editContext.beginPath();
       this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
       this.editContext.rect(this.startX, this.startY, this.width, this.height);

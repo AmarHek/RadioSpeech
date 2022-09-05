@@ -6,7 +6,7 @@ import {Annotation, BoundingBox} from "@app/models";
 })
 export class ImageDisplayService {
 
-  MAX_IMAGE_HEIGHT = 800;
+  MAX_IMAGE_HEIGHT = 750;
   MAX_IMAGE_WIDTH = 890;
 
   BOX_LINE_WIDTH = 5;
@@ -56,8 +56,8 @@ export class ImageDisplayService {
     context.strokeStyle = strokeStyle;
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, colorIdx: number) {
-    this.setCanvasProperties(context, this.BOX_LINE_WIDTH, "square", this.DISPLAY_BOX_COLOR.at(colorIdx));
+  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string) {
+    this.setCanvasProperties(context, this.BOX_LINE_WIDTH, "square", color);
     context.beginPath();
     context.rect(
       bbox.left * scaleFactor,
@@ -67,9 +67,9 @@ export class ImageDisplayService {
     context.stroke();
   }
 
-  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: number) {
+  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string) {
     context.font = "bold 15pt Arial";
-    context.fillStyle = this.DISPLAY_BOX_COLOR[color];
+    context.fillStyle = color;
     context.strokeStyle = "black";
     context.lineWidth = 0.3;
 

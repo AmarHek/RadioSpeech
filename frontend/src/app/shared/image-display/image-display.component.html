@@ -29,10 +29,9 @@
                            [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
           Vor</mat-button-toggle>
       </mat-button-toggle-group>
-      <mat-button-toggle [ngClass]="{'mat-button-toggle-checked': !displayBoxes}"
+      <mat-button-toggle [ngClass]="{'mat-button-toggle-checked': displayBoxes}"
                          class="buttons wideButton"
-                         (click)="toggleBoxes()">Annotationen verstecken
-
+                         (click)="toggleBoxes()">Annotationen anzeigen
       </mat-button-toggle>
       <div>
         <button mat-stroked-button (click)="zoomIn(+20)"
