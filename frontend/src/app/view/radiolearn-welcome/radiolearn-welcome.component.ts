@@ -35,12 +35,12 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   detailedMode() {
-    this.radiolearnService.detailedMode = true;
+    this.radiolearnService.deepMode = true;
     this.loadUnused("deep");
   }
 
   simpleMode() {
-    this.radiolearnService.detailedMode = false;
+    this.radiolearnService.deepMode = false;
     this.loadUnused("shallow");
   }
 

@@ -132,7 +132,7 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   openEditor(matID: string) {
-    this.radiolearnService.detailedMode = true;
+    this.radiolearnService.deepMode = true;
     this.router.navigate(["/", "radiolearn", "main", matID]).then();
   }
 

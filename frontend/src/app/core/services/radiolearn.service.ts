@@ -28,7 +28,7 @@ import * as M from "@app/models/templateModel";
 })
 export class RadiolearnService {
 
-  detailedMode = true;
+  deepMode = true;
 
   constructor() {
   }

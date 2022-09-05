@@ -93,7 +93,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   get detailedMode() {
-    return this.radiolearnService.detailedMode;
+    return this.radiolearnService.deepMode;
   }
 
   ngOnInit() {
@@ -211,7 +211,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   generateChips() {
     this.selectedSelectableID = "";
-    if (this.radiolearnService.detailedMode) {
+    if (this.radiolearnService.deepMode) {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts,
         this.material.deepDocTemplate.parts);
     } else {
@@ -251,7 +251,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   submit(){
     const duration = Date.now() - this.timestampStart;
-    const modeString = this.radiolearnService.detailedMode ? "deep" : "shallow";
+    const modeString = this.radiolearnService.deepMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
       this.UUID,
       this.material._id,
@@ -272,7 +272,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   switchMode() {
-    this.radiolearnService.detailedMode = !this.radiolearnService.detailedMode;
+    this.radiolearnService.deepMode = !this.radiolearnService.deepMode;
     this.reset();
     this.inputParser.init(this.deepCategories);
   }
@@ -309,7 +309,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterial() {
-    const mode = this.radiolearnService.detailedMode ? "deep" : "shallow";
+    const mode = this.radiolearnService.deepMode ? "deep" : "shallow";
     this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
@@ -378,7 +378,7 @@ export class RadiolearnUiComponent implements OnInit {
       this.chips = [];
     }
     this.input = "";
-    if (this.radiolearnService.detailedMode) {
+    if (this.radiolearnService.deepMode) {
       //deep
       this.material = JSON.parse(JSON.stringify(this.ogMaterial));
       this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);

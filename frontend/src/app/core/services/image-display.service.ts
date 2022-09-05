@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Annotation, BoundingBox} from "@app/models";
+import {DisplayService} from "@app/core";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,11 @@ export class ImageDisplayService {
     "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
     "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 
-  constructor() { }
+  constructor(private displayService: DisplayService) {
+    this.displayService.isMobile.subscribe((isMobile) => {
+      if (isMobile) {this.MAX_IMAGE_WIDTH = window.innerWidth};
+    })
+  }
 
   computeCanvasDimensions(imgUrl: string, callback) {
     const img = new Image();

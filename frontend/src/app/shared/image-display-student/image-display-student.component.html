@@ -51,7 +51,7 @@
       <canvas #boxLayer class="canvas level1" id="drawCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <canvas #labelLayer class="canvas level1" id="labelCanvas"
-              width="{{currentWidth+200}}" height="{{currentHeight}}"></canvas>
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <canvas *ngIf="enableHover" #hoverLayer class="canvas level2" id="hoverCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
@@ -65,9 +65,36 @@
     </div>
   </div>
   <div id="buttonsMobile" *ngIf="isMobile">
-    <button mat-raised-button color="primary" class="mobileButton" style="margin-top: 15px; margin-right: 10px" (click)="zoomIn(-20)">-</button>
-    <button mat-raised-button color="primary" style="margin-top: 15px" class="mobileButton" (click)="toggleZoom()">Zoom An/Aus</button>
-    <button mat-raised-button color="primary" class="mobileButton" style="margin-top: 15px; margin-left: 10px" (click)="zoomIn(20)">+</button>
+    <mat-button-toggle-group value="Frontal">
+      <mat-button-toggle class="mobileButton"
+                         value="Frontal"
+                         [ngClass]="{'imgButtonWarn':
+                        (this.displayBoxes && this.annotations.main.length > 0
+                         && this.currentMode !== 'main'),
+                         'mat-button-toggle-checked': this.currentMode === 'main'}"
+                         (click)="this.changeMode('main')">Frontal
+      </mat-button-toggle>
+      <mat-button-toggle class="mobileButton" (click)="this.changeMode('lateral')"
+                         value="Lateral"
+                         [ngClass]="{'imgButtonWarn':
+                           (this.displayBoxes && this.annotations.lateral.length > 0
+                           && this.currentMode !== 'lateral'),
+                         'mat-button-toggle-checked': this.currentMode === 'lateral'}"
+                         [disabled]="this.scans.lateralScan === undefined"
+                         [ngStyle]="{'pointer-events': (this.scans.lateralScan === undefined) ? 'none' : 'auto'}">
+        Lateral
+      </mat-button-toggle>
+      <mat-button-toggle class="mobileButton" (click)="this.changeMode('pre')"
+                         value="Vor"
+                         [ngClass]="{'imgButtonWarn':
+                        (this.displayBoxes && this.annotations.pre.length > 0
+                         && this.currentMode !== 'pre'),
+                         'mat-button-toggle-checked': this.currentMode === 'pre'}"
+                         [disabled]="this.scans.preScan === undefined"
+                         [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
+        Voraufnahme
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
   <div>
 
