@@ -12,7 +12,7 @@ import {switchMap, takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 
 import {environment} from "@env/environment";
-import {Annotation, BoundingBox, Image} from "@app/models";
+import {Annotation, BoundingBox, BoxLabel, Image} from "@app/models";
 import {BackendCallerService, ImageDisplayService, MatDialogService} from "@app/core";
 import {InputDialogComponent} from "@app/shared/input-dialog/input-dialog.component";
 import {ConfirmDialogComponent, ConfirmDialogModel} from "@app/shared";
@@ -35,7 +35,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     lateral:  Annotation[];
     pre:      Annotation[];
   };
-  @Input() boxLabels: string[];
+  @Input() boxLabels: BoxLabel[];
 
   imageUrl = environment.images;
 
@@ -229,6 +229,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   toggleEditor() {
     if (this.enableZoom) this.enableZoom = false;
     if (this.enableDelete) this.enableDelete = false;
+    if (!this.displayBoxes) this.toggleBoxes();
 
     this.enableEdit = !this.enableEdit;
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);

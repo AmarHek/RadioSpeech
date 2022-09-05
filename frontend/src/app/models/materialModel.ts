@@ -21,6 +21,11 @@ export interface Image {
   mimetype: string;
 }
 
+export interface BoxLabel {
+  name: string;
+  subLabels: string[];
+}
+
 export interface Material {
   _id:                 string;
   scans: {

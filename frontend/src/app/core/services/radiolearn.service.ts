@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {
-  Annotation,
+  Annotation, BoxLabel,
   Category,
   CheckBox,
   Group,
@@ -78,40 +78,45 @@ export class RadiolearnService {
     return variables;
   }
 
-  getBoxLabels(category: M.Category): string[] {
-    let boxLabels: string[] = [];
+  getBoxLabels(category: M.Category): BoxLabel[] {
+    let boxLabels: BoxLabel[] = [];
     for (const sel of category.selectables) {
       if (sel.kind === "box") {
-        boxLabels.push(sel.name);
-        if (sel.variables.length > 0) {
-          boxLabels = boxLabels.concat(this.getVariableBoxLabels(sel));
-        }
+        this.pushBoxLabel(boxLabels, sel);
       } else if (sel.kind === "group") {
         for (const option of sel.options) {
-          boxLabels.push(option.name);
-          if (option.variables.length > 0) {
-            boxLabels = boxLabels.concat(this.getVariableBoxLabels(option));
-          }
+          this.pushBoxLabel(boxLabels, option);
         }
       }
     }
     return boxLabels;
   }
 
-  getVariableBoxLabels(clickable: M.Clickable): string[] {
-    const boxLabels: string[] = [];
+  pushBoxLabel(boxLabels: BoxLabel[], clickable: M.Clickable) {
+    let variableLabels = [];
+    if (clickable.variables.length > 0) {
+      variableLabels = this.getVariableLabels(clickable);
+    }
+    boxLabels.push({
+      name: clickable.name,
+      subLabels: variableLabels
+    })
+  }
+
+  getVariableLabels(clickable: M.Clickable): string[] {
+    const variableLabels: string[] = [];
     for (const variable of clickable.variables) {
       if (variable.kind === "oc") {
         for (const value of variable.values) {
-          boxLabels.push(value);
+          variableLabels.push(value);
         }
       } else if (variable.kind === "mc") {
         for (const value of variable.values) {
-          boxLabels.push(value[0]);
+          variableLabels.push(value[0]);
         }
       }
     }
-    return boxLabels;
+    return variableLabels;
   }
 
   // takes shallow (or any kind of) template and annotations and fills out the template by these values
@@ -137,28 +142,38 @@ export class RadiolearnService {
       }
     }
 
-    // now check template for annotation occurrences
-    for (const sel of (shallowTemplate.parts[0] as M.Category).selectables) {
-      // type check for typescripts as only boxes are allowed here anyway
-      if (sel.kind === "box") {
-        // set value to true if sel name is present in labels
-        if (labels.includes(sel.name)) {
-          sel.value = true;
+    const diagnosis = shallowTemplate.parts[0] as Category;
+
+    // if annotations are empty: "Unauffälliger Röntgen-Thorax"
+    if (labels.length === 0) {
+      // first value is always "Unauffälliger Röntgen-Thorax --> set to true
+      diagnosis.selectables[0].value = true;
+    } else {
+      for (const label of labels) {
+        let clickableName: string = "";
+        let variableName: string = "";
+        // check if "pure" label (no variable suffix)
+        if (label.includes(" | ")) {
+          clickableName = label.split(" | ")[0];
+          variableName = label.split(" | ")[1];
+        } else {
+          clickableName = label;
         }
 
-        // same check for variables
-        if (sel.variables.length > 0) {
-          for (const variable of sel.variables) {
-            if (variable.kind === "oc") {
-              for (const value of variable.values) {
-                if (labels.includes(value)) {
-                  variable.value = value;
-                }
-              }
-            } else if (variable.kind === "mc") {
-              for (const value of variable.values) {
-                if (labels.includes(value[0])) {
-                  value[1] = true;
+        // Now check and fill out diagnosis category
+        for (const sel of (diagnosis.selectables as CheckBox[])) {
+          if (sel.name === clickableName) {
+            sel.value = true;
+            if (variableName.length > 0 && sel.variables.length > 0) {
+              for (const variable of sel.variables) {
+                if (variable.kind === "oc") {
+                  for (const value of variable.values) {
+                    if (value === variableName) variable.value = value;
+                  }
+                } else if (variable.kind === "mc") {
+                  for (const value of variable.values) {
+                    if (variableName === value[0]) value[1] = true;
+                  }
                 }
               }
             }
@@ -166,6 +181,7 @@ export class RadiolearnService {
         }
       }
     }
+
   }
 
   // checks the report-output-options of a group and returns that option's normal value
@@ -597,84 +613,4 @@ export class RadiolearnService {
       return undefined;
     }
   }
-
-  // takes box annotations (given in material) and compares filled out template to check which
-  // box can be labeled as "correct" for the student (just rough check)
-  // wrapper function for ALL annotations
-  /* checkCorrectAnnotations(annotations: Annotation[],
-                          studentTemplate: Template): Annotation[] {
-    // iterate through annotations
-    for (const annotation of annotations) {
-      // extract templateMap from correct pathologiesList
-      const templateMaps = pathologies.find(pathology =>
-        pathology.name === annotation.label).templateMaps;
-
-      annotation.correct = this.isAnnotationInTemplate(annotation, studentTemplate, templateMaps);
-    }
-    return annotations;
-  } */
-
-  // single function for checkCorrectAnnotations, i.e. takes one annotation and compares to template
-  // using specific templateMap
-  /* isAnnotationInTemplate(annotation: Annotation, template: Template, templateMaps: TemplateMap[]): boolean {
-    // now iterate template in several steps
-    for (const category of template.parts) {
-      // first check for category kind, i.e. ignore blocks etc.
-      if (category.kind === "category") {
-        // first check if category is in templateMap
-        let catPresent = false;
-        for (const map of templateMaps) {
-          if (map.categoryName === category.name) {
-            catPresent = true;
-            break;
-          }
-        }
-        if (catPresent) {
-          // then iterate through selectables and compare with templateMaps
-          for (const selectable of category.selectables) {
-            if (this.checkSelInTemplateMaps(selectable, templateMaps)) {
-              // sel present and checked, correct = true
-              return true;
-            }
-          }
-        }
-      }
-    }
-    // not present, correct = false
-    return false;
-  } */
-
-  // deeper method for isAnnotationInTemplate for Selectables
-  /* checkSelInTemplateMaps(selectable: Selectable, templateMaps: TemplateMap[]): boolean {
-    if (selectable.kind === "box") {
-      for (const map of templateMaps) {
-        // only check, if kind is the same
-        if (map.kind === "box") {
-          // is the name the same?
-          if (map.name === selectable.name) {
-            // is selectable checked? then all is good
-            if (selectable.value) {
-              return true;
-            }
-          }
-        }
-      }
-    } else if (selectable.kind === "group") {
-      // same spiel here: iterate through maps
-      for (const map of templateMaps) {
-        // check for kind
-        if (map.kind === "option") {
-          // is groupName the same?
-          if (map.groupName === selectable.name) {
-            // check if selectable value is the same as map name (i.e. value)
-            if (map.name === selectable.value) {
-              return true;
-            }
-          }
-        }
-      }
-    }
-    return false;
-  } */
-
 }

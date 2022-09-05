@@ -140,7 +140,7 @@
 
     <app-image-display *ngIf="material && !userMode && isMod"
                        [scans]="material.scans"
-                       [boxLabels]="boxLabels"
+                       [boxLabels]="boxLabels.slice(1)"
                        [annotations]="material.annotations"></app-image-display>
 
     <app-image-display-student *ngIf="material && userMode"

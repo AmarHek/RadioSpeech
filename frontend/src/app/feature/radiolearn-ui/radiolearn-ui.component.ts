@@ -9,7 +9,7 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
+import {BoxLabel, ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
 
@@ -45,7 +45,7 @@ export class RadiolearnUiComponent implements OnInit {
   ogMaterial: Material;
   deepCategories: M.Category[];
   shallowCategories: M.Category[];
-  boxLabels: string[];
+  boxLabels: BoxLabel[];
 
   // variables for options/category UI
   selectedCatList = ["undefined"];
@@ -438,6 +438,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.chipInput.nativeElement.value = this.input;
   }
 
+  // TODO Auf Dataparser auslagern
   assignValues() {
     for (const key of this.inputParser.foundClickables) {
       if (key.name === "Rest normal") {

@@ -243,6 +243,7 @@ export class ReportUiComponent implements OnInit {
     this.selectedSelectableID = "";
   }
 
+  // TODO Auf Dataparser auslagern
   // Assigns all found keywords in inputParser to this.parts
   assignValues() {
     for (const key of this.inputParser.foundClickables) {

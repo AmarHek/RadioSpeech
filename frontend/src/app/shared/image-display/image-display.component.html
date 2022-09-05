@@ -68,11 +68,21 @@
 
       <div [hidden]="!enableEdit">
         <mat-form-field class="wideButton" appearance="fill">
-          <mat-label>Pathologie wählen</mat-label>
+          <mat-label>Diagnose wählen</mat-label>
           <mat-select [(ngModel)]="currentLabel">
-            <mat-option *ngFor="let label of boxLabels" [value]="label">
-              {{label}}
-            </mat-option>
+            <ng-container *ngFor="let label of boxLabels">
+              <mat-option *ngIf="label.subLabels.length === 0" [value]="label.name">
+                {{label.name}}
+              </mat-option>
+              <ng-container *ngIf="label.subLabels.length > 0">
+                <mat-optgroup [label]="label.name">
+                  <mat-option [value]="label.name">-</mat-option>
+                  <mat-option *ngFor="let subLabel of label.subLabels" [value]="label.name + ' | ' + subLabel">
+                    {{subLabel}}
+                  </mat-option>
+                </mat-optgroup>
+              </ng-container>
+            </ng-container>
           </mat-select>
         </mat-form-field>
       </div>
