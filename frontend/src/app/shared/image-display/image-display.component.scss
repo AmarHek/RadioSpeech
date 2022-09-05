@@ -1,9 +1,9 @@
 .main {
-  grid-template-columns: 370px 850px;
+  grid-template-columns: 320px 900px;
   display: grid;
   overflow-y: scroll;
   overflow-x: auto;
-  grid-column-gap: 10px;
+  grid-column-gap: 5px;
   height: auto;
   padding: 0;
   grid-template-areas: "leftHalf rightHalf"
@@ -65,14 +65,6 @@
   width: 138px;
 }
 
-.zoomDiv {
-  margin: 5px 5px 2px 60px;
-  width: 250px;
-  height: 250px;
-  border: 1px solid #d4d4d4;
-  vertical-align: center;
-}
-
 .canvas {
   position: absolute;
   top: 0;
@@ -110,9 +102,16 @@
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+.zoomDiv {
+  width: 250px;
+  height: 250px;
+  border: 1px solid #d4d4d4;
+  vertical-align: center;
+  position: absolute;
+}
+
 .zoomLens {
   position: absolute;
-  border: 1px solid #d4d4d4;
 }
 
 /* width */

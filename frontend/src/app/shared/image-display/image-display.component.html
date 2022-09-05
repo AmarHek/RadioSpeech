@@ -1,9 +1,5 @@
 <div class="main">
   <div class="leftHalf">
-    <div>
-      <div #zoomDiv class="zoomDiv" id="zoom"></div>
-    </div>
-
     <div class="buttonsDiv">
       <mat-button-toggle-group value="Frontal">
         <mat-button-toggle class="buttons imgButton"
@@ -33,9 +29,9 @@
                            [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
           Vor</mat-button-toggle>
       </mat-button-toggle-group>
-      <mat-button-toggle [ngClass]="{'mat-button-toggle-checked': displayBoxes}"
+      <mat-button-toggle [ngClass]="{'mat-button-toggle-checked': !displayBoxes}"
                          class="buttons wideButton"
-                         (click)="toggleBoxes()">Annotationen anzeigen
+                         (click)="toggleBoxes()">Annotationen verstecken
 
       </mat-button-toggle>
       <div>
@@ -56,24 +52,25 @@
         Box Löschen An/Aus
       </mat-button-toggle>
       <mat-button-toggle class="buttons wideButton"
-                         [ngClass]="{'mat-button-toggle-checked': enableEdit}"
+                         [ngClass]="{'mat-button-toggle-checked': false}"
                          (click)="toggleEditor()">
-        Editor An/Aus
+        Editor
+        <mat-icon *ngIf="!enableEdit">arrow_drop_down</mat-icon>
+        <mat-icon *ngIf="enableEdit">arrow_drop_up</mat-icon>
       </mat-button-toggle>
-      <button class="buttons halfButton" mat-stroked-button [hidden]="!enableEdit"
-              (click)="deleteLastTempBox()"><mat-icon>undo</mat-icon>
-      </button>
-
       <button mat-stroked-button [hidden]="!enableEdit"
               class="buttons halfButton"
               (click)="openCommentDialog()">
         Kommentar
       </button>
+      <button class="buttons halfButton" mat-stroked-button [hidden]="!enableEdit"
+              (click)="deleteLastTempBox()"><mat-icon>undo</mat-icon>
+      </button>
+
       <div [hidden]="!enableEdit">
         <mat-form-field class="wideButton" appearance="fill">
           <mat-label>Pathologie wählen</mat-label>
           <mat-select [(ngModel)]="currentLabel">
-            <mat-option [value]="undefined">Keine</mat-option>
             <mat-option *ngFor="let label of boxLabels" [value]="label">
               {{label}}
             </mat-option>
@@ -85,14 +82,13 @@
         Annotation speichern
       </button>
     </div>
-
   </div>
 
   <div class="rightHalf" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
-    <img #sourceImage class="canvas level1"
+    <img #sourceImage class="canvas level0"
          height="{{currentHeight}}" width="{{currentWidth}}"
          src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
-    <canvas #drawLayer class="canvas level1" id="drawCanvas"
+    <canvas #boxLayer class="canvas level1" id="drawCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <canvas #tempLayer class="canvas level1" id="tempCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
@@ -102,9 +98,10 @@
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
     <div #lensContainer *ngIf="enableZoom">
+      <div class="zoomDiv" id="zoom"></div>
       <div class="zoomLens"
-           [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
-      <div class="canvas level3" id="zoomCanvas"
+           [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="zoomLens"></div>
+      <div class="canvas level3" id="zoomLayer"
            [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
     </div>
     <canvas *ngIf="enableDelete" #deleteLayer class="canvas level4" id="deleteCanvas"

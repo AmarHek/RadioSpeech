@@ -108,7 +108,6 @@ export class RadiolearnUiComponent implements OnInit {
     this.getData().then();
     this.timestampStart = Date.now();
     this.UUID = getUUID()
-    this.toggleUserMode();
   }
 
   async getData() {

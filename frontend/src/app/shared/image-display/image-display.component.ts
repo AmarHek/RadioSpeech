@@ -86,10 +86,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   // Zoom lens
   lensSize = 200;
 
-  // tooltip size
-  maxTipWidth = 300;
-
-  @ViewChild("drawLayer", {static: false }) drawLayer: ElementRef;
+  @ViewChild("boxLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
   private drawContext: CanvasRenderingContext2D;
 
@@ -135,14 +132,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   };
 
   @ViewChild("sourceImage") sourceImage: ElementRef;
-  @ViewChild("zoomDiv") zoomDiv: ElementRef;
+  private zoomDivElement;
   private zoomLayerElement;
   private lensElement;
   @ViewChild("lensContainer") set zoom(container: ElementRef) {
     if (this.enableZoom) {
       const containerElement = container.nativeElement;
-      this.zoomLayerElement = containerElement.children[1];
-      this.lensElement = containerElement.children[0];
+      this.zoomDivElement = containerElement.children[0]
+      this.zoomLayerElement = containerElement.children[2];
+      this.lensElement = containerElement.children[1];
       this.imageZoom();
     }
   }
@@ -160,7 +158,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       pre: []
     };
 
-    this.displayBoxes = false;
+    this.displayBoxes = true;
     this.enableEdit = true;
     this.enableDelete = false;
 
@@ -187,12 +185,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     this.currentMode = "main";
     this.setCurrentImage();
     this.setCurrentDimensions();
-  }
-
-  setCanvasProperties(context, lineWidth, lineCap, strokeStyle) {
-    context.lineWidth = lineWidth;
-    context.lineCap = lineCap;
-    context.strokeStyle = strokeStyle;
   }
 
   clearCanvas() {
@@ -240,13 +232,17 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   toggleDelete() {
-    if (!this.displayBoxes) {
-      this.toggleBoxes();
-    }
+    if (this.enableEdit) this.enableEdit = false;
+    if (this.enableZoom) this.enableZoom = false;
+
+    if (!this.displayBoxes) this.toggleBoxes();
     this.enableDelete = !this.enableDelete;
   }
 
   toggleEditor() {
+    if (this.enableZoom) this.enableZoom = false;
+    if (this.enableDelete) this.enableDelete = false;
+
     this.enableEdit = !this.enableEdit;
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
     if (this.enableDelete) {
@@ -255,13 +251,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   toggleZoom() {
+    if (this.enableEdit) this.enableEdit = false;
+    if (this.enableDelete) this.enableDelete = false;
+
     this.enableZoom = !this.enableZoom;
-    if (this.enableDelete) {
-      this.toggleDelete();
-    }
-    if (this.enableEdit) {
-      this.toggleEditor();
-    }
   }
 
   zoomIn(increment: number) {
@@ -411,7 +404,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, color: string) {
-    this.setCanvasProperties(context, BOX_LINE_WIDTH, "square", color);
+    this.imageDisplayService.setCanvasProperties(context, BOX_LINE_WIDTH, "square", color);
     context.beginPath();
     context.rect(
       bbox.left * this.currentScaleFactor,
@@ -440,7 +433,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
       this.width = x - this.startX;
       this.height = y - this.startY;
 
-      this.setCanvasProperties(this.editContext, BOX_LINE_WIDTH, "square", EDIT_BOX_COLOR);
+      this.imageDisplayService.setCanvasProperties(this.editContext, BOX_LINE_WIDTH, "square", EDIT_BOX_COLOR);
       this.editContext.beginPath();
       this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
       this.editContext.rect(this.startX, this.startY, this.width, this.height);
@@ -535,7 +528,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   imageZoom() {
     this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
-      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDiv.nativeElement)
+      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement)
   }
 
   private fixNegativeCoordinates() {

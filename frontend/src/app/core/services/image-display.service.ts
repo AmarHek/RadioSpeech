@@ -7,7 +7,7 @@ import {Annotation, BoundingBox} from "@app/models";
 export class ImageDisplayService {
 
   MAX_IMAGE_HEIGHT = 800;
-  MAX_IMAGE_WIDTH = 950;
+  MAX_IMAGE_WIDTH = 890;
 
   BOX_LINE_WIDTH = 5;
   DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
@@ -21,7 +21,6 @@ export class ImageDisplayService {
   computeCanvasDimensions(imgUrl: string, callback) {
     const img = new Image();
     img.src = imgUrl;
-    this.MAX_IMAGE_WIDTH = Math.min(950, window.innerWidth);
 
     let height: number;
     let width: number;
@@ -101,12 +100,24 @@ export class ImageDisplayService {
     zoomDivElement.style.backgroundImage = "url('" + img.src + "')";
     zoomDivElement.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
     // Remove previous EventListeners, important for mode change
+
+    lensElement.removeEventListener("mousemove", (e) => {
+      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
+        zoomLayerElement,
+        zoomDivElement)
+    })
     zoomLayerElement.removeEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
         zoomDivElement)
     });
+
     // Execute a function when someone moves the cursor over the image or the lens
+    lensElement.addEventListener("mousemove", (e) => {
+      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
+        zoomLayerElement,
+        zoomDivElement)
+    });
     zoomLayerElement.addEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
@@ -179,9 +190,6 @@ export class ImageDisplayService {
     y = y - window.scrollY;
     return {x, y};
   }
-
-
-
 
 
 }
