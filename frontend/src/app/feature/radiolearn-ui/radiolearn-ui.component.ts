@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -60,14 +60,13 @@ export class RadiolearnUiComponent implements OnInit {
   // state variables
   userMode: boolean;
   workMode: string; // "deep" or "shallow"
+  isMobile = false;
 
   // usageData variables
   timestampStart: number;
   sawFeedback = false;
-  isMobile = false;
-
-  private UUID = "undefined";
   showSurveyEveryNMaterials = 3;
+  private UUID = "undefined";
 
   private user: User;
 
@@ -110,25 +109,7 @@ export class RadiolearnUiComponent implements OnInit {
     });
 
     // get current mode
-    if (this.radiolearnService.workMode !== undefined) {
-      // try service first: if coming from radiolearn welcome, radiolearnservice.workMode should not be undefined
-      this.workMode = this.radiolearnService.workMode;
-      // add to localStorage afterwards
-      localStorage.setItem("workMode", this.workMode);
-    } else {
-      // if here from reloading, try localStorage
-      const workMode = localStorage.getItem("workMode");
-      if (workMode !== null) {
-        this.workMode = workMode
-      } else {
-        // default behaviour, if all else fails
-        this.workMode = "deep"
-      }
-
-      console.log(this.workMode);
-    }
-
-
+    this.setWorkMode();
 
     // get actual data
     this.getData().then();
@@ -156,7 +137,6 @@ export class RadiolearnUiComponent implements OnInit {
             this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
             this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
             if (this.workMode === "deep") {
-              console.log(this.deepCategories);
               this.inputParser.init(this.deepCategories);
             } else {
               this.inputParser.init(this.shallowCategories);
@@ -181,6 +161,24 @@ export class RadiolearnUiComponent implements OnInit {
         });
       }
     });
+  }
+
+  setWorkMode() {
+    if (this.radiolearnService.workMode !== undefined) {
+      // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
+      this.workMode = this.radiolearnService.workMode;
+      // add to localStorage afterwards
+      localStorage.setItem("workMode", this.workMode);
+    } else {
+      // if here from reloading, try localStorage
+      const workMode = localStorage.getItem("workMode");
+      if (workMode !== null) {
+        this.workMode = workMode
+      } else {
+        // default behaviour, if all else fails
+        this.workMode = "deep"
+      }
+    }
   }
 
   switchInputMode() {
@@ -274,7 +272,7 @@ export class RadiolearnUiComponent implements OnInit {
       this.material.annotations);
     this.backendCaller.updateMaterial(this.material).subscribe(res => {
       window.alert(res.message);
-      this.nextMaterial();
+      this.nextMaterialToAnnotate();
     });
   }
 
@@ -332,10 +330,7 @@ export class RadiolearnUiComponent implements OnInit {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
         this.material.shallowDocTemplate);
     }
-
-    if (this.userMode) {
-      this.imageDisplayStudentChild.toggleBoxes();
-    }
+    this.imageDisplayStudentChild.toggleBoxes();
 
     // Modal Dialog here, then await confirm press for next
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
@@ -349,16 +344,22 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterial() {
+    if (this.userMode) {
+      this.nextMaterialStudent();
+    } else {
+      if (window.confirm("Nicht gespeicherte Daten gehen eventuell verloren. Trotzdem nächste Aufnahme laden?")) {
+        this.nextMaterialToAnnotate();
+      }
+    }
+  }
+
+  nextMaterialStudent() {
     this.backendCaller.getUnusedMaterial(this.UUID, this.workMode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
-        window.alert("Keine weiteren Befunde verfügbar");
+        this.openNoMaterialsLeftDialog();
       } else {
-        if (this.userMode) {
-          if(this.imageDisplayStudentChild.displayBoxes) this.imageDisplayStudentChild.toggleBoxes();
-        } else {
-          if(this.imageDisplayChild.displayBoxes) this.imageDisplayChild.toggleBoxes();
-        }
+        if(this.imageDisplayStudentChild.displayBoxes) this.imageDisplayStudentChild.toggleBoxes();
         this.sawFeedback = false
         increaseSurveyCounter()
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
@@ -366,29 +367,26 @@ export class RadiolearnUiComponent implements OnInit {
     }, err => {
       if (err === "no-unused-materials"){
         console.log("No unused materials left");
-        this.openNoMaterialsLeftDialog();
+
       } else {
         console.log(err);
       }
     });
   }
 
-  nextWarning() {
-    const dialogData = new ConfirmDialogModel(
-      "warning",
-      "Warnung",
-      "Nicht gespeicherte Daten gehen eventuell verloren. Nächste Aufnahme laden?");
-
-    const dialogConfig = this.dialogService.defaultConfig("400px", dialogData);
-    dialogConfig.position = {top: "50px"};
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-
-      }
-    });
+  nextMaterialToAnnotate() {
+    if (this.imageDisplayChild.displayBoxes) this.imageDisplayChild.toggleBoxes();
+      this.backendCaller.getRandom(false).subscribe(res => {
+        console.log(res);
+        if (res.material === null) {
+          window.alert("Keine weiteren Befunde verfügbar");
+        } else {
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]);
+        }
+      }, err => {
+        window.alert(err);
+        console.log(err);
+      })
   }
 
   feedbackModal() {
@@ -406,7 +404,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   back() {
     if (this.isMod) {
-      this.router.navigate(["radiolearn/template-list"]).then();
+      this.router.navigate(["radiolearn/list"]).then();
     } else {
       this.router.navigate(["/"]).then();
     }

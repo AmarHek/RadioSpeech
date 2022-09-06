@@ -28,7 +28,7 @@
               matTooltip="Restliche Kategorien als unauffällig markieren"
               (click)="makeNormal()">Rest normal
       </button>
-      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen"
+      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod"
               (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="save" matTooltip="Speichern"
@@ -36,7 +36,7 @@
       </button>
       <button mat-button class="header-button" id="next" matTooltip="Nächste Aufnahme"
               (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
-      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben"
+      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"
               (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
 
     </mat-toolbar>
