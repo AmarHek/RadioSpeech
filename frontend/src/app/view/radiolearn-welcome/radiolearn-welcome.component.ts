@@ -30,7 +30,6 @@ export class RadiolearnWelcomeComponent implements OnInit {
     this.UUID = getUUID();
     this.displayService.isMobile.subscribe(res => {
        this.isMobile = res;
-       console.log(this.isMobile);
     });
   }
 
@@ -52,16 +51,12 @@ export class RadiolearnWelcomeComponent implements OnInit {
     this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
-        window.alert("Keine weiteren Befunde verfügbar");
+        this.dialog.open(DialogNoMaterialsComponent)
       } else {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if (err === "no-unused-materials"){
-        this.dialog.open(DialogNoMaterialsComponent)
-      } else {
-        console.log(err);
-      }
+      console.log(err);
     });
   }
 

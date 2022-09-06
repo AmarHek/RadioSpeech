@@ -355,7 +355,6 @@ export class RadiolearnUiComponent implements OnInit {
 
   nextMaterialStudent() {
     this.backendCaller.getUnusedMaterial(this.UUID, this.workMode, getResetCounter()).subscribe(res => {
-      console.log(res);
       if (res.material === null) {
         this.openNoMaterialsLeftDialog();
       } else {
@@ -365,12 +364,7 @@ export class RadiolearnUiComponent implements OnInit {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if (err === "no-unused-materials"){
-        console.log("No unused materials left");
-
-      } else {
-        console.log(err);
-      }
+      console.log(err);
     });
   }
 

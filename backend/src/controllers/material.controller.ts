@@ -391,7 +391,7 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     if(unusedMaterialIDs.length <= 0){
                         //No unused materials left
                         console.log("No unused materials left")
-                        res.status(500).send({message: "no-unused-materials"});
+                        res.status(200).send({material: null});
                     }else{
                         //Pick a random uncompleted material ID
                         let randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)]

@@ -41,7 +41,6 @@ export class DisplayService {
         if(result.breakpoints[query]){
           this.currentScreenSize = this.displayNameMap.get(query) ?? "Unknown";
           this.isMobile.next(this.currentScreenSize === "Small" || this.currentScreenSize === "XSmall");
-          console.log(this.isMobile.value);
         }
       }
     });
