@@ -48,7 +48,6 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   // state variables for canvas layers
   displayBoxes: boolean;
   enableZoom: boolean;
-  enableHover: boolean;
 
   // Zoom lens
   lensSize = 200;
@@ -65,7 +64,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   private hoverLayerElement;
   private hoverContext: CanvasRenderingContext2D;
   @ViewChild("hoverLayer", {static: false }) set hoverLayer(layer: ElementRef) {
-    if (this.enableHover) {
+    if (this.displayBoxes) {
       this.hoverLayerElement = layer.nativeElement;
       this.hoverContext = this.hoverLayerElement.getContext("2d");
       this.setHoverListeners();
@@ -144,15 +143,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.setCurrentDimensions();
     if (this.displayBoxes) {
       this.drawBoxes();
-    }
-    if (this.enableHover) {
       this.setHoverListeners();
     }
   }
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
-    this.enableHover = !this.enableHover;
     this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxes();

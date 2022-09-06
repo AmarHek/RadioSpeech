@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import * as G from "@app/models/generator";
 import * as M from "@app/models/templateModel";
-import {Row} from "@app/models";
+import {KeyClickable, KeyVariable, Row} from "@app/models";
+import {Variable} from "@app/models/templateModel";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: "root"
@@ -74,29 +76,6 @@ export class DataParserService {
     };
   }
 
-  createNewRowOption(option: M.Option, groupID: string) {
-    return {
-      kind: "option",
-      name: option.name,
-      groupID,
-      variables: option.variables
-    };
-  }
-
-  // extracts group identifiers and corresponding values for ngModel application
-  extractGroups(categories: M.Category[]): Map<string, string> {
-    const groupValues: Map<string, string> = new Map();
-    for (const category of categories) {
-      for (const sel of category.selectables) {
-        if (sel.kind === "group") {
-          console.log(sel.name, sel.value);
-          groupValues.set(sel.name, sel.value);
-        }
-      }
-    }
-    return groupValues;
-  }
-
   makeText(parts: M.TopLevel[]) {
     const normalExtractor: M.TextExtractor = G.normalExtractor();
     const judgementExtractor: M.TextExtractor = G.judgementExtractor();
@@ -114,6 +93,58 @@ export class DataParserService {
     for (const p of parts) {
       if (p.kind === "category") {
         G.makeNormalCategory(p);
+      }
+    }
+  }
+
+  assignValuesFromInputParser(categories: M.Category[], foundClickables: KeyClickable[],
+                              foundVariablesMap: Map<string, KeyVariable[]>) {
+    for (const key of foundClickables) {
+      if (key.name === "Rest normal") {
+        this.makeNormal(categories);
+        continue;
+      }
+
+      const foundVariables = foundVariablesMap.get(key.category + " " + key.name);
+      const cat = categories.find(c =>
+        c.name === key.category
+      );
+      const sel = cat.selectables.find(s =>
+        s.name === key.name || s.name === key.group
+      );
+      let variables: Variable[];
+      if (sel.kind === "box") {
+        sel.value = true;
+        variables = sel.variables;
+      } else {
+        sel.value = key.name;
+        const option = sel.options.find(o => o.name === key.name);
+        variables = option.variables;
+      }
+      // assign variable values
+      if (variables.length <= 0 || foundVariables === undefined) {
+        continue;
+      }
+
+      for (const varKey of foundVariables) {
+        const variable = variables.find(v => v.id === varKey.id);
+        if (variable.kind === "oc") {
+          variable.value = varKey.name;
+        } else if (variable.kind === "mc") {
+          const val = variable.values.find(v => v[0] === varKey.name);
+          val[1] = true;
+        } else if (varKey.value !== undefined) {
+          if (variable.kind === "ratio") {
+            variable.numerator = varKey.value[0] as number;
+            variable.denominator = varKey.value[1] as number;
+          } else if (variable.kind === "text") {
+            variable.value = varKey.value as string;
+          } else if (variable.kind === "number") {
+            variable.value = varKey.value as number;
+          } else {
+            variable.value = varKey.value as NgbDateStruct;
+          }
+        }
       }
     }
   }

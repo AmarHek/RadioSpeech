@@ -92,9 +92,11 @@ export class BackendCallerService {
   }
 
   addUsageData(UUID: string, materialID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
-               mode: string, timestampStart: number, duration: number, ogMaterial: Material, resetCounter: number): Observable<{ success: boolean; message: string }> {
+               mode: string, timestampStart: number, duration: number, ogMaterial: Material,
+               resetCounter: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.usageUrl + "add/",{UUID, materialID, deepDocTemplate, shallowDocTemplate, mode, timestampStart, duration, ogMaterial, resetCounter}
+      this.usageUrl + "add/",{UUID, materialID, deepDocTemplate,
+        shallowDocTemplate, mode, timestampStart, duration, ogMaterial, resetCounter}
     );
   }
 

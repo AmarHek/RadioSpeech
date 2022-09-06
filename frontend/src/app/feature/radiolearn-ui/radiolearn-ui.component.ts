@@ -316,19 +316,19 @@ export class RadiolearnUiComponent implements OnInit {
         window.alert("Keine weiteren Befunde verfügbar");
       } else {
         if (this.userMode) {
-          this.imageDisplayStudentChild.toggleBoxes();
+          this.imageDisplayStudentChild.displayBoxes = false;
         } else {
-          this.imageDisplayChild.toggleBoxes();
+          this.imageDisplayChild.displayBoxes = false;
         }
         this.sawFeedback = false
         increaseSurveyCounter()
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if(err === "no-unused-materials"){
+      if (err === "no-unused-materials"){
         console.log("No unused materials left");
         this.openNoMaterialsLeftDialog();
-      }else {
+      } else {
         console.log(err);
       }
     });
@@ -417,19 +417,19 @@ export class RadiolearnUiComponent implements OnInit {
         }
       }
     }
-    //Combine existing chips and text input into one input line
+    // Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
     //Pare this line, assign the values and generate the new chips accordingly
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
     this.generateChips();
-    //Remove everything that was detected as a clickable or variable from the input
+    // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
     if (this.input !== " ") {
       this.input = this.mergedInput.trimStart();
     }
-    // Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
+    // Additionally, setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
     // field, since otherwise the input text won't update via ngModel
     if (this.input.trim() !== "") {
       this.chips.push(new InputChip(this.input, ChipColors.RED, null));
@@ -440,53 +440,12 @@ export class RadiolearnUiComponent implements OnInit {
 
   // TODO Auf Dataparser auslagern
   assignValues() {
-    for (const key of this.inputParser.foundClickables) {
-      if (key.name === "Rest normal") {
-        this.makeNormal();
-        continue;
-      }
-
-      const foundVariables = this.inputParser.foundVariables.get(key.category + " " + key.name);
-      const cat = this.deepCategories.find(c =>
-        c.name === key.category
-      );
-      const sel = cat.selectables.find(s =>
-        s.name === key.name || s.name === key.group
-      );
-      let variables: Variable[];
-      if (sel.kind === "box") {
-        sel.value = true;
-        variables = sel.variables;
-      } else {
-        sel.value = key.name;
-        const option = sel.options.find(o => o.name === key.name);
-        variables = option.variables;
-      }
-      // assign variable values
-      if (variables.length <= 0 || foundVariables === undefined) {
-        continue;
-    }
-
-      for (const varKey of foundVariables) {
-        const vari = variables.find(v => v.id === varKey.id);
-        if (vari.kind === "oc") {
-          vari.value = varKey.name;
-        } else if (vari.kind === "mc") {
-          const val = vari.values.find(v => v[0] === varKey.name);
-          val[1] = true;
-        } else if (varKey.value !== undefined) {
-          if (vari.kind === "ratio") {
-            vari.numerator = varKey.value[0] as number;
-            vari.denominator = varKey.value[1] as number;
-          } else if (vari.kind === "text") {
-            vari.value = varKey.value as string;
-          } else if (vari.kind === "number") {
-            vari.value = varKey.value as number;
-          } else {
-            vari.value = varKey.value as NgbDateStruct;
-          }
-        }
-      }
+    if (this.radiolearnService.deepMode) {
+      this.dataParser.assignValuesFromInputParser(this.deepCategories, this.inputParser.foundClickables,
+        this.inputParser.foundVariables);
+    } else {
+      this.dataParser.assignValuesFromInputParser(this.shallowCategories, this.inputParser.foundClickables,
+        this.inputParser.foundVariables);
     }
   }
 

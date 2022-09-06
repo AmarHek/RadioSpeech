@@ -246,54 +246,8 @@ export class ReportUiComponent implements OnInit {
   // TODO Auf Dataparser auslagern
   // Assigns all found keywords in inputParser to this.parts
   assignValues() {
-    for (const key of this.inputParser.foundClickables) {
-      if (key.name === "Rest normal") {
-        this.makeNormal();
-        continue;
-      }
-
-      const foundVariables = this.inputParser.foundVariables.get(key.category + " " + key.name);
-      const cat = this.categories.find(c =>
-        c.name === key.category
-      );
-      const sel = cat.selectables.find(s =>
-        s.name === key.name || s.name === key.group
-      );
-      let variables: Variable[];
-      if (sel.kind === "box") {
-        sel.value = true;
-        variables = sel.variables;
-      } else {
-        sel.value = key.name;
-        const option = sel.options.find(o => o.name === key.name);
-        variables = option.variables;
-      }
-      // assign variable values
-      if (variables.length <= 0 || foundVariables === undefined) {
-        continue;
-      }
-
-      for (const varKey of foundVariables) {
-        const vari = variables.find(v => v.id === varKey.id);
-        if (vari.kind === "oc") {
-          vari.value = varKey.name;
-        } else if (vari.kind === "mc") {
-          const val = vari.values.find(v => v[0] === varKey.name);
-          val[1] = true;
-        } else if (varKey.value !== undefined) {
-          if (vari.kind === "ratio") {
-            vari.numerator = varKey.value[0] as number;
-            vari.denominator = varKey.value[1] as number;
-          } else if (vari.kind === "text") {
-            vari.value = varKey.value as string;
-          } else if (vari.kind === "number") {
-            vari.value = varKey.value as number;
-          } else {
-            vari.value = varKey.value as NgbDateStruct;
-          }
-        }
-      }
-    }
+    this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
+      this.inputParser.foundVariables);
   }
 
   makeNormal() {
