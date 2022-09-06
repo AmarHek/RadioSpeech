@@ -52,7 +52,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   enableEdit: boolean;
   enableDelete: boolean;
   enableZoom: boolean;
-  enableHover: boolean;
 
   // state variable to show warning that no pathology is selected
   warnLabel = false;
@@ -92,7 +91,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   private hoverLayerElement;
   private hoverContext: CanvasRenderingContext2D;
   @ViewChild("hoverLayer", {static: false }) set hoverLayer(layer: ElementRef) {
-    if (this.enableHover) {
+    if (this.displayBoxes) {
       this.hoverLayerElement = layer.nativeElement;
       this.hoverContext = this.hoverLayerElement.getContext("2d");
       this.setHoverListeners();
@@ -211,7 +210,6 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
-    this.enableHover = !this.enableHover;
     this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxes();

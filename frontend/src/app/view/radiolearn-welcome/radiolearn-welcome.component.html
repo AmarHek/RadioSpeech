@@ -14,7 +14,7 @@
   <div class="row">
     <div class="col-sm">
       <div class="button-container">
-        <button class="custom-button" mat-raised-button color="primary" (click)="detailedMode()">Dokumentationsmodus</button>
+        <button class="custom-button" mat-raised-button color="primary" (click)="deepMode()">Dokumentationsmodus</button>
       </div>
       <div class="text-container">
         In diesem Modus klicken Sie sich durch eine detaillierte Befundungs-Schablone aus dem Alltag.
@@ -24,12 +24,12 @@
         Dieser Modus ist für längere Lern-Sessions geeignet.
       </div>
       <div class="img-container">
-        <img src="{{assetsUrl}}Dokumentation.png" width="100%" alt="Dokumentationsmodus" (click)="detailedMode()">
+        <img src="{{assetsUrl}}Dokumentation.png" width="100%" alt="Dokumentationsmodus" (click)="deepMode()">
       </div>
     </div>
     <div class="col-sm">
       <div class="button-container">
-        <button class="custom-button" mat-raised-button color="primary" (click)="simpleMode()">Diagnosemodus</button>
+        <button class="custom-button" mat-raised-button color="primary" (click)="shallowMode()">Diagnosemodus</button>
       </div>
       <div class="text-container">
         Dies ist ein vereinfachter Modus, in dem Sie nur die vorhandenen Pathologien identifizieren sollen.
@@ -39,7 +39,7 @@
         Dieser Modus ist für kürzere Sessions zwischendurch geeignet.
       </div>
       <div class="img-container">
-        <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="simpleMode()">
+        <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
       </div>
     </div>
   </div>
@@ -63,7 +63,7 @@
   <div class="row" >
     <div class="col-sm" style="">
       <div class="button-container">
-        <button class="custom-button" mat-raised-button color="primary" (click)="simpleMode()">Diagnosemodus</button>
+        <button class="custom-button" mat-raised-button color="primary" (click)="shallowMode()">Diagnosemodus</button>
       </div>
       <div class="text-container" style="margin: unset; padding-top: 5px">
         Dies ist ein <b>vereinfachter Modus</b>, in dem Sie nur die vorhandenen Pathologien identifizieren sollen.
@@ -73,12 +73,12 @@
         Dieser Modus ist für kürzere Sessions zwischendurch geeignet.
       </div>
       <div class="img-container">
-        <img src="{{assetsUrl}}DiagnoseMobile.png" width="100%" alt="Diagnosemodus" (click)="simpleMode()">
+        <img src="{{assetsUrl}}DiagnoseMobile.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
       </div>
     </div>
     <div class="col-sm" style="margin-top: 15px">
       <div class="button-container">
-        <button class="custom-button" mat-raised-button color="primary" (click)="detailedMode()">Dokumentationsmodus</button>
+        <button class="custom-button" mat-raised-button color="primary" (click)="deepMode()">Dokumentationsmodus</button>
       </div>
       <div class="text-container" style="margin: unset; padding-top: 5px">
         In diesem Modus klicken Sie sich durch eine <b>detaillierte Befundungs-Schablone</b> aus dem Alltag.
@@ -88,7 +88,7 @@
         Dieser Modus ist für längere Lern-Sessions geeignet.
       </div>
       <div class="img-container">
-        <img src="{{assetsUrl}}Dokumentation.png" width="100%" alt="Dokumentationsmodus" (click)="detailedMode()">
+        <img src="{{assetsUrl}}Dokumentation.png" width="100%" alt="Dokumentationsmodus" (click)="deepMode()">
       </div>
     </div>
   </div>

@@ -24,7 +24,6 @@ import {
   StudentErrorsComponent
 } from "@app/shared";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
 import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
@@ -60,6 +59,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   // state variables
   userMode: boolean;
+  workMode: string; // "deep" or "shallow"
 
   // usageData variables
   timestampStart: number;
@@ -92,20 +92,48 @@ export class RadiolearnUiComponent implements OnInit {
     return this.user && this.user.role === Role.Admin;
   }
 
-  get detailedMode() {
-    return this.radiolearnService.deepMode;
+  get deepMode() {
+    return (this.workMode === "deep");
   }
 
   ngOnInit() {
+    // Mod or regular user?
     this.authenticationService.user.subscribe(
       (x) => {
         this.user = x;
         this.userMode = !this.isMod;
       });
+
+    // mobile check
     this.displayService.isMobile.subscribe(res => {
       this.isMobile = res;
     });
+
+    // get current mode
+    if (this.radiolearnService.workMode !== undefined) {
+      // try service first: if coming from radiolearn welcome, radiolearnservice.workMode should not be undefined
+      this.workMode = this.radiolearnService.workMode;
+      // add to localStorage afterwards
+      localStorage.setItem("workMode", this.workMode);
+    } else {
+      // if here from reloading, try localStorage
+      const workMode = localStorage.getItem("workMode");
+      if (workMode !== null) {
+        this.workMode = workMode
+      } else {
+        // default behaviour, if all else fails
+        this.workMode = "deep"
+      }
+
+      console.log(this.workMode);
+    }
+
+
+
+    // get actual data
     this.getData().then();
+
+    // data collection
     this.timestampStart = Date.now();
     this.UUID = getUUID()
   }
@@ -127,7 +155,7 @@ export class RadiolearnUiComponent implements OnInit {
             }
             this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
             this.shallowCategories = this.material.shallowDocTemplate.parts as M.Category[];
-            if (this.detailedMode) {
+            if (this.deepMode) {
               this.inputParser.init(this.deepCategories);
             } else {
               this.inputParser.init(this.shallowCategories);
@@ -211,7 +239,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   generateChips() {
     this.selectedSelectableID = "";
-    if (this.radiolearnService.deepMode) {
+    if (this.workMode === "deep") {
       this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts,
         this.material.deepDocTemplate.parts);
     } else {
@@ -251,13 +279,12 @@ export class RadiolearnUiComponent implements OnInit {
 
   submit(){
     const duration = Date.now() - this.timestampStart;
-    const modeString = this.radiolearnService.deepMode ? "deep" : "shallow";
     this.backendCaller.addUsageData(
       this.UUID,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
-      modeString,
+      this.workMode,
       this.timestampStart,
       duration,
       this.ogMaterial,
@@ -272,9 +299,24 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   switchMode() {
-    this.radiolearnService.deepMode = !this.radiolearnService.deepMode;
+    if (this.workMode === "deep") {
+      this.workMode = "shallow";
+    } else {
+      this.workMode = "deep";
+    }
+    console.log(this.workMode);
+    localStorage.setItem("workMode", this.workMode);
+
     this.reset();
-    this.inputParser.init(this.deepCategories);
+    this.initInputParser()
+  }
+
+  initInputParser() {
+    if (this.workMode === "deep") {
+      this.inputParser.init(this.deepCategories)
+    } else {
+      this.inputParser.init(this.shallowCategories);
+    }
   }
 
   checkForErrors() {
@@ -283,15 +325,13 @@ export class RadiolearnUiComponent implements OnInit {
     }
     this.sawFeedback = true
     let errors: CategoryError[];
-    if (this.detailedMode) {
+    if (this.workMode === "deep") {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
         this.material.deepDocTemplate);
     } else {
       errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
         this.material.shallowDocTemplate);
     }
-
-    // TODO: Reimplement correctness check
 
     if (this.userMode) {
       this.imageDisplayStudentChild.toggleBoxes();
@@ -309,16 +349,15 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterial() {
-    const mode = this.radiolearnService.deepMode ? "deep" : "shallow";
-    this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.UUID, this.workMode, getResetCounter()).subscribe(res => {
       console.log(res);
       if (res.material === null) {
         window.alert("Keine weiteren Befunde verfügbar");
       } else {
         if (this.userMode) {
-          this.imageDisplayStudentChild.displayBoxes = false;
+          if(this.imageDisplayStudentChild.displayBoxes) this.imageDisplayStudentChild.toggleBoxes();
         } else {
-          this.imageDisplayChild.displayBoxes = false;
+          if(this.imageDisplayChild.displayBoxes) this.imageDisplayChild.toggleBoxes();
         }
         this.sawFeedback = false
         increaseSurveyCounter()
@@ -378,12 +417,10 @@ export class RadiolearnUiComponent implements OnInit {
       this.chips = [];
     }
     this.input = "";
-    if (this.radiolearnService.deepMode) {
-      //deep
+    if (this.radiolearnService.workMode === "deep") {
       this.material = JSON.parse(JSON.stringify(this.ogMaterial));
       this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
     } else {
-      //shallow
       this.material = JSON.parse(JSON.stringify(this.ogMaterial));
       this.deepCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
     }
@@ -438,9 +475,8 @@ export class RadiolearnUiComponent implements OnInit {
     this.chipInput.nativeElement.value = this.input;
   }
 
-  // TODO Auf Dataparser auslagern
   assignValues() {
-    if (this.radiolearnService.deepMode) {
+    if (this.radiolearnService.workMode === "deep") {
       this.dataParser.assignValuesFromInputParser(this.deepCategories, this.inputParser.foundClickables,
         this.inputParser.foundVariables);
     } else {

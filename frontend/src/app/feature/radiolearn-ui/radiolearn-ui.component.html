@@ -21,10 +21,10 @@
       </button>
       <button *ngIf="isAdmin" mat-button class="header-button" id="detailedMode"
               (click)="switchMode()">
-        <ng-container *ngIf="detailedMode">Modus: Dokumentation</ng-container>
-        <ng-container *ngIf="!detailedMode">Modus: Diagnose</ng-container>
+        <ng-container *ngIf="deepMode">Modus: Dokumentation</ng-container>
+        <ng-container *ngIf="!deepMode">Modus: Diagnose</ng-container>
       </button>
-      <button *ngIf="detailedMode" mat-button class="header-button" id="normal-btn"
+      <button *ngIf="deepMode" mat-button class="header-button" id="normal-btn"
               matTooltip="Restliche Kategorien als unauffällig markieren"
               (click)="makeNormal()">Rest normal
       </button>
@@ -67,7 +67,7 @@
   </div>
 
   <div class="inner_remaining">
-    <ng-container *ngIf="detailedMode">
+    <ng-container *ngIf="deepMode">
       <mat-selection-list *ngIf="this.deepCategories"
                           class="catSelectionList"
                           (selectionChange)="onSelect($event)"
@@ -91,7 +91,7 @@
       </app-radiolearn-options>
     </ng-container>
 
-    <ng-container *ngIf="!detailedMode">
+    <ng-container *ngIf="!deepMode">
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
 

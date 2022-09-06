@@ -103,7 +103,7 @@
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <canvas #labelLayer class="canvas level1" id="labelCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
-    <canvas *ngIf="enableHover" #hoverLayer class="canvas level2" id="hoverCanvas"
+    <canvas *ngIf="displayBoxes" #hoverLayer class="canvas level2" id="hoverCanvas"
             width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
     <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
     <div #lensContainer *ngIf="enableZoom">

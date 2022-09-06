@@ -34,13 +34,13 @@ export class RadiolearnWelcomeComponent implements OnInit {
     });
   }
 
-  detailedMode() {
-    this.radiolearnService.deepMode = true;
+  deepMode() {
+    this.radiolearnService.workMode = "deep";
     this.loadUnused("deep");
   }
 
-  simpleMode() {
-    this.radiolearnService.deepMode = false;
+  shallowMode() {
+    this.radiolearnService.workMode = "shallow";
     this.loadUnused("shallow");
   }
 
@@ -57,9 +57,9 @@ export class RadiolearnWelcomeComponent implements OnInit {
         this.router.navigate(["/", "radiolearn", "main", res.material._id]);
       }
     }, err => {
-      if(err === "no-unused-materials"){
+      if (err === "no-unused-materials"){
         this.dialog.open(DialogNoMaterialsComponent)
-      }else {
+      } else {
         console.log(err);
       }
     });
