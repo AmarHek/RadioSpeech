@@ -493,11 +493,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     const dialogRef = this.dialog.open(InputDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        if (dialogResult.length > 0) {
-          this.currentComment = dialogResult;
-        }
-      }
+      if (dialogResult !== false) this.currentComment = dialogResult;
     });
   }
 

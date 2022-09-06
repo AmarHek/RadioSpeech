@@ -34,7 +34,7 @@ export class InputDialogComponent implements OnInit {
   }
 
   onDismiss(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
 }
