@@ -231,7 +231,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.enableEdit = !this.enableEdit;
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
-    if (this.enableDelete) {
+    if (this.enableEdit) {
       this.drawTempBoxes();
     }
   }
