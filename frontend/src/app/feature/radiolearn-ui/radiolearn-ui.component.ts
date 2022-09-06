@@ -154,8 +154,9 @@ export class RadiolearnUiComponent implements OnInit {
               this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
             }
             this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-            this.shallowCategories = this.material.shallowDocTemplate.parts as M.Category[];
-            if (this.deepMode) {
+            this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
+            if (this.workMode === "deep") {
+              console.log(this.deepCategories);
               this.inputParser.init(this.deepCategories);
             } else {
               this.inputParser.init(this.shallowCategories);
@@ -304,7 +305,6 @@ export class RadiolearnUiComponent implements OnInit {
     } else {
       this.workMode = "deep";
     }
-    console.log(this.workMode);
     localStorage.setItem("workMode", this.workMode);
 
     this.reset();
@@ -422,7 +422,7 @@ export class RadiolearnUiComponent implements OnInit {
       this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
     } else {
       this.material = JSON.parse(JSON.stringify(this.ogMaterial));
-      this.deepCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
+      this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
     }
   }
 
