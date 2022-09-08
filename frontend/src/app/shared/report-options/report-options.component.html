@@ -46,7 +46,7 @@
                 </label>
               </td>
               <app-variables *ngIf="clickable.variables.length > 0"
-                             (clickEvent)="updateFromVariable(clickable)"
+                             (clickEvent)="updateFromVariable(clickable, row.name)"
                              [variables]="clickable.variables"
                              [parentText]="clickable.name"
                              [parentActive]="clickable.name === getGroupByID(row.name, clickable.groupID).value"

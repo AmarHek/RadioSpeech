@@ -66,13 +66,14 @@ export class ReportOptionsComponent implements OnInit {
     this.clickEvent.emit();
   }
 
-  updateFromVariable(parent: M.Clickable, group?: M.Group) {
+  updateFromVariable(parent: M.Clickable, categoryName?: string) {
     if (parent.kind === "box") {
       parent.value = true;
     } else {
-      if (group === undefined) {
-        Error("Something went wrong here");
+      if (categoryName === undefined) {
+        Error("Missing categoryName");
       } else {
+        const group = this.getGroupByID(categoryName, parent.groupID);
         group.value = parent.name;
       }
     }
