@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
@@ -9,14 +9,12 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {BoxLabel, ChipColors, InputChip, Material, Role, User, Variable} from "@app/models";
+import {BoxLabel, ChipColors, InputChip, Material, Role, User} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
 
 import * as M from "@app/models/templateModel";
 import {
-  ConfirmDialogComponent,
-  ConfirmDialogModel,
   FeedbackDialogComponent,
   ImageDisplayComponent,
   ImageDisplayStudentComponent,
@@ -45,6 +43,7 @@ export class RadiolearnUiComponent implements OnInit {
   deepCategories: M.Category[];
   shallowCategories: M.Category[];
   boxLabels: BoxLabel[];
+  errors: CategoryError[];
 
   // variables for options/category UI
   selectedCatList = ["undefined"];
@@ -66,7 +65,7 @@ export class RadiolearnUiComponent implements OnInit {
   timestampStart: number;
   sawFeedback = false;
   showSurveyEveryNMaterials = 3;
-  private UUID = "undefined";
+  private uuid = "undefined";
 
   private user: User;
 
@@ -116,7 +115,7 @@ export class RadiolearnUiComponent implements OnInit {
 
     // data collection
     this.timestampStart = Date.now();
-    this.UUID = getUUID()
+    this.uuid = getUUID();
   }
 
   async getData() {
@@ -150,10 +149,10 @@ export class RadiolearnUiComponent implements OnInit {
               this.radiolearnOptionsChild.categories = this.deepCategories;
             }
             this.getBoxLabels();
-            this.sawFeedback = false
-            let surveyStatus = getSurveyStatus()
-            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials == 0){
-              this.openSurveyDialog()
+            this.sawFeedback = false;
+            const surveyStatus = getSurveyStatus();
+            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0){
+              this.openSurveyDialog();
             }
           }
         }, err => {
@@ -173,10 +172,10 @@ export class RadiolearnUiComponent implements OnInit {
       // if here from reloading, try localStorage
       const workMode = localStorage.getItem("workMode");
       if (workMode !== null) {
-        this.workMode = workMode
+        this.workMode = workMode;
       } else {
         // default behaviour, if all else fails
-        this.workMode = "deep"
+        this.workMode = "deep";
       }
     }
   }
@@ -279,7 +278,7 @@ export class RadiolearnUiComponent implements OnInit {
   submit(){
     const duration = Date.now() - this.timestampStart;
     this.backendCaller.addUsageData(
-      this.UUID,
+      this.uuid,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
@@ -306,33 +305,35 @@ export class RadiolearnUiComponent implements OnInit {
     localStorage.setItem("workMode", this.workMode);
 
     this.reset();
-    this.initInputParser()
+    this.initInputParser();
   }
 
   initInputParser() {
     if (this.workMode === "deep") {
-      this.inputParser.init(this.deepCategories)
+      this.inputParser.init(this.deepCategories);
     } else {
       this.inputParser.init(this.shallowCategories);
     }
   }
 
   checkForErrors() {
-    if(!this.sawFeedback){
-      this.submit()
+    if(!this.sawFeedback) {
+      this.submit();
+      if (this.workMode === "deep") {
+        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
+          this.material.deepDocTemplate);
+      } else {
+        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
+          this.material.shallowDocTemplate);
+      }
+      this.imageDisplayStudentChild.toggleBoxes();
     }
-    this.sawFeedback = true
-    let errors: CategoryError[];
-    if (this.workMode === "deep") {
-      errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
-        this.material.deepDocTemplate);
-    } else {
-      errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
-        this.material.shallowDocTemplate);
-    }
-    this.imageDisplayStudentChild.toggleBoxes();
+
+    // state variable
+    this.sawFeedback = true;
 
     // Modal Dialog here, then await confirm press for next
+    const errors = this.errors;
     const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
     const dialogRef = this.dialog.open(StudentErrorsComponent, dialogConfig);
 
@@ -354,14 +355,16 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterialStudent() {
-    this.backendCaller.getUnusedMaterial(this.UUID, this.workMode, getResetCounter()).subscribe(res => {
+    this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe(res => {
       if (res.material === null) {
         this.openNoMaterialsLeftDialog();
       } else {
-        if(this.imageDisplayStudentChild.displayBoxes) this.imageDisplayStudentChild.toggleBoxes();
-        this.sawFeedback = false
-        increaseSurveyCounter()
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]);
+        if(this.imageDisplayStudentChild.displayBoxes) {
+          this.imageDisplayStudentChild.toggleBoxes();
+        }
+        this.sawFeedback = false;
+        increaseSurveyCounter();
+        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
       }
     }, err => {
       console.log(err);
@@ -369,18 +372,20 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterialToAnnotate() {
-    if (this.imageDisplayChild.displayBoxes) this.imageDisplayChild.toggleBoxes();
+    if (this.imageDisplayChild.displayBoxes) {
+      this.imageDisplayChild.toggleBoxes();
+    }
       this.backendCaller.getRandom(false).subscribe(res => {
         console.log(res);
         if (res.material === null) {
           window.alert("Keine weiteren Befunde verfügbar");
         } else {
-          this.router.navigate(["/", "radiolearn", "main", res.material._id]);
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
         }
       }, err => {
         window.alert(err);
         console.log(err);
-      })
+      });
   }
 
   feedbackModal() {
