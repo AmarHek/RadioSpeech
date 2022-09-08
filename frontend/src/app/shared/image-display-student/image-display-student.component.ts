@@ -33,7 +33,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     pre:      Annotation[];
   };
 
-  @Input() isMobile: boolean
+  @Input() isMobile: boolean;
 
   imageUrl = environment.images;
 
@@ -171,11 +171,11 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
       }
       console.log(annotation);
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-       this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+       this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
     }
   }
 
@@ -227,7 +227,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   imageZoom() {
     this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
-      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement)
+      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement);
   }
 
 }

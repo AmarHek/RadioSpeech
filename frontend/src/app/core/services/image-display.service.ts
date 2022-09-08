@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {Annotation, BoundingBox} from "@app/models";
 import {DisplayService} from "@app/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ImageDisplayService {
 
-  MAX_IMAGE_HEIGHT = 750;
-  MAX_IMAGE_WIDTH = 890;
+  maxImageHeight = 750;
+  maxImageWidth = 890;
 
-  BOX_LINE_WIDTH = 5;
-  DISPLAY_BOX_COLOR = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
+  boxLineWidth = 5;
+  displayBoxColor = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
     "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
     "rgba(70,240,240,1)", "rgba(0,130,200,1)", "rgba(145,30,180,1)", "rgba(240,50,230,1)", "rgba(128,128,128,1)",
     "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
@@ -19,8 +19,10 @@ export class ImageDisplayService {
 
   constructor(private displayService: DisplayService) {
     this.displayService.isMobile.subscribe((isMobile) => {
-      if (isMobile) {this.MAX_IMAGE_WIDTH = window.innerWidth};
-    })
+      if (isMobile) {
+        this.maxImageWidth = window.innerWidth;
+      }
+    });
   }
 
   computeCanvasDimensions(imgUrl: string, callback) {
@@ -38,16 +40,16 @@ export class ImageDisplayService {
       scaleFactor = 1.0;
 
       // First check by height
-      if (height >= this.MAX_IMAGE_HEIGHT) {
-        scaleFactor = this.MAX_IMAGE_HEIGHT / loadedImage.height;
-        height = this.MAX_IMAGE_HEIGHT;
+      if (height >= this.maxImageHeight) {
+        scaleFactor = this.maxImageHeight / loadedImage.height;
+        height = this.maxImageHeight;
         width = loadedImage.width * scaleFactor;
       }
 
       // Then check by width
-      if (width >= this.MAX_IMAGE_WIDTH) {
-        scaleFactor = scaleFactor * this.MAX_IMAGE_WIDTH / width;
-        width = this.MAX_IMAGE_WIDTH;
+      if (width >= this.maxImageWidth) {
+        scaleFactor = scaleFactor * this.maxImageWidth / width;
+        width = this.maxImageWidth;
         height = scaleFactor * loadedImage.height;
       }
 
@@ -62,7 +64,7 @@ export class ImageDisplayService {
   }
 
   drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string) {
-    this.setCanvasProperties(context, this.BOX_LINE_WIDTH, "square", color);
+    this.setCanvasProperties(context, this.boxLineWidth, "square", color);
     context.beginPath();
     context.rect(
       bbox.left * scaleFactor,
@@ -88,12 +90,12 @@ export class ImageDisplayService {
     context.fillText(
       finalLabel,
       scaleFactor * annotation.labelLeft,
-      scaleFactor * annotation.labelTop + this.BOX_LINE_WIDTH + 20);
+      scaleFactor * annotation.labelTop + this.boxLineWidth + 20);
     context.strokeText(
       finalLabel,
       scaleFactor * annotation.labelLeft,
       scaleFactor * annotation.labelTop
-      + this.BOX_LINE_WIDTH + 20);
+      + this.boxLineWidth + 20);
   }
 
   // adds event listeners to given elements
@@ -109,24 +111,24 @@ export class ImageDisplayService {
     lensElement.removeEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
-        zoomDivElement)
-    })
+        zoomDivElement);
+    });
     zoomLayerElement.removeEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
-        zoomDivElement)
+        zoomDivElement);
     });
 
     // Execute a function when someone moves the cursor over the image or the lens
     lensElement.addEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
-        zoomDivElement)
+        zoomDivElement);
     });
     zoomLayerElement.addEventListener("mousemove", (e) => {
       this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
         zoomLayerElement,
-        zoomDivElement)
+        zoomDivElement);
     });
   }
 
@@ -195,6 +197,5 @@ export class ImageDisplayService {
     y = y - window.scrollY;
     return {x, y};
   }
-
 
 }

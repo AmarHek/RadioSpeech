@@ -129,7 +129,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild("lensContainer") set zoom(container: ElementRef) {
     if (this.enableZoom) {
       const containerElement = container.nativeElement;
-      this.zoomDivElement = containerElement.children[0]
+      this.zoomDivElement = containerElement.children[0];
       this.zoomLayerElement = containerElement.children[2];
       this.lensElement = containerElement.children[1];
       this.imageZoom();
@@ -218,17 +218,29 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   toggleDelete() {
-    if (this.enableEdit) this.enableEdit = false;
-    if (this.enableZoom) this.enableZoom = false;
+    if (this.enableEdit) {
+      this.enableEdit = false;
+    }
+    if (this.enableZoom) {
+      this.enableZoom = false;
+    }
 
-    if (!this.displayBoxes) this.toggleBoxes();
+    if (!this.displayBoxes) {
+      this.toggleBoxes();
+    }
     this.enableDelete = !this.enableDelete;
   }
 
   toggleEditor() {
-    if (this.enableZoom) this.enableZoom = false;
-    if (this.enableDelete) this.enableDelete = false;
-    if (!this.displayBoxes) this.toggleBoxes();
+    if (this.enableZoom) {
+      this.enableZoom = false;
+    }
+    if (this.enableDelete) {
+      this.enableDelete = false;
+    }
+    if (!this.displayBoxes) {
+      this.toggleBoxes();
+    }
 
     this.enableEdit = !this.enableEdit;
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
@@ -238,8 +250,12 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   toggleZoom() {
-    if (this.enableEdit) this.enableEdit = false;
-    if (this.enableDelete) this.enableDelete = false;
+    if (this.enableEdit) {
+      this.enableEdit = false;
+    }
+    if (this.enableDelete) {
+      this.enableDelete = false;
+    }
 
     this.enableZoom = !this.enableZoom;
   }
@@ -256,10 +272,10 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
       }
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-        this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)]);
+        this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
     }
   }
 
@@ -321,7 +337,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     const rect = this.drawLayerElement.getBoundingClientRect();
     const parent = this;
     for (const annotation of annotations) {
-      const color = this.imageDisplayService.DISPLAY_BOX_COLOR[annotations.indexOf(annotation)];
+      const color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)];
       for (const bbox of annotation.boxes) {
         this.deleteLayerElement.addEventListener("mousemove", (e) => {
           const x = bbox.left * parent.currentScaleFactor;
@@ -495,13 +511,15 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     const dialogRef = this.dialog.open(InputDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult !== false) this.currentComment = dialogResult;
+      if (dialogResult !== false) {
+        this.currentComment = dialogResult;
+      }
     });
   }
 
   imageZoom() {
     this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
-      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement)
+      this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement);
   }
 
   private fixNegativeCoordinates() {
