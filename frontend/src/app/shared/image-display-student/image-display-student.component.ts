@@ -50,8 +50,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   enableZoom: boolean;
 
   // Zoom lens
-  lensSize = 200;
-  maxLensSize = 250;
+  lensSize = 140;
+  maxLensSize = 240;
 
   @ViewChild("boxLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;

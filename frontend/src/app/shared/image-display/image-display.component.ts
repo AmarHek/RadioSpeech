@@ -74,7 +74,8 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   currentComment: string;
 
   // Zoom lens
-  lensSize = 200;
+  lensSize = 140;
+  maxLensSize = 250;
 
   @ViewChild("boxLayer", {static: false }) drawLayer: ElementRef;
   private drawLayerElement;
@@ -245,6 +246,7 @@ export class ImageDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   zoomIn(increment: number) {
     this.lensSize += increment;
+    this.lensSize = Math.min(this.lensSize, this.maxLensSize);
     this.imageZoom();
   }
 
