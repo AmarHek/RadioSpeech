@@ -91,10 +91,12 @@ export class BackendCallerService {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   addUsageData(UUID: string, materialID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
                mode: string, timestampStart: number, duration: number, ogMaterial: Material,
                resetCounter: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       this.usageUrl + "add/",{UUID, materialID, deepDocTemplate,
         shallowDocTemplate, mode, timestampStart, duration, ogMaterial, resetCounter}
     );
@@ -146,9 +148,11 @@ export class BackendCallerService {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   getUnusedMaterial(UUID: string, mode: string, resetCounter: number){
     return this.http.post<{message: string; material: Material}>(
       this.materialUrl + "unused/",
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       {UUID, mode, resetCounter}
     );
   }

@@ -173,7 +173,6 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
         this.imageDisplayService.drawRect(this.drawContext, bbox,
           this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
       }
-      console.log(annotation);
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
        this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
     }

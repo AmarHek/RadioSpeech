@@ -21,8 +21,10 @@ export function saveUsageData(req: any, res: Response) {
 
     const query = ParticipantDB.findOne({'UUID': req.body.UUID});
     query.exec(function (err, participant){
-        if(err) return handleError(err);
-        if(participant == null) {
+        if (err) {
+            return handleError(err);
+        }
+        if (participant == null) {
             console.log("No matching participant found, creating entry:")
             const usageList: UsageData[] = []
             usageList.push(usageData)
@@ -31,22 +33,26 @@ export function saveUsageData(req: any, res: Response) {
                 usageList: usageList
             });
             participant.save(function (err){
-                if(err){
+                if (err){
                     console.log("Saving participant failed: " + err.message)
-                }else {
+                    res.status(500).send({success: false,
+                        message: "Saving participant failed: " + err.message})
+                } else {
                     console.log("Successfully saved new participant.")
-                    res.sendStatus(200)
+                    res.status(200).send({success: true, message: "Successfully saved new participant."})
                 }
             })
-
-        }else {
+        } else {
             participant.usageList.push(usageData)
             participant.save(function (err){
                 if(err){
                     console.log("Updating participant failed: " + err.message)
+                    res.status(500).send({success: false,
+                        message: "Updating participant failed: " + err.message})
                 }else {
                     console.log("Successfully updated participants usage data")
-                    res.sendStatus(200)
+                    res.status(200).send({success: true,
+                        message: "Successfully updated participants usage data"})
                 }
             })
         }
