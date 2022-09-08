@@ -20,7 +20,7 @@ export class ImageDisplayService {
   constructor(private displayService: DisplayService) {
     this.displayService.isMobile.subscribe((isMobile) => {
       if (isMobile) {
-        this.maxImageWidth = window.innerWidth;
+        this.maxImageWidth = window.innerWidth - 2;
       }
     });
   }

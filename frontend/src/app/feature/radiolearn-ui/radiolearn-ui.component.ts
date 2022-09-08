@@ -105,6 +105,7 @@ export class RadiolearnUiComponent implements OnInit {
     // mobile check
     this.displayService.isMobile.subscribe(res => {
       this.isMobile = res;
+      console.log("isMobile: " + this.isMobile);
     });
 
     // get current mode
