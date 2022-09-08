@@ -42,15 +42,15 @@
 
   <mat-divider></mat-divider>
 
-  <div class="table-div">
+  <div class="table-div" *ngIf="!isMobile">
     <table class="table table-bordered">
       <thead class="table-dark">
       <tr>
-        <th scope="col" *ngIf="!isMobile">Kategorie</th>
+        <th scope="col">Kategorie</th>
         <th scope="col">Eingabe</th>
         <th scope="col">Lösung</th>
-        <th scope="col" *ngIf="!isMobile">Eingabe (Variable)</th>
-        <th scope="col" *ngIf="!isMobile">Lösung (Variable)</th>
+        <th scope="col">Eingabe (Variable)</th>
+        <th scope="col">Lösung (Variable)</th>
       </tr>
       </thead>
       <tbody>
@@ -117,6 +117,62 @@
             <td>-</td>
           </ng-container>
         </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-div" *ngIf="isMobile">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+      <tr>
+        <th scope="col">Eingabe</th>
+        <th scope="col">Lösung</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let errorRow of errorRowsMobile">
+        <ng-container *ngIf="errorRow.selError">
+          <ng-container *ngIf="errorRow.selError.kind === 'box'">
+            <td [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts',
+                  'table-danger': errorRow.selError.actual !== errorRow.selError.should,
+                  'table-success': (errorRow.selError.actual === errorRow.selError.should) && errorRow.selError.normal,
+                  'great-success': (errorRow.selError.actual === errorRow.selError.should) && !errorRow.selError.normal}">
+              {{errorRow.selError.actual}}
+            </td>
+            <td [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts'}">
+              {{errorRow.selError.should}}
+            </td>
+          </ng-container>
+          <ng-container *ngIf="errorRow.selError.kind === 'group'">
+            <td [ngClass]="{'italic-font': errorRow.selError.actual === 'Nichts',
+                  'table-danger': errorRow.selError.actual !== errorRow.selError.should,
+                  'table-success': (errorRow.selError.actual === errorRow.selError.should) && errorRow.selError.normal,
+                  'great-success': (errorRow.selError.actual === errorRow.selError.should) && !errorRow.selError.normal}">
+              {{errorRow.selError.actual}}
+            </td>
+            <td [ngClass]="{'italic-font': errorRow.selError.should === 'Nichts'}">
+              {{errorRow.selError.should}}
+            </td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="errorRow.varError">
+          <ng-container *ngIf="errorRow.varError.kind === 'mc'">
+            <td [ngClass]="{'table-danger': errorRow.varError.actual !== errorRow.varError.should,
+                            'table-success': errorRow.varError.actual === errorRow.varError.should}">
+              {{errorRow.varError.actual.join(", ")}}</td>
+            <td>
+              {{errorRow.varError.should.join(", ")}}</td>
+          </ng-container>
+          <ng-container *ngIf="errorRow.varError.kind === 'value'">
+            <td [ngClass]="{'italic-font': errorRow.varError.actual === 'Nichts',
+                            'table-danger': errorRow.varError.actual !== errorRow.varError.should,
+                            'table-success': errorRow.varError.actual === errorRow.varError.should}">
+              {{errorRow.varError.actual}}</td>
+            <td [ngClass]="{'italic-font': errorRow.varError.should === 'Nichts'}">
+              {{errorRow.varError.should}}</td>
+          </ng-container>
+        </ng-container>
+      </tr>
       </tbody>
     </table>
   </div>

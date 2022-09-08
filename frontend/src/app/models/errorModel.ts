@@ -56,3 +56,8 @@ export interface ErrorTableRow {
   selRowSize: number;
   varError: VariableError;
 }
+
+export interface ErrorTableRowMobile {
+  selError?: SelectableError;
+  varError?: SelectableError;
+}

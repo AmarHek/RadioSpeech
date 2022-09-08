@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CategoryError, ErrorTableRow, SelectableError} from "@app/models/errorModel";
+import {CategoryError, ErrorTableRow, ErrorTableRowMobile, SelectableError} from "@app/models/errorModel";
 import {displayableQuotient} from "@app/helpers";
 import {DisplayService} from "@app/core";
 
@@ -11,11 +11,12 @@ import {DisplayService} from "@app/core";
 })
 export class StudentErrorsComponent implements OnInit {
 
-  errorRows: ErrorTableRow[];
+  errorRows: ErrorTableRow[] = [];
+  errorRowsMobile: ErrorTableRowMobile[] =[];
   majorErrorCount = 0;
   minorErrorCount = 0;
 
-  isMobile = false
+  isMobile = false;
 
   constructor(
     private displayService: DisplayService,
@@ -26,10 +27,10 @@ export class StudentErrorsComponent implements OnInit {
   ngOnInit(): void {
     this.countMajorAndMinorErrors();
     this.errorRows = this.data.errors;
-    this.rollOutErrors();
     this.displayService.isMobile.subscribe(res =>{
-      this.isMobile = res
-    })
+      this.isMobile = res;
+      this.rollOutErrors();
+    });
   }
 
   close() {
@@ -40,8 +41,15 @@ export class StudentErrorsComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
-
   rollOutErrors() {
+    if (!this.isMobile) {
+      this.rollOutErrorsNormal();
+    } else {
+      this.rollOutErrorsMobile();
+    }
+  }
+
+  rollOutErrorsNormal() {
     this.errorRows = [];
     // row variables
     let catName: string;
@@ -95,6 +103,24 @@ export class StudentErrorsComponent implements OnInit {
             selRowSize: 1,
             varError: null
           });
+        }
+      }
+    }
+  }
+
+  rollOutErrorsMobile() {
+    this.errorRowsMobile = [];
+    for (const catErr of this.data.errors) {
+      for (const selError of catErr.selErrors) {
+        this.errorRowsMobile.push({
+          selError
+        });
+        if (selError.varErrors.length > 0) {
+          for (const varError of selError.varErrors) {
+            this.errorRowsMobile.push({
+              varError
+            });
+          }
         }
       }
     }
