@@ -33,19 +33,39 @@ async function loadDefaultTemplates() {
     if (!fs.existsSync(Path.join(__dirname, "./assets/Radiolearn.json"))) {
         console.warn("Radiolearn.json missing!")
     } else {
-        console.log("Removing old Radiolearn.json");
+        console.log("Removing old Radiolearn");
         await TemplateDB.deleteOne({name: "Radiolearn"});
-        saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn");
+        saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn", "deepDoc");
     }
 
     if (!fs.existsSync(Path.join(__dirname, "./assets/RöntgenNormal.json"))) {
         console.warn("RöntgenNormal.json missing!")
     } else {
-        saveTemplate(Path.join(__dirname, "./assets/RöntgenNormal.json"), "RöntgenNormal");
+        console.log("Removing old RöntgenNormal");
+        await TemplateDB.deleteOne({name: "RöntgenNormal"});
+        saveTemplate(Path.join(__dirname, "./assets/RöntgenNormal.json"), "RöntgenNormal", "deepDoc");
+    }
+
+    if (!fs.existsSync(Path.join(__dirname, "./assets/Intensivlunge.json"))) {
+        console.warn("RöntgenNormal.json missing!")
+    } else {
+        console.log("Removing old Intensivlunge");
+        await TemplateDB.deleteOne({name: "Intensivlunge"});
+        saveTemplate(Path.join(__dirname, "./assets/Intensivlunge.json"), "Intensivlunge",
+            "shallowDoc");
+    }
+
+    if (!fs.existsSync(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"))) {
+        console.warn("RöntgenNormal.json missing!")
+    } else {
+        console.log("Removing old Zwei-Ebenen-Thorax");
+        await TemplateDB.deleteOne({name: "Zwei-Ebenen-Thorax"});
+        saveTemplate(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"), "Zwei-Ebenen-Thorax",
+            "shallowDoc");
     }
 }
 
-function saveTemplate(path: string, name: string) {
+function saveTemplate(path: string, name: string, kind: string) {
     TemplateDB.countDocuments({name: name}, {}, (err, count) => {
         if (count === 0) {
             console.log("Adding " + name + " from assets..");
@@ -56,7 +76,7 @@ function saveTemplate(path: string, name: string) {
             const template = new TemplateDB({
                 parts: parts,
                 name: name,
-                kind: "deepDoc",
+                kind: kind,
                 timestamp
             });
             template.save().then(res => {
