@@ -142,6 +142,9 @@ export class RadiolearnService {
       }
     }
 
+    // IMPORTANT: Reset shallowTemplate first, otherwise changes from deleting boxes will apply
+    this.resetTemplate(shallowTemplate);
+
     const diagnosis = shallowTemplate.parts[0] as Category;
 
     // if annotations are empty: "Unauffälliger Röntgen-Thorax"
