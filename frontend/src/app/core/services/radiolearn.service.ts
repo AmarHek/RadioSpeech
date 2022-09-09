@@ -79,7 +79,7 @@ export class RadiolearnService {
   }
 
   getBoxLabels(category: M.Category): BoxLabel[] {
-    let boxLabels: BoxLabel[] = [];
+    const boxLabels: BoxLabel[] = [];
     for (const sel of category.selectables) {
       if (sel.kind === "box") {
         this.pushBoxLabel(boxLabels, sel);
@@ -100,7 +100,7 @@ export class RadiolearnService {
     boxLabels.push({
       name: clickable.name,
       subLabels: variableLabels
-    })
+    });
   }
 
   getVariableLabels(clickable: M.Clickable): string[] {
@@ -150,8 +150,8 @@ export class RadiolearnService {
       diagnosis.selectables[0].value = true;
     } else {
       for (const label of labels) {
-        let clickableName: string = "";
-        let variableName: string = "";
+        let clickableName = "";
+        let variableName = "";
         // check if "pure" label (no variable suffix)
         if (label.includes(" | ")) {
           clickableName = label.split(" | ")[0];
@@ -168,11 +168,15 @@ export class RadiolearnService {
               for (const variable of sel.variables) {
                 if (variable.kind === "oc") {
                   for (const value of variable.values) {
-                    if (value === variableName) variable.value = value;
+                    if (value === variableName) {
+                      variable.value = value;
+                    }
                   }
                 } else if (variable.kind === "mc") {
                   for (const value of variable.values) {
-                    if (variableName === value[0]) value[1] = true;
+                    if (variableName === value[0]) {
+                      value[1] = true;
+                    }
                   }
                 }
               }
