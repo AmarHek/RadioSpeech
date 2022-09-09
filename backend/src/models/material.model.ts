@@ -38,6 +38,7 @@ export interface Material {
   deepDocTemplate:      Template;
   shallowDocTemplate:   Template;
   timestamp:            number;
+  lastModified?:        number;
   judged:               boolean;
 }
 

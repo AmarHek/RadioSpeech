@@ -44,6 +44,7 @@ export interface Material {
   shallowDocTemplate: Template;
   pathologies:        string[];
   timestamp:          number;
+  lastModified?:      number;
   judged:             boolean;
 }
 

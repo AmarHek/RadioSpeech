@@ -38,6 +38,7 @@ const materialSchema = new mongoose.Schema({
     deepDocTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
     shallowDocTemplate: { type: mongoose.Schema.Types.Mixed, required: true },
     timestamp:  {type: Number},
+    lastModified: {type: Number},
     judged: { type: Boolean }
 });
 
