@@ -349,7 +349,7 @@ export class RadiolearnUiComponent implements OnInit {
     if (this.userMode) {
       this.nextMaterialStudent();
     } else {
-      if (window.confirm("Nicht gespeicherte Daten gehen eventuell verloren. Trotzdem nächste Aufnahme laden?")) {
+      if (window.confirm("Nicht gespeicherte Daten gehen verloren. Trotzdem nächste Aufnahme laden?")) {
         this.nextMaterialToAnnotate();
       }
     }
