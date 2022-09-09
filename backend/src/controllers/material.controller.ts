@@ -313,15 +313,28 @@ export function listAll(req: Request, res: Response): void {
 
 export function listByQuery(req: Request, res: Response): void {
     const skip = Math.max(0, req.body.skip);
-    MaterialDB.find({judged: req.body.judged})
-        .skip(skip)
-        .limit(req.body.length)
-        .exec((err, materials) => {
-        if (err) {
-            res.status(404).send({message: err});
-        }
-        res.status(200).send({materials});
-    });
+    if (req.body.judged) {
+        MaterialDB.find({judged: req.body.judged})
+            .sort('lastModified')
+            .skip(skip)
+            .limit(req.body.length)
+            .exec((err, materials) => {
+                if (err) {
+                    res.status(404).send({message: err});
+                }
+                res.status(200).send({materials});
+            });
+    } else {
+        MaterialDB.find({judged: req.body.judged})
+            .skip(skip)
+            .limit(req.body.length)
+            .exec((err, materials) => {
+                if (err) {
+                    res.status(404).send({message: err});
+                }
+                res.status(200).send({materials});
+            });
+    }
 }
 
 export function getRandom(req: Request, res: Response): void {
@@ -348,14 +361,14 @@ export function getRandom(req: Request, res: Response): void {
 * */
 export function getUnusedMaterial(req: Request, res: Response): void {
     console.log("received request to give unused material")
-    let query = ParticipantDB.findOne({'UUID' : req.body.UUID});
+    const query = ParticipantDB.findOne({'UUID' : req.body.UUID});
     query.exec(function (error, participant){
         if(error){
             console.log("Error getting participant for material query: " + error.message)
             res.status(500).send({message: "Error getting participant for material query: " + error.message});
         }else {
             //Get all material IDs of the materials that this user has already completed in this mode and this reset round
-           let usedMaterialIDs: string[] = []
+           const usedMaterialIDs: string[] = []
             if(participant != null){
                 participant.usageList.forEach(usageData =>{
                     if(usageData.mode == req.body.mode && usageData.resetCounter == req.body.resetCounter){
@@ -364,7 +377,7 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                 })
             }
             console.log("got all used materials of user " + req.body.UUID + " for run " + req.body.resetCounter + " here: " + usedMaterialIDs.toString())
-            let materialQuery = MaterialDB.find({})
+            const materialQuery = MaterialDB.find({})
             materialQuery.exec(function (error, result){
                 if (error){
                     console.log("Error fetching materials: " + error.message)
@@ -372,7 +385,7 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                 }else {
                     //Get all available material IDs
                     //Todo, filter for judged here?
-                    let allMaterialIDs: string[] = []
+                    const allMaterialIDs: string[] = []
                     result.forEach(material =>{
                         if(material.judged){
                             allMaterialIDs.push(material._id)
@@ -380,7 +393,7 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     })
                     // console.log("Got all existing material ids: " + allMaterialIDs.toString())
                     //Get a list of all uncompleted material IDs
-                    let unusedMaterialIDs: string[] = []
+                    const unusedMaterialIDs: string[] = []
                     allMaterialIDs.forEach(matID => {
                         let used = false
                         usedMaterialIDs.forEach(usedID =>{
@@ -396,9 +409,9 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                         res.status(200).send({material: null});
                     }else{
                         //Pick a random uncompleted material ID
-                        let randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)]
+                        const randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)]
                         console.log("selected random id: " + randomUnusedMaterialID)
-                        let finalMaterialQuery = MaterialDB.findOne({'_id': randomUnusedMaterialID})
+                        const finalMaterialQuery = MaterialDB.findOne({'_id': randomUnusedMaterialID})
                         finalMaterialQuery.exec(function (error, material){
                             if(error){
                                 console.log("Error fetching random unused material: " + error.message)

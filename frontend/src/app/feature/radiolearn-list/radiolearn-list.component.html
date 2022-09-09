@@ -120,6 +120,11 @@
                 <td class="metadata" *ngIf="material.shallowDocTemplate">{{material.shallowDocTemplate.name}}
                   vom {{displayDate(material.shallowDocTemplate.timestamp)}}</td>
               </tr>
+              <tr>
+                <td class="metadata">Zuletzt Geändert:</td>
+                <td class="metadata" *ngIf="material.lastModified">{{displayDate(material.lastModified)}}</td>
+                <td class="metadata" *ngIf="!material.lastModified">-</td>
+              </tr>
             </table>
             <button mat-flat-button color="primary" class="custom-button"
                     (click)="openEditor(material._id)">Start Befundung
