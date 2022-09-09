@@ -87,6 +87,7 @@ export function deleteMaterial(req: Request, res: Response): void {
 }
 
 export function updateMaterial(req: Request, res: Response): void {
+    const time: number = new Date().getTime();
     MaterialDB.updateOne({
         _id: req.params.id
     }, {
@@ -94,6 +95,7 @@ export function updateMaterial(req: Request, res: Response): void {
         shallowDocTemplate: req.body.shallowDocTemplate,
         annotations: req.body.annotations,
         pathologies: req.body.pathologies,
+        lastModified: time,
         judged: req.body.judged
     }).exec((err, response) => {
         console.log(response);
