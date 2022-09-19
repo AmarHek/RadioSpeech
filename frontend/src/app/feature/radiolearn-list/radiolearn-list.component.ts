@@ -18,6 +18,11 @@ export class RadiolearnListComponent implements OnInit {
   imageUrl = environment.images;
   materials: Material[] = [];
 
+  shallowTemplates: string[] = [];
+  deepTemplates: string[] = [];
+  shallowFilter: string;
+  deepFilter: string;
+
   showJudged = false;
 
   collectionSize = 0;
@@ -47,6 +52,18 @@ export class RadiolearnListComponent implements OnInit {
       this.showJudged = !this.isMod;
     });
     this.getCountAndData();
+    this.getTemplateLists();
+  }
+
+  getTemplateLists() {
+    this.backendCaller.getTemplateListAsString("shallowDoc").subscribe(res => {
+      console.log(res);
+      this.shallowTemplates = res.templateNames;
+    });
+    this.backendCaller.getTemplateListAsString("deepDoc").subscribe(res => {
+      console.log(res);
+      this.deepTemplates = res.templateNames;
+    });
   }
 
   getCountAndData() {

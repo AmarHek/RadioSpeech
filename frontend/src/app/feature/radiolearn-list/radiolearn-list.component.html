@@ -22,23 +22,38 @@
 
   <div *ngIf="this.materials.length > 0; else noEntry">
 
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
-                      [pageSize]="pageSize" (pageChange)="getData()"
-                      [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
-      </ngb-pagination>
+    <div class="d-flex justify-content-between">
+      <div class="m-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page"
+                        [pageSize]="pageSize" (pageChange)="getData()"
+                        [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
+        </ngb-pagination>
+      </div>
 
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Ergebnisse pro Seite</mat-label>
-          <mat-select [(ngModel)]="pageSize"
-                      (ngModelChange)="getCountAndData()">
-            <mat-option [value]="5">5</mat-option>
-            <mat-option [value]="10">10</mat-option>
-            <mat-option [value]="25">25</mat-option>
-            <mat-option [value]="50">50</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="d-flex">
+        <div style="width: fit-content" class="m-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Diagnose-Template</mat-label>
+            <mat-select [(ngModel)]="shallowFilter" (ngModelChange)="getCountAndData()">
+              <mat-option [value]="null">-</mat-option>
+              <mat-option *ngFor="let shallowTemplate of shallowTemplates" [value]="shallowTemplate">
+                {{shallowTemplate}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="m-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Ergebnisse pro Seite</mat-label>
+            <mat-select [(ngModel)]="pageSize"
+                        (ngModelChange)="getCountAndData()">
+              <mat-option [value]="5">5</mat-option>
+              <mat-option [value]="10">10</mat-option>
+              <mat-option [value]="25">25</mat-option>
+              <mat-option [value]="50">50</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
 

@@ -68,8 +68,10 @@ export class BackendCallerService {
     return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
-  getTemplateListAsString(kind: "deepDoc" | "shallowDoc"): Observable<string[]> {
-    return this.http.post<string[]>(this.templateUrl + "listAsString/", {kind});
+  getTemplateListAsString(kind: "deepDoc" | "shallowDoc") {
+    return this.http.post<{templateNames: string[]}>(
+      this.templateUrl + "listAsString/",
+      {kind});
   }
 
   getTemplatesByKind(kind: string) {
