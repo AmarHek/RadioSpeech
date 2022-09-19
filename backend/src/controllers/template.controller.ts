@@ -135,7 +135,7 @@ export function getTemplateList(req: Request, res: Response){
 }
 
 export function getTemplateListAsString(req: Request, res: Response) {
-    TemplateDB.find().exec((err,
+    TemplateDB.find({kind: req.body.kind}).exec((err,
                             templates) => {
         if (err) {
             res.status(500).send({message: err});

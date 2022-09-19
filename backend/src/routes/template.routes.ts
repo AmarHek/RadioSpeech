@@ -43,7 +43,7 @@ templateRouter.post("/json/", multer({
 templateRouter.post("/add/", TemplateController.createTemplate);
 templateRouter.put("/update/:id", TemplateController.updateTemplate);
 templateRouter.get('/list/', TemplateController.getTemplateList);
-templateRouter.get('/listAsString/', TemplateController.getTemplateListAsString);
+templateRouter.post('/listAsString/', TemplateController.getTemplateListAsString);
 templateRouter.get("/:id", TemplateController.getTemplateById)
 templateRouter.delete("/delete/:id", TemplateController.deleteTemplate);
 templateRouter.post("/getByName/", TemplateController.getTemplateByName);
