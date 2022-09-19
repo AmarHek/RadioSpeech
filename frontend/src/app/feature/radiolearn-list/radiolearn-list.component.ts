@@ -87,7 +87,7 @@ export class RadiolearnListComponent implements OnInit {
         skip = 0;
       }
       this.backendCaller.listByQuery(skip, length,
-        this.showJudged)
+        this.showJudged, this.shallowFilter)
         .subscribe(res => {
           // then reverse the resulting template-list
           this.materials = res.materials.reverse();
@@ -97,7 +97,7 @@ export class RadiolearnListComponent implements OnInit {
     } else {
       const skip = (this.page - 1) * this.pageSize;
       this.backendCaller.listByQuery(skip, this.pageSize,
-        this.showJudged)
+        this.showJudged, this.shallowFilter)
         .subscribe(res => {
           this.materials = res.materials;
         }, err => {

@@ -317,9 +317,23 @@ export function listAll(req: Request, res: Response): void {
 }
 
 export function listByQuery(req: Request, res: Response): void {
+    let query;
+    if (req.body.shallowFilter !== undefined) {
+        query = {
+            'judged': req.body.judged,
+            'shallowDocTemplate.name': req.body.shallowFilter
+        }
+    }
+    else {
+        query = {
+            'judged': req.body.judged
+        }
+    }
+
+    console.log(query);
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(query)
             .sort('lastModified')
             .skip(skip)
             .limit(req.body.length)
@@ -330,7 +344,7 @@ export function listByQuery(req: Request, res: Response): void {
                 res.status(200).send({materials});
             });
     } else {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(query)
             .skip(skip)
             .limit(req.body.length)
             .exec((err, materials) => {

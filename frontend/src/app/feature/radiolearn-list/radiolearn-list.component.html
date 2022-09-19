@@ -35,7 +35,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Diagnose-Template</mat-label>
             <mat-select [(ngModel)]="shallowFilter" (ngModelChange)="getCountAndData()">
-              <mat-option [value]="null">-</mat-option>
+              <mat-option [value]="undefined">-</mat-option>
               <mat-option *ngFor="let shallowTemplate of shallowTemplates" [value]="shallowTemplate">
                 {{shallowTemplate}}
               </mat-option>
