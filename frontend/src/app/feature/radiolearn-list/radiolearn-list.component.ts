@@ -37,6 +37,10 @@ export class RadiolearnListComponent implements OnInit {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
+  get isAdmin() {
+    return this.user && (this.user.role === Role.Admin);
+  }
+
   async ngOnInit() {
     await this.authenticationService.user.subscribe((x) => {
       this.user = x;

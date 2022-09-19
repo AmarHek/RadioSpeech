@@ -7,10 +7,12 @@
       <button *ngIf="isMod" mat-flat-button color="primary" style="float: right;"
               id="uploadButton" (click)="openUploadDialog()">Aufnahmen hochladen
       </button>
-      <button hidden mat-stroked-button style="float: right; margin-right: 10px;"
+
+      <button *ngIf="isAdmin" mat-stroked-button style="float: right; margin-right: 10px;"
               (click)="updateTemplates()">
-        Schablonen aktualisieren
+        Radiolearn aktualisieren
       </button>
+
       <mat-slide-toggle *ngIf="isMod" id="showJudgedToggle" [(ngModel)]="showJudged"
                         (ngModelChange)="getCountAndData()">
         Bearbeitet
@@ -26,12 +28,18 @@
                       [maxSize]="5" [rotate]="false" [boundaryLinks]="true">
       </ngb-pagination>
 
-      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="getCountAndData()">
-        <option [ngValue]="5">5 Ergebnisse pro Seite</option>
-        <option [ngValue]="10">10 Ergebnisse pro Seite</option>
-        <option [ngValue]="25">25 Ergebnisse pro Seite</option>
-        <option [ngValue]="50">50 Ergebnisse pro Seite</option>
-      </select>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Ergebnisse pro Seite</mat-label>
+          <mat-select [(ngModel)]="pageSize"
+                      (ngModelChange)="getCountAndData()">
+            <mat-option [value]="5">5</mat-option>
+            <mat-option [value]="10">10</mat-option>
+            <mat-option [value]="25">25</mat-option>
+            <mat-option [value]="50">50</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
 
     <table  class="table table-striped">
@@ -132,7 +140,7 @@
             <button mat-flat-button color="warn" class="custom-button"
                     (click)="delete(material._id, material.scans.id)">Entfernen
             </button>
-            <button *ngIf="showJudged" mat-flat-button color="primary" class="custom-button"
+            <button *ngIf="isAdmin && showJudged" mat-flat-button color="primary" class="custom-button"
                     (click)="updateMatTempBCById(material._id)">Schablone aktualisieren
             </button>
           </td>
