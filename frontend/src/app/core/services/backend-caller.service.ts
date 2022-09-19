@@ -68,6 +68,10 @@ export class BackendCallerService {
     return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
+  getTemplateStringList(): Observable<string[]> {
+    return this.http.get<string[]>(this.templateUrl + "stringList/");
+  }
+
   getTemplatesByKind(kind: string) {
     return this.http.post<{templates: Template[]; message: string}>(
         this.templateUrl + "getByKind/",
