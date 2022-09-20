@@ -330,7 +330,6 @@ export function listByQuery(req: Request, res: Response): void {
         }
     }
 
-    console.log(query);
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
         MaterialDB.find(query)
