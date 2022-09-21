@@ -172,7 +172,8 @@ export function deleteScanById(req: Request, res: Response): void {
 export function updateMaterialTemplates(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material
     // first get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
@@ -192,7 +193,7 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
                 'judged': req.body.judged,
                 'template.timestamp': {$lt: newTemplate.timestamp}
             }, {
-                template: newTemplate,
+                deepDocTemplate: newTemplate,
                 judged: false
             }).exec(
                 (err, update) => {
@@ -207,11 +208,13 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
     });
 }
 
+// NOTE: BETTER USE PYTHON SCRIPTS WITH HARD CODED CHANGES
 export function updateMatTempBC(req: Request, res: Response): void {
     // updates old templates on judged with backwards compatibility
 
     // first get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
@@ -256,11 +259,13 @@ export function updateMatTempBC(req: Request, res: Response): void {
 
 export function updateMaterialTemplateBCByID(req: Request, res: Response) {
     // get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
-            MaterialDB.findById(req.params.id).exec((err, material) => {
+            MaterialDB.findById(req.params.id).exec((err,
+                                                     material) => {
                 if (err || material === null) {
                     res.status(500).send({message: err});
                 } else {
@@ -312,9 +317,22 @@ export function listAll(req: Request, res: Response): void {
 }
 
 export function listByQuery(req: Request, res: Response): void {
+    let query;
+    if (req.body.shallowFilter !== undefined) {
+        query = {
+            'judged': req.body.judged,
+            'shallowDocTemplate.name': req.body.shallowFilter
+        }
+    }
+    else {
+        query = {
+            'judged': req.body.judged
+        }
+    }
+
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(query)
             .sort('lastModified')
             .skip(skip)
             .limit(req.body.length)
@@ -325,7 +343,7 @@ export function listByQuery(req: Request, res: Response): void {
                 res.status(200).send({materials});
             });
     } else {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(query)
             .skip(skip)
             .limit(req.body.length)
             .exec((err, materials) => {

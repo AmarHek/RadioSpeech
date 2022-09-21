@@ -123,7 +123,7 @@ export function deleteTemplate(req: any, res: Response){
         });
 }
 
-export function getTemplateList(req: any, res: Response){
+export function getTemplateList(req: Request, res: Response){
   try {
     TemplateDB.find()
         .then(templates => {
@@ -132,6 +132,23 @@ export function getTemplateList(req: any, res: Response){
   } catch {
     res.status(500);
   }
+}
+
+export function getTemplateListAsString(req: Request, res: Response) {
+    TemplateDB.find({kind: req.body.kind}).exec((err,
+                            templates) => {
+        if (err) {
+            res.status(500).send({message: err});
+        } else {
+            const templateNames: string[] = [];
+            if (templates.length > 0) {
+                for (const template of templates) {
+                    templateNames.push(template.name)
+                }
+            }
+            res.status(200).send({templateNames});
+        }
+    })
 }
 
 export function getTemplateById(req: Request, res: Response): void {

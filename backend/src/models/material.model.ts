@@ -22,7 +22,7 @@ export interface Image {
 }
 
 export interface Material {
-  _id:                    string;
+  _id:            string;
   scans: {
     id:           string;
     mainScan:     Image;

@@ -18,6 +18,11 @@ export class RadiolearnListComponent implements OnInit {
   imageUrl = environment.images;
   materials: Material[] = [];
 
+  shallowTemplates: string[] = [];
+  deepTemplates: string[] = [];
+  shallowFilter: string;
+  deepFilter: string;
+
   showJudged = false;
 
   collectionSize = 0;
@@ -37,12 +42,28 @@ export class RadiolearnListComponent implements OnInit {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
   }
 
+  get isAdmin() {
+    return this.user && (this.user.role === Role.Admin);
+  }
+
   async ngOnInit() {
     await this.authenticationService.user.subscribe((x) => {
       this.user = x;
       this.showJudged = !this.isMod;
     });
     this.getCountAndData();
+    this.getTemplateLists();
+  }
+
+  getTemplateLists() {
+    this.backendCaller.getTemplateListAsString("shallowDoc").subscribe(res => {
+      console.log(res);
+      this.shallowTemplates = res.templateNames;
+    });
+    this.backendCaller.getTemplateListAsString("deepDoc").subscribe(res => {
+      console.log(res);
+      this.deepTemplates = res.templateNames;
+    });
   }
 
   getCountAndData() {
@@ -66,7 +87,7 @@ export class RadiolearnListComponent implements OnInit {
         skip = 0;
       }
       this.backendCaller.listByQuery(skip, length,
-        this.showJudged)
+        this.showJudged, this.shallowFilter)
         .subscribe(res => {
           // then reverse the resulting template-list
           this.materials = res.materials.reverse();
@@ -76,7 +97,7 @@ export class RadiolearnListComponent implements OnInit {
     } else {
       const skip = (this.page - 1) * this.pageSize;
       this.backendCaller.listByQuery(skip, this.pageSize,
-        this.showJudged)
+        this.showJudged, this.shallowFilter)
         .subscribe(res => {
           this.materials = res.materials;
         }, err => {
