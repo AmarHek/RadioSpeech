@@ -138,8 +138,8 @@ export class BackendCallerService {
       {id: scanID, scanType, filename});
   }
 
-  listByQuery(skip: number, length: number, judged: boolean, shallowFilter: string) {
-    const query = {skip, length, judged, shallowFilter};
+  listByFilter(skip: number, length: number, filter) {
+    const query = {skip, length, filter};
     // skip: mongoose skip parameter, how many documents to skip
     // length: how many documents to return
     return this.http.post<{message: string; materials: Material[]}>(
@@ -163,10 +163,11 @@ export class BackendCallerService {
     );
   }
 
-  getDocCount(judged: boolean) {
+  // TODO: Verallgemeinern auf query/filter
+  getDocCount(filter) {
     return this.http.post<{message: string; count: number}>(
       this.materialUrl + "queryDocCount/",
-      {judged}
+      {filter}
     );
   }
 

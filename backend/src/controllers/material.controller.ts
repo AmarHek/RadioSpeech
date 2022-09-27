@@ -321,7 +321,7 @@ export function listByQuery(req: Request, res: Response): void {
     if (req.body.shallowFilter !== undefined) {
         query = {
             'judged': req.body.judged,
-            'shallowDocTemplate.name': req.body.shallowFilter
+            'shallowDocTemplate.name': req.body.shallowDocTemplate
         }
     }
     else {
