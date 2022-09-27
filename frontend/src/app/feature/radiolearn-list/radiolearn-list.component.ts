@@ -67,7 +67,7 @@ export class RadiolearnListComponent implements OnInit {
   }
 
   getCountAndData() {
-    this.backendCaller.getDocCount(this.showJudged).subscribe(res => {
+    this.backendCaller.getDocCount(this.showJudged, this.shallowFilter).subscribe(res => {
       console.log("Count: ", res.count);
       this.collectionSize = res.count;
       this.getData();
@@ -86,8 +86,7 @@ export class RadiolearnListComponent implements OnInit {
         length = length + skip;
         skip = 0;
       }
-      this.backendCaller.listByQuery(skip, length,
-        this.showJudged, this.shallowFilter)
+      this.backendCaller.listByFilter(skip, length, this.showJudged, this.shallowFilter)
         .subscribe(res => {
           // then reverse the resulting template-list
           this.materials = res.materials.reverse();
@@ -96,8 +95,7 @@ export class RadiolearnListComponent implements OnInit {
         });
     } else {
       const skip = (this.page - 1) * this.pageSize;
-      this.backendCaller.listByQuery(skip, this.pageSize,
-        this.showJudged, this.shallowFilter)
+      this.backendCaller.listByFilter(skip, this.pageSize, this.showJudged, this.shallowFilter)
         .subscribe(res => {
           this.materials = res.materials;
         }, err => {

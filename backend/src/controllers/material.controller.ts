@@ -316,23 +316,23 @@ export function listAll(req: Request, res: Response): void {
     });
 }
 
-export function listByQuery(req: Request, res: Response): void {
-    let query;
-    if (req.body.shallowFilter !== undefined) {
-        query = {
+export function listByFilter(req: Request, res: Response): void {
+    let filter;
+    if (req.body.shallowDocTemplate !== undefined) {
+        filter = {
             'judged': req.body.judged,
-            'shallowDocTemplate.name': req.body.shallowFilter
+            'shallowDocTemplate.name': req.body.shallowDocTemplate
         }
     }
     else {
-        query = {
+        filter = {
             'judged': req.body.judged
         }
     }
 
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
-        MaterialDB.find(query)
+        MaterialDB.find(filter)
             .sort('lastModified')
             .skip(skip)
             .limit(req.body.length)
@@ -343,7 +343,7 @@ export function listByQuery(req: Request, res: Response): void {
                 res.status(200).send({materials});
             });
     } else {
-        MaterialDB.find(query)
+        MaterialDB.find(filter)
             .skip(skip)
             .limit(req.body.length)
             .exec((err, materials) => {
@@ -448,8 +448,20 @@ export function getUnusedMaterial(req: Request, res: Response): void {
 
 }
 
-export function queryDocCount(req: Request, res: Response): void {
-    MaterialDB.countDocuments({judged: req.body.judged}).exec((err, count) => {
+export function countMaterials(req: Request, res: Response): void {
+    let filter;
+    if (req.body.shallowDocTemplate !== undefined) {
+        filter = {
+            'judged': req.body.judged,
+            'shallowDocTemplate.name': req.body.shallowDocTemplate
+        }
+    }
+    else {
+        filter = {
+            'judged': req.body.judged
+        }
+    }
+    MaterialDB.countDocuments(filter).exec((err, count) => {
         if (err) {
             console.log(err);
             res.status(500).send({message: err});
