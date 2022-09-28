@@ -394,32 +394,19 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     }
                 })
             }
-            console.log("got all used materials of user " + req.body.UUID + " for run " + req.body.resetCounter + " here: " + usedMaterialIDs.toString())
-            const materialQuery = MaterialDB.find({})
+            const materialQuery = MaterialDB.find({"judged" : true})
             materialQuery.exec(function (error, result){
                 if (error){
                     console.log("Error fetching materials: " + error.message)
                     res.status(500).send({message: "Error fetching materials: " + error.message});
                 }else {
-                    //Get all available material IDs
-                    //Todo, filter for judged here?
-                    const allMaterialIDs: string[] = []
-                    result.forEach(material =>{
-                        if(material.judged){
-                            allMaterialIDs.push(material._id)
+                    //generate a list of all unused material IDs
+                    const unusedMaterialIDs: string[] = []
+                    result.forEach(material => {
+                        if(!usedMaterialIDs.includes(material._id.toString())){
+                           unusedMaterialIDs.push(material._id.toString())
                         }
                     })
-                    // console.log("Got all existing material ids: " + allMaterialIDs.toString())
-                    //Get a list of all uncompleted material IDs
-                    const unusedMaterialIDs: string[] = []
-                    allMaterialIDs.forEach(matID => {
-                        let used = false
-                        usedMaterialIDs.forEach(usedID =>{
-                            if(usedID == matID) used = true
-                        })
-                        if (!used) unusedMaterialIDs.push(matID)
-                    })
-                    // console.log("Removed used ids: " + unusedMaterialIDs.toString())
 
                     if(unusedMaterialIDs.length <= 0){
                         //No unused materials left
