@@ -447,6 +447,8 @@ export class RadiolearnUiComponent implements OnInit {
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
     this.generateChips();
+    //navigate to category of last chip
+    if(this.chips.length > 0) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
