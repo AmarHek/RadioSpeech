@@ -108,6 +108,12 @@ export class BackendCallerService {
     );
   }
 
+  addDoctorReport(template: Template, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration}
+    );
+  }
+
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
       deepDocTemplate: material.deepDocTemplate,

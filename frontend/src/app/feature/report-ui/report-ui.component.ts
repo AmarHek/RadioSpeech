@@ -57,6 +57,11 @@ export class ReportUiComponent implements OnInit {
 
   private user: User;
 
+  //data collection
+  timestampStart: number
+  template: Template = undefined
+  submittedReport: boolean = false
+
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
@@ -79,6 +84,8 @@ export class ReportUiComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
+    //data collection
+    this.timestampStart = Date.now()
   }
 
   // HANDLE CHIPS
@@ -111,6 +118,7 @@ export class ReportUiComponent implements OnInit {
             window.alert("Dieses Dictionary existiert nicht! " +
               "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
           } else {
+            this.template = template
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts);
@@ -227,6 +235,17 @@ export class ReportUiComponent implements OnInit {
     }
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
+  }
+
+  submit(){
+    if(this.submittedReport) return
+    const duration = Date.now() - this.timestampStart;
+    this.backendCaller.addDoctorReport(
+      this.template,
+      this.timestampStart,
+      duration
+    ).subscribe(res => console.log(res.message))
+    this.submittedReport = true
   }
 }
 

@@ -53,6 +53,12 @@ export interface UsageData {
   resetCounter: number;
 }
 
+export interface DoctorReport{
+  template: Template;
+  timestamp: number;
+  duration: number;
+}
+
 export interface Participant {
   UUID: string;
   usageList: UsageData[]
