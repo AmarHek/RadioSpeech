@@ -6,9 +6,8 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
 import {ReportOptionsComponent} from "@app/shared";
-import {Category, ColoredText, InputChip, Role, Template, TopLevel, User} from "@app/models";
+import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ENTER} from "@angular/cdk/keycodes";
-import {MatChipInputEvent} from "@angular/material/chips";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 
 interface Layout{
@@ -29,7 +28,6 @@ export class ReportUiComponent implements OnInit {
   @ViewChild(ReportOptionsComponent)
   private optionsComponent: ReportOptionsComponent;
 
-  useChips = true;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER];
@@ -50,7 +48,6 @@ export class ReportUiComponent implements OnInit {
 
   input = "";
   mergedInput = "";
-  foundKeywords: ColoredText[] = [];
 
   categories: Category[];
   report = "";
@@ -85,18 +82,13 @@ export class ReportUiComponent implements OnInit {
   }
 
   // HANDLE CHIPS
-  add(event: MatChipInputEvent): void {
-    // Clear the input value
-    // event.chipInput?.clear();
-  }
-
   remove(chip: InputChip): void {
     const index = this.chips.indexOf(chip);
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
     this.reset(false, false);
-    this.onInput(new Event(""));
+    this.onInput();
   }
 
   onSelected(cat: string){
@@ -156,89 +148,32 @@ export class ReportUiComponent implements OnInit {
     setTimeout(() => this.modelChange(), 5);
   }
 
-  onBackSpaceKeyDown(event){
-    //Override onBackSpaceKeyDown to prevent default behavior of deleting chips
-    if(this.useChips){
-      const chipCount = this.chips.length;
-      if(chipCount>0){
-        const oldInput = this.input;
-        let newInput = "";
-        this.chips.forEach(c => newInput += c.content + " ");
-        newInput = newInput.trim();
-        this.input = newInput + " " + oldInput;
-        this.chips = [];
-      }
-    }
-    this.reset();
-    return true;
-  }
-
   //If useChips is set to false, inputs are handled exactly like before the implementations of chips
-  onInput(ev) {
-    if(ev.inputType === "deleteContentBackward") {
-      //reset is now handled in onBackSpacePress
-      // this.reset();
-      return;
-    }
-    if (this.input[this.input.length - 1] === " ") {
-      this.input = this.inputParser.autocorrect(this.input);
-    }
-
-    if(this.useChips){
-      console.log("___________________________________________________________________________________");
-      //Check if previous run ended with text variable, if yes, don't automatically separate chip and input with spaces
-      let trim = false;
-      let allVars = [];
-      this.inputParser.foundVariables.forEach(list => allVars = allVars.concat(list));
-      if(allVars.length>0 && allVars[allVars.length-1].kind === "text"){
-        if(this.inputParser.foundClickables[this.inputParser.foundClickables.length-1].name === allVars[allVars.length-1].selectable){
-          trim = true;
-        }
-      }
-      this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, trim);
-      console.log("------------------MERGED INPUT>" + this.mergedInput + "<");
-      this.inputParser.parseInput(this.mergedInput);
-      this.debugPrintVars();
-    } else {
-      this.inputParser.parseInput(this.input);
-    }
-
+  onInput() {
+    //Remove chips showing unrecognized text
+    this.chipHelper.removeRedChips(this.chips)
+    // Combine existing chips and text input into one input line
+    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
+    //Parse this input, assign the values and generate the new chips accordingly
+    this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
-    if(this.useChips) {
-      this.generateChips();
+    this.generateChips();
+    // Remove everything that was detected as a clickable or variable from the input
+    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
+    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
+    //Add a red chip containing unrecognized text if there is any
+    if (this.mergedInput.trim() !== "") {
+      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
     }
-    this.foundKeywords = this.inputParser.getColoredText(this.input);
+    //Clear the text input
+    this.input = "";
+    this.chipInput.nativeElement.value = "";
+
     setTimeout(() => this.updateText(), 5);
   }
 
-
-  debugPrintVars(){
-    console.log("--FOUND VARIABLES");
-    console.log(this.inputParser.foundVariables);
-    this.inputParser.foundVariables.forEach(list => {
-      list.forEach((v, i) => {
-        console.log(i + ") "+v.textBefore + " synonym >" + v.synonym +
-          "< pos[" + v.position + "," + v.positionEnd + "] substring >"
-          + this.mergedInput.substring(v.position, v.positionEnd) + "< value >" + v.value + "<");
-      });
-    });
-  }
-
   generateChips(){
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
-    console.log("TEXT NO VARS>" + this.mergedInput + "<");
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    console.log("TEXT NO CLICKABLES>" + this.mergedInput + "<");
-    //Add chips displaying the active clickables and variables, deduced from this.parts
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
-    //Show the remaining text that was not detected as part of a clickable or a variable
-    if(this.input !== " ") {
-      this.input = this.mergedInput.trimStart();
-    }
-    // Additionally setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
-    // field, since otherwise the input text won't update via ngModel
-    this.chipInput.nativeElement.value = this.input;
-    this.selectedSelectableID = "";
   }
 
   // TODO Auf Dataparser auslagern
@@ -251,7 +186,7 @@ export class ReportUiComponent implements OnInit {
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
-    this.onInput(new Event(""));
+    this.onInput();
   }
 
   modelChange(){

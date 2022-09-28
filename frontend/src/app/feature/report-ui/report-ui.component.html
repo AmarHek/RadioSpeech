@@ -39,9 +39,8 @@
             #chipInput
             placeholder="Befund eingeben ..."
             [matChipInputFor]="chipList"
-            (keydown.backspace)="onBackSpaceKeyDown($event)"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="add($event)" [(ngModel)]="this.input" (input)="onInput($event)">
+            [(ngModel)]="this.input" (input)="onInput()">
         </mat-chip-list>
       </mat-form-field>
 
