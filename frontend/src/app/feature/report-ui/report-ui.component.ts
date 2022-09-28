@@ -6,8 +6,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
 import {ReportOptionsComponent} from "@app/shared";
-import {Category, ColoredText, InputChip, Role, Template, TopLevel, User, Variable} from "@app/models";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {Category, ColoredText, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
@@ -44,7 +43,7 @@ export class ReportUiComponent implements OnInit {
     {id: 1, displayName: "Kategorien Aufklappen"}
   ];
 
-  currentLayout = this.layouts[0];
+  currentLayout = this.layouts[1];
 
   parts: TopLevel[];
   defaultParts: TopLevel[];
@@ -106,7 +105,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   layoutChanged(newLayout: Layout){
-    this.selectedCat = "undefined";
+    this.selectedCat = this.categories[0].name;
     this.currentLayout = newLayout;
   }
 
@@ -123,6 +122,7 @@ export class ReportUiComponent implements OnInit {
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts);
+            this.selectedCat = this.categories[0].name;
             this.inputParser.init(this.defaultParts);
           }
         });
@@ -137,7 +137,6 @@ export class ReportUiComponent implements OnInit {
   }
 
   updateText(): void {
-    console.log(this.parts);
     [this.report, this.judgment] = this.dataParser.makeText(this.parts);
   }
 
@@ -147,7 +146,6 @@ export class ReportUiComponent implements OnInit {
   }
 
   onChipClick(chip: InputChip){
-    // this.selectedCat = chip.clickable.category
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
   }
@@ -283,7 +281,9 @@ export class ReportUiComponent implements OnInit {
       this.chips = [];
     }
     this.input = "";
-    this.selectedCat = this.categories[0].name;
+    if(resetSelectedCat){
+      this.selectedCat = this.categories[0].name;
+    }
     if (resetSelectedCat) {
       this.selectedSelectableID = "";
     }

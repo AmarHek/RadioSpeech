@@ -49,7 +49,7 @@
 
   <div id="inner_remaining">
         <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1">
-          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories">
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories" [selected]="cat.name == selectedCat">
             {{cat.name}}
           </mat-list-option>
         </mat-selection-list>
