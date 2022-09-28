@@ -434,13 +434,8 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   onChipClick(chip: InputChip){
-    // this.selectedCat = chip.clickable.category
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
-    console.log("selected selectable");
-    console.log(">" + this.selectedSelectableID + "<");
-    console.log("selected cat");
-    console.log(">" + this.selectedCat + "<");
   }
 
   onInput() {

@@ -173,6 +173,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   generateChips(){
+    this.selectedSelectableID = ""
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
