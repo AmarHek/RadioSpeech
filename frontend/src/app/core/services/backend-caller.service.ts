@@ -144,8 +144,8 @@ export class BackendCallerService {
       {id: scanID, scanType, filename});
   }
 
-  listByFilter(skip: number, length: number, judged: boolean, shallowDocTemplateName: string) {
-    const query = {skip, length, judged, shallowDocTemplateName};
+  listByFilter(skip: number, length: number, judged: boolean, shallowDocTemplate: string) {
+    const query = {skip, length, judged, shallowDocTemplate};
     // skip: mongoose skip parameter, how many documents to skip
     // length: how many documents to return
     return this.http.post<{message: string; materials: Material[]}>(

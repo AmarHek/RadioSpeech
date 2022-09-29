@@ -69,7 +69,9 @@ export class RadiolearnListComponent implements OnInit {
   getCountAndData() {
     this.backendCaller.getDocCount(this.showJudged, this.shallowFilter).subscribe(res => {
       console.log("Count: ", res.count);
+      console.log(this.collectionSize);
       this.collectionSize = res.count;
+      this.page = 1;
       this.getData();
     }, err => {
       console.log(err);
