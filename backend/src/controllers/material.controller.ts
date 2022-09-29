@@ -318,10 +318,10 @@ export function listAll(req: Request, res: Response): void {
 
 export function listByFilter(req: Request, res: Response): void {
     let filter;
-    if (req.body.shallowDocTemplate !== undefined) {
+    if (req.body.shallowDocTemplateName !== undefined) {
         filter = {
             'judged': req.body.judged,
-            'shallowDocTemplate.name': req.body.shallowDocTemplate
+            'shallowDocTemplate.name': req.body.shallowDocTemplateName
         }
     }
     else {
@@ -329,6 +329,8 @@ export function listByFilter(req: Request, res: Response): void {
             'judged': req.body.judged
         }
     }
+    console.log(req.body);
+    console.log("Filter: ", filter);
 
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
@@ -437,10 +439,10 @@ export function getUnusedMaterial(req: Request, res: Response): void {
 
 export function countMaterials(req: Request, res: Response): void {
     let filter;
-    if (req.body.shallowDocTemplate !== undefined) {
+    if (req.body.shallowDocTemplateName !== undefined) {
         filter = {
             'judged': req.body.judged,
-            'shallowDocTemplate.name': req.body.shallowDocTemplate
+            'shallowDocTemplate.name': req.body.shallowDocTemplateName
         }
     }
     else {
@@ -448,6 +450,8 @@ export function countMaterials(req: Request, res: Response): void {
             'judged': req.body.judged
         }
     }
+
+    console.log("Count", filter);
     MaterialDB.countDocuments(filter).exec((err, count) => {
         if (err) {
             console.log(err);
