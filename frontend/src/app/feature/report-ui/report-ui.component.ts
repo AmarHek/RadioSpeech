@@ -59,8 +59,8 @@ export class ReportUiComponent implements OnInit {
 
   //data collection
   timestampStart: number
+  imageID: string
   template: Template = undefined
-  submittedReport: boolean = false
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -85,7 +85,6 @@ export class ReportUiComponent implements OnInit {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
     //data collection
-    this.timestampStart = Date.now()
   }
 
   // HANDLE CHIPS
@@ -238,14 +237,18 @@ export class ReportUiComponent implements OnInit {
   }
 
   submit(){
-    if(this.submittedReport) return
     const duration = Date.now() - this.timestampStart;
     this.backendCaller.addDoctorReport(
       this.template,
       this.timestampStart,
-      duration
+      duration,
+      this.imageID
     ).subscribe(res => console.log(res.message))
-    this.submittedReport = true
+  }
+
+  startCounter(id: string){
+    this.timestampStart = Date.now()
+    this.imageID = id
   }
 }
 

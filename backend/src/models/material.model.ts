@@ -57,6 +57,7 @@ export interface DoctorReport{
   template: Template;
   timestamp: number;
   duration: number;
+  imageID: string;
 }
 
 export interface Participant {
