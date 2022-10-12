@@ -68,6 +68,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { role: [Role.Admin, Role.Moderator]}
   },
+  {path: "deepspeech",
+   redirectTo: "deepspeech/login"},
   {path: "**", redirectTo: "/home"}
 ];
 
