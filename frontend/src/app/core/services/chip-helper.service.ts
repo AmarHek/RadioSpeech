@@ -58,7 +58,7 @@ export class ChipHelperService {
     let activeVars = 0
     variables.forEach(variable => {
       if(variable.kind == "oc" && variable.value != null){
-        let key = ""
+        let key: string
         if (variable.keys == null){
           key = variable.value
         }else {
@@ -161,5 +161,16 @@ export class ChipHelperService {
 
   isNumeric(s) {
     return !isNaN(s - parseFloat(s));
+  }
+
+  removeRedChips(chips){
+    for (const chip of chips){
+      if(chip.color === ChipColors.RED){
+        const index = chips.indexOf(chip);
+        if (index >= 0) {
+          chips.splice(index, 1);
+        }
+      }
+    }
   }
 }

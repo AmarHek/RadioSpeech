@@ -68,6 +68,12 @@ export class BackendCallerService {
     return this.http.get<Template[]>(this.templateUrl + "list/");
   }
 
+  getTemplateListAsString(kind: "deepDoc" | "shallowDoc") {
+    return this.http.post<{templateNames: string[]}>(
+      this.templateUrl + "listAsString/",
+      {kind});
+  }
+
   getTemplatesByKind(kind: string) {
     return this.http.post<{templates: Template[]; message: string}>(
         this.templateUrl + "getByKind/",
@@ -102,6 +108,12 @@ export class BackendCallerService {
     );
   }
 
+  addDoctorReport(template: Template, timestampStart: number, duration: number, imageID: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration, imageID}
+    );
+  }
+
   updateMaterial(material: Material) {
     return this.http.put<{message: string}>(this.materialUrl + "update/" + material._id, {
       deepDocTemplate: material.deepDocTemplate,
@@ -132,12 +144,12 @@ export class BackendCallerService {
       {id: scanID, scanType, filename});
   }
 
-  listByQuery(skip: number, length: number, judged: boolean) {
-    const query = {skip, length, judged};
+  listByFilter(skip: number, length: number, judged: boolean, shallowDocTemplate: string) {
+    const query = {skip, length, judged, shallowDocTemplate};
     // skip: mongoose skip parameter, how many documents to skip
     // length: how many documents to return
     return this.http.post<{message: string; materials: Material[]}>(
-      this.materialUrl + "listByQuery/",
+      this.materialUrl + "listByFilter/",
       query);
   }
 
@@ -157,10 +169,11 @@ export class BackendCallerService {
     );
   }
 
-  getDocCount(judged: boolean) {
+  // TODO: Verallgemeinern auf query/filter
+  getDocCount(judged: boolean, shallowDocTemplate: string) {
     return this.http.post<{message: string; count: number}>(
-      this.materialUrl + "queryDocCount/",
-      {judged}
+      this.materialUrl + "countMaterials/",
+      {judged, shallowDocTemplate}
     );
   }
 

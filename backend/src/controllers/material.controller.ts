@@ -172,7 +172,8 @@ export function deleteScanById(req: Request, res: Response): void {
 export function updateMaterialTemplates(req: Request, res: Response): void {
     // replaces old with new template in all unjudged material
     // first get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
@@ -192,7 +193,7 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
                 'judged': req.body.judged,
                 'template.timestamp': {$lt: newTemplate.timestamp}
             }, {
-                template: newTemplate,
+                deepDocTemplate: newTemplate,
                 judged: false
             }).exec(
                 (err, update) => {
@@ -207,11 +208,13 @@ export function updateMaterialTemplates(req: Request, res: Response): void {
     });
 }
 
+// NOTE: BETTER USE PYTHON SCRIPTS WITH HARD CODED CHANGES
 export function updateMatTempBC(req: Request, res: Response): void {
     // updates old templates on judged with backwards compatibility
 
     // first get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
@@ -256,11 +259,13 @@ export function updateMatTempBC(req: Request, res: Response): void {
 
 export function updateMaterialTemplateBCByID(req: Request, res: Response) {
     // get current Template
-    TemplateDB.findOne({name: "Radiolearn"}).exec((err, template) => {
+    TemplateDB.findOne({name: "Radiolearn"}).exec((err,
+                                                   template) => {
         if (err || template === null) {
             res.status(500).send({message: err});
         } else {
-            MaterialDB.findById(req.params.id).exec((err, material) => {
+            MaterialDB.findById(req.params.id).exec((err,
+                                                     material) => {
                 if (err || material === null) {
                     res.status(500).send({message: err});
                 } else {
@@ -311,10 +316,25 @@ export function listAll(req: Request, res: Response): void {
     });
 }
 
-export function listByQuery(req: Request, res: Response): void {
+export function listByFilter(req: Request, res: Response): void {
+    let filter;
+    if (req.body.shallowDocTemplate !== undefined) {
+        filter = {
+            'judged': req.body.judged,
+            'shallowDocTemplate.name': req.body.shallowDocTemplate
+        }
+    }
+    else {
+        filter = {
+            'judged': req.body.judged
+        }
+    }
+    console.log(req.body);
+    console.log("Filter: ", filter);
+
     const skip = Math.max(0, req.body.skip);
     if (req.body.judged) {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(filter)
             .sort('lastModified')
             .skip(skip)
             .limit(req.body.length)
@@ -325,7 +345,7 @@ export function listByQuery(req: Request, res: Response): void {
                 res.status(200).send({materials});
             });
     } else {
-        MaterialDB.find({judged: req.body.judged})
+        MaterialDB.find(filter)
             .skip(skip)
             .limit(req.body.length)
             .exec((err, materials) => {
@@ -376,32 +396,19 @@ export function getUnusedMaterial(req: Request, res: Response): void {
                     }
                 })
             }
-            console.log("got all used materials of user " + req.body.UUID + " for run " + req.body.resetCounter + " here: " + usedMaterialIDs.toString())
-            const materialQuery = MaterialDB.find({})
+            const materialQuery = MaterialDB.find({"judged" : true})
             materialQuery.exec(function (error, result){
                 if (error){
                     console.log("Error fetching materials: " + error.message)
                     res.status(500).send({message: "Error fetching materials: " + error.message});
                 }else {
-                    //Get all available material IDs
-                    //Todo, filter for judged here?
-                    const allMaterialIDs: string[] = []
-                    result.forEach(material =>{
-                        if(material.judged){
-                            allMaterialIDs.push(material._id)
+                    //generate a list of all unused material IDs
+                    const unusedMaterialIDs: string[] = []
+                    result.forEach(material => {
+                        if(!usedMaterialIDs.includes(material._id.toString())){
+                           unusedMaterialIDs.push(material._id.toString())
                         }
                     })
-                    // console.log("Got all existing material ids: " + allMaterialIDs.toString())
-                    //Get a list of all uncompleted material IDs
-                    const unusedMaterialIDs: string[] = []
-                    allMaterialIDs.forEach(matID => {
-                        let used = false
-                        usedMaterialIDs.forEach(usedID =>{
-                            if(usedID == matID) used = true
-                        })
-                        if (!used) unusedMaterialIDs.push(matID)
-                    })
-                    // console.log("Removed used ids: " + unusedMaterialIDs.toString())
 
                     if(unusedMaterialIDs.length <= 0){
                         //No unused materials left
@@ -430,8 +437,22 @@ export function getUnusedMaterial(req: Request, res: Response): void {
 
 }
 
-export function queryDocCount(req: Request, res: Response): void {
-    MaterialDB.countDocuments({judged: req.body.judged}).exec((err, count) => {
+export function countMaterials(req: Request, res: Response): void {
+    let filter;
+    if (req.body.shallowDocTemplate !== undefined) {
+        filter = {
+            'judged': req.body.judged,
+            'shallowDocTemplate.name': req.body.shallowDocTemplate
+        }
+    }
+    else {
+        filter = {
+            'judged': req.body.judged
+        }
+    }
+    console.log("Count", req.body);
+    console.log("Count", filter);
+    MaterialDB.countDocuments(filter).exec((err, count) => {
         if (err) {
             console.log(err);
             res.status(500).send({message: err});

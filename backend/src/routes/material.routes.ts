@@ -72,8 +72,8 @@ matRouter.put("/updateMaterialTemplatesBC/", MaterialController.updateMatTempBC)
 matRouter.put("/updateMaterialTemplatesBCByID/:id", MaterialController.updateMaterialTemplateBCByID);
 
 matRouter.get("/listAll/", MaterialController.listAll);
-matRouter.post("/listByQuery/", MaterialController.listByQuery);
-matRouter.post("/queryDocCount/", MaterialController.queryDocCount);
+matRouter.post("/listByFilter/", MaterialController.listByFilter);
+matRouter.post("/countMaterials/", MaterialController.countMaterials);
 matRouter.post("/random/", MaterialController.getRandom);
 matRouter.post("/unused/", MaterialController.getUnusedMaterial);
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
   selector: "app-report-output",
@@ -9,8 +9,11 @@ export class ReportOutputComponent implements OnInit {
 
   @Input() report: string;
   @Input() judgement: string;
+  @Output() startReport = new EventEmitter<any>();
+  @Output() submitReport = new EventEmitter<any>();
 
   disclaimer: string;
+  timerStarted = false
 
   constructor() { }
 
@@ -19,6 +22,17 @@ export class ReportOutputComponent implements OnInit {
 
   ngOnInit() {
     this.disclaimer = "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt.";
+  }
+
+  submitReportClicked(){
+    this.submitReport.emit();
+    this.timerStarted = false
+  }
+
+  startReportClicked(){
+    let id = prompt("Bitte geben Sie die ID der Aufnahme ein:")
+    this.startReport.emit(id)
+    this.timerStarted = true
   }
 
   copyText(inputElement: HTMLTextAreaElement) {

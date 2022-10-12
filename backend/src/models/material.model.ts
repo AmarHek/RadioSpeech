@@ -22,7 +22,7 @@ export interface Image {
 }
 
 export interface Material {
-  _id:                    string;
+  _id:            string;
   scans: {
     id:           string;
     mainScan:     Image;
@@ -51,6 +51,13 @@ export interface UsageData {
   duration: number;
   ogMaterial: Material;
   resetCounter: number;
+}
+
+export interface DoctorReport{
+  template: Template;
+  timestamp: number;
+  duration: number;
+  imageID: string;
 }
 
 export interface Participant {

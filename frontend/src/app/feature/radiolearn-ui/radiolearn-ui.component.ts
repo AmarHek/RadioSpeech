@@ -434,43 +434,31 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   onChipClick(chip: InputChip){
-    // this.selectedCat = chip.clickable.category
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
-    console.log("selected selectable");
-    console.log(">" + this.selectedSelectableID + "<");
-    console.log("selected cat");
-    console.log(">" + this.selectedCat + "<");
   }
 
   onInput() {
-    for (const chip of this.chips){
-      if(chip.color === ChipColors.RED){
-        const index = this.chips.indexOf(chip);
-        if (index >= 0) {
-          this.chips.splice(index, 1);
-        }
-      }
-    }
+    //Remove chips showing unrecognized text
+    this.chipHelper.removeRedChips(this.chips)
     // Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
-    //Pare this line, assign the values and generate the new chips accordingly
+    //Parse this input, assign the values and generate the new chips accordingly
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
     this.generateChips();
+    //navigate to category of last chip
+    if(this.chips.length > 0) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    if (this.input !== " ") {
-      this.input = this.mergedInput.trimStart();
+    //Add a red chip containing unrecognized text if there is any
+    if (this.mergedInput.trim() !== "") {
+      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
     }
-    // Additionally, setting the value via ELEMENT REF is necessary for the case that text is pasted into the input
-    // field, since otherwise the input text won't update via ngModel
-    if (this.input.trim() !== "") {
-      this.chips.push(new InputChip(this.input, ChipColors.RED, null));
-    }
+    //Clear the text input
     this.input = "";
-    this.chipInput.nativeElement.value = this.input;
+    this.chipInput.nativeElement.value = "";
   }
 
   assignValues() {
