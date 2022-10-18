@@ -14,7 +14,8 @@ export function saveDoctorReport(req: any, res: Response) {
         template: req.body.template,
         timestamp: req.body.timestampStart,
         duration: req.body.duration,
-        imageID: req.body.imageID
+        imageID: req.body.imageID,
+        layoutID: req.body.layoutID
     });
 
     doctorReport.save(function (err){

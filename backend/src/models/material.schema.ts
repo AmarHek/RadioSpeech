@@ -26,7 +26,8 @@ const doctorReportScheme = new mongoose.Schema({
     template: {type: [mongoose.Schema.Types.Mixed]},
     timestamp: {type: Number},
     duration: {type: Number},
-    imageID: {type: String}
+    imageID: {type: String},
+    layoutID: {type: Number}
 })
 
 export const DoctorReportDB = mongoose.model<DoctorReport>("DoctorReport", doctorReportScheme, "doctorReports")

@@ -242,7 +242,8 @@ export class ReportUiComponent implements OnInit {
       this.template,
       this.timestampStart,
       duration,
-      this.imageID
+      this.imageID,
+      this.currentLayout.id
     ).subscribe(res => console.log(res.message))
   }
 
