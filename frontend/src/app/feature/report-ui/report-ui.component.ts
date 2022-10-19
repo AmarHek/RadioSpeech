@@ -260,8 +260,6 @@ export class ReportUiComponent implements OnInit {
   }
 
   submitReportClicked(){
-    this.reset()
-    this.updateText()
     this.timerStarted = false
     this.submit()
   }
