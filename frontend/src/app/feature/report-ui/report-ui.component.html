@@ -47,18 +47,24 @@
   </div>
 
   <div id="inner_remaining">
-        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1">
+        <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1 && mode != 'f'">
           <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories" [selected]="cat.name == selectedCat">
             {{cat.name}}
           </mat-list-option>
         </mat-selection-list>
 
-        <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories"
+        <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories && mode != 'f'"
                      [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                      (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-report-options>
-        <app-report-output  class="report" [report]="report" [judgement]="judgment" (startReport)="startCounter($event)" (submitReport)="submit()"></app-report-output>
+        <app-report-output  class="report" [report]="report" [judgement]="judgment"></app-report-output>
   </div>
 
+  <button *ngIf="!timerStarted" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">
+    Start Befundung
+  </button>
+  <button *ngIf="timerStarted" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="submit-report-button" (click)="submitReportClicked()">
+    Submit Report
+  </button>
 </div>
 </body>
 </html>

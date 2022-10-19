@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
@@ -9,6 +9,7 @@ import {ReportOptionsComponent} from "@app/shared";
 import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ENTER} from "@angular/cdk/keycodes";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
+import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 interface Layout{
   id: number;
@@ -60,7 +61,9 @@ export class ReportUiComponent implements OnInit {
   //data collection
   timestampStart: number
   imageID: string
+  mode: string
   template: Template = undefined
+  timerStarted: boolean = false
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -70,6 +73,7 @@ export class ReportUiComponent implements OnInit {
               private chipHelper: ChipHelperService,
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
+              public dialog: MatDialog,
               private authenticationService: AuthenticationService) {
   }
 
@@ -243,13 +247,52 @@ export class ReportUiComponent implements OnInit {
       this.timestampStart,
       duration,
       this.imageID,
-      this.currentLayout.id
+      this.currentLayout.id,
+      this.mode,
+      this.report
     ).subscribe(res => console.log(res.message))
   }
 
-  startCounter(id: string){
-    this.timestampStart = Date.now()
-    this.imageID = id
+  startReportClicked(){
+    this.openDialog()
+    this.reset()
+    this.updateText()
+  }
+
+  submitReportClicked(){
+    this.reset()
+    this.updateText()
+    this.timerStarted = false
+    this.submit()
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '350px',
+      data: {id: ""}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.mode = result.split('$')[1]
+      this.imageID = result.split('$')[0]
+      console.log("mode:" + this.mode)
+      console.log("id:" + this.imageID)
+      this.timerStarted = true
+      this.timestampStart = Date.now()
+    });
   }
 }
 
+export interface DialogData{
+  id: string;
+}
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example-dialog.html',
+})
+export class DialogOverviewExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+}
