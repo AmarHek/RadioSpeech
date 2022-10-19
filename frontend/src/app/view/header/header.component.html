@@ -15,7 +15,7 @@
   <a mat-button class="header-button" routerLink="/admin" routerLinkActive="active" *ngIf="(isAdmin)">
     <mat-icon>admin_panel_settings</mat-icon>
   </a>
-  <a mat-button class="header-button" routerLink="/manageAccount" routerLinkActive="active">
+  <a *ngIf="isMod" mat-button class="header-button" routerLink="/manageAccount" routerLinkActive="active">
     <mat-icon>manage_accounts</mat-icon>
   </a>
   <a mat-button class="header-button" style="cursor: pointer;" routerLinkActive="active" (click)="logout()">
