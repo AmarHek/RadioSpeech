@@ -1,4 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
+import {AuthenticationService} from "@app/core";
+import {Role, User} from "@app/models";
 
 @Component({
   selector: "app-report-output",
@@ -13,26 +15,45 @@ export class ReportOutputComponent implements OnInit {
   @Output() submitReport = new EventEmitter<any>();
 
   disclaimer: string;
-  timerStarted = false
+  timerStarted = false;
 
-  constructor() { }
+  private user: User;
+
+  constructor(private authenticationService: AuthenticationService) { }
 
   // TODO: make download button
   // TODO: Send change event to layout so changes in report-output are reflected in data structure
 
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
   ngOnInit() {
-    this.disclaimer = "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt.";
+    this.authenticationService.user.subscribe(
+      (x) => {
+        this.user = x;
+      });
+    this.disclaimer =
+      "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt.";
   }
 
   submitReportClicked(){
     this.submitReport.emit();
-    this.timerStarted = false
+    this.timerStarted = false;
   }
 
   startReportClicked(){
-    let id = prompt("Bitte geben Sie die ID der Aufnahme ein:")
-    this.startReport.emit(id)
-    this.timerStarted = true
+    let id = prompt("Bitte geben Sie die ID der Aufnahme ein:");
+    if (id === null) {
+      return;
+    } else {
+      this.startReport.emit(id);
+      this.timerStarted = true;
+    }
   }
 
   copyText(inputElement: HTMLTextAreaElement) {
@@ -42,8 +63,8 @@ export class ReportOutputComponent implements OnInit {
   }
 
   copyAll() {
-    let fullText: string;
-    fullText = this.report + "\n\n" + this.disclaimer + "\n\n\n" + this.judgement + "\n\n" + this.disclaimer;
+    const fullText: string = this.report + "\n\n" + this.disclaimer +
+      "\n\n\n" + this.judgement + "\n\n" + this.disclaimer;
     const selBox = document.createElement("textarea");
     selBox.value = fullText;
     document.body.append(selBox);

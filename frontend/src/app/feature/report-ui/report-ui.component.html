@@ -48,15 +48,19 @@
 
   <div id="inner_remaining">
         <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1">
-          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories" [selected]="cat.name == selectedCat">
+          <mat-list-option (click)="onSelected(cat.name)" *ngFor="let cat of categories"
+                           [selected]="cat.name === selectedCat">
             {{cat.name}}
           </mat-list-option>
         </mat-selection-list>
 
-        <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories"
-                     [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
-                     (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-report-options>
-        <app-report-output  class="report" [report]="report" [judgement]="judgment" (startReport)="startCounter($event)" (submitReport)="submit()"></app-report-output>
+        <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
+                            *ngIf="categories"
+                            [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
+                            (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id">
+        </app-report-options>
+        <app-report-output  class="report" [report]="report" [judgement]="judgment"
+                            (startReport)="startCounter($event)" (submitReport)="submit()"></app-report-output>
   </div>
 
 </div>

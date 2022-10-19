@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {increaseResetCounter, surveyLinkClicked} from "@app/helpers/localStorageHelper";
 
 @Component({
-  selector: 'app-dialog-no-materials',
-  templateUrl: './dialog-no-materials.component.html',
-  styleUrls: ['./dialog-no-materials.component.css']
+  selector: "app-dialog-no-materials",
+  templateUrl: "./dialog-no-materials.component.html",
+  styleUrls: ["./dialog-no-materials.component.css"]
 })
 export class DialogNoMaterialsComponent implements OnInit {
 
@@ -14,11 +14,11 @@ export class DialogNoMaterialsComponent implements OnInit {
   }
 
   linkClicked(){
-    surveyLinkClicked()
+    surveyLinkClicked();
   }
 
   resetProgress(){
-    increaseResetCounter()
+    increaseResetCounter();
   }
 
 }
