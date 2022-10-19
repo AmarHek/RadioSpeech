@@ -108,9 +108,9 @@ export class BackendCallerService {
     );
   }
 
-  addDoctorReport(template: Template, timestampStart: number, duration: number): Observable<{ success: boolean; message: string }> {
+  addDoctorReport(template: Template, timestampStart: number, duration: number, imageID: string, layoutID: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration}
+      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration, imageID, layoutID}
     );
   }
 

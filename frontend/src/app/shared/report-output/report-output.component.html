@@ -14,7 +14,10 @@
   <button style="position: fixed; bottom: 15px; right: 15px;" mat-fab color="primary" id="copy-button" (click)="copyAll()">
     <mat-icon>content_copy</mat-icon>
   </button>
-<button style="position: fixed; bottom: 15px; right: 100px;" mat-fab color="primary" id="submit-report-button" (click)="submitReportClicked()">
-  <mat-icon>backup</mat-icon>
+<button *ngIf="!timerStarted" style="position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">
+  Start Befundung
+</button>
+<button *ngIf="timerStarted" style="position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="submit-report-button" (click)="submitReportClicked()">
+  Submit Report
 </button>
 

@@ -13,7 +13,9 @@ export function saveDoctorReport(req: any, res: Response) {
     const doctorReport = new DoctorReportDB({
         template: req.body.template,
         timestamp: req.body.timestampStart,
-        duration: req.body.duration
+        duration: req.body.duration,
+        imageID: req.body.imageID,
+        layoutID: req.body.layoutID
     });
 
     doctorReport.save(function (err){
