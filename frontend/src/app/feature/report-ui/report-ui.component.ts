@@ -249,7 +249,7 @@ export class ReportUiComponent implements OnInit {
       this.imageID,
       this.currentLayout.id,
       this.mode,
-      this.report
+      this.report + "\nJudgement below:\n" + this.judgement
     ).subscribe(res => console.log(res.message))
   }
 

@@ -56,7 +56,7 @@
         <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID" *ngIf="categories && mode != 'f'"
                      [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                      (clickEvent)="onClick()" [categories]="categories" [layoutId]="currentLayout.id"></app-report-options>
-        <app-report-output  class="report" [report]="report" [judgement]="judgement"></app-report-output>
+        <app-report-output  class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
   </div>
 
   <button *ngIf="!timerStarted && isModerator" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">

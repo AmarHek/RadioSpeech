@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
   selector: "app-report-output",
@@ -9,6 +9,9 @@ export class ReportOutputComponent implements OnInit {
 
   @Input() report: string;
   @Input() judgement: string;
+
+  @Output() reportChange = new EventEmitter<string>();
+  @Output() judgementChange = new EventEmitter<string>();
 
   disclaimer: string;
 
@@ -25,6 +28,14 @@ export class ReportOutputComponent implements OnInit {
     inputElement.select();
     document.execCommand("copy");
     inputElement.setSelectionRange(0, 0);
+  }
+
+  onInputReport(){
+    this.reportChange.emit(this.report)
+  }
+
+  onInputJudgement(){
+    this.judgementChange.emit(this.judgement)
   }
 
   copyAll() {
