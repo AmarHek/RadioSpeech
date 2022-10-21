@@ -53,9 +53,13 @@ for oid in oids:
 
     # get selectable "Thorax im Liegen" from parts
     thoraxLiegen = material.get("deepDocTemplate").get("parts")[0].get("selectables")[0].get("options")[2]
+    groupThorax = material.get("deepDocTemplate").get("parts")[0].get("selectables")[0]
     if thoraxLiegen["name"] == "Thorax im Liegen":
         thoraxLiegen["name"] = "Thorax a.p."
         thoraxLiegen["keys"] = ["Thorax a.p., Thorax ap"]
+
+    if groupThorax["value"] == "Thorax im Liegen":
+        groupThorax["value"] = "Thorax a.p."
 
     # get Instrumentierung
     instrumentierungSel = material["deepDocTemplate"]["parts"][2]["selectables"]
