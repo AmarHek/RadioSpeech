@@ -10,20 +10,32 @@ import {SharedModule} from "@app/shared/shared.module";
 import {ViewModule} from "@app/view/view.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
+import {DialogOverviewExampleDialog} from "@app/feature";
+import {FormsModule} from "@angular/forms";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
+    DialogOverviewExampleDialog,
     AppComponent,
   ],
-    imports: [
-      BrowserModule,
-      BrowserAnimationsModule,
-      HttpClientModule,
-      AppRoutingModule,
-      FeatureModule,
-      SharedModule,
-      ViewModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FeatureModule,
+    SharedModule,
+    ViewModule,
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+  ],
   providers: [
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
