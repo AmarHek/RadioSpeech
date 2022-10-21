@@ -52,7 +52,7 @@ export class ReportUiComponent implements OnInit {
 
   categories: Category[];
   report = "";
-  judgment = "";
+  judgement = "";
 
   downJson: SafeUrl;
 
@@ -140,12 +140,12 @@ export class ReportUiComponent implements OnInit {
   }
 
   updateText(): void {
-    [this.report, this.judgment] = this.dataParser.makeText(this.parts);
+    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
   }
 
   resetText(): void {
     this.report = "";
-    this.judgment = "";
+    this.judgement = "";
   }
 
   onChipClick(chip: InputChip){
