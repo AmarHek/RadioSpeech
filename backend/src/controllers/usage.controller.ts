@@ -15,7 +15,9 @@ export function saveDoctorReport(req: any, res: Response) {
         timestamp: req.body.timestampStart,
         duration: req.body.duration,
         imageID: req.body.imageID,
-        layoutID: req.body.layoutID
+        layoutID: req.body.layoutID,
+        mode: req.body.mode,
+        report: req.body.report
     });
 
     doctorReport.save(function (err){

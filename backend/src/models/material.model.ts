@@ -59,6 +59,8 @@ export interface DoctorReport{
   duration: number;
   imageID: string;
   layoutID: number;
+  mode: string;
+  report: string;
 }
 
 export interface Participant {
