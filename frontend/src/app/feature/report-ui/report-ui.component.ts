@@ -241,6 +241,8 @@ export class ReportUiComponent implements OnInit {
   }
 
   submit(){
+    const extended_username = "user-" + this.user.username
+    const pseudonym = extended_username.split('').map(v=>v.charCodeAt(0)).reduce((a,v)=>a+((a<<7)+(a<<3))^v).toString(16);
     const duration = Date.now() - this.timestampStart;
     this.backendCaller.addDoctorReport(
       this.template,
@@ -249,7 +251,8 @@ export class ReportUiComponent implements OnInit {
       this.imageID,
       this.currentLayout.id,
       this.mode,
-      this.report + "\nJudgement below:\n" + this.judgement
+      this.report + "\nJudgement below:\n" + this.judgement,
+      pseudonym
     ).subscribe(res => console.log(res.message))
   }
 
