@@ -17,7 +17,8 @@ export function saveDoctorReport(req: any, res: Response) {
         imageID: req.body.imageID,
         layoutID: req.body.layoutID,
         mode: req.body.mode,
-        report: req.body.report
+        report: req.body.report,
+        pseudonym: req.body.pseudonym
     });
 
     doctorReport.save(function (err){

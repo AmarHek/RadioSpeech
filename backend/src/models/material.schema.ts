@@ -29,7 +29,8 @@ const doctorReportScheme = new mongoose.Schema({
     imageID: {type: String},
     layoutID: {type: Number},
     mode: {type: String},
-    report: {type: String}
+    report: {type: String},
+    pseudonym: {type: String}
 })
 
 export const DoctorReportDB = mongoose.model<DoctorReport>("DoctorReport", doctorReportScheme, "doctorReports")

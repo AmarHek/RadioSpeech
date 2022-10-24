@@ -61,6 +61,7 @@ export interface DoctorReport{
   layoutID: number;
   mode: string;
   report: string;
+  pseudonym: string;
 }
 
 export interface Participant {
