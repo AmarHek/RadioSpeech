@@ -44,3 +44,10 @@ export function isJsonString(str: string) {
     }
     return true;
 }
+
+export function isNumber(value: string | number): boolean
+{
+    return ((value != null) &&
+        (value !== '') &&
+        !isNaN(Number(value.toString())));
+}

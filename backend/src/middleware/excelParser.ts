@@ -17,7 +17,7 @@ import {
     VariableRatio,
     VariableText
 } from "../models/template.model";
-import {trim2DArray, trimArray} from "../util/util";
+import {trim2DArray, trimArray, isNumber} from "../util/util";
 
 interface Row {
     Gliederung: string;
@@ -32,6 +32,7 @@ interface Row {
     "Variable-ID": string;
     "Variable-Typ": string;
     "Variable-Synonyme": string;
+    "Variable-Default": string;
     "Variable-Info": string;
     "Text Befund": string;
     "Text Beurteilung": string;
@@ -233,7 +234,10 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 }
 
 function extractSelectableKeys(rows: Row[]): string[] {
-    const name = rows[0]["Befund"].trim();
+    let name = "";
+    if (rows[0]["Befund"] !== undefined) {
+        name = rows[0]["Befund"].trim();
+    }
     let keys: string[] = [];
     if (rows[0]["Synonyme"] !== undefined){
         keys = trimArray(rows[0]["Synonyme"].split(";"))
@@ -243,7 +247,6 @@ function extractSelectableKeys(rows: Row[]): string[] {
     }
     return keys;
 }
-
 
 function extractBox(rows: Row[]): CheckBox {
     const variables = extractSelectableVariables(rows)
@@ -295,10 +298,19 @@ function extractVariable(row: Row): Variable {
 }
 
 function extractVariableOC(row: Row, variable: VariableCommon): VariableOC {
-    const parsed = variable as VariableOC
-    parsed.kind = "oc"
-    parsed.value = null as any
-    parsed.values = trimArray(row["Variable-Typ"].split("/"))
+    const parsed = variable as VariableOC;
+    parsed.kind = "oc";
+    parsed.values = trimArray(row["Variable-Typ"].split("/"));
+    parsed.value = null as any;
+    if (row["Variable-Default"] !== undefined) {
+        const varDefault = row["Variable-Default"].trim();
+        if (parsed.values.includes(varDefault)) {
+            parsed.value = varDefault
+        } else {
+            console.log(varDefault + "is not part of the provided options!")
+        }
+    }
+
     return parsed
 }
 
@@ -316,6 +328,9 @@ function extractVariableText(row: Row, variable: VariableCommon): VariableText {
     const parsed = variable as VariableText
     parsed.kind = "text"
     parsed.value = ""
+    if (row["Variable-Default"] !== undefined) {
+        parsed.value = row["Variable-Default"].trim();
+    }
     return parsed
 }
 
@@ -323,6 +338,15 @@ function extractVariableNumber(row: Row, variable: VariableCommon): VariableNumb
     const parsed = variable as VariableNumber;
     parsed.kind = "number";
     parsed.value = 0;
+    if (row["Variable-Default"] !== undefined) {
+        const varDefault = row["Variable-Default"].trim();
+        if(isNumber(varDefault)) {
+            parsed.value = Number(varDefault);
+        } else {
+            console.log(varDefault + "is not a number");
+        }
+
+    }
     return parsed;
 }
 
