@@ -40,7 +40,7 @@ interface Row {
 
 const unwantedCharacters: string[] = []
 
-export function parseXLSToJson(binary_string: string): string | undefined {
+export function parseXLSToJson(binary_string: string): string | number {
     // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
@@ -51,35 +51,39 @@ export function parseXLSToJson(binary_string: string): string | undefined {
     // get rows as json objects
     const jsonSheet = XLSX.utils.sheet_to_json(ws)
 
-    //iterate over all fields of the excel sheet and check for unwanted characters, return undefined if any are found
+    //iterate over all fields of the Excel sheet and check for unwanted characters, return undefined if any are found
     //this triggers parsing error in template controller
     for(let i = 0; i < jsonSheet.length; i++){
-        let row = jsonSheet[i]
-        // @ts-ignore
-        let keys = Object.keys(row)
-        // @ts-ignore
+        const row: any = jsonSheet[i]
+        const keys = Object.keys(row)
         for(let j = 0; j < keys.length; j++){
             //check key
-            if(containsUnwantedCharacters(keys[j])) return undefined
+            if(containsUnwantedCharacters(keys[j])) return -1;
             //check value
-            // @ts-ignore
-            if(containsUnwantedCharacters(row[keys[j]])) return undefined
+            if(containsUnwantedCharacters(row[keys[j]])) return -1;
         }
     }
+
     const rows = jsonSheet as Row[];
 
-    const parts = new Array<TopLevel>();
+    const parts: TopLevel[] = [];
 
     let i = 0;
     while (i < rows.length) {
         const row = rows[i];
-        if (row["Gliederung"] == "Block") {
+
+        // check row for parsing errors
+        if(containsParsingError(row)) {
+            return i;
+        }
+
+        if (row["Gliederung"] === "Block") {
             parts.push(extractBlock(row));
             i++;
-        } else if (row["Gliederung"] == "Aufzählung") {
+        } else if (row["Gliederung"] === "Aufzählung") {
             parts.push(extractEnumeration(row));
             i++;
-        } else if (row["Gliederung"] != undefined) {
+        } else if (row["Gliederung"] !== undefined) {
             const relevantRows: Row[] = [];
             relevantRows.push(row);
             let j = i +1;
@@ -102,7 +106,7 @@ export function parseXLSToJson(binary_string: string): string | undefined {
     return final
 }
 
-function containsUnwantedCharacters(content: string) : boolean {
+function containsUnwantedCharacters(content: string): boolean {
     let containsAny = false
     unwantedCharacters.forEach(char =>{
         if(content.includes(char)){
@@ -110,6 +114,58 @@ function containsUnwantedCharacters(content: string) : boolean {
         }
     })
     return containsAny
+}
+
+function containsParsingError(row: Row): boolean {
+    // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block)
+    if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Befund"] === undefined) {
+        return true;
+    }
+
+    // Wenn optional markiert, dann darf Gliederung nicht leer sein
+    if (row["Optional"] !== undefined && row["Gliederung"] !== undefined) {
+        return true;
+    }
+
+    // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler
+    if ((row["Synonyme"] !== undefined || row["Normal"] !== undefined || row["Default"] !== undefined
+        || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
+        || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined) {
+        return true;
+    }
+
+    // Wenn Befund oder Beurteilung Text angegeben ist, darf Befund nicht leer sein
+    if ((row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined) && row["Befund"] === undefined) {
+        return true;
+    }
+
+    // Wenn Variable angegeben, dann muss Variable-ID angegeben sein und umgekehrt
+    if ((row["Variable-ID"] !== undefined && row["Variable-ID"] === undefined)
+        || row["Variable-ID"] === undefined && row["Variable-Typ"] !== undefined) {
+        return true;
+    }
+
+    // Wenn Eigenschaften von Variable angegeben, dürfen Variable-ID und -Typ nicht leer sein
+    if ((row["Variable-Synonyme"] !== undefined || row["Variable-Default"] !== undefined ||
+        row["Variable-Info"] !== undefined)
+        && (row["Variable-ID"] === undefined || row["Variable-Typ"] == undefined)) {
+        return true;
+    }
+
+    // Wenn Variable-Typ Text, Zahl, Datum oder Ratio, darf Variable-Info nicht leer sein
+    if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] || row["Variable-Typ"] === "Datum")
+        && row["Variable-Info"] === undefined) {
+        return true;
+    }
+
+    // Wenn Variable-Info vorhanden, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
+    if (row["Variable-Info"] !== undefined
+        && (!row["Variable-Info"].includes("...") || !row["Variable-Info"].includes("\u2026"))) {
+        return true;
+    }
+
+    // sonst alles gut
+    return false;
 }
 
 export function extractBlock(row: Row): Block {
