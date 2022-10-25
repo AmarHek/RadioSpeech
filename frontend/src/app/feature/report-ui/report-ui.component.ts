@@ -77,8 +77,8 @@ export class ReportUiComponent implements OnInit {
               private authenticationService: AuthenticationService) {
   }
 
-  get isModerator() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  get isTester() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
   }
 
   get isAdmin() {
