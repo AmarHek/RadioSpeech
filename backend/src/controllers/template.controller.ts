@@ -9,38 +9,37 @@ import {generateUniqueFilename, isJsonString} from "../util/util";
 
 export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
-    const jsonString = parseXLSToJson(rawData.toString("binary"));
-    if (jsonString === undefined) {
-        console.log("Parsing error, json string undefined")
-        //todo add client sided feedback for parsing error
+    const result = parseXLSToJson(rawData.toString("binary"));
+    if (typeof(result) === "number") {
+        console.log("Parsing error, in line " + result);
         res.status(500).send({
-            message: "Parsing error in Excel Template"
+            message: "Parsing error in line " + result
         });
-        return
+    } else {
+        // save parsed data to json
+        const jsonName = generateUniqueFilename("data/json", req.body.name, ".json");
+        const templateName = jsonName.replace(".json", "");
+        fs.writeFile(Path.join("data/json", jsonName), result, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Successfully saved " + jsonName);
+            }
+        })
+        const parts = JSON.parse(result);
+        const template = new TemplateDB({
+            parts: parts,
+            name: templateName,
+            kind: req.body.kind,
+            timestamp: req.body.timestamp as number
+        });
+        template.save().then(result => {
+            res.status(201).json({
+                message: "Template added successfully",
+                postId: result._id
+            });
+        });
     }
-    // save parsed data to json
-    const jsonName = generateUniqueFilename("data/json", req.body.name, ".json");
-    const templateName = jsonName.replace(".json", "");
-    fs.writeFile(Path.join("data/json", jsonName), jsonString, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Successfully saved " + jsonName);
-        }
-    })
-    const parts = JSON.parse(jsonString);
-    const template = new TemplateDB({
-        parts: parts,
-        name: templateName,
-        kind: req.body.kind,
-        timestamp: req.body.timestamp as number
-    });
-    template.save().then(result => {
-        res.status(201).json({
-            message: "Template added successfully",
-            postId: result._id
-        });
-    });
 }
 
 
