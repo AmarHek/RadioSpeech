@@ -72,10 +72,11 @@ export function parseXLSToJson(binary_string: string): string | number {
     while (i < rows.length) {
         const row = rows[i];
 
-        // check row for parsing errors
-        if(containsParsingError(row)) {
-            return i;
-        }
+            // check regular row for parsing errors
+            if (containsParsingError(row) ) {
+                console.log(row);
+                return i + 2;
+            }
 
         if (row["Gliederung"] === "Block") {
             parts.push(extractBlock(row));
@@ -117,13 +118,16 @@ function containsUnwantedCharacters(content: string): boolean {
 }
 
 function containsParsingError(row: Row): boolean {
-    // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block)
-    if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Befund"] === undefined) {
+    // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)
+    if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung"
+        && row["Befund"] === undefined) {
+        console.log("Error 1");
         return true;
     }
 
     // Wenn optional markiert, dann darf Gliederung nicht leer sein
-    if (row["Optional"] !== undefined && row["Gliederung"] !== undefined) {
+    if (row["Optional"] !== undefined && row["Gliederung"] === undefined) {
+        console.log("Error 2");
         return true;
     }
 
@@ -131,17 +135,22 @@ function containsParsingError(row: Row): boolean {
     if ((row["Synonyme"] !== undefined || row["Normal"] !== undefined || row["Default"] !== undefined
         || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
         || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined) {
+        console.log("Error 3");
         return true;
     }
 
-    // Wenn Befund oder Beurteilung Text angegeben ist, darf Befund nicht leer sein
-    if ((row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined) && row["Befund"] === undefined) {
+    // Wenn Befund oder Beurteilung Text angegeben ist, darf Befund nicht leer sein, außer bei Block und Aufzählung
+    if ((row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung")
+        && (row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined)
+        && row["Befund"] === undefined) {
+        console.log("Error 4");
         return true;
     }
 
     // Wenn Variable angegeben, dann muss Variable-ID angegeben sein und umgekehrt
     if ((row["Variable-ID"] !== undefined && row["Variable-ID"] === undefined)
         || row["Variable-ID"] === undefined && row["Variable-Typ"] !== undefined) {
+        console.log("Error 5");
         return true;
     }
 
@@ -149,18 +158,21 @@ function containsParsingError(row: Row): boolean {
     if ((row["Variable-Synonyme"] !== undefined || row["Variable-Default"] !== undefined ||
         row["Variable-Info"] !== undefined)
         && (row["Variable-ID"] === undefined || row["Variable-Typ"] == undefined)) {
+        console.log("Error 6");
         return true;
     }
 
     // Wenn Variable-Typ Text, Zahl, Datum oder Ratio, darf Variable-Info nicht leer sein
-    if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] || row["Variable-Typ"] === "Datum")
+    if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] === "Zahl" || row["Variable-Typ"] === "Datum")
         && row["Variable-Info"] === undefined) {
+        console.log("Error 7");
         return true;
     }
 
     // Wenn Variable-Info vorhanden, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
     if (row["Variable-Info"] !== undefined
         && (!row["Variable-Info"].includes("...") || !row["Variable-Info"].includes("\u2026"))) {
+        console.log("Error 8");
         return true;
     }
 

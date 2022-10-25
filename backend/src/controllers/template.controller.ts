@@ -11,9 +11,9 @@ export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const result = parseXLSToJson(rawData.toString("binary"));
     if (typeof(result) === "number") {
-        console.log("Parsing error, in line " + result);
+        console.log("Parsing error in line " + result);
         res.status(500).send({
-            message: "Parsing error in line " + result
+            message: "Fehler in Zeile " + result
         });
     } else {
         // save parsed data to json

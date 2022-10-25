@@ -64,7 +64,10 @@ export class UploadTemplateComponent implements OnInit {
           window.alert(res.message);
           this.uploadForm.reset();
           this.close();
-        });
+        }, (err) => {
+            console.log(err);
+            window.alert(err)
+          });
       } else if (extension === "json") {
         this.backendCaller.addTemplateFromJSON(postData)
           .subscribe((res) => {
