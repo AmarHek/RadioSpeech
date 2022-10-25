@@ -171,7 +171,7 @@ function containsParsingError(row: Row): boolean {
 
     // Wenn Variable-Info vorhanden, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
     if (row["Variable-Info"] !== undefined
-        && (!row["Variable-Info"].includes("...") || !row["Variable-Info"].includes("\u2026"))) {
+        && (!row["Variable-Info"].includes("...") && !row["Variable-Info"].includes("\u2026"))) {
         console.log("Error 8");
         return true;
     }
