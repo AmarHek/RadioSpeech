@@ -77,3 +77,19 @@ export const changePassword = (req: Request, res: Response) => {
         }
     });
 }
+
+export const changeRole = (req: Request, res: Response) => {
+    console.log(req.body, req.params.id);
+    UserDB.updateOne({
+        _id: req.params.id
+    }, {
+        role: req.body.newRole
+    }).exec((err, result) => {
+        console.log(result)
+        if (err) {
+            res.status(500).send({message: err});
+        } else {
+            res.status(200).send({message: "Rolle erfolgreich geändert."});
+        }
+    });
+}

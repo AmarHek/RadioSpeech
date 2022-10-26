@@ -1,5 +1,5 @@
-import {verifyToken, isAdmin, checkDuplicateUsername, verifyPassword} from "../middleware";
-import {getUserById, deleteUserById, changeUsername, changePassword, getUsers} from "../controllers";
+import {verifyToken, isAdmin, verifyDuplicateUsername, verifyPassword, verifyRoleExists} from "../middleware";
+import {getUserById, deleteUserById, changeUsername, changePassword, getUsers, changeRole} from "../controllers";
 import express from "express";
 
 export const userRouter = express.Router();
@@ -36,7 +36,7 @@ userRouter.post(
     [
         verifyToken,
         verifyPassword,
-        checkDuplicateUsername
+        verifyDuplicateUsername
     ],
     changeUsername
 )
@@ -48,5 +48,14 @@ userRouter.post(
         verifyPassword
     ],
     changePassword
+)
+
+userRouter.post(
+    "/users/changeRole/:id",
+    [
+        verifyToken,
+        verifyRoleExists,
+    ],
+    changeRole
 )
 
