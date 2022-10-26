@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Role} from "@app/models";
-import {UserService} from "@app/core";
+import {AuthenticationService, UserService} from "@app/core";
 import {mustMatch} from "@app/helpers";
 
 @Component({
@@ -15,17 +15,29 @@ export class SignUpComponent implements OnInit {
   submitted = false;
   error = "";
 
-  roles = [Role.User, Role.Moderator, Role.demoUser];
+  roles = [Role.User, Role.Moderator, Role.demoUser, Role.tester];
+
+  private user;
 
   constructor(private formBuilder: FormBuilder,
-              private userService: UserService) { }
+              private userService: UserService,
+              private authenticationService: AuthenticationService) { }
 
   // convenience getter for easy access to form fields
   get sc() {
     return this.signUpForm.controls;
   }
 
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
   ngOnInit(): void {
+    this.authenticationService.user.subscribe(
+      (x) => {
+        this.user = x;
+      });
+
     this.signUpForm = this.formBuilder.group({
       username: ["", [Validators.required]],
       password: ["", [Validators.required, Validators.minLength(6)]],

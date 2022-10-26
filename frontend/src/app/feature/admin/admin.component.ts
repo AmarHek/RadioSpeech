@@ -1,6 +1,8 @@
 import {Component, ComponentRef, OnInit, ViewChild} from "@angular/core";
+import {MatDialog} from "@angular/material/dialog";
 import {Role, User} from "@app/models";
-import {AuthenticationService, UserService} from "@app/core";
+import {MatDialogService, UserService} from "@app/core";
+import {ChangeRoleDialogComponent} from "@app/shared/change-role-dialog/change-role-dialog.component";
 
 @Component({
   selector: "app-admin",
@@ -11,9 +13,9 @@ export class AdminComponent implements OnInit {
 
   users: User[];
 
-  // @ViewChild("signUp") signUp: ComponentRef<>;
-
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private dialogService: MatDialogService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getUserList();
@@ -24,7 +26,9 @@ export class AdminComponent implements OnInit {
   }
 
   changeRole(id: string) {
-    // TODO
+    const dialogConfig = this.dialogService.defaultConfig("400px",
+      {id});
+    this.dialog.open(ChangeRoleDialogComponent, dialogConfig);
   }
 
   deleteUser(id: string) {

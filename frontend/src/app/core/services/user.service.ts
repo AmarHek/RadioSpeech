@@ -39,6 +39,11 @@ export class UserService {
     return this.http.delete<{message: string}>(this.url + "users/" + id);
   }
 
+  changeRole(id: string, newRole: Role) {
+    return this.http.post<{message: string}>(this.url + "users/changeRole/" + id,
+      {newRole});
+  }
+
   signUp(username: string, password: string, role: Role) {
     return this.http.post<{message: string}>(this.url + "signUp",
       {

@@ -10,23 +10,24 @@
         <table>
           <tr>
             <th class="text">Username</th>
-            <th class="text">Role</th>
-            <th class="text">Löschen</th>
+            <th class="text">Rolle</th>
             <th class="text">Rolle ändern</th>
+            <th class="text">Löschen</th>
           </tr>
           <tr *ngFor="let user of users">
             <td class="text">{{user.username}}</td>
             <td class="text">{{user.role}}</td>
             <td class="button">
-              <button class="btn btn-danger" (click)="deleteUser(user.id)">Löschen</button>
+              <button [disabled]="user.username === 'Amar'"
+                      mat-flat-button color="primary" (click)="changeRole(user.id)">Rolle Ändern</button>
             </td>
             <td class="button">
-              <button class="btn btn-outline-primary" (click)="changeRole(user.id)">Rolle ändern</button>
+              <button mat-flat-button color="warn" (click)="deleteUser(user.id)">Löschen</button>
             </td>
           </tr>
         </table>
         <div class="form-group">
-          <button style="float:right" class="btn btn-primary" (click)="getUserList()">Liste neu laden</button>
+          <button style="float:right" mat-flat-button color="primary" (click)="getUserList()">Liste neu laden</button>
         </div>
       </div>
       <div *ngIf="users === undefined">

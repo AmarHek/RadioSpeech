@@ -37,6 +37,7 @@ import {StudentErrorsComponent} from "./student-errors/student-errors.component"
 
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.component";
+import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.componen
     UploadTemplateComponent,
     UploadMaterialComponent,
     VariablesComponent,
-    AddScanDialogComponent
+    AddScanDialogComponent,
+    ChangeRoleDialogComponent
   ],
     imports: [
         CommonModule,

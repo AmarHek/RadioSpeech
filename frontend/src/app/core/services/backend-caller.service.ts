@@ -108,9 +108,12 @@ export class BackendCallerService {
     );
   }
 
-  addDoctorReport(template: Template, timestampStart: number, duration: number, imageID: string, layoutID: number, mode: string, report: string, pseudonym: string): Observable<{ success: boolean; message: string }> {
+  addDoctorReport(template: Template, timestampStart: number,
+                  duration: number, imageID: string, layoutID: number,
+                  mode: string, report: string, pseudonym: string): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
-      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration, imageID, layoutID, mode, report, pseudonym}
+      this.usageUrl + "addDoctorReport/",{template, timestampStart, duration,
+        imageID, layoutID, mode, report, pseudonym}
     );
   }
 
@@ -169,7 +172,6 @@ export class BackendCallerService {
     );
   }
 
-  // TODO: Verallgemeinern auf query/filter
   getDocCount(judged: boolean, shallowDocTemplate: string) {
     return this.http.post<{message: string; count: number}>(
       this.materialUrl + "countMaterials/",
