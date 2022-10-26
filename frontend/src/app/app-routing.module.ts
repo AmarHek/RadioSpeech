@@ -24,19 +24,19 @@ const routes: Routes = [
     path: "home",
     component: RadiolearnWelcomeComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
     path: "list",
     component: TemplateListComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
     path: "main/:id",
     component: ReportUiComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser] }
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
     path: "radiolearn/list",

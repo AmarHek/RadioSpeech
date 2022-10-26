@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate(["/radiolearn/list"]);
     } else if (userRole === Role.Admin) {
       this.router.navigate(["/admin"]);
-    } else if (userRole === Role.demoUser) {
+    } else if (userRole === Role.demoUser || userRole === Role.tester) {
       this.router.navigate(["/list"]);
     }
   }
