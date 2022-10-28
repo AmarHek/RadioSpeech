@@ -47,9 +47,10 @@ export class ImageDisplayService {
       }
 
       // Then check by width
-      if (width >= this.maxImageWidth) {
-        scaleFactor = scaleFactor * this.maxImageWidth / width;
-        width = this.maxImageWidth;
+      const maxWidth = Math.min(window.innerWidth, this.maxImageWidth)
+      if (width >= maxWidth) {
+        scaleFactor = scaleFactor * maxWidth / width;
+        width = maxWidth;
         height = scaleFactor * loadedImage.height;
       }
 
