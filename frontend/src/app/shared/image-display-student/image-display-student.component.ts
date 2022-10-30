@@ -33,6 +33,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     pre:      Annotation[];
   };
 
+  @Input() showCommentButton: boolean;
+
   @Input() isMobile: boolean;
 
   imageUrl = environment.images;
@@ -179,6 +181,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   setHoverListeners() {
+    if(this.isMobile) return
     const annotations = this.annotations[this.currentMode];
     const rect = this.hoverLayerElement.getBoundingClientRect();
 
@@ -209,6 +212,17 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       }
       if (!hit) {
         parent.hideToolTip();
+      }
+    }
+  }
+
+  showAllComments(){
+    const annotations = this.annotations[this.currentMode];
+    for (const annotation of annotations) {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          this.showToolTip(annotation.labelLeft * this.currentScaleFactor, annotation.labelTop * this.currentScaleFactor + 30, annotation.comment)
+        }
       }
     }
   }

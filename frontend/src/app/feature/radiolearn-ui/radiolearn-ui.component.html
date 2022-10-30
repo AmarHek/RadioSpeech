@@ -213,7 +213,9 @@
       <app-image-display-student *ngIf="material && userMode"
                                  [scans]="material.scans"
                                  [isMobile]="isMobile"
-                                 [annotations]="material.annotations"></app-image-display-student>
+                                 [annotations]="material.annotations"
+                                 [showCommentButton]="sawFeedback && anyComments"
+      ></app-image-display-student>
 
 
       <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()" *ngIf="!sawFeedback">

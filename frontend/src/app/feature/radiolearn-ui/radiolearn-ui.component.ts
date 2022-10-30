@@ -28,7 +28,7 @@ import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialo
 @Component({
   selector: "app-radiolearn-ui",
   templateUrl: "./radiolearn-ui.component.html",
-  styleUrls: ["./radiolearn-ui.component.scss"]
+  styleUrls: ["./radiolearn-ui.component.scss"],
 })
 export class RadiolearnUiComponent implements OnInit {
 
@@ -60,6 +60,7 @@ export class RadiolearnUiComponent implements OnInit {
   userMode: boolean;
   workMode: string; // "deep" or "shallow"
   isMobile = false;
+  anyComments = false;
 
   // usageData variables
   timestampStart: number;
@@ -151,6 +152,11 @@ export class RadiolearnUiComponent implements OnInit {
             }
             this.getBoxLabels();
             this.sawFeedback = false;
+
+            //check if there are any comments in the annotations, to enable the "view comment" button
+            this.anyComments = this.materialHasComments(this.material)
+            this.imageDisplayStudentChild.hideToolTip()
+
             const surveyStatus = getSurveyStatus();
             if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0){
               this.openSurveyDialog();
@@ -469,6 +475,34 @@ export class RadiolearnUiComponent implements OnInit {
       this.dataParser.assignValuesFromInputParser(this.shallowCategories, this.inputParser.foundClickables,
         this.inputParser.foundVariables);
     }
+  }
+
+
+  materialHasComments(material): boolean{
+    let result = false
+    material.annotations.pre.forEach(annotation =>{
+      if (annotation.comment != undefined){
+        if(annotation.comment.length > 0){
+          result = true
+        }
+      }
+    })
+    material.annotations.lateral.forEach(annotation =>{
+      if (annotation.comment != undefined){
+        if(annotation.comment.length > 0){
+          result = true
+        }
+      }
+    })
+    material.annotations.main.forEach(annotation =>{
+      if (annotation.comment != undefined){
+        if(annotation.comment.length > 0){
+          result = true
+        }
+      }
+    })
+    return result
+
   }
 
 }

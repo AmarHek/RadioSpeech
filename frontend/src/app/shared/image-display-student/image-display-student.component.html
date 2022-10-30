@@ -97,6 +97,11 @@
     </mat-button-toggle-group>
   </div>
   <div>
+    <div style="display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 10px" *ngIf="showCommentButton">
+      <button mat-raised-button color="primary" style=""  (click)="showAllComments()">
+        Kommentare anzeigen
+      </button>
+    </div>
 
   </div>
 </div>
