@@ -124,6 +124,9 @@ export class ImageDisplayService {
       finalLabel,
       scaleFactor * annotation.labelLeft + xAdjustment,
       scaleFactor * annotation.labelTop + this.boxLineWidth + 20 + yAdjustment);
+
+    annotation.labelLeft += xAdjustment * (1/scaleFactor)
+    annotation.labelTop += yAdjustment * (1/scaleFactor)
   }
 
   //checks whether the text labels of two annotations overlap
@@ -134,7 +137,7 @@ export class ImageDisplayService {
     return this.rectangleOverlap(rectA, rectB)
   }
 
-  //Returns the rectangle object corresponding to a vertice
+  //Returns the rectangle object corresponding to an annotation
   annotationToRectangle(context, scalefactor, annotation): Rect{
     let metrics = context.measureText(annotation.label)
     const textWidth = metrics.width
