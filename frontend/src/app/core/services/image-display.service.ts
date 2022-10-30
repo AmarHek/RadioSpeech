@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 import {Annotation, BoundingBox} from "@app/models";
 import {DisplayService} from "@app/core";
 
@@ -75,9 +75,8 @@ export class ImageDisplayService {
     context.stroke();
   }
 
-  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string) {
+  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string, firstBox: BoundingBox, annotations) {
     context.font = "bold 15pt Arial";
-    context.fillStyle = color;
     context.strokeStyle = "black";
     context.lineWidth = 0.3;
 
@@ -88,16 +87,87 @@ export class ImageDisplayService {
       }
     }
 
+    const textMetrics = context.measureText(finalLabel)
+    const textWidth = textMetrics.width
+    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+
+    //check for overlap with another label
+    let overlap = false
+    annotations.forEach(otherAnnotation => {
+      if(this.annotationOverlap(context, scaleFactor, annotation, otherAnnotation)){
+        overlap = true
+      }
+    })
+
+    //fix out of bounds to the right side by shifting the label to the left as far as necessary
+    let endPos = textMetrics.width + scaleFactor * annotation.labelLeft
+    let xAdjustment = 0
+    if (endPos > context.canvas.width){
+      xAdjustment = -1 * (endPos - context.canvas.width)
+    }
+
+    //fix out of bounds at the bottom or overlap with another label, by placing the label at the top of a box
+    let bottomPos = textHeight + scaleFactor * annotation.labelTop + this.boxLineWidth + 4
+    let yAdjustment = 1
+    if (bottomPos > context.canvas.height || overlap){
+      yAdjustment = -1 * (scaleFactor * firstBox.height + textHeight + 20)
+    }
+
+    //add white background to the text
+    context.fillStyle = "white"
+    const textBackgroundPadding = 4
+    context.fillRect(scaleFactor * annotation.labelLeft + xAdjustment, scaleFactor * annotation.labelTop + this.boxLineWidth + textBackgroundPadding * 0.5 + yAdjustment, textWidth, textHeight + textBackgroundPadding)
+
+    //draw text
+    context.fillStyle = color;
     context.fillText(
       finalLabel,
-      scaleFactor * annotation.labelLeft,
-      scaleFactor * annotation.labelTop + this.boxLineWidth + 20);
-    context.strokeText(
-      finalLabel,
-      scaleFactor * annotation.labelLeft,
-      scaleFactor * annotation.labelTop
-      + this.boxLineWidth + 20);
+      scaleFactor * annotation.labelLeft + xAdjustment,
+      scaleFactor * annotation.labelTop + this.boxLineWidth + 20 + yAdjustment);
   }
+
+  annotationOverlap(context, scalefactor, anno_a, anno_b) : boolean {
+    if(anno_a.label == anno_b.label && anno_a.labelLeft == anno_b.labelLeft && anno_a.labelTop == anno_b.labelTop) return false
+    let rectA = this.annotationToRectangle(context, scalefactor, anno_a)
+    let rectB = this.annotationToRectangle(context, scalefactor, anno_b)
+    return this.rectangleOverlap(rectA, rectB)
+  }
+
+  annotationToRectangle(context, scalefactor, annotation): Rect{
+    let metrics = context.measureText(annotation.label)
+    const textWidth = metrics.width
+    const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+    let topLeft: Point =  {x: annotation.labelLeft * scalefactor, y: annotation.labelTop * scalefactor}
+    let bottomRight: Point =  {x: annotation.labelLeft * scalefactor + textWidth, y: annotation.labelTop * scalefactor + textHeight}
+    return new Rect(topLeft, bottomRight)
+  }
+
+  rectangleOverlap(rect_A, rect_B): boolean {
+    let verticesA = this.getRectangleVertices(rect_A)
+    let verticesB = this.getRectangleVertices(rect_B)
+    let overlap = false
+    verticesA.forEach(vertice => {
+      if(rect_B.contains(vertice)){
+        overlap = true
+      }
+    })
+    verticesB.forEach(vertice => {
+      if(rect_A.contains(vertice)){
+        overlap = true
+      }
+    })
+    return overlap
+  }
+
+  getRectangleVertices(rect: Rect): Point[] {
+    let vertices: Point[] = []
+    vertices.push(rect.topLeft)
+    vertices.push(rect.bottomRight)
+    vertices.push({x: rect.topLeft.x, y: rect.bottomRight.y})
+    vertices.push({x: rect.bottomRight.x, y: rect.topLeft.y})
+    return vertices
+  }
+
 
   // adds event listeners to given elements
   setImageZoomEventListeners(img: HTMLImageElement, lensElement, lensSize, zoomLayerElement, zoomDivElement) {
@@ -199,4 +269,29 @@ export class ImageDisplayService {
     return {x, y};
   }
 
+}
+
+export class Rect {
+  topLeft: Point
+  bottomRight: Point
+
+  constructor(topLeft: Point, bottomRight: Point) {
+    this.topLeft = topLeft
+    this.bottomRight = bottomRight
+  }
+
+  contains(p: Point) : boolean {
+    if(this.topLeft.x <= p.x && p.x <= this.bottomRight.x){
+      if(this.topLeft.y <= p.y && p.y <= this.bottomRight.y){
+        return true
+      }
+    }
+    return false
+  }
+
+}
+
+export type Point = {
+  x: number
+  y: number
 }

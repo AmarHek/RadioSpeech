@@ -174,7 +174,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
           this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
       }
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-       this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
+       this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], annotation.boxes[0], annotations);
     }
   }
 
