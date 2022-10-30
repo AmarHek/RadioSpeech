@@ -63,7 +63,7 @@ export class RadiolearnUiComponent implements OnInit {
   anyComments = false;
 
   // usageData variables
-  timestampStart: number;
+  timestamp: number;
   sawFeedback = false;
   showSurveyEveryNMaterials = 3;
   private uuid = "undefined";
@@ -116,8 +116,8 @@ export class RadiolearnUiComponent implements OnInit {
     this.getData().then();
 
     // data collection
-    this.timestampStart = Date.now();
     this.uuid = getUUID();
+    this.timestamp = Date.now();
   }
 
   async getData() {
@@ -156,6 +156,7 @@ export class RadiolearnUiComponent implements OnInit {
             //check if there are any comments in the annotations, to enable the "view comment" button
             this.anyComments = this.materialHasComments(this.material)
             this.imageDisplayStudentChild.hideToolTip()
+            this.timestamp = Date.now();
 
             const surveyStatus = getSurveyStatus();
             if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0){
@@ -283,14 +284,14 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   submit(){
-    const duration = Date.now() - this.timestampStart;
+    const duration = Date.now() - this.timestamp;
     this.backendCaller.addUsageData(
       this.uuid,
       this.material._id,
       this.material.deepDocTemplate,
       this.material.shallowDocTemplate,
       this.workMode,
-      this.timestampStart,
+      this.timestamp,
       duration,
       this.ogMaterial,
       getResetCounter()
