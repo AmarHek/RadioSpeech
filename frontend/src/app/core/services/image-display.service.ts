@@ -108,7 +108,7 @@ export class ImageDisplayService {
 
     //fix out of bounds at the bottom or overlap with another label, by placing the label at the top of a box
     let bottomPos = textHeight + scaleFactor * annotation.labelTop + this.boxLineWidth + 4
-    let yAdjustment = 1
+    let yAdjustment = 0
     if (bottomPos > context.canvas.height || overlap){
       yAdjustment = -1 * (scaleFactor * firstBox.height + textHeight + 20)
     }
@@ -126,6 +126,7 @@ export class ImageDisplayService {
       scaleFactor * annotation.labelTop + this.boxLineWidth + 20 + yAdjustment);
   }
 
+  //checks whether the text labels of two annotations overlap
   annotationOverlap(context, scalefactor, anno_a, anno_b) : boolean {
     if(anno_a.label == anno_b.label && anno_a.labelLeft == anno_b.labelLeft && anno_a.labelTop == anno_b.labelTop) return false
     let rectA = this.annotationToRectangle(context, scalefactor, anno_a)
@@ -133,6 +134,7 @@ export class ImageDisplayService {
     return this.rectangleOverlap(rectA, rectB)
   }
 
+  //Returns the rectangle object corresponding to a vertice
   annotationToRectangle(context, scalefactor, annotation): Rect{
     let metrics = context.measureText(annotation.label)
     const textWidth = metrics.width
@@ -142,6 +144,7 @@ export class ImageDisplayService {
     return new Rect(topLeft, bottomRight)
   }
 
+  //Checks whether two rectangles overlap, by seeing if either rectangle contains any of the others four vertices
   rectangleOverlap(rect_A, rect_B): boolean {
     let verticesA = this.getRectangleVertices(rect_A)
     let verticesB = this.getRectangleVertices(rect_B)
@@ -159,6 +162,7 @@ export class ImageDisplayService {
     return overlap
   }
 
+  //given a rect object returns a list of its 4 vertices
   getRectangleVertices(rect: Rect): Point[] {
     let vertices: Point[] = []
     vertices.push(rect.topLeft)
@@ -271,6 +275,7 @@ export class ImageDisplayService {
 
 }
 
+// a class representing the bounding box of a text label
 export class Rect {
   topLeft: Point
   bottomRight: Point
