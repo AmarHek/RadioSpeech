@@ -166,7 +166,7 @@ export class ReportUiComponent implements OnInit {
     //remember old chips to prevent change of category if no new correct chip has been found
     const oldChips = JSON.stringify(this.chips)
     // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
+    this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips, false);
     //Parse this input, assign the values and generate the new chips accordingly
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
