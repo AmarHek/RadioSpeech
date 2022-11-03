@@ -163,6 +163,8 @@ export class ReportUiComponent implements OnInit {
   onInput() {
     //Remove chips showing unrecognized text
     this.chipHelper.removeRedChips(this.chips)
+    //remember old chips to prevent change of category if no new correct chip has been found
+    const oldChips = JSON.stringify(this.chips)
     // Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
     //Parse this input, assign the values and generate the new chips accordingly
@@ -170,7 +172,7 @@ export class ReportUiComponent implements OnInit {
     this.assignValues();
     this.generateChips();
     //navigate to category of last chip
-    if(this.chips.length > 0) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
+    if(this.chips.length > 0 && JSON.stringify(this.chips) != oldChips) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
