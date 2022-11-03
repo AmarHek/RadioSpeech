@@ -7,7 +7,7 @@ export function initData() {
     initDirectories();
     console.log("...finished");
 
-    console.log("Loading default Templates into database...")
+    console.log("Loading default Templates into database if not already in database...")
     loadDefaultTemplates().then(() => console.log("...finished"));
 
 }
@@ -33,24 +33,24 @@ async function loadDefaultTemplates() {
     if (!fs.existsSync(Path.join(__dirname, "./assets/Radiolearn.json"))) {
         console.warn("Radiolearn.json missing!")
     } else {
-        console.log("Removing old Radiolearn");
-        await TemplateDB.deleteOne({name: "Radiolearn"});
+        // console.log("Removing old Radiolearn");
+        // await TemplateDB.deleteOne({name: "Radiolearn"});
         saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn", "deepDoc");
     }
 
     if (!fs.existsSync(Path.join(__dirname, "./assets/RöntgenNormal.json"))) {
         console.warn("RöntgenNormal.json missing!")
     } else {
-        console.log("Removing old RöntgenNormal");
-        await TemplateDB.deleteOne({name: "RöntgenNormal"});
+        // console.log("Removing old RöntgenNormal");
+        // await TemplateDB.deleteOne({name: "RöntgenNormal"});
         saveTemplate(Path.join(__dirname, "./assets/RöntgenNormal.json"), "RöntgenNormal", "deepDoc");
     }
 
     if (!fs.existsSync(Path.join(__dirname, "./assets/Intensivlunge.json"))) {
         console.warn("RöntgenNormal.json missing!")
     } else {
-        console.log("Removing old Intensivlunge");
-        await TemplateDB.deleteOne({name: "Intensivlunge"});
+        // console.log("Removing old Intensivlunge");
+        // await TemplateDB.deleteOne({name: "Intensivlunge"});
         saveTemplate(Path.join(__dirname, "./assets/Intensivlunge.json"), "Intensivlunge",
             "shallowDoc");
     }
@@ -58,8 +58,8 @@ async function loadDefaultTemplates() {
     if (!fs.existsSync(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"))) {
         console.warn("RöntgenNormal.json missing!")
     } else {
-        console.log("Removing old Zwei-Ebenen-Thorax");
-        await TemplateDB.deleteOne({name: "Zwei-Ebenen-Thorax"});
+        // console.log("Removing old Zwei-Ebenen-Thorax");
+        // await TemplateDB.deleteOne({name: "Zwei-Ebenen-Thorax"});
         saveTemplate(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"), "Zwei-Ebenen-Thorax",
             "shallowDoc");
     }
