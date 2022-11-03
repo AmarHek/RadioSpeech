@@ -34,7 +34,12 @@ export class InputParserService {
     this.foundVariables = new Map<string, KeyVariable[]>();
   }
 
+  fixUnits(inputString: string): string {
+    return inputString.replace(/Millimeter/g,"mm").replace(/Zentimeter/g, "cm")
+  }
+
   autocorrect(inputString: string): string {
+    inputString = this.fixUnits(inputString)
     const possibleWords: string[] = Array.from(this.primaryDictionary);
     const inputSplit = inputString.split(" ");
     inputSplit.forEach((word, idx) => {
