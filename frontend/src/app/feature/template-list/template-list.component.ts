@@ -17,6 +17,9 @@ export class TemplateListComponent implements OnInit {
   templates: Template[] = [];
   isLoading: boolean;
 
+  // TODO: implement outside of source code
+  blacklist = ["Radiolearn", "Zwei-Ebenen-Thorax", "Intensivlunge"];
+
   private user: User;
 
   constructor(private dialog: MatDialog,
