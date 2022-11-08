@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 
 import {displayableQuotient} from "@app/helpers";
 
@@ -11,10 +11,10 @@ import {displayableQuotient} from "@app/helpers";
 })
 export class InputModalComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dialogRef: MatDialogRef<InputModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 

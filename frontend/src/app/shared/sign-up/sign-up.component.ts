@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Role} from "@app/models";
 import {AuthenticationService, UserService} from "@app/core";
 import {mustMatch} from "@app/helpers";
@@ -11,7 +11,7 @@ import {mustMatch} from "@app/helpers";
 })
 export class SignUpComponent implements OnInit {
 
-  signUpForm: FormGroup;
+  signUpForm: UntypedFormGroup;
   submitted = false;
   error = "";
 
@@ -19,7 +19,7 @@ export class SignUpComponent implements OnInit {
 
   private user;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private userService: UserService,
               private authenticationService: AuthenticationService) { }
 

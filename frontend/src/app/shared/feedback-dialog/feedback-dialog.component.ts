@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BackendCallerService} from "@app/core";
 import {Feedback} from "@app/models";
@@ -11,11 +11,11 @@ import {Feedback} from "@app/models";
 })
 export class FeedbackDialogComponent implements OnInit {
 
-  feedbackForm: FormGroup;
+  feedbackForm: UntypedFormGroup;
   submitted = false;
 
   constructor(private dialogRef: MatDialogRef<FeedbackDialogComponent>,
-              private formBuilder: FormBuilder,
+              private formBuilder: UntypedFormBuilder,
               private backendCaller: BackendCallerService,
               @Inject(MAT_DIALOG_DATA) public data) { }
 
@@ -25,7 +25,7 @@ export class FeedbackDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.feedbackForm = this.formBuilder.group({
-      comment: new FormControl(null,
+      comment: new UntypedFormControl(null,
         {validators: [Validators.required, Validators.minLength(10)]
       })
     });

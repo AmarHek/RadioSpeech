@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
 import {BackendCallerService} from "@app/core";
 import {fileValidator, getFileExtension} from "@app/helpers";
@@ -12,11 +12,11 @@ import {fileValidator, getFileExtension} from "@app/helpers";
 })
 export class UploadTemplateComponent implements OnInit {
 
-  uploadForm: FormGroup;
+  uploadForm: UntypedFormGroup;
   submitted = false;
 
   constructor(private dialogRef: MatDialogRef<UploadTemplateComponent>,
-              private formBuilder: FormBuilder,
+              private formBuilder: UntypedFormBuilder,
               private backendCaller: BackendCallerService) { }
 
   // convenience getter for easy access to form fields
@@ -30,11 +30,11 @@ export class UploadTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.uploadForm = this.formBuilder.group({
-      name: new FormControl(null, {
+      name: new UntypedFormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      file: new FormControl(null, {validators: [Validators.required]}),
-      kind: new FormControl(null, {validators: [Validators.required]})
+      file: new UntypedFormControl(null, {validators: [Validators.required]}),
+      kind: new UntypedFormControl(null, {validators: [Validators.required]})
     }, {
       validator: fileValidator("file")
     });

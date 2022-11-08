@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {UserService} from "@app/core";
 
 @Component({
@@ -10,11 +10,11 @@ import {UserService} from "@app/core";
 export class ChangeUsernameComponent implements OnInit {
 
   @Input() userID: string;
-  changeForm: FormGroup;
+  changeForm: UntypedFormGroup;
   submitted = false;
   error = "";
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private userService: UserService) { }
 
   get f() {

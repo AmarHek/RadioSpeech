@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {nanoid} from "nanoid";
 import {MatDialogRef} from "@angular/material/dialog";
 
@@ -13,7 +13,7 @@ import {Template} from "@app/models/templateModel";
 })
 export class UploadMaterialComponent implements OnInit {
 
-  uploadForm: FormGroup;
+  uploadForm: UntypedFormGroup;
 
   deepDocTemplates: Template[];
   shallowDocTemplates: Template[];
@@ -53,12 +53,12 @@ export class UploadMaterialComponent implements OnInit {
   }
 
   initForm() {
-    this.uploadForm = new FormGroup({
-      mainScans: new FormControl([], {validators: [Validators.required]}),
-      lateralScans: new FormControl([]),
-      preScans: new FormControl([]),
-      deepDocTemplate: new FormControl(null, {validators: [Validators.required]}),
-      shallowDocTemplate: new FormControl(null, {validators: Validators.required})
+    this.uploadForm = new UntypedFormGroup({
+      mainScans: new UntypedFormControl([], {validators: [Validators.required]}),
+      lateralScans: new UntypedFormControl([]),
+      preScans: new UntypedFormControl([]),
+      deepDocTemplate: new UntypedFormControl(null, {validators: [Validators.required]}),
+      shallowDocTemplate: new UntypedFormControl(null, {validators: Validators.required})
     });
   }
 

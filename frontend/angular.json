@@ -56,7 +56,7 @@
               "vendorChunk": false,
               "buildOptimizer": true
             },
-			"development": {
+            "development": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -148,7 +148,6 @@
       }
     }
   },
-  "defaultProject": "radiospeech",
   "cli": {
     "analytics": false
   }

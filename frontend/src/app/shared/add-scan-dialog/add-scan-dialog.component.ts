@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BackendCallerService} from "@app/core";
 
@@ -10,7 +10,7 @@ import {BackendCallerService} from "@app/core";
 })
 export class AddScanDialogComponent implements OnInit {
 
-  fileForm: FormGroup;
+  fileForm: UntypedFormGroup;
   uploading = false;
   supportedFileTypes = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -23,8 +23,8 @@ export class AddScanDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit(): void {
-    this.fileForm = new FormGroup({
-      newScan: new FormControl(null, {validators: [Validators.required]})
+    this.fileForm = new UntypedFormGroup({
+      newScan: new UntypedFormControl(null, {validators: [Validators.required]})
     });
   }
 
