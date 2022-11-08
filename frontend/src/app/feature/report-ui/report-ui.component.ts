@@ -4,7 +4,13 @@ import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
-import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
+import {
+  AuthenticationService,
+  BackendCallerService,
+  DataParserService,
+  FileSaverService,
+  InputParserService
+} from "@app/core";
 import {ReportOptionsComponent} from "@app/shared";
 import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ENTER} from "@angular/cdk/keycodes";
@@ -60,7 +66,8 @@ export class ReportUiComponent implements OnInit {
   mode: string;
   template: Template = undefined;
   timerStarted = false;
-  fileName: string = "down.json";
+
+  handle: FileSystemHandle;
 
   private user: User;
 
@@ -73,7 +80,9 @@ export class ReportUiComponent implements OnInit {
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
               public dialog: MatDialog,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private fileSaverService: FileSaverService
+              ) {
   }
 
   get isTester() {
@@ -94,7 +103,7 @@ export class ReportUiComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
-    //data collection
+    // data collection
   }
 
   // HANDLE CHIPS
@@ -287,6 +296,51 @@ export class ReportUiComponent implements OnInit {
       this.timestampStart = Date.now();
     });
   }
+
+  // File save workaround functions
+
+  getHandle(suggestedName: string) {
+    // set some options, like the suggested file name and the file type.
+    const options = {
+      suggestedName,
+      types: [
+        {
+          description: "Text Files",
+          accept: {
+            "text/plain": [".txt"],
+          },
+        },
+      ],
+    };
+
+    // prompt the user for the location to save the file.
+    (window as any).showSaveFilePicker(options).then((handle: FileSystemHandle) => {
+      this.handle = handle;
+      console.log(handle, this.handle);
+    });
+  }
+
+  async save(text: string) {
+    // creates a writable, used to write data to the file.
+    const writable = await (this.handle as any).createWritable();
+    console.log(writable);
+
+    // write a string to the writable.
+    await writable.write(text);
+
+    // close the writable and save all changes to disk.
+    // this will prompt the user for write permission to the file, if it's the first time.
+    await writable.close();
+  }
+
+  setHandle() {
+    this.getHandle("test.json");
+  }
+
+  write() {
+    this.save("test");
+  }
+
 }
 
 export interface DialogData{

@@ -16,11 +16,12 @@
         </mat-menu>
         <button mat-button class="header-button" (click)="makeNormal()">Rest normal</button>
         <button mat-button class="header-button" (click)="reset()">Zurücksetzen</button>
-        <a download="{{fileName}}" [href]="downJson">
-          <button *ngIf="isAdmin" mat-button class="header-button">
-            <mat-icon>file_download</mat-icon>
-          </button>
-        </a>
+        <button *ngIf="isAdmin" mat-button class="header-button" (click)="setHandle()">
+          <mat-icon>file_download</mat-icon>
+        </button>
+        <button *ngIf="isAdmin" mat-button class="header-button" (click)="write()">
+          Schreiben
+        </button>
       </mat-toolbar>
 
       <mat-form-field class="example-chip-list" appearance="fill">
