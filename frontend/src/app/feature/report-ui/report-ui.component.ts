@@ -54,14 +54,13 @@ export class ReportUiComponent implements OnInit {
   report = "";
   judgement = "";
 
-  downJson: SafeUrl;
-
   //data collection
   timestampStart: number;
   imageID: string;
   mode: string;
   template: Template = undefined;
   timerStarted = false;
+  fileName: string = "down.json";
 
   private user: User;
 
@@ -83,6 +82,13 @@ export class ReportUiComponent implements OnInit {
 
   get isAdmin() {
     return this.user && this.user.role === Role.Admin;
+  }
+
+  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
+  get downJson() {
+    const jsonData = JSON.stringify(this.parts);
+    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
+    return this.sanitizer.bypassSecurityTrustUrl(uri);
   }
 
   ngOnInit() {
@@ -131,12 +137,6 @@ export class ReportUiComponent implements OnInit {
         });
       }
     });
-  }
-
-  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
-  generateDownloadJson(jsonData) {
-    const json = JSON.stringify(jsonData);
-    this.downJson = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(json));
   }
 
   updateText(): void {

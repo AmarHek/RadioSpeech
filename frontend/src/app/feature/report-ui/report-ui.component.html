@@ -16,8 +16,11 @@
         </mat-menu>
         <button mat-button class="header-button" (click)="makeNormal()">Rest normal</button>
         <button mat-button class="header-button" (click)="reset()">Zurücksetzen</button>
-        <button *ngIf="isAdmin" mat-button class="header-button" (click)="generateDownloadJson(parts)">
-          <mat-icon>file_download</mat-icon></button>
+        <a download="{{fileName}}" [href]="downJson">
+          <button *ngIf="isAdmin" mat-button class="header-button">
+            <mat-icon>file_download</mat-icon>
+          </button>
+        </a>
       </mat-toolbar>
 
       <mat-form-field class="example-chip-list" appearance="fill">
@@ -59,10 +62,12 @@
         <app-report-output  class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
   </div>
 
-  <button *ngIf="!timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">
+  <button *ngIf="!timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+          mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">
     Start Befundung
   </button>
-  <button *ngIf="timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold" mat-raised-button color="primary" id="submit-report-button" (click)="submitReportClicked()">
+  <button *ngIf="timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+          mat-raised-button color="primary" id="submit-report-button" (click)="submitReportClicked()">
     Submit Report
   </button>
 </div>
