@@ -7,7 +7,7 @@ export class FileSaverService {
 
   constructor() { }
 
-  /* async getHandle(suggestedName: string,) {
+  async getHandle(suggestedName: string,) {
     // set some options, like the suggested file name and the file type.
     const options = {
       suggestedName,
@@ -37,7 +37,7 @@ export class FileSaverService {
     // close the writable and save all changes to disk.
     // this will prompt the user for write permission to the file, if it's the first time.
     await writable.close();
-  }*/
+  }
 
 }
 

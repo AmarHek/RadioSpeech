@@ -18,8 +18,8 @@
     "module": "es2020",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2015",
-	"types": ["node", "@types/wicg-file-system-access"],
+    "target": "es2020",
+	"types": ["@types/wicg-file-system-access", "node"],
     "typeRoots": [
       "node_modules/@types"
     ],
