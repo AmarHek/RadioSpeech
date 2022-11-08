@@ -1,7 +1,9 @@
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function assertNever(n: never): never {
   throw new Error(JSON.stringify(n) + " should never be a value");
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function flatMap<X, Y>(xs: X[], f: (x: X) => Y[]): Y[] {
   let ret: Y[] = [];
 
@@ -12,6 +14,7 @@ export function flatMap<X, Y>(xs: X[], f: (x: X) => Y[]): Y[] {
   return ret;
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function displayableQuotient(numerator: number, denominator: number, fractionDigits: number = 2): string {
   const res = numerator / denominator ;
   if (isFinite(res)) {
@@ -21,6 +24,7 @@ export function displayableQuotient(numerator: number, denominator: number, frac
   }
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function levenshtein(a: string, b: string): number {
   const an = a ? a.length : 0;
   const bn = b ? b.length : 0;
@@ -55,6 +59,7 @@ export function levenshtein(a: string, b: string): number {
   return matrix[bn][an];
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getAllIndexOf(searchStr: string, inputStr: string, caseSensitive: boolean): number[] {
   // searches for all occurrences of a searchString within an inputString and returns all start indexes as an array
   if (searchStr.length === 0) {
@@ -78,6 +83,7 @@ export function getAllIndexOf(searchStr: string, inputStr: string, caseSensitive
   return indexes;
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function splitStringFromIndexes(input: string, indexes: number[]): string[] {
   const splitText: string[] = [];
   indexes.sort();
@@ -91,6 +97,7 @@ export function splitStringFromIndexes(input: string, indexes: number[]): string
   return splitText;
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getDateFormatted(date: Date, addTime: boolean): string {
   let result: string;
   const day: string = ("0" + date.getDate()).slice(-2);
@@ -104,6 +111,7 @@ export function getDateFormatted(date: Date, addTime: boolean): string {
   return result;
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function arrayBufferToBase64(buffer) {
   let binary = "";
   const bytes = new Uint8Array(buffer);
@@ -115,6 +123,7 @@ export function arrayBufferToBase64(buffer) {
   return window.btoa(binary);
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getBase64Image(img) {
   const canvas = document.createElement("canvas");
   canvas.width = img.width;
@@ -128,28 +137,31 @@ export function getBase64Image(img) {
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getFileExtension(filename: string) {
   return filename.split(".").pop().toLowerCase();
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getImageDimensions(imgUrl): [number, number] {
 
   let width: number;
   let height: number;
-  let img = new Image();
+  const img = new Image();
 
   img.src = imgUrl;
   img.onload = (event) => {
-    let loadedImage = event.currentTarget as HTMLImageElement;
+    const loadedImage = event.currentTarget as HTMLImageElement;
     width = loadedImage.width;
     height = loadedImage.height;
-  }
+  };
 
   console.log("UTIL HERE");
   console.log(width, height);
   return [width, height];
 }
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function getNextHighestValue(array, testValue): number {
   for (const value of array) {
     if (value > testValue) {

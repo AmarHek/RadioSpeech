@@ -154,8 +154,8 @@ export class RadiolearnUiComponent implements OnInit {
             this.sawFeedback = false;
 
             //check if there are any comments in the annotations, to enable the "view comment" button
-            this.anyComments = this.materialHasComments(this.material)
-            this.imageDisplayStudentChild.hideToolTip()
+            this.anyComments = this.materialHasComments(this.material);
+            this.imageDisplayStudentChild.hideToolTip();
             this.timestamp = Date.now();
 
             const surveyStatus = getSurveyStatus();
@@ -447,7 +447,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   onInput() {
     //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips)
+    this.chipHelper.removeRedChips(this.chips);
     // Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
     //Parse this input, assign the values and generate the new chips accordingly
@@ -455,7 +455,9 @@ export class RadiolearnUiComponent implements OnInit {
     this.assignValues();
     this.generateChips();
     //navigate to category of last chip
-    if(this.chips.length > 0) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
+    if (this.chips.length > 0) {
+      this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
+    }
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
@@ -480,29 +482,29 @@ export class RadiolearnUiComponent implements OnInit {
 
 
   materialHasComments(material): boolean{
-    let result = false
+    let result = false;
     material.annotations.pre.forEach(annotation =>{
-      if (annotation.comment != undefined){
+      if (annotation.comment !== undefined){
         if(annotation.comment.length > 0){
-          result = true
+          result = true;
         }
       }
-    })
+    });
     material.annotations.lateral.forEach(annotation =>{
-      if (annotation.comment != undefined){
+      if (annotation.comment !== undefined){
         if(annotation.comment.length > 0){
-          result = true
+          result = true;
         }
       }
-    })
+    });
     material.annotations.main.forEach(annotation =>{
-      if (annotation.comment != undefined){
+      if (annotation.comment !== undefined){
         if(annotation.comment.length > 0){
-          result = true
+          result = true;
         }
       }
-    })
-    return result
+    });
+    return result;
 
   }
 
