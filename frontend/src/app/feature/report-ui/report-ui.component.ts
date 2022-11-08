@@ -17,7 +17,7 @@ interface Layout{
 }
 
 @Component({
-  selector: "app-workspace",
+  selector: "app-report-ui",
   templateUrl: "./report-ui.component.html",
   styleUrls: ["./report-ui.component.scss"],
 })
@@ -56,14 +56,14 @@ export class ReportUiComponent implements OnInit {
 
   downJson: SafeUrl;
 
-  private user: User;
-
   //data collection
-  timestampStart: number
-  imageID: string
-  mode: string
-  template: Template = undefined
-  timerStarted: boolean = false
+  timestampStart: number;
+  imageID: string;
+  mode: string;
+  template: Template = undefined;
+  timerStarted = false;
+
+  private user: User;
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -121,7 +121,7 @@ export class ReportUiComponent implements OnInit {
             window.alert("Dieses Dictionary existiert nicht! " +
               "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
           } else {
-            this.template = template
+            this.template = template;
             this.parts = template.parts;
             this.defaultParts = JSON.parse(JSON.stringify(this.parts));
             this.categories = this.dataParser.extractCategories(this.parts);
@@ -162,9 +162,9 @@ export class ReportUiComponent implements OnInit {
   //If useChips is set to false, inputs are handled exactly like before the implementations of chips
   onInput() {
     //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips)
+    this.chipHelper.removeRedChips(this.chips);
     //remember old chips to prevent change of category if no new correct chip has been found
-    const oldChips = JSON.stringify(this.chips)
+    const oldChips = JSON.stringify(this.chips);
     // Combine existing chips and text input into one input line
     this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips, false);
     //Parse this input, assign the values and generate the new chips accordingly
@@ -172,7 +172,9 @@ export class ReportUiComponent implements OnInit {
     this.assignValues();
     this.generateChips();
     //navigate to category of last chip
-    if(this.chips.length > 0 && JSON.stringify(this.chips) != oldChips) this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
+    if(this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
+      this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
+    }
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
     this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
@@ -188,7 +190,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   generateChips(){
-    this.selectedSelectableID = ""
+    this.selectedSelectableID = "";
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
@@ -243,8 +245,9 @@ export class ReportUiComponent implements OnInit {
   }
 
   submit(){
-    const extended_username = "user-" + this.user.username
-    const pseudonym = extended_username.split('').map(v=>v.charCodeAt(0)).reduce((a,v)=>a+((a<<7)+(a<<3))^v).toString(16);
+    const extendedUsername = "user-" + this.user.username;
+    const pseudonym = extendedUsername.split("").map(v=>v.charCodeAt(0)).reduce(
+      (a,v) => a+((a<<7)+(a<<3))^v).toString(16);
     const duration = Date.now() - this.timestampStart;
     this.backendCaller.addDoctorReport(
       this.template,
@@ -255,33 +258,33 @@ export class ReportUiComponent implements OnInit {
       this.mode,
       this.report + "\nJudgement below:\n" + this.judgement,
       pseudonym
-    ).subscribe(res => console.log(res.message))
+    ).subscribe(res => console.log(res.message));
   }
 
   startReportClicked(){
-    this.openDialog()
-    this.reset()
-    this.updateText()
+    this.openDialog();
+    this.reset();
+    this.updateText();
   }
 
   submitReportClicked(){
-    this.timerStarted = false
-    this.submit()
+    this.timerStarted = false;
+    this.submit();
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '350px',
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: "350px",
       data: {id: ""}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.mode = result.split('$')[1]
-      this.imageID = result.split('$')[0]
-      console.log("mode:" + this.mode)
-      console.log("id:" + this.imageID)
-      this.timerStarted = true
-      this.timestampStart = Date.now()
+      this.mode = result.split("$")[1];
+      this.imageID = result.split("$")[0];
+      console.log("mode:" + this.mode);
+      console.log("id:" + this.imageID);
+      this.timerStarted = true;
+      this.timestampStart = Date.now();
     });
   }
 }
@@ -290,12 +293,12 @@ export interface DialogData{
   id: string;
 }
 @Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: './dialog-overview-example-dialog.html',
+  selector: "app-dialog-overview-example-dialog-component",
+  templateUrl: "./app-dialog-overview-example-dialog-component.html",
 })
-export class DialogOverviewExampleDialog {
+export class DialogOverviewExampleDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 }

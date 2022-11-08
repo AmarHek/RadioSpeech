@@ -10,7 +10,7 @@ import {SharedModule} from "@app/shared/shared.module";
 import {ViewModule} from "@app/view/view.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
-import {DialogOverviewExampleDialog} from "@app/feature";
+import {DialogOverviewExampleDialogComponent} from "@app/feature";
 import {FormsModule} from "@angular/forms";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -19,7 +19,7 @@ import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
-    DialogOverviewExampleDialog,
+    DialogOverviewExampleDialogComponent,
     AppComponent,
   ],
   imports: [
