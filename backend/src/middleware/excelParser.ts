@@ -38,7 +38,7 @@ interface Row {
     "Text Beurteilung": string;
 }
 
-const unwantedCharacters: RegExp[] = [new RegExp("\\[^n]")];
+const unwantedCharacters: RegExp[] = [new RegExp("\\\\[^n]")];
 
 export function parseXLSToJson(binary_string: string, docKind: string): string | number {
     // get workbook from binary string
@@ -55,15 +55,24 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
     const parts: TopLevel[] = [];
 
     let i = 0;
-    while (i < rows.length) {
-        const row = rows[i];
 
+    for (const row of rows) {
         // check row for unwanted characters
-        if (rowContainsUnwantedCharacters(row) || rowContainsParsingError(row, docKind === "deep")) {
+        if (rowContainsUnwantedCharacters(row)) {
+            console.log("Character error");
             console.log(row);
             return i + 2;
         }
+        if (rowContainsParsingError(row, docKind === "deep")) {
+            console.log("Rule error");
+            console.log(row);
+            return i + 2;
+        }
+    }
 
+    // if everything is fine, we can parse
+    while (i < rows.length) {
+        const row = rows[i];
         if (row["Gliederung"] === "Block") {
             parts.push(extractBlock(row));
             i++;
@@ -113,7 +122,7 @@ function rowContainsUnwantedCharacters(row: Row): boolean {
     return false;
 }
 
-function rowContainsParsingError(row: Row, deep: boolean) {
+function rowContainsParsingError(row: Row, deep: boolean): boolean {
     if (deep) {
         return rowContainsParsingErrorDeep(row);
     } else {
@@ -181,11 +190,12 @@ function rowContainsParsingErrorDeep(row: Row): boolean {
     }
 
     // sonst alles gut
+    console.log("No errors");
     return false;
 }
 
 function rowContainsParsingErrorShallow(row: Row): boolean {
-    return true;
+    return false;
 }
 
 export function extractBlock(row: Row): Block {

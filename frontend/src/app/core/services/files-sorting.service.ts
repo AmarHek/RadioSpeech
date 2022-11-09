@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class FilesSortingService {
 
   identifier: RegExp;
-  preSetIdentifiers: RegExp[] = [new RegExp("^patient\\d{5}\\D"), new RegExp("^\\d{8}\\D")]
+  preSetIdentifiers: RegExp[] = [new RegExp("^patient\\d{5}\\D"), new RegExp("^\\d{8}\\D")];
 
   constructor() {
     this.identifier = new RegExp("thisShouldNotMatchAnything");
