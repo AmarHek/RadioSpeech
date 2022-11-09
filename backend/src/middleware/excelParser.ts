@@ -329,16 +329,9 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 }
 
 function extractSelectableKeys(rows: Row[]): string[] {
-    let name = "";
-    if (rows[0]["Befund"] !== undefined) {
-        name = rows[0]["Befund"].trim();
-    }
     let keys: string[] = [];
     if (rows[0]["Synonyme"] !== undefined){
         keys = trimArray(rows[0]["Synonyme"].split(";"))
-    }
-    if (!keys.includes(name)) {
-        keys.push(name);
     }
     return keys;
 }
