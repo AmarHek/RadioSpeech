@@ -9,7 +9,7 @@ import {generateUniqueFilename, isJsonString} from "../util/util";
 
 export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
-    const result = parseXLSToJson(rawData.toString("binary"));
+    const result = parseXLSToJson(rawData.toString("binary"), req.body.kind);
     if (typeof(result) === "number") {
         console.log("Parsing error in line " + result);
         res.status(500).send({

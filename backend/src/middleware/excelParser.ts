@@ -20,12 +20,12 @@ import {
 import {trim2DArray, trimArray, isNumber} from "../util/util";
 
 interface Row {
-    Gliederung: string;
-    Optional: string;
-    Befund: string;
-    Synonyme: string;
-    Normal: string;
-    Default: string;
+    "Gliederung": string;
+    "Optional": string;
+    "Befund": string;
+    "Synonyme": string;
+    "Normal": string;
+    "Default": string;
     "Choice-Gruppe-ID": string;
     "Aufzählung-ID": string;
     "Ausschluss Befund": string;
@@ -38,9 +38,9 @@ interface Row {
     "Text Beurteilung": string;
 }
 
-const unwantedCharacters: string[] = []
+const unwantedCharacters: RegExp[] = [new RegExp("\\[^n]")];
 
-export function parseXLSToJson(binary_string: string): string | number {
+export function parseXLSToJson(binary_string: string, docKind: string): string | number {
     // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
@@ -50,20 +50,6 @@ export function parseXLSToJson(binary_string: string): string | number {
 
     // get rows as json objects
     const jsonSheet = XLSX.utils.sheet_to_json(ws)
-
-    //iterate over all fields of the Excel sheet and check for unwanted characters, return undefined if any are found
-    //this triggers parsing error in template controller
-    for(let i = 0; i < jsonSheet.length; i++){
-        const row: any = jsonSheet[i]
-        const keys = Object.keys(row)
-        for(let j = 0; j < keys.length; j++){
-            //check key
-            if(containsUnwantedCharacters(keys[j])) return -1;
-            //check value
-            if(containsUnwantedCharacters(row[keys[j]])) return -1;
-        }
-    }
-
     const rows = jsonSheet as Row[];
 
     const parts: TopLevel[] = [];
@@ -72,11 +58,11 @@ export function parseXLSToJson(binary_string: string): string | number {
     while (i < rows.length) {
         const row = rows[i];
 
-            // check regular row for parsing errors
-            if (containsParsingError(row) ) {
-                console.log(row);
-                return i + 2;
-            }
+        // check row for unwanted characters
+        if (rowContainsUnwantedCharacters(row) || rowContainsParsingError(row, docKind === "deep")) {
+            console.log(row);
+            return i + 2;
+        }
 
         if (row["Gliederung"] === "Block") {
             parts.push(extractBlock(row));
@@ -107,17 +93,35 @@ export function parseXLSToJson(binary_string: string): string | number {
     return final
 }
 
-function containsUnwantedCharacters(content: string): boolean {
-    let containsAny = false
-    unwantedCharacters.forEach(char =>{
-        if(content.includes(char)){
-            containsAny = true
+function rowContainsUnwantedCharacters(row: Row): boolean {
+    // get all row keys
+    let key: keyof typeof row;
+
+    // first iterate through all unwanted character regexes
+    for (const rx of unwantedCharacters) {
+        // iterate through keys
+        for (key in row) {
+            if (rx.test(key as string)) {
+                return true;
+            }
+            if (rx.test(row[key])) {
+                return true;
+            }
         }
-    })
-    return containsAny
+    }
+
+    return false;
 }
 
-function containsParsingError(row: Row): boolean {
+function rowContainsParsingError(row: Row, deep: boolean) {
+    if (deep) {
+        return rowContainsParsingErrorDeep(row);
+    } else {
+        return rowContainsParsingErrorShallow(row);
+    }
+}
+
+function rowContainsParsingErrorDeep(row: Row): boolean {
     // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)
     if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung"
         && row["Befund"] === undefined) {
@@ -178,6 +182,10 @@ function containsParsingError(row: Row): boolean {
 
     // sonst alles gut
     return false;
+}
+
+function rowContainsParsingErrorShallow(row: Row): boolean {
+    return true;
 }
 
 export function extractBlock(row: Row): Block {
