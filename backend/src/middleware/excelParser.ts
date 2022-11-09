@@ -63,7 +63,7 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
             console.log(row);
             return i + 2;
         }
-        if (rowContainsParsingError(row, docKind === "deep")) {
+        if (rowContainsParsingError(row, docKind === "shallowDoc")) {
             console.log("Rule error");
             console.log(row);
             return i + 2;
@@ -122,15 +122,7 @@ function rowContainsUnwantedCharacters(row: Row): boolean {
     return false;
 }
 
-function rowContainsParsingError(row: Row, deep: boolean): boolean {
-    if (deep) {
-        return rowContainsParsingErrorDeep(row);
-    } else {
-        return rowContainsParsingErrorShallow(row);
-    }
-}
-
-function rowContainsParsingErrorDeep(row: Row): boolean {
+function rowContainsParsingError(row: Row, shallow: boolean): boolean {
     // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)
     if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung"
         && row["Befund"] === undefined) {
@@ -144,11 +136,17 @@ function rowContainsParsingErrorDeep(row: Row): boolean {
         return true;
     }
 
+    // Wenn Befund angegeben ist, dürfen Synonyme nicht leer sein
+    if ((row["Befund"] !== undefined && row["Synonyme"] === undefined)) {
+        console.log("Error 3");
+        return true;
+    }
+
     // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler
     if ((row["Synonyme"] !== undefined || row["Normal"] !== undefined || row["Default"] !== undefined
         || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
         || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined) {
-        console.log("Error 3");
+        console.log("Error 4");
         return true;
     }
 
@@ -156,14 +154,14 @@ function rowContainsParsingErrorDeep(row: Row): boolean {
     if ((row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung")
         && (row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined)
         && row["Befund"] === undefined) {
-        console.log("Error 4");
+        console.log("Error 5");
         return true;
     }
 
     // Wenn Variable angegeben, dann muss Variable-ID angegeben sein und umgekehrt
     if ((row["Variable-ID"] !== undefined && row["Variable-ID"] === undefined)
         || row["Variable-ID"] === undefined && row["Variable-Typ"] !== undefined) {
-        console.log("Error 5");
+        console.log("Error 6");
         return true;
     }
 
@@ -171,22 +169,37 @@ function rowContainsParsingErrorDeep(row: Row): boolean {
     if ((row["Variable-Synonyme"] !== undefined || row["Variable-Default"] !== undefined ||
         row["Variable-Info"] !== undefined)
         && (row["Variable-ID"] === undefined || row["Variable-Typ"] == undefined)) {
-        console.log("Error 6");
-        return true;
-    }
-
-    // Wenn Variable-Typ Text, Zahl, Datum oder Ratio, darf Variable-Info nicht leer sein
-    if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] === "Zahl" || row["Variable-Typ"] === "Datum")
-        && row["Variable-Info"] === undefined) {
         console.log("Error 7");
         return true;
     }
 
-    // Wenn Variable-Info vorhanden, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
-    if (row["Variable-Info"] !== undefined
-        && (!row["Variable-Info"].includes("...") && !row["Variable-Info"].includes("\u2026"))) {
+    // Wenn Variable-Typ Text, Zahl oder Datum, darf Variable-Info nicht leer sein
+    if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] === "Zahl" || row["Variable-Typ"] === "Datum")
+        && row["Variable-Info"] === undefined) {
         console.log("Error 8");
         return true;
+    }
+
+    // Wenn Variable-Info vorhanden sind, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
+    if (row["Variable-Info"] !== undefined
+        && (!row["Variable-Info"].includes("...") && !row["Variable-Info"].includes("\u2026"))) {
+        console.log("Error 9");
+        return true;
+    }
+
+    // Die folgenden Bedingungen nur für shallow Templates
+    if (shallow) {
+        // Radio Buttons sind nicht erlaubt
+        if (row["Choice-Gruppe-ID"] !== undefined) {
+            console.log("Error 10");
+            return true;
+        }
+
+        // Es darf keine Text-, Zahl- oder Datums-Variablen geben
+        if (["Text", "Zahl", "Datum"].includes(row["Variable-Typ"])) {
+            console.log("Error 11");
+            return true;
+        }
     }
 
     // sonst alles gut
@@ -194,9 +207,6 @@ function rowContainsParsingErrorDeep(row: Row): boolean {
     return false;
 }
 
-function rowContainsParsingErrorShallow(row: Row): boolean {
-    return false;
-}
 
 export function extractBlock(row: Row): Block {
     const judgementText = row["Text Beurteilung"] == undefined ? undefined : row["Text Beurteilung"]
