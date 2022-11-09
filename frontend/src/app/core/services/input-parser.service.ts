@@ -129,8 +129,8 @@ export class InputParserService {
     const possibleVariables = this.varKeyDictionary.get(id);
 
     if (varText.length <= 0 || possibleVariables === undefined) {
-return;
-}
+      return;
+    }
 
     const splitters: number[] = getSplitters(possibleVariables, varText);
     for (const varKey of possibleVariables) {
