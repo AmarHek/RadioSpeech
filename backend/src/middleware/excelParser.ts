@@ -54,23 +54,22 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
 
     const parts: TopLevel[] = [];
 
-    let i = 0;
-
     for (const row of rows) {
         // check row for unwanted characters
         if (rowContainsUnwantedCharacters(row)) {
             console.log("Character error");
             console.log(row);
-            return i + 2;
+            return rows.indexOf(row) + 2;
         }
         if (rowContainsParsingError(row, docKind === "shallowDoc")) {
             console.log("Rule error");
             console.log(row);
-            return i + 2;
+            return rows.indexOf(row) + 2;
         }
     }
 
     // if everything is fine, we can parse
+    let i = 0;
     while (i < rows.length) {
         const row = rows[i];
         if (row["Gliederung"] === "Block") {
@@ -142,10 +141,11 @@ function rowContainsParsingError(row: Row, shallow: boolean): boolean {
         return true;
     }
 
-    // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler
+    // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler, aber nur wenn nicht Aufzählung oder Block
     if ((row["Synonyme"] !== undefined || row["Normal"] !== undefined || row["Default"] !== undefined
         || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
-        || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined) {
+        || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined
+        && (row["Gliederung"] !== "Aufzählung" && row["Gliederung"] !== "Block")) {
         console.log("Error 4");
         return true;
     }
@@ -203,7 +203,6 @@ function rowContainsParsingError(row: Row, shallow: boolean): boolean {
     }
 
     // sonst alles gut
-    console.log("No errors");
     return false;
 }
 
