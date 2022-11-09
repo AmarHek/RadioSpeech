@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 import * as M from "@app/models/templateModel";
-import {KeyVariable, KeyClickable, ColoredText} from "@app/models";
+import {KeyVariable, KeyClickable} from "@app/models";
 import { levenshtein, getAllIndexOf, getNextHighestValue, getClickableKeywords,
-         getSplitters, parseValue, countUniqueVariableKeywords, getVariableKeywords} from "@app/helpers";
+         getSplitters, parseValue, getVariableKeywords} from "@app/helpers";
 
 @Injectable({
   providedIn: "root"
@@ -13,8 +12,6 @@ export class InputParserService {
 
   clickableKeywords: KeyClickable[] = [];
   varKeyDictionary: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
-
-  lastKeyword: KeyClickable;  // input buffer for last spoken keyword
 
   foundClickables: KeyClickable[] = [];
   foundVariables: Map<string, KeyVariable[]> = new Map<string, KeyVariable[]>();
@@ -35,11 +32,11 @@ export class InputParserService {
   }
 
   fixUnits(inputString: string): string {
-    return inputString.replace(/Millimeter/g,"mm").replace(/Zentimeter/g, "cm")
+    return inputString.replace(/Millimeter/g,"mm").replace(/Zentimeter/g, "cm");
   }
 
   autocorrect(inputString: string): string {
-    inputString = this.fixUnits(inputString)
+    inputString = this.fixUnits(inputString);
     const possibleWords: string[] = Array.from(this.primaryDictionary);
     const inputSplit = inputString.split(" ");
     inputSplit.forEach((word, idx) => {
@@ -103,7 +100,7 @@ export class InputParserService {
     // console.log(foundKeywordsTemp);
     foundKeywordsTemp = this.filterOverlap(foundKeywordsTemp);
     // this removes keywords that are substrings of other words, i.e. that don't have a leading white space
-    foundKeywordsTemp = this.filterIncompleteOverlap(input, foundKeywordsTemp)
+    foundKeywordsTemp = this.filterIncompleteOverlap(input, foundKeywordsTemp);
     foundKeywordsTemp.sort(this.compareKeywords);
     this.foundClickables = foundKeywordsTemp;
   }
@@ -112,12 +109,15 @@ export class InputParserService {
   //If "Herzschrittmache" is entered, this method removes the clickable "CHE" that is detected in the input, which was
   //obviously not intended by the input, but is not removed as overlap, since "Herzschrittmacher" is not detected yet
   filterIncompleteOverlap(input: string, foundClickables: KeyClickable[]){
-    let result = []
+    const result = [];
     foundClickables.forEach(fc => {
-      if(fc.position == 0) result.push(fc)
-      else if(input[fc.position-1] == " ") result.push(fc)
-    })
-    return result
+      if(fc.position === 0) {
+        result.push(fc);
+      } else if(input[fc.position-1] === " ") {
+        result.push(fc);
+      }
+    });
+    return result;
   }
 
   // find all Variable Keywords in input string (typically just a fraction of the entire string)
@@ -128,7 +128,9 @@ export class InputParserService {
     let foundVariablesTemp: KeyVariable[] = [];
     const possibleVariables = this.varKeyDictionary.get(id);
 
-    if (varText.length <= 0 || possibleVariables === undefined) return
+    if (varText.length <= 0 || possibleVariables === undefined) {
+return;
+}
 
     const splitters: number[] = getSplitters(possibleVariables, varText);
     for (const varKey of possibleVariables) {
@@ -162,7 +164,7 @@ export class InputParserService {
         for (const pos of positions) {
           const posValueStart = pos + varKey.textBefore.length;
           let posValueEnd: number;
-          let textAfterDetected: boolean = false
+          let textAfterDetected = false;
           if (varKey.textAfter.length === 0) {
             posValueEnd = getNextHighestValue(splitters, posValueStart);
             if (posValueEnd === -1) {
@@ -172,7 +174,7 @@ export class InputParserService {
             }
           } else {
             posValueEnd = varText.toLowerCase().indexOf(varKey.textAfter.toLowerCase(), pos);
-            textAfterDetected = posValueEnd != -1
+            textAfterDetected = posValueEnd !== -1;
           }
           //todo, if no textAfter is detected, posValueEnd is -1, so substring from posValueStart to -1?
           const valueString = varText.substring(posValueStart, posValueEnd).trim();
@@ -180,25 +182,27 @@ export class InputParserService {
           newVarKey.position = pos + relativePosition;
           // no need to check for existence of textAfter and textBefore since they always need to be present here
           // (if textAfter exists in this case. textBefore must always exist)
-          let afterTextAddition = textAfterDetected ? varKey.textAfter.length : 0
+          const afterTextAddition = textAfterDetected ? varKey.textAfter.length : 0;
           newVarKey.positionEnd = posValueEnd + relativePosition + afterTextAddition;
           newVarKey.value = parseValue(valueString, newVarKey.kind);
           foundVariablesTemp.push(newVarKey);
         }
       }
     }
-    foundVariablesTemp = this.filterVariableOverlap(input, foundVariablesTemp)
+    foundVariablesTemp = this.filterVariableOverlap(input, foundVariablesTemp);
     foundVariablesTemp.sort(this.compareKeywords);
     this.foundVariables.set(id, foundVariablesTemp);
   }
 
   //Remove variables that start in the middle of another word
   filterVariableOverlap(input: string, foundVariables: KeyVariable[]){
-    let result = []
+    const result = [];
     foundVariables.forEach(fv => {
-      if(input[fv.position-1] == " ") result.push(fv)
-    })
-    return result
+      if(input[fv.position-1] === " ") {
+result.push(fv);
+}
+    });
+    return result;
   }
 
   // Removes all synonyms/keywords that are substrings of another synonym/keyword
@@ -221,7 +225,9 @@ export class InputParserService {
       //this check is necessary, since toRemove can contain duplicates of the same clickable
       //E.g. the input "2. Shaldon-Katheter" produces the toRemove template-list "Shaldon", "Shaldon-Katheter", "Shaldon"
       //After the first shaldon gets removed, splice is called with -1 as start index, removing the wrong elements
-      if(fKCopy.indexOf(removable) == -1) continue
+      if(fKCopy.indexOf(removable) === -1) {
+continue;
+}
       fKCopy.splice(fKCopy.indexOf(removable), 1);
     }
     return fKCopy;
@@ -259,109 +265,6 @@ export class InputParserService {
     } else {
       return 0;
     }
-  }
-
-  getColoredText(input: string): ColoredText[] {
-    const result: ColoredText[] = [];
-    // go through each found Clickable and check for variable completion
-    for (const clickKey of this.foundClickables) {
-      if (clickKey.nVariables > 0) {
-        // get variables of clickKey
-        const foundVariables: KeyVariable[] = this.foundVariables.get(clickKey.category + " " + clickKey.name);
-        //const foundVariables: KeyVariable[] = InputParserService.filterUniqueOptions(
-        //  this.foundVariables.get(clickKey.category + " " + clickKey.name));
-        // check text Color of clickKey for variable filling
-        if (foundVariables !== undefined) {
-          const numberFoundUniqueVariables = countUniqueVariableKeywords(foundVariables);
-          let color: string;
-          // TODO: Think how to handle the coloring. Also text that *could* be a keyword goes unnoticed like this
-          // TODO: But do we need feedback for such text or is ignoring sufficient?
-          if (clickKey.nVariables === numberFoundUniqueVariables) {
-            color = "green";
-          } else if (clickKey.nVariables < numberFoundUniqueVariables) {
-            color = "yellow";
-          } else {
-            color = "red";
-          }
-          // finally, push the result (must be here because variables must come right after to preserve text order
-          result.push({
-            text: clickKey.synonym,
-            color
-          });
-          // now handle the variables
-          for (const varKey of foundVariables) {
-            // easy for oc and mc: add textAfter if in substring (orange), add name (lightgreen)
-            // and add textAfter if included (orange)
-            if (varKey.kind === "mc" || varKey.kind === "oc") {
-              const substring = input.substring(varKey.position, varKey.positionEnd);
-              if (varKey.textBefore.length > 0 && substring.includes(varKey.textBefore)) {
-                result.push({
-                  text: varKey.textBefore,
-                  color: "orange"
-                });
-              }
-              result.push({
-                text: varKey.name,
-                color: "lightgreen"
-              });
-              if (varKey.textAfter.length > 0 && substring.includes(varKey.textAfter)) {
-                result.push({
-                  text: varKey.textAfter,
-                  color: "orange"
-                });
-              }
-            } else {
-              // remaining variables are easy: add textBefore, since always present
-              // color the value text lightblue if parsing did not work (i.e. value is undefined) otherwise lightgreen
-              // add textAfter, if exists
-              result.push({
-                text: varKey.textBefore,
-                color: "orange"
-              });
-              // check the value
-              if (varKey.value === undefined) {
-                // if value could not be parsed, just add the text as light blue
-                result.push({
-                  text: input.substring(varKey.position + 1 + varKey.textBefore.length, varKey.positionEnd),
-                  color: "lightblue"
-                });
-              } else {
-                // otherwise parse the values accordingly
-                let resultText: string;
-                if (varKey.kind === "date") {
-                  const value = varKey.value as NgbDateStruct;
-                  resultText = value.day + "." + value.month + "." + value.year;
-                } else if (varKey.kind === "ratio") {
-                  const value = varKey.value as [number, number];
-                  resultText = value[0] + "/" + value[1];
-                } else {
-                  resultText = varKey.value as string;
-                }
-                result.push({
-                  text: resultText,
-                  color: "lightgreen"
-                });
-              }
-              // check textAfter
-              if (varKey.textAfter.length > 0) {
-                result.push({
-                    text: varKey.textAfter,
-                    color: "orange"
-                  }
-                );
-              }
-            }
-          }
-        }
-      } else {
-        // no variables means clickKey is immediately green, easiest case
-        result.push({
-          text: clickKey.synonym,
-          color: "green"
-        });
-      }
-    }
-    return result;
   }
 
   private initializeKeywords(rootEl: M.TopLevel[]): void {

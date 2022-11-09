@@ -92,7 +92,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   get dataFilename() {
-    return this.user.username + "_" + (new Date().toLocaleDateString()) + ".json";
+    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
   }
 
   // auxiliary function to get parsed json (mostly because of missing excel parser in node)
