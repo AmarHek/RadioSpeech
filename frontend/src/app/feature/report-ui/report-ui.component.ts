@@ -1,21 +1,15 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {Location} from "@angular/common";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-
-import {
-  AuthenticationService,
-  BackendCallerService,
-  DataParserService,
-  FileSaverService,
-  InputParserService
-} from "@app/core";
-import {ReportOptionsComponent} from "@app/shared";
-import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ENTER} from "@angular/cdk/keycodes";
+import {Location} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ActivatedRoute} from "@angular/router";
+
+import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
+import {ReportOptionsComponent} from "@app/shared";
 
 interface Layout{
   id: number;
@@ -66,8 +60,7 @@ export class ReportUiComponent implements OnInit {
   mode: string;
   template: Template = undefined;
   timerStarted = false;
-
-  handle: FileSystemHandle;
+  sessionData = [];
 
   private user: User;
 
@@ -80,8 +73,7 @@ export class ReportUiComponent implements OnInit {
               private backendCaller: BackendCallerService,
               private sanitizer: DomSanitizer,
               public dialog: MatDialog,
-              private authenticationService: AuthenticationService,
-              private fileSaverService: FileSaverService
+              private authenticationService: AuthenticationService
               ) {
   }
 
@@ -93,9 +85,19 @@ export class ReportUiComponent implements OnInit {
     return this.user && this.user.role === Role.Admin;
   }
 
+  get pseudonym() {
+    const extendedUsername = "user-" + this.user.username;
+    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
+      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
+  }
+
+  get dataFilename() {
+    return this.user.username + "_" + (new Date().toLocaleDateString()) + ".json";
+  }
+
   // auxiliary function to get parsed json (mostly because of missing excel parser in node)
   get downJson() {
-    const jsonData = JSON.stringify(this.parts);
+    const jsonData = JSON.stringify(this.sessionData);
     const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
     return this.sanitizer.bypassSecurityTrustUrl(uri);
   }
@@ -254,10 +256,20 @@ export class ReportUiComponent implements OnInit {
   }
 
   submit(){
-    const extendedUsername = "user-" + this.user.username;
-    const pseudonym = extendedUsername.split("").map(v=>v.charCodeAt(0)).reduce(
-      (a,v) => a+((a<<7)+(a<<3))^v).toString(16);
+    const pseudonym = this.pseudonym;
     const duration = Date.now() - this.timestampStart;
+
+    this.sessionData.push({
+      template: this.template,
+      timestampStart: this.timestampStart,
+      duration,
+      imageID: this.imageID,
+      currentLayout: this.currentLayout.id,
+      mode: this.mode,
+      report: this.report + "\nJudgement below:\n" + this.judgement,
+      pseudonym
+    });
+
     this.backendCaller.addDoctorReport(
       this.template,
       this.timestampStart,
@@ -295,50 +307,6 @@ export class ReportUiComponent implements OnInit {
       this.timerStarted = true;
       this.timestampStart = Date.now();
     });
-  }
-
-  // File save workaround functions
-
-  getHandle(suggestedName: string) {
-    // set some options, like the suggested file name and the file type.
-    const options = {
-      suggestedName,
-      types: [
-        {
-          description: "Text Files",
-          accept: {
-            "text/plain": [".txt"],
-          },
-        },
-      ],
-    };
-
-    // prompt the user for the location to save the file.
-    (window as any).showSaveFilePicker(options).then((handle: FileSystemHandle) => {
-      this.handle = handle;
-      console.log(handle, this.handle);
-    });
-  }
-
-  async save(text: string) {
-    // creates a writable, used to write data to the file.
-    const writable = await (this.handle as any).createWritable();
-    console.log(writable);
-
-    // write a string to the writable.
-    await writable.write(text);
-
-    // close the writable and save all changes to disk.
-    // this will prompt the user for write permission to the file, if it's the first time.
-    await writable.close();
-  }
-
-  setHandle() {
-    this.getHandle("test.json");
-  }
-
-  write() {
-    this.save("test");
   }
 
 }

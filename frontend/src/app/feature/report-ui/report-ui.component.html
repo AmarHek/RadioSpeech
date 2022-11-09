@@ -8,7 +8,17 @@
           RadioSpeech
         </a>
         <span class="spacer"></span>
-        <button mat-button class="header-button" [matMenuTriggerFor]="menu">{{currentLayout.displayName}}</button>
+        <a title="SessionData Download" [href]="downJson" [download]="dataFilename">
+          <button *ngIf="isTester" [disabled]="sessionData.length === 0" class="header-button"
+                  mat-flat-button color="warn">
+            <mat-icon>save</mat-icon>
+          </button>
+        </a>
+        <button mat-button class="header-button" [matMenuTriggerFor]="menu" #t="matMenuTrigger">
+          {{currentLayout.displayName}}
+          <mat-icon *ngIf="!t.menuOpen">expand_more</mat-icon>
+          <mat-icon *ngIf="t.menuOpen">expand_less</mat-icon>
+        </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item *ngFor="let layout of layouts"
                   (click)="layoutChanged(layout)">{{layout.displayName}}
@@ -16,12 +26,6 @@
         </mat-menu>
         <button mat-button class="header-button" (click)="makeNormal()">Rest normal</button>
         <button mat-button class="header-button" (click)="reset()">Zurücksetzen</button>
-        <button *ngIf="isAdmin" mat-button class="header-button" (click)="setHandle()">
-          <mat-icon>file_download</mat-icon>
-        </button>
-        <button *ngIf="isAdmin" mat-button class="header-button" (click)="write()">
-          Schreiben
-        </button>
       </mat-toolbar>
 
       <mat-form-field class="example-chip-list" appearance="fill">
@@ -63,14 +67,17 @@
         <app-report-output  class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
   </div>
 
-  <button *ngIf="!timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+  <button *ngIf="!timerStarted && isTester"
+          style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
           mat-raised-button color="primary" id="start-report-button" (click)="startReportClicked()">
     Start Befundung
   </button>
-  <button *ngIf="timerStarted && isTester" style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+  <button *ngIf="timerStarted && isTester"
+          style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
           mat-raised-button color="primary" id="submit-report-button" (click)="submitReportClicked()">
-    Submit Report
+    Ende Befundung
   </button>
+
 </div>
 </body>
 </html>
