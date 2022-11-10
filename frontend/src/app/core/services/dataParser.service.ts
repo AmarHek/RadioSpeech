@@ -134,10 +134,7 @@ export class DataParserService {
           const val = variable.values.find(v => v[0] === varKey.name);
           val[1] = true;
         } else if (varKey.value !== undefined) {
-          if (variable.kind === "ratio") {
-            variable.numerator = varKey.value[0] as number;
-            variable.denominator = varKey.value[1] as number;
-          } else if (variable.kind === "text") {
+          if (variable.kind === "text") {
             variable.value = varKey.value as string;
           } else if (variable.kind === "number") {
             variable.value = varKey.value as number;

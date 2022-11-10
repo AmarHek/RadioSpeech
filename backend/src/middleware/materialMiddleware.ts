@@ -131,9 +131,6 @@ function updateVariablesBC(newVars: Variable[], oldVars: Variable[]) {
                 if (newVar.values.includes(oldVar.value as string)) {
                     newVar.value = oldVar.value;
                 }
-            } else if (newVar.kind === "ratio" && oldVar.kind === "ratio") {
-                newVar.numerator = oldVar.numerator;
-                newVar.denominator = oldVar.denominator;
             } else if ((newVar.kind === "number" && oldVar.kind === "number") ||
                 (newVar.kind === "text" && oldVar.kind === "text") ||
                 (newVar.kind === "date" && oldVar.kind === "date")) {

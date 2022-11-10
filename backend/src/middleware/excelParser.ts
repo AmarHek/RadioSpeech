@@ -14,7 +14,6 @@ import {
     VariableMC,
     VariableNumber,
     VariableOC,
-    VariableRatio,
     VariableText
 } from "../models/template.model";
 import {trim2DArray, trimArray, isNumber} from "../util/util";
@@ -372,8 +371,6 @@ function extractVariable(row: Row): Variable {
         return extractVariableNumber(row, variable)
     } else if (row["Variable-Typ"] === "Text") {
         return extractVariableText(row, variable)
-    } else if (row["Variable-Typ"] === "ZahlBruch") {
-        return extractVariableRatio(row, variable)
     } else if (row["Variable-Typ"].includes("/")) {
         return extractVariableOC(row, variable)
     } else if (row["Variable-Typ"] === "Datum") {
@@ -435,14 +432,6 @@ function extractVariableNumber(row: Row, variable: VariableCommon): VariableNumb
         }
 
     }
-    return parsed;
-}
-
-function extractVariableRatio(row: Row, variable: VariableCommon): VariableRatio {
-    const parsed = variable as VariableRatio;
-    parsed.kind = "ratio";
-    parsed.numerator = 0;
-    parsed.denominator = 0;
     return parsed;
 }
 

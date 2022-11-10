@@ -2,7 +2,6 @@ import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 import {Variable} from "@app/models";
 import {MatDialog} from "@angular/material/dialog";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {displayableQuotient} from "@app/helpers";
 import {MatDialogService} from "@app/core";
 
 import {InputModalComponent} from "@app/shared";
@@ -36,7 +35,7 @@ export class VariablesComponent implements OnInit {
   initButtonClickedMap() {
     for (const variable of this.variables) {
       if (variable.kind === "text" || variable.kind === "number" ||
-        variable.kind === "date" || variable.kind === "ratio") {
+        variable.kind === "date") {
         this.hasButtonBeenClickedOnce[variable.id] = false;
       }
     }
@@ -55,9 +54,6 @@ export class VariablesComponent implements OnInit {
         variable.value.month !== undefined &&
         variable.value.year !== undefined) ?
       variable.value.day + "." + variable.value.month + "." + variable.value.year : base;
-    } else if (variable.kind === "ratio") {
-      return (variable.numerator !== 0 && variable.denominator !== 0) ? displayableQuotient(variable.numerator,
-        variable.denominator) : base;
     }
   }
 
@@ -87,10 +83,7 @@ export class VariablesComponent implements OnInit {
       textAfter: variable.textAfter,
       parentText: this.parentText,
     };
-    if (variable.kind === "ratio") {
-      dialogConfig.data["denominator"] = variable.denominator;
-      dialogConfig.data["numerator"] = variable.numerator;
-    } else if (variable.kind === "text" || variable.kind === "number") {
+    if (variable.kind === "text" || variable.kind === "number") {
       dialogConfig.data["value"] = variable.value;
     } else if (variable.kind === "date") {
       dialogConfig.data["value"] = variable.value.year.toString() + "-" +
@@ -120,9 +113,6 @@ export class VariablesComponent implements OnInit {
       variable.value = (input.date as NgbDateStruct);
     } else if (variable.kind === "number") {
       variable.value = input.number as number;
-    } else if (variable.kind === "ratio") {
-      variable.numerator = input.numerator as number;
-      variable.denominator = input.denominator as number;
     }
   }
 

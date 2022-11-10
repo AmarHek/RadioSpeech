@@ -60,7 +60,7 @@ export const makeText = (parts: M.TopLevel[], extractor: M.TextExtractor): strin
     console.log(regEx);
     result = result.replace(regEx, "\n");
   }
-  console.log(result)
+  console.log(result);
   return result;
 };
 
@@ -175,8 +175,6 @@ export function textOfVariable(v: M.Variable): string | undefined {
     }
   } else if (v.kind === "date") {
     return v.value.day + "." + v.value.month + "." + v.value.year;
-  } else if (v.kind === "ratio") {
-    return (v.numerator / v.denominator).toLocaleString("de-DE", { maximumFractionDigits: 2 });
   }
 
   return assertUnreachable(v);

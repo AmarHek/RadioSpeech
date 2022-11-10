@@ -90,7 +90,7 @@ export interface Option {
 
 // Variable types
 
-export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate | VariableRatio;
+export type Variable = VariableOC | VariableMC | VariableText | VariableNumber | VariableDate;
 
 export interface VariableCommon {
   id:         string;
@@ -123,11 +123,5 @@ export interface VariableNumber extends VariableCommon {
 export interface VariableDate extends VariableCommon {
   kind:  "date";
   value: NgbDateStruct;
-}
-
-export interface VariableRatio extends VariableCommon {
-  kind:           "ratio";
-  numerator:      number;
-  denominator:    number;
 }
 

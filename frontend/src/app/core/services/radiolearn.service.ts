@@ -10,7 +10,6 @@ import {
   VariableMC,
   VariableNumber,
   VariableOC,
-  VariableRatio,
   VariableText
 } from "@app/models";
 import {
@@ -18,7 +17,6 @@ import {
   SelectableError,
   VariableError,
   VariableMCError,
-  VariableRatioError,
   VariableValueError
 } from "@app/models/errorModel";
 import * as M from "@app/models/templateModel";
@@ -66,9 +64,6 @@ export class RadiolearnService {
         for (const val of variable.values) {
           val[1] = false;
         }
-      } else if (variable.kind === "ratio") {
-        variable.numerator = 0;
-        variable.denominator = 0;
       } else if (variable.kind === "number") {
         variable.value = 0;
       } else if (variable.kind === "text") {
@@ -362,8 +357,6 @@ export class RadiolearnService {
         // differentiate variable types
         if (shouldVar.kind === "mc") {
           err = this.compareVariableMC(shouldVar as VariableMC, actualVar as VariableMC);
-        } else if (shouldVar.kind === "ratio") {
-          err = this.compareVariableRatio(shouldVar as VariableRatio, actualVar as VariableRatio);
         } else if (shouldVar.kind === "oc") {
           err = this.compareVariableOC(shouldVar as VariableOC, actualVar as VariableOC);
         } else if (shouldVar.kind === "text") {
@@ -404,22 +397,6 @@ export class RadiolearnService {
         kind: "mc",
         should,
         actual
-      };
-    } else {
-      return undefined;
-    }
-  }
-
-  // comparison function for ratio variables
-  compareVariableRatio(originalVar: VariableRatio, studentVar: VariableRatio): VariableRatioError {
-    if (originalVar.numerator !== studentVar.numerator || originalVar.denominator !== studentVar.denominator) {
-      return {
-        id: originalVar.id,
-        kind: "ratio",
-        shouldNum: originalVar.numerator,
-        shouldDenom: originalVar.denominator,
-        actualNum: studentVar.numerator,
-        actualDenom: studentVar.denominator
       };
     } else {
       return undefined;

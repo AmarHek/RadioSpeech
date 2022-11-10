@@ -25,7 +25,7 @@
       </td>
 
       <td *ngIf="variable.kind === 'text' || variable.kind === 'number'
-      || variable.kind === 'date' || variable.kind === 'ratio'">
+      || variable.kind === 'date'">
         {{variable.textBefore}}
         <button class="modal-button"
                 [ngClass]="{'selected': parentActive}"
