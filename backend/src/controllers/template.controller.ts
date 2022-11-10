@@ -1,10 +1,9 @@
-import {extractKeys, validateTemplate} from "../middleware/templateMiddleware";
 import {TemplateDB} from '../models';
 import * as fs from 'fs';
 import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 import * as Path from "path";
-import {generateUniqueFilename, isJsonString} from "../util/util";
+import {generateUniqueFilename} from "../util/util";
 
 
 export function createExcelTemplate(req: any, res: Response) {
@@ -40,34 +39,6 @@ export function createExcelTemplate(req: any, res: Response) {
             });
         });
     }
-}
-
-
-export function createJSONTemplate(req: any, res: Response) {
-  const rawData = fs.readFileSync(req.file.path);
-  if (!isJsonString(rawData.toString())) {
-      res.status(500).send({message: "Given file is not a JSON file, aborting."});
-  }
-  let parts = JSON.parse(rawData.toString());
-
-  if (!validateTemplate(parts)) {
-      res.status(500).send({message: "Not a valid template"})
-  }
-
-  parts = extractKeys(parts);
-
-  const template = new TemplateDB({
-      parts: parts,
-      name: req.body.name,
-      kind: req.body.kind,
-      timestamp: req.body.timestamp as number
-  });
-  template.save().then(result => {
-    res.status(201).json({
-      message: "Template added successfully",
-      postId: result._id
-    });
-  });
 }
 
 export function createTemplate(req: any, res: Response) {
