@@ -284,12 +284,23 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   submit(){
+    let deepToSave = null;
+    let shallowToSave = null;
+    if(this.workMode == "deep"){
+      deepToSave = this.material.deepDocTemplate
+      this.ogMaterial.shallowDocTemplate = null
+    }
+    else {
+      shallowToSave = this.material.shallowDocTemplate
+      this.ogMaterial.deepDocTemplate = null
+    }
+
     const duration = Date.now() - this.timestamp;
     this.backendCaller.addUsageData(
       this.uuid,
       this.material._id,
-      this.material.deepDocTemplate,
-      this.material.shallowDocTemplate,
+      deepToSave,
+      shallowToSave,
       this.workMode,
       this.timestamp,
       duration,
