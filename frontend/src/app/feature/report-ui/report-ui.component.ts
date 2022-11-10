@@ -119,6 +119,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   onSelected(cat: string){
+    this.chipInput.nativeElement.focus()
     this.selectedCat = cat;
     this.selectedSelectableID = "";
   }
@@ -144,6 +145,7 @@ export class ReportUiComponent implements OnInit {
             this.categories = this.dataParser.extractCategories(this.parts);
             this.selectedCat = this.categories[0].name;
             this.inputParser.init(this.defaultParts);
+            this.chipInput.nativeElement.focus()
           }
         });
       }
@@ -165,6 +167,7 @@ export class ReportUiComponent implements OnInit {
   }
 
   onClick() {
+    this.chipInput.nativeElement.focus()
     this.selectedSelectableID = "";
     setTimeout(() => this.updateText(), 1);
     setTimeout(() => this.modelChange(), 5);
