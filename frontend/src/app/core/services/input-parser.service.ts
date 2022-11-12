@@ -126,6 +126,9 @@ export class InputParserService {
     const relativePosition = clickKey.position + clickKey.synonym.length + 1;
     const id: string = clickKey.category + " " + clickKey.name;
     let foundVariablesTemp: KeyVariable[] = [];
+    if(this.foundVariables.get(id) != undefined){
+      foundVariablesTemp = this.foundVariables.get(id)
+    }
     const possibleVariables = this.varKeyDictionary.get(id);
 
     if (varText.length <= 0 || possibleVariables === undefined) {
