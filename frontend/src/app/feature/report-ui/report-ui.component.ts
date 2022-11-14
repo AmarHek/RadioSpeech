@@ -341,4 +341,8 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
+  updateSessionData(event) {
+    console.log(event);
+  }
+
 }
