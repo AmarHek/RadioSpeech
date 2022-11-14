@@ -14,6 +14,7 @@ import {Role} from "@app/models";
 
 import {LoginComponent} from "@app/view";
 import {RadiolearnWelcomeComponent} from "@app/view/radiolearn-welcome/radiolearn-welcome.component";
+import {PendingChangesGuard} from "@app/core/guards/pending-changes.guard";
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
     path: "main/:id",
     component: ReportUiComponent,
     canActivate: [AuthGuard],
+    canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
