@@ -16,6 +16,22 @@ interface Layout{
   displayName: string;
 }
 
+export interface DialogData{
+  id: string;
+}
+
+@Component({
+  selector: "app-dialog-overview-example-dialog-component",
+  templateUrl: "./app-dialog-overview-example-dialog-component.html",
+})
+
+export class DialogOverviewExampleDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+}
+
 @Component({
   selector: "app-report-ui",
   templateUrl: "./report-ui.component.html",
@@ -312,18 +328,4 @@ export class ReportUiComponent implements OnInit {
     });
   }
 
-}
-
-export interface DialogData{
-  id: string;
-}
-@Component({
-  selector: "app-dialog-overview-example-dialog-component",
-  templateUrl: "./app-dialog-overview-example-dialog-component.html",
-})
-export class DialogOverviewExampleDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
 }
