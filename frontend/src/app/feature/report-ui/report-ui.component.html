@@ -8,8 +8,9 @@
           RadioSpeech
         </a>
         <span class="spacer"></span>
-        <a title="SessionData Download" [href]="downJson" [download]="dataFilename">
-          <button *ngIf="isTester" [disabled]="sessionData.length === 0" class="header-button"
+        <a title="SessionData Download" [href]="downJson" [download]="dataFilename"
+           (click)="savedSessionData = sessionData.length">
+          <button *ngIf="isTester" [disabled]="sessionData.length === savedSessionData" class="header-button"
                   mat-flat-button color="warn">
             <mat-icon>save</mat-icon>
           </button>

@@ -1,15 +1,22 @@
 import {ENTER} from "@angular/cdk/keycodes";
 import {Location} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
-import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 
-import {AuthenticationService, BackendCallerService, DataParserService, InputParserService} from "@app/core";
+import {
+  AuthenticationService,
+  BackendCallerService,
+  ComponentCanDeactivate,
+  DataParserService,
+  InputParserService
+} from "@app/core";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ReportOptionsComponent} from "@app/shared";
+import {Observable} from "rxjs";
 
 interface Layout{
   id: number;
@@ -38,12 +45,17 @@ export class DialogOverviewExampleDialogComponent {
   styleUrls: ["./report-ui.component.scss"],
 })
 
-export class ReportUiComponent implements OnInit {
+export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
   @ViewChild(ReportOptionsComponent)
   private optionsComponent: ReportOptionsComponent;
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.sessionData.length <= this.savedSessionData;
+  }
 
   selectable = true;
   removable = true;
@@ -77,6 +89,7 @@ export class ReportUiComponent implements OnInit {
   template: Template = undefined;
   timerStarted = false;
   sessionData = [];
+  savedSessionData = 0;
 
   private user: User;
 
