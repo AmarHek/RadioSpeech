@@ -9,10 +9,10 @@ import {ActivatedRoute} from "@angular/router";
 import {
   AuthenticationService,
   BackendCallerService,
-  ComponentCanDeactivate,
   DataParserService,
   InputParserService
 } from "@app/core";
+import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
 import {ReportOptionsComponent} from "@app/shared";

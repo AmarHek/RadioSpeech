@@ -10,8 +10,7 @@ import {
   InputParserService,
   MatDialogService,
   RadiolearnService,
-  UserService,
-  PendingChangesGuard
+  UserService
 } from "@app/core";
 
 
@@ -30,8 +29,7 @@ import {
     InputParserService,
     MatDialogService,
     RadiolearnService,
-    UserService,
-    PendingChangesGuard
+    UserService
   ]
 })
 export class CoreModule {

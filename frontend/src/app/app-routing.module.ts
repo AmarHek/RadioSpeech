@@ -14,7 +14,7 @@ import {Role} from "@app/models";
 
 import {LoginComponent} from "@app/view";
 import {RadiolearnWelcomeComponent} from "@app/view/radiolearn-welcome/radiolearn-welcome.component";
-import {PendingChangesGuard} from "@app/core/guards/pending-changes.guard";
+import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
 
 const routes: Routes = [
   {

@@ -16,6 +16,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
+import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
 
 @NgModule({
   declarations: [
@@ -34,9 +35,9 @@ import {MatInputModule} from "@angular/material/input";
     MatDialogModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatInputModule,
+    MatInputModule
   ],
-  providers: [
+  providers: [PendingChangesGuard,
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
