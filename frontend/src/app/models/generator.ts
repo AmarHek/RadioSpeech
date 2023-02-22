@@ -42,7 +42,7 @@ export function judgementExtractor(): M.TextExtractor {
 }
 
 export const makeText = (parts: M.TopLevel[], extractor: M.TextExtractor): string => {
- let result = parts.map(c => {
+  let result = parts.map(c => {
     if (c.kind === "category") {
       return getTexts(c.selectables, extractor)
         .map(t => expandVariablesInString(t, parts, true)).join("");
@@ -75,14 +75,10 @@ export function getTexts(ss: M.Selectable[], textExtractor: M.TextExtractor): st
         ret.push(result);
       }
     } else if (s.kind === "group") {
-      for (const o of s.options) {
-        if (s.value === o.name) {
-          const result = textExtractor.ofOption(o);
-          if (result) {
-            ret.push(result);
-          }
-        }
-      }
+      s.options.filter(o => s.value == o.name).forEach(o => {
+        const result = textExtractor.ofOption(o);
+        if (result) ret.push(result);
+      })
     }
   }
   return ret;
@@ -135,28 +131,22 @@ export function expandVariablesInString(s: string, data: M.TopLevel[], addFullSt
 }
 
 export function makeDateString(d: Date): string {
-  return d.toLocaleDateString("de-DE", { year: "numeric", month: "numeric", day: "numeric" });
+  return d.toLocaleDateString("de-DE", {year: "numeric", month: "numeric", day: "numeric"});
 }
 
 export function allVariables(data: M.TopLevel[]): M.Variable[] {
   let vars: M.Variable[] = [];
-
-  for (const c of data) {
-    if (c.kind === "category") {
-      for (const sel of c.selectables) {
-        if (sel.kind === "box" && sel.value) {
-          vars = vars.concat(sel.variables);
-        } else if (sel.kind === "group") {
-          for (const o of sel.options) {
-            if (sel.value === o.name) {
-              vars = vars.concat(o.variables);
-            }
-          }
-        }
+  data.filter(e => e.kind === "category").forEach(c => {
+    (c as M.Category).selectables.forEach(sel => {
+      if (sel.kind === "box" && sel.value) {
+        vars = vars.concat(sel.variables);
+      } else if (sel.kind === "group") {
+        sel.options.forEach(o => {
+          if (sel.value === o.name) vars = vars.concat(o.variables);
+        })
       }
-    }
-  }
-
+    })
+  })
   return vars;
 }
 
@@ -171,7 +161,7 @@ export function textOfVariable(v: M.Variable): string | undefined {
     if (v.value !== 0) {
       return "" + v.value;
     } else {
-    return "";
+      return "";
     }
   } else if (v.kind === "date") {
     return v.value.day + "." + v.value.month + "." + v.value.year;
@@ -227,22 +217,12 @@ export function makeEnumeration(e: M.Enumeration, data: M.TopLevel[], textExtrac
 
 export function getRelevantEnumerationItems(id: string, data: M.TopLevel[], textExtractor: M.TextExtractor): string[] {
   const items: string[] = [];
-
-  for (const p of data) {
-    if (p.kind === "category") {
-      for (const s of p.selectables) {
-        if (s.kind === "box") {
-          if (s.value && s.enumeration === id) {
-            const result = textExtractor.ofCheckbox(s);
-            if (result) {
-              items.push(expandVariablesInString(result, data, false));
-            }
-          }
-        }
-      }
-    }
-  }
-
+  data.filter(p => p.kind === "category").forEach(p => {
+    (p as M.Category).selectables.filter(s => s.kind === "box" && s.value && s.enumeration === id).forEach(s => {
+      const result = textExtractor.ofCheckbox(s as M.CheckBox);
+      if (result) items.push(expandVariablesInString(result, data, false));
+    })
+  })
   return items;
 }
 
