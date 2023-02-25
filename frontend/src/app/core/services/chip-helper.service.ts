@@ -6,7 +6,7 @@ import {
   Group,
   InputChip,
   KeyClickable,
-  KeyVariable, TopLevel,
+  KeyVariable, Option, TopLevel,
   Variable
 } from "@app/models";
 
@@ -29,28 +29,24 @@ export class ChipHelperService {
     return mergedInput
   }
 
-
   generateChipForGroup(group: Group, catName: string): InputChip{
     let option = group.options.find(o => o.name == group.value)
-    let chipText = option.keys[0]
-    let varInfo = this.getVarTextAndCount(option.variables)
-    let varText = varInfo[0]
-    let activeVarCount = varInfo[1]
-    chipText += varText
-    let variablesComplete = activeVarCount == option.variables.length
-    let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
-    return new InputChip(chipText, chipColor, catName + " " + option.name)
+    return this.generateGenericChip(option, catName)
   }
 
   generateChipForBox(box: CheckBox, catName: string): InputChip{
-    let chipText = box.keys[0]
-    let varInfo = this.getVarTextAndCount(box.variables)
+    return this.generateGenericChip(box, catName)
+  }
+
+  generateGenericChip(element: Option | CheckBox, catName: string){
+    let chipText = element.keys[0]
+    let varInfo = this.getVarTextAndCount(element.variables)
     let varText = varInfo[0]
     let activeVarCount = varInfo[1]
     chipText += varText
-    let variablesComplete = activeVarCount == box.variables.length
+    let variablesComplete = activeVarCount == element.variables.length
     let chipColor = variablesComplete ? ChipColors.GREEN : ChipColors.YELLOW
-    return new InputChip(chipText, chipColor, catName + " " + box.name)
+    return new InputChip(chipText, chipColor, catName + " " + element.name)
   }
 
   getVarTextAndCount(variables: Variable[]) {
@@ -165,12 +161,10 @@ export class ChipHelperService {
 
   removeRedChips(chips){
     for (const chip of chips){
-      if(chip.color === ChipColors.RED){
-        const index = chips.indexOf(chip);
-        if (index >= 0) {
-          chips.splice(index, 1);
-        }
-      }
+      if (chip.color != ChipColors.RED) continue
+      const index = chips.indexOf(chip);
+      if (index < 0) continue
+      chips.splice(index, 1);
     }
   }
 }
