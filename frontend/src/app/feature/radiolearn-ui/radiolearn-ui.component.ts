@@ -460,7 +460,7 @@ export class RadiolearnUiComponent implements OnInit {
     //Remove chips showing unrecognized text
     this.chipHelper.removeRedChips(this.chips);
     // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
+    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips);
     //Parse this input, assign the values and generate the new chips accordingly
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
