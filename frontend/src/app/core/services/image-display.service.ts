@@ -94,7 +94,7 @@ export class ImageDisplayService {
     //check for overlap with another label
     let overlap = false
     annotations.forEach(otherAnnotation => {
-      if(this.annotationOverlap(context, scaleFactor, annotation, otherAnnotation)){
+      if (this.annotationOverlap(context, scaleFactor, annotation, otherAnnotation)) {
         overlap = true
       }
     })
@@ -102,48 +102,67 @@ export class ImageDisplayService {
     //fix out of bounds to the right side by shifting the label to the left as far as necessary
     let endPos = textMetrics.width + scaleFactor * annotation.labelLeft
     let xAdjustment = 0
-    if (endPos > context.canvas.width){
+    if (endPos > context.canvas.width) {
       xAdjustment = -1 * (endPos - context.canvas.width)
     }
 
     //fix out of bounds at the bottom or overlap with another label, by placing the label at the top of a box
     let bottomPos = textHeight + scaleFactor * annotation.labelTop + this.boxLineWidth + 4
     let yAdjustment = 0
-    if (bottomPos > context.canvas.height || overlap){
+    if (bottomPos > context.canvas.height || overlap) {
       yAdjustment = -1 * (scaleFactor * firstBox.height + textHeight + 20)
+    }
+
+    // calculate text positions
+    let textX = scaleFactor * annotation.labelLeft + xAdjustment
+    let textY = scaleFactor * annotation.labelTop + yAdjustment + this.boxLineWidth + 20
+
+    // draw lines connecting label to boxes if there are multiple
+    if (annotation.boxes.length > 1) {
+      context.strokeStyle = color
+      annotation.boxes.forEach(box => {
+        context.lineWidth = this.boxLineWidth
+        context.beginPath()
+        context.moveTo(textX + textWidth * 0.5, textY)
+        context.lineTo(box.left * scaleFactor, box.top * scaleFactor + box.height * scaleFactor)
+        context.stroke()
+      })
     }
 
     //add white background to the text
     context.fillStyle = "white"
     const textBackgroundPadding = 4
-    context.fillRect(scaleFactor * annotation.labelLeft + xAdjustment, scaleFactor * annotation.labelTop + this.boxLineWidth + textBackgroundPadding * 0.5 + yAdjustment, textWidth, textHeight + textBackgroundPadding)
+    context.fillRect(textX - textBackgroundPadding * 0.5,
+      textY - textHeight + textMetrics.actualBoundingBoxDescent - textBackgroundPadding * 0.5,
+      textWidth + textBackgroundPadding,
+      textHeight + textBackgroundPadding)
 
     //draw text
     context.fillStyle = color;
-    context.fillText(
-      finalLabel,
-      scaleFactor * annotation.labelLeft + xAdjustment,
-      scaleFactor * annotation.labelTop + this.boxLineWidth + 20 + yAdjustment);
+    context.fillText(finalLabel, textX, textY);
 
-    annotation.labelLeft += xAdjustment * (1/scaleFactor)
-    annotation.labelTop += yAdjustment * (1/scaleFactor)
+    annotation.labelLeft += xAdjustment * (1 / scaleFactor)
+    annotation.labelTop += yAdjustment * (1 / scaleFactor)
   }
 
   //checks whether the text labels of two annotations overlap
-  annotationOverlap(context, scalefactor, anno_a, anno_b) : boolean {
-    if(anno_a.label == anno_b.label && anno_a.labelLeft == anno_b.labelLeft && anno_a.labelTop == anno_b.labelTop) return false
+  annotationOverlap(context, scalefactor, anno_a, anno_b): boolean {
+    if (anno_a.label == anno_b.label && anno_a.labelLeft == anno_b.labelLeft && anno_a.labelTop == anno_b.labelTop) return false
     let rectA = this.annotationToRectangle(context, scalefactor, anno_a)
     let rectB = this.annotationToRectangle(context, scalefactor, anno_b)
     return this.rectangleOverlap(rectA, rectB)
   }
 
   //Returns the rectangle object corresponding to an annotation
-  annotationToRectangle(context, scalefactor, annotation): Rect{
+  annotationToRectangle(context, scalefactor, annotation): Rect {
     let metrics = context.measureText(annotation.label)
     const textWidth = metrics.width
     const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
-    let topLeft: Point =  {x: annotation.labelLeft * scalefactor, y: annotation.labelTop * scalefactor}
-    let bottomRight: Point =  {x: annotation.labelLeft * scalefactor + textWidth, y: annotation.labelTop * scalefactor + textHeight}
+    let topLeft: Point = {x: annotation.labelLeft * scalefactor, y: annotation.labelTop * scalefactor}
+    let bottomRight: Point = {
+      x: annotation.labelLeft * scalefactor + textWidth,
+      y: annotation.labelTop * scalefactor + textHeight
+    }
     return new Rect(topLeft, bottomRight)
   }
 
@@ -153,12 +172,12 @@ export class ImageDisplayService {
     let verticesB = this.getRectangleVertices(rect_B)
     let overlap = false
     verticesA.forEach(vertice => {
-      if(rect_B.contains(vertice)){
+      if (rect_B.contains(vertice)) {
         overlap = true
       }
     })
     verticesB.forEach(vertice => {
-      if(rect_A.contains(vertice)){
+      if (rect_A.contains(vertice)) {
         overlap = true
       }
     })
@@ -288,9 +307,9 @@ export class Rect {
     this.bottomRight = bottomRight
   }
 
-  contains(p: Point) : boolean {
-    if(this.topLeft.x <= p.x && p.x <= this.bottomRight.x){
-      if(this.topLeft.y <= p.y && p.y <= this.bottomRight.y){
+  contains(p: Point): boolean {
+    if (this.topLeft.x <= p.x && p.x <= this.bottomRight.x) {
+      if (this.topLeft.y <= p.y && p.y <= this.bottomRight.y) {
         return true
       }
     }
