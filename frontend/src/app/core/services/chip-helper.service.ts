@@ -18,11 +18,14 @@ export class ChipHelperService {
   constructor() {
   }
 
+  /**
+   * Returns a string containing the content of all existing InputChips separated by whitespaces, concatenated with
+   * the user input at the end.
+   * @param input Raw user input string
+   * @param chips List of already existing InputChips
+   */
   getMergedInput(input: string, chips: InputChip[]) {
-    let mergedInput = ""
-    chips.forEach(chip => mergedInput += chip.content + " ")
-    mergedInput += input
-    return mergedInput
+    return chips.map(c => c.content).join(" ") + input
   }
 
   generateChipForGroup(group: Group, catName: string): InputChip {
@@ -34,6 +37,12 @@ export class ChipHelperService {
     return this.generateGenericChip(box, catName)
   }
 
+  /**
+   * Generates a chip for a checkbox or a group option, containing its name and variable text.
+   * The color of the chip will be green, if all variables have been filled out, otherwise it will be yellow.
+   * @param element The element for which a chip should be generated
+   * @param catName The category to which the element belongs, necessary to generate a unique element ID
+   */
   generateGenericChip(element: Option | CheckBox, catName: string) {
     let chipText = element.keys[0]
     let varInfo = this.getVarTextAndCount(element.variables)
@@ -45,6 +54,11 @@ export class ChipHelperService {
     return new InputChip(chipText, chipColor, catName + " " + element.name)
   }
 
+  /**
+   * Returns a tuple [varText, varCount] containing the variable text for the variables of one clickable,
+   * and the number of active variables (deviating from their default values)
+   * @param variables List of variables of one clickable, where text and active count should be extracted
+   */
   getVarTextAndCount(variables: Variable[]) {
     let varText = ""
     let activeVars = 0
@@ -112,15 +126,15 @@ export class ChipHelperService {
 
   /**
    * Checks whether the char at index in the mergedInput belongs to any of the detected variables
-   * @param index
-   * @param mergedInput
-   * @param variables
+   * @param index Index of the char within the input
+   * @param mergedInput Input combining user input and text of already existing InputChips
+   * @param variables List of all found variables
    */
-  keepChar(index: number, mergedInput: string, variables: KeyVariable[]) {
+  charBelongsToVariable(index: number, mergedInput: string, variables: KeyVariable[]) {
     for (let varCounter = 0; varCounter < variables.length; varCounter++) {
       let v = variables[varCounter]
-      if (v.kind == "ratio" && v.value === undefined) return true
-      if (v.kind == "date" && v.value === undefined) return true
+      if (v.kind == "ratio" && v.value === undefined) return false
+      if (v.kind == "date" && v.value === undefined) return false
       if (v.kind == "date") {
         const dateVar = mergedInput.substring(v.position, v.positionEnd);
         let trimAmount = 0;
@@ -132,13 +146,13 @@ export class ChipHelperService {
           }
         }
         if (index >= v.position && index <= v.positionEnd - trimAmount) {
-          return false
+          return true
         }
       } else if (index >= v.position && index <= v.positionEnd) {
-        return false
+        return true
       }
     }
-    return true
+    return false
   }
 
   getTextWithoutVariables(mergedInput: string, foundVariables: Map<String, KeyVariable[]>) {
@@ -148,7 +162,7 @@ export class ChipHelperService {
       list.forEach(v => allVars.push(v))
     })
     for (let i = 0; i < mergedInput.length; i++) {
-      if (this.keepChar(i, mergedInput, allVars)) {
+      if (!this.charBelongsToVariable(i, mergedInput, allVars)) {
         textNoVars += mergedInput[i]
       }
     }
