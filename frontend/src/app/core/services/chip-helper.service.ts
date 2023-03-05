@@ -81,6 +81,12 @@ export class ChipHelperService {
     return [varText, activeVars]
   }
 
+  /**
+   * Returns a list of InputChips corresponding to the discrepancies between the filled out
+   * partList and the provided defaultList of default values.
+   * @param defaultList List of TopLevel parts with their default values
+   * @param partList Modified list of TopLevel parts, to be represented by the returned InputChips
+   */
   generateChipsForParts(defaultList: TopLevel[], partList: TopLevel[]): InputChip[] {
     let result = []
     defaultList.forEach((defaultPart, defaultPartIndex) => {
@@ -104,6 +110,12 @@ export class ChipHelperService {
     return result
   }
 
+  /**
+   * Checks whether the char at index in the mergedInput belongs to any of the detected variables
+   * @param index
+   * @param mergedInput
+   * @param variables
+   */
   keepChar(index: number, mergedInput: string, variables: KeyVariable[]) {
     for (let varCounter = 0; varCounter < variables.length; varCounter++) {
       let v = variables[varCounter]
