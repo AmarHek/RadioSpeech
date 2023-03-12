@@ -52,7 +52,7 @@ export class RowErrorCollection {
     }
 
     getCompactReport(){
-        return this.errorList.map(error => "Line " + error.row + ": " + this.errorToID(error))
+        return this.errorList.map(error => "Line " + error.row + ": " + this.errorToID(error)).join("; ")
     }
 
 }
