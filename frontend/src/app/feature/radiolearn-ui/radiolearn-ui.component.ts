@@ -37,6 +37,9 @@ export class RadiolearnUiComponent implements OnInit {
   @ViewChild(ImageDisplayComponent) imageDisplayChild: ImageDisplayComponent;
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
+  // debugging
+  SAVE_EVALUATION_DATA = false
+
   // data variables
   material: Material;
   ogMaterial: Material;
@@ -159,7 +162,7 @@ export class RadiolearnUiComponent implements OnInit {
             this.timestamp = Date.now();
 
             const surveyStatus = getSurveyStatus();
-            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0){
+            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
               this.openSurveyDialog();
             }
           }
@@ -283,14 +286,14 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  submit(){
+  submit() {
+    if (!this.SAVE_EVALUATION_DATA) return
     let deepToSave = null;
     let shallowToSave = null;
-    if(this.workMode == "deep"){
+    if (this.workMode == "deep") {
       deepToSave = this.material.deepDocTemplate
       this.ogMaterial.shallowDocTemplate = null
-    }
-    else {
+    } else {
       shallowToSave = this.material.shallowDocTemplate
       this.ogMaterial.deepDocTemplate = null
     }
@@ -308,7 +311,7 @@ export class RadiolearnUiComponent implements OnInit {
       getResetCounter()
     ).subscribe(res => {
       console.log(res.message);
-      });
+    });
   }
 
   toggleUserMode() {
@@ -336,7 +339,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
-    if(!this.sawFeedback) {
+    if (!this.sawFeedback) {
       this.submit();
       if (this.workMode === "deep") {
         this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
@@ -378,7 +381,7 @@ export class RadiolearnUiComponent implements OnInit {
       if (res.material === null) {
         this.openNoMaterialsLeftDialog();
       } else {
-        if(this.imageDisplayStudentChild.displayBoxes) {
+        if (this.imageDisplayStudentChild.displayBoxes) {
           this.imageDisplayStudentChild.toggleBoxes();
         }
         this.sawFeedback = false;
@@ -394,17 +397,17 @@ export class RadiolearnUiComponent implements OnInit {
     if (this.imageDisplayChild.displayBoxes) {
       this.imageDisplayChild.toggleBoxes();
     }
-      this.backendCaller.getRandom(false).subscribe(res => {
-        console.log(res);
-        if (res.material === null) {
-          window.alert("Keine weiteren Befunde verfügbar");
-        } else {
-          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
-        }
-      }, err => {
-        window.alert(err);
-        console.log(err);
-      });
+    this.backendCaller.getRandom(false).subscribe(res => {
+      console.log(res);
+      if (res.material === null) {
+        window.alert("Keine weiteren Befunde verfügbar");
+      } else {
+        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+      }
+    }, err => {
+      window.alert(err);
+      console.log(err);
+    });
   }
 
   feedbackModal() {
@@ -451,7 +454,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.onInput();
   }
 
-  onChipClick(chip: InputChip){
+  onChipClick(chip: InputChip) {
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
   }
@@ -492,25 +495,25 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
 
-  materialHasComments(material): boolean{
+  materialHasComments(material): boolean {
     let result = false;
-    material.annotations.pre.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
+    material.annotations.pre.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
           result = true;
         }
       }
     });
-    material.annotations.lateral.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
+    material.annotations.lateral.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
           result = true;
         }
       }
     });
-    material.annotations.main.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
+    material.annotations.main.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
           result = true;
         }
       }
