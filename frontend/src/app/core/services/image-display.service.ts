@@ -120,14 +120,16 @@ export class ImageDisplayService {
     // draw lines connecting label to boxes if there are multiple
     if (annotation.boxes.length > 1) {
       context.strokeStyle = color
+      context.setLineDash([5, 5])
       annotation.boxes.forEach(box => {
-        context.lineWidth = this.boxLineWidth
+        context.lineWidth = this.boxLineWidth * 0.5
         context.beginPath()
         context.moveTo(textX + textWidth * 0.5, textY)
         context.lineTo(box.left * scaleFactor, box.top * scaleFactor + box.height * scaleFactor)
         context.stroke()
       })
     }
+    context.setLineDash([])
 
     //add white background to the text
     context.fillStyle = "white"
