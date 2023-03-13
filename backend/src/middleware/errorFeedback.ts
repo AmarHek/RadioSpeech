@@ -26,6 +26,7 @@ export class RowError {
 
 export class RowErrorCollection {
     errorList: RowError[];
+    reportHeadline = "Beim Parsen der Schablone sind folgende Fehler aufgetreten:\n"
 
     constructor() {
         this.errorList = [];
@@ -48,11 +49,11 @@ export class RowErrorCollection {
     }
 
     getVerboseReport(){
-        return this.errorList.map(error => "Line " + error.row + ": " + error.type).join("\n")
+        return this.reportHeadline + this.errorList.map(error => "Zeile " + error.row + ": " + error.type).join("\n")
     }
 
     getCompactReport(){
-        return this.errorList.map(error => "Line " + error.row + ": " + this.errorToID(error)).join("; ")
+        return this.reportHeadline + this.errorList.map(error => "Zeile " + error.row + ": " + this.errorToID(error)).join("\n")
     }
 
 }
