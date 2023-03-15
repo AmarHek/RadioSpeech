@@ -7,7 +7,7 @@
         <mat-icon>arrow_back_ios</mat-icon>
         RadioLearn
       </button>
-      <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
+      <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0, 25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
               (click)="switchInputMode()">
@@ -29,15 +29,22 @@
               (click)="makeNormal()">Rest normal
       </button>
       <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod"
-              (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
+              (click)="checkForErrors()">
+        <mat-icon>checklist_rtl</mat-icon>
+        Überprüfen
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="save" matTooltip="Speichern"
-              (click)="save()"><mat-icon>save</mat-icon>
+              (click)="save()">
+        <mat-icon>save</mat-icon>
       </button>
       <button mat-button class="header-button" id="next" matTooltip="Nächste Aufnahme"
-              (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
+              (click)="nextMaterial()">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
       <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"
-              (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
+              (click)="feedbackModal()">
+        <mat-icon>feedback</mat-icon>
+      </button>
 
     </mat-toolbar>
 
@@ -160,9 +167,9 @@
 
   </mat-toolbar>
 
-  <mat-drawer-container class="example-container" [hasBackdrop]="true" style="height: calc(100% - 60px); background-color: #e0eafa">
+  <mat-drawer-container class="example-container" [hasBackdrop]="true"
+                        style="height: calc(100% - 60px); background-color: #e0eafa">
     <mat-drawer #drawer [mode]="'over'">
-
 
 
       <ng-container *ngIf="this.material">
@@ -207,7 +214,6 @@
       </ng-container>
 
 
-
     </mat-drawer>
     <mat-drawer-content style="height: 100%">
       <app-image-display-student *ngIf="material && userMode"
@@ -218,19 +224,23 @@
       ></app-image-display-student>
 
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()" *ngIf="!sawFeedback">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()"
+              *ngIf="!sawFeedback">
         <mat-icon>
           edit
         </mat-icon>
       </button>
 
-      <div style="z-index: -10; position: fixed; bottom: 25px; display: flex; align-items: center; justify-content: center; width: 100%">
+      <div
+        style="z-index: -10; position: fixed; bottom: 25px; display: flex; align-items: center; justify-content: center; width: 100%">
         <button mat-raised-button color="primary" style="" (click)="checkForErrors()">
-          <mat-icon>checklist_rtl</mat-icon> Überprüfen
+          <mat-icon>checklist_rtl</mat-icon>
+          Überprüfen
         </button>
       </div>
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()" *ngIf="sawFeedback">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()"
+              *ngIf="sawFeedback">
         <mat-icon>
           navigate_next
         </mat-icon>
