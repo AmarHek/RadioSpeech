@@ -18,12 +18,12 @@ import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@
 import {ReportOptionsComponent} from "@app/shared";
 import {Observable} from "rxjs";
 
-interface Layout{
+interface Layout {
   id: number;
   displayName: string;
 }
 
-export interface DialogData{
+export interface DialogData {
   id: string;
 }
 
@@ -103,7 +103,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
               private sanitizer: DomSanitizer,
               public dialog: MatDialog,
               private authenticationService: AuthenticationService
-              ) {
+  ) {
   }
 
   get isTester() {
@@ -143,17 +143,17 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
-    this.reset(false, false);
+    this.reset(false);
     this.onInput();
   }
 
-  onSelected(cat: string){
+  onSelectedCategory(cat: string) {
     this.chipInput.nativeElement.focus()
     this.selectedCat = cat;
     this.selectedSelectableID = "";
   }
 
-  layoutChanged(newLayout: Layout){
+  layoutChanged(newLayout: Layout) {
     this.selectedCat = this.categories[0].name;
     this.currentLayout = newLayout;
   }
@@ -161,23 +161,24 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   // gets parts from node server via id in url
   getData() {
     this.route.paramMap.subscribe(ps => {
-      if (ps.has("id")) {
-        const templateID = ps.get("id");
-        this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
-          if (template === undefined) {
-            window.alert("Dieses Dictionary existiert nicht! " +
-              "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-          } else {
-            this.template = template;
-            this.parts = template.parts;
-            this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-            this.categories = this.dataParser.extractCategories(this.parts);
-            this.selectedCat = this.categories[0].name;
-            this.inputParser.init(this.defaultParts);
-            this.chipInput.nativeElement.focus()
-          }
-        });
-      }
+      if (!ps.has("id")) return;
+      const templateID = ps.get("id");
+      this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
+        if (template === undefined) {
+          window.alert("Dieses Dictionary existiert nicht! " +
+            "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
+        } else {
+          // prepare data
+          this.template = template;
+          this.parts = template.parts;
+          this.defaultParts = JSON.parse(JSON.stringify(this.parts));
+          this.categories = this.dataParser.extractCategories(this.parts);
+          this.inputParser.init(this.defaultParts);
+          // prepare UI
+          this.selectedCat = this.categories[0].name;
+          this.chipInput.nativeElement.focus()
+        }
+      });
     });
   }
 
@@ -190,19 +191,19 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.judgement = "";
   }
 
-  onChipClick(chip: InputChip){
+  onChipClick(chip: InputChip) {
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
   }
 
   onClick() {
+    // triggered via <app-report-options> sub-component, when group, checkbox or variable is clicked
     this.chipInput.nativeElement.focus()
     this.selectedSelectableID = "";
     setTimeout(() => this.updateText(), 1);
     setTimeout(() => this.modelChange(), 5);
   }
 
-  //If useChips is set to false, inputs are handled exactly like before the implementations of chips
   onInput() {
     //Remove chips showing unrecognized text
     this.chipHelper.removeRedChips(this.chips);
@@ -215,8 +216,8 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.assignValues();
     this.generateChips();
     //navigate to category of last chip
-    if(this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
-      this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
+    if (this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
+      this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
     }
     // Remove everything that was detected as a clickable or variable from the input
     this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
@@ -232,12 +233,11 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.updateText(), 5);
   }
 
-  generateChips(){
+  generateChips() {
     this.selectedSelectableID = "";
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
-  // TODO Auf Dataparser auslagern
   // Assigns all found keywords in inputParser to this.parts
   assignValues() {
     this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
@@ -250,7 +250,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.onInput();
   }
 
-  modelChange(){
+  modelChange() {
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
@@ -270,24 +270,21 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
-  reset(resetSelectedCat: boolean = true, resetChips = true) {
+  reset(resetUI: boolean = true) {
     this.parts = JSON.parse(JSON.stringify(this.defaultParts));
     this.categories = this.dataParser.extractCategories(this.parts);
-    if (resetChips) {
+    if (resetUI) {
       this.chips = [];
-    }
-    this.input = "";
-    if(resetSelectedCat){
       this.selectedCat = this.categories[0].name;
-    }
-    if (resetSelectedCat) {
       this.selectedSelectableID = "";
     }
+    this.input = "";
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }
 
-  submit(){
+  // DATA COLLECTION BELOW
+  submit() {
     const pseudonym = this.pseudonym;
     const duration = Date.now() - this.timestampStart;
 
@@ -314,13 +311,13 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     ).subscribe(res => console.log(res.message));
   }
 
-  startReportClicked(){
+  startReportClicked() {
     this.openDialog();
     this.reset();
     this.updateText();
   }
 
-  submitReportClicked(){
+  submitReportClicked() {
     this.timerStarted = false;
     this.submit();
   }
