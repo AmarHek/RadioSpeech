@@ -43,6 +43,7 @@ export class RadiolearnUiComponent implements OnInit {
   // data variables
   material: Material;
   ogMaterial: Material;
+  emptyMaterial: Material;
   deepCategories: M.Category[];
   shallowCategories: M.Category[];
   boxLabels: BoxLabel[];
@@ -134,6 +135,11 @@ export class RadiolearnUiComponent implements OnInit {
           } else {
             this.material = res.material;
             this.ogMaterial = JSON.parse(JSON.stringify(res.material));
+            // since ogMaterial is partly filled out in radiolearn, an additional empty material is needed to compare against for chip creation
+            this.emptyMaterial = JSON.parse(JSON.stringify(res.material));
+            this.emptyMaterial.deepDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.deepDocTemplate);
+            this.emptyMaterial.shallowDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.shallowDocTemplate);
+
             if (!this.isMod) {
               this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
               this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
@@ -197,6 +203,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.generateChips();
   }
 
+  // USED FOR SHALLOW
   updateFromVariable(selectable) {
     setTimeout(() => this.updateFromVariableDelayed(selectable), 5);
   }
@@ -249,10 +256,10 @@ export class RadiolearnUiComponent implements OnInit {
   generateChips() {
     this.selectedSelectableID = "";
     if (this.workMode === "deep") {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts,
+      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.deepDocTemplate.parts,
         this.material.deepDocTemplate.parts);
     } else {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts,
+      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.shallowDocTemplate.parts,
         this.material.shallowDocTemplate.parts);
     }
   }
