@@ -42,6 +42,7 @@ export class ReportOptionsComponent implements OnInit {
   updateFromGroup(categoryName: string, groupID: string, option: string) {
     const group: Group = this.getGroupByID(categoryName, groupID);
     if (group.value === option) {
+      // allows deselection of group when clicking active option
       group.value = null;
     }
     this.clickEvent.emit();

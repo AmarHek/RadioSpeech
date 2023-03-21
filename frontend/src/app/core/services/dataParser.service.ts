@@ -80,9 +80,6 @@ export class DataParserService {
     const normalExtractor: M.TextExtractor = G.normalExtractor();
     const judgementExtractor: M.TextExtractor = G.judgementExtractor();
 
-    console.log(normalExtractor);
-    console.log(judgementExtractor);
-
     const report = G.makeText(parts, normalExtractor);
     const judgement = G.makeText(parts, judgementExtractor);
 
