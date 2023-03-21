@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import * as G from "@app/models/generator";
 import * as M from "@app/models/templateModel";
 import {KeyClickable, KeyVariable, Row} from "@app/models";
-import {Variable} from "@app/models/templateModel";
+import {Category, CheckBox, Clickable, Group, Variable} from "@app/models/templateModel";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
@@ -139,6 +139,94 @@ export class DataParserService {
             variable.value = varKey.value as NgbDateStruct;
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Manages an update via box, by deselecting all exclusions, and triggering the required click event
+   * The category can either be passed directly, or be determined via categoryName + list of categories
+   */
+  updateFromBox(box: CheckBox, clickEvent: EventEmitter<any>, category?: Category, categoryName?: string, categories?: Category[]) {
+    if (box.exclusions !== undefined) {
+      if (box.exclusions.length > 0) {
+        // Rows only contain selectables of their respective row
+        // We need to extract the corresponding category with all selectables first
+        // row-name contains an additional 0 or 1 at the beginning, so we take the substring
+        if (category === undefined){
+          // determine category via name and list if none was passed
+          category = this.getCategoryByName(categoryName, categories);
+        }
+        for (const exclusion of box.exclusions) {
+          if (exclusion === "Rest") {
+            this.deselectRest(category, box.name);
+          } else {
+            this.deselectByName(category, exclusion);
+          }
+        }
+      }
+    }
+    clickEvent.emit();
+  }
+
+  /**
+   * Manages an update via group
+   * The group can either be passed directly, or be determined via categoryName + list of categories + group ID
+   */
+  updateFromGroup(option: string, clickEvent: EventEmitter<any>, group?: Group, categoryName?: string, categories?: Category[], groupID?: string) {
+    if(group===undefined){
+      group = this.getGroupByID(categoryName, groupID, categories);
+    }
+    if (group.value === option) {
+      // allows deselection of group when clicking active option
+      group.value = null;
+    }
+    clickEvent.emit();
+  }
+
+  updateFromVariable(parent: Clickable, clickEvent: EventEmitter<any>, group?: Group, categories?: Category[], categoryName?: string) {
+    if (parent.kind === "box") {
+      parent.value = true;
+    } else {
+      if(group===undefined){
+        group = this.getGroupByID(categoryName, parent.groupID, categories);
+      }
+      group.value = parent.name;
+    }
+    clickEvent.emit();
+  }
+
+  getCategoryByName(categoryName: string, categories: M.Category[]): M.Category {
+    for (const category of categories) {
+      if (category.name === categoryName) {
+        return category;
+      }
+    }
+  }
+
+  getGroupByID(categoryName: string, groupID: string, categories: M.Category[]): Group {
+    const category: M.Category = this.getCategoryByName(categoryName, categories);
+    for (const sel of category.selectables) {
+      if (sel.name === groupID) {
+        return (sel as Group);
+      }
+    }
+  }
+
+  // functions to deselect specific selectables by name, id etc.
+  deselectByName(category: M.Category, name: string) {
+    for (const sel of category.selectables) {
+      if (sel.name === name) {
+        sel.value = false;
+        return;
+      }
+    }
+  }
+
+  deselectRest(category: M.Category, name: string) {
+    for (const sel of category.selectables) {
+      if (sel.name !== name) {
+        sel.value = false;
       }
     }
   }
