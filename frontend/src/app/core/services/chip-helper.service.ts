@@ -115,7 +115,8 @@ export class ChipHelperService {
         } else if (defaultSel.kind == "box") {
           let parsedDefaultSel = defaultSel as CheckBox
           let parsedSel = (partList[defaultPartIndex] as Category).selectables[defaultSelIndex] as CheckBox
-          if (parsedDefaultSel.value != parsedSel.value) {
+          // Todo, decide on behavior for checkboxes which are default checked to true like "Indikation geprüft"
+          if (parsedDefaultSel.value != parsedSel.value && parsedSel.value) {
             result.push(this.generateChipForBox(parsedSel, defaultPart.name))
           }
         }
