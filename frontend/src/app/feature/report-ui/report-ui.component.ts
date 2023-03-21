@@ -201,7 +201,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.chipInput.nativeElement.focus()
     this.selectedSelectableID = "";
     setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.modelChange(), 5);
+    setTimeout(() => this.generateChips(), 5);
   }
 
   onInput() {
@@ -248,10 +248,6 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
     this.onInput();
-  }
-
-  modelChange() {
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
   // for when the radiologist finishes: empty parts and input
