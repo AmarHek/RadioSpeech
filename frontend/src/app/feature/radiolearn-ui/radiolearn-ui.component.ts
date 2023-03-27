@@ -126,56 +126,55 @@ export class RadiolearnUiComponent implements OnInit {
 
   async getData() {
     this.route.paramMap.subscribe(async (ps) => {
-      if (ps.has("id")) {
-        const matID = ps.get("id");
-        await this.backendCaller.getMaterialById(matID).subscribe(res => {
-          if (res.material === undefined) {
-            window.alert("Der Eintrag mit dieser ID existiert nicht! " +
-              "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
-          } else {
-            this.material = res.material;
-            this.ogMaterial = JSON.parse(JSON.stringify(res.material));
-            // since ogMaterial is partly filled out in radiolearn, an additional empty material is needed to compare against for chip creation
-            this.emptyMaterial = JSON.parse(JSON.stringify(res.material));
-            this.emptyMaterial.deepDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.deepDocTemplate);
-            this.emptyMaterial.shallowDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.shallowDocTemplate);
+      if (!ps.has("id")) return;
+      const matID = ps.get("id");
+      await this.backendCaller.getMaterialById(matID).subscribe(res => {
+        if (res.material === undefined) {
+          window.alert("Der Eintrag mit dieser ID existiert nicht! " +
+            "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
+          return;
+        }
+        this.material = res.material;
+        this.ogMaterial = JSON.parse(JSON.stringify(res.material));
+        // since ogMaterial is partly filled out in radiolearn, an additional empty material is needed to compare against for chip creation
+        this.emptyMaterial = JSON.parse(JSON.stringify(res.material));
+        this.emptyMaterial.deepDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.deepDocTemplate);
+        this.emptyMaterial.shallowDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.shallowDocTemplate);
 
-            if (!this.isMod) {
-              this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
-              this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
-            }
-            this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-            this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-            if (this.workMode === "deep") {
-              this.inputParser.init(this.deepCategories);
-            } else {
-              this.inputParser.init(this.shallowCategories);
-            }
-            if (this.selectedCat === undefined) {
-              this.selectedCat = this.deepCategories[0].name;
-            }
-            this.selectedCatList = [this.selectedCat];
-            // Do this so radiolearn report-output-options don't break on route change
-            if (this.radiolearnOptionsChild !== undefined) {
-              this.radiolearnOptionsChild.categories = this.deepCategories;
-            }
-            this.getBoxLabels();
-            this.sawFeedback = false;
+        if (!this.isMod) {
+          this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
+          this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
+        }
+        this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
+        this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
+        if (this.workMode === "deep") {
+          this.inputParser.init(this.deepCategories);
+        } else {
+          this.inputParser.init(this.shallowCategories);
+        }
+        if (this.selectedCat === undefined) {
+          this.selectedCat = this.deepCategories[0].name;
+        }
+        this.selectedCatList = [this.selectedCat];
+        // Do this so radiolearn report-output-options don't break on route change
+        if (this.radiolearnOptionsChild !== undefined) {
+          this.radiolearnOptionsChild.categories = this.deepCategories;
+        }
+        this.getBoxLabels();
+        this.sawFeedback = false;
 
-            //check if there are any comments in the annotations, to enable the "view comment" button
-            this.anyComments = this.materialHasComments(this.material);
-            this.imageDisplayStudentChild.hideToolTip();
-            this.timestamp = Date.now();
+        //check if there are any comments in the annotations, to enable the "view comment" button
+        this.anyComments = this.materialHasComments(this.material);
+        this.imageDisplayStudentChild.hideToolTip();
+        this.timestamp = Date.now();
 
-            const surveyStatus = getSurveyStatus();
-            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
-              this.openSurveyDialog();
-            }
-          }
-        }, err => {
-          window.alert(err.message);
-        });
-      }
+        const surveyStatus = getSurveyStatus();
+        if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
+          this.openSurveyDialog();
+        }
+      }, err => {
+        window.alert(err.message);
+      });
     });
   }
 

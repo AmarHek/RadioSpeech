@@ -36,7 +36,8 @@ export class DialogOverviewExampleDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) {
+  }
 }
 
 @Component({
@@ -167,17 +168,17 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
         if (template === undefined) {
           window.alert("Dieses Dictionary existiert nicht! " +
             "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-        } else {
-          // prepare data
-          this.template = template;
-          this.parts = template.parts;
-          this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-          this.categories = this.dataParser.extractCategories(this.parts);
-          this.inputParser.init(this.defaultParts);
-          // prepare UI
-          this.selectedCat = this.categories[0].name;
-          this.chipInput.nativeElement.focus()
+          return;
         }
+        // prepare data
+        this.template = template;
+        this.parts = template.parts;
+        this.defaultParts = JSON.parse(JSON.stringify(this.parts));
+        this.categories = this.dataParser.extractCategories(this.parts);
+        this.inputParser.init(this.defaultParts);
+        // prepare UI
+        this.selectedCat = this.categories[0].name;
+        this.chipInput.nativeElement.focus()
       });
     });
   }
