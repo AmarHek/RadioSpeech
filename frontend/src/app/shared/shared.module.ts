@@ -38,6 +38,7 @@ import {StudentErrorsComponent} from "./student-errors/student-errors.component"
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.component";
 import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
+import { RadiolearnOptionsShallowComponent } from './radiolearn-options-shallow/radiolearn-options-shallow.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dial
     UploadMaterialComponent,
     VariablesComponent,
     AddScanDialogComponent,
-    ChangeRoleDialogComponent
+    ChangeRoleDialogComponent,
+    RadiolearnOptionsShallowComponent
   ],
     imports: [
         CommonModule,
@@ -80,23 +82,24 @@ import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dial
         ReactiveFormsModule,
         MatSlideToggleModule
     ],
-  exports: [
-    ChangePasswordComponent,
-    ChangeUsernameComponent,
-    ConfirmDialogComponent,
-    FeedbackDialogComponent,
-    ImageDisplayComponent,
-    ImageDisplayStudentComponent,
-    InputDialogComponent,
-    InputModalComponent,
-    StudentErrorsComponent,
-    RadiolearnOptionsComponent,
-    ReportOptionsComponent,
-    ReportOutputComponent,
-    SignUpComponent,
-    UploadTemplateComponent,
-    UploadMaterialComponent,
-    VariablesComponent
-  ]
+    exports: [
+        ChangePasswordComponent,
+        ChangeUsernameComponent,
+        ConfirmDialogComponent,
+        FeedbackDialogComponent,
+        ImageDisplayComponent,
+        ImageDisplayStudentComponent,
+        InputDialogComponent,
+        InputModalComponent,
+        StudentErrorsComponent,
+        RadiolearnOptionsComponent,
+        ReportOptionsComponent,
+        ReportOutputComponent,
+        SignUpComponent,
+        UploadTemplateComponent,
+        UploadMaterialComponent,
+        VariablesComponent,
+        RadiolearnOptionsShallowComponent
+    ]
 })
 export class SharedModule { }

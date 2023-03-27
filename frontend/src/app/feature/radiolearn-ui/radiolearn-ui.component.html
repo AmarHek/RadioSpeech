@@ -99,49 +99,16 @@
     </ng-container>
 
     <ng-container *ngIf="!deepMode">
+
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
-
-        <ng-container *ngIf="this.material">
-          <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
-            <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px">
-              <mat-checkbox style="font-size: 17px"
-                            (click)="updateFromParent(selectable)"
-                            [(ngModel)]="selectable.value"
-                            [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
-                          selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-              >{{selectable.name}}</mat-checkbox>
-            </div>
-
-            <ng-container *ngIf="selectable.value">
-
-              <ng-container *ngFor="let variable of selectable.variables">
-
-                <mat-radio-group *ngIf=" variable.kind === 'oc'" [(ngModel)]="variable.value">
-                  <ng-container *ngFor="let value of variable.values">
-                    <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                      <mat-radio-button [value]="value" (click)="updateFromVariable(selectable)">
-                        {{value}}
-                      </mat-radio-button>
-                    </div>
-                  </ng-container>
-                </mat-radio-group>
-
-                <ng-container *ngIf="variable.kind === 'mc'">
-                  <ng-container *ngFor="let value of variable.values">
-                    <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                      <mat-checkbox [(ngModel)]="value[1]" (click)="updateFromVariable(selectable)">
-                        {{value[0]}}
-                      </mat-checkbox>
-                    </div>
-                  </ng-container>
-                </ng-container>
-
-              </ng-container>
-            </ng-container>
-
-          </ng-container>
-        </ng-container>
+         <app-radiolearn-options-shallow
+           [material]="this.material"
+           [userMode]="this.userMode"
+           [shallowCategories]="this.shallowCategories"
+           [deepCategories]="this.deepCategories"
+           [selectedSelectableID]="this.selectedSelectableID">
+         </app-radiolearn-options-shallow>
       </div>
     </ng-container>
 
@@ -172,46 +139,13 @@
     <mat-drawer #drawer [mode]="'over'">
 
 
-      <ng-container *ngIf="this.material">
-        <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
-          <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px; padding-right: 7px">
-            <mat-checkbox style="font-size: 17px"
-                          (click)="updateFromParent(selectable)"
-                          [(ngModel)]="selectable.value"
-                          [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
-                          selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-            >{{selectable.name}}</mat-checkbox>
-          </div>
-
-          <ng-container *ngIf="selectable.value">
-
-            <ng-container *ngFor="let variable of selectable.variables">
-
-              <mat-radio-group *ngIf=" variable.kind === 'oc'" [(ngModel)]="variable.value">
-                <ng-container *ngFor="let value of variable.values">
-                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                    <mat-radio-button [value]="value" (click)="updateFromVariable(selectable)">
-                      {{value}}
-                    </mat-radio-button>
-                  </div>
-                </ng-container>
-              </mat-radio-group>
-
-              <ng-container *ngIf="variable.kind === 'mc'">
-                <ng-container *ngFor="let value of variable.values">
-                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                    <mat-checkbox [(ngModel)]="value[1]" (click)="updateFromVariable(selectable)">
-                      {{value[0]}}
-                    </mat-checkbox>
-                  </div>
-                </ng-container>
-              </ng-container>
-
-            </ng-container>
-          </ng-container>
-
-        </ng-container>
-      </ng-container>
+      <app-radiolearn-options-shallow
+        [material]="this.material"
+        [userMode]="this.userMode"
+        [shallowCategories]="this.shallowCategories"
+        [deepCategories]="this.deepCategories"
+        [selectedSelectableID]="this.selectedSelectableID">
+      </app-radiolearn-options-shallow>
 
 
     </mat-drawer>
