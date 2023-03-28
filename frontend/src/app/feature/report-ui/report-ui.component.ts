@@ -138,7 +138,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
         this.categories = this.dataParser.extractCategories(this.parts);
         this.inputParser.init(this.defaultParts);
         // prepare UI
-        this.selectedCat = "Pulmonal";
+        this.selectedCat = this.categories[0].name;
         this.chipInput.nativeElement.focus()
       });
     });
