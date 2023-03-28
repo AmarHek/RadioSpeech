@@ -74,6 +74,18 @@ export class RadiolearnUiComponent implements OnInit {
 
   private user: User;
 
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
+  get deepMode() {
+    return (this.workMode === "deep");
+  }
+
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
               private router: Router,
@@ -87,17 +99,6 @@ export class RadiolearnUiComponent implements OnInit {
               private dialogService: MatDialogService) {
   }
 
-  get isMod() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
-  }
-
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
-  }
-
-  get deepMode() {
-    return (this.workMode === "deep");
-  }
 
   ngOnInit() {
     // Mod or regular user?
@@ -110,7 +111,6 @@ export class RadiolearnUiComponent implements OnInit {
     // mobile check
     this.displayService.isMobile.subscribe(res => {
       this.isMobile = res;
-      console.log("isMobile: " + this.isMobile);
     });
 
     // get current mode
@@ -202,12 +202,6 @@ export class RadiolearnUiComponent implements OnInit {
     this.generateChips();
   }
 
-  updateFromOptions() {
-    // this.chipInput.nativeElement.focus()
-    // this.selectedSelectableID = "";
-    // setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.generateChips(), 5);
-  }
 
   generateChips() {
     this.selectedSelectableID = "";
@@ -408,6 +402,12 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
+  // HANDLE CHIPS
+  onChipClick(chip: InputChip) {
+    this.selectedCat = chip.id.split(" ")[0];
+    this.selectedSelectableID = chip.id;
+  }
+
   remove(chip: InputChip): void {
     const index = this.chips.indexOf(chip);
     if (index >= 0) {
@@ -415,11 +415,6 @@ export class RadiolearnUiComponent implements OnInit {
     }
     this.reset(false);
     this.onInput();
-  }
-
-  onChipClick(chip: InputChip) {
-    this.selectedCat = chip.id.split(" ")[0];
-    this.selectedSelectableID = chip.id;
   }
 
   onInput() {
@@ -445,6 +440,13 @@ export class RadiolearnUiComponent implements OnInit {
     //Clear the text input
     this.input = "";
     this.chipInput.nativeElement.value = "";
+  }
+
+  updateFromOptions() {
+    // this.chipInput.nativeElement.focus()
+    // this.selectedSelectableID = "";
+    // setTimeout(() => this.updateText(), 1);
+    setTimeout(() => this.generateChips(), 5);
   }
 
   assignValues() {

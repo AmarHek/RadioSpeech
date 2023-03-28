@@ -94,6 +94,14 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   private user: User;
 
+  get isTester() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
               private dataParser: DataParserService,
@@ -107,56 +115,9 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   ) {
   }
 
-  get isTester() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
-  }
-
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
-  }
-
-  get pseudonym() {
-    const extendedUsername = "user-" + this.user.username;
-    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
-      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
-  }
-
-  get dataFilename() {
-    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
-  }
-
-  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
-  get downJson() {
-    const jsonData = JSON.stringify(this.sessionData);
-    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
-    return this.sanitizer.bypassSecurityTrustUrl(uri);
-  }
-
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
-    // data collection
-  }
-
-  // HANDLE CHIPS
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    this.reset(false);
-    this.onInput();
-  }
-
-  onSelectedCategory(cat: string) {
-    this.chipInput.nativeElement.focus()
-    this.selectedCat = cat;
-    this.selectedSelectableID = "";
-  }
-
-  layoutChanged(newLayout: Layout) {
-    this.selectedCat = this.categories[0].name;
-    this.currentLayout = newLayout;
   }
 
   // gets parts from node server via id in url
@@ -183,26 +144,38 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
-  updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+  // data collection
+  get pseudonym() {
+    const extendedUsername = "user-" + this.user.username;
+    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
+      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
   }
 
-  resetText(): void {
-    this.report = "";
-    this.judgement = "";
+  get dataFilename() {
+    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
   }
 
+  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
+  get downJson() {
+    const jsonData = JSON.stringify(this.sessionData);
+    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
+    return this.sanitizer.bypassSecurityTrustUrl(uri);
+  }
+
+
+  // HANDLE CHIPS
   onChipClick(chip: InputChip) {
     this.selectedCat = chip.id.split(" ")[0];
     this.selectedSelectableID = chip.id;
   }
 
-  updateFromOptions() {
-    // triggered via <app-report-options> sub-component, when group, checkbox or variable is clicked
-    this.chipInput.nativeElement.focus()
-    this.selectedSelectableID = "";
-    setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.generateChips(), 5);
+  remove(chip: InputChip): void {
+    const index = this.chips.indexOf(chip);
+    if (index >= 0) {
+      this.chips.splice(index, 1);
+    }
+    this.reset(false);
+    this.onInput();
   }
 
   onInput() {
@@ -234,9 +207,12 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.updateText(), 5);
   }
 
-  generateChips() {
+  updateFromOptions() {
+    // triggered via <app-report-options> sub-component, when group, checkbox or variable is clicked
+    this.chipInput.nativeElement.focus()
     this.selectedSelectableID = "";
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
+    setTimeout(() => this.updateText(), 1);
+    setTimeout(() => this.generateChips(), 5);
   }
 
   // Assigns all found keywords in inputParser to this.parts
@@ -244,6 +220,33 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
       this.inputParser.foundVariables);
   }
+
+  onSelectedCategory(cat: string) {
+    this.chipInput.nativeElement.focus()
+    this.selectedCat = cat;
+    this.selectedSelectableID = "";
+  }
+
+  layoutChanged(newLayout: Layout) {
+    this.selectedCat = this.categories[0].name;
+    this.currentLayout = newLayout;
+  }
+
+
+  updateText(): void {
+    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+  }
+
+  resetText(): void {
+    this.report = "";
+    this.judgement = "";
+  }
+
+  generateChips() {
+    this.selectedSelectableID = "";
+    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
+  }
+
 
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
