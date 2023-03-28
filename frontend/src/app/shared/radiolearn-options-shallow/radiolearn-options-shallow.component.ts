@@ -18,12 +18,14 @@ export class RadiolearnOptionsShallowComponent implements OnInit {
   constructor() { }
 
   updateFromParent(selectable){
-    // todo: forward to data parser
+    // in the shallow selection list there are no exclusionary boxes that need to be checked / unchecked, additionally
+    // there are no group options that need the option to be deselected, therefore no action is needed here.
     return
   }
 
   updateFromVariable(selectable){
-    // todo: forward to data parser
+    // in the shallow selection list, variables are not clickable if a parent is not active, so there is no need to
+    // set the parent to active when a variable is clicked
     return
   }
 
