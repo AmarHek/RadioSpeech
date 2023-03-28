@@ -66,7 +66,7 @@
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories && mode != 'f'"
                         [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
-                        (clickEvent)="onClick()" [categories]="categories"
+                        (clickEvent)="updateFromOptions()" [categories]="categories"
                         [layoutId]="currentLayout.id"></app-report-options>
     <app-report-output class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
   </div>

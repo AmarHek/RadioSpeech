@@ -177,7 +177,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
         this.categories = this.dataParser.extractCategories(this.parts);
         this.inputParser.init(this.defaultParts);
         // prepare UI
-        this.selectedCat = this.categories[0].name;
+        this.selectedCat = "Pulmonal";
         this.chipInput.nativeElement.focus()
       });
     });
@@ -197,7 +197,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.selectedSelectableID = chip.id;
   }
 
-  onClick() {
+  updateFromOptions() {
     // triggered via <app-report-options> sub-component, when group, checkbox or variable is clicked
     this.chipInput.nativeElement.focus()
     this.selectedSelectableID = "";
