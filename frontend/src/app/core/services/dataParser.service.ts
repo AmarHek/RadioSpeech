@@ -144,8 +144,10 @@ export class DataParserService {
   }
 
   /**
-   * Manages an update via box, by deselecting all exclusions, and triggering the required click event
+   * Manages an update via box, by deselecting all exclusions, and triggering the required click event.
    * The category can either be passed directly, or be determined via categoryName + list of categories
+   * Variables do not get reset when a box is unchecked, however their selection state is hidden depending on their
+   * parentActive variable (see variables.component.html)
    */
   updateFromBox(box: CheckBox, clickEvent: EventEmitter<any>, category?: Category, categoryName?: string, categories?: Category[]) {
     if (box.exclusions !== undefined) {
@@ -170,20 +172,33 @@ export class DataParserService {
   }
 
   /**
-   * Manages an update via group
+   * Manages an update via group, to allow deselection when clicking an active option, and triggering the clickEvent.
    * The group can either be passed directly, or be determined via categoryName + list of categories + group ID
+   * Variables do not get reset when an option is unchecked, however their selection state is hidden depending on their
+   * parentActive variable (see variables.component.html)
    */
   updateFromGroup(option: string, clickEvent: EventEmitter<any>, group?: Group, categoryName?: string, categories?: Category[], groupID?: string) {
     if(group===undefined){
       group = this.getGroupByID(categoryName, groupID, categories);
     }
     if (group.value === option) {
-      // allows deselection of group when clicking active option
       group.value = null;
     }
     clickEvent.emit();
   }
 
+  /**
+   * Manages an update event triggered by a change in variable.
+   * Whenever a variable is changed, it's parent should be set to active, no matter if the variable is selected or
+   * deselected.
+   * @param parent The variable's parent clickable
+   * @param clickEvent The event to be emitted after the click event
+   * @param group [Optional] If the parent object is a Option belonging to a Group, the group has to be provided.
+   * @param categories [Optional] If the group object is not accessible due to the variable being embedded in a Row,
+   * the list of categories and the category name can be passed to determine the group using the list of categories,
+   * the category name and the parent's groupID.
+   * @param categoryName [Optional] see above
+   */
   updateFromVariable(parent: Clickable, clickEvent: EventEmitter<any>, group?: Group, categories?: Category[], categoryName?: string) {
     if (parent.kind === "box") {
       parent.value = true;
