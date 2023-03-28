@@ -443,10 +443,10 @@ export class RadiolearnUiComponent implements OnInit {
     }
     this.input = "";
     if (this.radiolearnService.workMode === "deep") {
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
+      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
       this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
     } else {
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
+      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
       this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
     }
   }

@@ -103,6 +103,7 @@
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
          <app-radiolearn-options-shallow
+           (updateEmitter)="updateFromOptions()"
            [material]="this.material"
            [userMode]="this.userMode"
            [shallowCategories]="this.shallowCategories"
@@ -140,6 +141,7 @@
 
 
       <app-radiolearn-options-shallow
+        (updateEmitter)="updateFromOptions()"
         [material]="this.material"
         [userMode]="this.userMode"
         [shallowCategories]="this.shallowCategories"
