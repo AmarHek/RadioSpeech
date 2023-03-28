@@ -44,12 +44,11 @@ export interface Material {
 
 export interface UsageData {
   materialID: string;
-  deepDocTemplate: Template;
-  shallowDocTemplate: Template;
+  template: Template;
+  ogTemplate: Template;
   mode: string;
   timestamp: number;
   duration: number;
-  ogMaterial: Material;
   resetCounter: number;
 }
 

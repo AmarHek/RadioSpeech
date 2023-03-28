@@ -9,7 +9,7 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {BoxLabel, ChipColors, InputChip, Material, Role, User} from "@app/models";
+import {BoxLabel, ChipColors, InputChip, Material, Role, Template, User} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
 
@@ -42,10 +42,11 @@ export class RadiolearnUiComponent implements OnInit {
 
   // data variables
   material: Material;
-  ogMaterial: Material;
-  emptyMaterial: Material;
-  deepCategories: M.Category[];
-  shallowCategories: M.Category[];
+  template: Template = undefined;
+  ogTemplate: Template;
+  emptyTemplate: Template;
+  categories: M.Category[];
+
   boxLabels: BoxLabel[];
   errors: CategoryError[];
 
@@ -135,30 +136,24 @@ export class RadiolearnUiComponent implements OnInit {
           return;
         }
         this.material = res.material;
-        this.ogMaterial = JSON.parse(JSON.stringify(res.material));
-        // since ogMaterial is partly filled out in radiolearn, an additional empty material is needed to compare against for chip creation
-        this.emptyMaterial = JSON.parse(JSON.stringify(res.material));
-        this.emptyMaterial.deepDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.deepDocTemplate);
-        this.emptyMaterial.shallowDocTemplate = this.radiolearnService.resetTemplate(this.emptyMaterial.shallowDocTemplate);
+        // Template to be worked on
+        this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
+        // Original Template to be compared against for error check
+        this.ogTemplate = JSON.parse(JSON.stringify(this.template));
+        // Empty Template to be compared against for chip generation
+        this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)))
 
         if (!this.isMod) {
-          this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
-          this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
+          this.template = this.radiolearnService.resetTemplate(this.template);
         }
-        this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-        this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-        if (this.workMode === "deep") {
-          this.inputParser.init(this.deepCategories);
-        } else {
-          this.inputParser.init(this.shallowCategories);
-        }
-        if (this.selectedCat === undefined) {
-          this.selectedCat = this.deepCategories[0].name;
-        }
+
+        this.categories = this.dataParser.extractCategories(this.template.parts);
+        this.inputParser.init(this.categories);
+        this.selectedCat = this.categories[0].name;
         this.selectedCatList = [this.selectedCat];
         // Do this so radiolearn report-output-options don't break on route change
         if (this.radiolearnOptionsChild !== undefined) {
-          this.radiolearnOptionsChild.categories = this.deepCategories;
+          this.radiolearnOptionsChild.categories = this.categories;
         }
         this.getBoxLabels();
         this.sawFeedback = false;
@@ -250,42 +245,22 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-
   // SPECIFIC TO RADIOLEARN (no eval) (below until comment HANDLE CHIPS)
   toggleUserMode() {
     this.userMode = !this.userMode;
   }
 
   switchMode() {
-    if (this.workMode === "deep") {
-      this.workMode = "shallow";
-    } else {
-      this.workMode = "deep";
-    }
+    this.workMode = this.workMode === "deep" ? "shallow" : "deep";
     localStorage.setItem("workMode", this.workMode);
-
     this.reset();
-    this.initInputParser();
-  }
-
-  initInputParser() {
-    if (this.workMode === "deep") {
-      this.inputParser.init(this.deepCategories);
-    } else {
-      this.inputParser.init(this.shallowCategories);
-    }
+    this.ngOnInit()
   }
 
   checkForErrors() {
     if (!this.sawFeedback) {
       this.submit();
-      if (this.workMode === "deep") {
-        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
-          this.material.deepDocTemplate);
-      } else {
-        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
-          this.material.shallowDocTemplate);
-      }
+      this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)
       this.imageDisplayStudentChild.toggleBoxes();
     }
 
@@ -389,26 +364,23 @@ export class RadiolearnUiComponent implements OnInit {
       this.chips = [];
     }
     this.input = "";
-    if (this.radiolearnService.workMode === "deep") {
-      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
-      this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-    } else {
-      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
-      this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-    }
+    this.template = JSON.parse(JSON.stringify(this.emptyTemplate));
+    this.categories = this.dataParser.extractCategories((this.template.parts))
   }
 
   onInput() {
     //Remove chips showing unrecognized text
     this.chipHelper.removeRedChips(this.chips);
+    //remember old chips to prevent change of category if no new correct chip has been found
+    const oldChips = JSON.stringify(this.chips);
     // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips);
+    this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips);
     //Parse this input, assign the values and generate the new chips accordingly
     this.inputParser.parseInput(this.mergedInput);
     this.assignValues();
     this.generateChips();
     //navigate to category of last chip
-    if (this.chips.length > 0) {
+    if (this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
       this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
     }
     // Remove everything that was detected as a clickable or variable from the input
@@ -424,31 +396,20 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   updateFromOptions() {
-    // this.chipInput.nativeElement.focus()
-    // this.selectedSelectableID = "";
+    this.chipInput.nativeElement.focus()
+    this.selectedSelectableID = "";
     // setTimeout(() => this.updateText(), 1);
     setTimeout(() => this.generateChips(), 5);
   }
 
   assignValues() {
-    if (this.radiolearnService.workMode === "deep") {
-      this.dataParser.assignValuesFromInputParser(this.deepCategories, this.inputParser.foundClickables,
-        this.inputParser.foundVariables);
-    } else {
-      this.dataParser.assignValuesFromInputParser(this.shallowCategories, this.inputParser.foundClickables,
-        this.inputParser.foundVariables);
-    }
+    this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
+      this.inputParser.foundVariables);
   }
 
   generateChips() {
     this.selectedSelectableID = "";
-    if (this.workMode === "deep") {
-      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.deepDocTemplate.parts,
-        this.material.deepDocTemplate.parts);
-    } else {
-      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.shallowDocTemplate.parts,
-        this.material.shallowDocTemplate.parts);
-    }
+    this.chips = this.chipHelper.generateChipsForParts(this.emptyTemplate.parts, this.template.parts);
   }
 
   makeNormal() {
@@ -458,26 +419,16 @@ export class RadiolearnUiComponent implements OnInit {
   // DATA COLLECTION
   submit() {
     if (!this.SAVE_EVALUATION_DATA) return
-    let deepToSave = null;
-    let shallowToSave = null;
-    if (this.workMode == "deep") {
-      deepToSave = this.material.deepDocTemplate
-      this.ogMaterial.shallowDocTemplate = null
-    } else {
-      shallowToSave = this.material.shallowDocTemplate
-      this.ogMaterial.deepDocTemplate = null
-    }
 
     const duration = Date.now() - this.timestamp;
     this.backendCaller.addUsageData(
       this.uuid,
       this.material._id,
-      deepToSave,
-      shallowToSave,
+      this.template,
+      this.ogTemplate,
       this.workMode,
       this.timestamp,
       duration,
-      this.ogMaterial,
       getResetCounter()
     ).subscribe(res => {
       console.log(res.message);

@@ -11,8 +11,7 @@ export class RadiolearnOptionsShallowComponent implements OnInit {
 
   @Input() material: Material;
   @Input() userMode: boolean;
-  @Input() shallowCategories: M.Category[];
-  @Input() deepCategories: M.Category[];
+  @Input() categories: M.Category[];
   @Input() selectedSelectableID: string;
   @Output() updateEmitter = new EventEmitter<string>();
 

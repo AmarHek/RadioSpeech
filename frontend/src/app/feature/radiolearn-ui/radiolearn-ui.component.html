@@ -75,12 +75,12 @@
 
   <div class="inner_remaining">
     <ng-container *ngIf="deepMode">
-      <mat-selection-list *ngIf="this.deepCategories"
+      <mat-selection-list *ngIf="this.categories"
                           class="catSelectionList"
                           (selectionChange)="onSelect($event)"
                           [ngStyle]="{'width.%': userMode ? 12 : 9}"
                           [multiple]="false" [(ngModel)]="selectedCatList">
-        <ng-container *ngFor="let cat of deepCategories">
+        <ng-container *ngFor="let cat of categories">
           <mat-list-option [value]="cat.name"
                            [selected]="cat.name === this.selectedCat">
             {{cat.name}}
@@ -94,7 +94,7 @@
                               (nextCat)="nextCategory($event)"
                               (updateEmitter)="updateFromOptions()"
                               class="options-expand"
-                              [categories]="deepCategories">
+                              [categories]="categories">
       </app-radiolearn-options>
     </ng-container>
 
@@ -106,8 +106,7 @@
            (updateEmitter)="updateFromOptions()"
            [material]="this.material"
            [userMode]="this.userMode"
-           [shallowCategories]="this.shallowCategories"
-           [deepCategories]="this.deepCategories"
+           [categories]="this.categories"
            [selectedSelectableID]="this.selectedSelectableID">
          </app-radiolearn-options-shallow>
       </div>
@@ -144,8 +143,7 @@
         (updateEmitter)="updateFromOptions()"
         [material]="this.material"
         [userMode]="this.userMode"
-        [shallowCategories]="this.shallowCategories"
-        [deepCategories]="this.deepCategories"
+        [categories]="this.categories"
         [selectedSelectableID]="this.selectedSelectableID">
       </app-radiolearn-options-shallow>
 

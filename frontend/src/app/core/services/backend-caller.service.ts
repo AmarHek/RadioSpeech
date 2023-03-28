@@ -91,13 +91,12 @@ export class BackendCallerService {
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  addUsageData(UUID: string, materialID: string, deepDocTemplate: Template, shallowDocTemplate: Template,
-               mode: string, timestamp: number, duration: number, ogMaterial: Material,
-               resetCounter: number): Observable<{ success: boolean; message: string }> {
+  addUsageData(UUID: string, materialID: string, template: Template, ogTemplate: Template,
+               mode: string, timestamp: number, duration: number, resetCounter: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      this.usageUrl + "add/",{UUID, materialID, deepDocTemplate,
-        shallowDocTemplate, mode, timestamp, duration, ogMaterial, resetCounter}
+      this.usageUrl + "add/",{UUID, materialID, template,
+        ogTemplate, mode, timestamp, duration, resetCounter}
     );
   }
 

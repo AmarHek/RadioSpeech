@@ -38,12 +38,11 @@ export function saveUsageData(req: any, res: Response) {
     console.log("----------------------received material id: " + req.body.materialID)
     const usageData: UsageData = {
         materialID: req.body.materialID,
-        deepDocTemplate: req.body.deepDocTemplate,
-        shallowDocTemplate: req.body.shallowDocTemplate,
+        template: req.body.template,
+        ogTemplate: req.body.ogTemplate,
         mode: req.body.mode,
         timestamp: req.body.timestamp,
         duration: req.body.duration,
-        ogMaterial: req.body.ogMaterial,
         resetCounter: req.body.resetCounter
     }
 

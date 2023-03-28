@@ -1,10 +1,10 @@
 <ng-container *ngIf="this.material">
-  <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
+  <ng-container *ngFor="let selectable of this.categories[0].selectables">
     <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px">
       <mat-checkbox style="font-size: 17px"
                     (click)="updateFromParent(selectable)"
                     [(ngModel)]="selectable.value"
-                    [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
+                    [ngStyle]="{'border' : this.categories[0].name + ' ' + selectable.name ===
                           selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
       >{{selectable.name}}</mat-checkbox>
     </div>
