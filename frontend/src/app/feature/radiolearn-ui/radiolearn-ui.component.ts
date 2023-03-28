@@ -202,24 +202,35 @@ export class RadiolearnUiComponent implements OnInit {
     this.generateChips();
   }
 
-
-  generateChips() {
-    this.selectedSelectableID = "";
-    if (this.workMode === "deep") {
-      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.deepDocTemplate.parts,
-        this.material.deepDocTemplate.parts);
-    } else {
-      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.shallowDocTemplate.parts,
-        this.material.shallowDocTemplate.parts);
-    }
-  }
-
-  openSurveyDialog(): void {
-    this.dialog.open(DialogTemplateComponent);
-  }
-
   openNoMaterialsLeftDialog(): void {
     this.dialog.open(DialogNoMaterialsComponent);
+  }
+
+  materialHasComments(material): boolean {
+    let result = false;
+    material.annotations.pre.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    material.annotations.lateral.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    material.annotations.main.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    return result;
+
   }
 
   onSelect(event) {
@@ -228,10 +239,6 @@ export class RadiolearnUiComponent implements OnInit {
 
   getBoxLabels() {
     this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
-  }
-
-  makeNormal() {
-    this.dataParser.makeNormal(this.material.deepDocTemplate.parts);
   }
 
   save() {
@@ -243,34 +250,8 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  submit() {
-    if (!this.SAVE_EVALUATION_DATA) return
-    let deepToSave = null;
-    let shallowToSave = null;
-    if (this.workMode == "deep") {
-      deepToSave = this.material.deepDocTemplate
-      this.ogMaterial.shallowDocTemplate = null
-    } else {
-      shallowToSave = this.material.shallowDocTemplate
-      this.ogMaterial.deepDocTemplate = null
-    }
 
-    const duration = Date.now() - this.timestamp;
-    this.backendCaller.addUsageData(
-      this.uuid,
-      this.material._id,
-      deepToSave,
-      shallowToSave,
-      this.workMode,
-      this.timestamp,
-      duration,
-      this.ogMaterial,
-      getResetCounter()
-    ).subscribe(res => {
-      console.log(res.message);
-    });
-  }
-
+  // SPECIFIC TO RADIOLEARN (no eval) (below until comment HANDLE CHIPS)
   toggleUserMode() {
     this.userMode = !this.userMode;
   }
@@ -388,20 +369,6 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
-  reset(resetChips: boolean = true) {
-    if (resetChips) {
-      this.chips = [];
-    }
-    this.input = "";
-    if (this.radiolearnService.workMode === "deep") {
-      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
-      this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-    } else {
-      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
-      this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-    }
-  }
-
   // HANDLE CHIPS
   onChipClick(chip: InputChip) {
     this.selectedCat = chip.id.split(" ")[0];
@@ -415,6 +382,20 @@ export class RadiolearnUiComponent implements OnInit {
     }
     this.reset(false);
     this.onInput();
+  }
+
+  reset(resetChips: boolean = true) {
+    if (resetChips) {
+      this.chips = [];
+    }
+    this.input = "";
+    if (this.radiolearnService.workMode === "deep") {
+      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
+      this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
+    } else {
+      this.material = JSON.parse(JSON.stringify(this.emptyMaterial));
+      this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
+    }
   }
 
   onInput() {
@@ -459,32 +440,53 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
+  generateChips() {
+    this.selectedSelectableID = "";
+    if (this.workMode === "deep") {
+      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.deepDocTemplate.parts,
+        this.material.deepDocTemplate.parts);
+    } else {
+      this.chips = this.chipHelper.generateChipsForParts(this.emptyMaterial.shallowDocTemplate.parts,
+        this.material.shallowDocTemplate.parts);
+    }
+  }
 
-  materialHasComments(material): boolean {
-    let result = false;
-    material.annotations.pre.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    material.annotations.lateral.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    material.annotations.main.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    return result;
+  makeNormal() {
+    this.dataParser.makeNormal(this.material.deepDocTemplate.parts);
+  }
 
+  // DATA COLLECTION
+  submit() {
+    if (!this.SAVE_EVALUATION_DATA) return
+    let deepToSave = null;
+    let shallowToSave = null;
+    if (this.workMode == "deep") {
+      deepToSave = this.material.deepDocTemplate
+      this.ogMaterial.shallowDocTemplate = null
+    } else {
+      shallowToSave = this.material.shallowDocTemplate
+      this.ogMaterial.deepDocTemplate = null
+    }
+
+    const duration = Date.now() - this.timestamp;
+    this.backendCaller.addUsageData(
+      this.uuid,
+      this.material._id,
+      deepToSave,
+      shallowToSave,
+      this.workMode,
+      this.timestamp,
+      duration,
+      this.ogMaterial,
+      getResetCounter()
+    ).subscribe(res => {
+      console.log(res.message);
+    });
+  }
+
+  openSurveyDialog(): void {
+    //todo rework dialogs
+    this.dialog.open(DialogTemplateComponent);
   }
 
 }

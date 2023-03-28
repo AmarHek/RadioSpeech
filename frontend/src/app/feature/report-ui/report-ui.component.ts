@@ -144,24 +144,38 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
-  // data collection
-  get pseudonym() {
-    const extendedUsername = "user-" + this.user.username;
-    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
-      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
+  onSelectedCategory(cat: string) {
+    this.chipInput.nativeElement.focus()
+    this.selectedCat = cat;
+    this.selectedSelectableID = "";
   }
 
-  get dataFilename() {
-    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
+  layoutChanged(newLayout: Layout) {
+    this.selectedCat = this.categories[0].name;
+    this.currentLayout = newLayout;
   }
 
-  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
-  get downJson() {
-    const jsonData = JSON.stringify(this.sessionData);
-    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
-    return this.sanitizer.bypassSecurityTrustUrl(uri);
+  updateText(): void {
+    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
   }
 
+  resetText(): void {
+    this.report = "";
+    this.judgement = "";
+  }
+
+  resetDialog() {
+    const reset = confirm("Formular zurücksetzen=");
+    if (!reset) {
+      return;
+    } else {
+      this.reset();
+    }
+  }
+
+  updateSessionData(event) {
+    console.log(event);
+  }
 
   // HANDLE CHIPS
   onChipClick(chip: InputChip) {
@@ -176,6 +190,19 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     }
     this.reset(false);
     this.onInput();
+  }
+
+  reset(resetUI: boolean = true) {
+    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
+    this.categories = this.dataParser.extractCategories(this.parts);
+    if (resetUI) {
+      this.chips = [];
+      this.selectedCat = this.categories[0].name;
+      this.selectedSelectableID = "";
+    }
+    this.input = "";
+    setTimeout(() => this.optionsComponent.initRows(), 1);
+    setTimeout(() => this.resetText(), 1);
   }
 
   onInput() {
@@ -215,31 +242,10 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.generateChips(), 5);
   }
 
-  // Assigns all found keywords in inputParser to this.parts
   assignValues() {
+    // Assigns all found keywords in inputParser to this.parts
     this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
       this.inputParser.foundVariables);
-  }
-
-  onSelectedCategory(cat: string) {
-    this.chipInput.nativeElement.focus()
-    this.selectedCat = cat;
-    this.selectedSelectableID = "";
-  }
-
-  layoutChanged(newLayout: Layout) {
-    this.selectedCat = this.categories[0].name;
-    this.currentLayout = newLayout;
-  }
-
-
-  updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
-  }
-
-  resetText(): void {
-    this.report = "";
-    this.judgement = "";
   }
 
   generateChips() {
@@ -247,40 +253,10 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
   }
 
-
   makeNormal() {
     this.dataParser.makeNormal(this.parts);
     this.updateText();
     this.onInput();
-  }
-
-  // for when the radiologist finishes: empty parts and input
-  // Will not be necessary once the input is streamed
-  next() {
-    this.reset();
-    this.input = "";
-  }
-
-  resetDialog() {
-    const reset = confirm("Formular zurücksetzen=");
-    if (!reset) {
-      return;
-    } else {
-      this.reset();
-    }
-  }
-
-  reset(resetUI: boolean = true) {
-    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts);
-    if (resetUI) {
-      this.chips = [];
-      this.selectedCat = this.categories[0].name;
-      this.selectedSelectableID = "";
-    }
-    this.input = "";
-    setTimeout(() => this.optionsComponent.initRows(), 1);
-    setTimeout(() => this.resetText(), 1);
   }
 
   // DATA COLLECTION BELOW
@@ -311,6 +287,23 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     ).subscribe(res => console.log(res.message));
   }
 
+  get pseudonym() {
+    const extendedUsername = "user-" + this.user.username;
+    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
+      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
+  }
+
+  get dataFilename() {
+    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
+  }
+
+  get downJson() {
+    // auxiliary function to get parsed json (mostly because of missing excel parser in node)
+    const jsonData = JSON.stringify(this.sessionData);
+    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
+    return this.sanitizer.bypassSecurityTrustUrl(uri);
+  }
+
   startReportClicked() {
     this.openDialog();
     this.reset();
@@ -336,10 +329,6 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
       this.timerStarted = true;
       this.timestampStart = Date.now();
     });
-  }
-
-  updateSessionData(event) {
-    console.log(event);
   }
 
 }
