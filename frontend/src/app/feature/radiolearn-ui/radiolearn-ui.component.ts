@@ -202,54 +202,11 @@ export class RadiolearnUiComponent implements OnInit {
     this.generateChips();
   }
 
-  // USED FOR SHALLOW
-  updateFromVariable(selectable) {
-    setTimeout(() => this.updateFromVariableDelayed(selectable), 5);
-  }
-
-  //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
-  updateFromVariableDelayed(selectable) {
-    let anyVarsActive = false;
-    selectable.variables.forEach(variable => {
-      if (variable.kind === "oc" && variable.value !== undefined) {
-        anyVarsActive = true;
-      }
-      if (variable.kind === "mc") {
-        variable.values.forEach(value => {
-          if (value[1]) {
-            anyVarsActive = true;
-          }
-        });
-      }
-    });
-    if (anyVarsActive) {
-      selectable.value = true;
-    }
-    this.generateChips();
-  }
-
-  updateFromParent(selectable) {
-    setTimeout(() => this.updateFromParentDelayed(selectable), 5);
-  }
-
   updateFromOptions() {
+    // this.chipInput.nativeElement.focus()
+    // this.selectedSelectableID = "";
+    // setTimeout(() => this.updateText(), 1);
     setTimeout(() => this.generateChips(), 5);
-  }
-
-  //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
-  updateFromParentDelayed(selectable) {
-    if (!selectable.value) {
-      selectable.variables.forEach(variable => {
-        if (variable.kind === "oc") {
-          variable.value = null;
-        } else if (variable.kind === "mc") {
-          variable.values.forEach(value => {
-            value[1] = false;
-          });
-        }
-      });
-    }
-    this.generateChips();
   }
 
   generateChips() {
