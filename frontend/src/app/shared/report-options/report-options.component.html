@@ -22,7 +22,7 @@
             </label>
           </td>
           <app-variables *ngIf="clickable.variables.length> 0"
-                         (clickEvent)="this.dataParser.updateFromVariable(clickable,this.clickEvent,this.categories)"
+                         (clickEvent)="this.dataParser.updateFromVariable(clickable,this.clickEvent,undefined, this.categories, row.name)"
                          [variables]="clickable.variables"
                          [parentText]="clickable.name"
                          [parentActive]="clickable.value"
@@ -47,7 +47,7 @@
             </label>
           </td>
           <app-variables *ngIf="clickable.variables.length > 0"
-                         (clickEvent)="this.dataParser.updateFromVariable(clickable,this.clickEvent,this.categories,row.name)"
+                         (clickEvent)="this.dataParser.updateFromVariable(clickable,this.clickEvent, undefined, this.categories,row.name)"
                          [variables]="clickable.variables"
                          [parentText]="clickable.name"
                          [parentActive]="clickable.name === this.dataParser.getGroupByID(row.name, clickable.groupID, this.categories).value"
