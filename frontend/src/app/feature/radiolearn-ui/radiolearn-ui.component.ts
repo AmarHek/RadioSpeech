@@ -159,6 +159,9 @@ export class RadiolearnUiComponent implements OnInit {
 
         //check if there are any comments in the annotations, to enable the "view comment" button
         this.anyComments = this.materialHasComments(this.material);
+        this.generateChips()
+
+        // this crashes, everything below is not executed
         this.imageDisplayStudentChild.hideToolTip();
         this.timestamp = Date.now();
 
