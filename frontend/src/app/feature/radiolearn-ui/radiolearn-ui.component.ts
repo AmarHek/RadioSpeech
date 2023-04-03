@@ -1,6 +1,20 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {MatDialog} from "@angular/material/dialog";
+import * as M from "@app/models/templateModel";
 import {ActivatedRoute, Router} from "@angular/router";
+import {BoxLabel, ChipColors, InputChip, Material, Role, Template, User} from "@app/models";
+import {CategoryError} from "@app/models/errorModel";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
+import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
+import {MatDialog} from "@angular/material/dialog";
+import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
+import {
+  FeedbackDialogComponent,
+  ImageDisplayComponent,
+  ImageDisplayStudentComponent,
+  RadiolearnOptionsComponent,
+  StudentErrorsComponent
+} from "@app/shared";
 import {
   AuthenticationService,
   BackendCallerService,
@@ -9,21 +23,6 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {BoxLabel, ChipColors, InputChip, Material, Role, Template, User} from "@app/models";
-import {CategoryError} from "@app/models/errorModel";
-import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
-
-import * as M from "@app/models/templateModel";
-import {
-  FeedbackDialogComponent,
-  ImageDisplayComponent,
-  ImageDisplayStudentComponent,
-  RadiolearnOptionsComponent,
-  StudentErrorsComponent
-} from "@app/shared";
-import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
-import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
   selector: "app-radiolearn-ui",

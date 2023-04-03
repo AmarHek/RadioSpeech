@@ -1,22 +1,21 @@
-import {ENTER} from "@angular/cdk/keycodes";
-import {Location} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
-import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
-
+import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
+import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
+import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ENTER} from "@angular/cdk/keycodes";
+import {HttpClient} from "@angular/common/http";
+import {Location} from "@angular/common";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Observable} from "rxjs";
+import {ReportOptionsComponent} from "@app/shared";
 import {
   AuthenticationService,
   BackendCallerService,
   DataParserService,
   InputParserService
 } from "@app/core";
-import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
-import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
-import {ReportOptionsComponent} from "@app/shared";
-import {Observable} from "rxjs";
 
 interface Layout {
   id: number;
