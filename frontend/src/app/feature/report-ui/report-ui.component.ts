@@ -57,8 +57,6 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     return this.sessionData.length <= this.savedSessionData;
   }
 
-  selectable = true;
-  removable = true;
   separatorKeysCodes: number[] = [ENTER];
   selectedCat = "undefined";
   selectedSelectableID = "";

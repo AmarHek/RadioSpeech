@@ -34,13 +34,11 @@
       <mat-chip-list #chipList>
         <mat-chip
           *ngFor="let chip of chips"
-          [selectable]="selectable"
-          [removable]="removable"
           [ngClass]="chip.color"
           (click)="onChipClick(chip)"
           (removed)="remove(chip)">
           {{chip.content}}
-          <button matChipRemove *ngIf="removable">
+          <button matChipRemove>
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>
