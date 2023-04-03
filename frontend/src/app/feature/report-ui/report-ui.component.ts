@@ -192,14 +192,15 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   reset(resetUI: boolean = true) {
-    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts);
     if (resetUI) {
       this.chips = [];
       this.selectedCat = this.categories[0].name;
       this.selectedSelectableID = "";
     }
     this.input = "";
+    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
+    this.categories = this.dataParser.extractCategories(this.parts);
+
     setTimeout(() => this.optionsComponent.initRows(), 1);
     setTimeout(() => this.resetText(), 1);
   }

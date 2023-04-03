@@ -358,9 +358,11 @@ export class RadiolearnUiComponent implements OnInit {
     this.onInput();
   }
 
-  reset(resetChips: boolean = true) {
-    if (resetChips) {
+  reset(resetUI: boolean = true) {
+    if (resetUI) {
       this.chips = [];
+      this.selectedCat = this.categories[0].name;
+      this.selectedSelectableID = "";
     }
     this.input = "";
     this.template = JSON.parse(JSON.stringify(this.emptyTemplate));
@@ -402,6 +404,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   assignValues() {
+    // Assigns all found keywords in inputParser to this.parts
     this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
       this.inputParser.foundVariables);
   }
@@ -412,7 +415,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   makeNormal() {
-    this.dataParser.makeNormal(this.material.deepDocTemplate.parts);
+    this.dataParser.makeNormal(this.template.parts);
   }
 
   // DATA COLLECTION
