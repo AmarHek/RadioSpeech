@@ -414,11 +414,11 @@ export class RadiolearnUiComponent implements OnInit {
 
   generateChips() {
     this.selectedSelectableID = "";
-    this.chips = this.chipHelper.generateChipsForParts(this.emptyTemplate.parts, this.template.parts);
+    // this.chips = this.chipHelper.generateChipsForCategories(this.emptyTemplate.parts, this.template.parts);
   }
 
   makeNormal() {
-    this.dataParser.makeNormal(this.template.parts);
+    // this.dataParser.makeNormal(this.template.parts);
   }
 
   // DATA COLLECTION

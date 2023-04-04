@@ -1,5 +1,5 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
+import {Category, Role, Template, User} from "@app/models";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
@@ -16,6 +16,7 @@ import {
   DataParserService,
   InputParserService
 } from "@app/core";
+import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 
 interface Layout {
   id: number;
@@ -49,6 +50,9 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
+  @ViewChild(InputMaterialHandlerComponent)
+  private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
+
   @ViewChild(ReportOptionsComponent)
   private optionsComponent: ReportOptionsComponent;
 
@@ -57,30 +61,25 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     return this.sessionData.length <= this.savedSessionData;
   }
 
+  // Constants
   separatorKeysCodes: number[] = [ENTER];
-  selectedCat = "undefined";
-  selectedSelectableID = "";
-
-  chips: InputChip[] = [];
-
   layouts: Layout[] = [
     {id: 0, displayName: "Standard Layout"},
     {id: 1, displayName: "Kategorien Aufklappen"}
   ];
 
+  // UI related
+  selectedCat = "undefined";
+  selectedSelectableID = "";
   currentLayout = this.layouts[1];
 
-  parts: TopLevel[];
-  defaultParts: TopLevel[];
-
-  input = "";
-  mergedInput = "";
-
+  // Model
   categories: Category[];
+  defaultCategories: Category[];
   report = "";
   judgement = "";
 
-  //data collection
+  //Data collection
   timestampStart: number;
   imageID: string;
   mode: string;
@@ -130,19 +129,17 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
         }
         // prepare data
         this.template = template;
-        this.parts = template.parts;
-        this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-        this.categories = this.dataParser.extractCategories(this.parts);
-        this.inputParser.init(this.defaultParts);
+        this.categories = this.dataParser.extractCategories(template.parts);
+        this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
+        this.inputParser.init(this.categories);
         // prepare UI
         this.selectedCat = this.categories[0].name;
-        this.chipInput.nativeElement.focus()
       });
     });
   }
 
   onSelectedCategory(cat: string) {
-    this.chipInput.nativeElement.focus()
+    this.inputMaterialHandlerComponent.focusInput()
     this.selectedCat = cat;
     this.selectedSelectableID = "";
   }
@@ -153,7 +150,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+    [this.report, this.judgement] = this.dataParser.makeText(this.template.parts, this.categories);
   }
 
   resetText(): void {
@@ -161,102 +158,57 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.judgement = "";
   }
 
-  resetDialog() {
-    const reset = confirm("Formular zurücksetzen=");
-    if (!reset) {
-      return;
-    } else {
-      this.reset();
-    }
+  // Chip was selected, navigate to corresponding category and highlight selected element
+  chipSelectedEvent([selectedCat, selectedSelectableID]) {
+    this.selectedCat = selectedCat;
+    this.selectedSelectableID = selectedSelectableID;
   }
 
-  updateSessionData(event) {
-    console.log(event);
-  }
-
-  // HANDLE CHIPS
-  onChipClick(chip: InputChip) {
-    this.selectedCat = chip.id.split(" ")[0];
-    this.selectedSelectableID = chip.id;
-  }
-
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    this.reset(false);
-    this.onInput();
-  }
-
-  reset(resetUI: boolean = true) {
-    if (resetUI) {
-      this.chips = [];
-      this.selectedCat = this.categories[0].name;
-      this.selectedSelectableID = "";
-    }
-    this.input = "";
-    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts);
-
-    setTimeout(() => this.optionsComponent.initRows(), 1);
-    setTimeout(() => this.resetText(), 1);
-  }
-
-  onInput() {
-    //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips);
-    //remember old chips to prevent change of category if no new correct chip has been found
-    const oldChips = JSON.stringify(this.chips);
-    // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips);
-    //Parse this input, assign the values and generate the new chips accordingly
-    this.inputParser.parseInput(this.mergedInput);
-    this.assignValues();
-    this.generateChips();
-    //navigate to category of last chip
-    if (this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
-      this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
-    }
-    // Remove everything that was detected as a clickable or variable from the input
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    //Add a red chip containing unrecognized text if there is any
-    if (this.mergedInput.trim() !== "") {
-      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
-    }
-    //Clear the text input
-    this.input = "";
-    this.chipInput.nativeElement.value = "";
-
+  inputEvent() {
     setTimeout(() => this.updateText(), 5);
   }
 
-  updateFromOptions() {
-    // triggered via <app-report-options> sub-component, when group, checkbox or variable is clicked
-    this.chipInput.nativeElement.focus()
+  // resets categories, and re-initializes the options rows, with the new array reference
+  resetMaterial(){
+    this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
+    setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
+  }
+
+  // Used to reset the material if part of the input is removed (since assign values can't
+  // remove values from a material, a clean reset is necessary, before onInput is called,
+  // and the new values are parsed from the now shorter input and then applied to the material)
+  resetMaterialKeepInput() {
+    this.resetMaterial()
+    setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
+  }
+
+  resetAll() {
+    this.resetMaterial()
+    setTimeout(() => this.resetText(), 5);
+    setTimeout(() => this.inputMaterialHandlerComponent.reset())
+  }
+
+  // Vales in the material changed, update chips and text to reflect the changes
+  materialChanged() {
+    setTimeout(() => this.updateText(), 5);
+    setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
+  }
+
+  // Any element in the options component was clicked, reset focus to input line,
+  // reset element highlighting, update text and input chips
+  updateFromOptionsEvent() {
+    this.inputMaterialHandlerComponent.focusInput()
     this.selectedSelectableID = "";
-    setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.generateChips(), 5);
+    this.materialChanged()
   }
 
-  assignValues() {
-    // Assigns all found keywords in inputParser to this.parts
-    this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
-      this.inputParser.foundVariables);
-  }
-
-  generateChips() {
-    this.selectedSelectableID = "";
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
-  }
-
+  // make material normal, update text and input chips
   makeNormal() {
-    this.dataParser.makeNormal(this.parts);
-    this.updateText();
-    this.onInput();
+    this.dataParser.makeNormal(this.categories);
+    this.materialChanged()
   }
 
+  // Todo, overhaul data-collection
   // DATA COLLECTION BELOW
   submit() {
     const pseudonym = this.pseudonym;
@@ -304,7 +256,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   startReportClicked() {
     this.openDialog();
-    this.reset();
+    this.resetAll();
     this.updateText();
   }
 
@@ -327,6 +279,20 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
       this.timerStarted = true;
       this.timestampStart = Date.now();
     });
+  }
+
+  updateSessionData(event) {
+    console.log(event);
+  }
+
+  //todo check if this method is needed
+  resetDialog() {
+    const reset = confirm("Formular zurücksetzen=");
+    if (!reset) {
+      return;
+    } else {
+      this.resetAll();
+    }
   }
 
 }

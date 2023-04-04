@@ -6,8 +6,7 @@ import {
   Group,
   InputChip,
   KeyClickable,
-  KeyVariable, Option, TopLevel,
-  Variable
+  KeyVariable, Option, Variable
 } from "@app/models";
 
 @Injectable({
@@ -97,27 +96,26 @@ export class ChipHelperService {
 
   /**
    * Returns a list of InputChips corresponding to the discrepancies between the filled out
-   * partList and the provided defaultList of default values.
-   * @param defaultList List of TopLevel parts with their default values
-   * @param partList Modified list of TopLevel parts, to be represented by the returned InputChips
+   * categories and the provided defaultCategories of default values.
+   * @param defaultCategories List of TopLevel parts with their default values
+   * @param categories Modified list of TopLevel parts, to be represented by the returned InputChips
    */
-  generateChipsForParts(defaultList: TopLevel[], partList: TopLevel[]): InputChip[] {
+  generateChipsForCategories(defaultCategories: Category[], categories: Category[]): InputChip[] {
     let result = []
-    defaultList.forEach((defaultPart, defaultPartIndex) => {
-      if (defaultPart.kind != "category") return
-      defaultPart.selectables.forEach((defaultSel, defaultSelIndex) => {
+    defaultCategories.forEach((defaultCat, defaultCatIndex) => {
+      defaultCat.selectables.forEach((defaultSel, defaultSelIndex) => {
         if (defaultSel.kind == "group") {
           let parsedDefaultSel = defaultSel as Group
-          let parsedSel = (partList[defaultPartIndex] as Category).selectables[defaultSelIndex] as Group
+          let parsedSel = (categories[defaultCatIndex] as Category).selectables[defaultSelIndex] as Group
           if (parsedDefaultSel.value != parsedSel.value) {
-            result.push(this.generateChipForGroup(parsedSel, defaultPart.name))
+            result.push(this.generateChipForGroup(parsedSel, defaultCat.name))
           }
         } else if (defaultSel.kind == "box") {
           let parsedDefaultSel = defaultSel as CheckBox
-          let parsedSel = (partList[defaultPartIndex] as Category).selectables[defaultSelIndex] as CheckBox
+          let parsedSel = (categories[defaultCatIndex] as Category).selectables[defaultSelIndex] as CheckBox
           // Todo, decide on behavior for checkboxes which are default checked to true like "Indikation geprüft"
           if (parsedDefaultSel.value != parsedSel.value && parsedSel.value) {
-            result.push(this.generateChipForBox(parsedSel, defaultPart.name))
+            result.push(this.generateChipForBox(parsedSel, defaultCat.name))
           }
         }
       })

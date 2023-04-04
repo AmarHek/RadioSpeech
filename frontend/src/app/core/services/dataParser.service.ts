@@ -76,7 +76,20 @@ export class DataParserService {
     };
   }
 
-  makeText(parts: M.TopLevel[]) {
+
+  // Parts contain formatting features like block and enumeration, needed for the final report.
+  // Since for every other UI interaction, only categories are needed, they are separated logically
+  // This method is used to combine
+  updateCategoriesInParts(parts, categories){
+    parts.forEach((part, i) => {
+      if (part.kind === "category"){
+        parts[i] = categories.find(cat => cat.name == part.name)
+      }
+    });
+  }
+
+  makeText(parts: M.TopLevel[], categories: M.Category[]) {
+    this.updateCategoriesInParts(parts, categories);
     const normalExtractor: M.TextExtractor = G.normalExtractor();
     const judgementExtractor: M.TextExtractor = G.judgementExtractor();
 
@@ -86,11 +99,9 @@ export class DataParserService {
     return [report, judgement];
   }
 
-  makeNormal(parts: M.TopLevel[]) {
-    for (const p of parts) {
-      if (p.kind === "category") {
-        G.makeNormalCategory(p);
-      }
+  makeNormal(categories: M.Category[]) {
+    for (const cat of categories) {
+      G.makeNormalCategory(cat);
     }
   }
 
@@ -146,7 +157,7 @@ export class DataParserService {
   /**
    * Manages an update via box, by deselecting all exclusions, and triggering the required click event.
    * The category can either be passed directly, or be determined via categoryName + list of categories
-   * Variables do not get reset when a box is unchecked, however their selection state is hidden depending on their
+   * Variables do not get resetAll when a box is unchecked, however their selection state is hidden depending on their
    * parentActive variable (see variables.component.html)
    */
   updateFromBox(box: CheckBox, clickEvent: EventEmitter<any>, category?: Category, categoryName?: string, categories?: Category[]) {
@@ -174,7 +185,7 @@ export class DataParserService {
   /**
    * Manages an update via group, to allow deselection when clicking an active option, and triggering the clickEvent.
    * The group can either be passed directly, or be determined via categoryName + list of categories + group ID
-   * Variables do not get reset when an option is unchecked, however their selection state is hidden depending on their
+   * Variables do not get resetAll when an option is unchecked, however their selection state is hidden depending on their
    * parentActive variable (see variables.component.html)
    */
   updateFromGroup(option: string, clickEvent: EventEmitter<any>, group?: Group, categoryName?: string, categories?: Category[], groupID?: string) {

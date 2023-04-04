@@ -30,10 +30,11 @@ export class ReportOptionsComponent implements OnInit {
   ngOnInit(): void {
     this.maxRowLength = 5;
     this.determineWidth();
-    this.initRows();
+    this.initRows(this.categories);
   }
 
-  initRows() {
+  initRows(changedCategories) {
+    this.categories = changedCategories;
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
   }
 
