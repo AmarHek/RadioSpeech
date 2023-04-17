@@ -126,8 +126,7 @@ export class RadiolearnUiComponent implements OnInit {
   async getData() {
     this.route.paramMap.subscribe(async (ps) => {
       if (!ps.has("id")) return;
-      const matID = ps.get("id");
-      await this.backendCaller.getMaterialById(matID).subscribe({
+      this.backendCaller.getMaterialById(ps.get("id")).subscribe({
         next: (res) => {
           if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
@@ -140,7 +139,7 @@ export class RadiolearnUiComponent implements OnInit {
           // Original Template to be compared against for error check
           this.ogTemplate = JSON.parse(JSON.stringify(this.template));
           // Empty Template to be compared against for chip generation
-          this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)))
+          this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)));
 
           if (!this.isMod) {
             this.template = this.radiolearnService.resetTemplate(this.template);
@@ -176,6 +175,7 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
+  // INITIALIZATION
   setWorkMode() {
     if (this.radiolearnService.workMode !== undefined) {
       // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
@@ -194,8 +194,17 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
+  // UI / GENERAL
   switchInputMode() {
     this.inputEnabled = !this.inputEnabled;
+  }
+
+  back() {
+    if (this.isMod) {
+      this.router.navigate(["radiolearn/list"]).then();
+    } else {
+      this.router.navigate(["/"]).then();
+    }
   }
 
   openNoMaterialsLeftDialog(): void {
@@ -206,21 +215,10 @@ export class RadiolearnUiComponent implements OnInit {
     this.selectedCat = cat;
   }
 
-  save() {
-    this.radiolearnService.fillShallowTemplateByBoxAnnotations(this.material.shallowDocTemplate,
-      this.material.annotations);
-    this.backendCaller.updateMaterial(this.material).subscribe(res => {
-      window.alert(res.message);
-      this.nextMaterialToAnnotate();
-    });
-  }
-
-  // SPECIFIC TO RADIOLEARN (no eval)
   toggleUserMode() {
     this.userMode = !this.userMode;
   }
 
-  // debug
   switchMode() {
     this.workMode = this.workMode === "deep" ? "shallow" : "deep";
     localStorage.setItem("workMode", this.workMode);
@@ -228,26 +226,9 @@ export class RadiolearnUiComponent implements OnInit {
     this.ngOnInit()
   }
 
-  checkForErrors() {
-    if (!this.sawFeedback) {
-      this.submit();
-      this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)
-      this.imageDisplayStudentChild.toggleBoxes();
-    }
-
-    // state variable
-    this.sawFeedback = true;
-
-    // Modal Dialog here, then await confirm press for next
-    const errors = this.errors;
-    const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
-    const dialogRef = this.dialog.open(StudentErrorsComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.nextMaterial();
-      }
-    });
+  // DATA
+  nextCategory(nextCat: string) {
+    this.selectedCat = nextCat;
   }
 
   nextMaterial() {
@@ -300,24 +281,35 @@ export class RadiolearnUiComponent implements OnInit {
     })
   }
 
-  feedbackModal() {
-    const dialogConfig = this.dialogService.defaultConfig("700px", {
-      userID: this.user.id,
-      materialID: this.material._id
+  save() {
+    this.radiolearnService.fillShallowTemplateByBoxAnnotations(this.material.shallowDocTemplate,
+      this.material.annotations);
+    this.backendCaller.updateMaterial(this.material).subscribe(res => {
+      window.alert(res.message);
+      this.nextMaterialToAnnotate();
     });
-    this.dialog.open(FeedbackDialogComponent, dialogConfig);
   }
 
-  nextCategory(nextCat: string) {
-    this.selectedCat = nextCat;
-  }
-
-  back() {
-    if (this.isMod) {
-      this.router.navigate(["radiolearn/list"]).then();
-    } else {
-      this.router.navigate(["/"]).then();
+  checkForErrors() {
+    if (!this.sawFeedback) {
+      this.submit();
+      this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)
+      this.imageDisplayStudentChild.toggleBoxes();
     }
+
+    // state variable
+    this.sawFeedback = true;
+
+    // Modal Dialog here, then await confirm press for next
+    const errors = this.errors;
+    const dialogConfig = this.dialogService.defaultConfig("1100px", {errors});
+    const dialogRef = this.dialog.open(StudentErrorsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.nextMaterial();
+      }
+    });
   }
 
   // Used to reset the material if part of the input is removed (since assign values can't
@@ -329,7 +321,6 @@ export class RadiolearnUiComponent implements OnInit {
     setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
   }
 
-  // resets categories, and re-initializes the options rows, with the new array reference
   resetMaterial() {
     this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
   }
@@ -350,7 +341,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   // Any element in the options component was clicked, reset focus to input line,
-  // reset element highlighting, update text and input chips
+  // reset element highlighting, update input chips
   updateFromOptionsEvent() {
     this.inputMaterialHandlerComponent.focusInput()
     this.selectedSelectableID = "";
@@ -367,7 +358,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.materialChanged()
   }
 
-  // DATA COLLECTION
+  // EVALUATION / DATA COLLECTION
   submit() {
     if (!this.SAVE_EVALUATION_DATA) return
 
@@ -387,8 +378,14 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   openSurveyDialog(): void {
-    //todo rework dialogs
     this.dialog.open(DialogTemplateComponent);
   }
 
+  feedbackModal() {
+    const dialogConfig = this.dialogService.defaultConfig("700px", {
+      userID: this.user.id,
+      materialID: this.material._id
+    });
+    this.dialog.open(FeedbackDialogComponent, dialogConfig);
+  }
 }
