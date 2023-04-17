@@ -175,6 +175,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   // and the new values are parsed from the now shorter input and then applied to the material)
   resetMaterialKeepInput() {
     this.resetMaterial()
+    this.selectedSelectableID = ""
     setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
   }
 
