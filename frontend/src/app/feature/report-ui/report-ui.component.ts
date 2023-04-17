@@ -134,7 +134,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
-  onSelectedCategory(cat: string) {
+  onCategorySelected(cat: string) {
     this.inputMaterialHandlerComponent.focusInput()
     this.selectedCat = cat;
     this.selectedSelectableID = "";

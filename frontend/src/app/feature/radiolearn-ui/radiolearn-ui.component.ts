@@ -53,7 +53,6 @@ export class RadiolearnUiComponent implements OnInit {
   errors: CategoryError[];
 
   // variables for options/category UI
-  selectedCatList = ["undefined"];
   selectedCat: string;
 
   // inputParser variables
@@ -150,7 +149,6 @@ export class RadiolearnUiComponent implements OnInit {
         this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
         this.inputParser.init(this.categories);
         this.selectedCat = this.categories[0].name;
-        this.selectedCatList = [this.selectedCat];
         // Do this so radiolearn report-output-options don't break on route change
         if (this.radiolearnOptionsChild !== undefined) {
           this.radiolearnOptionsChild.categories = this.categories;
@@ -179,7 +177,7 @@ export class RadiolearnUiComponent implements OnInit {
     if (this.radiolearnService.workMode !== undefined) {
       // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
       this.workMode = this.radiolearnService.workMode;
-      // add to localStorage afterwards
+      // add to localStorage afterward
       localStorage.setItem("workMode", this.workMode);
     } else {
       // if here from reloading, try localStorage
@@ -228,8 +226,8 @@ export class RadiolearnUiComponent implements OnInit {
 
   }
 
-  onSelect(event) {
-    this.selectedCat = event.options[0].value;
+  onCategorySelected(cat: string) {
+    this.selectedCat = cat;
   }
 
   save() {
@@ -329,7 +327,6 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextCategory(nextCat: string) {
-    this.selectedCatList = [nextCat];
     this.selectedCat = nextCat;
   }
 

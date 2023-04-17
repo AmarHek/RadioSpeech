@@ -63,15 +63,13 @@
     <ng-container *ngIf="deepMode">
       <mat-selection-list *ngIf="this.categories"
                           class="catSelectionList"
-                          (selectionChange)="onSelect($event)"
                           [ngStyle]="{'width.%': userMode ? 12 : 9}"
-                          [multiple]="false" [(ngModel)]="selectedCatList">
-        <ng-container *ngFor="let cat of categories">
-          <mat-list-option [value]="cat.name"
-                           [selected]="cat.name === this.selectedCat">
-            {{cat.name}}
-          </mat-list-option>
-        </ng-container>
+                          [multiple]="false">
+        <mat-list-option *ngFor="let cat of categories"
+                         (click)="onCategorySelected(cat.name)"
+                         [selected]="cat.name === this.selectedCat">
+          {{cat.name}}
+        </mat-list-option>
       </mat-selection-list>
 
       <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
@@ -88,13 +86,13 @@
 
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
-         <app-radiolearn-options-shallow
-           (updateEmitter)="updateFromOptionsEvent()"
-           [material]="this.material"
-           [userMode]="this.userMode"
-           [categories]="this.categories"
-           [selectedSelectableID]="this.selectedSelectableID">
-         </app-radiolearn-options-shallow>
+        <app-radiolearn-options-shallow
+          (updateEmitter)="updateFromOptionsEvent()"
+          [material]="this.material"
+          [userMode]="this.userMode"
+          [categories]="this.categories"
+          [selectedSelectableID]="this.selectedSelectableID">
+        </app-radiolearn-options-shallow>
       </div>
     </ng-container>
 

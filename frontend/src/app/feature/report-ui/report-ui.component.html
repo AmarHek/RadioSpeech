@@ -31,18 +31,20 @@
 
 
     <app-input-material-handler
-    [defaultCategories]="this.defaultCategories"
-    [categories]="this.categories"
-    (inputEventEmitter)="inputEvent()"
-    (resetEmitter)="resetMaterialKeepInput()"
-    (selectedChipEmitter)="chipSelectedEvent($event)">
+      [defaultCategories]="this.defaultCategories"
+      [categories]="this.categories"
+      (inputEventEmitter)="inputEvent()"
+      (resetEmitter)="resetMaterialKeepInput()"
+      (selectedChipEmitter)="chipSelectedEvent($event)">
     </app-input-material-handler>
 
   </div>
 
   <div id="inner_remaining">
-    <mat-selection-list [multiple]="false" *ngIf="currentLayout.id === 1 && mode != 'f'">
-      <mat-list-option (click)="onSelectedCategory(cat.name)" *ngFor="let cat of categories"
+    <mat-selection-list *ngIf="currentLayout.id === 1 && mode != 'f'"
+                        [multiple]="false">
+      <mat-list-option *ngFor="let cat of categories"
+                       (click)="onCategorySelected(cat.name)"
                        [selected]="cat.name == selectedCat">
         {{cat.name}}
       </mat-list-option>
