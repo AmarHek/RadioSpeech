@@ -4,7 +4,6 @@ import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ENTER} from "@angular/cdk/keycodes";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -58,10 +57,9 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   // Constants
-  separatorKeysCodes: number[] = [ENTER];
   layouts: Layout[] = [
     {id: 0, displayName: "Standard Layout"},
-    {id: 1, displayName: "Kategorien Aufklappen"}
+    {id: 1, displayName: "Kategorien aufklappen"}
   ];
 
   // UI related
@@ -245,7 +243,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   get downJson() {
-    // auxiliary function to get parsed json (mostly because of missing excel parser in node)
+    // auxiliary function to get parsed json (mostly because of missing Excel parser in node)
     const jsonData = JSON.stringify(this.sessionData);
     const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
     return this.sanitizer.bypassSecurityTrustUrl(uri);

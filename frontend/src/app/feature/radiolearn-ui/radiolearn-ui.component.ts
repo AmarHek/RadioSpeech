@@ -305,6 +305,7 @@ export class RadiolearnUiComponent implements OnInit {
     if (this.imageDisplayChild.displayBoxes) {
       this.imageDisplayChild.toggleBoxes();
     }
+    // todo fix deprecated subscribe
     this.backendCaller.getRandom(false).subscribe(res => {
       console.log(res);
       if (res.material === null) {
