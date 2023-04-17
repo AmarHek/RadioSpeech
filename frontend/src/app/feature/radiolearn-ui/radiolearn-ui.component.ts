@@ -252,6 +252,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.userMode = !this.userMode;
   }
 
+  // debug
   switchMode() {
     this.workMode = this.workMode === "deep" ? "shallow" : "deep";
     localStorage.setItem("workMode", this.workMode);

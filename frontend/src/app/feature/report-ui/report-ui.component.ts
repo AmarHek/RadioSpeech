@@ -284,15 +284,4 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   updateSessionData(event) {
     console.log(event);
   }
-
-  //todo check if this method is needed
-  resetDialog() {
-    const reset = confirm("Formular zurücksetzen=");
-    if (!reset) {
-      return;
-    } else {
-      this.resetAll();
-    }
-  }
-
 }
