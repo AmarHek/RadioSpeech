@@ -127,49 +127,52 @@ export class RadiolearnUiComponent implements OnInit {
     this.route.paramMap.subscribe(async (ps) => {
       if (!ps.has("id")) return;
       const matID = ps.get("id");
-      await this.backendCaller.getMaterialById(matID).subscribe(res => {
-        if (res.material === undefined) {
-          window.alert("Der Eintrag mit dieser ID existiert nicht! " +
-            "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
-          return;
+      await this.backendCaller.getMaterialById(matID).subscribe({
+        next: (res) => {
+          if (res.material === undefined) {
+            window.alert("Der Eintrag mit dieser ID existiert nicht! " +
+              "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
+            return;
+          }
+          this.material = res.material;
+          // Template to be worked on
+          this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
+          // Original Template to be compared against for error check
+          this.ogTemplate = JSON.parse(JSON.stringify(this.template));
+          // Empty Template to be compared against for chip generation
+          this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)))
+
+          if (!this.isMod) {
+            this.template = this.radiolearnService.resetTemplate(this.template);
+          }
+
+          this.categories = this.dataParser.extractCategories(this.template.parts);
+          this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
+          this.inputParser.init(this.categories);
+          this.selectedCat = this.categories[0].name;
+          // Do this so radiolearn report-output-options don't break on route change
+          if (this.radiolearnOptionsChild !== undefined) {
+            this.radiolearnOptionsChild.categories = this.categories;
+          }
+          this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
+          this.sawFeedback = false;
+
+          //check if there are any comments in the annotations, to enable the "view comment" button
+          this.anyComments = this.dataParser.materialHasComments(this.material);
+
+          // this crashes, everything below is not executed
+          this.imageDisplayStudentChild.hideToolTip();
+          this.timestamp = Date.now();
+
+          const surveyStatus = getSurveyStatus();
+          if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
+            this.openSurveyDialog();
+          }
+        },
+        error: (err) => {
+          window.alert(err.message);
         }
-        this.material = res.material;
-        // Template to be worked on
-        this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
-        // Original Template to be compared against for error check
-        this.ogTemplate = JSON.parse(JSON.stringify(this.template));
-        // Empty Template to be compared against for chip generation
-        this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)))
-
-        if (!this.isMod) {
-          this.template = this.radiolearnService.resetTemplate(this.template);
-        }
-
-        this.categories = this.dataParser.extractCategories(this.template.parts);
-        this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
-        this.inputParser.init(this.categories);
-        this.selectedCat = this.categories[0].name;
-        // Do this so radiolearn report-output-options don't break on route change
-        if (this.radiolearnOptionsChild !== undefined) {
-          this.radiolearnOptionsChild.categories = this.categories;
-        }
-        this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
-        this.sawFeedback = false;
-
-        //check if there are any comments in the annotations, to enable the "view comment" button
-        this.anyComments = this.dataParser.materialHasComments(this.material);
-
-        // this crashes, everything below is not executed
-        this.imageDisplayStudentChild.hideToolTip();
-        this.timestamp = Date.now();
-
-        const surveyStatus = getSurveyStatus();
-        if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
-          this.openSurveyDialog();
-        }
-      }, err => {
-        window.alert(err.message);
-      });
+      })
     });
   }
 
@@ -258,38 +261,43 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterialStudent() {
-    this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe(res => {
-      if (res.material === null) {
-        this.openNoMaterialsLeftDialog();
-      } else {
-        if (this.imageDisplayStudentChild.displayBoxes) {
-          this.imageDisplayStudentChild.toggleBoxes();
+    this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe({
+      next: (res) => {
+        if (res.material === null) {
+          this.openNoMaterialsLeftDialog();
+        } else {
+          if (this.imageDisplayStudentChild.displayBoxes) {
+            this.imageDisplayStudentChild.toggleBoxes();
+          }
+          this.sawFeedback = false;
+          increaseSurveyCounter();
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
         }
-        this.sawFeedback = false;
-        increaseSurveyCounter();
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+      },
+      error: (err) => {
+        console.log(err);
       }
-    }, err => {
-      console.log(err);
-    });
+    })
   }
 
   nextMaterialToAnnotate() {
     if (this.imageDisplayChild.displayBoxes) {
       this.imageDisplayChild.toggleBoxes();
     }
-    // todo fix deprecated subscribe
-    this.backendCaller.getRandom(false).subscribe(res => {
-      console.log(res);
-      if (res.material === null) {
-        window.alert("Keine weiteren Befunde verfügbar");
-      } else {
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+    this.backendCaller.getRandom(false).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.material === null) {
+          window.alert("Keine weiteren Befunde verfügbar");
+        } else {
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+        }
+      },
+      error: (err) => {
+        window.alert(err);
+        console.log(err);
       }
-    }, err => {
-      window.alert(err);
-      console.log(err);
-    });
+    })
   }
 
   feedbackModal() {
