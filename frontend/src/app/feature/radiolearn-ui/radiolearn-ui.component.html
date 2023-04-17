@@ -49,6 +49,7 @@
     </mat-toolbar>
 
     <app-input-material-handler
+      *ngIf="inputEnabled"
       [defaultCategories]="this.defaultCategories"
       [categories]="this.categories"
       (resetEmitter)="resetMaterialKeepInput()"

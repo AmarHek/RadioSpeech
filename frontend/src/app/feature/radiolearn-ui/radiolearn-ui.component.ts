@@ -57,7 +57,7 @@ export class RadiolearnUiComponent implements OnInit {
   selectedCat: string;
 
   // inputParser variables
-  inputEnabled: boolean;
+  inputEnabled: boolean = true;
   selectedSelectableID = "";
 
   // state variables
