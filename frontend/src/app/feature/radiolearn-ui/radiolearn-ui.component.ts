@@ -155,7 +155,7 @@ export class RadiolearnUiComponent implements OnInit {
         if (this.radiolearnOptionsChild !== undefined) {
           this.radiolearnOptionsChild.categories = this.categories;
         }
-        this.getBoxLabels();
+        this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
         this.sawFeedback = false;
 
         //check if there are any comments in the annotations, to enable the "view comment" button
@@ -230,10 +230,6 @@ export class RadiolearnUiComponent implements OnInit {
 
   onSelect(event) {
     this.selectedCat = event.options[0].value;
-  }
-
-  getBoxLabels() {
-    this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
   }
 
   save() {
@@ -357,8 +353,6 @@ export class RadiolearnUiComponent implements OnInit {
   // resets categories, and re-initializes the options rows, with the new array reference
   resetMaterial() {
     this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
-    //todo check if any other action is necessary
-    // setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
   }
 
   // Chip was selected, navigate to corresponding category and highlight selected element
@@ -387,12 +381,6 @@ export class RadiolearnUiComponent implements OnInit {
   // Vales in the material changed, update chips to reflect changes
   materialChanged() {
     setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
-  }
-
-  assignValues() {
-    // Assigns all found keywords in inputParser to this.parts
-    this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
-      this.inputParser.foundVariables);
   }
 
   makeNormal() {

@@ -185,7 +185,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.inputMaterialHandlerComponent.reset())
   }
 
-  // Vales in the material changed, update chips and text to reflect the changes
+  // Values in the material changed, update chips and text to reflect the changes
   materialChanged() {
     setTimeout(() => this.updateText(), 5);
     setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
