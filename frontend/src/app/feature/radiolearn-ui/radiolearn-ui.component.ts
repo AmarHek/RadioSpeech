@@ -1,6 +1,6 @@
 import * as M from "@app/models/templateModel";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BoxLabel, ChipColors, InputChip, Material, Role, Template, User} from "@app/models";
+import {BoxLabel, Material, Role, Template, User} from "@app/models";
 import {CategoryError} from "@app/models/errorModel";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
@@ -23,6 +23,7 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
+import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -34,6 +35,7 @@ export class RadiolearnUiComponent implements OnInit {
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
   @ViewChild(ImageDisplayComponent) imageDisplayChild: ImageDisplayComponent;
+  @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
   // debugging
@@ -45,6 +47,7 @@ export class RadiolearnUiComponent implements OnInit {
   ogTemplate: Template;
   emptyTemplate: Template;
   categories: M.Category[];
+  defaultCategories: M.Category[];
 
   boxLabels: BoxLabel[];
   errors: CategoryError[];
@@ -55,9 +58,6 @@ export class RadiolearnUiComponent implements OnInit {
 
   // inputParser variables
   inputEnabled: boolean;
-  chips: InputChip[] = [];
-  input = "";
-  mergedInput = "";
   selectedSelectableID = "";
 
   // state variables
@@ -147,6 +147,7 @@ export class RadiolearnUiComponent implements OnInit {
         }
 
         this.categories = this.dataParser.extractCategories(this.template.parts);
+        this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
         this.inputParser.init(this.categories);
         this.selectedCat = this.categories[0].name;
         this.selectedCatList = [this.selectedCat];
@@ -159,7 +160,6 @@ export class RadiolearnUiComponent implements OnInit {
 
         //check if there are any comments in the annotations, to enable the "view comment" button
         this.anyComments = this.materialHasComments(this.material);
-        this.generateChips()
 
         // this crashes, everything below is not executed
         this.imageDisplayStudentChild.hideToolTip();
@@ -195,8 +195,6 @@ export class RadiolearnUiComponent implements OnInit {
 
   switchInputMode() {
     this.inputEnabled = !this.inputEnabled;
-    this.input = "";
-    this.generateChips();
   }
 
   openNoMaterialsLeftDialog(): void {
@@ -347,64 +345,47 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
-  // HANDLE CHIPS
-  onChipClick(chip: InputChip) {
-    this.selectedCat = chip.id.split(" ")[0];
-    this.selectedSelectableID = chip.id;
+  // Used to reset the material if part of the input is removed (since assign values can't
+  // remove values from a material, a clean reset is necessary, before onInput is called,
+  // and the new values are parsed from the now shorter input and then applied to the material)
+  resetMaterialKeepInput() {
+    this.resetMaterial()
+    setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
   }
 
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    this.reset(false);
-    this.onInput();
+  // resets categories, and re-initializes the options rows, with the new array reference
+  resetMaterial() {
+    this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
+    //todo check if any other action is necessary
+    // setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
+  }
+
+  // Chip was selected, navigate to corresponding category and highlight selected element
+  chipSelectedEvent([selectedCat, selectedSelectableID]) {
+    this.selectedCat = selectedCat;
+    this.selectedSelectableID = selectedSelectableID;
   }
 
   reset(resetUI: boolean = true) {
     if (resetUI) {
-      this.chips = [];
       this.selectedCat = this.categories[0].name;
       this.selectedSelectableID = "";
     }
-    this.input = "";
     this.template = JSON.parse(JSON.stringify(this.emptyTemplate));
     this.categories = this.dataParser.extractCategories((this.template.parts))
   }
 
-  onInput() {
-    //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips);
-    //remember old chips to prevent change of category if no new correct chip has been found
-    const oldChips = JSON.stringify(this.chips);
-    // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips);
-    //Parse this input, assign the values and generate the new chips accordingly
-    this.inputParser.parseInput(this.mergedInput);
-    this.assignValues();
-    this.generateChips();
-    //navigate to category of last chip
-    if (this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
-      this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
-    }
-    // Remove everything that was detected as a clickable or variable from the input
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    //Add a red chip containing unrecognized text if there is any
-    if (this.mergedInput.trim() !== "") {
-      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
-    }
-    //Clear the text input
-    this.input = "";
-    this.chipInput.nativeElement.value = "";
+  // Any element in the options component was clicked, reset focus to input line,
+  // reset element highlighting, update text and input chips
+  updateFromOptionsEvent() {
+    this.inputMaterialHandlerComponent.focusInput()
+    this.selectedSelectableID = "";
+    this.materialChanged()
   }
 
-  updateFromOptions() {
-    this.chipInput.nativeElement.focus()
-    this.selectedSelectableID = "";
-    // setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.generateChips(), 5);
+  // Vales in the material changed, update chips to reflect changes
+  materialChanged() {
+    setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
   }
 
   assignValues() {
@@ -413,13 +394,9 @@ export class RadiolearnUiComponent implements OnInit {
       this.inputParser.foundVariables);
   }
 
-  generateChips() {
-    this.selectedSelectableID = "";
-    // this.chips = this.chipHelper.generateChipsForCategories(this.emptyTemplate.parts, this.template.parts);
-  }
-
   makeNormal() {
-    // this.dataParser.makeNormal(this.template.parts);
+    this.dataParser.makeNormal(this.categories);
+    this.materialChanged()
   }
 
   // DATA COLLECTION

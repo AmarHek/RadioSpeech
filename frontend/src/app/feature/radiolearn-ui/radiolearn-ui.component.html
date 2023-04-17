@@ -48,28 +48,13 @@
 
     </mat-toolbar>
 
-    <mat-form-field class="example-chip-list" appearance="fill" *ngIf="inputEnabled">
-      <mat-label>Eingabe</mat-label>
-      <mat-chip-list #chipList>
-        <mat-chip
-          *ngFor="let chip of chips"
-          (removed)="remove(chip)"
-          (click)="onChipClick(chip)"
-          [ngClass]="chip.color">
-          {{chip.content}}
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip>
-        <input
-          #chipInput
-          placeholder="Befund eingeben ..."
-          [matChipInputFor]="chipList"
-          [(ngModel)]="this.input"
-          (input)="onInput()"
-        >
-      </mat-chip-list>
-    </mat-form-field>
+    <app-input-material-handler
+      [defaultCategories]="this.defaultCategories"
+      [categories]="this.categories"
+      (resetEmitter)="resetMaterialKeepInput()"
+      (selectedChipEmitter)="chipSelectedEvent($event)">
+    </app-input-material-handler>
+
 
   </div>
 
@@ -92,7 +77,7 @@
                               [selectedCat]="selectedCat"
                               [selectedSelectableID]="selectedSelectableID"
                               (nextCat)="nextCategory($event)"
-                              (updateEmitter)="updateFromOptions()"
+                              (updateEmitter)="updateFromOptionsEvent()"
                               class="options-expand"
                               [categories]="categories">
       </app-radiolearn-options>
@@ -103,7 +88,7 @@
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
          <app-radiolearn-options-shallow
-           (updateEmitter)="updateFromOptions()"
+           (updateEmitter)="updateFromOptionsEvent()"
            [material]="this.material"
            [userMode]="this.userMode"
            [categories]="this.categories"
@@ -140,7 +125,7 @@
 
 
       <app-radiolearn-options-shallow
-        (updateEmitter)="updateFromOptions()"
+        (updateEmitter)="updateFromOptionsEvent()"
         [material]="this.material"
         [userMode]="this.userMode"
         [categories]="this.categories"

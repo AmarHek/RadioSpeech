@@ -49,12 +49,8 @@ export class DialogOverviewExampleDialogComponent {
 export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
-
-  @ViewChild(InputMaterialHandlerComponent)
-  private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
-
-  @ViewChild(ReportOptionsComponent)
-  private optionsComponent: ReportOptionsComponent;
+  @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
+  @ViewChild(ReportOptionsComponent) private optionsComponent: ReportOptionsComponent;
 
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
@@ -169,7 +165,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   // resets categories, and re-initializes the options rows, with the new array reference
-  resetMaterial(){
+  resetMaterial() {
     this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
     setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
   }
