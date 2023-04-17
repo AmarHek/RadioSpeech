@@ -157,7 +157,7 @@ export class RadiolearnUiComponent implements OnInit {
         this.sawFeedback = false;
 
         //check if there are any comments in the annotations, to enable the "view comment" button
-        this.anyComments = this.materialHasComments(this.material);
+        this.anyComments = this.dataParser.materialHasComments(this.material);
 
         // this crashes, everything below is not executed
         this.imageDisplayStudentChild.hideToolTip();
@@ -199,33 +199,6 @@ export class RadiolearnUiComponent implements OnInit {
     this.dialog.open(DialogNoMaterialsComponent);
   }
 
-  materialHasComments(material): boolean {
-    let result = false;
-    material.annotations.pre.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    material.annotations.lateral.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    material.annotations.main.forEach(annotation => {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          result = true;
-        }
-      }
-    });
-    return result;
-
-  }
-
   onCategorySelected(cat: string) {
     this.selectedCat = cat;
   }
@@ -239,7 +212,7 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  // SPECIFIC TO RADIOLEARN (no eval) (below until comment HANDLE CHIPS)
+  // SPECIFIC TO RADIOLEARN (no eval)
   toggleUserMode() {
     this.userMode = !this.userMode;
   }

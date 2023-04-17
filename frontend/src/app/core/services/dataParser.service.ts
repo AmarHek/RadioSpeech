@@ -80,9 +80,9 @@ export class DataParserService {
   // Parts contain formatting features like block and enumeration, needed for the final report.
   // Since for every other UI interaction, only categories are needed, they are separated logically
   // This method is used to combine
-  updateCategoriesInParts(parts, categories){
+  updateCategoriesInParts(parts, categories) {
     parts.forEach((part, i) => {
-      if (part.kind === "category"){
+      if (part.kind === "category") {
         parts[i] = categories.find(cat => cat.name == part.name)
       }
     });
@@ -166,7 +166,7 @@ export class DataParserService {
         // Rows only contain selectables of their respective row
         // We need to extract the corresponding category with all selectables first
         // row-name contains an additional 0 or 1 at the beginning, so we take the substring
-        if (category === undefined){
+        if (category === undefined) {
           // determine category via name and list if none was passed
           category = this.getCategoryByName(categoryName, categories);
         }
@@ -189,7 +189,7 @@ export class DataParserService {
    * parentActive variable (see variables.component.html)
    */
   updateFromGroup(option: string, clickEvent: EventEmitter<any>, group?: Group, categoryName?: string, categories?: Category[], groupID?: string) {
-    if(group===undefined){
+    if (group === undefined) {
       group = this.getGroupByID(categoryName, groupID, categories);
     }
     if (group.value === option) {
@@ -214,7 +214,7 @@ export class DataParserService {
     if (parent.kind === "box") {
       parent.value = true;
     } else {
-      if(group===undefined){
+      if (group === undefined) {
         group = this.getGroupByID(categoryName, parent.groupID, categories);
       }
       group.value = parent.name;
@@ -256,4 +256,31 @@ export class DataParserService {
       }
     }
   }
+
+  materialHasComments(material): boolean {
+    let result = false;
+    material.annotations.pre.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    material.annotations.lateral.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    material.annotations.main.forEach(annotation => {
+      if (annotation.comment !== undefined) {
+        if (annotation.comment.length > 0) {
+          result = true;
+        }
+      }
+    });
+    return result;
+  }
+
 }
