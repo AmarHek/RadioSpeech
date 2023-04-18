@@ -379,63 +379,37 @@ export function getRandom(req: Request, res: Response): void {
 * Returns a material that the participant with the UUID specified in the request body has not completed yet,
 * or the error "no-unused-materials" if no unused materials are left for this participant.
 * */
-export function getUnusedMaterial(req: Request, res: Response): void {
-    console.log("received request to give unused material")
-    const query = ParticipantDB.findOne({'UUID' : req.body.UUID});
-    query.exec(function (error, participant){
-        if(error){
-            console.log("Error getting participant for material query: " + error.message)
-            res.status(500).send({message: "Error getting participant for material query: " + error.message});
-        }else {
-            //Get all material IDs of the materials that this user has already completed in this mode and this reset round
-           const usedMaterialIDs: string[] = []
-            if(participant != null){
-                participant.usageList.forEach(usageData =>{
-                    if(usageData.mode == req.body.mode && usageData.resetCounter == req.body.resetCounter){
-                        usedMaterialIDs.push(usageData.materialID)
-                    }
-                })
-            }
-            const materialQuery = MaterialDB.find({"judged" : true})
-            materialQuery.exec(function (error, result){
-                if (error){
-                    console.log("Error fetching materials: " + error.message)
-                    res.status(500).send({message: "Error fetching materials: " + error.message});
-                }else {
-                    //generate a list of all unused material IDs
-                    const unusedMaterialIDs: string[] = []
-                    result.forEach(material => {
-                        if(!usedMaterialIDs.includes(material._id.toString())){
-                           unusedMaterialIDs.push(material._id.toString())
-                        }
-                    })
+export async function getUnusedMaterial(req: Request, res: Response): Promise<void> {
+    console.log('received request to give unused material');
 
-                    if(unusedMaterialIDs.length <= 0){
-                        //No unused materials left
-                        console.log("No unused materials left")
-                        res.status(200).send({material: null});
-                    }else{
-                        //Pick a random uncompleted material ID
-                        const randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)]
-                        console.log("selected random id: " + randomUnusedMaterialID)
-                        const finalMaterialQuery = MaterialDB.findOne({'_id': randomUnusedMaterialID})
-                        finalMaterialQuery.exec(function (error, material){
-                            if(error){
-                                console.log("Error fetching random unused material: " + error.message)
-                                res.status(500).send({message: "Error fetching random unused material: " + error.message});
-                            }else {
-                                res.status(200).send({material});
-                            }
-                        });
-                    }
+    try {
+        const participant = await ParticipantDB.findOne({ 'UUID': req.body.UUID }).exec();
 
-                }
-            })
+        const usedMaterialIDs: string[] = participant?.usageList
+            .filter(usageData => usageData.mode === req.body.mode && usageData.resetCounter === req.body.resetCounter)
+            .map(usageData => usageData.materialID) || [];
 
+        const materials = await MaterialDB.find({ 'judged': true }).exec();
+
+        const unusedMaterialIDs: string[] = materials
+            .filter(material => !usedMaterialIDs.includes(material._id.toString()))
+            .map(material => material._id.toString());
+
+        if (unusedMaterialIDs.length <= 0) {
+            console.log('No unused materials left');
+            res.status(200).send({ material: null });
+            return;
         }
-    });
 
-}
+        const randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)];
+        console.log('selected random id:', randomUnusedMaterialID);
+
+        const material = await MaterialDB.findOne({ '_id': randomUnusedMaterialID }).exec();
+        res.status(200).send({ material });
+    } catch (error) {
+        console.log('Error:', (error as Error).message);
+        res.status(500).send({ message: (error as Error).message });
+    }}
 
 export function countMaterials(req: Request, res: Response): void {
     let filter;
