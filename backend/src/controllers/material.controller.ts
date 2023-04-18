@@ -357,23 +357,15 @@ export function listByFilter(req: Request, res: Response): void {
     }
 }
 
-export function getRandom(req: Request, res: Response): void {
-    MaterialDB.countDocuments({judged: req.body.judged}).exec((err, count) => {
-        if (err) {
-            res.status(500).send({message: err});
-        } else {
-            // get random entry
-            const random = Math.floor(Math.random() * count);
-            // query one judged material, but skip random count
-            MaterialDB.findOne({judged: req.body.judged}).skip(random).exec(
-                (err, material) => {
-                    if (err) {
-                        res.status(500).send({message: err});
-                    }
-                    res.status(200).send({material});
-                });
-        }
-    });
+export async function getRandom(req: Request, res: Response): Promise<void> {
+    try {
+        const count = await MaterialDB.countDocuments({judged: req.body.judged}).exec();
+        const random = Math.floor(Math.random() * count);
+        const randomMaterial = MaterialDB.findOne({judged: req.body.judged}).skip(random).exec();
+        res.status(200).send({randomMaterial});
+    } catch (error){
+        res.status(500).send({message: error})
+    }
 }
 /*
 * Returns a material that the participant with the UUID specified in the request body has not completed yet,
