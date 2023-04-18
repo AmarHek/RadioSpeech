@@ -38,8 +38,6 @@ export class RadiolearnUiComponent implements OnInit {
   @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
 
-  // debugging
-  SAVE_EVALUATION_DATA = false
 
   // data variables
   material: Material;
@@ -54,10 +52,8 @@ export class RadiolearnUiComponent implements OnInit {
 
   // variables for options/category UI
   selectedCat: string;
-
-  // inputParser variables
-  inputEnabled: boolean = true;
   selectedSelectableID = "";
+  inputEnabled: boolean = true;
 
   // state variables
   userMode: boolean;
@@ -65,7 +61,8 @@ export class RadiolearnUiComponent implements OnInit {
   isMobile = false;
   anyComments = false;
 
-  // usageData variables
+  // evaluation
+  SAVE_EVALUATION_DATA = false
   timestamp: number;
   sawFeedback = false;
   showSurveyEveryNMaterials = 3;
@@ -121,7 +118,9 @@ export class RadiolearnUiComponent implements OnInit {
 
     // data collection
     this.uuid = getUUID();
-    this.timestamp = Date.now();
+    if (this.SAVE_EVALUATION_DATA){
+      this.timestamp = Date.now();
+    }
   }
 
   async getData() {
@@ -134,46 +133,50 @@ export class RadiolearnUiComponent implements OnInit {
               "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
             return;
           }
-          this.material = res.material;
-          // Template to be worked on
-          this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
-          // Original Template to be compared against for error check
-          this.ogTemplate = JSON.parse(JSON.stringify(this.template));
-          // Empty Template to be compared against for chip generation
-          this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)));
-
-          if (!this.isMod) {
-            this.template = this.radiolearnService.resetTemplate(this.template);
-          }
-
-          this.categories = this.dataParser.extractCategories(this.template.parts);
-          this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
-          this.inputParser.init(this.categories);
-          this.selectedCat = this.categories[0].name;
-          // Do this so radiolearn report-output-options don't break on route change
-          if (this.radiolearnOptionsChild !== undefined) {
-            this.radiolearnOptionsChild.categories = this.categories;
-          }
-          this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
-          this.sawFeedback = false;
-
-          //check if there are any comments in the annotations, to enable the "view comment" button
-          this.anyComments = this.dataParser.materialHasComments(this.material);
-
-          // todo, this crashes, everything below is not executed
-          this.imageDisplayStudentChild.hideToolTip();
-          this.timestamp = Date.now();
-
-          const surveyStatus = getSurveyStatus();
-          if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
-            this.openSurveyDialog();
-          }
+          this.initFields(res.material)
+          if (this.SAVE_EVALUATION_DATA) this.initSurvey()
         },
         error: (err) => {
           window.alert(err.message);
         }
       })
     });
+  }
+
+  initFields(material){
+    this.material = material;
+    // Template to be worked on
+    this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
+    // Original Template to be compared against for error check
+    this.ogTemplate = JSON.parse(JSON.stringify(this.template));
+    // Empty Template to be compared against for chip generation
+    this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)));
+
+    if (!this.isMod) {
+      this.template = this.radiolearnService.resetTemplate(this.template);
+    }
+
+    this.categories = this.dataParser.extractCategories(this.template.parts);
+    this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
+    this.inputParser.init(this.categories);
+    this.selectedCat = this.categories[0].name;
+    // Do this so radiolearn report-output-options don't break on route change
+    if (this.radiolearnOptionsChild !== undefined) {
+      this.radiolearnOptionsChild.categories = this.categories;
+    }
+    this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
+    this.sawFeedback = false;
+
+    //check if there are any comments in the annotations, to enable the "view comment" button
+    this.anyComments = this.dataParser.materialHasComments(this.material);
+  }
+
+  initSurvey(){
+    this.timestamp = Date.now();
+    const surveyStatus = getSurveyStatus();
+    if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
+      this.openSurveyDialog();
+    }
   }
 
   setWorkMode() {
@@ -242,6 +245,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   nextMaterialStudent() {
+    console.info("getting next material for " + this.uuid)
     this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe({
       next: (res) => {
         if (res.material === null) {
