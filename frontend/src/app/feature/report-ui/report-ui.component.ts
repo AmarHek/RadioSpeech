@@ -105,6 +105,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   ) {
   }
 
+  // INITIALIZATION
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
@@ -132,15 +133,17 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
+  // UI / GENERAL
+  layoutChanged(newLayout: Layout) {
+    this.selectedCat = this.categories[0].name;
+    this.currentLayout = newLayout;
+  }
+
+  // DATA
   onCategorySelected(cat: string) {
     this.inputMaterialHandlerComponent.focusInput()
     this.selectedCat = cat;
     this.selectedSelectableID = "";
-  }
-
-  layoutChanged(newLayout: Layout) {
-    this.selectedCat = this.categories[0].name;
-    this.currentLayout = newLayout;
   }
 
   updateText(): void {

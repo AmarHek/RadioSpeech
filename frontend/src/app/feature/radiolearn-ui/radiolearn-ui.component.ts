@@ -99,6 +99,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
 
+  // INITIALIZATION
   ngOnInit() {
     // Mod or regular user?
     this.authenticationService.user.subscribe(
@@ -159,7 +160,7 @@ export class RadiolearnUiComponent implements OnInit {
           //check if there are any comments in the annotations, to enable the "view comment" button
           this.anyComments = this.dataParser.materialHasComments(this.material);
 
-          // this crashes, everything below is not executed
+          // todo, this crashes, everything below is not executed
           this.imageDisplayStudentChild.hideToolTip();
           this.timestamp = Date.now();
 
@@ -175,7 +176,6 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  // INITIALIZATION
   setWorkMode() {
     if (this.radiolearnService.workMode !== undefined) {
       // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
@@ -211,10 +211,6 @@ export class RadiolearnUiComponent implements OnInit {
     this.dialog.open(DialogNoMaterialsComponent);
   }
 
-  onCategorySelected(cat: string) {
-    this.selectedCat = cat;
-  }
-
   toggleUserMode() {
     this.userMode = !this.userMode;
   }
@@ -229,6 +225,10 @@ export class RadiolearnUiComponent implements OnInit {
   // DATA
   nextCategory(nextCat: string) {
     this.selectedCat = nextCat;
+  }
+
+  onCategorySelected(cat: string) {
+    this.selectedCat = cat;
   }
 
   nextMaterial() {
