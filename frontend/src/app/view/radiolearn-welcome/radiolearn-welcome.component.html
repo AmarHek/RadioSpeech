@@ -2,15 +2,15 @@
   <div class="row">
     <h1>Willkommen zu RadioLearn</h1>
     <div class="text-container">
-      Sie haben die Auswahl zwischen zwei Lernmodi. In beiden Modi sehen Sie Röntgenaufnahmen und
-      sollen den zugehörigen Fragebogen ausfüllen. Füllen Sie dort alles Zutreffende aus.
+      Sie haben die Auswahl zwischen drei Lernmodi. In allen Modi sehen Sie Röntgenaufnahmen und
+      sollen den zugehörigen Fragebogen ausfüllen, oder Auffälligkeiten in der Aufnahme markieren.
 
       Mit einem Klick auf "Überprüfen" können Sie ihre Eingaben mit der Lösung vergleichen und sehen auf den Aufnahmen
       nun zusätzliche Informationen in Form von Boxen.
     </div>
   </div>
 </div>
-<div class="container body" *ngIf="!isMobile">
+<div class="container body" *ngIf="!isMobile" style="max-width: fit-content; margin-right: 80px; margin-left: 80px">
   <div class="row">
     <div class="col-sm">
       <div class="button-container">
@@ -35,6 +35,19 @@
 
         Dieser Modus ist für kürzere Sessions zwischendurch gedacht und am besten
         für die Nutzung am <b>Handy</b> geeignet.
+      </div>
+      <div class="img-container">
+        <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" (click)="shallowMode()">Annotationsmodus</button>
+      </div>
+      <div class="text-container">
+        In diesem Modus liegt der Fokus darauf, Auffälligkeiten <b>mit einer Box zu markieren</b>, und mit der richtigen Diagnosen zu annotieren.
+
+        Dieser Modus ist am besten für die Nutzung am <b>PC</b> geeignet.
       </div>
       <div class="img-container">
         <img src="{{assetsUrl}}Diagnose.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
