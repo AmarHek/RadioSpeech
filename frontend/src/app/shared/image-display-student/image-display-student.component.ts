@@ -36,6 +36,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   @Input() showCommentButton: boolean;
 
   @Input() isMobile: boolean;
+  @Input() drawMode: boolean;
 
   imageUrl = environment.images;
 

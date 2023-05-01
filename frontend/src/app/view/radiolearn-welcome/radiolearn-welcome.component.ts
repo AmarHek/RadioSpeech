@@ -34,11 +34,19 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   deepMode() {
+    this.radiolearnService.drawMode = false;
     this.radiolearnService.workMode = "deep";
     this.loadUnused("deep");
   }
 
   shallowMode() {
+    this.radiolearnService.drawMode = false;
+    this.radiolearnService.workMode = "shallow";
+    this.loadUnused("shallow");
+  }
+
+  annotationMode() {
+    this.radiolearnService.drawMode = true;
     this.radiolearnService.workMode = "shallow";
     this.loadUnused("shallow");
   }

@@ -1,5 +1,5 @@
 <div class="main" [ngStyle]="{'padding' : isMobile ? 'unset': '10px 0 0 10px'}">
-  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20}">
+  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20, 'margin': drawMode ? '0 auto' : '0'}">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div id="imgOuter" [ngStyle]="{'padding' : isMobile ? 'unset' : '10px 0 0 10px'}">
-    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
+    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
            src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">

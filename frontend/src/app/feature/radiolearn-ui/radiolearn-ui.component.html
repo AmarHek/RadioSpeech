@@ -82,7 +82,7 @@
       </app-radiolearn-options>
     </ng-container>
 
-    <ng-container *ngIf="!deepMode">
+    <ng-container *ngIf="!deepMode && !drawMode">
 
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
@@ -103,6 +103,7 @@
 
     <app-image-display-student *ngIf="material && userMode"
                                [scans]="material.scans"
+                               [drawMode]="drawMode"
                                [annotations]="material.annotations"></app-image-display-student>
   </div>
 

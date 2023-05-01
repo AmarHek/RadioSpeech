@@ -27,6 +27,7 @@ import * as M from "@app/models/templateModel";
 export class RadiolearnService {
 
   workMode: string;
+  drawMode: boolean;
 
   constructor() {
   }
