@@ -64,15 +64,24 @@ export class ImageDisplayService {
     context.strokeStyle = strokeStyle;
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string) {
+  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string, fill: boolean = false) {
     this.setCanvasProperties(context, this.boxLineWidth, "square", color);
     context.beginPath();
-    context.rect(
-      bbox.left * scaleFactor,
-      bbox.top * scaleFactor,
-      bbox.width * scaleFactor,
-      bbox.height * scaleFactor);
-    context.stroke();
+    if (fill){
+      context.fillStyle = "rgba(0, 0, 255, 0.3)"
+      context.fillRect(
+        bbox.left * scaleFactor,
+        bbox.top * scaleFactor,
+        bbox.width * scaleFactor,
+        bbox.height * scaleFactor);
+    } else {
+      context.rect(
+        bbox.left * scaleFactor,
+        bbox.top * scaleFactor,
+        bbox.width * scaleFactor,
+        bbox.height * scaleFactor);
+      context.stroke();
+    }
   }
 
   addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string, firstBox: BoundingBox, annotations) {

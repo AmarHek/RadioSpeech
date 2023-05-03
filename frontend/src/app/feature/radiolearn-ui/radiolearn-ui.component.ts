@@ -300,6 +300,10 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
+    if (this.drawMode){
+      this.imageDisplayStudentChild.drawBoxes()
+      return
+    }
     if (!this.sawFeedback) {
       this.submit();
       this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)

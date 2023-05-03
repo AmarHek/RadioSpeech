@@ -241,7 +241,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
-    this.clearCanvas();
+    // this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxes();
     }
@@ -258,7 +258,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   drawBoxes() {
-    this.clearCanvas();
+    // this.clearCanvas();
     const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
@@ -276,7 +276,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
+          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], true);
       }
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
         this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], annotation.boxes[0], annotations);
