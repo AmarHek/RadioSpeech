@@ -38,6 +38,8 @@ import {StudentErrorsComponent} from "./student-errors/student-errors.component"
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.component";
 import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
+import { DeepLearningDialogComponent } from './deep-learning-dialog/deep-learning-dialog.component';
+import { ResultPopUpComponent } from './result-pop-up/result-pop-up.component';
 
 
 @NgModule({
@@ -59,7 +61,9 @@ import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dial
     UploadMaterialComponent,
     VariablesComponent,
     AddScanDialogComponent,
-    ChangeRoleDialogComponent
+    ChangeRoleDialogComponent,
+    DeepLearningDialogComponent,
+    ResultPopUpComponent
   ],
     imports: [
         CommonModule,

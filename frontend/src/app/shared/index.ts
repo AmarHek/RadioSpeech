@@ -14,3 +14,4 @@ export * from "./student-errors/student-errors.component";
 export * from "./upload-material/upload-material.component";
 export * from "./upload-template/upload-template.component";
 export * from "./variables/variables.component";
+export * from "./deep-learning-dialog/deep-learning-dialog.component";

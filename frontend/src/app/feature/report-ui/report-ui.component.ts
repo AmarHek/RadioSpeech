@@ -15,7 +15,7 @@ import {
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
-import {ReportOptionsComponent} from "@app/shared";
+import {DeepLearningDialogComponent, ReportOptionsComponent} from "@app/shared";
 import {Observable} from "rxjs";
 
 interface Layout{
@@ -52,7 +52,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   @ViewChild(ReportOptionsComponent)
   private optionsComponent: ReportOptionsComponent;
 
-  @HostListener('window:beforeunload')
+  @HostListener("window:beforeunload")
   canDeactivate(): Observable<boolean> | boolean {
     return this.sessionData.length <= this.savedSessionData;
   }
@@ -148,7 +148,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onSelected(cat: string){
-    this.chipInput.nativeElement.focus()
+    this.chipInput.nativeElement.focus();
     this.selectedCat = cat;
     this.selectedSelectableID = "";
   }
@@ -174,7 +174,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
             this.categories = this.dataParser.extractCategories(this.parts);
             this.selectedCat = this.categories[0].name;
             this.inputParser.init(this.defaultParts);
-            this.chipInput.nativeElement.focus()
+            this.chipInput.nativeElement.focus();
           }
         });
       }
@@ -196,7 +196,7 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   }
 
   onClick() {
-    this.chipInput.nativeElement.focus()
+    this.chipInput.nativeElement.focus();
     this.selectedSelectableID = "";
     setTimeout(() => this.updateText(), 1);
     setTimeout(() => this.modelChange(), 5);
@@ -242,6 +242,18 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   assignValues() {
     this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
       this.inputParser.foundVariables);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Test(){//TODO
+    const dialogRef = this.dialog.open(DeepLearningDialogComponent, {
+      width: "350px",
+      data: {id: ""}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Test worked");
+    });
+    this.reset();
   }
 
   makeNormal() {
