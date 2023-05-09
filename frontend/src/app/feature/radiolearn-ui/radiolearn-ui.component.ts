@@ -170,6 +170,7 @@ export class RadiolearnUiComponent implements OnInit {
 
     //check if there are any comments in the annotations, to enable the "view comment" button
     this.anyComments = this.dataParser.materialHasComments(this.material);
+    this.imageDisplayStudentChild.clearData()
   }
 
   initSurvey(){
@@ -256,9 +257,9 @@ export class RadiolearnUiComponent implements OnInit {
         if (res.material === null) {
           this.openNoMaterialsLeftDialog();
         } else {
-          if (this.imageDisplayStudentChild.displayBoxes) {
-            this.imageDisplayStudentChild.toggleBoxes();
-          }
+          // if (this.imageDisplayStudentChild.displayBoxes) {
+          //   this.imageDisplayStudentChild.toggleBoxes();
+          // }
           this.sawFeedback = false;
           increaseSurveyCounter();
           this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
@@ -301,7 +302,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   checkForErrors() {
     if (this.drawMode){
-      this.imageDisplayStudentChild.drawBoxes()
+      this.imageDisplayStudentChild.checkBoxes()
       return
     }
     if (!this.sawFeedback) {

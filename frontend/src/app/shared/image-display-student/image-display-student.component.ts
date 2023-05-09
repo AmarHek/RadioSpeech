@@ -183,6 +183,14 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.labelContext.clearRect(0, 0, this.labelLayerElement.width, this.labelLayerElement.height);
   }
 
+  clearData(){
+    this.annotationsStudent = {
+      main: [],
+      lateral: [],
+      pre: []
+    };
+  }
+
   rectangleDrawing() {
     let rect = this.editLayerElement.getBoundingClientRect();
     fromEvent(this.editLayerElement, "mousedown")
@@ -234,16 +242,17 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
-      this.drawBoxes();
+      this.drawBoxesSolution();
       this.setHoverListeners();
     }
   }
+
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
     // this.clearCanvas();
     if (this.displayBoxes) {
-      this.drawBoxes();
+      this.drawBoxesSolution();
     }
   }
 
@@ -257,31 +266,63 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.imageZoom();
   }
 
-  drawBoxes() {
-    // this.clearCanvas();
-    const annotations = this.annotations[this.currentMode];
-    for (const annotation of annotations) {
-      for (const bbox of annotation.boxes) {
-        this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]);
-      }
-      this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-        this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], annotation.boxes[0], annotations);
-    }
+  checkBoxes(){
+    console.log(this.annotations)
+    this.clearCanvas()
+    this.drawBoxesSolution()
+    this.drawBoxesStudent(true)
   }
 
-  drawBoxesStudent() {
-    this.clearCanvas();
-    const annotations = this.annotationsStudent[this.currentMode];
+  drawBoxesSolution() {
+    // this.clearCanvas();
+    const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
         this.imageDisplayService.drawRect(this.drawContext, bbox,
           this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], true);
       }
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-        this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], annotation.boxes[0], annotations);
+        "rgba(0, 0, 255, 1)", annotation.boxes[0], annotations);
     }
   }
+
+  drawBoxesStudent(feedbackColor = false) {
+    const annotations = this.annotationsStudent[this.currentMode];
+    for (const annotation of annotations) {
+      let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
+      for (const bbox of annotation.boxes) {
+        if (feedbackColor){
+          color = this.feedbackColorForBox(annotation, bbox)
+        }
+        this.imageDisplayService.drawRect(this.drawContext, bbox, this.currentScaleFactor, color);
+      }
+      this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
+        color, annotation.boxes[0], annotations);
+    }
+  }
+
+  feedbackColorForBox(drawnAnnotation, drawnBox){
+    let feedbackColors = ["rgba(255,0,0,1)", "rgba(255,196,0,1)", "rgb(0,189,13)"]
+    let correct = false
+    this.annotations[this.currentMode].forEach(correctAnnotation => {
+      if (!correctAnnotation.label.includes(drawnAnnotation.label)){
+        return
+      }
+      correctAnnotation.boxes.forEach(solutionBox => {
+        let r1: Rectangle = {x1: solutionBox.left, y1: solutionBox.top, x2: solutionBox.left + solutionBox.width, y2: solutionBox.top + solutionBox.height}
+        let r2: Rectangle = {x1: drawnBox.left, y1: drawnBox.top, x2: drawnBox.left + drawnBox.width, y2: drawnBox.top + drawnBox.height}
+        let iou = this.calculateIoU(r1, r2)
+        if (iou > 0.5) correct = true
+      })
+    })
+
+    if (correct){
+      return feedbackColors[2]
+    }
+
+    return feedbackColors[0]
+  }
+
 
 
 
@@ -437,4 +478,31 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
     return [labelX, labelY];
   }
+
+
+  calculateIntersection(rect1: Rectangle, rect2: Rectangle): number {
+    const xOverlap = Math.max(0, Math.min(rect1.x2, rect2.x2) - Math.max(rect1.x1, rect2.x1));
+    const yOverlap = Math.max(0, Math.min(rect1.y2, rect2.y2) - Math.max(rect1.y1, rect2.y1));
+    return xOverlap * yOverlap;
+  }
+
+  calculateUnion(rect1: Rectangle, rect2: Rectangle): number {
+    const rect1Area = (rect1.x2 - rect1.x1) * (rect1.y2 - rect1.y1);
+    const rect2Area = (rect2.x2 - rect2.x1) * (rect2.y2 - rect2.y1);
+    return rect1Area + rect2Area - this.calculateIntersection(rect1, rect2);
+  }
+
+  calculateIoU(rect1: Rectangle, rect2: Rectangle): number {
+    const intersection = this.calculateIntersection(rect1, rect2);
+    const union = this.calculateUnion(rect1, rect2);
+    return intersection / union;
+  }
+
+}
+
+interface Rectangle {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 }
