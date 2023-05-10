@@ -183,7 +183,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.labelContext.clearRect(0, 0, this.labelLayerElement.width, this.labelLayerElement.height);
   }
 
-  clearData(){
+  clearData() {
     this.annotationsStudent = {
       main: [],
       lateral: [],
@@ -266,7 +266,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.imageZoom();
   }
 
-  checkBoxes(){
+  checkBoxes() {
     console.log(this.annotations)
     this.clearCanvas()
     this.drawBoxesSolution()
@@ -291,7 +291,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     for (const annotation of annotations) {
       let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
       for (const bbox of annotation.boxes) {
-        if (feedbackColor){
+        if (feedbackColor) {
           color = this.feedbackColorForBox(annotation, bbox)
         }
         this.imageDisplayService.drawRect(this.drawContext, bbox, this.currentScaleFactor, color);
@@ -301,29 +301,41 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  feedbackColorForBox(drawnAnnotation, drawnBox){
+  feedbackColorForBox(drawnAnnotation, drawnBox) {
     let feedbackColors = ["rgba(255,0,0,1)", "rgba(255,196,0,1)", "rgb(0,189,13)"]
-    let correct = false
+    let maxIoU = 0
     this.annotations[this.currentMode].forEach(correctAnnotation => {
-      if (!correctAnnotation.label.includes(drawnAnnotation.label)){
+      if (!correctAnnotation.label.includes(drawnAnnotation.label)) {
         return
       }
       correctAnnotation.boxes.forEach(solutionBox => {
-        let r1: Rectangle = {x1: solutionBox.left, y1: solutionBox.top, x2: solutionBox.left + solutionBox.width, y2: solutionBox.top + solutionBox.height}
-        let r2: Rectangle = {x1: drawnBox.left, y1: drawnBox.top, x2: drawnBox.left + drawnBox.width, y2: drawnBox.top + drawnBox.height}
+        let r1: Rectangle = {
+          x1: solutionBox.left,
+          y1: solutionBox.top,
+          x2: solutionBox.left + solutionBox.width,
+          y2: solutionBox.top + solutionBox.height
+        }
+        let r2: Rectangle = {
+          x1: drawnBox.left,
+          y1: drawnBox.top,
+          x2: drawnBox.left + drawnBox.width,
+          y2: drawnBox.top + drawnBox.height
+        }
         let iou = this.calculateIoU(r1, r2)
-        if (iou > 0.5) correct = true
+        maxIoU = Math.max(iou, maxIoU)
       })
     })
 
-    if (correct){
+    if (maxIoU > 0.5) {
       return feedbackColors[2]
+    }
+
+    if (maxIoU > 0.2) {
+      return feedbackColors[1]
     }
 
     return feedbackColors[0]
   }
-
-
 
 
   setHoverListeners() {
