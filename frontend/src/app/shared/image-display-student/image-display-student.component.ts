@@ -60,7 +60,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   currentTooltip = "";
 
   // state variables for canvas layers
-  displayBoxes: boolean;
+  displayBoxes: boolean = false;
   enableZoom: boolean;
 
   startX = 0;
@@ -237,20 +237,22 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   changeMode(mode: string) {
+    this.clearCanvas()
     this.currentMode = mode;
     this.enableZoom = false;
     this.setCurrentImage();
     this.setCurrentDimensions();
     if (this.displayBoxes) {
-      this.drawBoxesSolution();
+      setTimeout(() => this.drawBoxesSolution(), 5);
       this.setHoverListeners();
     }
+    setTimeout(() => this.drawBoxesStudent(this.displayBoxes))
   }
 
 
   toggleBoxes() {
     this.displayBoxes = !this.displayBoxes;
-    // this.clearCanvas();
+    this.clearCanvas();
     if (this.displayBoxes) {
       this.drawBoxesSolution();
     }
@@ -267,14 +269,11 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   checkBoxes() {
-    console.log(this.annotations)
-    this.clearCanvas()
-    this.drawBoxesSolution()
+    this.toggleBoxes()
     this.drawBoxesStudent(true)
   }
 
   drawBoxesSolution() {
-    // this.clearCanvas();
     const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
       for (const bbox of annotation.boxes) {
