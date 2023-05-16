@@ -1,11 +1,15 @@
 <div mat-dialog-title>
-  <h3>Diagnose</h3>
+  <h3>
+    <ng-container>
+      {{this.title}}
+    </ng-container>
+  </h3>
 </div>
 
 <mat-dialog-content>
   <div style="display: flex; flex-direction: column;">
-    <button *ngFor="let selectable of this.categories[0].selectables" mat-raised-button color="primary"
-            style="margin: 5px;" (click)="annotationSelected(selectable.name)">{{selectable.name}}</button>
+    <button *ngFor="let option of this.options" mat-raised-button color="primary"
+            style="margin: 5px;" (click)="annotationSelected(option)">{{option}}</button>
   </div>
 </mat-dialog-content>
 
