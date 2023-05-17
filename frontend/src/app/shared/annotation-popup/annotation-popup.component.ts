@@ -33,7 +33,6 @@ export class AnnotationPopupComponent implements OnInit {
 
   annotationSelected(name) {
     this.options = []
-    console.log(this.pathologies)
     if (this.selectedPathology == "") {
       this.selectedPathology = name
       this.title = name
