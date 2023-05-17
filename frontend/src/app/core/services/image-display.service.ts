@@ -64,11 +64,11 @@ export class ImageDisplayService {
     context.strokeStyle = strokeStyle;
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string, fill: boolean = false) {
+  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string, fill: boolean = false, fillColor = "rgba(0, 0, 255, 0.3)") {
     this.setCanvasProperties(context, this.boxLineWidth, "square", color);
     context.beginPath();
-    if (fill){
-      context.fillStyle = "rgba(0, 0, 255, 0.3)"
+    if (fill) {
+      context.fillStyle = fillColor
       context.fillRect(
         bbox.left * scaleFactor,
         bbox.top * scaleFactor,
@@ -84,7 +84,8 @@ export class ImageDisplayService {
     }
   }
 
-  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string, firstBox: BoundingBox, annotations) {
+  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string,
+                    firstBox: BoundingBox, annotations, drawMode: boolean = false) {
     context.font = "bold 15pt Arial";
     context.strokeStyle = "black";
     context.lineWidth = 0.3;
@@ -142,6 +143,9 @@ export class ImageDisplayService {
 
     //add white background to the text
     context.fillStyle = "white"
+    if (drawMode) {
+      context.fillStyle = color.replace(/[^,]+(?=\))/, "1");
+    }
     const textBackgroundPadding = 4
     context.fillRect(textX - textBackgroundPadding * 0.5,
       textY - textHeight + textMetrics.actualBoundingBoxDescent - textBackgroundPadding * 0.5,
@@ -150,6 +154,9 @@ export class ImageDisplayService {
 
     //draw text
     context.fillStyle = color;
+    if (drawMode) {
+      context.fillStyle = "white"
+    }
     context.fillText(finalLabel, textX, textY);
 
     annotation.labelLeft += xAdjustment * (1 / scaleFactor)

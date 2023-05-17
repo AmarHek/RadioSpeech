@@ -276,12 +276,16 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   drawBoxesSolution() {
     const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
+      let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
       for (const bbox of annotation.boxes) {
-        this.imageDisplayService.drawRect(this.drawContext, bbox,
-          this.currentScaleFactor, this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)], true);
+        if (this.drawMode) {
+          // overwrite annotation color with feedback color (red / yellow / green) when in draw mode
+          color = this.feedbackColorForSolutionBox(annotation, bbox)
+        }
+        this.imageDisplayService.drawRect(this.drawContext, bbox, this.currentScaleFactor, color, this.drawMode, color);
       }
-      this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor,
-        "rgba(0, 0, 255, 1)", annotation.boxes[0], annotations);
+      this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor, color,
+        annotation.boxes[0], annotations, this.drawMode);
     }
   }
 
@@ -291,7 +295,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
       for (const bbox of annotation.boxes) {
         if (feedbackColor) {
-          color = this.feedbackColorForBox(annotation, bbox)
+          color = this.feedbackColorForStudentBox(annotation, bbox)
         }
         this.imageDisplayService.drawRect(this.drawContext, bbox, this.currentScaleFactor, color);
       }
@@ -300,7 +304,43 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  feedbackColorForBox(drawnAnnotation, drawnBox) {
+  feedbackColorForSolutionBox(solutionAnnotation, solutionBox){
+    let feedbackColors = ["rgba(255,0,0, 0.3)", "rgba(255,196,0,0.3)", "rgb(0,189,0, 0.3)"]
+    let maxIoU = 0
+    this.annotationsStudent[this.currentMode].forEach(studentAnnotation => {
+      if (!studentAnnotation.label.includes(solutionAnnotation.label)) {
+        return
+      }
+      studentAnnotation.boxes.forEach(studentBox => {
+        let r1: Rectangle = {
+          x1: studentBox.left,
+          y1: studentBox.top,
+          x2: studentBox.left + studentBox.width,
+          y2: studentBox.top + studentBox.height
+        }
+        let r2: Rectangle = {
+          x1: solutionBox.left,
+          y1: solutionBox.top,
+          x2: solutionBox.left + solutionBox.width,
+          y2: solutionBox.top + solutionBox.height
+        }
+        let iou = this.calculateIoU(r1, r2)
+        maxIoU = Math.max(iou, maxIoU)
+      })
+    })
+
+    if (maxIoU > 0.5) {
+      return feedbackColors[2]
+    }
+
+    if (maxIoU > 0.2) {
+      return feedbackColors[1]
+    }
+
+    return feedbackColors[0]
+  }
+
+  feedbackColorForStudentBox(drawnAnnotation, drawnBox) {
     let feedbackColors = ["rgba(255,0,0,1)", "rgba(255,196,0,1)", "rgb(0,189,13)"]
     let maxIoU = 0
     this.annotations[this.currentMode].forEach(correctAnnotation => {
