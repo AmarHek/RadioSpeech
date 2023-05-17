@@ -246,7 +246,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       setTimeout(() => this.drawBoxesSolution(), 5);
       this.setHoverListeners();
     }
-    setTimeout(() => this.drawBoxesStudent(this.displayBoxes))
+    setTimeout(() => this.drawBoxesStudent(this.displayBoxes), 5)
   }
 
 
