@@ -304,7 +304,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  feedbackColorForSolutionBox(solutionAnnotation, solutionBox){
+  feedbackColorForSolutionBox(solutionAnnotation, solutionBox) {
     let feedbackColors = ["rgba(255,0,0, 0.3)", "rgba(255,196,0,0.3)", "rgb(0,189,0, 0.3)"]
     let maxIoU = 0
     this.annotationsStudent[this.currentMode].forEach(studentAnnotation => {
@@ -388,23 +388,21 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
     function toolTip(e) {
       let hit = false;
+      let mouseX = e.clientX - rect.left
+      let mouseY = e.clientY - rect.top
       for (const annotation of annotations) {
-        if (annotation.comment !== undefined) {
-          if (annotation.comment.length > 0) {
-            const x = parent.currentScaleFactor * annotation.labelLeft;
-            const y = parent.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
-            const h = 30; // approx. height of 18pt font size
-            const w = parent.labelContext.measureText(annotation.label).width;
-            if (
-              x <= e.clientX - rect.left &&
-              e.clientX - rect.left <= x + w &&
-              y - h <= e.clientY - rect.top &&
-              e.clientY - rect.top <= y
-            ) {
-              // TODO Compute corner coordinates of tooltip based on position in image
-              parent.showToolTip(e.clientX - rect.left, e.clientY - rect.top + 20, annotation.comment);
-              hit = true;
-            }
+        if (annotation.comment?.length > 0) {
+          const x = parent.currentScaleFactor * annotation.labelLeft;
+          const y = parent.currentScaleFactor * annotation.labelTop + BOX_LINE_WIDTH + 20;
+          const h = 30; // approx. height of 18pt font size
+          const w = parent.labelContext.measureText(annotation.label).width;
+
+          const isWithinWidth = mouseX >= x && mouseX <= x + w;
+          const isWithinHeight = mouseY >= y - h && mouseY <= y;
+          if (isWithinWidth && isWithinHeight) {
+            // TODO Compute corner coordinates of tooltip based on position in image
+            parent.showToolTip(mouseX, mouseY + 20, annotation.comment);
+            hit = true;
           }
         }
       }
