@@ -413,12 +413,9 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   showAllComments() {
-    const annotations = this.annotations[this.currentMode];
-    for (const annotation of annotations) {
-      if (annotation.comment !== undefined) {
-        if (annotation.comment.length > 0) {
-          this.showToolTip(annotation.labelLeft * this.currentScaleFactor, annotation.labelTop * this.currentScaleFactor + 30, annotation.comment)
-        }
+    for (const annotation of this.annotations[this.currentMode]) {
+      if (annotation.comment?.length > 0) {
+        this.showToolTip(annotation.labelLeft * this.currentScaleFactor, annotation.labelTop * this.currentScaleFactor + 30, annotation.comment)
       }
     }
   }
@@ -440,20 +437,19 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   saveTempBox() {
-    if (!(this.width === 0 && this.height === 0)) {
-      this.fixNegativeCoordinates();
-      this.tempBoxes[this.currentMode].push({
-        left: this.startX / this.currentScaleFactor,
-        top: this.startY / this.currentScaleFactor,
-        height: this.height / this.currentScaleFactor,
-        width: this.width / this.currentScaleFactor
-      });
-      this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
-      this.width = 0;
-      this.height = 0;
-      this.drawTempBoxes();
-      this.annotationDialog()
-    }
+    if (this.width === 0 && this.height === 0) return
+    this.fixNegativeCoordinates();
+    this.tempBoxes[this.currentMode].push({
+      left: this.startX / this.currentScaleFactor,
+      top: this.startY / this.currentScaleFactor,
+      height: this.height / this.currentScaleFactor,
+      width: this.width / this.currentScaleFactor
+    });
+    this.editContext.clearRect(0, 0, this.editLayerElement.width, this.editLayerElement.height);
+    this.width = 0;
+    this.height = 0;
+    this.drawTempBoxes();
+    this.annotationDialog()
   }
 
   annotationDialog() {
@@ -474,23 +470,22 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   saveNewAnnotation(label) {
     // gather all necessary data
     const boxes = this.tempBoxes[this.currentMode];
-    if (boxes.length > 0) {
-      const labelCoordinates = this.getLabelCoordinates(boxes);
+    if (boxes.length == 0) return;
+    const labelCoordinates = this.getLabelCoordinates(boxes);
 
-      // push new annotation to array of proper mode
-      this.annotationsStudent[this.currentMode].push({
-        boxes,
-        label: label,
-        comment: "",
-        labelLeft: labelCoordinates[0],
-        labelTop: labelCoordinates[1]
-      });
+    // push new annotation to array of proper mode
+    this.annotationsStudent[this.currentMode].push({
+      boxes,
+      label: label,
+      comment: "",
+      labelLeft: labelCoordinates[0],
+      labelTop: labelCoordinates[1]
+    });
 
-      // update state and empty buffer variables
-      this.tempBoxes[this.currentMode] = [];
-      this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
-      this.drawBoxesStudent()
-    }
+    // update state and empty buffer variables
+    this.tempBoxes[this.currentMode] = [];
+    this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
+    this.drawBoxesStudent()
   }
 
   drawTempBoxes() {
@@ -518,10 +513,11 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     let labelX = 5000; // start very far right
     let labelY = 0; // start at the top
     for (const box of boxes) {
-      if (labelY < (box.top + box.height)) {
-        labelY = box.top + box.height;
+      let boxBottomY = box.top + box.height
+      if (labelY < boxBottomY) {
+        labelY = boxBottomY;
       }
-      if (labelX > (box.left)) {
+      if (labelX > box.left) {
         labelX = box.left;
       }
     }
