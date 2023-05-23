@@ -191,6 +191,9 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     };
   }
 
+  /**
+   * Enables click and drag to draw rectangles on the edit layer.
+   */
   rectangleDrawing() {
     let rect = this.editLayerElement.getBoundingClientRect();
     fromEvent(this.editLayerElement, "mousedown")
@@ -273,6 +276,11 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.drawBoxesStudent(true)
   }
 
+  /**
+   * Draws the solution bounding boxes on the image. In non-draw mode, they are colored in different colors that allow
+   * distinguishing between different annotations. In draw-mode the boxes are colored according to their correctness
+   * with respect to the student boxes (red / yellow / green).
+   */
   drawBoxesSolution() {
     const annotations = this.annotations[this.currentMode];
     for (const annotation of annotations) {
@@ -289,6 +297,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
+  /**
+   * Draws the student's annotation boxes on the image.
+   * @param feedbackColor If set to false, the boxes will be displayed in different colors, to distinguish
+   * between annotations (before checkErrors is called). If set to true, the boxes are colored according to their
+   * correctness with respect to the solution boxes (red / yellow / green).
+   */
   drawBoxesStudent(feedbackColor = false) {
     const annotations = this.annotationsStudent[this.currentMode];
     for (const annotation of annotations) {
@@ -304,6 +318,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
+  /**
+   * Determines the feedback color for a solution box based on its IoU (Intersection over Union) with the student's annotations.
+   * @param {Annotation} solutionAnnotation - The annotation of the solution box.
+   * @param {BoundingBox} solutionBox - The coordinates of the solution box.
+   * @returns {string} - The feedback color in the format "rgba(r, g, b, a)".
+   */
   feedbackColorForSolutionBox(solutionAnnotation, solutionBox) {
     let feedbackColors = ["rgba(255,0,0, 0.3)", "rgba(255,196,0,0.3)", "rgb(0,189,0, 0.3)"]
     let maxIoU = 0
@@ -340,6 +360,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     return feedbackColors[0]
   }
 
+  /**
+   * Determines the feedback color for a student box based on its IoU (Intersection over Union) with the correct annotations.
+   * @param {Annotation} drawnAnnotation - The annotation of the student's drawn box.
+   * @param {BoundingBox} drawnBox - The coordinates of the student's drawn box.
+   * @returns {string} - The feedback color in the format "rgba(r, g, b, a)".
+   */
   feedbackColorForStudentBox(drawnAnnotation, drawnBox) {
     let feedbackColors = ["rgba(255,0,0,1)", "rgba(255,196,0,1)", "rgb(0,189,13)"]
     let maxIoU = 0
@@ -376,7 +402,11 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     return feedbackColors[0]
   }
 
-
+  /**
+   * Sets up hover listeners for the annotation tool. Not applicable in mobile mode.
+   * When the mouse is moved over the hover layer, it checks if the mouse is within the bounds
+   * of any annotated labels and displays a tooltip with the corresponding comment if available.
+   */
   setHoverListeners() {
     if (this.isMobile) return
     const annotations = this.annotations[this.currentMode];
