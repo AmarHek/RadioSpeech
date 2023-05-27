@@ -1,0 +1,33 @@
+<!--<p>deep-learning-dialog works!</p>-->
+
+<body>
+<style>
+  input[type=submit] {
+    margin: 30px 20px;
+    box-sizing: border-box;
+  }
+
+  label {
+    margin-top: 20px;
+  }
+
+  h1{
+    font-size: 27px;
+  }
+</style>
+
+
+<div id="upload-dialog">
+  <h1 style="margin-bottom: 10px">Diagnoseunterstützung</h1>
+  <select #dropdown value="Modus auswählen">
+    <option value="Klassifikation">Klassifikation</option>
+    <option value="Detektion">Detektion</option>
+    <option value="Segmentierung" disabled style="background-color: lightgrey;">Segmentierung</option>
+  </select>
+  <label for="Ausfüllen">
+    <input type="checkbox" id="Ausfüllen" value="Automatisches Ausfüllen" > Automatisches Ausfüllen
+  </label>
+  <input type="file" #fileInput style="margin-bottom: 10px">
+  <button (click)="uploadFile()" style="margin-right: 10px">Bestätigen</button>
+  <button (click)="abort()">Abbrechen</button>
+</div>
