@@ -9,6 +9,7 @@ import {CheckBox, Selectable} from "@app/models";
 })
 export class AnnotationPopupComponent implements OnInit {
 
+  readonly NO_VAR_SELECTION_STRING = "Keine Spezifizierung";
   pathologies: Selectable[];
   selectedPathology: string = "";
   options: string[] = [];
@@ -21,6 +22,7 @@ export class AnnotationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // initially fill displayed options with pathologies
     this.pathologies = this.data.categories[0].selectables
     this.pathologies.forEach(selectable => {
       this.options.push(selectable.name)
@@ -31,33 +33,42 @@ export class AnnotationPopupComponent implements OnInit {
     this.dialogRef.close(false)
   }
 
-  annotationSelected(name) {
+  optionSelected(name) {
     this.options = []
     if (this.selectedPathology == "") {
+      // pathology has been selected
       this.selectedPathology = name
       this.title = name
-      let variablesExist = false
-      this.pathologies.forEach(pathology => {
-        pathology = pathology as CheckBox
-        if (pathology.name == this.selectedPathology && pathology.variables.length > 0){
-          variablesExist = true
-          if (pathology.variables[0].kind == "oc"){
-            pathology.variables[0].values.forEach(value => {
-              this.options.push(value)
-            })
-          } else if (pathology.variables[0].kind == "mc"){
-            pathology.variables[0].values.forEach(value => {
-              this.options.push(value[0])
-            })
-          }
-        }
-      })
-      if(!variablesExist){
+
+      // find the correct pathology and check if it has vars
+      let pat = this.pathologies.map(pat => pat as CheckBox)
+        .find(pat => pat.name == this.selectedPathology && pat.variables)
+
+      if (pat == undefined){
+        // close dialog if no further variables can be selected
         this.dialogRef.close(name)
+      } else {
+        // if pathology has variables, populate options array with variables
+        if (pat.variables[0].kind == "oc") {
+          pat.variables[0].values.forEach(value => {
+            this.options.push(value)
+          })
+        } else if (pat.variables[0].kind == "mc") {
+          pat.variables[0].values.forEach(value => {
+            this.options.push(value[0])
+          })
+          this.options.push("Keine Spezifizierung")
+        }
       }
-    } else {
-      this.dialogRef.close(this.selectedPathology + " | " + name)
+      return
     }
+    // variable was selected
+    let result = this.selectedPathology + " | " + name
+    if (name == this.NO_VAR_SELECTION_STRING){
+      // don't append option text if it is "Keine Spezifizierung"
+      result = this.selectedPathology
+    }
+    this.dialogRef.close(result)
   }
 
 }
