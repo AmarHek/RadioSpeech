@@ -42,7 +42,7 @@ export class AnnotationPopupComponent implements OnInit {
 
       // find the correct pathology and check if it has vars
       let pat = this.pathologies.map(pat => pat as CheckBox)
-        .find(pat => pat.name == this.selectedPathology && pat.variables)
+        .find(pat => pat.name == this.selectedPathology && pat.variables.length > 0)
 
       if (pat == undefined){
         // close dialog if no further variables can be selected
