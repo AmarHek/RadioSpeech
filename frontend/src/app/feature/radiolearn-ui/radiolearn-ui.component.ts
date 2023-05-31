@@ -53,7 +53,8 @@ export class RadiolearnUiComponent implements OnInit {
   // variables for options/category UI
   selectedCat: string;
   selectedSelectableID = "";
-  inputEnabled: boolean = true;
+  inputEnabled: boolean = false;
+  drawMode: boolean = true;
 
   // state variables
   userMode: boolean;
@@ -169,6 +170,7 @@ export class RadiolearnUiComponent implements OnInit {
 
     //check if there are any comments in the annotations, to enable the "view comment" button
     this.anyComments = this.dataParser.materialHasComments(this.material);
+    this.imageDisplayStudentChild.clearData()
   }
 
   initSurvey(){
@@ -183,11 +185,15 @@ export class RadiolearnUiComponent implements OnInit {
     if (this.radiolearnService.workMode !== undefined) {
       // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
       this.workMode = this.radiolearnService.workMode;
+      this.drawMode = this.radiolearnService.drawMode;
       // add to localStorage afterward
       localStorage.setItem("workMode", this.workMode);
+      localStorage.setItem("drawMode", JSON.stringify(this.drawMode))
     } else {
       // if here from reloading, try localStorage
       const workMode = localStorage.getItem("workMode");
+      const value = localStorage.getItem("drawMode");
+      this.drawMode = value ? JSON.parse(value) : false;
       if (workMode !== null) {
         this.workMode = workMode;
       } else {
@@ -251,9 +257,9 @@ export class RadiolearnUiComponent implements OnInit {
         if (res.material === null) {
           this.openNoMaterialsLeftDialog();
         } else {
-          if (this.imageDisplayStudentChild.displayBoxes) {
-            this.imageDisplayStudentChild.toggleBoxes();
-          }
+          // if (this.imageDisplayStudentChild.displayBoxes) {
+          //   this.imageDisplayStudentChild.toggleBoxes();
+          // }
           this.sawFeedback = false;
           increaseSurveyCounter();
           this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
@@ -295,6 +301,10 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
+    if (this.drawMode){
+      this.imageDisplayStudentChild.checkBoxes()
+      return
+    }
     if (!this.sawFeedback) {
       this.submit();
       this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)

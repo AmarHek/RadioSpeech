@@ -1,5 +1,5 @@
 <div class="main" [ngStyle]="{'padding' : isMobile ? 'unset': '10px 0 0 10px'}">
-  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20}">
+  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20, 'margin': drawMode ? '0 auto' : '0'}">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
@@ -44,15 +44,20 @@
     </div>
   </div>
   <div id="imgOuter" [ngStyle]="{'padding' : isMobile ? 'unset' : '10px 0 0 10px'}">
-    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}">
+    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
            src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
       <canvas #boxLayer class="canvas level1" id="drawCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+      <canvas #tempLayer class="canvas level1" id="tempCanvas"
+              width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
       <canvas #labelLayer class="canvas level1" id="labelCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-      <canvas *ngIf="displayBoxes" #hoverLayer class="canvas level2" id="hoverCanvas"
+      <canvas *ngIf="displayBoxes" #hoverLayer class="canvas level4" id="hoverCanvas"
+              width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
+      <canvas *ngIf="true" #editLayer class="canvas level3" id="editCanvas"
+              (mouseup)="saveTempBox()"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <div #tipDiv class="tipCanvas level3" id="tip">{{currentTooltip}}</div>
       <div #lensContainer *ngIf="enableZoom">

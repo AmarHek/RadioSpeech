@@ -10,8 +10,15 @@ export class ImageDisplayService {
   maxImageHeight = 750;
   maxImageWidth = 890;
 
-  boxLineWidth = 5;
-  displayBoxColor = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
+  boxLineWidth = 5
+  displayBoxColor =
+    ["rgb(255, 51, 51)","rgb(33,186,33)","rgb(51, 51, 255)","rgb(255, 51, 255)",
+      "rgb(21,155,155)", "rgb(204,2,2)","rgb(223,103,3)","rgb(56,172,0)",
+      "rgb(102, 51, 255)","rgb(255, 51, 102)", "rgb(51, 102, 255)","rgb(4,130,0)",
+      "rgb(255, 102, 76)","rgb(0,181,99)","rgb(148,76,255)","rgb(255, 51, 76)",
+      "rgb(76, 51, 255)","rgb(223,171,0)","rgb(255, 76, 51)","rgb(51, 76, 255)"]
+
+  displayBoxColor_colorblind = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
     "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
     "rgba(70,240,240,1)", "rgba(0,130,200,1)", "rgba(145,30,180,1)", "rgba(240,50,230,1)", "rgba(128,128,128,1)",
     "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
@@ -39,14 +46,14 @@ export class ImageDisplayService {
       width = loadedImage.width;
       scaleFactor = 1.0;
 
-      // First check by height
+      // Check if image exceeds max height, if yes, adjust scale
       if (height >= this.maxImageHeight) {
         scaleFactor = this.maxImageHeight / loadedImage.height;
         height = this.maxImageHeight;
         width = loadedImage.width * scaleFactor;
       }
 
-      // Then check by width
+      // Check if image exceeds max width, if yes, adjust scale
       const maxWidth = Math.min(window.innerWidth, this.maxImageWidth)
       if (width >= maxWidth) {
         scaleFactor = scaleFactor * maxWidth / width;
@@ -64,27 +71,35 @@ export class ImageDisplayService {
     context.strokeStyle = strokeStyle;
   }
 
-  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string) {
+  drawRect(context: CanvasRenderingContext2D, bbox: BoundingBox, scaleFactor: number, color: string, fill: boolean = false, fillColor = "rgba(0, 0, 255, 0.3)") {
     this.setCanvasProperties(context, this.boxLineWidth, "square", color);
     context.beginPath();
-    context.rect(
-      bbox.left * scaleFactor,
-      bbox.top * scaleFactor,
-      bbox.width * scaleFactor,
-      bbox.height * scaleFactor);
-    context.stroke();
+    if (fill) {
+      context.fillStyle = fillColor
+      context.fillRect(
+        bbox.left * scaleFactor,
+        bbox.top * scaleFactor,
+        bbox.width * scaleFactor,
+        bbox.height * scaleFactor);
+    } else {
+      context.rect(
+        bbox.left * scaleFactor,
+        bbox.top * scaleFactor,
+        bbox.width * scaleFactor,
+        bbox.height * scaleFactor);
+      context.stroke();
+    }
   }
 
-  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string, firstBox: BoundingBox, annotations) {
+  addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string,
+                    firstBox: BoundingBox, annotations, drawMode: boolean = false) {
     context.font = "bold 15pt Arial";
     context.strokeStyle = "black";
     context.lineWidth = 0.3;
 
     let finalLabel: string = annotation.label;
-    if (annotation.comment !== undefined) {
-      if (annotation.comment.length > 0) {
-        finalLabel = annotation.label + "**";
-      }
+    if (annotation.comment?.length > 0) {
+      finalLabel = annotation.label + "**";
     }
 
     const textMetrics = context.measureText(finalLabel)
@@ -92,11 +107,8 @@ export class ImageDisplayService {
     const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
 
     //check for overlap with another label
-    let overlap = false
-    annotations.forEach(otherAnnotation => {
-      if (this.annotationOverlap(context, scaleFactor, annotation, otherAnnotation)) {
-        overlap = true
-      }
+    let overlap = annotations.some(otherAnnotation => {
+      this.annotationOverlap(context, scaleFactor, annotation, otherAnnotation);
     })
 
     //fix out of bounds to the right side by shifting the label to the left as far as necessary
@@ -133,6 +145,9 @@ export class ImageDisplayService {
 
     //add white background to the text
     context.fillStyle = "white"
+    if (drawMode) {
+      context.fillStyle = color.replace(/[^,]+(?=\))/, "1");
+    }
     const textBackgroundPadding = 4
     context.fillRect(textX - textBackgroundPadding * 0.5,
       textY - textHeight + textMetrics.actualBoundingBoxDescent - textBackgroundPadding * 0.5,
@@ -141,6 +156,9 @@ export class ImageDisplayService {
 
     //draw text
     context.fillStyle = color;
+    if (drawMode) {
+      context.fillStyle = "white"
+    }
     context.fillText(finalLabel, textX, textY);
 
     annotation.labelLeft += xAdjustment * (1 / scaleFactor)
@@ -148,10 +166,10 @@ export class ImageDisplayService {
   }
 
   //checks whether the text labels of two annotations overlap
-  annotationOverlap(context, scalefactor, anno_a, anno_b): boolean {
+  annotationOverlap(context, scaleFactor, anno_a, anno_b): boolean {
     if (anno_a.label == anno_b.label && anno_a.labelLeft == anno_b.labelLeft && anno_a.labelTop == anno_b.labelTop) return false
-    let rectA = this.annotationToRectangle(context, scalefactor, anno_a)
-    let rectB = this.annotationToRectangle(context, scalefactor, anno_b)
+    let rectA = this.annotationToRectangle(context, scaleFactor, anno_a)
+    let rectB = this.annotationToRectangle(context, scaleFactor, anno_b)
     return this.rectangleOverlap(rectA, rectB)
   }
 
@@ -170,20 +188,9 @@ export class ImageDisplayService {
 
   //Checks whether two rectangles overlap, by seeing if either rectangle contains any of the others four vertices
   rectangleOverlap(rect_A, rect_B): boolean {
-    let verticesA = this.getRectangleVertices(rect_A)
-    let verticesB = this.getRectangleVertices(rect_B)
-    let overlap = false
-    verticesA.forEach(vertice => {
-      if (rect_B.contains(vertice)) {
-        overlap = true
-      }
-    })
-    verticesB.forEach(vertice => {
-      if (rect_A.contains(vertice)) {
-        overlap = true
-      }
-    })
-    return overlap
+    let vsA = this.getRectangleVertices(rect_A)
+    let vsB = this.getRectangleVertices(rect_B)
+    return vsA.some(v => rect_B.contains(v)) || vsB.some(v => rect_A.contains(v))
   }
 
   //given a rect object returns a list of its 4 vertices
@@ -200,35 +207,23 @@ export class ImageDisplayService {
   // adds event listeners to given elements
   setImageZoomEventListeners(img: HTMLImageElement, lensElement, lensSize, zoomLayerElement, zoomDivElement) {
     // calculate ratio between result div and lens
-    const cx = zoomDivElement.offsetWidth / lensElement.offsetWidth;
-    const cy = zoomDivElement.offsetHeight / lensElement.offsetHeight;
+    const widthRatio = zoomDivElement.offsetWidth / lensElement.offsetWidth;
+    const heightRatio = zoomDivElement.offsetHeight / lensElement.offsetHeight;
     // Set background properties for the result div
     zoomDivElement.style.backgroundImage = "url('" + img.src + "')";
-    zoomDivElement.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-    // Remove previous EventListeners, important for mode change
+    zoomDivElement.style.backgroundSize = (img.width * widthRatio) + "px " + (img.height * heightRatio) + "px";
 
-    lensElement.removeEventListener("mousemove", (e) => {
-      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
-        zoomLayerElement,
-        zoomDivElement);
-    });
-    zoomLayerElement.removeEventListener("mousemove", (e) => {
-      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
-        zoomLayerElement,
-        zoomDivElement);
-    });
+    // Function to handle mouse move events
+    const handleMouseMove = (e: MouseEvent) => {
+      this.imageZoomOnMousemove(e, widthRatio, heightRatio, img, lensElement, lensSize, zoomLayerElement, zoomDivElement);
+    };
+    // Remove previous EventListeners, important for mode change
+    lensElement.removeEventListener("mousemove", handleMouseMove);
+    zoomLayerElement.removeEventListener("mousemove", handleMouseMove);
 
     // Execute a function when someone moves the cursor over the image or the lens
-    lensElement.addEventListener("mousemove", (e) => {
-      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
-        zoomLayerElement,
-        zoomDivElement);
-    });
-    zoomLayerElement.addEventListener("mousemove", (e) => {
-      this.imageZoomOnMousemove(e, cx, cy, img, lensElement, lensSize,
-        zoomLayerElement,
-        zoomDivElement);
-    });
+    lensElement.addEventListener("mousemove", handleMouseMove)
+    zoomLayerElement.addEventListener("mousemove", handleMouseMove)
   }
 
   // event listener function for image zoom using divs
@@ -247,15 +242,11 @@ export class ImageDisplayService {
     if (x > img.width - lensElement.offsetWidth) {
       x = img.width - lensElement.offsetWidth;
     }
-    if (x < 0) {
-      x = 0;
-    }
+    x = Math.max(x, 0)
     if (y > img.height - lensElement.offsetHeight) {
       y = img.height - lensElement.offsetHeight;
     }
-    if (y < 0) {
-      y = 0;
-    }
+    y = Math.max(y, 0)
 
     // Set the position of the lens:
     lensElement.style.left = x + "px";
@@ -271,10 +262,8 @@ export class ImageDisplayService {
     let zoomDivY = centerY - 125;
 
     // apply constraints on position: not less than 0 and not more than image height and width
-    zoomDivX = Math.max(0, zoomDivX);
-    zoomDivX = Math.min(zoomDivX, img.width - 250);
-    zoomDivY = Math.max(0, zoomDivY);
-    zoomDivY = Math.min(zoomDivY, img.height - 250);
+    zoomDivX = Math.min(Math.max(zoomDivX, 0), img.width - 250);
+    zoomDivY = Math.min(Math.max(zoomDivY, 0), img.height - 250);
 
     zoomDivElement.style.left = zoomDivX + "px";
     zoomDivElement.style.top = zoomDivY + "px";
@@ -310,12 +299,12 @@ export class Rect {
   }
 
   contains(p: Point): boolean {
-    if (this.topLeft.x <= p.x && p.x <= this.bottomRight.x) {
-      if (this.topLeft.y <= p.y && p.y <= this.bottomRight.y) {
-        return true
-      }
-    }
-    return false
+    return (
+      p.x >= this.topLeft.x &&
+      p.x <= this.bottomRight.x &&
+      p.y >= this.topLeft.y &&
+      p.y <= this.bottomRight.y
+    );
   }
 
 }
