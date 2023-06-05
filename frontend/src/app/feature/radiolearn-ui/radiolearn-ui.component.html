@@ -3,10 +3,40 @@
 <div id="outer" *ngIf="!isMobile">
   <div id="inner_fixed" [ngStyle]="{'margin-bottom' : inputEnabled ? '-27px' : '1px'}">
     <mat-toolbar class="toolbar" color="primary">
-      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
-        <mat-icon>arrow_back_ios</mat-icon>
-        RadioLearn
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+
       </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon [ngStyle]="{'color':'#383838'}">content_paste</mat-icon>
+          <span>Dokumentationsmodus</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon [ngStyle]="{'color':'#383838'}">aod</mat-icon>
+          <span>Diagnosemodus</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon [ngStyle]="{'color':'#383838'}">crop_free</mat-icon>
+          <span>Annotationsmodus</span>
+        </button>
+        <button mat-menu-item (click)="feedbackModal()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">feedback</mat-icon>
+          <span>Feedback</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon [ngStyle]="{'color':'#383838'}">settings</mat-icon>
+          <span>Einstellungen</span>
+        </button>
+        <button mat-menu-item (click)="back()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">arrow_back</mat-icon>
+          <span>Hauptmenü</span>
+        </button>
+      </mat-menu>
+<!--      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>-->
+<!--        <mat-icon>arrow_back_ios</mat-icon>-->
+<!--        RadioLearn-->
+<!--      </button>-->
       <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0, 25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
@@ -41,10 +71,10 @@
               (click)="nextMaterial()">
         <mat-icon>navigate_next</mat-icon>
       </button>
-      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"
-              (click)="feedbackModal()">
-        <mat-icon>feedback</mat-icon>
-      </button>
+<!--      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"-->
+<!--              (click)="feedbackModal()">-->
+<!--        <mat-icon>feedback</mat-icon>-->
+<!--      </button>-->
 
     </mat-toolbar>
 
