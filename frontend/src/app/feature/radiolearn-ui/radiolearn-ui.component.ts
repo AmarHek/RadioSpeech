@@ -24,6 +24,7 @@ import {
   RadiolearnService
 } from "@app/core";
 import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
+import {SettingsDialogComponent} from "@app/shared/settings-dialog/settings-dialog.component";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -370,6 +371,10 @@ export class RadiolearnUiComponent implements OnInit {
   makeNormal() {
     this.dataParser.makeNormal(this.categories);
     this.materialChanged()
+  }
+
+  openSettingsMenu(){
+    this.dialog.open(SettingsDialogComponent)
   }
 
   // EVALUATION / DATA COLLECTION

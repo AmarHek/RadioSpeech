@@ -40,6 +40,7 @@ import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.componen
 import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
 import { RadiolearnOptionsShallowComponent } from './radiolearn-options-shallow/radiolearn-options-shallow.component';
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
+import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.co
     AddScanDialogComponent,
     ChangeRoleDialogComponent,
     RadiolearnOptionsShallowComponent,
-    AnnotationPopupComponent
+    AnnotationPopupComponent,
+    SettingsDialogComponent
   ],
     imports: [
         CommonModule,

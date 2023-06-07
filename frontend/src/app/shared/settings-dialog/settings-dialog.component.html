@@ -1,0 +1,31 @@
+<div mat-dialog-title>
+  <h3>
+    Einstellungen
+  </h3>
+</div>
+
+<mat-dialog-content>
+  <div style="width: 600px; height: 300px">
+
+
+    <h4 style="font-size: 18px"><b>Farbschema</b></h4>
+    <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" [(ngModel)]="color_mode">
+      <mat-button-toggle value="standard">Standard</mat-button-toggle>
+      <mat-button-toggle value="deuteranopie">Deuteranopie</mat-button-toggle>
+    </mat-button-toggle-group>
+
+  <div [ngClass]="{'stripe-standard': color_mode === 'standard', 'stripe-colorblind': color_mode !== 'standard'}">
+    </div>
+    <h4 style="font-size: 18px; margin-top: 30px"><b>Sprache</b></h4>
+    <mat-button-toggle-group name="language" [(ngModel)]="language">
+      <mat-button-toggle value="german">Deutsch</mat-button-toggle>
+      <mat-button-toggle value="english">Englisch</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions style="float: right">
+  <button mat-raised-button color="primary" (click)="save_settings()">Speichern</button>
+  <button mat-raised-button color="warn" (click)="close_dialog()">Abbrechen</button>
+</mat-dialog-actions>
