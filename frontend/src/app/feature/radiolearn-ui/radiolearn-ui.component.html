@@ -28,15 +28,10 @@
           <mat-icon [ngStyle]="{'color':'#383838'}">settings</mat-icon>
           <span>Einstellungen</span>
         </button>
-        <button mat-menu-item (click)="back()">
-          <mat-icon [ngStyle]="{'color':'#383838'}">arrow_back</mat-icon>
-          <span>Hauptmenü</span>
-        </button>
       </mat-menu>
-<!--      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>-->
-<!--        <mat-icon>arrow_back_ios</mat-icon>-->
-<!--        RadioLearn-->
-<!--      </button>-->
+      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
+        RadioLearn
+      </button>
       <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0, 25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
