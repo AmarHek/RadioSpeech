@@ -6,6 +6,12 @@ import {Injectable} from '@angular/core';
 
 export class SettingsService {
 
+  /**
+   * This object represents all available settings.
+   * The ID attributes are used to get or set specific settings.
+   * The valid_values sub-object contains all valid settings as string values.
+   * The first value in the valid_values array will be used as a default value.
+   */
   Settings = {
     ColorTheme: {
       ID: "setting_color_theme",
