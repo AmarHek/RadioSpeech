@@ -10,7 +10,7 @@ export class SettingsService {
     ColorTheme: {
       ID: "setting_color_theme",
       valid_values: {
-        regular: "regular",
+        standard: "standard",
         colorblind: "colorblind"
       }
     },
@@ -31,7 +31,7 @@ export class SettingsService {
    * @param setting_id ID of setting for which value should be retrieved, as defined in the Settings Object of
    * this service.
    */
-  getSetting(setting_id: string) {
+  getSetting(setting_id: string) : string {
     const value = localStorage.getItem(setting_id);
     if (value == null) {
       return this.getDefaultValueForSetting(setting_id)
@@ -44,13 +44,13 @@ export class SettingsService {
    * a setting.
    * @param setting_id
    */
-  getDefaultValueForSetting(setting_id: string) {
+  getDefaultValueForSetting(setting_id: string) : string {
     for (const setting in this.Settings) {
       if (this.Settings[setting].ID === setting_id) {
-        return Object.values(this.Settings[setting].valid_values)[0]
+        return <string>Object.values(this.Settings[setting].valid_values)[0]
       }
     }
-    return null
+    return ""
   }
 
   // saves setting of certain ID to local storage
