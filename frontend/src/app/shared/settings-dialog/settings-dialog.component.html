@@ -11,7 +11,7 @@
     <h4 style="font-size: 18px"><b>Farbschema</b></h4>
     <mat-button-toggle-group name="favoriteColor" aria-label="Favorite Color" [(ngModel)]="color_mode">
       <mat-button-toggle value="standard">Standard</mat-button-toggle>
-      <mat-button-toggle value="deuteranopie">Deuteranopie</mat-button-toggle>
+      <mat-button-toggle value="colorblind">Deuteranopie</mat-button-toggle>
     </mat-button-toggle-group>
 
   <div [ngClass]="{'stripe-standard': color_mode === 'standard', 'stripe-colorblind': color_mode !== 'standard'}">
