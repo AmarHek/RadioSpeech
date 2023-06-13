@@ -28,7 +28,7 @@ export class SettingsDialogComponent implements OnInit {
   save_settings() {
     this.settingsService.setSetting(this.settingsService.Settings.ColorTheme.ID, this.color_mode)
     this.settingsService.setSetting(this.settingsService.Settings.Language.ID, this.language)
-    this.close_dialog()
+    window.location.reload()
   }
 
   close_dialog() {
