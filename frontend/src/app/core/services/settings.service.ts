@@ -37,7 +37,7 @@ export class SettingsService {
    * @param setting_id ID of setting for which value should be retrieved, as defined in the Settings Object of
    * this service.
    */
-  getSetting(setting_id: string) : string {
+  getSetting(setting_id: string): string {
     const value = localStorage.getItem(setting_id);
     if (value == null) {
       return this.getDefaultValueForSetting(setting_id)
@@ -50,7 +50,7 @@ export class SettingsService {
    * a setting.
    * @param setting_id
    */
-  getDefaultValueForSetting(setting_id: string) : string {
+  getDefaultValueForSetting(setting_id: string): string {
     for (const setting in this.Settings) {
       if (this.Settings[setting].ID === setting_id) {
         return <string>Object.values(this.Settings[setting].valid_values)[0]
@@ -59,10 +59,33 @@ export class SettingsService {
     return ""
   }
 
-  // saves setting of certain ID to local storage
-  // todo check if value is valid
-  setSetting(setting_id: string, new_value) {
-    localStorage.setItem(setting_id, new_value)
+  /**
+   * Saves setting of certain ID to local storage.
+   * @param setting_id ID of the setting to be set.
+   * @param new_value The new value of the setting.
+   */
+  setSetting(setting_id: string, new_value: string) {
+    // Check if the value is valid for this setting
+    if (this.isValueValidForSetting(setting_id, new_value)) {
+      localStorage.setItem(setting_id, new_value);
+      console.log(`Set value "${new_value}" for setting "${setting_id}"`);
+    } else {
+      console.error(`Invalid value "${new_value}" for setting "${setting_id}"`);
+    }
   }
 
+  /**
+   * Checks if a value is valid for a setting.
+   * @param setting_id ID of the setting.
+   * @param value Value to be checked.
+   * @returns True if the value is valid, false otherwise.
+   */
+  isValueValidForSetting(setting_id: string, value: string): boolean {
+    for (const setting in this.Settings) {
+      if (this.Settings[setting].ID === setting_id) {
+        return Object.values(this.Settings[setting].valid_values).includes(value);
+      }
+    }
+    return false;
+  }
 }
