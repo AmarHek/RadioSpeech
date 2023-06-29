@@ -48,7 +48,6 @@ export class DeepLearningDialogComponent implements OnInit {
       <body>
         <div>
           <canvas id="chartCanvas"></canvas>
-          <button id="toggleButton">Toggle Layout</button>
         </div>
         <script>
           // Prepare chart data

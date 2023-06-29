@@ -17,17 +17,30 @@
 </style>
 
 
-<div id="upload-dialog">
-  <h1 style="margin-bottom: 10px">Diagnoseunterstützung</h1>
-  <select #dropdown value="Modus auswählen">
-    <option value="Klassifikation">Klassifikation</option>
-    <option value="Detektion">Detektion</option>
-    <option value="Segmentierung" disabled style="background-color: lightgrey;">Segmentierung</option>
-  </select>
-  <label for="Ausfüllen">
-    <input type="checkbox" id="Ausfüllen" value="Automatisches Ausfüllen" > Automatisches Ausfüllen
-  </label>
-  <input type="file" #fileInput style="margin-bottom: 10px">
-  <button (click)="uploadFile()" style="margin-right: 10px">Bestätigen</button>
-  <button (click)="abort()">Abbrechen</button>
+<div id="upload-dialog" style="width: 300px; padding: 20px; background-color: #f1f1f1; border: 1px solid #ccc; border-radius: 5px; font-family: Arial, sans-serif;">
+  <h2 style="margin-bottom: 10px; text-align: center; color: #333; font-size: 25px;">Diagnoseunterstützung</h2>
+
+  <div style="margin-bottom: 15px;">
+    <label for="dropdown"  style="margin-right: 10px; color: #666;">Methodik:</label>
+    <select id="dropdown" #dropdown name="dropdown" style="width: 150px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; background-color: #fff;">
+      <option value="Klassifikation">Klassifikation</option>
+      <option value="Detektion">Detektion</option>
+      <option value="Segmentierung" disabled style="background-color: lightgrey;">Segmentierung</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="Ausfüllen" style="color: #666;">
+      <input type="checkbox" id="Ausfüllen" value="Automatisches Ausfüllen" style="margin-right: 5px;"> Automatisches Ausfüllen
+    </label>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <input type="file" #fileInput id="fileInput" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box;">
+  </div>
+
+  <div style="text-align: right;">
+    <button (click)="uploadFile()" style="padding: 8px 15px; margin-right: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 3px; cursor: pointer;">Bestätigen</button>
+    <button (click)="abort()" style="padding: 8px 15px; background-color: #ccc; color: #333; border: none; border-radius: 3px; cursor: pointer;">Abbrechen</button>
+  </div>
 </div>
