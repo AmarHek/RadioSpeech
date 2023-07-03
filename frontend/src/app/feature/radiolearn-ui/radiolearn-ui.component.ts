@@ -120,7 +120,7 @@ export class RadiolearnUiComponent implements OnInit {
 
     // data collection
     this.uuid = getUUID();
-    if (this.SAVE_EVALUATION_DATA) {
+    if (this.SAVE_EVALUATION_DATA){
       this.timestamp = Date.now();
     }
   }
@@ -145,7 +145,7 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  initFields(material) {
+  initFields(material){
     this.material = material;
     // Template to be worked on
     this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
@@ -174,7 +174,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.imageDisplayStudentChild.clearData()
   }
 
-  initSurvey() {
+  initSurvey(){
     this.timestamp = Date.now();
     const surveyStatus = getSurveyStatus();
     if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
@@ -302,7 +302,7 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
-    if (this.drawMode) {
+    if (this.drawMode){
       this.imageDisplayStudentChild.checkBoxes()
       return
     }
@@ -373,7 +373,7 @@ export class RadiolearnUiComponent implements OnInit {
     this.materialChanged()
   }
 
-  openSettingsMenu() {
+  openSettingsMenu(){
     this.dialog.open(SettingsDialogComponent)
   }
 
@@ -382,34 +382,18 @@ export class RadiolearnUiComponent implements OnInit {
     if (!this.SAVE_EVALUATION_DATA) return
 
     const duration = Date.now() - this.timestamp;
-
-    if (this.drawMode) {
-      this.backendCaller.addRadiolearnDataDraw(
-        this.uuid,
-        this.material._id,
-        this.template,
-        this.ogTemplate,
-        this.workMode,
-        this.timestamp,
-        duration,
-        getResetCounter()
-      ).subscribe(res => {
-        console.log(res.message);
-      });
-    } else {
-      this.backendCaller.addRadiolearnDataRegular(
-        this.uuid,
-        this.material._id,
-        this.template,
-        this.ogTemplate,
-        this.workMode,
-        this.timestamp,
-        duration,
-        getResetCounter()
-      ).subscribe(res => {
-        console.log(res.message);
-      });
-    }
+    this.backendCaller.addRadiolearnDataRegular(
+      this.uuid,
+      this.material._id,
+      this.template,
+      this.ogTemplate,
+      this.workMode,
+      this.timestamp,
+      duration,
+      getResetCounter()
+    ).subscribe(res => {
+      console.log(res.message);
+    });
   }
 
   openSurveyDialog(): void {
