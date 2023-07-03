@@ -64,7 +64,7 @@ export class RadiolearnUiComponent implements OnInit {
   anyComments = false;
 
   // evaluation
-  SAVE_EVALUATION_DATA = false
+  SAVE_EVALUATION_DATA = true
   timestamp: number;
   sawFeedback = false;
   showSurveyEveryNMaterials = 3;
@@ -382,7 +382,7 @@ export class RadiolearnUiComponent implements OnInit {
     if (!this.SAVE_EVALUATION_DATA) return
 
     const duration = Date.now() - this.timestamp;
-    this.backendCaller.addUsageData(
+    this.backendCaller.addRadiolearnDataRegular(
       this.uuid,
       this.material._id,
       this.template,

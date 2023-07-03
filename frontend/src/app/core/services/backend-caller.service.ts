@@ -91,11 +91,11 @@ export class BackendCallerService {
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  addUsageData(UUID: string, materialID: string, template: Template, ogTemplate: Template,
-               mode: string, timestamp: number, duration: number, resetCounter: number): Observable<{ success: boolean; message: string }> {
+  addRadiolearnDataRegular(UUID: string, materialID: string, template: Template, ogTemplate: Template,
+                           mode: string, timestamp: number, duration: number, resetCounter: number): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      this.usageUrl + "add/",{UUID, materialID, template,
+      this.usageUrl + "addRadiolearnRegular/",{UUID, materialID, template,
         ogTemplate, mode, timestamp, duration, resetCounter}
     );
   }
