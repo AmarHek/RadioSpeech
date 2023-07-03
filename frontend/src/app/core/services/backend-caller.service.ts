@@ -99,6 +99,14 @@ export class BackendCallerService {
         ogTemplate, mode, timestamp, duration, resetCounter}
     );
   }
+  addRadiolearnDataDraw(UUID: string, materialID: string, template: Template, ogTemplate: Template,
+                           mode: string, timestamp: number, duration: number, resetCounter: number): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      this.usageUrl + "addRadiolearnDraw/",{UUID, materialID, template,
+        ogTemplate, mode, timestamp, duration, resetCounter}
+    );
+  }
 
   addDoctorReport(template: Template, timestampStart: number,
                   duration: number, imageID: string, layoutID: number,
