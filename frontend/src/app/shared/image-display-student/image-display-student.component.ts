@@ -271,6 +271,10 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.imageZoom();
   }
 
+  getStudentBoxes(){
+    return this.annotationsStudent;
+  }
+
   checkBoxes() {
     this.toggleBoxes()
     this.drawBoxesStudent(true)

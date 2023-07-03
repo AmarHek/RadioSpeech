@@ -303,6 +303,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   checkForErrors() {
     if (this.drawMode){
+      this.submit();
       this.imageDisplayStudentChild.checkBoxes()
       return
     }
@@ -381,16 +382,25 @@ export class RadiolearnUiComponent implements OnInit {
   submit() {
     if (!this.SAVE_EVALUATION_DATA) return
 
+    let workMode = this.workMode
+    let boxes = null
+
+    if (this.drawMode) {
+      workMode = "draw"
+      boxes = this.imageDisplayStudentChild.getStudentBoxes()
+    }
+
     const duration = Date.now() - this.timestamp;
-    this.backendCaller.addUsageData(
+    this.backendCaller.addRadiolearnData(
       this.uuid,
       this.material._id,
       this.template,
       this.ogTemplate,
-      this.workMode,
+      workMode,
       this.timestamp,
       duration,
-      getResetCounter()
+      getResetCounter(),
+      boxes
     ).subscribe(res => {
       console.log(res.message);
     });
