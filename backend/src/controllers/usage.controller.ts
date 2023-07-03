@@ -33,7 +33,7 @@ export function saveDoctorReport(req: any, res: Response) {
     })
 }
 
-export function saveRadiolearnDataRegular(req: any, res: Response) {
+export function saveUsageData(req: any, res: Response) {
 
     console.log("----------------------received material id: " + req.body.materialID)
     const usageData: UsageData = {
