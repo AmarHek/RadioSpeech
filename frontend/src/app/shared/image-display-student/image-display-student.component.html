@@ -1,30 +1,30 @@
-<div class="main" [ngStyle]="{'padding' : isMobile ? 'unset': '10px 0 0 10px'}">
-  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width.px': currentWidth + 20, 'margin': drawMode ? '0 auto' : '0'}">
+<div class="main">
+  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width': drawMode ? '50%' : '100%'}" style="padding-right: 10px">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
                          [ngClass]="{'imgButtonWarn':
-                        (this.displayBoxes && this.annotations.main.length > 0
-                         && this.currentMode !== 'main'),
-                         'mat-button-toggle-checked': this.currentMode === 'main'}"
-                         (click)="this.changeMode('main')">Frontalaufnahme
+                        (this.displayBoxesSolution && this.annotations.main.length > 0
+                         && this.currentImageType !== 'main'),
+                         'mat-button-toggle-checked': this.currentImageType === 'main'}"
+                         (click)="this.changeToImageType('main')">Frontalaufnahme
       </mat-button-toggle>
-      <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('lateral')"
+      <mat-button-toggle class="buttons imgButton" (click)="this.changeToImageType('lateral')"
                          value="Lateral"
                          [ngClass]="{'imgButtonWarn':
-                           (this.displayBoxes && this.annotations.lateral.length > 0
-                           && this.currentMode !== 'lateral'),
-                         'mat-button-toggle-checked': this.currentMode === 'lateral'}"
+                           (this.displayBoxesSolution && this.annotations.lateral.length > 0
+                           && this.currentImageType !== 'lateral'),
+                         'mat-button-toggle-checked': this.currentImageType === 'lateral'}"
                          [disabled]="this.scans.lateralScan === undefined"
                          [ngStyle]="{'pointer-events': (this.scans.lateralScan === undefined) ? 'none' : 'auto'}">
         Lateralaufnahme
       </mat-button-toggle>
-      <mat-button-toggle class="buttons imgButton" (click)="this.changeMode('pre')"
+      <mat-button-toggle class="buttons imgButton" (click)="this.changeToImageType('pre')"
                          value="Vor"
                          [ngClass]="{'imgButtonWarn':
-                        (this.displayBoxes && this.annotations.pre.length > 0
-                         && this.currentMode !== 'pre'),
-                         'mat-button-toggle-checked': this.currentMode === 'pre'}"
+                        (this.displayBoxesSolution && this.annotations.pre.length > 0
+                         && this.currentImageType !== 'pre'),
+                         'mat-button-toggle-checked': this.currentImageType === 'pre'}"
                          [disabled]="this.scans.preScan === undefined"
                          [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
         Voraufnahme
@@ -43,7 +43,7 @@
       </button>
     </div>
   </div>
-  <div id="imgOuter" [ngStyle]="{'padding' : isMobile ? 'unset' : '10px 0 0 10px'}">
+  <div id="imgOuter" style="display: flex; justify-content: center;">
     <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
@@ -54,7 +54,7 @@
               width="{{currentWidth+50}}" height="{{currentHeight+50}}"></canvas>
       <canvas #labelLayer class="canvas level1" id="labelCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
-      <canvas *ngIf="displayBoxes" #hoverLayer class="canvas level4" id="hoverCanvas"
+      <canvas *ngIf="displayBoxesSolution" #hoverLayer class="canvas level4" id="hoverCanvas"
               width="{{currentWidth}}" height="{{currentHeight}}"></canvas>
       <canvas *ngIf="true" #editLayer class="canvas level3" id="editCanvas"
               (mouseup)="saveTempBox()"
@@ -74,27 +74,27 @@
       <mat-button-toggle class="mobileButton"
                          value="Frontal"
                          [ngClass]="{'imgButtonWarn':
-                        (this.displayBoxes && this.annotations.main.length > 0
-                         && this.currentMode !== 'main'),
-                         'mat-button-toggle-checked': this.currentMode === 'main'}"
-                         (click)="this.changeMode('main')">Frontal
+                        (this.displayBoxesSolution && this.annotations.main.length > 0
+                         && this.currentImageType !== 'main'),
+                         'mat-button-toggle-checked': this.currentImageType === 'main'}"
+                         (click)="this.changeToImageType('main')">Frontal
       </mat-button-toggle>
-      <mat-button-toggle class="mobileButton" (click)="this.changeMode('lateral')"
+      <mat-button-toggle class="mobileButton" (click)="this.changeToImageType('lateral')"
                          value="Lateral"
                          [ngClass]="{'imgButtonWarn':
-                           (this.displayBoxes && this.annotations.lateral.length > 0
-                           && this.currentMode !== 'lateral'),
-                         'mat-button-toggle-checked': this.currentMode === 'lateral'}"
+                           (this.displayBoxesSolution && this.annotations.lateral.length > 0
+                           && this.currentImageType !== 'lateral'),
+                         'mat-button-toggle-checked': this.currentImageType === 'lateral'}"
                          [disabled]="this.scans.lateralScan === undefined"
                          [ngStyle]="{'pointer-events': (this.scans.lateralScan === undefined) ? 'none' : 'auto'}">
         Lateral
       </mat-button-toggle>
-      <mat-button-toggle class="mobileButton" (click)="this.changeMode('pre')"
+      <mat-button-toggle class="mobileButton" (click)="this.changeToImageType('pre')"
                          value="Vor"
                          [ngClass]="{'imgButtonWarn':
-                        (this.displayBoxes && this.annotations.pre.length > 0
-                         && this.currentMode !== 'pre'),
-                         'mat-button-toggle-checked': this.currentMode === 'pre'}"
+                        (this.displayBoxesSolution && this.annotations.pre.length > 0
+                         && this.currentImageType !== 'pre'),
+                         'mat-button-toggle-checked': this.currentImageType === 'pre'}"
                          [disabled]="this.scans.preScan === undefined"
                          [ngStyle]="{'pointer-events': (this.scans.preScan === undefined) ? 'none' : 'auto'}">
         Voraufnahme
