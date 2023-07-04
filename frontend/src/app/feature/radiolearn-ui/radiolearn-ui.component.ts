@@ -253,6 +253,7 @@ export class RadiolearnUiComponent implements OnInit {
 
   nextMaterialStudent() {
     console.info("getting next material for " + this.uuid)
+    this.imageDisplayStudentChild.displayBoxesSolution = false
     this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe({
       next: (res) => {
         if (res.material === null) {

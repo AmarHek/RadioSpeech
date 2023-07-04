@@ -53,7 +53,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   imageUrl = environment.images;
 
   // state variables for current display
-  currentMode: string;
+  currentImageType: string; // either "main", "lateral" or "pre"
   currentScanUrl: string;
   currentScaleFactor = 1.0;
   currentWidth: number;
@@ -61,7 +61,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   currentTooltip = "";
 
   // state variables for canvas layers
-  displayBoxes: boolean = false;
+  displayBoxesSolution: boolean = false;
   enableZoom: boolean;
 
   startX = 0;
@@ -108,7 +108,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   @ViewChild("hoverLayer", {static: false}) set hoverLayer(layer: ElementRef) {
-    if (this.displayBoxes) {
+    if (this.displayBoxesSolution) {
       this.hoverLayerElement = layer.nativeElement;
       this.hoverContext = this.hoverLayerElement.getContext("2d");
       this.setHoverListeners();
@@ -158,8 +158,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       lateral: [],
       pre: []
     };
-    this.displayBoxes = false;
-    // this.enableEdit = false;
+    this.displayBoxesSolution = false;
+    this.enableEdit = this.drawMode;
 
     this.initMain();
   }
@@ -175,13 +175,14 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if(this.drawContext === undefined) return
     if (changes.scans !== undefined) {
-      this.changeMode("main");
+      this.changeToImageType("main");
     }
   }
 
   initMain() {
-    this.currentMode = "main";
+    this.currentImageType = "main";
     this.setCurrentImage();
     this.setCurrentDimensions();
   }
@@ -230,12 +231,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   setCurrentImage() {
-    const filename = this.scans[this.currentMode + "Scan"].filename;
+    const filename = this.scans[this.currentImageType + "Scan"].filename;
     this.currentScanUrl = this.imageUrl + this.scans.id + "/" + filename;
   }
 
   deleteLastTempBox() {
-    this.tempBoxes[this.currentMode].pop()
+    this.tempBoxes[this.currentImageType].pop()
     this.drawTempBoxes()
   }
 
@@ -247,24 +248,25 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     });
   }
 
-  changeMode(mode: string) {
+  // Change between "main", "pre", "lateral" etc.
+  changeToImageType(newImageType: string) {
     this.clearCanvas()
-    this.currentMode = mode;
+    this.currentImageType = newImageType;
     this.enableZoom = false;
     this.setCurrentImage();
     this.setCurrentDimensions();
-    if (this.displayBoxes) {
+    if (this.displayBoxesSolution) {
       setTimeout(() => this.drawBoxesSolution(), 5);
       this.setHoverListeners();
     }
-    setTimeout(() => this.drawBoxesStudent(this.displayBoxes), 5)
+    setTimeout(() => this.drawBoxesStudent(this.displayBoxesSolution), 5)
   }
 
 
   toggleBoxes() {
-    this.displayBoxes = !this.displayBoxes;
+    this.displayBoxesSolution = !this.displayBoxesSolution;
     this.clearCanvas();
-    if (this.displayBoxes) {
+    if (this.displayBoxesSolution) {
       this.drawBoxesSolution();
     }
   }
@@ -294,7 +296,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
    * with respect to the student boxes (red / yellow / green).
    */
   drawBoxesSolution() {
-    const annotations = this.annotations[this.currentMode];
+    console.log("drawing solution")
+    const annotations = this.annotations[this.currentImageType];
     for (const annotation of annotations) {
       let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
       for (const bbox of annotation.boxes) {
@@ -316,7 +319,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
    * correctness with respect to the solution boxes (red / yellow / green).
    */
   drawBoxesStudent(feedbackColor = false) {
-    const annotations = this.annotationsStudent[this.currentMode];
+    const annotations = this.annotationsStudent[this.currentImageType];
     for (const annotation of annotations) {
       let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
       for (const bbox of annotation.boxes) {
@@ -339,7 +342,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   feedbackColorForSolutionBox(solutionAnnotation, solutionBox) {
     let feedbackColors = ["rgba(255,0,0, 0.3)", "rgba(255,196,0,0.3)", "rgb(0,189,0, 0.3)"]
     let maxIoU = 0
-    this.annotationsStudent[this.currentMode].forEach(studentAnnotation => {
+    this.annotationsStudent[this.currentImageType].forEach(studentAnnotation => {
       if (!studentAnnotation.label.includes(solutionAnnotation.label)) {
         return
       }
@@ -381,7 +384,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   feedbackColorForStudentBox(drawnAnnotation, drawnBox) {
     let feedbackColors = ["rgba(255,0,0,1)", "rgba(255,196,0,1)", "rgb(0,189,13)"]
     let maxIoU = 0
-    this.annotations[this.currentMode].forEach(correctAnnotation => {
+    this.annotations[this.currentImageType].forEach(correctAnnotation => {
       if (!correctAnnotation.label.includes(drawnAnnotation.label)) {
         return
       }
@@ -421,7 +424,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
    */
   setHoverListeners() {
     if (this.isMobile) return
-    const annotations = this.annotations[this.currentMode];
+    const annotations = this.annotations[this.currentImageType];
     const rect = this.hoverLayerElement.getBoundingClientRect();
 
     const parent = this;
@@ -455,7 +458,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   showAllComments() {
-    for (const annotation of this.annotations[this.currentMode]) {
+    for (const annotation of this.annotations[this.currentImageType]) {
       if (annotation.comment?.length > 0) {
         this.showToolTip(annotation.labelLeft * this.currentScaleFactor, annotation.labelTop * this.currentScaleFactor + 30, annotation.comment)
       }
@@ -481,7 +484,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   saveTempBox() {
     if (this.width === 0 && this.height === 0) return
     this.fixNegativeCoordinates();
-    this.tempBoxes[this.currentMode].push({
+    this.tempBoxes[this.currentImageType].push({
       left: this.startX / this.currentScaleFactor,
       top: this.startY / this.currentScaleFactor,
       height: this.height / this.currentScaleFactor,
@@ -511,12 +514,12 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
 
   saveNewAnnotation(label) {
     // gather all necessary data
-    const boxes = this.tempBoxes[this.currentMode];
+    const boxes = this.tempBoxes[this.currentImageType];
     if (boxes.length == 0) return;
     const labelCoordinates = this.getLabelCoordinates(boxes);
 
     // push new annotation to array of proper mode
-    this.annotationsStudent[this.currentMode].push({
+    this.annotationsStudent[this.currentImageType].push({
       boxes,
       label: label,
       comment: "",
@@ -525,14 +528,14 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     });
 
     // update state and empty buffer variables
-    this.tempBoxes[this.currentMode] = [];
+    this.tempBoxes[this.currentImageType] = [];
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
     this.drawBoxesStudent()
   }
 
   drawTempBoxes() {
     this.tempContext.clearRect(0, 0, this.tempLayerElement.width, this.tempLayerElement.height);
-    const boxes = this.tempBoxes[this.currentMode];
+    const boxes = this.tempBoxes[this.currentImageType];
     for (const box of boxes) {
       this.imageDisplayService.drawRect(this.tempContext, box, this.currentScaleFactor, "blue");
     }
