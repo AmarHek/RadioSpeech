@@ -12,12 +12,12 @@ export class ImageDisplayService {
   maxImageWidth = 890;
 
   boxLineWidth = 5
-  displayBoxColor =
-    ["rgb(255, 51, 51)","rgb(33,186,33)","rgb(51, 51, 255)","rgb(255, 51, 255)",
-      "rgb(21,155,155)", "rgb(204,2,2)","rgb(223,103,3)","rgb(56,172,0)",
-      "rgb(102, 51, 255)","rgb(255, 51, 102)", "rgb(51, 102, 255)","rgb(4,130,0)",
-      "rgb(255, 102, 76)","rgb(0,181,99)","rgb(148,76,255)","rgb(255, 51, 76)",
-      "rgb(76, 51, 255)","rgb(223,171,0)","rgb(255, 76, 51)","rgb(51, 76, 255)"]
+  displayBoxColor_regular =
+    ["rgb(255, 51, 51)", "rgb(33,186,33)", "rgb(51, 51, 255)", "rgb(255, 51, 255)",
+      "rgb(21,155,155)", "rgb(204,2,2)", "rgb(223,103,3)", "rgb(56,172,0)",
+      "rgb(102, 51, 255)", "rgb(255, 51, 102)", "rgb(51, 102, 255)", "rgb(4,130,0)",
+      "rgb(255, 102, 76)", "rgb(0,181,99)", "rgb(148,76,255)", "rgb(255, 51, 76)",
+      "rgb(76, 51, 255)", "rgb(223,171,0)", "rgb(255, 76, 51)", "rgb(51, 76, 255)"]
 
   displayBoxColor_colorblind = ["rgba(170,110,40,1)", "rgba(128,128,0,1)", "rgba(0,128, 128,1)",
     "rgba(230,25,75,1)", "rgba(245,130,48,1)", "rgba(255,255,25,1)", "rgba(210,245,60,1)", "rgba(60,180,75,1)",
@@ -25,16 +25,24 @@ export class ImageDisplayService {
     "rgba(250,190,212,1)", "rgba(255,215,180,1)", "rgba(255,250,200,1)", "rgba(170,255,195,1)", "rgba(128,0,0,1)",
     "rgba(220,190,255,1)", "rgba(0,0,0,1)"];
 
+  displayBoxColor = this.displayBoxColor_regular
+
   constructor(private displayService: DisplayService, private settingsService: SettingsService) {
     this.displayService.isMobile.subscribe((isMobile) => {
       if (isMobile) {
         this.maxImageWidth = window.innerWidth - 2;
       }
     });
-    let colorSetting = settingsService.getSetting(settingsService.Settings.ColorTheme.ID)
-    if (colorSetting == settingsService.Settings.ColorTheme.valid_values.colorblind){
-      this.displayBoxColor = this.displayBoxColor_colorblind
-    }
+
+    this.settingsService.getSettingObservable().subscribe((setting) => {
+      if (setting.setting_id == settingsService.Settings.ColorTheme.ID) {
+        if (setting.new_value == settingsService.Settings.ColorTheme.valid_values.colorblind) {
+          this.displayBoxColor = this.displayBoxColor_colorblind
+        } else {
+          this.displayBoxColor = this.displayBoxColor_regular
+        }
+      }
+    })
   }
 
   computeCanvasDimensions(imgUrl: string, callback) {

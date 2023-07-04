@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +29,14 @@ export class SettingsService {
       }
     }
   }
+  private settingChanged = new Subject<{setting_id: string, new_value: string}>();
 
   constructor() {
   }
 
+  getSettingObservable() {
+    return this.settingChanged.asObservable();
+  }
   /**
    * Returns the value of the setting according to the given setting ID.
    * @param setting_id ID of setting for which value should be retrieved, as defined in the Settings Object of
@@ -69,6 +74,7 @@ export class SettingsService {
     if (this.isValueValidForSetting(setting_id, new_value)) {
       localStorage.setItem(setting_id, new_value);
       console.log(`Set value "${new_value}" for setting "${setting_id}"`);
+      this.settingChanged.next({setting_id: setting_id, new_value: new_value});
     } else {
       console.error(`Invalid value "${new_value}" for setting "${setting_id}"`);
     }

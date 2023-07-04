@@ -15,6 +15,7 @@ import {fromEvent} from "rxjs";
 import {switchMap, takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import {AnnotationPopupComponent} from "@app/shared/annotation-popup/annotation-popup.component";
+import {SettingsService} from "@app/core/services/settings.service";
 
 const BOX_LINE_WIDTH = 5;
 
@@ -136,7 +137,14 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
               private renderer: Renderer2,
               private dialog: MatDialog,
               private dialogService: MatDialogService,
-              private imageDisplayService: ImageDisplayService) {
+              private imageDisplayService: ImageDisplayService,
+              private settingsService: SettingsService) {
+
+    this.settingsService.getSettingObservable().subscribe((setting) => {
+      if (setting.setting_id == settingsService.Settings.ColorTheme.ID){
+        this.drawBoxesStudent()
+      }
+    })
   }
 
   ngOnInit(): void {
