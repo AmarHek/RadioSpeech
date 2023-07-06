@@ -141,7 +141,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
               private settingsService: SettingsService) {
 
     this.settingsService.getSettingObservable().subscribe((setting) => {
-      if (setting.setting_id == settingsService.Settings.ColorTheme.ID){
+      if (setting.setting_id == settingsService.Settings.ColorTheme.ID) {
         this.drawBoxesStudent()
       }
     })
@@ -175,7 +175,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(this.drawContext === undefined) return
+    if (this.drawContext === undefined) return
     if (changes.scans !== undefined) {
       this.changeToImageType("main");
     }
@@ -281,7 +281,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.imageZoom();
   }
 
-  getStudentBoxes(){
+  getStudentBoxes() {
     return this.annotationsStudent;
   }
 
@@ -296,7 +296,19 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
    * with respect to the student boxes (red / yellow / green).
    */
   drawBoxesSolution() {
-    console.log("drawing solution")
+    if (!this.anyAnnotation()) {
+      //nothing to draw => display "Unauffälliger Röntgenthorax"
+      let color = "green"
+      let textAppendix = "✅"
+      if (this.anyStudentAnnotation()) {
+        // student mistakenly annotated something
+        color = "red"
+        textAppendix = "❌"
+      }
+      this.imageDisplayService.topCenterText(this.drawContext, this.currentScaleFactor, "Unauffälliger Röntgenthorax " + textAppendix, color);
+      return
+    }
+
     const annotations = this.annotations[this.currentImageType];
     for (const annotation of annotations) {
       let color = this.imageDisplayService.displayBoxColor[annotations.indexOf(annotation)]
@@ -310,6 +322,26 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
       this.imageDisplayService.addLabelToContext(this.labelContext, annotation, this.currentScaleFactor, color,
         annotation.boxes[0], annotations, this.drawMode);
     }
+  }
+
+  anyAnnotation(): boolean {
+    if (this.annotations["main"].length > 0) {
+      return true
+    }
+    if (this.annotations["lateral"].length > 0) {
+      return true
+    }
+    return this.annotations["pre"].length > 0;
+  }
+
+  anyStudentAnnotation(): boolean {
+    if (this.annotationsStudent["main"].length > 0) {
+      return true
+    }
+    if (this.annotationsStudent["lateral"].length > 0) {
+      return true
+    }
+    return this.annotationsStudent["pre"].length > 0;
   }
 
   /**

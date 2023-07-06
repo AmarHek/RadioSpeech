@@ -104,6 +104,25 @@ export class ImageDisplayService {
     }
   }
 
+  topCenterText(context: CanvasRenderingContext2D, scaleFactor: number, text, color) {
+    context.font = "bold 15pt Arial";
+    context.lineWidth = 0.3;
+
+    const metrics = context.measureText(text);
+    const textWidth = metrics.width;
+
+    const x = (context.canvas.width - textWidth) / 2;
+    const y = 30;
+
+    const padding = 8;
+
+    context.fillStyle = "white";
+    context.fillRect(x - padding, y - metrics.actualBoundingBoxAscent - padding, textWidth + (2 * padding), metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + (2 * padding));
+
+    context.fillStyle = color;
+    context.fillText(text, x, y);
+  }
+
   addLabelToContext(context: CanvasRenderingContext2D, annotation: Annotation, scaleFactor: number, color: string,
                     firstBox: BoundingBox, annotations, drawMode: boolean = false) {
     context.font = "bold 15pt Arial";
