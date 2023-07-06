@@ -53,7 +53,7 @@
               matTooltip="Restliche Kategorien als unauffällig markieren"
               (click)="makeNormal()">Rest normal
       </button>
-      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod"
+      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod && !(drawMode && sawFeedback)"
               (click)="checkForErrors()">
         <mat-icon>checklist_rtl</mat-icon>
         Überprüfen
