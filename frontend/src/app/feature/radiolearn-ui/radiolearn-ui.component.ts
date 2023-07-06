@@ -64,10 +64,13 @@ export class RadiolearnUiComponent implements OnInit {
   anyComments = false;
 
   // evaluation
-  SAVE_EVALUATION_DATA = false
+  SAVE_EVALUATION_DATA = true
   timestamp: number;
   sawFeedback = false;
+
+  SHOW_SURVEY = false
   showSurveyEveryNMaterials = 3;
+
   private uuid = "undefined";
 
   private user: User;
@@ -136,7 +139,9 @@ export class RadiolearnUiComponent implements OnInit {
             return;
           }
           this.initFields(res.material)
-          if (this.SAVE_EVALUATION_DATA) this.initSurvey()
+          if (this.SHOW_SURVEY) {
+            this.initSurvey()
+          }
         },
         error: (err) => {
           window.alert(err.message);
@@ -303,7 +308,8 @@ export class RadiolearnUiComponent implements OnInit {
   }
 
   checkForErrors() {
-    if (this.drawMode){
+    if (this.drawMode && !this.sawFeedback){
+      this.sawFeedback = true
       this.submit();
       this.imageDisplayStudentChild.checkBoxes()
       return
