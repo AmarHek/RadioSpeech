@@ -57,12 +57,10 @@
 </div>
 
 
-
-
-<div class="header" *ngIf="isMobile" style="padding: 20px">
+<div class="header" *ngIf="isMobile">
   <div class="row">
     <h2>Willkommen zu RadioLearn</h2>
-    <div class="text-container" style="margin: 0px">
+    <div class="text-container" style="margin: 0">
       Sie haben die Auswahl zwischen zwei Lernmodi. In beiden Modi sehen Sie Röntgenaufnahmen und
       sollen den zugehörigen Fragebogen ausfüllen.
 
@@ -71,20 +69,18 @@
   </div>
 </div>
 <div class="container body" *ngIf="isMobile">
-  <div class="row" >
-    <div class="col-sm" style="">
-      <div class="button-container">
-        <button class="custom-button" mat-raised-button color="primary" (click)="shallowMode()">Diagnosemodus</button>
-      </div>
-      <div class="text-container" style="margin: unset; padding-top: 5px">
-        Dies ist ein <b>vereinfachter Modus</b>, in dem Sie nur kurze Diagnosen durchführen sollen.
+  <div class="row">
+    <div class="button-container">
+      <button class="custom-button" mat-raised-button color="primary" (click)="shallowMode()">Diagnosemodus</button>
+    </div>
+    <div class="text-container" style="margin: unset; padding-top: 5px">
+      Dies ist ein <b>vereinfachter Modus</b>, in dem Sie nur kurze Diagnosen durchführen sollen.
 
-        Dieser Modus ist für kürzere Sessions zwischendurch gedacht und am besten
-        für die Nutzung am <b>Handy</b> geeignet.
-      </div>
-      <div class="img-container">
-        <img src="{{assetsUrl}}DiagnoseMobile.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
-      </div>
+      Dieser Modus ist für kürzere Sessions zwischendurch gedacht und am besten
+      für die Nutzung am <b>Handy</b> geeignet.
+    </div>
+    <div class="img-container">
+      <img src="{{assetsUrl}}DiagnoseMobile.png" width="100%" alt="Diagnosemodus" (click)="shallowMode()">
     </div>
   </div>
 </div>
