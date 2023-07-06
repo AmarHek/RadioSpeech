@@ -2,7 +2,6 @@
   overflow-y: auto;
   overflow-x: auto;
   height: 100%;
-  padding: 0 0 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -13,6 +12,9 @@
 
 #buttonsDiv {
   vertical-align: center;
+  display: flex;
+  column-gap: 50px;
+  justify-content: center;
 }
 
 .buttons {
@@ -46,11 +48,14 @@
 #imgOuter {
   position: relative;
   align-content: center;
-  padding: 10px 0 0 0px;
+  overflow: clip;
+  display: flex;
+  justify-content: center;
 }
 
 #imgInner {
   position: relative;
+  height: 100%;
 }
 
 .canvas {

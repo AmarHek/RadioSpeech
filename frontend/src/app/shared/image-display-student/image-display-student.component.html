@@ -1,5 +1,5 @@
 <div class="main">
-  <div id="buttonsDiv"  *ngIf="!isMobile" [ngStyle]="{'width': drawMode ? '50%' : '100%'}" style="padding-right: 10px">
+  <div id="buttonsDiv"  *ngIf="!isMobile">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
@@ -43,7 +43,7 @@
       </button>
     </div>
   </div>
-  <div id="imgOuter" style="display: flex; justify-content: center;">
+  <div id="imgOuter">
     <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
