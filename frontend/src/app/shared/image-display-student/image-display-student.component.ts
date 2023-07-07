@@ -179,6 +179,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     if (changes.scans !== undefined) {
       this.changeToImageType("main");
     }
+    this.hideToolTip()
   }
 
   initMain() {
