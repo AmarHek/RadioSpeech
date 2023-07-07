@@ -297,7 +297,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
    * with respect to the student boxes (red / yellow / green).
    */
   drawBoxesSolution() {
-    if (!this.anyAnnotation()) {
+    if (this.drawMode && !this.anyAnnotation()) {
       //nothing to draw => display "Unauffälliger Röntgenthorax"
       let color = "green"
       let textAppendix = "✅"
