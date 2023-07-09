@@ -68,8 +68,8 @@ export class RadiolearnUiComponent implements OnInit {
   timestamp: number;
   sawFeedback = false;
 
-  SHOW_SURVEY = false
-  showSurveyEveryNMaterials = 3;
+  SHOW_SURVEY = true
+  showSurveyEveryNMaterials = 10;
 
   private uuid = "undefined";
 
