@@ -17,6 +17,7 @@ import {
     VariableText
 } from "../models/template.model";
 import {trim2DArray, trimArray, isNumber} from "../util/util";
+import {ErrorType, RowError, RowErrorCollection} from "./errorFeedback";
 
 interface Row {
     "Gliederung": string;
@@ -38,8 +39,9 @@ interface Row {
 }
 
 const unwantedCharacters: RegExp[] = [new RegExp("\\\\[^n]")];
+const varInfoSeparator: string = "...";
 
-export function parseXLSToJson(binary_string: string, docKind: string): string | number {
+export function parseXLSToJson(binary_string: string, docKind: string): string | RowErrorCollection {
     // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
@@ -53,18 +55,17 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
 
     const parts: TopLevel[] = [];
 
+    let errorCollection = new RowErrorCollection();
     for (const row of rows) {
-        // check row for unwanted characters
-        if (rowContainsUnwantedCharacters(row)) {
-            console.log("Character error");
-            console.log(row);
-            return rows.indexOf(row) + 2;
+        let rowErrorTypes = getErrorTypesInRow(row, docKind === "shallowDoc")
+        // + 2 because zero index and header is skipped
+        let rowIndex = rows.indexOf(row) + 2;
+        for (let errorType of rowErrorTypes) {
+            errorCollection.addError(new RowError(rowIndex, errorType))
         }
-        if (rowContainsParsingError(row, docKind === "shallowDoc")) {
-            console.log("Rule error");
-            console.log(row);
-            return rows.indexOf(row) + 2;
-        }
+    }
+    if (errorCollection.errorList.length > 0) {
+        return errorCollection
     }
 
     // if everything is fine, we can parse
@@ -80,7 +81,7 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
         } else if (row["Gliederung"] !== undefined) {
             const relevantRows: Row[] = [];
             relevantRows.push(row);
-            let j = i +1;
+            let j = i + 1;
             for (; j < rows.length; j++) {
                 const subRow = rows[j];
                 //Add rows below start of "Gliederung" until new Gliederung or Block / Enumeration starts
@@ -120,70 +121,66 @@ function rowContainsUnwantedCharacters(row: Row): boolean {
     return false;
 }
 
-function rowContainsParsingError(row: Row, shallow: boolean): boolean {
+function getErrorTypesInRow(row: Row, shallow: boolean): ErrorType[] {
+    let foundErrorTypes = []
+    if (rowContainsUnwantedCharacters(row)) {
+        foundErrorTypes.push(ErrorType.INVALID_CHARACTER)
+    }
     // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)
     if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung"
         && row["Befund"] === undefined) {
-        console.log("Error 1");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_STRUCTURE)
     }
 
     // Wenn optional markiert, dann darf Gliederung nicht leer sein
     if (row["Optional"] !== undefined && row["Gliederung"] === undefined) {
-        console.log("Error 2");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_STRUCTURE)
     }
 
     // Wenn Befund angegeben ist, dürfen Synonyme nicht leer sein
     if ((row["Befund"] !== undefined && row["Synonyme"] === undefined)) {
-        console.log("Error 3");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_SYNONYMS)
     }
 
     // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler, aber nur wenn nicht Aufzählung oder Block
     if ((row["Synonyme"] !== undefined || row["Normal"] !== undefined || row["Default"] !== undefined
-        || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
-        || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined
+            || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
+            || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined
         && (row["Gliederung"] !== "Aufzählung" && row["Gliederung"] !== "Block")) {
-        console.log("Error 4");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_ATTRIBUTES)
     }
 
     // Wenn Befund oder Beurteilung Text angegeben ist, darf Befund nicht leer sein, außer bei Block und Aufzählung
     if ((row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung")
         && (row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined)
         && row["Befund"] === undefined) {
-        console.log("Error 5");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_REPORT_TEXT)
     }
 
     // Wenn Variable angegeben, dann muss Variable-ID angegeben sein und umgekehrt
     if ((row["Variable-ID"] !== undefined && row["Variable-ID"] === undefined)
         || row["Variable-ID"] === undefined && row["Variable-Typ"] !== undefined) {
-        console.log("Error 6");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_OR_ID)
     }
 
     // Wenn Eigenschaften von Variable angegeben, dürfen Variable-ID und -Typ nicht leer sein
     if ((row["Variable-Synonyme"] !== undefined || row["Variable-Default"] !== undefined ||
-        row["Variable-Info"] !== undefined)
+            row["Variable-Info"] !== undefined)
         && (row["Variable-ID"] === undefined || row["Variable-Typ"] == undefined)) {
         console.log("Error 7");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_ID_OR_TYPE)
     }
 
     // Wenn Variable-Typ Text, Zahl oder Datum, darf Variable-Info nicht leer sein
     if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] === "Zahl" || row["Variable-Typ"] === "Datum")
         && row["Variable-Info"] === undefined) {
-        console.log("Error 8");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_ID_OR_TYPE)
     }
 
     // Wenn Variable-Info vorhanden sind, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
     if (row["Variable-Info"] !== undefined
         && (!row["Variable-Info"].includes("...") && !row["Variable-Info"].includes("\u2026"))) {
-        console.log("Error 9");
-        return true;
+        foundErrorTypes.push(ErrorType.MISSING_ELLIPSE_FOR_VARIABLE)
     }
 
     // Die folgenden Bedingungen nur für shallow Templates
@@ -191,18 +188,15 @@ function rowContainsParsingError(row: Row, shallow: boolean): boolean {
         // Radio Buttons sind nicht erlaubt
         if (row["Choice-Gruppe-ID"] !== undefined) {
             console.log("Error 10");
-            return true;
+            foundErrorTypes.push(ErrorType.INVALID_RADIO_BUTTON)
         }
 
         // Es darf keine Text-, Zahl- oder Datums-Variablen geben
         if (["Text", "Zahl", "Datum"].includes(row["Variable-Typ"])) {
-            console.log("Error 11");
-            return true;
+            foundErrorTypes.push(ErrorType.INVALID_VARIABLE_TYPE)
         }
     }
-
-    // sonst alles gut
-    return false;
+    return foundErrorTypes
 }
 
 
@@ -329,7 +323,7 @@ function extractSelectableVariables(rows: Row[]): Variable[] {
 
 function extractSelectableKeys(rows: Row[]): string[] {
     let keys: string[] = [];
-    if (rows[0]["Synonyme"] !== undefined){
+    if (rows[0]["Synonyme"] !== undefined) {
         keys = trimArray(rows[0]["Synonyme"].split(";"))
     }
     return keys;
@@ -425,7 +419,7 @@ function extractVariableNumber(row: Row, variable: VariableCommon): VariableNumb
     parsed.value = 0;
     if (row["Variable-Default"] !== undefined) {
         const varDefault = row["Variable-Default"].trim();
-        if(isNumber(varDefault)) {
+        if (isNumber(varDefault)) {
             parsed.value = Number(varDefault);
         } else {
             console.log(varDefault + "is not a number");
@@ -449,7 +443,7 @@ function extractVariableDate(row: Row, variable: VariableCommon): VariableDate {
 function extractVariableKeys(row: Row): string[][] {
     const valueString = row["Variable-Typ"].trim()
     const excludeVariableTypes = ["Zahl", "Zahlbruch", "Text"]
-    if (excludeVariableTypes.includes(valueString)){
+    if (excludeVariableTypes.includes(valueString)) {
         return new Array<string[]>()
     }
     const keys = new Array<string[]>();
@@ -480,19 +474,18 @@ function extractTextBefore(varInfo: string): string {
     if (varInfo === undefined) {
         return "";
     }
-    varInfo = varInfo.replace("\u2026", "...");
-    return varInfo.split("...")[0];
+    varInfo = varInfo.replace("\u2026", varInfoSeparator);
+    return varInfo.split(varInfoSeparator)[0];
 }
 
 function extractTextAfter(varInfo: string): string {
-    if (varInfo === undefined)
-    {
+    if (varInfo === undefined) {
         return "";
     }
-    varInfo = varInfo.replace("\u2026", "...");
-    if (varInfo.split("...").length < 2) {
+    varInfo = varInfo.replace("\u2026", varInfoSeparator);
+    if (varInfo.split(varInfoSeparator).length < 2) {
         return "";
     }
-    return varInfo.split("...")[1];
+    return varInfo.split(varInfoSeparator)[1];
 }
 

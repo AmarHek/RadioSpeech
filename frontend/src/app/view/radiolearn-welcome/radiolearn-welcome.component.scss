@@ -1,5 +1,5 @@
 .header {
-  padding: 50px 25%;
+  padding: 20px;
   align-items: center;
   text-align: center;
   background-color: #673ab7;
@@ -10,13 +10,20 @@
   padding: 20px;
 }
 
+.col-sm {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 .h3 {
   vertical-align: center;
 }
 
 .text-container {
-  text-align: justify;
+  text-align: initial;
+  word-wrap: break-word;
   margin-top: 20px;
+  padding: 0 30px;
 }
 
 .img-container {

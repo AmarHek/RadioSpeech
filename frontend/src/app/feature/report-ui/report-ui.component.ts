@@ -1,29 +1,28 @@
-import {ENTER} from "@angular/cdk/keycodes";
-import {Location} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
-import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
-
+import {Category, Role, Template, User} from "@app/models";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
+import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
+import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
+import {DomSanitizer} from "@angular/platform-browser";
+import {HttpClient} from "@angular/common/http";
+import {Location} from "@angular/common";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Observable} from "rxjs";
+import {ReportOptionsComponent} from "@app/shared";
 import {
   AuthenticationService,
   BackendCallerService,
   DataParserService,
   InputParserService
 } from "@app/core";
-import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
-import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {Category, ChipColors, InputChip, Role, Template, TopLevel, User} from "@app/models";
-import {ReportOptionsComponent} from "@app/shared";
-import {Observable} from "rxjs";
+import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 
-interface Layout{
+interface Layout {
   id: number;
   displayName: string;
 }
 
-export interface DialogData{
+export interface DialogData {
   id: string;
 }
 
@@ -36,7 +35,8 @@ export class DialogOverviewExampleDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) {
+  }
 }
 
 @Component({
@@ -48,41 +48,32 @@ export class DialogOverviewExampleDialogComponent {
 export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
-
-  @ViewChild(ReportOptionsComponent)
-  private optionsComponent: ReportOptionsComponent;
+  @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
+  @ViewChild(ReportOptionsComponent) private optionsComponent: ReportOptionsComponent;
 
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
     return this.sessionData.length <= this.savedSessionData;
   }
 
-  selectable = true;
-  removable = true;
-  separatorKeysCodes: number[] = [ENTER];
-  selectedCat = "undefined";
-  selectedSelectableID = "";
-
-  chips: InputChip[] = [];
-
+  // Constants
   layouts: Layout[] = [
     {id: 0, displayName: "Standard Layout"},
-    {id: 1, displayName: "Kategorien Aufklappen"}
+    {id: 1, displayName: "Kategorien aufklappen"}
   ];
 
+  // UI related
+  selectedCat = "undefined";
+  selectedSelectableID = "";
   currentLayout = this.layouts[1];
 
-  parts: TopLevel[];
-  defaultParts: TopLevel[];
-
-  input = "";
-  mergedInput = "";
-
+  // Model
   categories: Category[];
+  defaultCategories: Category[];
   report = "";
   judgement = "";
 
-  //data collection
+  //Data collection
   timestampStart: number;
   imageID: string;
   mode: string;
@@ -92,6 +83,14 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   savedSessionData = 0;
 
   private user: User;
+
+  get isTester() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
@@ -103,86 +102,52 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
               private sanitizer: DomSanitizer,
               public dialog: MatDialog,
               private authenticationService: AuthenticationService
-              ) {
+  ) {
   }
 
-  get isTester() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
-  }
-
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
-  }
-
-  get pseudonym() {
-    const extendedUsername = "user-" + this.user.username;
-    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
-      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
-  }
-
-  get dataFilename() {
-    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
-  }
-
-  // auxiliary function to get parsed json (mostly because of missing excel parser in node)
-  get downJson() {
-    const jsonData = JSON.stringify(this.sessionData);
-    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
-    return this.sanitizer.bypassSecurityTrustUrl(uri);
-  }
-
+  // INITIALIZATION
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
-    // data collection
-  }
-
-  // HANDLE CHIPS
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    this.reset(false, false);
-    this.onInput();
-  }
-
-  onSelected(cat: string){
-    this.chipInput.nativeElement.focus()
-    this.selectedCat = cat;
-    this.selectedSelectableID = "";
-  }
-
-  layoutChanged(newLayout: Layout){
-    this.selectedCat = this.categories[0].name;
-    this.currentLayout = newLayout;
   }
 
   // gets parts from node server via id in url
   getData() {
     this.route.paramMap.subscribe(ps => {
-      if (ps.has("id")) {
-        const templateID = ps.get("id");
-        this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
-          if (template === undefined) {
-            window.alert("Dieses Dictionary existiert nicht! " +
-              "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
-          } else {
-            this.template = template;
-            this.parts = template.parts;
-            this.defaultParts = JSON.parse(JSON.stringify(this.parts));
-            this.categories = this.dataParser.extractCategories(this.parts);
-            this.selectedCat = this.categories[0].name;
-            this.inputParser.init(this.defaultParts);
-            this.chipInput.nativeElement.focus()
-          }
-        });
-      }
+      if (!ps.has("id")) return;
+      const templateID = ps.get("id");
+      this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
+        if (template === undefined) {
+          window.alert("Dieses Dictionary existiert nicht! " +
+            "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
+          return;
+        }
+        // prepare data
+        this.template = template;
+        this.categories = this.dataParser.extractCategories(template.parts);
+        this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
+        this.inputParser.init(this.categories);
+        // prepare UI
+        this.selectedCat = this.categories[0].name;
+      });
     });
   }
 
+  // UI / GENERAL
+  layoutChanged(newLayout: Layout) {
+    this.selectedCat = this.categories[0].name;
+    this.currentLayout = newLayout;
+  }
+
+  // DATA
+  onCategorySelected(cat: string) {
+    this.inputMaterialHandlerComponent.focusInput()
+    this.selectedCat = cat;
+    this.selectedSelectableID = "";
+  }
+
   updateText(): void {
-    [this.report, this.judgement] = this.dataParser.makeText(this.parts);
+    [this.report, this.judgement] = this.dataParser.makeText(this.template.parts, this.categories);
   }
 
   resetText(): void {
@@ -190,104 +155,60 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     this.judgement = "";
   }
 
-  onChipClick(chip: InputChip){
-    this.selectedCat = chip.id.split(" ")[0];
-    this.selectedSelectableID = chip.id;
+  // Chip was selected, navigate to corresponding category and highlight selected element
+  chipSelectedEvent([selectedCat, selectedSelectableID]) {
+    this.selectedCat = selectedCat;
+    this.selectedSelectableID = selectedSelectableID;
   }
 
-  onClick() {
-    this.chipInput.nativeElement.focus()
-    this.selectedSelectableID = "";
-    setTimeout(() => this.updateText(), 1);
-    setTimeout(() => this.modelChange(), 5);
-  }
-
-  //If useChips is set to false, inputs are handled exactly like before the implementations of chips
-  onInput() {
-    //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips);
-    //remember old chips to prevent change of category if no new correct chip has been found
-    const oldChips = JSON.stringify(this.chips);
-    // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.inputParser.autocorrect(this.input), this.chips, false);
-    //Parse this input, assign the values and generate the new chips accordingly
-    this.inputParser.parseInput(this.mergedInput);
-    this.assignValues();
-    this.generateChips();
-    //navigate to category of last chip
-    if(this.chips.length > 0 && JSON.stringify(this.chips) !== oldChips) {
-      this.selectedCat = this.chips[this.chips.length-1].id.split(" ")[0];
-    }
-    // Remove everything that was detected as a clickable or variable from the input
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    //Add a red chip containing unrecognized text if there is any
-    if (this.mergedInput.trim() !== "") {
-      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
-    }
-    //Clear the text input
-    this.input = "";
-    this.chipInput.nativeElement.value = "";
-
+  inputEvent() {
     setTimeout(() => this.updateText(), 5);
   }
 
-  generateChips(){
+  // resets categories, and re-initializes the options rows, with the new array reference
+  resetMaterial() {
+    this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
+    setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
+  }
+
+  // Used to reset the material if part of the input is removed (since assign values can't
+  // remove values from a material, a clean reset is necessary, before onInput is called,
+  // and the new values are parsed from the now shorter input and then applied to the material)
+  resetMaterialKeepInput() {
+    this.resetMaterial()
+    this.selectedSelectableID = ""
+    setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
+  }
+
+  resetAll() {
+    this.resetMaterial()
+    setTimeout(() => this.resetText(), 5);
+    setTimeout(() => this.inputMaterialHandlerComponent.reset())
+  }
+
+  // Values in the material changed, update chips and text to reflect the changes
+  materialChanged() {
+    setTimeout(() => this.updateText(), 5);
+    setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
+  }
+
+  // Any element in the options component was clicked, reset focus to input line,
+  // reset element highlighting, update text and input chips
+  updateFromOptionsEvent() {
+    this.inputMaterialHandlerComponent.focusInput()
     this.selectedSelectableID = "";
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
+    this.materialChanged()
   }
 
-  // TODO Auf Dataparser auslagern
-  // Assigns all found keywords in inputParser to this.parts
-  assignValues() {
-    this.dataParser.assignValuesFromInputParser(this.categories, this.inputParser.foundClickables,
-      this.inputParser.foundVariables);
-  }
-
+  // make material normal, update text and input chips
   makeNormal() {
-    this.dataParser.makeNormal(this.parts);
-    this.updateText();
-    this.onInput();
+    this.dataParser.makeNormal(this.categories);
+    this.materialChanged()
   }
 
-  modelChange(){
-    this.chips = this.chipHelper.generateChipsForParts(this.defaultParts, this.parts);
-  }
-
-  // for when the radiologist finishes: empty parts and input
-  // Will not be necessary once the input is streamed
-  next() {
-    this.reset();
-    this.input = "";
-  }
-
-  resetDialog() {
-    const reset = confirm("Formular zurücksetzen=");
-    if (!reset) {
-      return;
-    } else {
-      this.reset();
-    }
-  }
-
-  reset(resetSelectedCat: boolean = true, resetChips = true) {
-    this.parts = JSON.parse(JSON.stringify(this.defaultParts));
-    this.categories = this.dataParser.extractCategories(this.parts);
-    if (resetChips) {
-      this.chips = [];
-    }
-    this.input = "";
-    if(resetSelectedCat){
-      this.selectedCat = this.categories[0].name;
-    }
-    if (resetSelectedCat) {
-      this.selectedSelectableID = "";
-    }
-    setTimeout(() => this.optionsComponent.initRows(), 1);
-    setTimeout(() => this.resetText(), 1);
-  }
-
-  submit(){
+  // Todo, overhaul data-collection
+  // DATA COLLECTION BELOW
+  submit() {
     const pseudonym = this.pseudonym;
     const duration = Date.now() - this.timestampStart;
 
@@ -314,13 +235,30 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
     ).subscribe(res => console.log(res.message));
   }
 
-  startReportClicked(){
+  get pseudonym() {
+    const extendedUsername = "user-" + this.user.username;
+    return extendedUsername.split("").map(v => v.charCodeAt(0)).reduce(
+      (a, v) => a + ((a << 7) + (a << 3)) ^ v).toString(16);
+  }
+
+  get dataFilename() {
+    return this.user.username + "_" + (new Date().toLocaleString()) + ".json";
+  }
+
+  get downJson() {
+    // auxiliary function to get parsed json (mostly because of missing Excel parser in node)
+    const jsonData = JSON.stringify(this.sessionData);
+    const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(jsonData);
+    return this.sanitizer.bypassSecurityTrustUrl(uri);
+  }
+
+  startReportClicked() {
     this.openDialog();
-    this.reset();
+    this.resetAll();
     this.updateText();
   }
 
-  submitReportClicked(){
+  submitReportClicked() {
     this.timerStarted = false;
     this.submit();
   }
@@ -344,5 +282,4 @@ export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
   updateSessionData(event) {
     console.log(event);
   }
-
 }

@@ -4,15 +4,17 @@ import {Request, Response} from "express";
 import {parseXLSToJson} from "../middleware";
 import * as Path from "path";
 import {generateUniqueFilename} from "../util/util";
+import {RowErrorCollection} from "../middleware/errorFeedback";
 
 
 export function createExcelTemplate(req: any, res: Response) {
     const rawData = fs.readFileSync(req.file.path);
     const result = parseXLSToJson(rawData.toString("binary"), req.body.kind);
-    if (typeof(result) === "number") {
-        console.log("Parsing error in line " + result);
+    if (typeof(result) === "object") {
+        let errorCollection = result as RowErrorCollection
+        console.log("Errors found: " + errorCollection.getCompactReport());
         res.status(500).send({
-            message: "Fehler in Zeile " + result
+            message: errorCollection.getVerboseReport()
         });
     } else {
         // save parsed data to json

@@ -1,0 +1,18 @@
+<div mat-dialog-title>
+  <h3>
+    <ng-container>
+      {{this.title}}
+    </ng-container>
+  </h3>
+</div>
+
+<mat-dialog-content>
+  <div style="display: flex; flex-direction: column;">
+    <button *ngFor="let option of this.options" mat-raised-button color="primary"
+            style="margin: 5px;" (click)="optionSelected(option)">{{option}}</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions style="float: right">
+  <button mat-raised-button (click)="close()">Abbrechen</button>
+</mat-dialog-actions>

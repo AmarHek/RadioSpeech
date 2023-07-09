@@ -4,6 +4,7 @@ import * as M from "@app/models/templateModel";
 import {KeyVariable, KeyClickable} from "@app/models";
 import { levenshtein, getAllIndexOf, getNextHighestValue, getClickableKeywords,
          getSplitters, parseValue, getVariableKeywords} from "@app/helpers";
+import {Category} from "@app/models/templateModel";
 
 @Injectable({
   providedIn: "root"
@@ -21,8 +22,8 @@ export class InputParserService {
   constructor() {
   }
 
-  init(rootEl: M.TopLevel[]): void {
-    this.initializeKeywords(rootEl);
+  init(categories: Category[]): void {
+    this.initializeKeywords(categories);
     this.initializeDictionary();
   }
 
@@ -270,7 +271,7 @@ continue;
     }
   }
 
-  private initializeKeywords(rootEl: M.TopLevel[]): void {
+  private initializeKeywords(categories: M.Category[]): void {
     let clickKeys: KeyClickable[] = [];
     clickKeys.push({
       name: "Rest normal",
@@ -279,12 +280,10 @@ continue;
       position: -1,
       nVariables: 0
     });
-    for (const el of rootEl) {
-      if (el.kind === "category") {
-        const tempSelectables: KeyClickable[] = getClickableKeywords(el.selectables, el.name);
-        clickKeys = clickKeys.concat(tempSelectables);
-        this.extractVariableKeywords(el.selectables, el.name);
-      }
+    for (const cat of categories) {
+      const tempSelectables: KeyClickable[] = getClickableKeywords(cat.selectables, cat.name);
+      clickKeys = clickKeys.concat(tempSelectables);
+      this.extractVariableKeywords(cat.selectables, cat.name);
     }
     this.clickableKeywords = clickKeys;
   }

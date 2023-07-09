@@ -1,6 +1,20 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {MatDialog} from "@angular/material/dialog";
+import * as M from "@app/models/templateModel";
 import {ActivatedRoute, Router} from "@angular/router";
+import {BoxLabel, Material, Role, Template, User} from "@app/models";
+import {CategoryError} from "@app/models/errorModel";
+import {ChipHelperService} from "@app/core/services/chip-helper.service";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
+import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
+import {MatDialog} from "@angular/material/dialog";
+import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
+import {
+  FeedbackDialogComponent,
+  ImageDisplayComponent,
+  ImageDisplayStudentComponent,
+  RadiolearnOptionsComponent,
+  StudentErrorsComponent
+} from "@app/shared";
 import {
   AuthenticationService,
   BackendCallerService,
@@ -9,21 +23,8 @@ import {
   MatDialogService,
   RadiolearnService
 } from "@app/core";
-import {BoxLabel, ChipColors, InputChip, Material, Role, User} from "@app/models";
-import {CategoryError} from "@app/models/errorModel";
-import {getResetCounter, getSurveyStatus, getUUID, increaseSurveyCounter} from "@app/helpers/localStorageHelper";
-
-import * as M from "@app/models/templateModel";
-import {
-  FeedbackDialogComponent,
-  ImageDisplayComponent,
-  ImageDisplayStudentComponent,
-  RadiolearnOptionsComponent,
-  StudentErrorsComponent
-} from "@app/shared";
-import {ChipHelperService} from "@app/core/services/chip-helper.service";
-import {DialogTemplateComponent} from "@app/feature/dialog-template/dialog-template.component";
-import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
+import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
+import {SettingsDialogComponent} from "@app/shared/settings-dialog/settings-dialog.component";
 
 @Component({
   selector: "app-radiolearn-ui",
@@ -35,26 +36,26 @@ export class RadiolearnUiComponent implements OnInit {
   @ViewChild(RadiolearnOptionsComponent) radiolearnOptionsChild: RadiolearnOptionsComponent;
   @ViewChild(ImageDisplayStudentComponent) imageDisplayStudentChild: ImageDisplayStudentComponent;
   @ViewChild(ImageDisplayComponent) imageDisplayChild: ImageDisplayComponent;
+  @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
+
 
   // data variables
   material: Material;
-  ogMaterial: Material;
-  deepCategories: M.Category[];
-  shallowCategories: M.Category[];
+  template: Template = undefined;
+  ogTemplate: Template;
+  emptyTemplate: Template;
+  categories: M.Category[];
+  defaultCategories: M.Category[];
+
   boxLabels: BoxLabel[];
   errors: CategoryError[];
 
   // variables for options/category UI
-  selectedCatList = ["undefined"];
   selectedCat: string;
-
-  // inputParser variables
-  inputEnabled: boolean;
-  chips: InputChip[] = [];
-  input = "";
-  mergedInput = "";
   selectedSelectableID = "";
+  inputEnabled: boolean = false;
+  drawMode: boolean = true;
 
   // state variables
   userMode: boolean;
@@ -62,13 +63,29 @@ export class RadiolearnUiComponent implements OnInit {
   isMobile = false;
   anyComments = false;
 
-  // usageData variables
+  // evaluation
+  SAVE_EVALUATION_DATA = true
   timestamp: number;
   sawFeedback = false;
+
+  SHOW_SURVEY = false
   showSurveyEveryNMaterials = 3;
+
   private uuid = "undefined";
 
   private user: User;
+
+  get isMod() {
+    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
+  get deepMode() {
+    return (this.workMode === "deep");
+  }
 
   constructor(private backendCaller: BackendCallerService,
               private route: ActivatedRoute,
@@ -83,18 +100,8 @@ export class RadiolearnUiComponent implements OnInit {
               private dialogService: MatDialogService) {
   }
 
-  get isMod() {
-    return this.user && (this.user.role === Role.Admin || this.user.role === Role.Moderator);
-  }
 
-  get isAdmin() {
-    return this.user && this.user.role === Role.Admin;
-  }
-
-  get deepMode() {
-    return (this.workMode === "deep");
-  }
-
+  // INITIALIZATION
   ngOnInit() {
     // Mod or regular user?
     this.authenticationService.user.subscribe(
@@ -106,7 +113,6 @@ export class RadiolearnUiComponent implements OnInit {
     // mobile check
     this.displayService.isMobile.subscribe(res => {
       this.isMobile = res;
-      console.log("isMobile: " + this.isMobile);
     });
 
     // get current mode
@@ -117,68 +123,83 @@ export class RadiolearnUiComponent implements OnInit {
 
     // data collection
     this.uuid = getUUID();
-    this.timestamp = Date.now();
+    if (this.SAVE_EVALUATION_DATA){
+      this.timestamp = Date.now();
+    }
   }
 
   async getData() {
     this.route.paramMap.subscribe(async (ps) => {
-      if (ps.has("id")) {
-        const matID = ps.get("id");
-        await this.backendCaller.getMaterialById(matID).subscribe(res => {
+      if (!ps.has("id")) return;
+      this.backendCaller.getMaterialById(ps.get("id")).subscribe({
+        next: (res) => {
           if (res.material === undefined) {
             window.alert("Der Eintrag mit dieser ID existiert nicht! " +
               "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
-          } else {
-            this.material = res.material;
-            this.ogMaterial = JSON.parse(JSON.stringify(res.material));
-            if (!this.isMod) {
-              this.material.deepDocTemplate = this.radiolearnService.resetTemplate(this.material.deepDocTemplate);
-              this.material.shallowDocTemplate = this.radiolearnService.resetTemplate(this.material.shallowDocTemplate);
-            }
-            this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-            this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-            if (this.workMode === "deep") {
-              this.inputParser.init(this.deepCategories);
-            } else {
-              this.inputParser.init(this.shallowCategories);
-            }
-            if (this.selectedCat === undefined) {
-              this.selectedCat = this.deepCategories[0].name;
-            }
-            this.selectedCatList = [this.selectedCat];
-            // Do this so radiolearn report-output-options don't break on route change
-            if (this.radiolearnOptionsChild !== undefined) {
-              this.radiolearnOptionsChild.categories = this.deepCategories;
-            }
-            this.getBoxLabels();
-            this.sawFeedback = false;
-
-            //check if there are any comments in the annotations, to enable the "view comment" button
-            this.anyComments = this.materialHasComments(this.material);
-            this.imageDisplayStudentChild.hideToolTip();
-            this.timestamp = Date.now();
-
-            const surveyStatus = getSurveyStatus();
-            if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0){
-              this.openSurveyDialog();
-            }
+            return;
           }
-        }, err => {
+          this.initFields(res.material)
+          if (this.SHOW_SURVEY) {
+            this.initSurvey()
+          }
+        },
+        error: (err) => {
           window.alert(err.message);
-        });
-      }
+        }
+      })
     });
+  }
+
+  initFields(material){
+    this.material = material;
+    // Template to be worked on
+    this.template = this.workMode === "deep" ? this.material.deepDocTemplate : this.material.shallowDocTemplate;
+    // Original Template to be compared against for error check
+    this.ogTemplate = JSON.parse(JSON.stringify(this.template));
+    // Empty Template to be compared against for chip generation
+    this.emptyTemplate = this.radiolearnService.resetTemplate(JSON.parse(JSON.stringify(this.template)));
+
+    if (!this.isMod) {
+      this.template = this.radiolearnService.resetTemplate(this.template);
+    }
+
+    this.categories = this.dataParser.extractCategories(this.template.parts);
+    this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
+    this.inputParser.init(this.categories);
+    this.selectedCat = this.categories[0].name;
+    // Do this so radiolearn report-output-options don't break on route change
+    if (this.radiolearnOptionsChild !== undefined) {
+      this.radiolearnOptionsChild.categories = this.categories;
+    }
+    this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
+    this.sawFeedback = false;
+
+    //check if there are any comments in the annotations, to enable the "view comment" button
+    this.anyComments = this.dataParser.materialHasComments(this.material);
+    this.imageDisplayStudentChild.clearData()
+  }
+
+  initSurvey(){
+    this.timestamp = Date.now();
+    const surveyStatus = getSurveyStatus();
+    if (surveyStatus > 0 && surveyStatus % this.showSurveyEveryNMaterials === 0) {
+      this.openSurveyDialog();
+    }
   }
 
   setWorkMode() {
     if (this.radiolearnService.workMode !== undefined) {
       // try service first: if coming from radiolearn welcome, radiolearnService.workMode should not be undefined
       this.workMode = this.radiolearnService.workMode;
-      // add to localStorage afterwards
+      this.drawMode = this.radiolearnService.drawMode;
+      // add to localStorage afterward
       localStorage.setItem("workMode", this.workMode);
+      localStorage.setItem("drawMode", JSON.stringify(this.drawMode))
     } else {
       // if here from reloading, try localStorage
       const workMode = localStorage.getItem("workMode");
+      const value = localStorage.getItem("drawMode");
+      this.drawMode = value ? JSON.parse(value) : false;
       if (workMode !== null) {
         this.workMode = workMode;
       } else {
@@ -188,90 +209,93 @@ export class RadiolearnUiComponent implements OnInit {
     }
   }
 
+  // UI / GENERAL
   switchInputMode() {
     this.inputEnabled = !this.inputEnabled;
-    this.input = "";
-    this.generateChips();
   }
 
-  updateFromVariable(selectable) {
-    setTimeout(() => this.updateFromVariableDelayed(selectable), 5);
-  }
-
-  //A variable was clicked, check if any variables of its parent now are active, if yes => set parent to active
-  updateFromVariableDelayed(selectable) {
-    let anyVarsActive = false;
-    selectable.variables.forEach(variable => {
-      if (variable.kind === "oc" && variable.value !== undefined) {
-        anyVarsActive = true;
-      }
-      if (variable.kind === "mc") {
-        variable.values.forEach(value => {
-          if (value[1]) {
-            anyVarsActive = true;
-          }
-        });
-      }
-    });
-    if (anyVarsActive) {
-      selectable.value = true;
-    }
-    this.generateChips();
-  }
-
-  updateFromParent(selectable) {
-    setTimeout(() => this.updateFromParentDelayed(selectable), 5);
-  }
-
-  updateFromOptions() {
-    setTimeout(() => this.generateChips(), 5);
-  }
-
-  //A parent object was selected, check if it is now unchecked, if yes, disable all its variables
-  updateFromParentDelayed(selectable) {
-    if (!selectable.value) {
-      selectable.variables.forEach(variable => {
-        if (variable.kind === "oc") {
-          variable.value = null;
-        } else if (variable.kind === "mc") {
-          variable.values.forEach(value => {
-            value[1] = false;
-          });
-        }
-      });
-    }
-    this.generateChips();
-  }
-
-  generateChips() {
-    this.selectedSelectableID = "";
-    if (this.workMode === "deep") {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.deepDocTemplate.parts,
-        this.material.deepDocTemplate.parts);
+  back() {
+    if (this.isMod) {
+      this.router.navigate(["radiolearn/list"]).then();
     } else {
-      this.chips = this.chipHelper.generateChipsForParts(this.ogMaterial.shallowDocTemplate.parts,
-        this.material.shallowDocTemplate.parts);
+      this.router.navigate(["/"]).then();
     }
-  }
-
-  openSurveyDialog(): void {
-    this.dialog.open(DialogTemplateComponent);
   }
 
   openNoMaterialsLeftDialog(): void {
     this.dialog.open(DialogNoMaterialsComponent);
   }
 
-  onSelect(event) {
-    this.selectedCat = event.options[0].value;
+  toggleUserMode() {
+    this.userMode = !this.userMode;
   }
 
-  getBoxLabels() {
-    this.boxLabels = this.radiolearnService.getBoxLabels(this.material.shallowDocTemplate.parts[0] as M.Category);
+  switchMode() {
+    this.workMode = this.workMode === "deep" ? "shallow" : "deep";
+    localStorage.setItem("workMode", this.workMode);
+    this.reset();
+    this.ngOnInit()
   }
 
-  makeNormal() {
-    this.dataParser.makeNormal(this.material.deepDocTemplate.parts);
+  // DATA
+  nextCategory(nextCat: string) {
+    this.selectedCat = nextCat;
+  }
+
+  onCategorySelected(cat: string) {
+    this.selectedCat = cat;
+  }
+
+  nextMaterial() {
+    if (this.userMode) {
+      this.nextMaterialStudent();
+    } else {
+      if (window.confirm("Nicht gespeicherte Daten gehen verloren. Trotzdem nächste Aufnahme laden?")) {
+        this.nextMaterialToAnnotate();
+      }
+    }
+  }
+
+  nextMaterialStudent() {
+    console.info("getting next material for " + this.uuid)
+    this.imageDisplayStudentChild.displayBoxesSolution = false
+    this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe({
+      next: (res) => {
+        if (res.material === null) {
+          this.openNoMaterialsLeftDialog();
+        } else {
+          // if (this.imageDisplayStudentChild.displayBoxes) {
+          //   this.imageDisplayStudentChild.toggleBoxes();
+          // }
+          this.sawFeedback = false;
+          increaseSurveyCounter();
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  nextMaterialToAnnotate() {
+    if (this.imageDisplayChild.displayBoxes) {
+      this.imageDisplayChild.toggleBoxes();
+    }
+    this.backendCaller.getRandom(false).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.material === null) {
+          window.alert("Keine weiteren Befunde verfügbar");
+        } else {
+          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
+        }
+      },
+      error: (err) => {
+        window.alert(err);
+        console.log(err);
+      }
+    })
   }
 
   save() {
@@ -283,68 +307,16 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  submit(){
-    let deepToSave = null;
-    let shallowToSave = null;
-    if(this.workMode == "deep"){
-      deepToSave = this.material.deepDocTemplate
-      this.ogMaterial.shallowDocTemplate = null
-    }
-    else {
-      shallowToSave = this.material.shallowDocTemplate
-      this.ogMaterial.deepDocTemplate = null
-    }
-
-    const duration = Date.now() - this.timestamp;
-    this.backendCaller.addUsageData(
-      this.uuid,
-      this.material._id,
-      deepToSave,
-      shallowToSave,
-      this.workMode,
-      this.timestamp,
-      duration,
-      this.ogMaterial,
-      getResetCounter()
-    ).subscribe(res => {
-      console.log(res.message);
-      });
-  }
-
-  toggleUserMode() {
-    this.userMode = !this.userMode;
-  }
-
-  switchMode() {
-    if (this.workMode === "deep") {
-      this.workMode = "shallow";
-    } else {
-      this.workMode = "deep";
-    }
-    localStorage.setItem("workMode", this.workMode);
-
-    this.reset();
-    this.initInputParser();
-  }
-
-  initInputParser() {
-    if (this.workMode === "deep") {
-      this.inputParser.init(this.deepCategories);
-    } else {
-      this.inputParser.init(this.shallowCategories);
-    }
-  }
-
   checkForErrors() {
-    if(!this.sawFeedback) {
+    if (this.drawMode && !this.sawFeedback){
+      this.sawFeedback = true
       this.submit();
-      if (this.workMode === "deep") {
-        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.deepDocTemplate,
-          this.material.deepDocTemplate);
-      } else {
-        this.errors = this.radiolearnService.compareTemplates(this.ogMaterial.shallowDocTemplate,
-          this.material.shallowDocTemplate);
-      }
+      this.imageDisplayStudentChild.checkBoxes()
+      return
+    }
+    if (!this.sawFeedback) {
+      this.submit();
+      this.errors = this.radiolearnService.compareTemplates(this.ogTemplate, this.template)
       this.imageDisplayStudentChild.toggleBoxes();
     }
 
@@ -363,48 +335,86 @@ export class RadiolearnUiComponent implements OnInit {
     });
   }
 
-  nextMaterial() {
-    if (this.userMode) {
-      this.nextMaterialStudent();
-    } else {
-      if (window.confirm("Nicht gespeicherte Daten gehen verloren. Trotzdem nächste Aufnahme laden?")) {
-        this.nextMaterialToAnnotate();
-      }
-    }
+  // Used to reset the material if part of the input is removed (since assign values can't
+  // remove values from a material, a clean reset is necessary, before onInput is called,
+  // and the new values are parsed from the now shorter input and then applied to the material)
+  resetMaterialKeepInput() {
+    this.resetMaterial()
+    this.selectedSelectableID = ""
+    setTimeout(() => this.inputMaterialHandlerComponent.onInput(), 5);
   }
 
-  nextMaterialStudent() {
-    this.backendCaller.getUnusedMaterial(this.uuid, this.workMode, getResetCounter()).subscribe(res => {
-      if (res.material === null) {
-        this.openNoMaterialsLeftDialog();
-      } else {
-        if(this.imageDisplayStudentChild.displayBoxes) {
-          this.imageDisplayStudentChild.toggleBoxes();
-        }
-        this.sawFeedback = false;
-        increaseSurveyCounter();
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
-      }
-    }, err => {
-      console.log(err);
+  resetMaterial() {
+    this.categories = JSON.parse(JSON.stringify(this.defaultCategories));
+  }
+
+  // Chip was selected, navigate to corresponding category and highlight selected element
+  chipSelectedEvent([selectedCat, selectedSelectableID]) {
+    this.selectedCat = selectedCat;
+    this.selectedSelectableID = selectedSelectableID;
+  }
+
+  reset(resetUI: boolean = true) {
+    if (resetUI) {
+      this.selectedCat = this.categories[0].name;
+      this.selectedSelectableID = "";
+    }
+    this.template = JSON.parse(JSON.stringify(this.emptyTemplate));
+    this.categories = this.dataParser.extractCategories((this.template.parts))
+  }
+
+  // Any element in the options component was clicked, reset focus to input line,
+  // reset element highlighting, update input chips
+  updateFromOptionsEvent() {
+    this.inputMaterialHandlerComponent.focusInput()
+    this.selectedSelectableID = "";
+    this.materialChanged()
+  }
+
+  // Vales in the material changed, update chips to reflect changes
+  materialChanged() {
+    setTimeout(() => this.inputMaterialHandlerComponent.generateChips(), 5);
+  }
+
+  makeNormal() {
+    this.dataParser.makeNormal(this.categories);
+    this.materialChanged()
+  }
+
+  openSettingsMenu(){
+    this.dialog.open(SettingsDialogComponent)
+  }
+
+  // EVALUATION / DATA COLLECTION
+  submit() {
+    if (!this.SAVE_EVALUATION_DATA) return
+
+    let workMode = this.workMode
+    let boxes = null
+
+    if (this.drawMode) {
+      workMode = "draw"
+      boxes = this.imageDisplayStudentChild.getStudentBoxes()
+    }
+
+    const duration = Date.now() - this.timestamp;
+    this.backendCaller.addRadiolearnData(
+      this.uuid,
+      this.material._id,
+      this.template,
+      this.ogTemplate,
+      workMode,
+      this.timestamp,
+      duration,
+      getResetCounter(),
+      boxes
+    ).subscribe(res => {
+      console.log(res.message);
     });
   }
 
-  nextMaterialToAnnotate() {
-    if (this.imageDisplayChild.displayBoxes) {
-      this.imageDisplayChild.toggleBoxes();
-    }
-      this.backendCaller.getRandom(false).subscribe(res => {
-        console.log(res);
-        if (res.material === null) {
-          window.alert("Keine weiteren Befunde verfügbar");
-        } else {
-          this.router.navigate(["/", "radiolearn", "main", res.material._id]).then();
-        }
-      }, err => {
-        window.alert(err);
-        console.log(err);
-      });
+  openSurveyDialog(): void {
+    this.dialog.open(DialogTemplateComponent);
   }
 
   feedbackModal() {
@@ -414,109 +424,4 @@ export class RadiolearnUiComponent implements OnInit {
     });
     this.dialog.open(FeedbackDialogComponent, dialogConfig);
   }
-
-  nextCategory(nextCat: string) {
-    this.selectedCatList = [nextCat];
-    this.selectedCat = nextCat;
-  }
-
-  back() {
-    if (this.isMod) {
-      this.router.navigate(["radiolearn/list"]).then();
-    } else {
-      this.router.navigate(["/"]).then();
-    }
-  }
-
-  reset(resetChips: boolean = true) {
-    if (resetChips) {
-      this.chips = [];
-    }
-    this.input = "";
-    if (this.radiolearnService.workMode === "deep") {
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
-      this.deepCategories = this.dataParser.extractCategories(this.material.deepDocTemplate.parts);
-    } else {
-      this.material = JSON.parse(JSON.stringify(this.ogMaterial));
-      this.shallowCategories = this.dataParser.extractCategories(this.material.shallowDocTemplate.parts);
-    }
-  }
-
-  remove(chip: InputChip): void {
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
-    this.reset(false);
-    this.onInput();
-  }
-
-  onChipClick(chip: InputChip){
-    this.selectedCat = chip.id.split(" ")[0];
-    this.selectedSelectableID = chip.id;
-  }
-
-  onInput() {
-    //Remove chips showing unrecognized text
-    this.chipHelper.removeRedChips(this.chips);
-    // Combine existing chips and text input into one input line
-    this.mergedInput = this.chipHelper.getMergedInput(this.input, this.chips, false);
-    //Parse this input, assign the values and generate the new chips accordingly
-    this.inputParser.parseInput(this.mergedInput);
-    this.assignValues();
-    this.generateChips();
-    //navigate to category of last chip
-    if (this.chips.length > 0) {
-      this.selectedCat = this.chips[this.chips.length - 1].id.split(" ")[0];
-    }
-    // Remove everything that was detected as a clickable or variable from the input
-    this.mergedInput = this.chipHelper.getTextWithoutVariables(this.mergedInput, this.inputParser.foundVariables);
-    this.mergedInput = this.chipHelper.getTextWithoutClickables(this.mergedInput, this.inputParser.foundClickables);
-    //Add a red chip containing unrecognized text if there is any
-    if (this.mergedInput.trim() !== "") {
-      this.chips.push(new InputChip(this.mergedInput, ChipColors.RED, null));
-    }
-    //Clear the text input
-    this.input = "";
-    this.chipInput.nativeElement.value = "";
-  }
-
-  assignValues() {
-    if (this.radiolearnService.workMode === "deep") {
-      this.dataParser.assignValuesFromInputParser(this.deepCategories, this.inputParser.foundClickables,
-        this.inputParser.foundVariables);
-    } else {
-      this.dataParser.assignValuesFromInputParser(this.shallowCategories, this.inputParser.foundClickables,
-        this.inputParser.foundVariables);
-    }
-  }
-
-
-  materialHasComments(material): boolean{
-    let result = false;
-    material.annotations.pre.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
-          result = true;
-        }
-      }
-    });
-    material.annotations.lateral.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
-          result = true;
-        }
-      }
-    });
-    material.annotations.main.forEach(annotation =>{
-      if (annotation.comment !== undefined){
-        if(annotation.comment.length > 0){
-          result = true;
-        }
-      }
-    });
-    return result;
-
-  }
-
 }

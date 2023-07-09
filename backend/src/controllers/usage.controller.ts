@@ -1,5 +1,5 @@
 import {Response} from "express";
-import {UsageData} from "../models/material.model";
+import {RadiolearnData} from "../models/material.model";
 import {DoctorReportDB, ParticipantDB} from "../models";
 
 function handleError(err: NativeError){
@@ -33,18 +33,18 @@ export function saveDoctorReport(req: any, res: Response) {
     })
 }
 
-export function saveUsageData(req: any, res: Response) {
+export function saveRadiolearnData(req: any, res: Response) {
 
     console.log("----------------------received material id: " + req.body.materialID)
-    const usageData: UsageData = {
+    const usageData: RadiolearnData = {
         materialID: req.body.materialID,
-        deepDocTemplate: req.body.deepDocTemplate,
-        shallowDocTemplate: req.body.shallowDocTemplate,
+        template: req.body.template,
+        ogTemplate: req.body.ogTemplate,
         mode: req.body.mode,
         timestamp: req.body.timestamp,
         duration: req.body.duration,
-        ogMaterial: req.body.ogMaterial,
-        resetCounter: req.body.resetCounter
+        resetCounter: req.body.resetCounter,
+        boxes: req.body.boxes
     }
 
     const query = ParticipantDB.findOne({'UUID': req.body.UUID});
@@ -54,7 +54,7 @@ export function saveUsageData(req: any, res: Response) {
         }
         if (participant == null) {
             console.log("No matching participant found, creating entry:")
-            const usageList: UsageData[] = []
+            const usageList: RadiolearnData[] = []
             usageList.push(usageData)
             const participant = new ParticipantDB({
                 UUID: req.body.UUID,

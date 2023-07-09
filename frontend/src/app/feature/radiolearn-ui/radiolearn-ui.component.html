@@ -3,11 +3,36 @@
 <div id="outer" *ngIf="!isMobile">
   <div id="inner_fixed" [ngStyle]="{'margin-bottom' : inputEnabled ? '-27px' : '1px'}">
     <mat-toolbar class="toolbar" color="primary">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+
+      </button>
+      <mat-menu #menu="matMenu">
+<!--        <button mat-menu-item>-->
+<!--          <mat-icon [ngStyle]="{'color':'#383838'}">content_paste</mat-icon>-->
+<!--          <span>Dokumentationsmodus</span>-->
+<!--        </button>-->
+<!--        <button mat-menu-item>-->
+<!--          <mat-icon [ngStyle]="{'color':'#383838'}">aod</mat-icon>-->
+<!--          <span>Diagnosemodus</span>-->
+<!--        </button>-->
+<!--        <button mat-menu-item>-->
+<!--          <mat-icon [ngStyle]="{'color':'#383838'}">crop_free</mat-icon>-->
+<!--          <span>Annotationsmodus</span>-->
+<!--        </button>-->
+        <button mat-menu-item (click)="feedbackModal()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">feedback</mat-icon>
+          <span>Feedback</span>
+        </button>
+        <button mat-menu-item (click)="openSettingsMenu()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">settings</mat-icon>
+          <span>Einstellungen</span>
+        </button>
+      </mat-menu>
       <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
-        <mat-icon>arrow_back_ios</mat-icon>
         RadioLearn
       </button>
-      <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0,25)}}</span>
+      <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0, 25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
               (click)="switchInputMode()">
@@ -28,113 +53,71 @@
               matTooltip="Restliche Kategorien als unauffällig markieren"
               (click)="makeNormal()">Rest normal
       </button>
-      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod"
-              (click)="checkForErrors()"><mat-icon>checklist_rtl</mat-icon> Überprüfen
+      <button mat-button class="header-button" id="check" matTooltip="Eingaben überprüfen" *ngIf="!isMod && !(drawMode && sawFeedback)"
+              (click)="checkForErrors()">
+        <mat-icon>checklist_rtl</mat-icon>
+        Überprüfen
       </button>
       <button *ngIf="isMod" mat-button class="header-button" id="save" matTooltip="Speichern"
-              (click)="save()"><mat-icon>save</mat-icon>
+              (click)="save()">
+        <mat-icon>save</mat-icon>
       </button>
       <button mat-button class="header-button" id="next" matTooltip="Nächste Aufnahme"
-              (click)="nextMaterial()"><mat-icon>navigate_next</mat-icon></button>
-      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"
-              (click)="feedbackModal()"><mat-icon>feedback</mat-icon></button>
+              (click)="nextMaterial()">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+<!--      <button mat-button class="header-button" id="feedback" matTooltip="Feedback geben" *ngIf="!isMod"-->
+<!--              (click)="feedbackModal()">-->
+<!--        <mat-icon>feedback</mat-icon>-->
+<!--      </button>-->
 
     </mat-toolbar>
 
-    <mat-form-field class="example-chip-list" appearance="fill" *ngIf="inputEnabled">
-      <mat-label>Eingabe</mat-label>
-      <mat-chip-list #chipList>
-        <mat-chip
-          *ngFor="let chip of chips"
-          (removed)="remove(chip)"
-          (click)="onChipClick(chip)"
-          [ngClass]="chip.color">
-          {{chip.content}}
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip>
-        <input
-          #chipInput
-          placeholder="Befund eingeben ..."
-          [matChipInputFor]="chipList"
-          [(ngModel)]="this.input"
-          (input)="onInput()"
-        >
-      </mat-chip-list>
-    </mat-form-field>
+    <app-input-material-handler
+      *ngIf="inputEnabled"
+      [defaultCategories]="this.defaultCategories"
+      [categories]="this.categories"
+      (resetEmitter)="resetMaterialKeepInput()"
+      (selectedChipEmitter)="chipSelectedEvent($event)">
+    </app-input-material-handler>
+
 
   </div>
 
   <div class="inner_remaining">
     <ng-container *ngIf="deepMode">
-      <mat-selection-list *ngIf="this.deepCategories"
+      <mat-selection-list *ngIf="this.categories"
                           class="catSelectionList"
-                          (selectionChange)="onSelect($event)"
                           [ngStyle]="{'width.%': userMode ? 12 : 9}"
-                          [multiple]="false" [(ngModel)]="selectedCatList">
-        <ng-container *ngFor="let cat of deepCategories">
-          <mat-list-option [value]="cat.name"
-                           [selected]="cat.name === this.selectedCat">
-            {{cat.name}}
-          </mat-list-option>
-        </ng-container>
+                          [multiple]="false">
+        <mat-list-option *ngFor="let cat of categories"
+                         (click)="onCategorySelected(cat.name)"
+                         [selected]="cat.name === this.selectedCat">
+          {{cat.name}}
+        </mat-list-option>
       </mat-selection-list>
 
       <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
                               [selectedCat]="selectedCat"
                               [selectedSelectableID]="selectedSelectableID"
                               (nextCat)="nextCategory($event)"
-                              (updateEmitter)="updateFromOptions()"
+                              (updateEmitter)="updateFromOptionsEvent()"
                               class="options-expand"
-                              [categories]="deepCategories">
+                              [categories]="categories">
       </app-radiolearn-options>
     </ng-container>
 
-    <ng-container *ngIf="!deepMode">
+    <ng-container *ngIf="!deepMode && !drawMode">
+
       <div class="shallowSelectionList"
            [ngStyle]="{'width.%': userMode ? 18 : 18}">
-
-        <ng-container *ngIf="this.material">
-          <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
-            <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px">
-              <mat-checkbox style="font-size: 17px"
-                            (click)="updateFromParent(selectable)"
-                            [(ngModel)]="selectable.value"
-                            [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
-                          selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-              >{{selectable.name}}</mat-checkbox>
-            </div>
-
-            <ng-container *ngIf="selectable.value">
-
-              <ng-container *ngFor="let variable of selectable.variables">
-
-                <mat-radio-group *ngIf=" variable.kind === 'oc'" [(ngModel)]="variable.value">
-                  <ng-container *ngFor="let value of variable.values">
-                    <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                      <mat-radio-button [value]="value" (click)="updateFromVariable(selectable)">
-                        {{value}}
-                      </mat-radio-button>
-                    </div>
-                  </ng-container>
-                </mat-radio-group>
-
-                <ng-container *ngIf="variable.kind === 'mc'">
-                  <ng-container *ngFor="let value of variable.values">
-                    <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                      <mat-checkbox [(ngModel)]="value[1]" (click)="updateFromVariable(selectable)">
-                        {{value[0]}}
-                      </mat-checkbox>
-                    </div>
-                  </ng-container>
-                </ng-container>
-
-              </ng-container>
-            </ng-container>
-
-          </ng-container>
-        </ng-container>
+        <app-radiolearn-options-shallow
+          (updateEmitter)="updateFromOptionsEvent()"
+          [material]="this.material"
+          [userMode]="this.userMode"
+          [categories]="this.categories"
+          [selectedSelectableID]="this.selectedSelectableID">
+        </app-radiolearn-options-shallow>
       </div>
     </ng-container>
 
@@ -145,6 +128,8 @@
 
     <app-image-display-student *ngIf="material && userMode"
                                [scans]="material.scans"
+                               [drawMode]="drawMode"
+                               [categories]="this.categories"
                                [annotations]="material.annotations"></app-image-display-student>
   </div>
 
@@ -160,52 +145,18 @@
 
   </mat-toolbar>
 
-  <mat-drawer-container class="example-container" [hasBackdrop]="true" style="height: calc(100% - 60px); background-color: #e0eafa">
+  <mat-drawer-container class="example-container" [hasBackdrop]="true"
+                        style="height: calc(100% - 60px); background-color: #e0eafa">
     <mat-drawer #drawer [mode]="'over'">
 
 
-
-      <ng-container *ngIf="this.material">
-        <ng-container *ngFor="let selectable of this.shallowCategories[0].selectables">
-          <div style="padding-left: 15px; padding-top: 7px; padding-bottom: 7px; padding-right: 7px">
-            <mat-checkbox style="font-size: 17px"
-                          (click)="updateFromParent(selectable)"
-                          [(ngModel)]="selectable.value"
-                          [ngStyle]="{'border' : this.deepCategories[0].name + ' ' + selectable.name ===
-                          selectedSelectableID ? '3px solid red' : '3px solid transparent'}"
-            >{{selectable.name}}</mat-checkbox>
-          </div>
-
-          <ng-container *ngIf="selectable.value">
-
-            <ng-container *ngFor="let variable of selectable.variables">
-
-              <mat-radio-group *ngIf=" variable.kind === 'oc'" [(ngModel)]="variable.value">
-                <ng-container *ngFor="let value of variable.values">
-                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                    <mat-radio-button [value]="value" (click)="updateFromVariable(selectable)">
-                      {{value}}
-                    </mat-radio-button>
-                  </div>
-                </ng-container>
-              </mat-radio-group>
-
-              <ng-container *ngIf="variable.kind === 'mc'">
-                <ng-container *ngFor="let value of variable.values">
-                  <div style="padding-left: 25px; padding-top: 5px; padding-bottom: 5px">
-                    <mat-checkbox [(ngModel)]="value[1]" (click)="updateFromVariable(selectable)">
-                      {{value[0]}}
-                    </mat-checkbox>
-                  </div>
-                </ng-container>
-              </ng-container>
-
-            </ng-container>
-          </ng-container>
-
-        </ng-container>
-      </ng-container>
-
+      <app-radiolearn-options-shallow
+        (updateEmitter)="updateFromOptionsEvent()"
+        [material]="this.material"
+        [userMode]="this.userMode"
+        [categories]="this.categories"
+        [selectedSelectableID]="this.selectedSelectableID">
+      </app-radiolearn-options-shallow>
 
 
     </mat-drawer>
@@ -218,19 +169,23 @@
       ></app-image-display-student>
 
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()" *ngIf="!sawFeedback">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; left: 15px" (click)="drawer.toggle()"
+              *ngIf="!sawFeedback">
         <mat-icon>
           edit
         </mat-icon>
       </button>
 
-      <div style="z-index: -10; position: fixed; bottom: 25px; display: flex; align-items: center; justify-content: center; width: 100%">
+      <div
+        style="position: fixed; bottom: 25px; left: 50%; transform: translate(-50%, 0)">
         <button mat-raised-button color="primary" style="" (click)="checkForErrors()">
-          <mat-icon>checklist_rtl</mat-icon> Überprüfen
+          <mat-icon>checklist_rtl</mat-icon>
+          Überprüfen
         </button>
       </div>
 
-      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()" *ngIf="sawFeedback">
+      <button mat-fab color="primary" style="position: fixed; bottom: 15px; right: 15px" (click)="nextMaterial()"
+              *ngIf="sawFeedback">
         <mat-icon>
           navigate_next
         </mat-icon>

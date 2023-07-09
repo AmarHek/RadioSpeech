@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import * as M from "@app/models/templateModel";
+import {DataParserService} from "@app/core";
 
 @Component({
   selector: "app-radiolearn-options",
   templateUrl: "./radiolearn-options.component.html",
   styleUrls: ["./radiolearn-options.component.scss"]
 })
-export class RadiolearnOptionsComponent implements OnInit, OnChanges {
+export class RadiolearnOptionsComponent {
 
   @Input() categories: M.Category[];
   @Input() paramMapID: string; // for detecting changes
@@ -15,46 +16,7 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
   @Output() nextCat = new EventEmitter<string>();
   @Output() updateEmitter = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
-
-  update(sel: M.Selectable, option?: string, category?: M.Category) {
-    if (sel.kind === "group") {
-      if (sel.value === option) {
-        sel.value = null;
-      }
-    } else if (sel.kind === "box" && sel.exclusions !== undefined) {
-      if (sel.exclusions.length > 0) {
-        for (const exclusion of sel.exclusions) {
-          if (exclusion === "Rest") {
-            this.deselectRest(category, sel.name);
-          } else {
-            this.deselectByName(category, exclusion);
-          }
-        }
-      }
-    }
-    this.updateEmitter.emit()
-  }
-
-  updateFromVariable(parent: M.Clickable, group?: M.Group) {
-    if (parent.kind === "box") {
-      parent.value = true;
-    } else {
-      if (group === undefined) {
-        Error("Something went wrong here");
-      } else {
-        group.value = parent.name;
-      }
-    }
-    this.updateEmitter.emit()
-  }
+  constructor(public dataParser: DataParserService) { }
 
   getSelectedCatIndex() {
     if (this.categories !== undefined) {
@@ -77,22 +39,4 @@ export class RadiolearnOptionsComponent implements OnInit, OnChanges {
     const nextIdx = Math.max(idx - 1, 0);
     this.nextCat.emit(this.categories[nextIdx].name);
   }
-
-  deselectByName(category: M.Category, name: string) {
-    for (const sel of category.selectables) {
-      if (sel.name === name) {
-        sel.value = false;
-        return;
-      }
-    }
-  }
-
-  deselectRest(category: M.Category, name) {
-    for (const sel of category.selectables) {
-      if (sel.name !== name) {
-        sel.value = false;
-      }
-    }
-  }
-
 }

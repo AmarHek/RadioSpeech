@@ -27,6 +27,7 @@ import {SharedModule} from "@app/shared/shared.module";
 import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { DialogNoMaterialsComponent } from './dialog-no-materials/dialog-no-materials.component';
+import { InputMaterialHandlerComponent } from './input-material-handler/input-material-handler.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { DialogNoMaterialsComponent } from './dialog-no-materials/dialog-no-mate
     RadiolearnUiComponent,
     ReportUiComponent,
     DialogTemplateComponent,
-    DialogNoMaterialsComponent
+    DialogNoMaterialsComponent,
+    InputMaterialHandlerComponent
   ],
     imports: [
         CommonModule,
