@@ -97,7 +97,7 @@
         </mat-list-option>
       </mat-selection-list>
 
-      <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25}"
+      <app-radiolearn-options [ngStyle]="{'width.%': userMode ? 35 : 25, 'pointer-events' : sawFeedback ? 'none' : 'auto'}"
                               [selectedCat]="selectedCat"
                               [selectedSelectableID]="selectedSelectableID"
                               (nextCat)="nextCategory($event)"
