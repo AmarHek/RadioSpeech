@@ -110,7 +110,7 @@
     <ng-container *ngIf="!deepMode && !drawMode">
 
       <div class="shallowSelectionList"
-           [ngStyle]="{'width.%': userMode ? 18 : 18}">
+           [ngStyle]="{'width.%': userMode ? 18 : 18, 'pointer-events' : sawFeedback ? 'none' : 'auto'}">
         <app-radiolearn-options-shallow
           (updateEmitter)="updateFromOptionsEvent()"
           [material]="this.material"
