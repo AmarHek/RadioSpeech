@@ -45,6 +45,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   };
 
   @Input() showCommentButton: boolean;
+  @Input() sawFeedback: boolean;
 
   @Input() isMobile: boolean;
   @Input() drawMode: boolean;
@@ -63,6 +64,8 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   // state variables for canvas layers
   displayBoxesSolution: boolean = false;
   enableZoom: boolean;
+
+  visibleBoxTypes = "combined"; // either "combined", "solution" or "user"
 
   startX = 0;
   startY = 0;
@@ -252,6 +255,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   // Change between "main", "pre", "lateral" etc.
   changeToImageType(newImageType: string) {
     this.clearCanvas()
+    this.visibleBoxTypes = "combined"
     this.currentImageType = newImageType;
     this.enableZoom = false;
     this.setCurrentImage();
@@ -512,6 +516,18 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
   imageZoom() {
     this.imageDisplayService.setImageZoomEventListeners(this.sourceImage.nativeElement,
       this.lensElement, this.lensSize, this.zoomLayerElement, this.zoomDivElement);
+  }
+
+  changeBoxVisibility(){
+    this.clearCanvas()
+    if (this.visibleBoxTypes == "combined"){
+      this.drawBoxesSolution()
+      this.drawBoxesStudent(true)
+    } else if (this.visibleBoxTypes == "user"){
+      this.drawBoxesStudent(true)
+    } else {
+      this.drawBoxesSolution()
+    }
   }
 
   saveTempBox() {
