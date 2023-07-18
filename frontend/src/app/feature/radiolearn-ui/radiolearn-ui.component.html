@@ -3,7 +3,7 @@
 <div id="outer" *ngIf="!isMobile">
   <div id="inner_fixed" [ngStyle]="{'margin-bottom' : inputEnabled ? '-27px' : '1px'}">
     <mat-toolbar class="toolbar" color="primary">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu" style="top: 1px">
         <mat-icon>menu</mat-icon>
 
       </button>
@@ -29,9 +29,9 @@
           <span>Einstellungen</span>
         </button>
       </mat-menu>
-      <button mat-button class="header-button" style="font-size: 18px;" (click)='back()'>
+      <a mat-button class="header-button" (click)='back()' style="top: 2px; left: -5px; font-size: 15px">
         RadioLearn
-      </button>
+      </a>
       <span *ngIf="isMod && this.material">{{this.material.scans.mainScan.filename.substring(0, 25)}}</span>
       <span class="spacer"></span>
       <button *ngIf="isMod" mat-button class="header-button" id="btnSwitchInput"
