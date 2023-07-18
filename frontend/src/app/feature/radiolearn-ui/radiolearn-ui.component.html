@@ -8,18 +8,18 @@
 
       </button>
       <mat-menu #menu="matMenu">
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon [ngStyle]="{'color':'#383838'}">content_paste</mat-icon>-->
-<!--          <span>Dokumentationsmodus</span>-->
-<!--        </button>-->
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon [ngStyle]="{'color':'#383838'}">aod</mat-icon>-->
-<!--          <span>Diagnosemodus</span>-->
-<!--        </button>-->
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon [ngStyle]="{'color':'#383838'}">crop_free</mat-icon>-->
-<!--          <span>Annotationsmodus</span>-->
-<!--        </button>-->
+        <button mat-menu-item (click)="navigateToDeepMode()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">content_paste</mat-icon>
+          <span>Dokumentationsmodus</span>
+        </button>
+        <button mat-menu-item (click)="navigateToShallowMode()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">aod</mat-icon>
+          <span>Diagnosemodus</span>
+        </button>
+        <button mat-menu-item (click)="navigateToDrawMode()">
+          <mat-icon [ngStyle]="{'color':'#383838'}">crop_free</mat-icon>
+          <span>Annotationsmodus</span>
+        </button>
         <button mat-menu-item (click)="feedbackModal()">
           <mat-icon [ngStyle]="{'color':'#383838'}">feedback</mat-icon>
           <span>Feedback</span>

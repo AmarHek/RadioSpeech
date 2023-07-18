@@ -138,6 +138,7 @@ export class RadiolearnUiComponent implements OnInit {
               "Bitte zur Aufnahmen-Liste zurückkehren und eine der dort aufgeführten Aufnahmen auswählen.");
             return;
           }
+          this.setWorkMode()
           this.initFields(res.material)
           if (this.SHOW_SURVEY) {
             this.initSurvey()
@@ -382,6 +383,37 @@ export class RadiolearnUiComponent implements OnInit {
 
   openSettingsMenu(){
     this.dialog.open(SettingsDialogComponent)
+  }
+
+  navigateToDeepMode() {
+    this.radiolearnService.drawMode = false;
+    this.radiolearnService.workMode = "deep";
+    this.loadUnused("deep");
+  }
+
+  navigateToShallowMode() {
+    this.radiolearnService.drawMode = false;
+    this.radiolearnService.workMode = "shallow";
+    this.loadUnused("shallow");
+  }
+
+  navigateToDrawMode() {
+    this.radiolearnService.drawMode = true;
+    this.radiolearnService.workMode = "shallow";
+    this.loadUnused("shallow");
+  }
+
+  loadUnused(mode: string){
+    this.backendCaller.getUnusedMaterial(this.uuid, mode, getResetCounter()).subscribe(res => {
+      console.log(res);
+      if (res.material === null) {
+        this.dialog.open(DialogNoMaterialsComponent)
+      } else {
+        this.router.navigate(["/", "radiolearn", "main", res.material._id]);
+      }
+    }, err => {
+      console.log(err);
+    });
   }
 
   // EVALUATION / DATA COLLECTION
