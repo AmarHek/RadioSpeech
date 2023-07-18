@@ -176,7 +176,6 @@ export class RadiolearnUiComponent implements OnInit {
 
     //check if there are any comments in the annotations, to enable the "view comment" button
     this.anyComments = this.dataParser.materialHasComments(this.material);
-    this.imageDisplayStudentChild.clearData()
   }
 
   initSurvey(){

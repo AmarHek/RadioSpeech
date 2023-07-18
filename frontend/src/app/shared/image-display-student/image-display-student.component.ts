@@ -181,6 +181,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     if (this.drawContext === undefined) return
     if (changes.scans !== undefined) {
       this.changeToImageType("main");
+      this.clearStudentAnnotations()
     }
     this.hideToolTip()
   }
@@ -196,7 +197,7 @@ export class ImageDisplayStudentComponent implements OnInit, OnChanges, AfterVie
     this.labelContext.clearRect(0, 0, this.labelLayerElement.width, this.labelLayerElement.height);
   }
 
-  clearData() {
+  clearStudentAnnotations() {
     this.annotationsStudent = {
       main: [],
       lateral: [],
