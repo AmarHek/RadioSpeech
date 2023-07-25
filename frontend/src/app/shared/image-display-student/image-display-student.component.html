@@ -1,5 +1,5 @@
 <div class="main">
-  <div id="buttonsDiv"  *ngIf="!isMobile">
+  <div id="buttonsDiv" *ngIf="!isMobile">
     <mat-button-toggle-group value="Frontal">
       <mat-button-toggle class="buttons imgButton"
                          value="Frontal"
@@ -44,14 +44,14 @@
     </div>
   </div>
   <div id="imgOuter">
-    <div style="position: absolute; z-index: 100; bottom: 0; left: 0" *ngIf="sawFeedback && drawMode">
-      <mat-button-toggle-group [(ngModel)]="visibleBoxTypes">
-        <mat-button-toggle (click)="changeBoxVisibility()" value="combined">Kombiniert</mat-button-toggle>
-        <mat-button-toggle (click)="changeBoxVisibility()" value="solution">Nur Lösung</mat-button-toggle>
-        <mat-button-toggle (click)="changeBoxVisibility()" value="user">Nur meine Eingabe</mat-button-toggle>
-      </mat-button-toggle-group>
+    <div style="position: absolute; z-index: 100; top: 1rem;
+     right:-170px; display: flex; flex-direction: column; gap: 1rem;
+      " *ngIf="sawFeedback && drawMode">
+      <mat-slide-toggle (click)="changeBoxVisibility()" [(ngModel)]="visible_solution">Lösung</mat-slide-toggle>
+      <mat-slide-toggle (click)="changeBoxVisibility()" [(ngModel)]="visible_input">Meine Eingabe</mat-slide-toggle>
     </div>
-    <div id="imgInner" [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
+    <div id="imgInner"
+         [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight, 'margin': drawMode ? '0 auto' : '0'}">
       <img #sourceImage class="canvas level0"
            height="{{currentHeight}}" width="{{currentWidth}}"
            src="{{currentScanUrl}}" id="sourceImage" alt="Fehler beim Laden der Aufnahme">
@@ -70,7 +70,7 @@
       <div #lensContainer *ngIf="enableZoom">
         <div class="zoomDiv" id="zoom"></div>
         <div class="zoomLens"
-             [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens" ></div>
+             [ngStyle]="{'width.px': lensSize, 'height.px': lensSize}" id="lens"></div>
         <div class="canvas level3" id="zoomLayer"
              [ngStyle]="{'width.px': currentWidth, 'height.px': currentHeight}"></div>
       </div>
@@ -109,8 +109,9 @@
     </mat-button-toggle-group>
   </div>
   <div>
-    <div style="display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 10px" *ngIf="showCommentButton">
-      <button mat-raised-button color="primary" style=""  (click)="showAllComments()">
+    <div style="display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 10px"
+         *ngIf="showCommentButton">
+      <button mat-raised-button color="primary" style="" (click)="showAllComments()">
         Kommentare anzeigen
       </button>
     </div>
