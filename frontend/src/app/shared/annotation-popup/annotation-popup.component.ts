@@ -25,7 +25,9 @@ export class AnnotationPopupComponent implements OnInit {
     // initially fill displayed options with pathologies
     this.pathologies = this.data.categories[0].selectables
     this.pathologies.forEach(selectable => {
-      this.options.push(selectable.name)
+      if (selectable.name != "Unauffälliger Röntgen-Thorax"){
+        this.options.push(selectable.name)
+      }
     })
   }
 
