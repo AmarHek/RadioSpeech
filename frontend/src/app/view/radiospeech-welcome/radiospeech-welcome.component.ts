@@ -7,11 +7,11 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
 
 @Component({
-  selector: "app-radiolearn-welcome",
-  templateUrl: "./radiolearn-welcome.component.html",
-  styleUrls: ["./radiolearn-welcome.component.scss"]
+  selector: "app-radiospeech-welcome",
+  templateUrl: "./radiospeech-welcome.component.html",
+  styleUrls: ["./radiospeech-welcome.component.scss"]
 })
-export class RadiolearnWelcomeComponent implements OnInit {
+export class RadiospeechWelcomeComponent implements OnInit {
 
   assetsUrl = environment.assets;
 

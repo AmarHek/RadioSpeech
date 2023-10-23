@@ -11,7 +11,7 @@ import {AuthGuard} from "@app/helpers";
 import {Role} from "@app/models";
 
 import {LoginComponent} from "@app/view";
-import {RadiolearnWelcomeComponent} from "@app/view/radiolearn-welcome/radiolearn-welcome.component";
+import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
 import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: "home",
-    component: RadiolearnWelcomeComponent,
+    component: RadiospeechWelcomeComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
