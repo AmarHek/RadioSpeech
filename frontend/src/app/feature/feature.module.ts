@@ -19,8 +19,6 @@ import {MatRadioModule} from "@angular/material/radio";
 import {AdminComponent} from "@app/feature/admin/admin.component";
 import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
 import {TemplateListComponent} from "@app/feature/template-list/template-list.component";
-import {RadiolearnListComponent} from "@app/feature/radiolearn-list/radiolearn-list.component";
-import {RadiolearnUiComponent} from "@app/feature/radiolearn-ui/radiolearn-ui.component";
 import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
 import {AccountManagementComponent} from "./account-management/account-management.component";
 import {SharedModule} from "@app/shared/shared.module";
@@ -36,8 +34,6 @@ import { InputMaterialHandlerComponent } from './input-material-handler/input-ma
     AdminComponent,
     FeedbackDisplayComponent,
     TemplateListComponent,
-    RadiolearnListComponent,
-    RadiolearnUiComponent,
     ReportUiComponent,
     DialogTemplateComponent,
     DialogNoMaterialsComponent,
@@ -69,8 +65,6 @@ import { InputMaterialHandlerComponent } from './input-material-handler/input-ma
     AdminComponent,
     FeedbackDisplayComponent,
     TemplateListComponent,
-    RadiolearnListComponent,
-    RadiolearnUiComponent,
     ReportUiComponent
   ]
 })

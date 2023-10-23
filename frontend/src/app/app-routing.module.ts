@@ -5,8 +5,6 @@ import {
   AdminComponent,
   FeedbackDisplayComponent,
   TemplateListComponent,
-  RadiolearnListComponent,
-  RadiolearnUiComponent,
   ReportUiComponent
 } from "@app/feature";
 import {AuthGuard} from "@app/helpers";
@@ -39,18 +37,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
-  },
-  {
-    path: "radiolearn/list",
-    component: RadiolearnListComponent,
-    canActivate: [AuthGuard],
-    data: { roles: [Role.Moderator, Role.Admin] }
-  },
-  {
-    path: "radiolearn/main/:id",
-    component: RadiolearnUiComponent,
-    canActivate: [AuthGuard],
-    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin] }
   },
   {
     path: "admin",

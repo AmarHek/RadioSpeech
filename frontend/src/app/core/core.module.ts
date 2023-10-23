@@ -9,7 +9,6 @@ import {
   ImageDisplayService,
   InputParserService,
   MatDialogService,
-  RadiolearnService,
   UserService
 } from "@app/core";
 
@@ -28,7 +27,6 @@ import {
     ImageDisplayService,
     InputParserService,
     MatDialogService,
-    RadiolearnService,
     UserService
   ]
 })

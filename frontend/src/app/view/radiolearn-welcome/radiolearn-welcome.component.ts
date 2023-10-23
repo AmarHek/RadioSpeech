@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {BackendCallerService, DisplayService, RadiolearnService} from "@app/core";
+import {BackendCallerService, DisplayService} from "@app/core";
 import {environment} from "@env/environment";
 import {getResetCounter, getUUID} from "@app/helpers/localStorageHelper";
 import {MatDialog} from "@angular/material/dialog";
@@ -19,7 +19,6 @@ export class RadiolearnWelcomeComponent implements OnInit {
   private UUID = "undefined";
 
   constructor(
-    private radiolearnService: RadiolearnService,
     private router: Router,
     private backendCaller: BackendCallerService,
     private displayService: DisplayService,
@@ -34,20 +33,14 @@ export class RadiolearnWelcomeComponent implements OnInit {
   }
 
   deepMode() {
-    this.radiolearnService.drawMode = false;
-    this.radiolearnService.workMode = "deep";
     this.loadUnused("deep");
   }
 
   shallowMode() {
-    this.radiolearnService.drawMode = false;
-    this.radiolearnService.workMode = "shallow";
     this.loadUnused("shallow");
   }
 
   annotationMode() {
-    this.radiolearnService.drawMode = true;
-    this.radiolearnService.workMode = "shallow";
     this.loadUnused("shallow");
   }
 
