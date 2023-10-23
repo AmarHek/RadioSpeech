@@ -25,7 +25,6 @@ import {VariablesComponent} from "@app/shared/variables/variables.component";
 
 import {ImageDisplayStudentComponent} from "./image-display-student/image-display-student.component";
 import {ImageDisplayComponent} from "./image-display/image-display.component";
-import {RadiolearnOptionsComponent} from "./radiolearn-options/radiolearn-options.component";
 
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {ChangeUsernameComponent} from "./change-username/change-username.component";
@@ -38,7 +37,6 @@ import {StudentErrorsComponent} from "./student-errors/student-errors.component"
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.component";
 import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
-import { RadiolearnOptionsShallowComponent } from './radiolearn-options-shallow/radiolearn-options-shallow.component';
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 
@@ -54,7 +52,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     InputDialogComponent,
     InputModalComponent,
     StudentErrorsComponent,
-    RadiolearnOptionsComponent,
     ReportOutputComponent,
     ReportOptionsComponent,
     SignUpComponent,
@@ -63,7 +60,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     VariablesComponent,
     AddScanDialogComponent,
     ChangeRoleDialogComponent,
-    RadiolearnOptionsShallowComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent
   ],
@@ -96,14 +92,12 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
         InputDialogComponent,
         InputModalComponent,
         StudentErrorsComponent,
-        RadiolearnOptionsComponent,
         ReportOptionsComponent,
         ReportOutputComponent,
         SignUpComponent,
         UploadTemplateComponent,
         UploadMaterialComponent,
         VariablesComponent,
-        RadiolearnOptionsShallowComponent
     ]
 })
 export class SharedModule { }

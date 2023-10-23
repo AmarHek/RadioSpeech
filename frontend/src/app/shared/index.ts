@@ -6,7 +6,6 @@ export * from "./image-display-student/image-display-student.component";
 export * from "./image-display/image-display.component";
 export * from "./input-dialog/input-dialog.component";
 export * from "./inputModal/inputModal.component";
-export * from "./radiolearn-options/radiolearn-options.component";
 export * from "./report-options/report-options.component";
 export * from "./report-output/report-output.component";
 export * from "./sign-up/sign-up.component";
