@@ -23,7 +23,6 @@ import {UploadMaterialComponent} from "@app/shared/upload-material/upload-materi
 import {UploadTemplateComponent} from "@app/shared/upload-template/upload-template.component";
 import {VariablesComponent} from "@app/shared/variables/variables.component";
 
-import {ImageDisplayStudentComponent} from "./image-display-student/image-display-student.component";
 import {ImageDisplayComponent} from "./image-display/image-display.component";
 
 import {ChangePasswordComponent} from "./change-password/change-password.component";
@@ -47,7 +46,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     ImageDisplayComponent,
-    ImageDisplayStudentComponent,
     InputDialogComponent,
     InputModalComponent,
     ReportOutputComponent,
@@ -86,7 +84,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
         ConfirmDialogComponent,
         FeedbackDialogComponent,
         ImageDisplayComponent,
-        ImageDisplayStudentComponent,
         InputDialogComponent,
         InputModalComponent,
         ReportOptionsComponent,
