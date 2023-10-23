@@ -32,7 +32,6 @@ import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.compone
 import {ReportOptionsComponent} from "@app/shared/report-options/report-options.component";
 
 import {InputDialogComponent} from "./input-dialog/input-dialog.component";
-import {StudentErrorsComponent} from "./student-errors/student-errors.component";
 
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AddScanDialogComponent} from "./add-scan-dialog/add-scan-dialog.component";
@@ -51,7 +50,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     ImageDisplayStudentComponent,
     InputDialogComponent,
     InputModalComponent,
-    StudentErrorsComponent,
     ReportOutputComponent,
     ReportOptionsComponent,
     SignUpComponent,
@@ -91,7 +89,6 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
         ImageDisplayStudentComponent,
         InputDialogComponent,
         InputModalComponent,
-        StudentErrorsComponent,
         ReportOptionsComponent,
         ReportOutputComponent,
         SignUpComponent,

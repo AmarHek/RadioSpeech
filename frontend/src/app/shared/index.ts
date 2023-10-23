@@ -9,7 +9,6 @@ export * from "./inputModal/inputModal.component";
 export * from "./report-options/report-options.component";
 export * from "./report-output/report-output.component";
 export * from "./sign-up/sign-up.component";
-export * from "./student-errors/student-errors.component";
 export * from "./upload-material/upload-material.component";
 export * from "./upload-template/upload-template.component";
 export * from "./variables/variables.component";
