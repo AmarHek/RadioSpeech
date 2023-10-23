@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {Material, Participant, DoctorReport} from "./material.model";
+import {Material, DoctorReport} from "./material.model";
 
 const imageSchema = new mongoose.Schema({
     filename: String,
@@ -14,13 +14,6 @@ const annotationSchema = new mongoose.Schema({
     labelLeft: {type: Number},
     labelTop: {type: Number}
 })
-
-const participantDataScheme = new mongoose.Schema({
-    UUID: {type: String, required: true},
-    usageList: {type: [mongoose.Schema.Types.Mixed]}
-});
-
-export const ParticipantDB = mongoose.model<Participant>("Participant", participantDataScheme, "participants");
 
 const doctorReportScheme = new mongoose.Schema({
     template: {type: [mongoose.Schema.Types.Mixed]},

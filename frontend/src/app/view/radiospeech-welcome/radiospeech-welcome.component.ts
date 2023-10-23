@@ -1,10 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {BackendCallerService, DisplayService} from "@app/core";
+import {DisplayService} from "@app/core";
 import {environment} from "@env/environment";
-import {getResetCounter, getUUID} from "@app/helpers/localStorageHelper";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogNoMaterialsComponent} from "@app/feature/dialog-no-materials/dialog-no-materials.component";
+import {getUUID} from "@app/helpers/localStorageHelper";
 
 @Component({
   selector: "app-radiospeech-welcome",
@@ -20,9 +18,7 @@ export class RadiospeechWelcomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private backendCaller: BackendCallerService,
     private displayService: DisplayService,
-    private dialog: MatDialog
 ) {  }
 
   ngOnInit(): void {
@@ -32,33 +28,7 @@ export class RadiospeechWelcomeComponent implements OnInit {
     });
   }
 
-  deepMode() {
-    this.loadUnused("deep");
-  }
-
-  shallowMode() {
-    this.loadUnused("shallow");
-  }
-
-  annotationMode() {
-    this.loadUnused("shallow");
-  }
-
   openEditor(matID: string) {
     this.router.navigate(["/", "radiolearn", "main", matID]).then();
   }
-
-  loadUnused(mode: string){
-    this.backendCaller.getUnusedMaterial(this.UUID, mode, getResetCounter()).subscribe(res => {
-      console.log(res);
-      if (res.material === null) {
-        this.dialog.open(DialogNoMaterialsComponent)
-      } else {
-        this.router.navigate(["/", "radiolearn", "main", res.material._id]);
-      }
-    }, err => {
-      console.log(err);
-    });
-  }
-
 }

@@ -42,17 +42,6 @@ export interface Material {
   judged:               boolean;
 }
 
-export interface RadiolearnData {
-  materialID: string;
-  template: Template;
-  ogTemplate: Template;
-  mode: string;
-  timestamp: number;
-  duration: number;
-  resetCounter: number;
-  boxes: any;
-}
-
 export interface DoctorReport{
   template: Template;
   timestamp: number;
@@ -62,11 +51,6 @@ export interface DoctorReport{
   mode: string;
   report: string;
   pseudonym: string;
-}
-
-export interface Participant {
-  UUID: string;
-  usageList: RadiolearnData[]
 }
 
 

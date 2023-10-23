@@ -1,5 +1,5 @@
 import {updatePartsBackwardsCompatible} from "../middleware/materialMiddleware";
-import {MaterialDB, ParticipantDB, TemplateDB} from '../models';
+import {MaterialDB, TemplateDB} from '../models';
 import {Document} from 'mongoose';
 import {Request, Response} from 'express';
 import fs from "fs";
@@ -354,54 +354,6 @@ export function listByFilter(req: Request, res: Response): void {
                 }
                 res.status(200).send({materials});
             });
-    }
-}
-
-export async function getRandom(req: Request, res: Response): Promise<void> {
-    try {
-        const count = await MaterialDB.countDocuments({judged: req.body.judged}).exec();
-        const random = Math.floor(Math.random() * count);
-        const randomMaterial = await MaterialDB.findOne({judged: req.body.judged}).skip(random).exec();
-        res.status(200).send({randomMaterial});
-    } catch (error) {
-        res.status(500).send({message: error})
-    }
-}
-
-/*
-* Returns a material that the participant with the UUID specified in the request body has not completed yet,
-* or the error "no-unused-materials" if no unused materials are left for this participant.
-* */
-export async function getUnusedMaterial(req: Request, res: Response): Promise<void> {
-    console.log('received request to give unused material');
-
-    try {
-        const participant = await ParticipantDB.findOne({'UUID': req.body.UUID}).exec();
-
-        const usedMaterialIDs: string[] = participant?.usageList
-            .filter(usageData => usageData.mode === req.body.mode && usageData.resetCounter === req.body.resetCounter)
-            .map(usageData => usageData.materialID) || [];
-
-        const materials = await MaterialDB.find({'judged': true}).exec();
-
-        const unusedMaterialIDs: string[] = materials
-            .filter(material => !usedMaterialIDs.includes(material._id.toString()))
-            .map(material => material._id.toString());
-
-        if (unusedMaterialIDs.length <= 0) {
-            console.log('No unused materials left');
-            res.status(200).send({material: null});
-            return;
-        }
-
-        const randomUnusedMaterialID = unusedMaterialIDs[Math.floor(Math.random() * unusedMaterialIDs.length)];
-        console.log('selected random id:', randomUnusedMaterialID);
-
-        const material = await MaterialDB.findOne({'_id': randomUnusedMaterialID}).exec();
-        res.status(200).send({material});
-    } catch (error) {
-        console.log('Error:', (error as Error).message);
-        res.status(500).send({message: (error as Error).message});
     }
 }
 

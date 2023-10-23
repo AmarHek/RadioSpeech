@@ -154,16 +154,6 @@ export class BackendCallerService {
       {judged}
     );
   }
-
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  getUnusedMaterial(UUID: string, mode: string, resetCounter: number){
-    return this.http.post<{message: string; material: Material}>(
-      this.materialUrl + "unused/",
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      {UUID, mode, resetCounter}
-    );
-  }
-
   getDocCount(judged: boolean, shallowDocTemplate: string) {
     return this.http.post<{message: string; count: number}>(
       this.materialUrl + "countMaterials/",

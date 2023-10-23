@@ -74,8 +74,6 @@ matRouter.put("/updateMaterialTemplatesBCByID/:id", MaterialController.updateMat
 matRouter.get("/listAll/", MaterialController.listAll);
 matRouter.post("/listByFilter/", MaterialController.listByFilter);
 matRouter.post("/countMaterials/", MaterialController.countMaterials);
-matRouter.post("/random/", MaterialController.getRandom);
-matRouter.post("/unused/", MaterialController.getUnusedMaterial);
 
 
 
