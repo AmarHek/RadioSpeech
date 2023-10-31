@@ -1,5 +1,5 @@
 
-export enum ErrorType {
+export enum TemplateErrorType {
     MISSING_REPORT_FOR_STRUCTURE = "Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)",
     MISSING_STRUCTURE = "Wenn optional markiert, dann darf Gliederung nicht leer sein",
     MISSING_SYNONYMS = "Wenn Befund angegeben ist, dürfen Synonyme nicht leer sein",
@@ -14,31 +14,31 @@ export enum ErrorType {
     INVALID_CHARACTER = "Unerlaubtes Textzeichen",
 }
 
-export class RowError {
+export class TemplateRowError {
     row: number;
-    type: ErrorType;
+    type: TemplateErrorType;
 
-    constructor(row: number, type: ErrorType) {
+    constructor(row: number, type: TemplateErrorType) {
         this.row = row;
         this.type = type;
     }
 }
 
-export class RowErrorCollection {
-    errorList: RowError[];
+export class TemplateRowErrorCollection {
+    errorList: TemplateRowError[];
     reportHeadline = "Beim Parsen der Schablone sind folgende Fehler aufgetreten:\n"
 
     constructor() {
         this.errorList = [];
     }
 
-    addError(error: RowError){
+    addError(error: TemplateRowError){
         this.errorList.push(error)
     }
 
-    errorToID(error: RowError) : string {
-        let keys = Object.keys(ErrorType);
-        let values = Object.values(ErrorType);
+    errorToID(error: TemplateRowError) : string {
+        let keys = Object.keys(TemplateErrorType);
+        let values = Object.values(TemplateErrorType);
 
         for (let value of values){
             if(value == error.type){

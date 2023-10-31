@@ -17,7 +17,7 @@ import {
     VariableText
 } from "../models/template.model";
 import {trim2DArray, trimArray, isNumber} from "../util/util";
-import {ErrorType, RowError, RowErrorCollection} from "./errorFeedback";
+import {TemplateErrorType, TemplateRowError, TemplateRowErrorCollection} from "./errorFeedback";
 
 interface Row {
     "Gliederung": string;
@@ -41,7 +41,7 @@ interface Row {
 const unwantedCharacters: RegExp[] = [new RegExp("\\\\[^n]")];
 const varInfoSeparator: string = "...";
 
-export function parseXLSToJson(binary_string: string, docKind: string): string | RowErrorCollection {
+export function parseXLSToJson(binary_string: string, docKind: string): string | TemplateRowErrorCollection {
     // get workbook from binary string
     const wb: XLSX.IWorkBook = XLSX.read(binary_string, {type: "binary"});
 
@@ -55,13 +55,13 @@ export function parseXLSToJson(binary_string: string, docKind: string): string |
 
     const parts: TopLevel[] = [];
 
-    let errorCollection = new RowErrorCollection();
+    let errorCollection = new TemplateRowErrorCollection();
     for (const row of rows) {
         let rowErrorTypes = getErrorTypesInRow(row, docKind === "shallowDoc")
         // + 2 because zero index and header is skipped
         let rowIndex = rows.indexOf(row) + 2;
         for (let errorType of rowErrorTypes) {
-            errorCollection.addError(new RowError(rowIndex, errorType))
+            errorCollection.addError(new TemplateRowError(rowIndex, errorType))
         }
     }
     if (errorCollection.errorList.length > 0) {
@@ -121,25 +121,25 @@ function rowContainsUnwantedCharacters(row: Row): boolean {
     return false;
 }
 
-function getErrorTypesInRow(row: Row, shallow: boolean): ErrorType[] {
+function getErrorTypesInRow(row: Row, shallow: boolean): TemplateErrorType[] {
     let foundErrorTypes = []
     if (rowContainsUnwantedCharacters(row)) {
-        foundErrorTypes.push(ErrorType.INVALID_CHARACTER)
+        foundErrorTypes.push(TemplateErrorType.INVALID_CHARACTER)
     }
     // Wenn Gliederung ausgefüllt, dann darf Befund nicht leer sein (außer bei Block und Aufzählung)
     if (row["Gliederung"] !== undefined && row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung"
         && row["Befund"] === undefined) {
-        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_STRUCTURE)
+        foundErrorTypes.push(TemplateErrorType.MISSING_REPORT_FOR_STRUCTURE)
     }
 
     // Wenn optional markiert, dann darf Gliederung nicht leer sein
     if (row["Optional"] !== undefined && row["Gliederung"] === undefined) {
-        foundErrorTypes.push(ErrorType.MISSING_STRUCTURE)
+        foundErrorTypes.push(TemplateErrorType.MISSING_STRUCTURE)
     }
 
     // Wenn Befund angegeben ist, dürfen Synonyme nicht leer sein
     if ((row["Befund"] !== undefined && row["Synonyme"] === undefined)) {
-        foundErrorTypes.push(ErrorType.MISSING_SYNONYMS)
+        foundErrorTypes.push(TemplateErrorType.MISSING_SYNONYMS)
     }
 
     // Wenn Befund leer, aber Eigenschaften von Befund ausgefüllt, Fehler, aber nur wenn nicht Aufzählung oder Block
@@ -147,20 +147,20 @@ function getErrorTypesInRow(row: Row, shallow: boolean): ErrorType[] {
             || row["Choice-Gruppe-ID"] !== undefined || row["Aufzählung-ID"] !== undefined
             || row["Ausschluss Befund"] !== undefined) && row["Befund"] === undefined
         && (row["Gliederung"] !== "Aufzählung" && row["Gliederung"] !== "Block")) {
-        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_ATTRIBUTES)
+        foundErrorTypes.push(TemplateErrorType.MISSING_REPORT_FOR_ATTRIBUTES)
     }
 
     // Wenn Befund oder Beurteilung Text angegeben ist, darf Befund nicht leer sein, außer bei Block und Aufzählung
     if ((row["Gliederung"] !== "Block" && row["Gliederung"] !== "Aufzählung")
         && (row["Text Befund"] !== undefined || row["Text Beurteilung"] !== undefined)
         && row["Befund"] === undefined) {
-        foundErrorTypes.push(ErrorType.MISSING_REPORT_FOR_REPORT_TEXT)
+        foundErrorTypes.push(TemplateErrorType.MISSING_REPORT_FOR_REPORT_TEXT)
     }
 
     // Wenn Variable angegeben, dann muss Variable-ID angegeben sein und umgekehrt
     if ((row["Variable-ID"] !== undefined && row["Variable-ID"] === undefined)
         || row["Variable-ID"] === undefined && row["Variable-Typ"] !== undefined) {
-        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_OR_ID)
+        foundErrorTypes.push(TemplateErrorType.MISSING_VARIABLE_OR_ID)
     }
 
     // Wenn Eigenschaften von Variable angegeben, dürfen Variable-ID und -Typ nicht leer sein
@@ -168,19 +168,19 @@ function getErrorTypesInRow(row: Row, shallow: boolean): ErrorType[] {
             row["Variable-Info"] !== undefined)
         && (row["Variable-ID"] === undefined || row["Variable-Typ"] == undefined)) {
         console.log("Error 7");
-        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_ID_OR_TYPE)
+        foundErrorTypes.push(TemplateErrorType.MISSING_VARIABLE_ID_OR_TYPE)
     }
 
     // Wenn Variable-Typ Text, Zahl oder Datum, darf Variable-Info nicht leer sein
     if ((row["Variable-Typ"] === "Text" || row["Variable-Typ"] === "Zahl" || row["Variable-Typ"] === "Datum")
         && row["Variable-Info"] === undefined) {
-        foundErrorTypes.push(ErrorType.MISSING_VARIABLE_ID_OR_TYPE)
+        foundErrorTypes.push(TemplateErrorType.MISSING_VARIABLE_ID_OR_TYPE)
     }
 
     // Wenn Variable-Info vorhanden sind, müssen Punkte (oder Ellipse) angegeben sein für Variablenpos.
     if (row["Variable-Info"] !== undefined
         && (!row["Variable-Info"].includes("...") && !row["Variable-Info"].includes("\u2026"))) {
-        foundErrorTypes.push(ErrorType.MISSING_ELLIPSE_FOR_VARIABLE)
+        foundErrorTypes.push(TemplateErrorType.MISSING_ELLIPSE_FOR_VARIABLE)
     }
 
     // Die folgenden Bedingungen nur für shallow Templates
@@ -188,12 +188,12 @@ function getErrorTypesInRow(row: Row, shallow: boolean): ErrorType[] {
         // Radio Buttons sind nicht erlaubt
         if (row["Choice-Gruppe-ID"] !== undefined) {
             console.log("Error 10");
-            foundErrorTypes.push(ErrorType.INVALID_RADIO_BUTTON)
+            foundErrorTypes.push(TemplateErrorType.INVALID_RADIO_BUTTON)
         }
 
         // Es darf keine Text-, Zahl- oder Datums-Variablen geben
         if (["Text", "Zahl", "Datum"].includes(row["Variable-Typ"])) {
-            foundErrorTypes.push(ErrorType.INVALID_VARIABLE_TYPE)
+            foundErrorTypes.push(TemplateErrorType.INVALID_VARIABLE_TYPE)
         }
     }
     return foundErrorTypes
