@@ -6,7 +6,6 @@ import {
   DataParserService,
   DisplayService,
   FilesSortingService,
-  ImageDisplayService,
   InputParserService,
   MatDialogService,
   UserService
@@ -24,7 +23,6 @@ import {
     DataParserService,
     DisplayService,
     FilesSortingService,
-    ImageDisplayService,
     InputParserService,
     MatDialogService,
     UserService
