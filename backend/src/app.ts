@@ -5,7 +5,7 @@ import path from "path";
 import {dbConfig} from "./config";
 import cors from "cors";
 
-import {matRouter, templateRouter, userRouter, authRouter} from './routes';
+import {templateRouter, userRouter, authRouter} from './routes';
 import {initData} from "./init";
 import {feedbackRouter} from "./routes/feedback.routes";
 import {usageRouter} from "./routes/usage.routes";
@@ -53,7 +53,6 @@ app.use("/auth", authRouter);
 app.use("/auth", userRouter);
 
 app.use("/database/usage", usageRouter);
-app.use("/database/material", matRouter);
 app.use("/database/template", templateRouter);
 app.use("/database/feedback", feedbackRouter);
 
