@@ -1,10 +1,5 @@
 import {Template} from "./template.model";
 
-export interface Image {
-  filename: string;
-  mimetype: string;
-}
-
 export interface DoctorReport{
   template: Template;
   timestamp: number;
