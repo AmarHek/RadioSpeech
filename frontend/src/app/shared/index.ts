@@ -2,7 +2,6 @@ export * from "./change-password/change-password.component";
 export * from "./change-username/change-username.component";
 export * from "./confirm-dialog/confirm-dialog.component";
 export * from "./feedback-dialog/feedback-dialog.component";
-export * from "./image-display/image-display.component";
 export * from "./input-dialog/input-dialog.component";
 export * from "./inputModal/inputModal.component";
 export * from "./report-options/report-options.component";

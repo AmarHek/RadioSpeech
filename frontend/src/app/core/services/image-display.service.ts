@@ -28,11 +28,11 @@ export class ImageDisplayService {
   displayBoxColor = this.displayBoxColor_regular
 
   constructor(private displayService: DisplayService, private settingsService: SettingsService) {
-    this.displayService.isMobile.subscribe((isMobile) => {
-      if (isMobile) {
-        this.maxImageWidth = window.innerWidth - 2;
-      }
-    });
+    // this.displayService.isMobile.subscribe((isMobile) => {
+    //   if (isMobile) {
+    //     this.maxImageWidth = window.innerWidth - 2;
+    //   }
+    // });
 
     this.settingsService.getSettingObservable().subscribe((setting) => {
       if (setting.setting_id == settingsService.Settings.ColorTheme.ID) {
