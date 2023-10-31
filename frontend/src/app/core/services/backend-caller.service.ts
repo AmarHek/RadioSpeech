@@ -17,7 +17,6 @@ import {Template, Feedback} from "@app/models";
 export class BackendCallerService {
 
   templateUrl = environment.database + "template/";
-  materialUrl = environment.database + "material/";
   usageUrl = environment.database + "usage/";
   feedbackUrl = environment.database + "feedback/";
 
@@ -82,7 +81,7 @@ export class BackendCallerService {
     );
   }
 
-  // MATERIAL API
+  // USAGE API
   addDoctorReport(template: Template, timestampStart: number,
                   duration: number, imageID: string, layoutID: number,
                   mode: string, report: string, pseudonym: string): Observable<{ success: boolean; message: string }> {
