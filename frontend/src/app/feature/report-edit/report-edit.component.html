@@ -1,1 +1,38 @@
-<p>report-edit works!</p>
+<html>
+<body class="disable-select">
+<div id="outer">
+  <div id="inner_fixed">
+  </div>
+
+  <div id="inner_remaining">
+    <mat-selection-list *ngIf="currentLayout.id === 1 && mode != 'f'"
+                        [multiple]="false">
+      <mat-list-option *ngFor="let cat of categories"
+                       (click)="onCategorySelected(cat.name)"
+                       [selected]="cat.name == selectedCat">
+        {{cat.name}}
+      </mat-list-option>
+    </mat-selection-list>
+
+    <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
+                        *ngIf="categories && mode != 'f'"
+                        [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
+                        (clickEvent)="updateFromOptionsEvent()" [categories]="categories"
+                        [layoutId]="currentLayout.id"></app-report-options>
+    <app-report-output class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
+  </div>
+
+  <button *ngIf="!timerStarted && isTester"
+          style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+          mat-raised-button color="primary" id="start-report-button" (click)="">
+    Start Befundung
+  </button>
+  <button *ngIf="timerStarted && isTester"
+          style="z-index: 300; position: fixed; bottom: 25px; right: 100px; font-weight: bold"
+          mat-raised-button color="primary" id="submit-report-button" (click)="">
+    Ende Befundung
+  </button>
+
+</div>
+</body>
+</html>
