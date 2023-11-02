@@ -3,11 +3,18 @@
 <div id="outer">
   <div id="inner_remaining">
     <mat-selection-list [multiple]="false">
-      <mat-list-option *ngFor="let cat of categories"
-                       (click)="onCategorySelected(cat.name)"
-                       [selected]="cat.name == selectedCat">
-        {{cat.name}}
-      </mat-list-option>
+      <div *ngFor="let cat of categories" style="display: flex; align-items: center;">
+        <mat-list-option (click)="onCategorySelected(cat.name)"
+                         [selected]="cat.name == selectedCat"
+                         style="width: 50%">
+          {{ cat.name }}
+        </mat-list-option>
+        <div *ngIf="cat.name == selectedCat">
+          <button (click) = moveCatUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_upward</mat-icon></button>
+          <button (click) = moveCatDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_downward</mat-icon></button>
+          <button (click) = removeCat(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
     </mat-selection-list>
 
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"

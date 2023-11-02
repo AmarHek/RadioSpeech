@@ -102,4 +102,26 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
   }
 
+  moveCatUp(name){
+    let index = this.categories.findIndex(cat => cat.name === name);
+    if(index > 0){
+      let temp = this.categories[index];
+      this.categories[index] = this.categories[index-1];
+      this.categories[index-1] = temp;
+    }
+  }
+
+  moveCatDown(name){
+    let index = this.categories.findIndex(cat => cat.name === name);
+    if(index < this.categories.length-1){
+      let temp = this.categories[index];
+      this.categories[index] = this.categories[index+1];
+      this.categories[index+1] = temp;
+    }
+  }
+
+  removeCat(name){
+    let index = this.categories.findIndex(cat => cat.name === name);
+    this.categories.splice(index, 1);
+  }
 }
