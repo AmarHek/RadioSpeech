@@ -13,6 +13,7 @@ import {Role} from "@app/models";
 import {LoginComponent} from "@app/view";
 import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
 import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
+import {ReportEditComponent} from "@app/feature/report-edit/report-edit.component";
 
 const routes: Routes = [
   {
@@ -34,6 +35,13 @@ const routes: Routes = [
   {
     path: "main/:id",
     component: ReportUiComponent,
+    canActivate: [AuthGuard],
+    canDeactivate: [PendingChangesGuard],
+    data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
+  },
+  {
+    path: "edit/:id",
+    component: ReportEditComponent,
     canActivate: [AuthGuard],
     canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }

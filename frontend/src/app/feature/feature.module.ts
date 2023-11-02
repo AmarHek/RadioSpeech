@@ -25,6 +25,7 @@ import {SharedModule} from "@app/shared/shared.module";
 import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { InputMaterialHandlerComponent } from './input-material-handler/input-material-handler.component';
+import { ReportEditComponent } from './report-edit/report-edit.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { InputMaterialHandlerComponent } from './input-material-handler/input-ma
     TemplateListComponent,
     ReportUiComponent,
     DialogTemplateComponent,
-    InputMaterialHandlerComponent
+    InputMaterialHandlerComponent,
+    ReportEditComponent
   ],
     imports: [
         CommonModule,
