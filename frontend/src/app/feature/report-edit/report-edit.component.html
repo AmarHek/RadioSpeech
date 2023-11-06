@@ -15,7 +15,9 @@
           <button (click) = removeCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
         </div>
       </div>
-      <button (click)="addCategory()" mat-raised-button color="primary" style="margin: 10px">+ Kategorie hinzufügen</button>
+      <div style="display: flex; justify-content: center; align-items: center">
+        <button (click)="addCategory()" mat-raised-button color="primary" style="margin: 10px">+ Kategorie hinzufügen</button>
+      </div>
     </mat-selection-list>
 
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
