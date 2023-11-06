@@ -10,11 +10,12 @@
           {{ cat.name }}
         </mat-list-option>
         <div *ngIf="cat.name == selectedCat">
-          <button (click) = moveCatUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_upward</mat-icon></button>
-          <button (click) = moveCatDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_downward</mat-icon></button>
-          <button (click) = removeCat(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+          <button (click) = moveCategoryUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_upward</mat-icon></button>
+          <button (click) = moveCategoryDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_downward</mat-icon></button>
+          <button (click) = removeCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
         </div>
       </div>
+      <button (click)="addCategory()" mat-raised-button color="primary" style="margin: 10px">Add Category</button>
     </mat-selection-list>
 
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"

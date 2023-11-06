@@ -102,25 +102,38 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     setTimeout(() => this.optionsComponent.initRows(this.categories), 5);
   }
 
-  moveCatUp(name){
+
+  addCategory() {
+    let name = window.prompt("Name der neuen Kategorie:");
+    if (name === null || name === "") return;
+    // only add if name is unique
+    if (this.categories.find(cat => cat.name === name) !== undefined) {
+      window.alert("Kategorie mit diesem Namen existiert bereits!");
+      return;
+    }
+    let newCat: Category = {kind: "category", name: name, optional: false, selectables: []};
+    this.categories.push(newCat);
+  }
+
+  moveCategoryUp(name: string) {
     let index = this.categories.findIndex(cat => cat.name === name);
-    if(index > 0){
+    if (index > 0) {
       let temp = this.categories[index];
-      this.categories[index] = this.categories[index-1];
-      this.categories[index-1] = temp;
+      this.categories[index] = this.categories[index - 1];
+      this.categories[index - 1] = temp;
     }
   }
 
-  moveCatDown(name){
+  moveCategoryDown(name: string) {
     let index = this.categories.findIndex(cat => cat.name === name);
-    if(index < this.categories.length-1){
+    if (index < this.categories.length - 1) {
       let temp = this.categories[index];
-      this.categories[index] = this.categories[index+1];
-      this.categories[index+1] = temp;
+      this.categories[index] = this.categories[index + 1];
+      this.categories[index + 1] = temp;
     }
   }
 
-  removeCat(name){
+  removeCategory(name) {
     let index = this.categories.findIndex(cat => cat.name === name);
     this.categories.splice(index, 1);
   }
