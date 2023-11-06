@@ -33,6 +33,7 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
+import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     VariablesComponent,
     ChangeRoleDialogComponent,
     AnnotationPopupComponent,
-    SettingsDialogComponent
+    SettingsDialogComponent,
+    DialogAddGroupComponent
   ],
     imports: [
         CommonModule,

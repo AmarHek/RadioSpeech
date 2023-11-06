@@ -1,10 +1,11 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, Role, Template, User} from "@app/models";
+import {Category, Group, Role, Template, User} from "@app/models";
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {ReportOptionsComponent} from "@app/shared";
+import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {
   AuthenticationService,
   BackendCallerService,
@@ -137,4 +138,25 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     let index = this.categories.findIndex(cat => cat.name === name);
     this.categories.splice(index, 1);
   }
+
+  addGroup(){
+    this.dialog.open(DialogAddGroupComponent, {
+      width: '500px',
+    }).afterClosed().subscribe(result =>{
+        console.log(result);
+        if (result === undefined) return;
+        // todo fix name
+        const group: Group = {kind: "group", name: "group_name", options: []};
+        result.forEach(option_name => {
+          group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
+        })
+        // add group to selectables of currently selected category
+        this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
+        console.log(this.categories)
+        this.optionsComponent.initRows(this.categories)
+    });
+  }
+
+
+
 }
