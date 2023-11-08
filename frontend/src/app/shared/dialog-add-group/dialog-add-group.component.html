@@ -1,9 +1,10 @@
 <h2 mat-dialog-title>Gruppe hinzufügen</h2>
 <mat-dialog-content>
   <div *ngFor="let field of fields; let i = index">
-    <mat-form-field style="width: 80%;">
+    <mat-form-field style="width: 60%;">
       <input placeholder="Option {{i+1}}" matInput #inputField>
     </mat-form-field>
+    <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openVariableDialog()">Variable hinzufügen</button>
     <button *ngIf="i > 1" mat-icon-button (click)="removeField(i)">
       <mat-icon>delete</mat-icon>
     </button>

@@ -35,6 +35,7 @@ import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.co
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
 import { DialogAddBoxComponent } from './dialog-add-box/dialog-add-box.component';
+import { DialogAddVariableComponent } from './dialog-add-variable/dialog-add-variable.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { DialogAddBoxComponent } from './dialog-add-box/dialog-add-box.component
     AnnotationPopupComponent,
     SettingsDialogComponent,
     DialogAddGroupComponent,
-    DialogAddBoxComponent
+    DialogAddBoxComponent,
+    DialogAddVariableComponent
   ],
     imports: [
         CommonModule,

@@ -155,7 +155,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   addGroup(){
     this.dialog.open(DialogAddGroupComponent, {
-      width: '500px',
+      width: '600px',
     }).afterClosed().subscribe(result =>{
         if (result === undefined) return;
         // todo fix name

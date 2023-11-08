@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Variable hinzufügen</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Variablentyp</mat-label>
+    <mat-select [(ngModel)]="selectedType">
+      <mat-option *ngFor="let option of variable_types" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="width: 80%;" *ngIf="selectedType == 'One Choice'">
+    <input placeholder="Optionen, getrennt durch /" matInput #inputField>
+  </mat-form-field>
+  <mat-form-field style="width: 80%;" *ngIf="selectedType == 'Multiple Choice'">
+    <input placeholder="Optionen, getrennt durch ;" matInput #inputField>
+  </mat-form-field>
+
+  <mat-form-field style="width: 80%;">
+    <input placeholder="Text Before" matInput #inputField>
+  </mat-form-field>
+
+  <mat-form-field style="width: 80%;">
+    <input placeholder="Text After" matInput #inputField>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Bestätigen</button>
+</mat-dialog-actions>
