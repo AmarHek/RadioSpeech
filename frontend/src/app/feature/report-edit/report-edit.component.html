@@ -6,12 +6,13 @@
       <div *ngFor="let cat of categories" style="display: flex; align-items: center;">
         <mat-list-option (click)="onCategorySelected(cat.name)"
                          [selected]="cat.name == selectedCat"
-                         style="width: 50%">
+                         style="width: 40%">
           {{ cat.name }}
         </mat-list-option>
         <div *ngIf="cat.name == selectedCat">
           <button (click) = moveCategoryUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_upward</mat-icon></button>
           <button (click) = moveCategoryDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_downward</mat-icon></button>
+          <button (click) = editCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
           <button (click) = removeCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
         </div>
       </div>

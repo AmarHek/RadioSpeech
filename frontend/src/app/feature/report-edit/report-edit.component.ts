@@ -139,6 +139,18 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.categories.splice(index, 1);
   }
 
+  editCategory(name){
+    let newName = window.prompt("Neuer Name der Kategorie:");
+    if (newName === null || newName === "") return;
+    // only add if name is unique
+    if (this.categories.find(cat => cat.name === newName) !== undefined) {
+      window.alert("Kategorie mit diesem Namen existiert bereits!");
+      return;
+    }
+    this.categories.find(cat => cat.name === name).name = newName;
+    this.optionsComponent.initRows(this.categories)
+  }
+
   addGroup(){
     this.dialog.open(DialogAddGroupComponent, {
       width: '500px',
