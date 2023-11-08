@@ -34,6 +34,7 @@ import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dial
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
+import { DialogAddBoxComponent } from './dialog-add-box/dialog-add-box.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.com
     ChangeRoleDialogComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent,
-    DialogAddGroupComponent
+    DialogAddGroupComponent,
+    DialogAddBoxComponent
   ],
     imports: [
         CommonModule,

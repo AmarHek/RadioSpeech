@@ -1,5 +1,5 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, Group, Role, Template, User} from "@app/models";
+import {Category, CheckBox, Group, Role, Template, User} from "@app/models";
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {MatDialog} from "@angular/material/dialog";
@@ -12,6 +12,7 @@ import {
   DataParserService,
 } from "@app/core";
 import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
+import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
 
 @Component({
   selector: "app-report-edit",
@@ -84,6 +85,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
         // prepare data
         this.template = template;
         this.categories = this.dataParser.extractCategories(template.parts);
+        console.log(this.categories)
         this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
         // prepare UI
         this.selectedCat = this.categories[0].name;
@@ -155,17 +157,25 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.dialog.open(DialogAddGroupComponent, {
       width: '500px',
     }).afterClosed().subscribe(result =>{
-        console.log(result);
         if (result === undefined) return;
         // todo fix name
         const group: Group = {kind: "group", name: "group_name", options: []};
         result.forEach(option_name => {
           group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
         })
-        // add group to selectables of currently selected category
         this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
-        console.log(this.categories)
         this.optionsComponent.initRows(this.categories)
+    });
+  }
+
+  addCheckBox(){
+    this.dialog.open(DialogAddBoxComponent, {
+      width: '500px',
+    }).afterClosed().subscribe(result =>{
+      if (result === undefined) return;
+      const checkbox: CheckBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: result};
+      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(checkbox);
+      this.optionsComponent.initRows(this.categories)
     });
   }
 

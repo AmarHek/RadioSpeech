@@ -22,7 +22,7 @@
     </mat-selection-list>
 
     <button (click) = "addGroup()" mat-raised-button color="primary" style="margin: 10px; float: left">Gruppe hinzufügen</button>
-    <button mat-raised-button color="primary" style="margin: 10px; float: left" disabled="true">Checkbox hinzufügen</button>
+    <button (click) = "addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox hinzufügen</button>
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories"
                         class="options-expand"
