@@ -13,7 +13,8 @@ export class DialogAddGroupComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -33,10 +34,10 @@ export class DialogAddGroupComponent implements OnInit {
     this.dialogRef.close(fieldValues)
   }
 
-  openVariableDialog(){
+  openVariableDialog() {
     this.dialog.open(DialogAddVariableComponent, {
       width: '600px',
-    }).afterClosed().subscribe(result =>{
+    }).afterClosed().subscribe(result => {
       if (result === undefined) return;
       // // todo fix name
       // const group: Group = {kind: "group", name: "group_name", options: []};
