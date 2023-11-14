@@ -141,7 +141,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.categories.splice(index, 1);
   }
 
-  editCategory(name){
+  editCategory(name) {
     let newName = window.prompt("Neuer Name der Kategorie:");
     if (newName === null || newName === "") return;
     // only add if name is unique
@@ -153,32 +153,39 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.optionsComponent.initRows(this.categories)
   }
 
-  addGroup(){
+  addGroup() {
     this.dialog.open(DialogAddGroupComponent, {
       width: '600px',
-    }).afterClosed().subscribe(result =>{
-        if (result === undefined) return;
-        // todo fix name
-        const group: Group = {kind: "group", name: "group_name", options: []};
-        result.forEach(option_name => {
-          group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
-        })
-        this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
-        this.optionsComponent.initRows(this.categories)
-    });
-  }
-
-  addCheckBox(){
-    this.dialog.open(DialogAddBoxComponent, {
-      width: '500px',
-    }).afterClosed().subscribe(result =>{
+    }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      const checkbox: CheckBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: result};
-      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(checkbox);
+      // todo fix name
+      const group: Group = {kind: "group", name: "group_name", options: []};
+      result.forEach(option_name => {
+        group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
+      })
+      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
       this.optionsComponent.initRows(this.categories)
     });
   }
 
+  addCheckBox() {
+    this.dialog.open(DialogAddBoxComponent, {
+      width: '500px',
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
+      const checkbox: CheckBox = {
+        keys: [],
+        normal: false,
+        text: "",
+        value: false,
+        variables: [],
+        kind: "box",
+        name: result
+      };
+      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(checkbox);
+      this.optionsComponent.initRows(this.categories)
+    });
+  }
 
 
 }
