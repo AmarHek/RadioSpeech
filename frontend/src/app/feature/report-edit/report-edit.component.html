@@ -10,24 +10,36 @@
           {{ cat.name }}
         </mat-list-option>
         <div *ngIf="cat.name == selectedCat">
-          <button (click) = moveCategoryUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_upward</mat-icon></button>
-          <button (click) = moveCategoryDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>arrow_downward</mat-icon></button>
-          <button (click) = editCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
-          <button (click) = removeCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+          <button (click)=moveCategoryUp(cat.name) style="margin-left: 10px" mat-mini-fab color="primary">
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button (click)=moveCategoryDown(cat.name) style="margin-left: 10px" mat-mini-fab color="primary">
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+          <button (click)=editCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)=removeCategory(cat.name) style="margin-left: 10px" mat-mini-fab color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </div>
       <div style="display: flex; justify-content: center; align-items: center">
-        <button (click)="addCategory()" mat-raised-button color="primary" style="margin: 10px">+ Kategorie hinzufügen</button>
+        <button (click)="addCategory()" mat-raised-button color="primary" style="margin: 10px">+ Kategorie hinzufügen
+        </button>
       </div>
     </mat-selection-list>
 
-    <button (click) = "addGroup()" mat-raised-button color="primary" style="margin: 10px; float: left">Gruppe hinzufügen</button>
-    <button (click) = "addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox hinzufügen</button>
+    <button (click)="addGroup()" mat-raised-button color="primary" style="margin: 10px; float: left">Gruppe hinzufügen
+    </button>
+    <button (click)="addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox
+      hinzufügen
+    </button>
     <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories"
                         class="options-expand"
                         [categories]="categories"
-                        >
+    >
     </app-report-options>
   </div>
 </div>
