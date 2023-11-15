@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {DialogAddVariableComponent} from "@app/shared/dialog-add-variable/dialog-add-variable.component";
 
@@ -14,6 +14,7 @@ export class DialogListVariablesComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
   }
 

@@ -28,8 +28,13 @@ export class DialogAddBoxComponent implements OnInit {
   }
 
   openVariableDialog() {
+    const dialogData = {
+      name: this.inputField.first.nativeElement.value,
+    };
+
     this.dialog.open(DialogListVariablesComponent, {
       width: '600px',
+      data: dialogData,
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
       // // todo fix name
