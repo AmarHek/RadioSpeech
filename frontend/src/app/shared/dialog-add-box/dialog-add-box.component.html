@@ -1,8 +1,9 @@
 <h2 mat-dialog-title>Checkbox hinzufügen</h2>
 <mat-dialog-content>
-  <mat-form-field style="width: 80%;">
+  <mat-form-field style="width: 60%;">
     <input placeholder="Name" matInput #inputField>
   </mat-form-field>
+  <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openVariableDialog()">Variablen verwalten</button>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
