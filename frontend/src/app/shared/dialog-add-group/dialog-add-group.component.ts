@@ -31,13 +31,11 @@ export class DialogAddGroupComponent implements OnInit {
   // checks if at least two options are filled in, to allow confirmation of dialog
   checkAtLeastTwoFilled(): boolean {
     let count = 0;
-    console.log(this.fields)
     for (let i = 0; i < this.fields.length; i++) {
       if (this.fields[i] !== null && this.fields[i].length > 0) {
         count++;
       }
     }
-    console.log(count)
     return count >= 2;
   }
   onCancel(): void {
