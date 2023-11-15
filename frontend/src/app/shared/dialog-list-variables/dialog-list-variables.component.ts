@@ -1,13 +1,15 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
+import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
+import {DialogAddVariableComponent} from "@app/shared/dialog-add-variable/dialog-add-variable.component";
 
 @Component({
-  selector: 'app-dialog-add-group',
-  templateUrl: './dialog-add-group.component.html',
-  styleUrls: ['./dialog-add-group.component.css']
+  selector: 'app-dialog-list-variables',
+  templateUrl: './dialog-list-variables.component.html',
+  styleUrls: ['./dialog-list-variables.component.css']
 })
-export class DialogAddGroupComponent implements OnInit {
+export class DialogListVariablesComponent implements OnInit {
+
   @ViewChildren('inputField') inputFields: QueryList<ElementRef>;
 
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
@@ -34,7 +36,7 @@ export class DialogAddGroupComponent implements OnInit {
   }
 
   openVariableDialog() {
-    this.dialog.open(DialogListVariablesComponent, {
+    this.dialog.open(DialogAddVariableComponent, {
       width: '600px',
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
@@ -51,4 +53,5 @@ export class DialogAddGroupComponent implements OnInit {
   removeField(index: number): void {
     this.fields.splice(index, 1);
   }
+
 }

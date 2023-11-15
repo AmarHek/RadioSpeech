@@ -36,6 +36,8 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
 import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
 import { DialogAddBoxComponent } from './dialog-add-box/dialog-add-box.component';
 import { DialogAddVariableComponent } from './dialog-add-variable/dialog-add-variable.component';
+import { DialogListVariablesComponent } from './dialog-list-variables/dialog-list-variables.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
@@ -56,27 +58,29 @@ import { DialogAddVariableComponent } from './dialog-add-variable/dialog-add-var
     SettingsDialogComponent,
     DialogAddGroupComponent,
     DialogAddBoxComponent,
-    DialogAddVariableComponent
+    DialogAddVariableComponent,
+    DialogListVariablesComponent
   ],
-    imports: [
-        CommonModule,
-        FontAwesomeModule,
-        FormsModule,
-        MatButtonModule,
-        MatButtonToggleModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        MatDividerModule,
-        MatIconModule,
-        MatInputModule,
-        MatProgressBarModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatTooltipModule,
-        NgbModule,
-        ReactiveFormsModule,
-        MatSlideToggleModule
-    ],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatTooltipModule,
+    NgbModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatCardModule
+  ],
     exports: [
         ChangePasswordComponent,
         ChangeUsernameComponent,

@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Variablen für Option (unbenannt)</h2>
+<mat-dialog-content>
+  <div class="field-container" *ngFor="let field of fields; let i = index">
+    <mat-card class="card">
+      <p>Test before, Datum, Text After</p>
+    </mat-card>
+    <button mat-icon-button style="margin-left: 10px" (click)="openVariableDialog()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="removeField(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <button mat-raised-button color="primary" (click)="openVariableDialog()">Variable hinzufügen</button>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()" [mat-dialog-close]="fields">Bestätigen</button>
+</mat-dialog-actions>
