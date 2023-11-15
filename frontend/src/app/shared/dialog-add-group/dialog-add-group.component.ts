@@ -18,12 +18,28 @@ export class DialogAddGroupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  fields: string[] = [null, null];
+  fields: string[] = ["", ""];
 
   addTextField(): void {
-    this.fields.push(null);
+    this.fields.push("");
   }
 
+  trackByFn(index: number, item: any): number {
+    return index;
+  }
+
+  // checks if at least two options are filled in, to allow confirmation of dialog
+  checkAtLeastTwoFilled(): boolean {
+    let count = 0;
+    console.log(this.fields)
+    for (let i = 0; i < this.fields.length; i++) {
+      if (this.fields[i] !== null && this.fields[i].length > 0) {
+        count++;
+      }
+    }
+    console.log(count)
+    return count >= 2;
+  }
   onCancel(): void {
     this.dialogRef.close()
   }
