@@ -17,11 +17,11 @@
   </mat-form-field>
 
   <mat-form-field style="width: 80%;">
-    <input placeholder="Text Before" matInput #inputField>
+    <input placeholder="Text Before" matInput [(ngModel)]="textBefore">
   </mat-form-field>
 
   <mat-form-field style="width: 80%;">
-    <input placeholder="Text After" matInput #inputField>
+    <input placeholder="Text After" matInput [(ngModel)]="textAfter">
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

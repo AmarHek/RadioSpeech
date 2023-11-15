@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
+import {VariableText, VariableOC, VariableMC, VariableCommon, VariableNumber, VariableDate} from "@app/models";
+
 
 @Component({
   selector: 'app-dialog-add-variable',
@@ -8,18 +10,33 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class DialogAddVariableComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>) { }
+  textBefore: string = "";
+  textAfter: string = "";
+
+  constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>) {
+  }
+
   variable_types = ["One Choice", "Multiple Choice", "Text", "Number", "Date"];
   selectedType: string = "One Choice"
 
   ngOnInit(): void {
   }
 
-  onConfirm(){
-    this.dialogRef.close()
+  onConfirm() {
+    if (this.selectedType === "Text") {
+      // create variableOC by getting relevant data from dialog
+      let variableText: VariableText = {
+        id: "",
+        kind: "text",
+        textAfter: this.textAfter.trim(),
+        textBefore: this.textBefore.trim(),
+        value: ""
+      };
+      this.dialogRef.close(variableText)
+    }
   }
 
-  onCancel(){
+  onCancel() {
     this.dialogRef.close()
   }
 }

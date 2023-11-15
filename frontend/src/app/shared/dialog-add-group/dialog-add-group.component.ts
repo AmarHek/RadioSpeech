@@ -1,6 +1,7 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
+import {Group} from "@app/models";
 
 @Component({
   selector: 'app-dialog-add-group',
@@ -10,18 +11,28 @@ import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/di
 export class DialogAddGroupComponent implements OnInit {
   @ViewChildren('inputField') inputFields: QueryList<ElementRef>;
 
+  group: Group = null;
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+    if (data !== null) {
+      this.group = data.group;
+      // this.fields = this.group.options.map(option => option.name);
+    } else {
+      this.group = {kind: "group", name: "group_name", options: []};
+      for (let i = 0; i < 2; i++) {
+        this.group.options.push({kind: "option", name: "", text: "", normal: false, variables: [], keys: []});
+      }
+    }
   }
 
   ngOnInit(): void {
   }
 
-  fields: string[] = ["", ""];
 
   addTextField(): void {
-    this.fields.push("");
+    this.group.options.push({kind: "option", name: "", text: "", normal: false, variables: [], keys: []});
   }
 
   trackByFn(index: number, item: any): number {
@@ -31,8 +42,8 @@ export class DialogAddGroupComponent implements OnInit {
   // checks if at least two options are filled in, to allow confirmation of dialog
   checkAtLeastTwoFilled(): boolean {
     let count = 0;
-    for (let i = 0; i < this.fields.length; i++) {
-      if (this.fields[i] !== null && this.fields[i].length > 0) {
+    for (let i = 0; i < this.group.options.length; i++) {
+      if (this.group.options[i] !== null && this.group.options[i].name.length > 0) {
         count++;
       }
     }
@@ -44,12 +55,21 @@ export class DialogAddGroupComponent implements OnInit {
 
   onConfirm(): void {
     const fieldValues = this.inputFields.map(field => field.nativeElement.value);
-    this.dialogRef.close(fieldValues)
+    const group: Group = {kind: "group", name: "group_name", options: []};
+    fieldValues.forEach(option_name => {
+      group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
+    })
+    this.dialogRef.close(group)
   }
 
-  openVariableDialog() {
+  openListVariablesDialog(name: string) {
+    const dialogData = {
+      name: name,
+      variables: this.group.options.find(option => option.name === name).variables
+    };
     this.dialog.open(DialogListVariablesComponent, {
       width: '600px',
+      data: dialogData
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
       // // todo fix name
@@ -63,6 +83,6 @@ export class DialogAddGroupComponent implements OnInit {
   }
 
   removeField(index: number): void {
-    this.fields.splice(index, 1);
+    this.group.options.splice(index, 1);
   }
 }
