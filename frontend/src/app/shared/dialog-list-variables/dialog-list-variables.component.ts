@@ -24,8 +24,6 @@ export class DialogListVariablesComponent implements OnInit {
     } else {
       this.variables = [];
     }
-
-    this.openAddVariableDialog()
   }
 
   ngOnInit(): void {
