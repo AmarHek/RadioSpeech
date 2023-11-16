@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {VariableText, VariableOC, VariableMC, VariableCommon, VariableNumber, VariableDate} from "@app/models";
 import {FormControl} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material/chips";
@@ -18,11 +18,29 @@ export class DialogAddVariableComponent implements OnInit {
 
   optionControl = new FormControl('');
   options: string[] = [];
+  title = "Variable hinzufügen"
 
   @ViewChild('optionInput') optionInput: ElementRef<HTMLInputElement>;
 
 
-  constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>) {
+  constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    if (data != null && data.variable_to_edit !== null) {
+      this.title = "Variable bearbeiten"
+      console.log(data.variable_to_edit)
+      this.textBefore = data.variable_to_edit.textBefore;
+      this.textAfter = data.variable_to_edit.textAfter;
+      if (data.variable_to_edit.kind === "oc") {
+        this.selectedType = "One Choice"
+        this.options = data.variable_to_edit.values;
+      } else if (data.variable_to_edit.kind === "mc") {
+        this.selectedType = "Multiple Choice"
+        this.options = data.variable_to_edit.values.map(value_name => value_name[0]);
+      } else if (data.variable_to_edit.kind === "text") {
+        this.selectedType = "Text"
+      }
+    }
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];

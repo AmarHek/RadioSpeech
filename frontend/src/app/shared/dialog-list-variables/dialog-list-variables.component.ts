@@ -56,11 +56,19 @@ export class DialogListVariablesComponent implements OnInit {
     this.dialogRef.close(this.variables)
   }
 
-  openAddVariableDialog() {
+  openAddVariableDialog(variable_to_edit = null) {
+    const dialogData = {
+      variable_to_edit: variable_to_edit
+    };
     this.dialog.open(DialogAddVariableComponent, {
       width: '600px',
+      data: dialogData
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
+      if (variable_to_edit != null){
+        this.variables[this.variables.indexOf(variable_to_edit)] = result;
+        return;
+      }
       this.variables.push(result);
     });
   }
