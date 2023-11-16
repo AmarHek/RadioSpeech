@@ -2,7 +2,7 @@ import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@a
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {DialogAddVariableComponent} from "@app/shared/dialog-add-variable/dialog-add-variable.component";
-import {Variable} from "@app/models";
+import {Variable, VariableMC, VariableOC} from "@app/models";
 
 @Component({
   selector: 'app-dialog-list-variables',
@@ -24,12 +24,32 @@ export class DialogListVariablesComponent implements OnInit {
     } else {
       this.variables = [];
     }
+
+    this.openAddVariableDialog()
   }
 
   ngOnInit(): void {
   }
 
+  textForVariableOC(variable: VariableOC) {
+    let result = "One Choice: ";
+    result += variable.textBefore + " ";
+    result += variable.values.join(" / ")
+    result += " " + variable.textAfter;
+    return result
+  }
+
+  textForVariableMC(variable: VariableMC) {
+    let result = "Multiple Choice: ";
+    result += variable.textBefore + " ";
+    let value_name_string = variable.values.map(value_name => value_name[0]).join(" | ")
+    result += value_name_string
+    result += " " + variable.textAfter;
+    return result
+  }
+
   fields: string[] = [null, null];
+
   onCancel(): void {
     this.dialogRef.close()
   }

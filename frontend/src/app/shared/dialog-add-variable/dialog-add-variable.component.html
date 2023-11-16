@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Variable hinzufügen</h2>
-<mat-dialog-content>
+<mat-dialog-content style="display: flex; flex-direction: column">
   <mat-form-field>
     <mat-label>Variablentyp</mat-label>
     <mat-select [(ngModel)]="selectedType">
@@ -9,18 +9,32 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field style="width: 80%;" *ngIf="selectedType == 'One Choice'">
-    <input placeholder="Optionen, getrennt durch /" matInput #inputField>
-  </mat-form-field>
-  <mat-form-field style="width: 80%;" *ngIf="selectedType == 'Multiple Choice'">
-    <input placeholder="Optionen, getrennt durch ;" matInput #inputField>
+  <mat-form-field class="example-chip-list" appearance="fill"
+                  *ngIf="selectedType == 'Multiple Choice' || selectedType == 'One Choice'">
+    <mat-label>Optionen</mat-label>
+    <mat-chip-list #chipList aria-label="Optionen">
+      <mat-chip
+        *ngFor="let option of options"
+        (removed)="remove(option)">
+        {{option}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Neue Option ..."
+        #optionInput
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
   </mat-form-field>
 
-  <mat-form-field style="width: 80%;">
+  <mat-form-field style="width: 100%;">
     <input placeholder="Text Before" matInput [(ngModel)]="textBefore">
   </mat-form-field>
 
-  <mat-form-field style="width: 80%;">
+  <mat-form-field style="width: 100%;">
     <input placeholder="Text After" matInput [(ngModel)]="textAfter">
   </mat-form-field>
 </mat-dialog-content>

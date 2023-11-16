@@ -1,6 +1,12 @@
 <h2 mat-dialog-title>Variablen für Option "{{this.data.name}}"</h2>
 <mat-dialog-content>
   <div class="field-container" *ngFor="let variable of this.variables; let i = index">
+    <mat-card class="card" *ngIf="variable.kind ==='oc'">
+      <p>{{textForVariableOC(variable)}}</p>
+    </mat-card>
+    <mat-card class="card" *ngIf="variable.kind ==='mc'">
+      <p>{{textForVariableMC(variable)}}</p>
+    </mat-card>
     <mat-card class="card" *ngIf="variable.kind ==='text'">
       <p>{{variable.textBefore}} ... {{variable.textAfter}}</p>
     </mat-card>
@@ -11,7 +17,7 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-  <button mat-raised-button color="primary" (click)="openAddVariableDialog()">Variable hinzufügen</button>
+  <button mat-raised-button color="primary" (click)="openAddVariableDialog()">+ Variable hinzufügen</button>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
