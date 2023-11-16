@@ -159,10 +159,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
       // todo fix name
-      const group: Group = {kind: "group", name: "group_name", options: []};
-      result.forEach(option_name => {
-        group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
-      })
+      let group: Group = result as Group
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
       this.optionsComponent.initRows(this.categories)
     });

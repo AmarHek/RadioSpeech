@@ -54,12 +54,7 @@ export class DialogAddGroupComponent implements OnInit {
   }
 
   onConfirm(): void {
-    const fieldValues = this.inputFields.map(field => field.nativeElement.value);
-    const group: Group = {kind: "group", name: "group_name", options: []};
-    fieldValues.forEach(option_name => {
-      group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
-    })
-    this.dialogRef.close(group)
+    this.dialogRef.close(this.group)
   }
 
   openListVariablesDialog(name: string) {
@@ -72,13 +67,7 @@ export class DialogAddGroupComponent implements OnInit {
       data: dialogData
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      // // todo fix name
-      // const group: Group = {kind: "group", name: "group_name", options: []};
-      // result.forEach(option_name => {
-      //   group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
-      // })
-      // this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
-      // this.optionsComponent.initRows(this.categories)
+      this.group.options.find(option => option.name === name).variables = result;
     });
   }
 

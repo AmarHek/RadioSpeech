@@ -53,8 +53,7 @@ export class DialogListVariablesComponent implements OnInit {
   }
 
   onConfirm(): void {
-    const fieldValues = this.inputFields.map(field => field.nativeElement.value);
-    this.dialogRef.close(fieldValues)
+    this.dialogRef.close(this.variables)
   }
 
   openAddVariableDialog() {
