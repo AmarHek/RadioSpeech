@@ -1,7 +1,8 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
+import {CheckBox} from "@app/models";
 
 @Component({
   selector: 'app-dialog-add-box',
@@ -10,26 +11,36 @@ import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/di
 })
 export class DialogAddBoxComponent implements OnInit {
 
+  checkBox: CheckBox = null;
+
   @ViewChildren('inputField') inputField: QueryList<ElementRef>;
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+    if (data !== null) {
+      this.checkBox = data.group;
+      // this.fields = this.group.options.map(option => option.name);
+    } else {
+      this.checkBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: "group_name"};
+    }
   }
 
   ngOnInit(): void {
   }
 
-  onConfirm(value: string): void {
-    this.dialogRef.close(value)
+  onConfirm(): void {
+    this.dialogRef.close(this.checkBox)
   }
 
   onCancel(): void {
     this.dialogRef.close()
   }
 
-  openVariableDialog() {
+  openListVariableDialog() {
     const dialogData = {
       name: this.inputField.first.nativeElement.value,
+      variables: this.checkBox.variables,
     };
 
     this.dialog.open(DialogListVariablesComponent, {
@@ -37,13 +48,7 @@ export class DialogAddBoxComponent implements OnInit {
       data: dialogData,
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      // // todo fix name
-      // const group: Group = {kind: "group", name: "group_name", options: []};
-      // result.forEach(option_name => {
-      //   group.options.push({kind: "option", name: option_name, text: "", normal: false, variables: [], keys: []});
-      // })
-      // this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
-      // this.optionsComponent.initRows(this.categories)
+      this.checkBox.variables = result;
     });
   }
 }

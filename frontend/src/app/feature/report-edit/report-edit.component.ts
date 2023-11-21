@@ -167,19 +167,11 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   addCheckBox() {
     this.dialog.open(DialogAddBoxComponent, {
-      width: '500px',
+      width: '630px',
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      const checkbox: CheckBox = {
-        keys: [],
-        normal: false,
-        text: "",
-        value: false,
-        variables: [],
-        kind: "box",
-        name: result
-      };
-      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(checkbox);
+      let box: CheckBox = result as CheckBox
+      this.categories.find(cat => cat.name === this.selectedCat).selectables.push(box);
       this.optionsComponent.initRows(this.categories)
     });
   }

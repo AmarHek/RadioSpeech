@@ -3,9 +3,9 @@
   <mat-form-field style="width: 60%;">
     <input placeholder="Name" matInput #inputField>
   </mat-form-field>
-  <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openVariableDialog()" [disabled]="inputField.value.length == 0">Variablen verwalten</button>
+  <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openListVariableDialog()" [disabled]="inputField.value.length == 0">Variablen verwalten ({{checkBox.variables.length}})</button>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
-  <button mat-raised-button color="primary" (click)="onConfirm(inputField.value)" [disabled]="inputField.value.length == 0">Bestätigen</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="inputField.value.length == 0">Bestätigen</button>
 </mat-dialog-actions>
