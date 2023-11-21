@@ -32,7 +32,7 @@ export class DialogListVariablesComponent implements OnInit {
   textForVariableOC(variable: VariableOC) {
     let result = "One Choice: ";
     result += variable.textBefore + " ";
-    result += variable.values.join(" / ")
+    result += "[" + variable.values.join(" / ") +"]"
     result += " " + variable.textAfter;
     return result
   }
@@ -41,7 +41,7 @@ export class DialogListVariablesComponent implements OnInit {
     let result = "Multiple Choice: ";
     result += variable.textBefore + " ";
     let value_name_string = variable.values.map(value_name => value_name[0]).join(" | ")
-    result += value_name_string
+    result +=  "[" + value_name_string + "]"
     result += " " + variable.textAfter;
     return result
   }

@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {VariableText, VariableOC, VariableMC, VariableCommon, VariableNumber, VariableDate} from "@app/models";
+import {VariableText, VariableOC, VariableMC, VariableNumber, VariableDate} from "@app/models";
 import {FormControl} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
@@ -80,6 +80,7 @@ export class DialogAddVariableComponent implements OnInit {
         value: ""
       };
       this.dialogRef.close(variableText)
+      return;
     }
 
     if (this.selectedType === "One Choice") {
@@ -93,6 +94,7 @@ export class DialogAddVariableComponent implements OnInit {
         value: ""
       };
       this.dialogRef.close(variableOC)
+      return;
     }
 
     if (this.selectedType === "Multiple Choice") {
@@ -110,10 +112,39 @@ export class DialogAddVariableComponent implements OnInit {
         textBefore: this.textBefore.trim(),
       };
       this.dialogRef.close(variableMC)
+      return;
     }
+
+    if (this.selectedType === "Number") {
+      // create variableOC by getting relevant data from dialog
+      let variableNumber: VariableNumber = {
+        value: 0,
+        id: "",
+        kind: "number",
+        textAfter: this.textAfter.trim(),
+        textBefore: this.textBefore.trim()
+      };
+      this.dialogRef.close(variableNumber)
+      return;
+    }
+
+    if (this.selectedType === "Date") {
+      // create variableOC by getting relevant data from dialog
+      let variableDate: VariableDate = {
+        value: undefined,
+        id: "",
+        kind: "date",
+        textAfter: this.textAfter.trim(),
+        textBefore: this.textBefore.trim()
+      };
+      this.dialogRef.close(variableDate)
+      return;
+    }
+
   }
 
   onCancel() {
     this.dialogRef.close()
   }
+
 }
