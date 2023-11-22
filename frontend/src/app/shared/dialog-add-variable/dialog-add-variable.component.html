@@ -11,7 +11,7 @@
 
   <mat-form-field class="example-chip-list" appearance="fill"
                   *ngIf="selectedType == 'Multiple Choice' || selectedType == 'One Choice'">
-    <mat-label>Optionen</mat-label>
+    <mat-label>Optionen (Durch Komma getrennt)</mat-label>
     <mat-chip-list #chipList aria-label="Optionen">
       <mat-chip
         *ngFor="let option of options"
@@ -40,5 +40,8 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
-  <button mat-raised-button color="primary" (click)="onConfirm()">Bestätigen</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()"
+          [disabled]="(selectedType=='Multiple Choice' || selectedType =='One Choice') && options.length < 2">
+    Bestätigen
+  </button>
 </mat-dialog-actions>
