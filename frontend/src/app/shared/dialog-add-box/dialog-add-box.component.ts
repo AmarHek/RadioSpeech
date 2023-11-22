@@ -1,6 +1,5 @@
 import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
 import {CheckBox} from "@app/models";
 
@@ -14,13 +13,12 @@ export class DialogAddBoxComponent implements OnInit {
   checkBox: CheckBox = null;
 
   @ViewChildren('inputField') inputField: QueryList<ElementRef>;
-  constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
+  constructor(public dialogRef: MatDialogRef<DialogAddBoxComponent>,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data !== null) {
       this.checkBox = data.group;
-      // this.fields = this.group.options.map(option => option.name);
     } else {
       this.checkBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: ""};
     }

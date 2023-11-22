@@ -39,6 +39,7 @@ import { DialogAddVariableComponent } from './dialog-add-variable/dialog-add-var
 import { DialogListVariablesComponent } from './dialog-list-variables/dialog-list-variables.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
+import { DialogAddCategoryComponent } from './dialog-add-category/dialog-add-category.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {MatChipsModule} from "@angular/material/chips";
     DialogAddGroupComponent,
     DialogAddBoxComponent,
     DialogAddVariableComponent,
-    DialogListVariablesComponent
+    DialogListVariablesComponent,
+    DialogAddCategoryComponent
   ],
     imports: [
         CommonModule,

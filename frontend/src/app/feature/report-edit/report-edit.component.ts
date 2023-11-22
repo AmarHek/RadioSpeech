@@ -13,6 +13,7 @@ import {
 } from "@app/core";
 import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
+import {DialogAddCategoryComponent} from "@app/shared/dialog-add-category/dialog-add-category.component";
 
 @Component({
   selector: "app-report-edit",
@@ -107,15 +108,34 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
 
   addCategory() {
-    let name = window.prompt("Name der neuen Kategorie:");
-    if (name === null || name === "") return;
-    // only add if name is unique
-    if (this.categories.find(cat => cat.name === name) !== undefined) {
-      window.alert("Kategorie mit diesem Namen existiert bereits!");
-      return;
-    }
-    let newCat: Category = {kind: "category", name: name, optional: false, selectables: []};
-    this.categories.push(newCat);
+    let dialogData = {
+      categoryNames: this.categories.map(cat => cat.name),
+      categoryName: null
+    };
+    this.dialog.open(DialogAddCategoryComponent, {
+      data: dialogData,
+      width: '350px',
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
+      let newCat: Category = {kind: "category", name: result, optional: false, selectables: []};
+      this.categories.push(newCat);
+      this.optionsComponent.initRows(this.categories)
+    });
+  }
+
+  renameCategory(name: string) {
+    let dialogData = {
+      categoryNames: this.categories.map(cat => cat.name),
+      categoryName: name
+    };
+    this.dialog.open(DialogAddCategoryComponent, {
+      data: dialogData,
+      width: '350px',
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
+      this.categories.find(cat => cat.name === name).name = result;
+      this.optionsComponent.initRows(this.categories)
+    });
   }
 
   moveCategoryUp(name: string) {
@@ -141,17 +161,6 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.categories.splice(index, 1);
   }
 
-  editCategory(name) {
-    let newName = window.prompt("Neuer Name der Kategorie:");
-    if (newName === null || newName === "") return;
-    // only add if name is unique
-    if (this.categories.find(cat => cat.name === newName) !== undefined) {
-      window.alert("Kategorie mit diesem Namen existiert bereits!");
-      return;
-    }
-    this.categories.find(cat => cat.name === name).name = newName;
-    this.optionsComponent.initRows(this.categories)
-  }
 
   addGroup() {
     this.dialog.open(DialogAddGroupComponent, {
