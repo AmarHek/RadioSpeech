@@ -59,7 +59,7 @@ export class DialogAddGroupComponent implements OnInit {
 
   openListVariablesDialog(name: string) {
     const dialogData = {
-      name: name,
+      displayName: 'Option "' + name + '"',
       variables: this.group.options.find(option => option.name === name).variables
     };
     this.dialog.open(DialogListVariablesComponent, {
