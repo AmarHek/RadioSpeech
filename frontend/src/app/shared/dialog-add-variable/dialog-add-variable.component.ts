@@ -26,21 +26,39 @@ export class DialogAddVariableComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    if (data != null && data.variable_to_edit !== null) {
-      this.title = "Variable bearbeiten"
-      console.log(data.variable_to_edit)
-      this.textBefore = data.variable_to_edit.textBefore;
-      this.textAfter = data.variable_to_edit.textAfter;
-      if (data.variable_to_edit.kind === "oc") {
-        this.selectedType = "One Choice"
-        this.options = data.variable_to_edit.values;
-      } else if (data.variable_to_edit.kind === "mc") {
-        this.selectedType = "Multiple Choice"
-        this.options = data.variable_to_edit.values.map(value_name => value_name[0]);
-      } else if (data.variable_to_edit.kind === "text") {
-        this.selectedType = "Text"
-      }
+    if (data === null || data.variable_to_edit === null) return;
+
+    this.title = "Variable bearbeiten"
+    this.textBefore = data.variable_to_edit.textBefore;
+    this.textAfter = data.variable_to_edit.textAfter;
+
+    if (data.variable_to_edit.kind === "oc") {
+      this.selectedType = "One Choice"
+      this.options = data.variable_to_edit.values;
+      return;
     }
+
+    if (data.variable_to_edit.kind === "mc") {
+      this.selectedType = "Multiple Choice"
+      this.options = data.variable_to_edit.values.map(value_name => value_name[0]);
+      return;
+    }
+
+    if (data.variable_to_edit.kind === "text") {
+      this.selectedType = "Text"
+      return;
+    }
+
+    if (data.variable_to_edit.kind === "number") {
+      this.selectedType = "Number"
+      return;
+    }
+
+    if (data.variable_to_edit.kind === "date") {
+      this.selectedType = "Date"
+      return;
+    }
+
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
