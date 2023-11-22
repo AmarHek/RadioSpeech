@@ -35,12 +35,13 @@
     <button (click)="addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox
       hinzufügen
     </button>
-    <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
+    <report-edit-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories"
+                         (editClickEvent)="edit($event)"
                         class="options-expand"
                         [categories]="categories"
     >
-    </app-report-options>
+    </report-edit-options>
   </div>
 </div>
 </body>

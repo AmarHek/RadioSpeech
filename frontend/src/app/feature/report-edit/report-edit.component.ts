@@ -4,7 +4,6 @@ import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/c
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {ReportOptionsComponent} from "@app/shared";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {
   AuthenticationService,
@@ -14,6 +13,7 @@ import {
 import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
 import {DialogAddCategoryComponent} from "@app/shared/dialog-add-category/dialog-add-category.component";
+import {ReportEditOptionsComponent} from "@app/shared/report-edit-options/report-edit-options.component";
 
 @Component({
   selector: "app-report-edit",
@@ -25,7 +25,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
   @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
-  @ViewChild(ReportOptionsComponent) private optionsComponent: ReportOptionsComponent;
+  @ViewChild(ReportEditOptionsComponent) private optionsComponent: ReportEditOptionsComponent;
 
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
@@ -67,6 +67,19 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
   ngOnInit() {
     this.authenticationService.user.subscribe(x => this.user = x);
     this.getData();
+  }
+
+  edit(elementToEdit){
+    if(elementToEdit.kind === "group"){
+      this.editGroup(elementToEdit)
+    }
+    if(elementToEdit.kind === "box"){
+      this.editCheckBox(elementToEdit)
+    }
+  }
+
+  editGroup(group: Group) {
+
   }
 
   // gets parts from node server via id in url
@@ -182,6 +195,18 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let box: CheckBox = result as CheckBox
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(box);
       this.optionsComponent.initRows(this.categories)
+    });
+  }
+
+  editCheckBox(boxToEdit: CheckBox) {
+    let dialogData = {
+      boxToEdit: boxToEdit
+    };
+    this.dialog.open(DialogAddBoxComponent, {
+      width: '630px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
     });
   }
 

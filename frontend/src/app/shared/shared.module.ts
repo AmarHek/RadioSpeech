@@ -40,6 +40,7 @@ import { DialogListVariablesComponent } from './dialog-list-variables/dialog-lis
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
 import { DialogAddCategoryComponent } from './dialog-add-category/dialog-add-category.component';
+import { ReportEditOptionsComponent } from './report-edit-options/report-edit-options.component';
 
 
 @NgModule({
@@ -62,7 +63,9 @@ import { DialogAddCategoryComponent } from './dialog-add-category/dialog-add-cat
     DialogAddBoxComponent,
     DialogAddVariableComponent,
     DialogListVariablesComponent,
-    DialogAddCategoryComponent
+    DialogAddCategoryComponent,
+    ReportEditOptionsComponent,
+    ReportEditOptionsComponent
   ],
     imports: [
         CommonModule,
@@ -85,18 +88,19 @@ import { DialogAddCategoryComponent } from './dialog-add-category/dialog-add-cat
         MatCardModule,
         MatChipsModule
     ],
-    exports: [
-        ChangePasswordComponent,
-        ChangeUsernameComponent,
-        ConfirmDialogComponent,
-        FeedbackDialogComponent,
-        InputDialogComponent,
-        InputModalComponent,
-        ReportOptionsComponent,
-        ReportOutputComponent,
-        SignUpComponent,
-        UploadTemplateComponent,
-        VariablesComponent,
-    ]
+  exports: [
+    ChangePasswordComponent,
+    ChangeUsernameComponent,
+    ConfirmDialogComponent,
+    FeedbackDialogComponent,
+    InputDialogComponent,
+    InputModalComponent,
+    ReportOptionsComponent,
+    ReportOutputComponent,
+    SignUpComponent,
+    UploadTemplateComponent,
+    VariablesComponent,
+    ReportEditOptionsComponent,
+  ]
 })
 export class SharedModule { }

@@ -11,6 +11,8 @@ import {CheckBox} from "@app/models";
 export class DialogAddBoxComponent implements OnInit {
 
   checkBox: CheckBox = null;
+  inputValue: string = "";
+  title: string = "Checkbox hinzufügen";
 
   @ViewChildren('inputField') inputField: QueryList<ElementRef>;
   constructor(public dialogRef: MatDialogRef<DialogAddBoxComponent>,
@@ -18,7 +20,10 @@ export class DialogAddBoxComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data !== null) {
-      this.checkBox = data.group;
+      this.checkBox = data.boxToEdit;
+      this.inputValue = this.checkBox.name;
+      this.title = "Checkbox bearbeiten"
+
     } else {
       this.checkBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: ""};
     }

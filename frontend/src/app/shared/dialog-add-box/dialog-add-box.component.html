@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Checkbox hinzufügen</h2>
+<h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
   <mat-form-field style="width: 60%;">
-    <input placeholder="Name" matInput #inputField>
+    <input placeholder="Name" matInput #inputField [(ngModel)]="inputValue">
   </mat-form-field>
   <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openListVariableDialog()" [disabled]="inputField.value.length == 0">Variablen verwalten ({{checkBox.variables.length}})</button>
 </mat-dialog-content>
