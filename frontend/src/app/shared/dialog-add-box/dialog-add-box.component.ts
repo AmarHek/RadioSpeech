@@ -22,7 +22,7 @@ export class DialogAddBoxComponent implements OnInit {
       this.checkBox = data.group;
       // this.fields = this.group.options.map(option => option.name);
     } else {
-      this.checkBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: "group_name"};
+      this.checkBox = {keys: [], normal: false, text: "", value: false, variables: [], kind: "box", name: ""};
     }
   }
 
@@ -30,6 +30,7 @@ export class DialogAddBoxComponent implements OnInit {
   }
 
   onConfirm(): void {
+    this.checkBox.name = this.inputField.first.nativeElement.value;
     this.dialogRef.close(this.checkBox)
   }
 
