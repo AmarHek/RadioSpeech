@@ -36,7 +36,7 @@ export class DialogAddGroupComponent implements OnInit {
     this.group.options.push({kind: "option", name: "", text: "", normal: false, variables: [], keys: []});
   }
 
-  trackByFn(index: number, item: any): number {
+  trackByFn(index: number, _: any): number {
     return index;
   }
 
