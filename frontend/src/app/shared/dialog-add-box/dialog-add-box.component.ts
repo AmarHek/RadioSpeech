@@ -44,7 +44,7 @@ export class DialogAddBoxComponent implements OnInit {
   openListVariableDialog() {
     const dialogData = {
       displayName: 'Checkbox "' + this.inputField.first.nativeElement.value + '"',
-      variables: this.checkBox.variables,
+      variables: JSON.parse(JSON.stringify(this.checkBox.variables)),
     };
 
     this.dialog.open(DialogListVariablesComponent, {

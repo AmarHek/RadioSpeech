@@ -82,7 +82,6 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   }
 
-  // gets parts from node server via id in url
   getData() {
     this.route.paramMap.subscribe(ps => {
       console.log("subscribing")
@@ -200,13 +199,18 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   editCheckBox(boxToEdit: CheckBox) {
     let dialogData = {
-      boxToEdit: boxToEdit
+      boxToEdit: JSON.parse(JSON.stringify(boxToEdit))
     };
     this.dialog.open(DialogAddBoxComponent, {
       width: '630px',
       data: dialogData
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
+      // replace box with edited result
+      let category = this.categories.find(cat => cat.name === this.selectedCat);
+      let index = category.selectables.findIndex(box => box.name === boxToEdit.name);
+      category.selectables[index] = result;
+      this.optionsComponent.initRows(this.categories)
     });
   }
 
