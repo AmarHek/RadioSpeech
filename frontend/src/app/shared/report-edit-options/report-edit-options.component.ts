@@ -20,6 +20,7 @@ export class ReportEditOptionsComponent implements OnInit {
   @Input() selectedSelectableID: string;
 
   @Output() editClickEvent = new EventEmitter<any>();
+  @Output() removeClickEvent = new EventEmitter<any>();
 
   // TODO Make maxRowLength configurable
 
@@ -37,13 +38,17 @@ export class ReportEditOptionsComponent implements OnInit {
     this.initRows(this.categories);
   }
 
-  initRows(changedCategories) {
+  initRows(changedCategories: any) {
     this.categories = changedCategories;
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
   }
 
-  edit(elementToEdit){
+  edit(elementToEdit: any){
     this.editClickEvent.emit(elementToEdit)
+  }
+
+  remove(elementToRemove: any){
+    this.removeClickEvent.emit(elementToRemove)
   }
 
   private determineWidth() {

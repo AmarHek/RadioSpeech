@@ -38,6 +38,7 @@
     <report-edit-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories"
                          (editClickEvent)="edit($event)"
+                         (removeClickEvent)="removeElement($event)"
                         class="options-expand"
                         [categories]="categories"
     >

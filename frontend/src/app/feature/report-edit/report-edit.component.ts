@@ -14,6 +14,7 @@ import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler
 import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
 import {DialogAddCategoryComponent} from "@app/shared/dialog-add-category/dialog-add-category.component";
 import {ReportEditOptionsComponent} from "@app/shared/report-edit-options/report-edit-options.component";
+import {ConfirmDialogComponent} from "@app/shared";
 
 @Component({
   selector: "app-report-edit",
@@ -197,6 +198,36 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       this.optionsComponent.initRows(this.categories)
     });
 
+  }
+
+  removeElement(elementToRemove) {
+    let message = `Soll die Checkbox "${elementToRemove.name}" wirklich gelöscht werden?`
+    if (elementToRemove.kind == "option") {
+      // get all option names of this group:
+      let group = this.categories.find(cat => cat.name === this.selectedCat).selectables.find(sel => sel.name === elementToRemove.groupID) as Group;
+      let optionNames = group.options.map(opt => opt.name);
+      //concatenate them in a stirng
+      let optionNamesString = optionNames.join(", ");
+      // Use template literals for multi-line string
+      message = `Soll die gesamte Gruppe (${optionNamesString}) wirklich gelöscht werden? Um einzelne Optionen zu löschen, bearbeiten Sie die Gruppe.`;
+    }
+
+    this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        type: "warning",
+        title: "Löschen bestätigen",
+        message: message
+      }
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
+      if (result === true) {
+        let category = this.categories.find(cat => cat.name === this.selectedCat);
+        let index = category.selectables.findIndex(sel => sel.name === elementToRemove.name);
+        category.selectables.splice(index, 1);
+        this.optionsComponent.initRows(this.categories)
+      }
+    });
   }
 
   addCheckBox() {
