@@ -1,5 +1,5 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, CheckBox, Group, Role, Template, User} from "@app/models";
+import {Category, CheckBox, Group, Option, Role, Template, User} from "@app/models";
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
 import {MatDialog} from "@angular/material/dialog";
@@ -69,27 +69,21 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.getData();
   }
 
-  edit(elementToEdit){
-    if(elementToEdit.kind === "group"){
+  edit(elementToEdit) {
+    if (elementToEdit.kind === "option") {
       this.editGroup(elementToEdit)
     }
-    if(elementToEdit.kind === "box"){
+    if (elementToEdit.kind === "box") {
       this.editCheckBox(elementToEdit)
     }
   }
 
-  editGroup(group: Group) {
-
-  }
 
   getData() {
     this.route.paramMap.subscribe(ps => {
-      console.log("subscribing")
       if (!ps.has("id")) return;
       const templateID = ps.get("id");
-      console.log("template id is " + templateID);
       this.backendCaller.getTemplateById(templateID).subscribe((template: Template) => {
-        console.log("got template from backend")
         if (template === undefined) {
           window.alert("Dieses Dictionary existiert nicht! " +
             "Bitte auf List Seite zurückkehren und eines der dort aufgeführten Dictionaries auswählen.");
@@ -98,7 +92,6 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
         // prepare data
         this.template = template;
         this.categories = this.dataParser.extractCategories(template.parts);
-        console.log(this.categories)
         this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
         // prepare UI
         this.selectedCat = this.categories[0].name;
@@ -184,6 +177,26 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
       this.optionsComponent.initRows(this.categories)
     });
+  }
+
+  editGroup(option: Option) {
+    // find corresponding group
+    let group = this.categories.find(cat => cat.name === this.selectedCat).selectables.find(sel => sel.name === option.groupID) as Group;
+    let dialogData = {
+      groupToEdit: JSON.parse(JSON.stringify(group))
+    };
+    this.dialog.open(DialogAddGroupComponent, {
+      width: '630px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result === undefined) return;
+      // replace group with edited result
+      let category = this.categories.find(cat => cat.name === this.selectedCat);
+      let index = category.selectables.findIndex(sel => sel.name === group.name);
+      category.selectables[index] = result;
+      this.optionsComponent.initRows(this.categories)
+    });
+
   }
 
   addCheckBox() {

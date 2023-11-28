@@ -12,13 +12,14 @@ export class DialogAddGroupComponent implements OnInit {
   @ViewChildren('inputField') inputFields: QueryList<ElementRef>;
 
   group: Group = null;
+  title: string = "Gruppe hinzufügen";
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data !== null) {
-      this.group = data.group;
-      // this.fields = this.group.options.map(option => option.name);
+      this.group = data.groupToEdit;
+      this.title = "Gruppe bearbeiten"
     } else {
       this.group = {kind: "group", name: "group_name", options: []};
       for (let i = 0; i < 2; i++) {
