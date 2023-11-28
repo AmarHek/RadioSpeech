@@ -8,7 +8,7 @@
             (click)="openListVariablesDialog(inputField.value)" disabled="{{inputField.value.length == 0}}">Variablen
       verwalten ({{option.variables.length}})
     </button>
-    <button *ngIf="i > 1" mat-icon-button (click)="removeField(i)">
+    <button *ngIf="this.group.options.length > 2" mat-icon-button (click)="removeField(i)">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
