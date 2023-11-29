@@ -50,7 +50,7 @@
               {{clickable.name}}
             </label>
             <mat-icon style="float:right;" (click)="edit(clickable)" *ngIf="hoveredColumn === columnIndex && hoveredRow === rowIndex">edit</mat-icon>
-            <mat-icon style="float:right;" (click)="remove(clickable)" *ngIf="hoveredColumn === columnIndex && hoveredRow === rowIndex">delete</mat-icon>
+            <mat-icon style="float:right;" (click)="remove(clickable)" *ngIf="hoveredColumn === columnIndex && hoveredRow === rowIndex && this.dataParser.getGroupByID(row.name, clickable.groupID, this.categories).options.length > 2">delete</mat-icon>
           </td>
           <app-variables *ngIf="clickable.variables.length > 0"
                          (clickEvent)="this.dataParser.updateFromVariable(clickable,this.clickEvent, undefined, this.categories,row.name)"
