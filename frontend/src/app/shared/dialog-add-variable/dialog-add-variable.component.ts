@@ -1,7 +1,6 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {VariableText, VariableOC, VariableMC, VariableNumber, VariableDate} from "@app/models";
-import {FormControl} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 
@@ -16,11 +15,12 @@ export class DialogAddVariableComponent implements OnInit {
   textBefore: string = "";
   textAfter: string = "";
 
-  optionControl = new FormControl('');
+  selectedChipName: string = "";
   options: string[] = [];
-  title = "Variable hinzufügen"
+  synonyms: string[][] = [];
+  visibleSynonyms: string[] = [];
 
-  @ViewChild('optionInput') optionInput: ElementRef<HTMLInputElement>;
+  title = "Variable hinzufügen"
 
 
   constructor(public dialogRef: MatDialogRef<DialogAddVariableComponent>,
@@ -35,12 +35,14 @@ export class DialogAddVariableComponent implements OnInit {
     if (data.variable_to_edit.kind === "oc") {
       this.selectedType = "One Choice"
       this.options = data.variable_to_edit.values;
+      this.synonyms = data.variable_to_edit.keys;
       return;
     }
 
     if (data.variable_to_edit.kind === "mc") {
       this.selectedType = "Multiple Choice"
       this.options = data.variable_to_edit.values.map(value_name => value_name[0]);
+      this.synonyms = data.variable_to_edit.keys;
       return;
     }
 
@@ -68,22 +70,43 @@ export class DialogAddVariableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  add(event: MatChipInputEvent): void {
+  onChipSelect(chipName: string) {
+    this.selectedChipName = chipName;
+    this.visibleSynonyms = this.synonyms[this.options.indexOf(chipName)];
+  }
+
+  addOption(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
       this.options.push(value);
     }
-
     // Clear the input value
     event.chipInput!.clear();
-
-    this.optionControl.setValue(null);
+    this.synonyms.push([]);
   }
 
-  remove(option: string): void {
+  removeOption(option: string): void {
     const index = this.options.indexOf(option);
     if (index >= 0) {
       this.options.splice(index, 1);
+      this.synonyms.splice(index, 1)
+    }
+  }
+
+  addSynonym(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.visibleSynonyms.push(value);
+      console.log(value)
+    }
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  removeSynonym(option: string): void {
+    const index = this.visibleSynonyms.indexOf(option);
+    if (index >= 0) {
+      this.visibleSynonyms.splice(index, 1);
     }
   }
 
@@ -109,7 +132,8 @@ export class DialogAddVariableComponent implements OnInit {
         kind: "oc",
         textAfter: this.textAfter.trim(),
         textBefore: this.textBefore.trim(),
-        value: ""
+        value: "",
+        keys: this.synonyms
       };
       this.dialogRef.close(variableOC)
       return;
@@ -128,6 +152,7 @@ export class DialogAddVariableComponent implements OnInit {
         kind: "mc",
         textAfter: this.textAfter.trim(),
         textBefore: this.textBefore.trim(),
+        keys: this.synonyms
       };
       this.dialogRef.close(variableMC)
       return;
