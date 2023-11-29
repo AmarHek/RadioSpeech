@@ -2,6 +2,8 @@ import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@a
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
 import {CheckBox} from "@app/models";
+import {MatChipInputEvent} from "@angular/material/chips";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'app-dialog-add-box',
@@ -13,6 +15,7 @@ export class DialogAddBoxComponent implements OnInit {
   checkBox: CheckBox = null;
   inputValue: string = "";
   title: string = "Checkbox hinzufügen";
+  separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChildren('inputField') inputField: QueryList<ElementRef>;
   constructor(public dialogRef: MatDialogRef<DialogAddBoxComponent>,
@@ -54,5 +57,19 @@ export class DialogAddBoxComponent implements OnInit {
       if (result === undefined) return;
       this.checkBox.variables = result;
     });
+  }
+
+  addSynonym(event: MatChipInputEvent){
+    const name = (event.value || '').trim();
+    if (!name) return;
+    this.checkBox.keys.push(name)
+    event.chipInput.clear()
+  }
+
+  removeSynonym(synonym: string){
+    const index = this.checkBox.keys.indexOf(synonym);
+    if (index >= 0) {
+      this.checkBox.keys.splice(index, 1);
+    }
   }
 }
