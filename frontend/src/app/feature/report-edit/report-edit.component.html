@@ -30,17 +30,30 @@
       </div>
     </mat-selection-list>
 
-    <button (click)="addGroup()" mat-raised-button color="primary" style="margin: 10px; float: left">Gruppe hinzufügen
-    </button>
-    <button (click)="addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox
-      hinzufügen
-    </button>
+    <div style="display: flex; justify-content: space-between;">
+      <div>
+        <button (click)="addGroup()" mat-raised-button color="primary" style="margin: 10px; float: left">Gruppe
+          hinzufügen
+        </button>
+        <button (click)="addCheckBox()" mat-raised-button color="primary" style="margin: 10px; float: left">Checkbox
+          hinzufügen
+        </button>
+      </div>
+      <div>
+        <button [disabled]="undoDepth<=0" (click)="redo()" mat-raised-button color="primary"
+                style="margin: 10px; float: right">Redo
+        </button>
+        <button [disabled]="!(undoDepth<=this.editStack.length-2)" (click)="undo()" mat-raised-button color="primary"
+                style="margin: 10px; float: right">Undo
+        </button>
+      </div>
+    </div>
     <report-edit-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
-                        *ngIf="categories"
+                         *ngIf="categories"
                          (editClickEvent)="edit($event)"
                          (removeClickEvent)="removeElement($event)"
-                        class="options-expand"
-                        [categories]="categories"
+                         class="options-expand"
+                         [categories]="categories"
     >
     </report-edit-options>
   </div>

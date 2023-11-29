@@ -10,7 +10,6 @@ import {
   BackendCallerService,
   DataParserService,
 } from "@app/core";
-import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
 import {DialogAddCategoryComponent} from "@app/shared/dialog-add-category/dialog-add-category.component";
 import {ReportEditOptionsComponent} from "@app/shared/report-edit-options/report-edit-options.component";
@@ -25,7 +24,6 @@ import {ConfirmDialogComponent} from "@app/shared";
 export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
-  @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
   @ViewChild(ReportEditOptionsComponent) private optionsComponent: ReportEditOptionsComponent;
 
   @HostListener('window:beforeunload')
@@ -47,6 +45,8 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
   savedSessionData = 0;
 
   private user: User;
+  editStack = [];
+  undoDepth = 0;
 
   get isTester() {
     return this.user && (this.user.role === Role.Admin || this.user.role === Role.tester);
@@ -70,7 +70,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     this.getData();
   }
 
-  edit(elementToEdit) {
+  edit(elementToEdit: CheckBox | Option) {
     if (elementToEdit.kind === "option") {
       this.editGroup(elementToEdit)
     }
@@ -79,6 +79,19 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  undo() {
+    this.undoDepth += 1;
+    // -1 because the last element is the current state
+    this.categories = JSON.parse(JSON.stringify(this.editStack[this.editStack.length - this.undoDepth - 1]));
+    this.optionsComponent.initRows(this.categories)
+  }
+
+  redo() {
+    if (this.undoDepth <= 0) return;
+    this.undoDepth -= 1;
+    this.categories = JSON.parse(JSON.stringify(this.editStack[this.editStack.length - this.undoDepth - 1]));
+    this.optionsComponent.initRows(this.categories)
+  }
 
   getData() {
     this.route.paramMap.subscribe(ps => {
@@ -96,8 +109,18 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
         this.defaultCategories = JSON.parse(JSON.stringify(this.categories));
         // prepare UI
         this.selectedCat = this.categories[0].name;
+        this.updateUndoStack()
       });
     });
+  }
+
+  updateUndoStack() {
+    if (this.undoDepth > 0) {
+      // remove all elements after the current state, because we are branching off
+      this.editStack.splice(-this.undoDepth)
+      this.undoDepth = 0;
+    }
+    this.editStack.push(JSON.parse(JSON.stringify(this.categories)));
   }
 
   // DATA
@@ -126,6 +149,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let newCat: Category = {kind: "category", name: result, optional: false, selectables: []};
       this.categories.push(newCat);
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
 
@@ -141,6 +165,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       if (result === undefined) return;
       this.categories.find(cat => cat.name === name).name = result;
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
 
@@ -150,6 +175,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let temp = this.categories[index];
       this.categories[index] = this.categories[index - 1];
       this.categories[index - 1] = temp;
+      this.updateUndoStack()
     }
   }
 
@@ -159,12 +185,15 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let temp = this.categories[index];
       this.categories[index] = this.categories[index + 1];
       this.categories[index + 1] = temp;
+      this.updateUndoStack()
     }
   }
 
   removeCategory(name) {
     let index = this.categories.findIndex(cat => cat.name === name);
     this.categories.splice(index, 1);
+    this.optionsComponent.initRows(this.categories)
+    this.updateUndoStack()
   }
 
 
@@ -177,6 +206,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let group: Group = result as Group
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
 
@@ -196,20 +226,16 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let index = category.selectables.findIndex(sel => sel.name === group.name);
       category.selectables[index] = result;
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
 
   }
 
-  removeElement(elementToRemove) {
+  removeElement(elementToRemove: Option | CheckBox) {
     let message = `Soll die Checkbox "${elementToRemove.name}" wirklich gelöscht werden?`
+
     if (elementToRemove.kind == "option") {
-      // get all option names of this group:
-      let group = this.categories.find(cat => cat.name === this.selectedCat).selectables.find(sel => sel.name === elementToRemove.groupID) as Group;
-      let optionNames = group.options.map(opt => opt.name);
-      //concatenate them in a stirng
-      let optionNamesString = optionNames.join(", ");
-      // Use template literals for multi-line string
-      message = `Soll die gesamte Gruppe (${optionNamesString}) wirklich gelöscht werden? Um einzelne Optionen zu löschen, bearbeiten Sie die Gruppe.`;
+      message = `Soll die Option ${elementToRemove.name} wirklich gelöscht werden?`;
     }
 
     this.dialog.open(ConfirmDialogComponent, {
@@ -221,12 +247,19 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       }
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      if (result === true) {
-        let category = this.categories.find(cat => cat.name === this.selectedCat);
-        let index = category.selectables.findIndex(sel => sel.name === elementToRemove.name);
-        category.selectables.splice(index, 1);
-        this.optionsComponent.initRows(this.categories)
+      if (!result) return;
+      let category = this.categories.find(cat => cat.name === this.selectedCat);
+      if (elementToRemove.kind == "option") {
+        let group: Group = category.selectables.find(sel => sel.name == elementToRemove.groupID) as Group
+        let index = group.options.findIndex(sel => sel.name === elementToRemove.name);
+        group.options.splice(index, 1)
       }
+      if (elementToRemove.kind == "box") {
+        let index = category.selectables.findIndex(sel => sel.name === elementToRemove.name);
+        category.selectables.splice(index, 1)
+      }
+      this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
 
@@ -238,6 +271,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let box: CheckBox = result as CheckBox
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(box);
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
 
@@ -250,13 +284,12 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       data: dialogData
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      // replace box with edited result
       let category = this.categories.find(cat => cat.name === this.selectedCat);
       let index = category.selectables.findIndex(box => box.name === boxToEdit.name);
       category.selectables[index] = result;
       this.optionsComponent.initRows(this.categories)
+      this.updateUndoStack()
     });
   }
-
 
 }
