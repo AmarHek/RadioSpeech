@@ -91,6 +91,9 @@ export class DialogAddVariableComponent implements OnInit {
       this.options.splice(index, 1);
       this.synonyms.splice(index, 1)
     }
+    if (this.selectedChipName == option){
+      this.selectedChipName = "";
+    }
   }
 
   addSynonym(event: MatChipInputEvent): void {

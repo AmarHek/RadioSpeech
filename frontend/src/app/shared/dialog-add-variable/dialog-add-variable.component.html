@@ -30,7 +30,8 @@
     </mat-chip-list>
   </mat-form-field>
 
-  <p *ngIf="!selectedChipName">Wähle eine der oben gelisteten Optionen, um Synonyme zu bearbeiten.</p>
+  <p *ngIf="!selectedChipName && (selectedType == 'Multiple Choice' || selectedType == 'One Choice')">Wähle eine der
+    oben gelisteten Optionen, um Synonyme und Variablen zu bearbeiten.</p>
   <mat-form-field appearance="fill"
                   *ngIf="(selectedType == 'Multiple Choice' || selectedType == 'One Choice') && selectedChipName">
     <mat-label>Synonyme für {{selectedChipName}} (Durch Komma getrennt)</mat-label>
@@ -45,7 +46,6 @@
       </mat-chip>
       <input
         placeholder="Neues Synonym ..."
-        [disabled]="!selectedChipName"
         [matChipInputFor]="chipListSynonyms"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="addSynonym($event)">
