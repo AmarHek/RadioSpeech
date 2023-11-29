@@ -1,7 +1,9 @@
 import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
-import {Group} from "@app/models";
+import {Group, Option} from "@app/models";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {MatChipInputEvent} from "@angular/material/chips";
 
 @Component({
   selector: 'app-dialog-add-group',
@@ -13,6 +15,9 @@ export class DialogAddGroupComponent implements OnInit {
 
   group: Group = null;
   title: string = "Gruppe hinzufügen";
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  selectedOption: Option = null;
+
   constructor(public dialogRef: MatDialogRef<DialogAddGroupComponent>,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,18 +27,42 @@ export class DialogAddGroupComponent implements OnInit {
       this.title = "Gruppe bearbeiten"
     } else {
       this.group = {kind: "group", name: "group_name", options: []};
-      for (let i = 0; i < 2; i++) {
-        this.group.options.push({kind: "option", name: "", text: "", normal: false, variables: [], keys: []});
-      }
     }
   }
 
   ngOnInit(): void {
   }
 
+  addGroupOption(event: MatChipInputEvent): void {
+    const name = (event.value || '').trim();
+    if (!name) return;
+    this.group.options.push({kind: "option", name: name, text: "", normal: false, variables: [], keys: []});
+    event.chipInput!.clear();
+  }
 
-  addTextField(): void {
-    this.group.options.push({kind: "option", name: "", text: "", normal: false, variables: [], keys: []});
+  removeOption(option: Option): void {
+    this.group.options.splice(this.group.options.indexOf(option), 1);
+    if (this.selectedOption === option){
+      this.selectedOption = null;
+    }
+  }
+
+  onChipSelect(option: Option) {
+    this.selectedOption = option
+  }
+
+  addSynonym(event: MatChipInputEvent){
+    const name = (event.value || '').trim();
+    if (!name) return;
+    this.selectedOption.keys.push(name)
+    event.chipInput.clear()
+  }
+
+  removeSynonym(synonym: string){
+    const index = this.selectedOption.keys.indexOf(synonym);
+    if (index >= 0) {
+      this.selectedOption.keys.splice(index, 1);
+    }
   }
 
   trackByFn(index: number, _: any): number {
@@ -50,6 +79,7 @@ export class DialogAddGroupComponent implements OnInit {
     }
     return count >= 2;
   }
+
   onCancel(): void {
     this.dialogRef.close()
   }
@@ -72,7 +102,4 @@ export class DialogAddGroupComponent implements OnInit {
     });
   }
 
-  removeField(index: number): void {
-    this.group.options.splice(index, 1);
-  }
 }

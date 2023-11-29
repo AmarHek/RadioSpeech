@@ -1,20 +1,55 @@
 <h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
-  <div *ngFor="let option of this.group.options; let i = index; trackBy: trackByFn">
-    <mat-form-field style="width: 60%;">
-      <input placeholder="Option {{i+1}}" matInput #inputField [(ngModel)]="option.name">
-    </mat-form-field>
-    <button mat-raised-button color="primary" style="margin-left: 10px"
-            (click)="openListVariablesDialog(inputField.value)" disabled="{{inputField.value.length == 0}}">Variablen
-      verwalten ({{option.variables.length}})
-    </button>
-    <button *ngIf="this.group.options.length > 2" mat-icon-button (click)="removeField(i)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
-  <button mat-raised-button color="primary" (click)="addTextField()" style="margin-bottom: 30px">+ Option hinzufügen</button>
+
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>Optionen (Durch Komma getrennt)</mat-label>
+    <mat-chip-list #chipList aria-label="Optionen">
+      <mat-chip
+        *ngFor="let option of this.group.options"
+        (click)="onChipSelect(option)"
+        (removed)="removeOption(option)">
+        {{option.name}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Neue Option ..."
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addGroupOption($event)">
+    </mat-chip-list>
+  </mat-form-field>
+
+
+  <p *ngIf="!selectedOption">Wähle eine der oben gelisteten Optionen, um Synonyme zu bearbeiten.</p>
+  <mat-form-field appearance="fill" *ngIf="selectedOption" style="width: 100%">
+    <mat-label>Synonyme für Option "{{selectedOption.name}}" (Durch Komma getrennt)</mat-label>
+    <mat-chip-list #chipListSynonyms aria-label="Synonyme">
+      <mat-chip
+        *ngFor="let synonym of selectedOption.keys"
+        (removed)="removeSynonym(synonym)">
+        {{synonym}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Neues Synonym ..."
+        [matChipInputFor]="chipListSynonyms"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addSynonym($event)">
+    </mat-chip-list>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" style="margin-left: 10px"
+          (click)="openListVariablesDialog(selectedOption.name)"
+          *ngIf="selectedOption">
+    Variablen für Option "{{selectedOption.name}}" verwalten ({{selectedOption.variables.length}})
+  </button>
+
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions style="margin-top: 50px">
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
   <button mat-raised-button color="primary" (click)="onConfirm()"
           disabled="{{!checkAtLeastTwoFilled()}}">Bestätigen
