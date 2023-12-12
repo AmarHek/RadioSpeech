@@ -235,7 +235,10 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     let message = `Soll die Checkbox "${elementToRemove.name}" wirklich gelöscht werden?`
 
     if (elementToRemove.kind == "option") {
-      message = `Soll die Option ${elementToRemove.name} wirklich gelöscht werden?`;
+      // get names of all options in group
+      let group: Group = this.categories.find(cat => cat.name === this.selectedCat).selectables.find(sel => sel.name == elementToRemove.groupID) as Group
+      let optionNames = group.options.map(option => option.name)
+      message = 'Soll die gesamte Gruppe (' + optionNames.join(", ") + ') wirklich gelöscht werden?'
     }
 
     this.dialog.open(ConfirmDialogComponent, {
@@ -251,8 +254,10 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
       let category = this.categories.find(cat => cat.name === this.selectedCat);
       if (elementToRemove.kind == "option") {
         let group: Group = category.selectables.find(sel => sel.name == elementToRemove.groupID) as Group
-        let index = group.options.findIndex(sel => sel.name === elementToRemove.name);
-        group.options.splice(index, 1)
+        // remove entire group
+        let index = category.selectables.findIndex(sel => sel.name === group.name);
+        category.selectables.splice(index, 1)
+
       }
       if (elementToRemove.kind == "box") {
         let index = category.selectables.findIndex(sel => sel.name === elementToRemove.name);
