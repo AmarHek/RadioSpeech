@@ -40,10 +40,10 @@
         </button>
       </div>
       <div>
-        <button [disabled]="undoDepth<=0" (click)="redo()" mat-raised-button color="primary"
+        <button [disabled]="!redoAvailable()" (click)="redo()" mat-raised-button color="primary"
                 style="margin: 10px; float: right">Redo
         </button>
-        <button [disabled]="!(undoDepth<=this.editStack.length-2)" (click)="undo()" mat-raised-button color="primary"
+        <button [disabled]="!undoAvailable()" (click)="undo()" mat-raised-button color="primary"
                 style="margin: 10px; float: right">Undo
         </button>
       </div>

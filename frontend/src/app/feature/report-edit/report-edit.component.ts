@@ -27,6 +27,7 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
   @ViewChild(ReportEditOptionsComponent) private optionsComponent: ReportEditOptionsComponent;
 
   @HostListener('window:beforeunload')
+
   canDeactivate(): Observable<boolean> | boolean {
     return this.sessionData.length <= this.savedSessionData;
   }
@@ -79,7 +80,18 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
     }
   }
 
+  undoAvailable(){
+    return this.undoDepth < this.editStack.length - 1;
+  }
+
+  redoAvailable(){
+    return this.undoDepth > 0;
+  }
   undo() {
+    if (!this.undoAvailable()) {
+      console.log("Undo triggered despite being unavailable.")
+      return;
+    }
     this.undoDepth += 1;
     // -1 because the last element is the current state
     this.categories = JSON.parse(JSON.stringify(this.editStack[this.editStack.length - this.undoDepth - 1]));
@@ -87,12 +99,26 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
   }
 
   redo() {
-    if (this.undoDepth <= 0) return;
+    if (!this.redoAvailable()) {
+      console.log("Redo triggered despite being unavailable.")
+      return;
+    }
     this.undoDepth -= 1;
     this.categories = JSON.parse(JSON.stringify(this.editStack[this.editStack.length - this.undoDepth - 1]));
     this.optionsComponent.initRows(this.categories)
   }
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'z') {
+      if (!this.undoAvailable()) return;
+      this.undo()
+    }
+    else if (event.ctrlKey && event.key === 'y') {
+      if (!this.redoAvailable()) return;
+      this.redo()
+    }
+  }
   getData() {
     this.route.paramMap.subscribe(ps => {
       if (!ps.has("id")) return;
