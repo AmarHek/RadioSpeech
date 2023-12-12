@@ -5,6 +5,7 @@
     <mat-label>Optionen (Durch Komma getrennt)</mat-label>
     <mat-chip-list #chipList aria-label="Optionen">
       <mat-chip
+        [ngClass]="{'option-chip-selected': selectedOption === option, 'option-chip-unselected': selectedOption !== option}"
         *ngFor="let option of this.group.options"
         (click)="onChipSelect(option)"
         (removed)="removeOption(option)">
@@ -14,6 +15,7 @@
         </button>
       </mat-chip>
       <input
+        #optionInput
         placeholder="Neue Option ..."
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -27,6 +29,7 @@
     <mat-label>Synonyme für Option "{{selectedOption.name}}" (Durch Komma getrennt)</mat-label>
     <mat-chip-list #chipListSynonyms aria-label="Synonyme">
       <mat-chip
+        class="option-chip-unselected"
         *ngFor="let synonym of selectedOption.keys"
         (removed)="removeSynonym(synonym)">
         {{synonym}}

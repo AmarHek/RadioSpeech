@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
 import {Group, Option} from "@app/models";
@@ -11,8 +11,8 @@ import {MatChipInputEvent} from "@angular/material/chips";
   styleUrls: ['./dialog-add-group.component.css']
 })
 export class DialogAddGroupComponent implements OnInit {
-  @ViewChildren('inputField') inputFields: QueryList<ElementRef>;
 
+  @ViewChild('optionInput') optionInputRef: ElementRef;
   group: Group = null;
   title: string = "Gruppe hinzufügen";
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -31,6 +31,12 @@ export class DialogAddGroupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.optionInputRef.nativeElement.focus();
+    }, 200);
   }
 
   addGroupOption(event: MatChipInputEvent): void {
