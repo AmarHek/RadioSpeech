@@ -63,7 +63,7 @@
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
   <button mat-raised-button color="primary" (click)="onConfirm()"
-          [disabled]="(selectedType=='Multiple Choice' || selectedType =='One Choice') && options.length < 2">
+          [disabled]="(selectedType =='One Choice') && options.length < 2 || (selectedType == 'Multiple Choice') && options.length < 1">
     Bestätigen
   </button>
 </mat-dialog-actions>
