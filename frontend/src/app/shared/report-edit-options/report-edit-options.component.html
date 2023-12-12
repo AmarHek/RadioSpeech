@@ -41,8 +41,8 @@
                    (click)="this.dataParser.updateFromGroup(clickable.name,this.clickEvent,undefined, row.name, this.categories, clickable.groupID)"
                    [(ngModel)]="this.dataParser.getGroupByID(row.name, clickable.groupID, this.categories).value"/>
           </td>
-          <td class="title" [style.width.%]="width" (mouseover)="hoveredColumn = columnIndex; hoveredRow = rowIndex"
-              (mouseout)="hoveredColumn = -1; hoveredRow = -1">
+          <td class="title" [style.width.%]="width" (mouseover)="hoveredColumn = columnIndex; hoveredRow = rowIndex; hoveredGroupID = clickable.groupID"
+              (mouseout)="hoveredColumn = -1; hoveredRow = -1; hoveredGroupID = ''" [ngStyle]="{'background': hoveredGroupID == clickable.groupID ? 'lightblue' : 'white'}">
             <label for="{{row.name}} {{clickable.groupID + clickable.name}} box"
                    [ngStyle]="{'border' : row.name + ' ' + clickable.name === selectedSelectableID ?
                        '3px solid red' : '3px solid transparent'}"

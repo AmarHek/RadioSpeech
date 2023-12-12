@@ -22,6 +22,7 @@ export class ReportEditOptionsComponent implements OnInit {
   @Output() editClickEvent = new EventEmitter<any>();
   @Output() removeClickEvent = new EventEmitter<any>();
 
+
   // TODO Make maxRowLength configurable
 
   maxRowLength: number;
@@ -29,6 +30,7 @@ export class ReportEditOptionsComponent implements OnInit {
   rows: Row[];
   hoveredRow = -1;
   hoveredColumn = -1;
+  hoveredGroupID = "";
 
   constructor(public dataParser: DataParserService) { }
 
