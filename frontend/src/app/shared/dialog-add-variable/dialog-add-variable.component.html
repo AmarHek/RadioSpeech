@@ -1,10 +1,10 @@
-<h2 mat-dialog-title>{{this.title}}</h2>
+<h2 mat-dialog-title>{{ this.title }}</h2>
 <mat-dialog-content style="display: flex; flex-direction: column">
   <mat-form-field>
     <mat-label>Variablentyp</mat-label>
     <mat-select [(ngModel)]="selectedType">
       <mat-option *ngFor="let option of variable_types" [value]="option">
-        {{option}}
+        {{ option }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -17,7 +17,7 @@
         *ngFor="let option of options"
         (click)="onChipSelect(option)"
         (removed)="removeOption(option)">
-        {{option}}
+        {{ option }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -34,12 +34,12 @@
     oben gelisteten Optionen, um Synonyme und Variablen zu bearbeiten.</p>
   <mat-form-field appearance="fill"
                   *ngIf="(selectedType == 'Multiple Choice' || selectedType == 'One Choice') && selectedChipName">
-    <mat-label>Synonyme für {{selectedChipName}} (Durch Komma getrennt)</mat-label>
+    <mat-label>Synonyme für {{ selectedChipName }} (Durch Komma getrennt)</mat-label>
     <mat-chip-list #chipListSynonyms aria-label="Synonyme">
       <mat-chip
         *ngFor="let synonym of visibleSynonyms"
         (removed)="removeSynonym(synonym)">
-        {{synonym}}
+        {{ synonym }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>

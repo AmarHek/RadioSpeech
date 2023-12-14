@@ -48,7 +48,7 @@ export class DialogAddGroupComponent implements OnInit {
 
   removeOption(option: Option): void {
     this.group.options.splice(this.group.options.indexOf(option), 1);
-    if (this.selectedOption === option){
+    if (this.selectedOption === option) {
       this.selectedOption = null;
     }
   }
@@ -57,14 +57,14 @@ export class DialogAddGroupComponent implements OnInit {
     this.selectedOption = option
   }
 
-  addSynonym(event: MatChipInputEvent){
+  addSynonym(event: MatChipInputEvent) {
     const name = (event.value || '').trim();
     if (!name) return;
     this.selectedOption.keys.push(name)
     event.chipInput.clear()
   }
 
-  removeSynonym(synonym: string){
+  removeSynonym(synonym: string) {
     const index = this.selectedOption.keys.indexOf(synonym);
     if (index >= 0) {
       this.selectedOption.keys.splice(index, 1);

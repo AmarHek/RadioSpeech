@@ -18,6 +18,7 @@ export class DialogAddBoxComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChildren('inputField') inputField: QueryList<ElementRef>;
+
   constructor(public dialogRef: MatDialogRef<DialogAddBoxComponent>,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -59,14 +60,14 @@ export class DialogAddBoxComponent implements OnInit {
     });
   }
 
-  addSynonym(event: MatChipInputEvent){
+  addSynonym(event: MatChipInputEvent) {
     const name = (event.value || '').trim();
     if (!name) return;
     this.checkBox.keys.push(name)
     event.chipInput.clear()
   }
 
-  removeSynonym(synonym: string){
+  removeSynonym(synonym: string) {
     const index = this.checkBox.keys.indexOf(synonym);
     if (index >= 0) {
       this.checkBox.keys.splice(index, 1);

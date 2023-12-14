@@ -1,9 +1,11 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 <mat-dialog-content>
   <mat-form-field style="width: 60%;">
     <input placeholder="Name" matInput #inputField [(ngModel)]="inputValue">
   </mat-form-field>
-  <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openListVariableDialog()" [disabled]="inputField.value.length == 0">Variablen verwalten ({{checkBox.variables.length}})</button>
+  <button mat-raised-button color="primary" style="margin-left: 10px" (click)="openListVariableDialog()"
+          [disabled]="inputField.value.length == 0">Variablen verwalten ({{ checkBox.variables.length }})
+  </button>
 
   <mat-form-field appearance="fill" style="width: 100%">
     <mat-label>Synonyme (Durch Komma getrennt)</mat-label>
@@ -11,7 +13,7 @@
       <mat-chip
         *ngFor="let synonym of this.checkBox.keys"
         (removed)="removeSynonym(synonym)">
-        {{synonym}}
+        {{ synonym }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -27,5 +29,6 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
-  <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="inputField.value.length == 0">Bestätigen</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="inputField.value.length == 0">Bestätigen
+  </button>
 </mat-dialog-actions>

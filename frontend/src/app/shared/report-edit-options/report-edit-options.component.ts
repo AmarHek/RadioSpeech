@@ -23,8 +23,6 @@ export class ReportEditOptionsComponent implements OnInit {
   @Output() removeClickEvent = new EventEmitter<any>();
 
 
-  // TODO Make maxRowLength configurable
-
   maxRowLength: number;
   width: number;
   rows: Row[];
@@ -32,7 +30,8 @@ export class ReportEditOptionsComponent implements OnInit {
   hoveredColumn = -1;
   hoveredGroupID = "";
 
-  constructor(public dataParser: DataParserService) { }
+  constructor(public dataParser: DataParserService) {
+  }
 
   ngOnInit(): void {
     this.maxRowLength = 5;
@@ -45,11 +44,11 @@ export class ReportEditOptionsComponent implements OnInit {
     this.rows = this.dataParser.extractRows(this.categories, this.maxRowLength);
   }
 
-  edit(elementToEdit: any){
+  edit(elementToEdit: any) {
     this.editClickEvent.emit(elementToEdit)
   }
 
-  remove(elementToRemove: any){
+  remove(elementToRemove: any) {
     this.removeClickEvent.emit(elementToRemove)
   }
 

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 <mat-dialog-content>
 
   <mat-form-field appearance="fill" style="width: 100%">
@@ -9,7 +9,7 @@
         *ngFor="let option of this.group.options"
         (click)="onChipSelect(option)"
         (removed)="removeOption(option)">
-        {{option.name}}
+        {{ option.name }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -26,13 +26,13 @@
 
   <p *ngIf="!selectedOption">Wähle eine der oben gelisteten Optionen, um Synonyme zu bearbeiten.</p>
   <mat-form-field appearance="fill" *ngIf="selectedOption" style="width: 100%">
-    <mat-label>Synonyme für Option "{{selectedOption.name}}" (Durch Komma getrennt)</mat-label>
+    <mat-label>Synonyme für Option "{{ selectedOption.name }}" (Durch Komma getrennt)</mat-label>
     <mat-chip-list #chipListSynonyms aria-label="Synonyme">
       <mat-chip
         class="option-chip-unselected"
         *ngFor="let synonym of selectedOption.keys"
         (removed)="removeSynonym(synonym)">
-        {{synonym}}
+        {{ synonym }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -48,7 +48,7 @@
   <button mat-raised-button color="primary" style="margin-left: 10px"
           (click)="openListVariablesDialog(selectedOption.name)"
           *ngIf="selectedOption">
-    Variablen für Option "{{selectedOption.name}}" verwalten ({{selectedOption.variables.length}})
+    Variablen für Option "{{ selectedOption.name }}" verwalten ({{ selectedOption.variables.length }})
   </button>
 
 </mat-dialog-content>
