@@ -223,13 +223,33 @@ export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
   }
 
 
+  // Creates a new unique group ID, based on the name of the first option in the group
+  createNewGroupID(group: Group) : string{
+    let groupIDS = [];
+    this.categories.forEach(cat => {
+      cat.selectables.forEach(sel => {
+        if (sel.kind === 'group'){
+          groupIDS.push(sel.name)
+        }
+      })
+    })
+    let i = 0;
+    // take first 3 letters of first option (or less if it has less than three)
+    let group_name = group.options[0].name.substring(0, Math.min(3, group.options[0].name.length))
+    while (groupIDS.includes(group_name + i)){
+      i++;
+    }
+    return group_name + i
+  }
+
+  // opens dialog to add group, assigns unique id to group once it has been created
   addGroup() {
     this.dialog.open(DialogAddGroupComponent, {
       width: '630px',
     }).afterClosed().subscribe(result => {
       if (result === undefined) return;
-      // todo fix name
       let group: Group = result as Group
+      group.name = this.createNewGroupID(group);
       this.categories.find(cat => cat.name === this.selectedCat).selectables.push(group);
       this.optionsComponent.initRows(this.categories)
       this.updateUndoStack()
