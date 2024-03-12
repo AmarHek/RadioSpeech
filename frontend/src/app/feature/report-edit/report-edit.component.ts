@@ -2,7 +2,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Category, CheckBox, Group, Option, Role, Template, User} from "@app/models";
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {Observable} from "rxjs";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {
