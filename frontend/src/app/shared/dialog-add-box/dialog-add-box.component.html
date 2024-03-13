@@ -9,21 +9,21 @@
 
   <mat-form-field appearance="fill" style="width: 100%">
     <mat-label>Synonyme (Durch Komma getrennt)</mat-label>
-    <mat-chip-list #chipListSynonyms aria-label="Synonyme">
-      <mat-chip
+    <mat-chip-grid #chipListSynonyms aria-label="Synonyme">
+      <mat-chip-row
         *ngFor="let synonym of this.checkBox.keys"
         (removed)="removeSynonym(synonym)">
         {{ synonym }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
-      </mat-chip>
+      </mat-chip-row>
       <input
         placeholder="Neues Synonym ..."
         [matChipInputFor]="chipListSynonyms"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="addSynonym($event)">
-    </mat-chip-list>
+    </mat-chip-grid>
   </mat-form-field>
 
 </mat-dialog-content>

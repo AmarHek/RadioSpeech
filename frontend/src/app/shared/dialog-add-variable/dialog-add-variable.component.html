@@ -12,8 +12,8 @@
   <mat-form-field appearance="fill"
                   *ngIf="selectedType == 'Multiple Choice' || selectedType == 'One Choice'">
     <mat-label>Optionen (Durch Komma getrennt)</mat-label>
-    <mat-chip-list #chipList aria-label="Optionen">
-      <mat-chip
+    <mat-chip-grid #chipList aria-label="Optionen">
+      <mat-chip-row
         *ngFor="let option of options"
         (click)="onChipSelect(option)"
         (removed)="removeOption(option)">
@@ -21,13 +21,13 @@
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
-      </mat-chip>
+      </mat-chip-row>
       <input
         placeholder="Neue Option ..."
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="addOption($event)">
-    </mat-chip-list>
+    </mat-chip-grid>
   </mat-form-field>
 
   <p *ngIf="!selectedChipName && (selectedType == 'Multiple Choice' || selectedType == 'One Choice')">Wähle eine der
@@ -35,21 +35,21 @@
   <mat-form-field appearance="fill"
                   *ngIf="(selectedType == 'Multiple Choice' || selectedType == 'One Choice') && selectedChipName">
     <mat-label>Synonyme für {{ selectedChipName }} (Durch Komma getrennt)</mat-label>
-    <mat-chip-list #chipListSynonyms aria-label="Synonyme">
-      <mat-chip
+    <mat-chip-grid #chipListSynonyms aria-label="Synonyme">
+      <mat-chip-row
         *ngFor="let synonym of visibleSynonyms"
         (removed)="removeSynonym(synonym)">
         {{ synonym }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
-      </mat-chip>
+      </mat-chip-row>
       <input
         placeholder="Neues Synonym ..."
         [matChipInputFor]="chipListSynonyms"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="addSynonym($event)">
-    </mat-chip-list>
+    </mat-chip-grid>
   </mat-form-field>
 
   <mat-form-field style="width: 100%;">
