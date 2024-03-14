@@ -123,8 +123,9 @@ export async function getTemplateListAsString(req: Request, res: Response) {
 
 export async function getTemplateById(req: Request, res: Response) {
     try {
-        const template = await TemplateDB.findOne({_id: req.params.id}).exec();
-        res.status(200).send({template});
+        const template = await TemplateDB.findOne({_id: req.params.id});
+        console.log(template);
+        res.status(200).send(template);
     } catch (err) {
         res.status(500).send({message: err});
     }
