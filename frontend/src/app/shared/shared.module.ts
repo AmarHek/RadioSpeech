@@ -17,7 +17,6 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 import {ConfirmDialogComponent} from "@app/shared/confirm-dialog/confirm-dialog.component";
 
-import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.component";
 
 import {InputDialogComponent} from "./input-dialog/input-dialog.component";
 
@@ -30,7 +29,6 @@ import {MatChipsModule} from "@angular/material/chips";
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
-    FeedbackDialogComponent,
     InputDialogComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent,
@@ -57,7 +55,6 @@ import {MatChipsModule} from "@angular/material/chips";
     ],
   exports: [
     ConfirmDialogComponent,
-    FeedbackDialogComponent,
     InputDialogComponent,
   ]
 })
