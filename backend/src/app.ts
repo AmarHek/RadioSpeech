@@ -7,12 +7,10 @@ import cors from "cors";
 
 import {templateRouter, userRouter, authRouter} from './routes';
 import {initData} from "./init";
-import {feedbackRouter} from "./routes/feedback.routes";
 import {usageRouter} from "./routes/usage.routes";
 
 export const app = express();
 
-// TODO: Auf env auslagern
 
 const url = "mongodb://" + dbConfig.HOST + ":" + dbConfig.PORT + "/" + dbConfig.DB;
 mongoose.connect(url)
@@ -35,7 +33,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use("/images", express.static(path.join(__dirname, "../data/images")));
 app.use("/", express.static(path.join(__dirname, "../dist/radiospeech")));
 app.use("/assets", express.static(path.join(__dirname, "./assets/img")));
 app.set("view engine", "ejs");
@@ -54,7 +51,6 @@ app.use("/auth", userRouter);
 
 app.use("/database/usage", usageRouter);
 app.use("/database/template", templateRouter);
-app.use("/database/feedback", feedbackRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/radiospeech/index.html"));

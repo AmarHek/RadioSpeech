@@ -1,91 +1,102 @@
 import * as Path from "path";
 import * as fs from "fs";
-import {TemplateDB} from "./models";
+import {TemplateDB, UserDB} from "./models";
+import {dataPathConfig} from "./config";
 
 export function initData() {
-    console.log("Initializing directories...");
+    console.log("Initializing directories if not already there...");
     initDirectories();
     console.log("...finished");
 
-    console.log("Loading default Templates into database if not already in database...")
-    loadDefaultTemplates().then(() => console.log("...finished"));
-
+    console.log("Loading default data into MongoDB if not already there...");
+    loadDefaultMongoDB().then(() => console.log("...finished"));
 }
 
 // on app start, initialize all relative directories for file saving etc.
 function initDirectories() {
-    if (!fs.existsSync(Path.join(process.cwd(), "data"))) {
-        fs.mkdirSync(Path.join(process.cwd(), "data"));
+    const dataPath: string = dataPathConfig.path;
+
+    // check if data path exists, if not create it
+    if (!fs.existsSync(dataPath)) {
+        fs.mkdirSync(dataPath);
     }
-    if (!fs.existsSync(Path.join(process.cwd(), "data/images"))) {
-        fs.mkdirSync(Path.join(process.cwd(), "data/images"));
-    }
-    if (!fs.existsSync(Path.join(process.cwd(), "data/excels"))) {
-        fs.mkdirSync(Path.join(process.cwd(), "data/excels"));
-    }
-    if (!fs.existsSync(Path.join(process.cwd(), "data/json"))) {
-        fs.mkdirSync(Path.join(process.cwd(), "data/json"));
+    // check for other paths
+    const paths = ["excels", "json"];
+    for (const path of paths) {
+        if (!fs.existsSync(Path.join(dataPath, path))) {
+            fs.mkdirSync(Path.join(dataPath, path));
+        }
     }
 }
 
-// load default json files on startup (can be deleted from the database later)
-async function loadDefaultTemplates() {
-    if (!fs.existsSync(Path.join(__dirname, "./assets/Radiolearn.json"))) {
-        console.warn("Radiolearn.json missing!")
-    } else {
-        // console.log("Removing old Radiolearn");
-        // await TemplateDB.deleteOne({name: "Radiolearn"});
-        saveTemplate(Path.join(__dirname, "./assets/Radiolearn.json"), "Radiolearn", "deepDoc");
-    }
+async function loadDefaultMongoDB() {
+    // This function is intended for the first startup of the backend, namely for the MongoDB
+    // It will assert the contents of the following collections: material, template, user, participant
 
-    if (!fs.existsSync(Path.join(__dirname, "./assets/RöntgenNormal.json"))) {
-        console.warn("RöntgenNormal.json missing!")
-    } else {
-        // console.log("Removing old RöntgenNormal");
-        // await TemplateDB.deleteOne({name: "RöntgenNormal"});
-        saveTemplate(Path.join(__dirname, "./assets/RöntgenNormal.json"), "RöntgenNormal", "deepDoc");
-    }
+    // If the collection does not exist, we will create it and add the default data from the corresponding json file
+    // If the collection exists, but is empty, we will also add the default data from the corresponding json file
+    // Finally, if the collection is not empty, we will assert that all fields are present and add them otherwise
 
-    if (!fs.existsSync(Path.join(__dirname, "./assets/Intensivlunge.json"))) {
-        console.warn("RöntgenNormal.json missing!")
-    } else {
-        // console.log("Removing old Intensivlunge");
-        // await TemplateDB.deleteOne({name: "Intensivlunge"});
-        saveTemplate(Path.join(__dirname, "./assets/Intensivlunge.json"), "Intensivlunge",
-            "shallowDoc");
-    }
-
-    if (!fs.existsSync(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"))) {
-        console.warn("RöntgenNormal.json missing!")
-    } else {
-        // console.log("Removing old Zwei-Ebenen-Thorax");
-        // await TemplateDB.deleteOne({name: "Zwei-Ebenen-Thorax"});
-        saveTemplate(Path.join(__dirname, "./assets/Zwei-Ebenen-Thorax.json"), "Zwei-Ebenen-Thorax",
-            "shallowDoc");
-    }
-}
-
-async function saveTemplate(path: string, name: string, kind: string) {
     try {
-        const count = await TemplateDB.countDocuments({name: name}, {}).exec();
+        let collections: string[];
+        if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "docker") {
+            collections = ["templates", "users"]
+        } else {
+            collections = ["templates", "users"];
+        }
 
-        if (count === 0) {
-            console.log("Adding " + name + " from assets..");
-            const rawData = fs.readFileSync(path, "utf-8");
-            const metaData = fs.statSync(path);
-            const timestamp = (new Date(metaData.mtime)).getTime();
-            const parts = JSON.parse(rawData);
-            const template = new TemplateDB({
-                parts: parts,
-                name: name,
-                kind: kind,
-                timestamp
-            });
-            template.save().then(res => {
-                console.log("Successfully saved " + res.name);
-            });
+        for (const collection of collections) {
+            const jsonData = fs.readFileSync(Path.join(__dirname, "..", "init", "development", collection + ".json"),
+                'utf8');
+            const data = JSON.parse(jsonData);
+
+            let keys: string[] = [];
+            let existingKeys: string[] = [];
+
+            if (collection === "templates") {
+                keys = data.map((entry: any) => entry.name);
+                const existingData = await TemplateDB.find({name: {$in: keys}}).exec();
+                existingKeys = existingData.map((entry) => entry.name);
+            } else if (collection === "users") {
+                keys = data.map((entry: any) => entry.username);
+                const existingData = await UserDB.find({username: {$in: keys}}).exec();
+                existingKeys = existingData.map((entry) => entry.username);
+            } else {
+                console.log("Unknown collection");
+            }
+
+            // using keys and existingKeys, we can now assert which keys are missing
+            const missingKeys = keys.filter((key) => !existingKeys.includes(key));
+
+            for (const entry of data) {
+                // We need to remove the _id field, as it is not allowed to be set manually
+                deleteIDFields(entry);
+                if (collection === "templates") {
+                    if (missingKeys.includes(entry.name)) {
+                        const template = new TemplateDB(entry);
+                        await template.save();
+                    }
+                } else if (collection === "users") {
+                    if (missingKeys.includes(entry.username)) {
+                        const user = new UserDB(entry);
+                        await user.save();
+                    }
+                }
+            }
         }
     } catch (err) {
         console.error(err);
+    }
+
+}
+
+function deleteIDFields(entry: any) {
+    // iterate through all fields recursively and check for _id fields, delete if found
+    for (const field in entry) {
+        if (field === "_id") {
+            delete entry[field];
+        } else if (typeof entry[field] === "object") {
+            deleteIDFields(entry[field]);
+        }
     }
 }

@@ -1,0 +1,47 @@
+[
+	{
+		"_id": {
+			"$oid": "66019a2020b12edffd5245e1"
+		},
+		"username": "Amar",
+		"password": "$2b$08$7j6KDOmALHw0cGGAJDt85en7mMTGVA7mnxrvYqwnaKIMK6xmvmx.e",
+		"role": "admin",
+		"__v": 0
+	},
+	{
+		"_id": {
+			"$oid": "66019a2020b12edffd5245e7"
+		},
+		"username": "Testnutzer",
+		"password": "$2b$08$anVFzJ3652YWYOx1ab5QJ.r717IuW3EtCecCuNwG.T/BkLCzI9Yie",
+		"role": "demoUser",
+		"__v": 0
+	},
+	{
+		"_id": {
+			"$oid": "66019b354290ccf15dbaad1c"
+		},
+		"username": "Admin",
+		"password": "$2b$08$lhCD8jH914dV0yp3dfO7Iu2nZ3cyNKb3hTjjKYLcfm/FhoAeHzxYS",
+		"role": "admin",
+		"__v": 0
+	},
+	{
+		"_id": {
+			"$oid": "66019b8d4290ccf15dbaad2a"
+		},
+		"username": "Moderator",
+		"password": "$2b$08$hxm77kJFX5q8r/MNYuqfDOFJlRtW3hJgPo6rH1pdzYA3/0yF40uU6",
+		"role": "moderator",
+		"__v": 0
+	},
+	{
+		"_id": {
+			"$oid": "66019b9d4290ccf15dbaad30"
+		},
+		"username": "User",
+		"password": "$2b$08$UeoZkWnbexs/xFn33G8oueLpltj0lJFGMp6H8h0rrfAbQ35izPAiC",
+		"role": "user",
+		"__v": 0
+	}
+]
