@@ -1,8 +1,6 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {
-  AccountManagementComponent,
-  AdminComponent,
   FeedbackDisplayComponent,
   TemplateListComponent,
   ReportUiComponent
@@ -10,6 +8,8 @@ import {
 import {AuthGuard} from "@app/helpers";
 import {Role} from "@app/models";
 
+import {AdminComponent} from "@app/admin";
+import {AccountManagementComponent} from "@app/account-management";
 import {LoginComponent} from "@app/view";
 import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
 import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
@@ -64,8 +64,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { role: [Role.Admin, Role.Moderator]}
   },
-  {path: "deepspeech",
-   redirectTo: "deepspeech/login"},
   {path: "**", redirectTo: "/home"}
 ];
 

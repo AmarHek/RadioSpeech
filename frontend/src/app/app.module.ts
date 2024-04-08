@@ -17,6 +17,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
+import {AdminModule} from "@app/admin/admin.module";
+import {AccountManagementModule} from "@app/account-management/account-management.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
     MatDialogModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    AdminModule,
+    AccountManagementModule
   ],
   providers: [PendingChangesGuard,
     { provide: DateAdapter, useClass: AppDateAdapter },

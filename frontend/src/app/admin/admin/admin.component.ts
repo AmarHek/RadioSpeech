@@ -2,7 +2,7 @@ import {Component, ComponentRef, OnInit, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {Role, User} from "@app/models";
 import {MatDialogService, UserService} from "@app/core";
-import {ChangeRoleDialogComponent} from "@app/shared/change-role-dialog/change-role-dialog.component";
+import {ChangeRoleDialogComponent} from "@app/admin/change-role-dialog/change-role-dialog.component";
 
 @Component({
   selector: "app-admin",

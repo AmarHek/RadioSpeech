@@ -18,18 +18,14 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {ConfirmDialogComponent} from "@app/shared/confirm-dialog/confirm-dialog.component";
 import {InputModalComponent} from "@app/shared/inputModal/inputModal.component";
 import {ReportOutputComponent} from "@app/shared/report-output/report-output.component";
-import {UploadTemplateComponent} from "@app/shared/upload-template/upload-template.component";
+import {UploadTemplateComponent} from "@app/template-manager/upload-template/upload-template.component";
 import {VariablesComponent} from "@app/shared/variables/variables.component";
 
-import {ChangePasswordComponent} from "./change-password/change-password.component";
-import {ChangeUsernameComponent} from "./change-username/change-username.component";
 import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.component";
 import {ReportOptionsComponent} from "@app/shared/report-options/report-options.component";
 
 import {InputDialogComponent} from "./input-dialog/input-dialog.component";
 
-import {SignUpComponent} from "./sign-up/sign-up.component";
-import { ChangeRoleDialogComponent } from './change-role-dialog/change-role-dialog.component';
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
@@ -44,18 +40,14 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
 
 @NgModule({
   declarations: [
-    ChangePasswordComponent,
-    ChangeUsernameComponent,
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
     InputModalComponent,
     ReportOutputComponent,
     ReportOptionsComponent,
-    SignUpComponent,
     UploadTemplateComponent,
     VariablesComponent,
-    ChangeRoleDialogComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent,
     DialogAddGroupComponent,
@@ -87,15 +79,12 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
         MatChipsModule
     ],
   exports: [
-    ChangePasswordComponent,
-    ChangeUsernameComponent,
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
     InputModalComponent,
     ReportOptionsComponent,
     ReportOutputComponent,
-    SignUpComponent,
     UploadTemplateComponent,
     VariablesComponent,
     ReportEditOptionsComponent,

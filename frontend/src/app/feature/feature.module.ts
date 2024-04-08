@@ -16,11 +16,10 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterModule} from "@angular/router";
 import {MatRadioModule} from "@angular/material/radio";
 
-import {AdminComponent} from "@app/feature/admin/admin.component";
+import {AdminComponent} from "@app/admin/admin/admin.component";
 import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
-import {TemplateListComponent} from "@app/feature/template-list/template-list.component";
+import {TemplateListComponent} from "@app/template-manager/template-list/template-list.component";
 import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
-import {AccountManagementComponent} from "./account-management/account-management.component";
 import {SharedModule} from "@app/shared/shared.module";
 import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
@@ -30,7 +29,6 @@ import { ReportEditComponent } from './report-edit/report-edit.component';
 
 @NgModule({
   declarations: [
-    AccountManagementComponent,
     AdminComponent,
     FeedbackDisplayComponent,
     TemplateListComponent,
@@ -61,7 +59,6 @@ import { ReportEditComponent } from './report-edit/report-edit.component';
         MatSidenavModule,
     ],
   exports: [
-    AccountManagementComponent,
     AdminComponent,
     FeedbackDisplayComponent,
     TemplateListComponent,
