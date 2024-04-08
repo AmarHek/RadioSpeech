@@ -18,7 +18,6 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {ConfirmDialogComponent} from "@app/shared/confirm-dialog/confirm-dialog.component";
 import {InputModalComponent} from "@app/shared/inputModal/inputModal.component";
 import {ReportOutputComponent} from "@app/shared/report-output/report-output.component";
-import {UploadTemplateComponent} from "@app/template-manager/upload-template/upload-template.component";
 import {VariablesComponent} from "@app/shared/variables/variables.component";
 
 import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.component";
@@ -46,7 +45,6 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
     InputModalComponent,
     ReportOutputComponent,
     ReportOptionsComponent,
-    UploadTemplateComponent,
     VariablesComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent,
@@ -85,7 +83,6 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
     InputModalComponent,
     ReportOptionsComponent,
     ReportOutputComponent,
-    UploadTemplateComponent,
     VariablesComponent,
     ReportEditOptionsComponent,
   ]

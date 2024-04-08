@@ -2,7 +2,6 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {
   FeedbackDisplayComponent,
-  TemplateListComponent,
   ReportUiComponent
 } from "@app/feature";
 import {AuthGuard} from "app/core/helpers";
@@ -14,6 +13,7 @@ import {LoginComponent} from "@app/view";
 import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
 import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
 import {ReportEditComponent} from "@app/feature/report-edit/report-edit.component";
+import {TemplateListComponent} from "@app/template-manager";
 
 const routes: Routes = [
   {

@@ -16,9 +16,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterModule} from "@angular/router";
 import {MatRadioModule} from "@angular/material/radio";
 
-import {AdminComponent} from "@app/admin/admin/admin.component";
 import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
-import {TemplateListComponent} from "@app/template-manager/template-list/template-list.component";
 import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
 import {SharedModule} from "@app/shared/shared.module";
 import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
@@ -29,9 +27,7 @@ import { ReportEditComponent } from './report-edit/report-edit.component';
 
 @NgModule({
   declarations: [
-    AdminComponent,
     FeedbackDisplayComponent,
-    TemplateListComponent,
     ReportUiComponent,
     DialogTemplateComponent,
     InputMaterialHandlerComponent,
@@ -59,9 +55,7 @@ import { ReportEditComponent } from './report-edit/report-edit.component';
         MatSidenavModule,
     ],
   exports: [
-    AdminComponent,
     FeedbackDisplayComponent,
-    TemplateListComponent,
     ReportUiComponent
   ]
 })
