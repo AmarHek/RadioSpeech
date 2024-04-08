@@ -5,7 +5,7 @@ import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {DataParserService, InputParserService} from "@app/core";
 
 @Component({
-  selector: 'app-input-material-handler',
+  selector: 'app-input-handler',
   templateUrl: './input-material-handler.component.html',
   styleUrls: ['./input-material-handler.component.css']
 })

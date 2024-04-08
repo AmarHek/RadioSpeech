@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReportEditOptionsComponent } from './report-edit-options.component';
+import { EditorOptionsComponent } from './editor-options.component';
 
 describe('ReportEditOptionsComponent', () => {
-  let component: ReportEditOptionsComponent;
-  let fixture: ComponentFixture<ReportEditOptionsComponent>;
+  let component: EditorOptionsComponent;
+  let fixture: ComponentFixture<EditorOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportEditOptionsComponent ]
+      declarations: [ EditorOptionsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReportEditOptionsComponent);
+    fixture = TestBed.createComponent(EditorOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -14,9 +14,9 @@ import {MatMenuModule} from "@angular/material/menu";
 import {
   InputMaterialHandlerComponent,
   InputModalComponent,
-  ReportOptionsComponent,
-  ReportOutputComponent,
-  ReportUiComponent,
+  OptionsComponent,
+  ReportComponent,
+  MainInterfaceComponent,
   VariablesComponent
 } from "@app/main-interface/";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -28,9 +28,9 @@ import {MatChipsModule} from "@angular/material/chips";
   declarations: [
     InputMaterialHandlerComponent,
     InputModalComponent,
-    ReportOptionsComponent,
-    ReportOutputComponent,
-    ReportUiComponent,
+    OptionsComponent,
+    ReportComponent,
+    MainInterfaceComponent,
     VariablesComponent
   ],
   imports: [
@@ -52,7 +52,7 @@ import {MatChipsModule} from "@angular/material/chips";
     MatChipsModule
   ],
   exports: [
-    ReportUiComponent,
+    MainInterfaceComponent,
     VariablesComponent
   ]
 })

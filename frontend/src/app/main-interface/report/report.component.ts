@@ -1,11 +1,11 @@
 import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
-  selector: "app-report-output",
-  templateUrl: "./report-output.component.html",
-  styleUrls: ["./report-output.component.scss"]
+  selector: "app-report",
+  templateUrl: "./report.component.html",
+  styleUrls: ["./report.component.scss"]
 })
-export class ReportOutputComponent implements OnInit {
+export class ReportComponent implements OnInit {
 
   @Input() report: string;
   @Input() judgement: string;
@@ -18,7 +18,7 @@ export class ReportOutputComponent implements OnInit {
   constructor() { }
 
   // TODO: make download button
-  // TODO: Send change event to layout so changes in report-output are reflected in data structure
+  // TODO: Send change event to layout so changes in report are reflected in data structure
 
   ngOnInit() {
     this.disclaimer = "Dieser Bericht wurde mit Hilfe eines sprachgesteuerten Browsertools aus Textbausteinen erstellt.";

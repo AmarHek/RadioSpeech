@@ -30,13 +30,13 @@
     </mat-toolbar>
 
 
-    <app-input-material-handler
+    <app-input-handler
       [defaultCategories]="this.defaultCategories"
       [categories]="this.categories"
       (inputEventEmitter)="inputEvent()"
       (resetEmitter)="resetMaterialKeepInput()"
       (selectedChipEmitter)="chipSelectedEvent($event)">
-    </app-input-material-handler>
+    </app-input-handler>
 
   </div>
 
@@ -50,12 +50,12 @@
       </mat-list-option>
     </mat-selection-list>
 
-    <app-report-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
+    <app-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                         *ngIf="categories && mode != 'f'"
                         [ngClass]="currentLayout.id === 0 ? 'options-default' : 'options-expand'"
                         (clickEvent)="updateFromOptionsEvent()" [categories]="categories"
-                        [layoutId]="currentLayout.id"></app-report-options>
-    <app-report-output class="report" [(report)]="report" [(judgement)]="judgement"></app-report-output>
+                        [layoutId]="currentLayout.id"></app-options>
+    <app-report class="report" [(report)]="report" [(judgement)]="judgement"></app-report>
   </div>
 
   <button *ngIf="!timerStarted && isTester"

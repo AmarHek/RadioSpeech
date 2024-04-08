@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {ReportOptionsComponent,
+import {OptionsComponent,
   InputMaterialHandlerComponent} from "@app/main-interface";
 import {
   AuthenticationService,
@@ -40,16 +40,16 @@ export class DialogOverviewExampleDialogComponent {
 }
 
 @Component({
-  selector: "app-report-ui",
-  templateUrl: "./report-ui.component.html",
-  styleUrls: ["./report-ui.component.scss"],
+  selector: "app-main-interface",
+  templateUrl: "./main-interface.component.html",
+  styleUrls: ["./main-interface.component.scss"],
 })
 
-export class ReportUiComponent implements OnInit, ComponentCanDeactivate {
+export class MainInterfaceComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
   @ViewChild(InputMaterialHandlerComponent) private inputMaterialHandlerComponent: InputMaterialHandlerComponent;
-  @ViewChild(ReportOptionsComponent) private optionsComponent: ReportOptionsComponent;
+  @ViewChild(OptionsComponent) private optionsComponent: OptionsComponent;
 
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {

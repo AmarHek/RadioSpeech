@@ -12,19 +12,19 @@ import {
 import {DialogAddBoxComponent,
   DialogAddCategoryComponent,
   DialogAddGroupComponent,
-  ReportEditOptionsComponent} from "@app/template-editor"
+  EditorOptionsComponent} from "@app/template-editor"
 import {ConfirmDialogComponent} from "@app/shared";
 
 @Component({
-  selector: "app-report-edit",
-  templateUrl: "./report-edit.component.html",
-  styleUrls: ["./report-edit.component.scss"],
+  selector: "app-template-editor",
+  templateUrl: "./template-editor.component.html",
+  styleUrls: ["./template-editor.component.scss"],
 })
 
-export class ReportEditComponent implements OnInit, ComponentCanDeactivate {
+export class TemplateEditorComponent implements OnInit, ComponentCanDeactivate {
 
   @ViewChild("chipInput") chipInput: ElementRef<HTMLInputElement> | undefined;
-  @ViewChild(ReportEditOptionsComponent) private optionsComponent: ReportEditOptionsComponent;
+  @ViewChild(EditorOptionsComponent) private optionsComponent: EditorOptionsComponent;
 
   @HostListener('window:beforeunload')
 

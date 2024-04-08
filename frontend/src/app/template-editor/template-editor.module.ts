@@ -15,7 +15,7 @@ import {
   DialogAddBoxComponent,
   DialogAddCategoryComponent,
   DialogAddGroupComponent, DialogAddVariableComponent,
-  DialogListVariablesComponent, ReportEditComponent, ReportEditOptionsComponent
+  DialogListVariablesComponent, TemplateEditorComponent, EditorOptionsComponent
 } from "@app/template-editor";
 import {MatListModule} from "@angular/material/list";
 import {MainInterfaceModule} from "@app/main-interface/main-interface.module";
@@ -28,8 +28,8 @@ import {MainInterfaceModule} from "@app/main-interface/main-interface.module";
     DialogAddGroupComponent,
     DialogListVariablesComponent,
     DialogAddVariableComponent,
-    ReportEditComponent,
-    ReportEditOptionsComponent
+    TemplateEditorComponent,
+    EditorOptionsComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +47,7 @@ import {MainInterfaceModule} from "@app/main-interface/main-interface.module";
     MainInterfaceModule
   ],
   exports: [
-    ReportEditComponent
+    TemplateEditorComponent
   ]
 })
 export class TemplateEditorModule { }

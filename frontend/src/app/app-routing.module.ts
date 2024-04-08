@@ -8,9 +8,9 @@ import {AccountManagementComponent} from "@app/account-management";
 import {LoginComponent} from "@app/view";
 import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
 import {PendingChangesGuard} from "@app/core/guards/pending-changes.guard";
-import {ReportEditComponent} from "@app/template-editor";
+import {TemplateEditorComponent} from "@app/template-editor";
 import {TemplateListComponent} from "@app/template-manager";
-import {ReportUiComponent} from "@app/main-interface";
+import {MainInterfaceComponent} from "@app/main-interface";
 
 const routes: Routes = [
   {
@@ -31,14 +31,14 @@ const routes: Routes = [
   },
   {
     path: "main/:id",
-    component: ReportUiComponent,
+    component: MainInterfaceComponent,
     canActivate: [AuthGuard],
     canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
     path: "edit/:id",
-    component: ReportEditComponent,
+    component: TemplateEditorComponent,
     canActivate: [AuthGuard],
     canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }

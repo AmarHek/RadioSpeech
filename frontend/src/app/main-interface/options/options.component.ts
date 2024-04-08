@@ -6,12 +6,12 @@ import {Row} from "@app/core/models";
 import * as M from "@app/core/models/templateModel";
 
 @Component({
-  selector: "app-report-options",
-  templateUrl: "./report-options.component.html",
-  styleUrls: ["./report-options.component.scss"]
+  selector: "app-options",
+  templateUrl: "./options.component.html",
+  styleUrls: ["./options.component.scss"]
 })
 
-export class ReportOptionsComponent implements OnInit {
+export class OptionsComponent implements OnInit {
 
   @Input() categories: M.Category[];
   @Output() clickEvent = new EventEmitter<any>();
