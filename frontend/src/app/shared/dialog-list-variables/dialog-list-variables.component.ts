@@ -2,7 +2,7 @@ import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@a
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {DialogAddVariableComponent} from "@app/shared/dialog-add-variable/dialog-add-variable.component";
-import {Variable, VariableMC, VariableOC} from "@app/models";
+import {Variable, VariableMC, VariableOC} from "app/core/models";
 
 @Component({
   selector: 'app-dialog-list-variables',

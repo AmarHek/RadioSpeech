@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms
 import { first } from "rxjs/operators";
 
 import {AuthenticationService} from "@app/core/services/authentication.service";
-import {Role} from "@app/models";
+import {Role} from "app/core/models";
 import {environment} from "@env/environment";
 
 @Component({

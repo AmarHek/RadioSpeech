@@ -5,8 +5,8 @@ import {
   TemplateListComponent,
   ReportUiComponent
 } from "@app/feature";
-import {AuthGuard} from "@app/helpers";
-import {Role} from "@app/models";
+import {AuthGuard} from "app/core/helpers";
+import {Role} from "app/core/models";
 
 import {AdminComponent} from "@app/admin";
 import {AccountManagementComponent} from "@app/account-management";

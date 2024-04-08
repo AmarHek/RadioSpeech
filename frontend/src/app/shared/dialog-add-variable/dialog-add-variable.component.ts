@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {VariableText, VariableOC, VariableMC, VariableNumber, VariableDate} from "@app/models";
+import {VariableText, VariableOC, VariableMC, VariableNumber, VariableDate} from "app/core/models";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 

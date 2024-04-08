@@ -5,7 +5,7 @@ import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FeatureModule} from "@app/feature/feature.module";
-import {APP_DATE_FORMATS, AppDateAdapter, ErrorInterceptor, JwtInterceptor} from "@app/helpers";
+import {APP_DATE_FORMATS, AppDateAdapter, ErrorInterceptor, JwtInterceptor} from "app/core/helpers";
 import {SharedModule} from "@app/shared/shared.module";
 import {ViewModule} from "@app/view/view.module";
 import {AppRoutingModule} from "./app-routing.module";

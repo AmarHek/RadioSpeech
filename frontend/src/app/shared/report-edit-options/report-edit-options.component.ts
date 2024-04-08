@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
 
 import {DataParserService} from "@app/core";
-import {Row} from "@app/models";
+import {Row} from "app/core/models";
 
-import * as M from "@app/models/templateModel";
+import * as M from "@app/core/models/templateModel";
 
 @Component({
   selector: "report-edit-options",

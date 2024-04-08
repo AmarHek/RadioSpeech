@@ -1,5 +1,5 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, Role, Template, User} from "@app/models";
+import {Category, Role, Template, User} from "app/core/models";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
 import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
