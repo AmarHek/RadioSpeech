@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputMaterialHandlerComponent } from './input-material-handler.component';
+import { InputMaterialHandlerComponent } from '@app/main-interface';
 
 describe('InputMaterialHandlerComponent', () => {
   let component: InputMaterialHandlerComponent;

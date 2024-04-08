@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TemplateEditorComponent } from './template-editor.component';
+import { TemplateEditorComponent } from '@app/template-editor';
 
 describe('ReportEditComponent', () => {
   let component: TemplateEditorComponent;

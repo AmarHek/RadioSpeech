@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainInterfaceComponent } from './main-interface.component';
+import { MainInterfaceComponent } from '@app/main-interface';
 
 describe('WorkspaceComponent', () => {
   let component: MainInterfaceComponent;

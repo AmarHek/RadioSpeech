@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorOptionsComponent } from './editor-options.component';
+import { EditorOptionsComponent } from '@app/template-editor';
 
 describe('ReportEditOptionsComponent', () => {
   let component: EditorOptionsComponent;
