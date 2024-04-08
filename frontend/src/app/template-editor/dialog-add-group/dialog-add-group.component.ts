@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogListVariablesComponent} from "@app/shared/dialog-list-variables/dialog-list-variables.component";
+import {DialogListVariablesComponent} from "@app/template-editor";
 import {Group, Option} from "app/core/models";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";

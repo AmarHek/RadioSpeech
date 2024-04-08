@@ -1,7 +1,7 @@
 import {Component, ElementRef, Inject, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
-import {DialogAddVariableComponent} from "@app/shared/dialog-add-variable/dialog-add-variable.component";
+import {DialogAddGroupComponent,
+  DialogAddVariableComponent} from "@app/template-editor";
 import {Variable, VariableMC, VariableOC} from "app/core/models";
 
 @Component({

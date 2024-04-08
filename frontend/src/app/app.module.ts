@@ -10,16 +10,18 @@ import {SharedModule} from "@app/shared/shared.module";
 import {ViewModule} from "@app/view/view.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
-import {DialogOverviewExampleDialogComponent} from "@app/feature";
+import {DialogOverviewExampleDialogComponent} from "@app/main-interface";
 import {FormsModule} from "@angular/forms";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
-import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
+import {PendingChangesGuard} from "@app/core/guards/pending-changes.guard";
 import {AdminModule} from "@app/admin/admin.module";
 import {AccountManagementModule} from "@app/account-management/account-management.module";
 import {TemplateManagerModule} from "@app/template-manager/template-manager.module";
+import {MainInterfaceModule} from "@app/main-interface/main-interface.module";
+import {TemplateEditorModule} from "@app/template-editor/template-editor.module";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {TemplateManagerModule} from "@app/template-manager/template-manager.modu
     MatInputModule,
     AdminModule,
     AccountManagementModule,
-    TemplateManagerModule
+    TemplateManagerModule,
+    MainInterfaceModule,
+    TemplateEditorModule
   ],
   providers: [PendingChangesGuard,
     { provide: DateAdapter, useClass: AppDateAdapter },

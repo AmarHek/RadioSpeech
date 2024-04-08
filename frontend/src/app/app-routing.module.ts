@@ -1,9 +1,5 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {
-  FeedbackDisplayComponent,
-  ReportUiComponent
-} from "@app/feature";
 import {AuthGuard} from "app/core/helpers";
 import {Role} from "app/core/models";
 
@@ -11,9 +7,10 @@ import {AdminComponent} from "@app/admin";
 import {AccountManagementComponent} from "@app/account-management";
 import {LoginComponent} from "@app/view";
 import {RadiospeechWelcomeComponent} from "@app/view/radiospeech-welcome/radiospeech-welcome.component";
-import {PendingChangesGuard} from "@app/guards/pending-changes.guard";
-import {ReportEditComponent} from "@app/feature/report-edit/report-edit.component";
+import {PendingChangesGuard} from "@app/core/guards/pending-changes.guard";
+import {ReportEditComponent} from "@app/template-editor";
 import {TemplateListComponent} from "@app/template-manager";
+import {ReportUiComponent} from "@app/main-interface";
 
 const routes: Routes = [
   {
@@ -57,12 +54,6 @@ const routes: Routes = [
     component: AccountManagementComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin, Role.Moderator, Role.User]}
-  },
-  {
-    path: "feedback",
-    component: FeedbackDisplayComponent,
-    canActivate: [AuthGuard],
-    data: { role: [Role.Admin, Role.Moderator]}
   },
   {path: "**", redirectTo: "/home"}
 ];

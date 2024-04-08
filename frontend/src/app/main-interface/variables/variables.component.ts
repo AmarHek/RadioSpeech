@@ -1,10 +1,9 @@
 import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
-import {Variable} from "app/core/models";
+import {Variable} from "@app/core/models";
 import {MatDialog} from "@angular/material/dialog";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {MatDialogService} from "@app/core";
-
-import {InputModalComponent} from "@app/shared";
+import {InputModalComponent} from "@app/main-interface";
 
 @Component({
   selector: "app-variables",

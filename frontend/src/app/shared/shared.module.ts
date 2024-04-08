@@ -16,25 +16,15 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 import {ConfirmDialogComponent} from "@app/shared/confirm-dialog/confirm-dialog.component";
-import {InputModalComponent} from "@app/shared/inputModal/inputModal.component";
-import {ReportOutputComponent} from "@app/shared/report-output/report-output.component";
-import {VariablesComponent} from "@app/shared/variables/variables.component";
 
 import {FeedbackDialogComponent} from "./feedback-dialog/feedback-dialog.component";
-import {ReportOptionsComponent} from "@app/shared/report-options/report-options.component";
 
 import {InputDialogComponent} from "./input-dialog/input-dialog.component";
 
 import { AnnotationPopupComponent } from './annotation-popup/annotation-popup.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { DialogAddGroupComponent } from './dialog-add-group/dialog-add-group.component';
-import { DialogAddBoxComponent } from './dialog-add-box/dialog-add-box.component';
-import { DialogAddVariableComponent } from './dialog-add-variable/dialog-add-variable.component';
-import { DialogListVariablesComponent } from './dialog-list-variables/dialog-list-variables.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
-import { DialogAddCategoryComponent } from './dialog-add-category/dialog-add-category.component';
-import { ReportEditOptionsComponent } from './report-edit-options/report-edit-options.component';
 
 
 @NgModule({
@@ -42,19 +32,8 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
-    InputModalComponent,
-    ReportOutputComponent,
-    ReportOptionsComponent,
-    VariablesComponent,
     AnnotationPopupComponent,
     SettingsDialogComponent,
-    DialogAddGroupComponent,
-    DialogAddBoxComponent,
-    DialogAddVariableComponent,
-    DialogListVariablesComponent,
-    DialogAddCategoryComponent,
-    ReportEditOptionsComponent,
-    ReportEditOptionsComponent
   ],
     imports: [
         CommonModule,
@@ -80,11 +59,6 @@ import { ReportEditOptionsComponent } from './report-edit-options/report-edit-op
     ConfirmDialogComponent,
     FeedbackDialogComponent,
     InputDialogComponent,
-    InputModalComponent,
-    ReportOptionsComponent,
-    ReportOutputComponent,
-    VariablesComponent,
-    ReportEditOptionsComponent,
   ]
 })
 export class SharedModule { }

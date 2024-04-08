@@ -16,22 +16,14 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterModule} from "@angular/router";
 import {MatRadioModule} from "@angular/material/radio";
 
-import {FeedbackDisplayComponent} from "@app/feature/feedback-display/feedback-display.component";
-import {ReportUiComponent} from "@app/feature/report-ui/report-ui.component";
 import {SharedModule} from "@app/shared/shared.module";
 import { DialogTemplateComponent } from './dialog-template/dialog-template.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
-import { InputMaterialHandlerComponent } from './input-material-handler/input-material-handler.component';
-import { ReportEditComponent } from './report-edit/report-edit.component';
 
 
 @NgModule({
   declarations: [
-    FeedbackDisplayComponent,
-    ReportUiComponent,
     DialogTemplateComponent,
-    InputMaterialHandlerComponent,
-    ReportEditComponent
   ],
     imports: [
         CommonModule,
@@ -54,9 +46,5 @@ import { ReportEditComponent } from './report-edit/report-edit.component';
         MatRadioModule,
         MatSidenavModule,
     ],
-  exports: [
-    FeedbackDisplayComponent,
-    ReportUiComponent
-  ]
 })
 export class FeatureModule { }

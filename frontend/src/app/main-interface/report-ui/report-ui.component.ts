@@ -1,21 +1,21 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, Role, Template, User} from "app/core/models";
+import {Category, Role, Template, User} from "@app/core/models";
 import {ChipHelperService} from "@app/core/services/chip-helper.service";
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from "@angular/core";
-import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
+import {ComponentCanDeactivate} from "@app/core/guards/pending-changes.guard";
 import {DomSanitizer} from "@angular/platform-browser";
 import {HttpClient} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {ReportOptionsComponent} from "@app/shared";
+import {ReportOptionsComponent,
+  InputMaterialHandlerComponent} from "@app/main-interface";
 import {
   AuthenticationService,
   BackendCallerService,
   DataParserService,
   InputParserService
 } from "@app/core";
-import {InputMaterialHandlerComponent} from "@app/feature/input-material-handler/input-material-handler.component";
 
 interface Layout {
   id: number;

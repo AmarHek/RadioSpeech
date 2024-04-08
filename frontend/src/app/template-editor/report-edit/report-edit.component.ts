@@ -1,18 +1,18 @@
 import {ActivatedRoute} from "@angular/router";
-import {Category, CheckBox, Group, Option, Role, Template, User} from "app/core/models";
+import {Category, CheckBox, Group, Option, Role, Template, User} from "@app/core/models";
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
-import {ComponentCanDeactivate} from "@app/guards/pending-changes.guard";
+import {ComponentCanDeactivate} from "@app/core/guards/pending-changes.guard";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {DialogAddGroupComponent} from "@app/shared/dialog-add-group/dialog-add-group.component";
 import {
   AuthenticationService,
   BackendCallerService,
   DataParserService,
 } from "@app/core";
-import {DialogAddBoxComponent} from "@app/shared/dialog-add-box/dialog-add-box.component";
-import {DialogAddCategoryComponent} from "@app/shared/dialog-add-category/dialog-add-category.component";
-import {ReportEditOptionsComponent} from "@app/shared/report-edit-options/report-edit-options.component";
+import {DialogAddBoxComponent,
+  DialogAddCategoryComponent,
+  DialogAddGroupComponent,
+  ReportEditOptionsComponent} from "@app/template-editor"
 import {ConfirmDialogComponent} from "@app/shared";
 
 @Component({
