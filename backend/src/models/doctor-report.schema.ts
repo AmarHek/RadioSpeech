@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import {DoctorReport} from "./material.model";
+import {DoctorReport} from "./doctor-report.model";
 
-const doctorReportScheme = new mongoose.Schema({
+const doctorReportSchema = new mongoose.Schema({
     template: {type: [mongoose.Schema.Types.Mixed]},
-    timestamp: {type: Number},
+    timestampStart: {type: Number},
     duration: {type: Number},
     imageID: {type: String},
     layoutID: {type: Number},
@@ -12,4 +12,4 @@ const doctorReportScheme = new mongoose.Schema({
     pseudonym: {type: String}
 })
 
-export const DoctorReportDB = mongoose.model<DoctorReport>("DoctorReport", doctorReportScheme, "doctorReports")
+export const DoctorReportDB = mongoose.model<DoctorReport>("DoctorReport", doctorReportSchema, "doctorReports")

@@ -2,7 +2,7 @@ import {Template} from "./template.model";
 
 export interface DoctorReport{
   template: Template;
-  timestamp: number;
+  timestampStart: number;
   duration: number;
   imageID: string;
   layoutID: number;

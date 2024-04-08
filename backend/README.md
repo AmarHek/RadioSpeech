@@ -14,8 +14,8 @@ Folder models:
 - template.schema.ts defines how a template looks like in the database (a template and its name), 
 have in mind that an id is automatically added as well
 - template.model.ts defines how a template and its substructures look like in json / from excel
-- material.schema.ts defines the db structure for saving doctor reports
-- material.model.ts provides the necessary interfaces for typescript
+- doctor-report.schema.ts defines the db structure for saving doctor reports
+- doctor-report.model.ts provides the necessary interfaces for typescript
 - role.model.ts are the allowed user roles
 - user.schema.ts describes database entries for user management
 

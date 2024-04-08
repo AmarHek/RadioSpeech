@@ -3,7 +3,7 @@ import * as M from "@app/core/models/templateModel";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@env/environment";
 import {Observable} from "rxjs";
-import {Template, Feedback} from "app/core/models";
+import {Template} from "app/core/models";
 
 
 @Injectable({
@@ -91,29 +91,5 @@ export class BackendCallerService {
         imageID, layoutID, mode, report, pseudonym
       }
     );
-  }
-
-  // FEEDBACK API
-  getFeedbackList(skip: number, length: number) {
-    return this.http.post<{ message: string; feedbackList: Feedback[] }>(
-      this.feedbackUrl + "list/",
-      {skip, length}
-    );
-  }
-
-  getFeedbackCount() {
-    return this.http.get<{ message: string; count: number }>(
-      this.feedbackUrl + "count/"
-    );
-  }
-
-  addFeedback(feedback: Feedback) {
-    return this.http.post<{ message: string; id: string }>(
-      this.feedbackUrl + "add/",
-      feedback);
-  }
-
-  deleteFeedback(id: string) {
-    return this.http.delete(this.feedbackUrl + "delete/" + id);
   }
 }
