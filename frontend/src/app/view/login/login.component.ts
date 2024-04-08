@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
   }
 
   getBackgroundUrl() {
-    return "url('" + this.assetsUrl + 'loginScreen.PNG' + "')";
+    return "url('" + "assets/img/" + 'loginScreen.PNG' + "')";
   }
 
   onSubmit() {
