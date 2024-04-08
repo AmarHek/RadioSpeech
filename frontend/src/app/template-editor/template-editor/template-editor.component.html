@@ -48,14 +48,13 @@
         </button>
       </div>
     </div>
-    <report-edit-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
+    <editor-options style="float: left" [selectedCat]="selectedCat" [selectedSelectableID]="selectedSelectableID"
                          *ngIf="categories"
                          (editClickEvent)="edit($event)"
                          (removeClickEvent)="removeElement($event)"
                          class="options-expand"
                          [categories]="categories"
-    >
-    </report-edit-options>
+    ></editor-options>
   </div>
 </div>
 </body>
