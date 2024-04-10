@@ -42,7 +42,7 @@
 
   <div id="inner_remaining">
     <mat-selection-list *ngIf="currentLayout.id === 1 && mode != 'f'"
-                        [multiple]="false">
+                        [multiple]="false" [hideSingleSelectionIndicator]="true">
       <mat-list-option *ngFor="let cat of categories"
                        (click)="onCategorySelected(cat.name)"
                        [selected]="cat.name == selectedCat">

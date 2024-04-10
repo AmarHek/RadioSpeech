@@ -2,7 +2,8 @@
 <body class="disable-select">
 <div id="outer">
   <div id="inner_remaining">
-    <mat-selection-list [multiple]="false">
+    <mat-selection-list [multiple]="false"
+                        [hideSingleSelectionIndicator]="true">
       <div *ngFor="let cat of categories" style="display: flex; align-items: center;">
         <mat-list-option (click)="onCategorySelected(cat.name)"
                          [selected]="cat.name == selectedCat"
