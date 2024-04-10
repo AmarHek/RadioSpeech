@@ -33,7 +33,6 @@ const routes: Routes = [
     path: "main/:id",
     component: MainInterfaceComponent,
     canActivate: [AuthGuard],
-    canDeactivate: [PendingChangesGuard],
     data: { roles: [Role.User, Role.ExternalUser, Role.Moderator, Role.Admin, Role.demoUser, Role.tester] }
   },
   {
