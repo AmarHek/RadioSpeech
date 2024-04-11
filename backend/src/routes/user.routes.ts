@@ -7,8 +7,8 @@ export const userRouter = express.Router();
 userRouter.get(
     "/users",
     [
-        verifyToken,
-        isAdmin
+        // verifyToken,
+        // isAdmin
     ],
     getUsers
 )

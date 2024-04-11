@@ -5,6 +5,7 @@ import * as bcrypt from "bcrypt";
 export const getUsers = (req: Request, res: Response) => {
     try {
         UserDB.find().then(users => {
+            console.log(users);
             const result = users.map((user) => {
                 return {
                     id: user._id,
@@ -15,6 +16,7 @@ export const getUsers = (req: Request, res: Response) => {
             res.status(200).send(result);
         });
     } catch (error) {
+        console.log(error);
         res.status(404);
     }
 }
