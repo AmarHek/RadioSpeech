@@ -1,0 +1,18 @@
+# IDE
+.idea/
+
+# backend
+backend/node_modules/
+backend/data/
+backend/dist/
+backend/src/config/auth.config.ts
+
+# frontend
+# compiled output
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+# dependencies
+frontend/node_modules/
+# cache
+frontend/.angular/cache/
