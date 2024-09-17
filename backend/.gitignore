@@ -1,5 +1,5 @@
-
-/node_modules
-/.idea
-/data
-/dist
+node_modules/
+.idea/
+data/
+dist/
+config/auth.config.ts

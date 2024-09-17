@@ -1,7 +1,7 @@
 # Radiologie Befundung
 
 backend contains all code for the node-server
-frontent is the angular project
+frontend is the angular project
 build contains .exes and folders for deployment
 test-build contains the same folders, but for testing environment
 
